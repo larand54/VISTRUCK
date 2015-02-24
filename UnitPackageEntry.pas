@@ -317,7 +317,7 @@ Begin
   if mtPackages.Active then
    if mtPackages.RecordCount > 0 then
     Begin
-     ShowMessage('Cannot swith when packages are present.');
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_0' (* 'Cannot swith when packages are present.' *) ));
      Exit ;
     End ;
 
@@ -481,7 +481,7 @@ Begin
    mtPackages.FieldByName('Defsspno').Visible:= False ;
 
 //25
-   mtPackages.FieldDefs.Add('Varuslag',ftInteger,0,False) ;
+   mtPackages.FieldDefs.Add(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_4' (* 'Varuslag' *) ),ftInteger,0,False) ;
    mtPackages.FieldDefs[cVaruslag].CreateField(nil);
    mtPackages.FieldByName('Varuslag').Visible:= False ;
 
@@ -506,7 +506,7 @@ MakeLengthQuery_STD_Lengths (mtUserPropLengthGroupNo.AsInteger)
              Begin
                bcLengthOption.ItemIndex:= 1 ;
                MakeLengthQueryAllaPGLength ; //All lengths
-               ShowMessage('Loading all lengths...') ;
+               ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_5' (* 'Loading all lengths...' *) )) ;
              End ;
          End
          else
@@ -971,7 +971,7 @@ begin
     StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
 
     if NoOfPkgsInSerie > 100 then
-    ResultButton:= MessageDlg(IntToStr(NoOfPkgsInSerie)+' paket kommer att läggas upp, är det ok?',
+    ResultButton:= MessageDlg(IntToStr(NoOfPkgsInSerie)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_7' (* ' paket kommer att läggas upp, är det ok?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -988,7 +988,7 @@ begin
     if mtDupPkgNo.FindKey([PkgNo,Trim(SupplierCode)]) then
     Begin
      MessageBeep(MB_ICONEXCLAMATION);
-     ShowMessage('Paketnr finns redan, ange ett annat '+IntToStr(PkgNo)) ;
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_8' (* 'Paketnr finns redan, ange ett annat ' *) )+IntToStr(PkgNo)) ;
     End
      else
      if PackageNumberExists(PkgNo, SupplierCode) = False then
@@ -1016,10 +1016,10 @@ begin
       End ;
      End //if dmsSystem.Pkg_Reserved(
       else
-       ShowMessage('Paketnr '+IntToStr(PkgNo)+' är reserverat av användare '+ Res_UserName) ;
+       ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_9' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_10' (* ' är reserverat av användare ' *) )+ Res_UserName) ;
      End //if..
       else
-       ShowMessage('Paketnr  '+IntToStr(PkgNo)+' existerar redan, ange ett annat nummer') ;
+       ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_11' (* 'Paketnr  ' *) )+IntToStr(PkgNo)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_12' (* ' existerar redan, ange ett annat nummer' *) )) ;
     End ; //for PkgNo
      Finally
       Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -1045,7 +1045,7 @@ Var ResultButton      : word ;
 begin
  if (UnsavedPkgs) and (SavePkgs = False) then
  Begin
- ResultButton:= MessageDlg('Paket är inte sparade, vill du spara?',
+ ResultButton:= MessageDlg(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_13' (* 'Paket är inte sparade, vill du spara?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
  if ResultButton = mrYes then
   begin
@@ -1118,7 +1118,7 @@ begin
   TestPkgNo := StrToInt64(NewValue) ;
   if TestPkgNo > Const_MAX_PKG_NO then
   Begin
-   ErrorText:= 'Högsta paketnr tillåtet är '+IntToStr(Const_MAX_PKG_NO) ;
+   ErrorText:= siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_15' (* 'Högsta paketnr tillåtet är ' *) )+IntToStr(Const_MAX_PKG_NO) ;
    Error:= True ;
   End ;
 
@@ -1127,7 +1127,7 @@ begin
   if mtDupPkgNo.FindKey([PkgNo,Trim(SupplierCode)]) then
   Begin
    MessageBeep(MB_ICONEXCLAMATION);
-   ErrorText:= 'Paketnr finns redan, ange ett annat.' ;
+   ErrorText:= siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_16' (* 'Paketnr finns redan, ange ett annat.' *) ) ;
    Error := True ;
    MessageBeep(MB_ICONINFORMATION);
    Error:= True ;
@@ -1136,7 +1136,7 @@ begin
  if PackageNumberExists(PkgNo, //mtPackages.Fields.Fields[cPACKAGENO].AsInteger,
  SupplierCode) then
  Begin
-  ErrorText:= 'Paketnr finns redan '+ Pkg_Info(PkgNo, Trim(SupplierCode)) ;
+  ErrorText:= siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_17' (* 'Paketnr finns redan ' *) )+ Pkg_Info(PkgNo, Trim(SupplierCode)) ;
   Error:= True ;
  End
  else
@@ -1144,7 +1144,7 @@ begin
           PkgNo,
           SupplierCode, Self.Name, Res_UserName
           ) <> ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then begin
-          ErrorText:= 'Paketnr är reserverat av användare '+ Res_UserName ;
+          ErrorText:= siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_18' (* 'Paketnr är reserverat av användare ' *) )+ Res_UserName ;
           Error:= True ;
          End ;
 //  Accept := tAccept ;
@@ -1481,7 +1481,7 @@ Begin
    if dmsProduct.mtPackages.Active then
    if dmsProduct.mtPackages.RecordCount > 0 then
     Begin
-     ShowMessage('Kan inte byta när paketrader redan är inlagda.');
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_19' (* 'Kan inte byta när paketrader redan är inlagda.' *) ));
      cbInputOption.ItemIndex:= dmsProduct.InputOption  ;
      Exit ;
     End ;
@@ -1616,7 +1616,7 @@ begin
     End ;//for
     End
      else
-      ShowMessage('Finns ingen paketnr serie för verk ' + lcVerk.Text) ;
+      ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_20' (* 'Finns ingen paketnr serie för verk ' *) ) + lcVerk.Text) ;
    End ; //if NoOfPkgNo > 0 then
 
   Finally
@@ -1658,7 +1658,7 @@ begin
   mtpackages.DisableControls ;
   Try
     if AntalPaketAttLaggaUpp > 100 then
-    ResultButton:= MessageDlg(IntToStr(AntalPaketAttLaggaUpp)+' paket kommer att läggas upp, är det ok?',
+    ResultButton:= MessageDlg(IntToStr(AntalPaketAttLaggaUpp)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_7' (* ' paket kommer att läggas upp, är det ok?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -1721,7 +1721,7 @@ begin
     End ;//if StartPkgNo > 0 then
     End  //for PkgNo
      else
-      ShowMessage('Finns ingen paketnr serie för ' + lcVerk.Text) ;
+      ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_22' (* 'Finns ingen paketnr serie för ' *) ) + lcVerk.Text) ;
      Finally
       Screen.Cursor := Save_Cursor;  { Always restore to normal }
      End ;
@@ -1897,7 +1897,7 @@ begin
       AColumn.Width                 := ColumnWidth ;
      End
       else
-       ShowMessage('Längd '+fAddSpecialLengths.lbSpecialLengths.Items[x]+' finns redan i tabellen.') ;
+       ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_23' (* 'Längd ' *) )+fAddSpecialLengths.lbSpecialLengths.Items[x]+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_24' (* ' finns redan i tabellen.' *) )) ;
     End ;//x
    End //if fAddSpecialLengths.ShowModal = mrOK then
    else
@@ -1917,7 +1917,7 @@ begin
       AColumn.Width                 := ColumnWidth ;
      End
       else
-       ShowMessage('Längd '+CurrentLengths.Strings[x]+' finns redan i tabellen.') ;
+       ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_23' (* 'Längd ' *) )+CurrentLengths.Strings[x]+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_24' (* ' finns redan i tabellen.' *) )) ;
     End ;//x
    End ;//else
 
@@ -1999,7 +1999,7 @@ begin
    if dmsProduct.mtPackages.Active then
    if dmsProduct.mtPackages.RecordCount > 0 then
     Begin
-     ShowMessage('Kan inte byta när paketrader redan är inlagda.');
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_19' (* 'Kan inte byta när paketrader redan är inlagda.' *) ));
      cbInputOption.ItemIndex:= dmsProduct.InputOption  ;
      Exit ;
     End ;
@@ -2079,20 +2079,20 @@ begin
 
   if Length(TRIM(lcREGPOINT.Text)) < 1 then
   Begin
-   ShowMessage('Var vänlig och välj en mätpunkt.');
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_28' (* 'Var vänlig och välj en mätpunkt.' *) ));
    Exit ;
   End ;
 
 
   if mtUserPropLIPNo.AsInteger < 1 then
   Begin
-   ShowMessage('Ej tillåten lagergrupp.');
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_29' (* 'Ej tillåten lagergrupp.' *) ));
    Exit ;
   End ;
 
   if deRegDate.Date > Now then
   Begin
-   ShowMessage('Registreringsdatum får inte vara större än aktuellt datum');
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_30' (* 'Registreringsdatum får inte vara större än aktuellt datum' *) ));
    Exit ;
   End ;
 
@@ -2113,12 +2113,12 @@ begin
  +LF+'Datum: '+DateToStr(deRegDate.Date) , mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  }
 
-  if MessageDlg('Vill du spara paket mot mätpunkt: '+
+  if MessageDlg(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_31' (* 'Vill du spara paket mot mätpunkt: ' *) )+
  Trim(lcVERK.Text)  //Producent
  +'/'+ Trim(lcREGPOINT.Text) //Mätpunkt
- +LF+'Lagerplats: '+Trim(lcLIPNAME.Text)
+ +LF+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_32' (* 'Lagerplats: ' *) )+Trim(lcLIPNAME.Text)
  +'/'+ Trim(lcLIPNAME.Text)
- +LF+'Datum: '+DateToStr(deRegDate.Date) , mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ +LF+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_33' (* 'Datum: ' *) )+DateToStr(deRegDate.Date) , mtConfirmation, [mbYes, mbNo], 0) = mrYes then
 
  Begin
 
@@ -2148,7 +2148,7 @@ begin
   Begin
    if mtpackages.Fields[cTOTALPCS].AsInteger < 1 then //PCS
     Begin
-     ShowMessage('Paketnr '+mtpackages.Fields[cPACKAGENO].AsString+' har inga stycketal') ;
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_9' (* 'Paketnr ' *) )+mtpackages.Fields[cPACKAGENO].AsString+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_35' (* ' har inga stycketal' *) )) ;
      OKToSave := False ;
     End ;
 {   if Length(Trim(mtpackages.Fields[cPACKAGENO].AsString)) = 0 then //PCS
@@ -2159,13 +2159,13 @@ begin
 
    if (mtpackages.Fields[cPACKAGENO].AsInteger < 1) or (mtpackages.Fields[cPACKAGENO].IsNull) then //PCS
     Begin
-     ShowMessage('Radnr '+mtpackages.Fields[cRECID].AsString+' saknar paketnr') ;
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_36' (* 'Radnr ' *) )+mtpackages.Fields[cRECID].AsString+' saknar paketnr') ;
      OKToSave := False ;
     End ;
 
    if (mtpackages.Fields[cTOTALLPM].AsInteger < 1) and (mtpackages.Fields[cVaruslag].AsInteger = 0) then //PCS
     Begin
-     ShowMessage('Paketnr '+mtpackages.Fields[cPACKAGENO].AsString+' har inget värde i LPM kolumnen') ;
+     ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_9' (* 'Paketnr ' *) )+mtpackages.Fields[cPACKAGENO].AsString+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_38' (* ' har inget värde i LPM kolumnen' *) )) ;
      OKToSave := False ;
     End ;
    if OKToSave = False then
@@ -2204,7 +2204,7 @@ begin
      End
      else
      Begin
-      if MessageDlg('Paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?',
+      if MessageDlg(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_39' (* 'Paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?' *) ),
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
        AddPkgsToLoadFromPkgEntry(Sender);
      End ;
@@ -2238,7 +2238,7 @@ begin
      End
      else
      Begin
-      if MessageDlg('En del paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?',
+      if MessageDlg(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_40' (* 'En del paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?' *) ),
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
        AddPkgsToLoadFromPkgEntry(Sender);
       OKToSave:= False ;
@@ -2274,7 +2274,7 @@ begin
      End
      else
      Begin
-      if MessageDlg('Paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?',
+      if MessageDlg(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_39' (* 'Paket kunde inte sparas. Vill du lägga de paket som sparades till lasten?' *) ),
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
        AddPkgsToLoadFromPkgEntry(Sender);
      End ;
@@ -2282,7 +2282,7 @@ begin
 
   End
   else
-   ShowMessage('Välj ett lager ') ;
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_42' (* 'Välj ett lager ' *) )) ;
 
  End ;
   if mtpackages.RecordCount > 0 then
@@ -2292,7 +2292,7 @@ begin
  End ; //with
  End
   else
-   ShowMessage('Kan inte spara, ingen mätpunkt vald') ;
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_43' (* 'Kan inte spara, ingen mätpunkt vald' *) )) ;
  End ;
 end;
 
@@ -2348,7 +2348,7 @@ begin
 
   if mtpackages.RecordCount = 0 then
   Begin
-   ShowMessage('Lägg till ett paket först') ;
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_44' (* 'Lägg till ett paket först' *) )) ;
    Exit ;
   End
    else
@@ -2410,7 +2410,7 @@ begin
  FyllTommaPaket (Sender, NoOfErrorPkgnr) ;
  Repeat
   if NoOfErrorPkgnr > 0 then
-  MessageDlgAnswer:= MessageDlg(IntToStr(NoOfErrorPkgnr)+' paketnr var upptagna, vill du hämta paketnr igen?',
+  MessageDlgAnswer:= MessageDlg(IntToStr(NoOfErrorPkgnr)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_45' (* ' paketnr var upptagna, vill du hämta paketnr igen?' *) ),
   mtConfirmation, [mbYes, mbNo], 0) ;
   if MessageDlgAnswer = mrYes then
   Begin
@@ -2445,7 +2445,7 @@ begin
 
   if mtpackages.RecordCount = 0 then
   Begin
-   ShowMessage('Lägg till ett paket först') ;
+   ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_44' (* 'Lägg till ett paket först' *) )) ;
    Exit ;
   End
    else
@@ -2456,7 +2456,7 @@ begin
      LaggUppPaketMedPaketNr(Sender, NoOfErrorPkgnr, AntalPaketAttLaggaUpp) ;
      Repeat
      if NoOfErrorPkgnr > 0 then
-      MessageDlgAnswer:= MessageDlg(IntToStr(NoOfErrorPkgnr)+' paketnr var upptagna, vill du hämta paketnr igen?',
+      MessageDlgAnswer:= MessageDlg(IntToStr(NoOfErrorPkgnr)+siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_45' (* ' paketnr var upptagna, vill du hämta paketnr igen?' *) ),
       mtConfirmation, [mbYes, mbNo], 0) ;
       if MessageDlgAnswer = mrYes then
        Begin

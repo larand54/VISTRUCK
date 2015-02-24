@@ -262,7 +262,7 @@ begin
  Begin
   GetPkg(Sender) ;
 
-  Self.Caption := 'PAKETINFORMATION ' + ' Paketnr: ' + dmModule1.cds_PkgInfoPKG_NO.AsString
+  Self.Caption := 'PAKETINFORMATION ' + siLangLinked_frmPkgInfo.GetTextOrDefault('IDS_0' (* ' Paketnr: ' *) ) + dmModule1.cds_PkgInfoPKG_NO.AsString
   + '/' +  dmModule1.cds_PkgInfoSUPP_CODE.AsString ;
  End ; 
 end;
@@ -311,7 +311,7 @@ begin
     GetPkg(Sender) ;
     //GetPkgLog(Sender) ;
    End ;
-    Self.Caption := 'PAKETINFORMATION ' + ' Paketnr: ' + ' Paketnr: ' + dmModule1.cds_PkgInfoPKG_NO.AsString
+    Self.Caption := 'PAKETINFORMATION ' + siLangLinked_frmPkgInfo.GetTextOrDefault('IDS_0' (* ' Paketnr: ' *) ) + siLangLinked_frmPkgInfo.GetTextOrDefault('IDS_0' (* ' Paketnr: ' *) ) + dmModule1.cds_PkgInfoPKG_NO.AsString
   + '/' +  dmModule1.cds_PkgInfoSUPP_CODE.AsString ;
 
 
@@ -353,7 +353,7 @@ begin
 //    GetPkgLog(Sender) ;
    End ;
 
- Self.Caption := 'PAKETINFORMATION ' + ' Paketnr: ' + dmModule1.cds_PkgInfoPKG_NO.AsString
+ Self.Caption := 'PAKETINFORMATION ' + siLangLinked_frmPkgInfo.GetTextOrDefault('IDS_0' (* ' Paketnr: ' *) ) + dmModule1.cds_PkgInfoPKG_NO.AsString
   + '/' +  dmModule1.cds_PkgInfoSUPP_CODE.AsString ;
 
 

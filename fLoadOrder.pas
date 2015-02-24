@@ -907,7 +907,7 @@ begin
   dmcOrder.RefreshOrter ;
 //  dmcOrder.sq_City.Refresh ;
 //  bcStatus.ItemIndex:= 1 ;
-  Caption := 'Testing';
+  Caption := siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_0' (* 'Testing' *) );
   SearchOneLO:= False ;
 
   LoadUserPreferences;
@@ -1592,7 +1592,7 @@ Begin
   dmcOrder.cdsSawmillLoadOrders.Post ;
 
  if (dmcOrder.cdsSawmillLoadOrders.ChangeCount > 0) OR (dmcOrder.cdsBooking.ChangeCount > 0) then
- if MessageDlg('Vill du spara ändringar?',
+ if MessageDlg(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_1' (* 'Vill du spara ändringar?' *) ),
     mtConfirmation, [mbYes, mbNo], 0) = mrYes then
    acSaveChangesExecute(Sender)
     else
@@ -1672,7 +1672,7 @@ begin
   Begin
    ShippingPlanNo:= dmcOrder.Does_SearchedLONo_Have_ALO_Connected (dmcOrder.cds_PropsVerkNo.AsInteger, StrToIntDef(Trim(teSearchLONo.Text),0) ) ;
    if ShippingPlanNo > 1 then
-   if MessageDlg('Hittade inte LONr '+Trim(teSearchLONo.Text)+', det finns däremot en add LO nr '+IntToStr(ShippingPlanNo)+' kopplad till den, vill du hämta den?',
+   if MessageDlg(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_2' (* 'Hittade inte LONr ' *) )+Trim(teSearchLONo.Text)+siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_3' (* ', det finns däremot en add LO nr ' *) )+IntToStr(ShippingPlanNo)+siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_4' (* ' kopplad till den, vill du hämta den?' *) ),
     mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     Begin
      teSearchLONo.Text                    := IntToStr(ShippingPlanNo) ;
@@ -2955,7 +2955,7 @@ begin
     Begin
      if (Status = STATUS_COMPLETE) and (dmcOrder.LoadStatusOK(dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger) = False) then
      Begin
-      ShowMessage('Kan inte avsluta LO för att det finns laster som inte är avslutade eller inga laster alls.') ;
+      ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_5' (* 'Kan inte avsluta LO för att det finns laster som inte är avslutade eller inga laster alls.' *) )) ;
      End
      else
      Begin
@@ -3110,10 +3110,10 @@ begin
   else
    Begin
     if LOStatus = 0 then
-     ShowMessage('LO är inte aktiv')
+     ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_6' (* 'LO är inte aktiv' *) ))
       else
        if LOStatus = 2 then
-        ShowMessage('Avropet är inte aktiv') ;
+        ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_7' (* 'Avropet är inte aktiv' *) )) ;
 
    End ;
 
@@ -3207,7 +3207,7 @@ begin
 
   Try
   ExportGridToExcel(FileName, grdLO, False, False, True,'xls');
-  ShowMessage('Tabell exporterad till Excel fil '+FileName);
+  ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_8' (* 'Tabell exporterad till Excel fil ' *) )+FileName);
   Except
   End ;
  End ;
@@ -3224,8 +3224,8 @@ begin
  Begin
   LONo:= 0 ;
   fEntryField:= TfEntryField.Create(Nil);
-  fEntryField.Caption:= 'Ange LastNr' ;
-  fEntryField.Label1.Caption:= 'LastNr:' ;
+  fEntryField.Caption:= siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_9' (* 'Ange LastNr' *) ) ;
+  fEntryField.Label1.Caption:= siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_10' (* 'LastNr:' *) ) ;
   Try
    if fEntryField.ShowModal = mrOK then
    Begin
@@ -4015,8 +4015,8 @@ begin
  LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
  fEntryField:= TfEntryField.Create(Nil);
  Try
-  fEntryField.Caption         := 'Ange LO nummer att byta till' ;
-  fEntryField.Label1.Caption  := 'LO Nr:' ;
+  fEntryField.Caption         := siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_11' (* 'Ange LO nummer att byta till' *) ) ;
+  fEntryField.Label1.Caption  := siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_12' (* 'LO Nr:' *) ) ;
   if fEntryField.ShowModal = mrOK then
   Begin
    if (StrToIntDef(Trim(fEntryField.eNoofpkgs.Text),0) > 0) then
@@ -4027,7 +4027,7 @@ begin
      StrToIntDef(Trim(fEntryField.eNoofpkgs.Text),0)) ;
 
      GetLO(StrToIntDef(Trim(fEntryField.eNoofpkgs.Text),0), Sender) ;
-     ShowMessage('LOnr ändrat i lasten ') ;
+     ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_13' (* 'LOnr ändrat i lasten ' *) )) ;
 //     if dmcOrder.cdsLoadsForLO.Locate('LoadNo', LoadNo, []) then
      if dmcOrder.FindLoadRecord(LoadNo) then
       acOpenLoadExecute(Sender) ;
@@ -4041,7 +4041,7 @@ begin
      End ;
     End //if dmcOrder.ValidLO(StrToIntDef(Trim(fEntryField.eNoofpkgs.Text),0)) then
      else
-     ShowMessage('LOnr ' + fEntryField.eNoofpkgs.Text + ' finns ej eller så skiljer sig leverantör eller lastställe från det LOnr lasten har.') ;
+     ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_14' (* 'LOnr ' *) ) + fEntryField.eNoofpkgs.Text + siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_15' (* ' finns ej eller så skiljer sig leverantör eller lastställe från det LOnr lasten har.' *) )) ;
   End ;
  Finally
   FreeAndNil(fEntryField) ;
@@ -4329,7 +4329,7 @@ begin
  if Length(MailToAddress) = 0 then
  Begin
   MailToAddress:= 'ange@adress.nu' ;
-  ShowMessage('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)') ;
+  ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_16' (* 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' *) )) ;
  End ;
  if Length(MailToAddress) > 0 then
  Begin
@@ -4372,9 +4372,9 @@ begin
  dm_SendMapiMail  := Tdm_SendMapiMail.Create(nil);
  Try
   dm_SendMapiMail.SendMail('Följesedel. FSnr: ' + grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString,
-  'Följesedel bifogad. '
+  siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_18' (* 'Följesedel bifogad. ' *) )
   +LF+''
-  +'Load tally attached. '
+  +siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_19' (* 'Load tally attached. ' *) )
   +LF+''
   +LF+''
   +LF+'MVH/Best Regards, '
@@ -4388,7 +4388,7 @@ begin
  End ;
  End
   else
-   ShowMessage('Emailadress saknas för klienten!') ;
+   ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_20' (* 'Emailadress saknas för klienten!' *) )) ;
 end;
 
 procedure TfrmVisTruckLoadOrder.grdLODBTableView1DblClick(Sender: TObject);
@@ -4516,7 +4516,7 @@ begin
 
  if Length(ReservedByUser) > 0 then
  begin
-  ShowMessage('Cannot open, Load is locked by user ' + ReservedByUser) ;
+  ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_21' (* 'Cannot open, Load is locked by user ' *) ) + ReservedByUser) ;
   Exit ;
  end;
 

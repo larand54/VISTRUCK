@@ -786,9 +786,9 @@ Var
     Subject                 : String ;
     InfogadHTMLFil          : String ;
 begin
- Subject:= 'Paketspecifikation' ;
+ Subject:= siLangLinked_fLager.GetTextOrDefault('IDS_0' (* 'Paketspecifikation' *) ) ;
 
- InfogadHTMLFil:= ExportToHTML('paketspec', grdBoT) ;
+ InfogadHTMLFil:= ExportToHTML(siLangLinked_fLager.GetTextOrDefault('IDS_1' (* 'paketspec' *) ), grdBoT) ;
 
  MailToAddress:= 'ange@address.se';//'lars.makiaho@gmail.com' ;
 
@@ -1196,7 +1196,7 @@ begin
   FileName:= SaveDialog1.FileName ;
   Try
 //   ExportGridToExcel(FileName, grdBoT, False, False, True,'xls');
-  ShowMessage('Tabell exporterad till excel fil ' + FileName);
+  ShowMessage(siLangLinked_fLager.GetTextOrDefault('IDS_2' (* 'Tabell exporterad till excel fil ' *) ) + FileName);
   Except
   End ;
  End ;
@@ -1443,7 +1443,7 @@ begin
 
  End
     else
-     ShowMessage('Välj en lagergrupp') ;
+     ShowMessage(siLangLinked_fLager.GetTextOrDefault('IDS_3' (* 'Välj en lagergrupp' *) )) ;
 
  Finally
   Screen.Cursor := Save_Cursor ;
@@ -1454,9 +1454,9 @@ procedure TfLager.SetHeadersCaptionSortimentVy ;
 Begin
  Case cds_PropsLengthVolUnitNo.AsInteger of
   0 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'ANTAL STYCK PER LÄNGD' ;
-  1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'AM3 PER LÄNGD' ;
-  2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'NM3 PER LÄNGD' ;
-  3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'PAKET PER LÄNGD' ;
+  1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
+  2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
+  3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
  End ;
 
 End ;
@@ -1465,9 +1465,9 @@ procedure TfLager.SetHeadersCaptionPaketnrVy ;
 Begin
  Case cds_PropsLengthVolUnitNo.AsInteger of
   0 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= 'ANTAL STYCK PER LÄNGD' ;
-  1 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= 'AM3 PER LÄNGD' ;
-  2 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= 'NM3 PER LÄNGD' ;
-  3 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= 'PAKET PER LÄNGD' ;
+  1 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
+  2 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
+  3 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
  End ;
 
 End ;
@@ -1620,7 +1620,11 @@ begin
   Except
    on E: eDatabaseError do
    Begin
-    ShowMessage('ClearItems, CreateAllItems ' + E.Message) ;
+    ShowMessage(
+{TSI:IGNORE ON}
+	'ClearItems, CreateAllItems '
+{TSI:IGNORE OFF}
+ + E.Message) ;
     Raise ;
    End ;
   End ;
@@ -1823,10 +1827,10 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
 
 // for x := 0 to grdDBBandedPerSortiment.Bands.Count-1 do
 //  grdDBBandedPerSortiment.Bands[x].c
- grdDBBandedPerSortiment.Bands[0].Caption := 'PAKET ID';
- grdDBBandedPerSortiment.Bands[1].Caption := 'PRODUKT';
- grdDBBandedPerSortiment.Bands[2].Caption := 'NM3 PER LÄNGD';
- grdDBBandedPerSortiment.Bands[3].Caption := 'LAGER';
+ grdDBBandedPerSortiment.Bands[0].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_11' (* 'PAKET ID' *) );
+ grdDBBandedPerSortiment.Bands[1].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_12' (* 'PRODUKT' *) );
+ grdDBBandedPerSortiment.Bands[2].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) );
+ grdDBBandedPerSortiment.Bands[3].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_14' (* 'LAGER' *) );
  grdDBBandedPerSortiment.Bands[4].Caption := 'KVANTITET';
 
  FormatLengthColumns ;
@@ -2294,7 +2298,11 @@ begin
   Except
    on E: eDatabaseError do
    Begin
-    ShowMessage('ClearItems, CreateAllItems ' + E.Message) ;
+    ShowMessage(
+{TSI:IGNORE ON}
+	'ClearItems, CreateAllItems '
+{TSI:IGNORE OFF}
+ + E.Message) ;
     Raise ;
    End ;
   End ;
@@ -2599,7 +2607,11 @@ begin
   Except
    on E: eDatabaseError do
    Begin
-    ShowMessage('ClearItems, CreateAllItems ' + E.Message) ;
+    ShowMessage(
+{TSI:IGNORE ON}
+	'ClearItems, CreateAllItems '
+{TSI:IGNORE OFF}
+ + E.Message) ;
     Raise ;
    End ;
   End ;

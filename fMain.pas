@@ -301,7 +301,7 @@ procedure TfrmMain.CheckDrive ;
 Begin
   if not DirectoryExists('h:\') then
   Begin
-   cxShellBrowserDialog1.Title:= 'Disk drive H: finns ej, ange en annan.' ;
+   cxShellBrowserDialog1.Title:= siLangLinked1.GetTextOrDefault('IDS_0' (* 'Disk drive H: finns ej, ange en annan.' *) ) ;
    cxShellBrowserDialog1.Execute ;
    dmsConnector.DriveLetter:= cxShellBrowserDialog1.Path ;
   End
@@ -314,13 +314,13 @@ End ;
 procedure TfrmMain.AppException(Sender: TObject; E: Exception);
 begin
   if Pos('547', E.Message) > 0 then
-    ShowMessage('The system can not insert record due to data conflict!')
+    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_1' (* 'The system can not insert record due to data conflict!' *) ))
   else
     if Pos('2601', E.Message) > 0 then
-      ShowMessage('The system can not insert record due to data duplication!')
+      ShowMessage(siLangLinked1.GetTextOrDefault('IDS_2' (* 'The system can not insert record due to data duplication!' *) ))
     else
       if Pos('10015', E.Message) > 0 then
-        ShowMessage('The system can not insert record due to data duplication!')
+        ShowMessage(siLangLinked1.GetTextOrDefault('IDS_2' (* 'The system can not insert record due to data duplication!' *) ))
       else
         ShowMessage('System Error. Original Message: ' + E.Message)
 end;
@@ -355,19 +355,19 @@ Begin
  Begin
   if not DirectoryExists(dmsConnector.DriveLetter+'VIS') then
     if not CreateDir(dmsConnector.DriveLetter+'VIS') then
-    raise Exception.Create('Cannot create '+dmsConnector.DriveLetter+'VIS');
+    raise Exception.Create(siLangLinked1.GetTextOrDefault('IDS_4' (* 'Cannot create ' *) )+dmsConnector.DriveLetter+'VIS');
 
   if not DirectoryExists(dmsConnector.DriveLetter+'VIS\KONFIG') then
     if not CreateDir(dmsConnector.DriveLetter+'VIS\KONFIG') then
-    raise Exception.Create('Cannot create '+dmsConnector.DriveLetter+'VIS\KONFIG');
+    raise Exception.Create(siLangLinked1.GetTextOrDefault('IDS_4' (* 'Cannot create ' *) )+dmsConnector.DriveLetter+'VIS\KONFIG');
 
   if not DirectoryExists(dmsConnector.DriveLetter+'VIS\MALL') then
     if not CreateDir(dmsConnector.DriveLetter+'VIS\MALL') then
-    raise Exception.Create('Cannot create '+dmsConnector.DriveLetter+'VIS\MALL');
+    raise Exception.Create(siLangLinked1.GetTextOrDefault('IDS_4' (* 'Cannot create ' *) )+dmsConnector.DriveLetter+'VIS\MALL');
 
   if not DirectoryExists(dmsConnector.DriveLetter+'VIS\TEMP') then
     if not CreateDir(dmsConnector.DriveLetter+'VIS\TEMP') then
-    raise Exception.Create('Cannot create '+dmsConnector.DriveLetter+'VIS\TEMP');
+    raise Exception.Create(siLangLinked1.GetTextOrDefault('IDS_4' (* 'Cannot create ' *) )+dmsConnector.DriveLetter+'VIS\TEMP');
  End ;
 End ;
 
@@ -378,7 +378,7 @@ var Height, Width, Top, Left : Integer ;
 begin
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
-  ShowMessage('Ändra till H:') ;
+  ShowMessage(siLangLinked1.GetTextOrDefault('IDS_8' (* 'Ändra till H:' *) )) ;
 
  CheckMappar ;
 
@@ -498,7 +498,7 @@ begin
  Begin
  if FormOpen then
  Begin
-  ShowMessage('Stäng alla formulär först!');
+  ShowMessage(siLangLinked1.GetTextOrDefault('IDS_9' (* 'Stäng alla formulär först!' *) ));
   Exit ;
  End ;
  OKHelpBottomDlg:= TOKHelpBottomDlg.Create(nil);
@@ -557,7 +557,7 @@ begin
  end;
  End
   else
-   ShowMessage('No access');
+   ShowMessage(siLangLinked1.GetTextOrDefault('IDS_10' (* 'No access' *) ));
 end;
 
 procedure TfrmMain.Timer1Timer(Sender: TObject);

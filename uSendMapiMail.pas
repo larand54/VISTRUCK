@@ -6,11 +6,12 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, uRwMapiSession,
   uRwMapiInterfaces ,
-  fRwMapiFolderDialog, uRwMapiBase ;
+  fRwMapiFolderDialog, uRwMapiBase, siComp, uRwEasyMAPI ;
 
 type
   Tdm_SendMapiMail = class(TDataModule)
     MapiSession: TRwMapiSession;
+    siLang_dm_SendMapiMail: TsiLang;
     procedure MapiSessionAfterLogon(Sender: TObject);
     procedure MapiSessionBeforeLogoff(Sender: TObject);
   private
@@ -58,10 +59,10 @@ begin
  //ShowLogonDlg(Self.MapiSession, True);
 
   if Trim(MailToAddress) = '' then
-   raise Exception.Create('No recipients specified');
+   raise Exception.Create(siLang_dm_SendMapiMail.GetTextOrDefault('IDS_0' (* 'No recipients specified' *) ));
 
   if Trim(Subject) = '' then
-   raise EAbort.Create('There is no subject.');
+   raise EAbort.Create(siLang_dm_SendMapiMail.GetTextOrDefault('IDS_1' (* 'There is no subject.' *) ));
 
     // Logon, create and send the message
   MapiSession.Logon;
@@ -91,7 +92,7 @@ begin
 
   if Submitted then
   begin
-    RwMsgBoxInfo('The message is submitted.');
+    RwMsgBoxInfo(siLang_dm_SendMapiMail.GetTextOrDefault('IDS_2' (* 'The message is submitted.' *) ));
     //ClearMessage;
   end;
 end;

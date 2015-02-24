@@ -420,7 +420,7 @@ begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,831 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   if DataSaved = False then begin
 
-    wRet := MessageDlg('Data är inte sparade, vill du spara?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+    wRet := MessageDlg(siLangLinked_frmBaseFormA.GetTextOrDefault('IDS_0' (* 'Data är inte sparade, vill du spara?' *) ), mtConfirmation, [mbYes, mbNo, mbCancel], 0);
 
     case wRet of
 

@@ -648,9 +648,9 @@ Begin
    Begin
     LoadEnabled:= True ;
     if LoadAR then
-    Caption                                               := 'Lasten kan inte ändras för att den är ankomstregistrerad'
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_0' (* 'Lasten kan inte ändras för att den är ankomstregistrerad' *) )
     else
-    Caption                                               := 'Lasten kan inte ändras för att status är "Avslutad"' ;
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_1' (* 'Lasten kan inte ändras för att status är "Avslutad"' *) ) ;
 
     grdPkgsDBBandedTableView1DefaultCustShipObjectNo.Visible  := True ;
     grdPkgsDBBandedTableView1Defsspno.Visible                 := True ;
@@ -661,9 +661,9 @@ Begin
     MessageBeep(MB_ICONEXCLAMATION);
 
     if LoadAR then
-    Caption                                               := 'Lasten kan inte ändras för att den är ankomstregistrerad'
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_0' (* 'Lasten kan inte ändras för att den är ankomstregistrerad' *) )
     else
-    Caption                                               := 'Lasten kan inte ändras för att status är "Avslutad"' ;
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_1' (* 'Lasten kan inte ändras för att status är "Avslutad"' *) ) ;
 
     LoadEnabled                                           := False ;
     cds_LoadHead.UpdateOptions.ReadOnly                   := True ;
@@ -676,7 +676,7 @@ Begin
    Begin
     MessageBeep(MB_ICONEXCLAMATION);
 
-    Caption                                               := 'Lasten kan ändras.' ;
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_4' (* 'Lasten kan ändras.' *) ) ;
 
     LoadEnabled                                           := True ;
     cds_LoadHead.UpdateOptions.ReadOnly                   := False ;
@@ -1044,7 +1044,7 @@ begin
 
     if Length(ReservedByUser) > 0 then
     begin
-      ShowMessage('Cannot create, Load is locked by user ' + ReservedByUser) ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_5' (* 'Cannot create, Load is locked by user ' *) ) + ReservedByUser) ;
     end;
    End ;
 
@@ -1168,15 +1168,15 @@ Begin
       case ValidPackage of
         VP_LengthNotInLengthGroup : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= VP_LengthNotInLengthGroup ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'Längd matchar ej längdgruppen' ;
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_6' (* 'Längd matchar ej längdgruppen' *) ) ;
                      End ;
         ALL_OK     : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'OK';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
                      End ;
         BAD_PKG    : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_PKG ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_PKG';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_8' (* 'BAD_PKG' *) );
                      End ;
 {        PKG_OK     : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= PKG_OK ;
@@ -1188,7 +1188,7 @@ Begin
                      End ; }
         BAD_LENGTH : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_LENGTH ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_LENGTH ';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_9' (* 'BAD_LENGTH ' *) );
                      End ;
         VP_BadThickness : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_BadThickness ;
@@ -1245,7 +1245,7 @@ Begin
      on eDatabaseError do
      Begin
       Raise ;
-      ShowMessage('Paketnr finns redan i lasten.') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_10' (* 'Paketnr finns redan i lasten.' *) )) ;
       cds_LoadPackages.Cancel ;
      End ;
     End ; //Except
@@ -1673,7 +1673,7 @@ begin
    Begin
     fSelectLORowInLoad  := TfSelectLORowInLoad.Create(nil);
     Try
-     fSelectLORowInLoad.PanelPaket.Caption  :=  'Paketnr = ' + cds_LoadPackagesPACKAGENO.AsString + ' ' + cds_LoadPackagesPRODUCT.AsString ;
+     fSelectLORowInLoad.PanelPaket.Caption  :=  siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_11' (* 'Paketnr = ' *) ) + cds_LoadPackagesPACKAGENO.AsString + ' ' + cds_LoadPackagesPRODUCT.AsString ;
      fSelectLORowInLoad.ShowModal ;
      Result    := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
      CustcdsNo := cdsLORowsCustShipPlanDetailObjectNo.AsInteger ;
@@ -1725,19 +1725,19 @@ begin
       case ValidPackage of
         VP_LengthNotInLengthGroup : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= VP_LengthNotInLengthGroup ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'Längd matchar ej längdgruppen' ;
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_6' (* 'Längd matchar ej längdgruppen' *) ) ;
                      End ;
         ALL_OK     : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'OK';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
                      End ;
         BAD_PKG    : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_PKG ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_PKG';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_8' (* 'BAD_PKG' *) );
                      End ;
         BAD_LENGTH : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_LENGTH ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_LENGTH' ;
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_15' (* 'BAD_LENGTH' *) ) ;
                      End ;
         VP_BadThickness : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_BadThickness ;
@@ -1918,7 +1918,7 @@ Var dResult: Integer ;
 begin
   if DataSaved = False then
    Begin
-   dResult:= MessageDlg('Ändringar är inte sparade, vill du spara?',
+   dResult:= MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_16' (* 'Ändringar är inte sparade, vill du spara?' *) ),
     mtConfirmation, [mbYes, mbNo,mbCancel], 0) ;
    End
     else
@@ -1981,7 +1981,7 @@ begin
     StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
 
     if NoOfPkgsInSerie > 100 then
-    ResultButton:= MessageDlg(IntToStr(NoOfPkgsInSerie)+' paket läggs till lasten, vill du fortsätta?',
+    ResultButton:= MessageDlg(IntToStr(NoOfPkgsInSerie)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_17' (* ' paket läggs till lasten, vill du fortsätta?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -2097,7 +2097,7 @@ Begin
      on eDatabaseError do
      Begin
       Raise ;
-      ShowMessage('Paketnr finns redan i lasten.') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_10' (* 'Paketnr finns redan i lasten.' *) )) ;
       cds_LoadPackages.Cancel ;
      End ;
     End ;
@@ -2134,20 +2134,20 @@ begin
     AddPkgTo_cds_LoadPackagesPkgSerieNo(Sender, PkgNo, PkgSupplierCode) ;
     if AfterAddedPkgNo(Sender, PkgNo,PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths) <> eaACCEPT then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte') ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
     End ;
   End
    else
    if Action = eaREJECT then
     Begin
      dmLoadEntrySSP.cds_LoadPackages.Cancel ;
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte') ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
     End
    else
    if Action = eaReserved then
     Begin
      dmLoadEntrySSP.cds_LoadPackages.Cancel ;
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' är reserverat av '+Res_UserName) ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) )+Res_UserName) ;
     End ;
 
   Result:= Action ;
@@ -2235,7 +2235,7 @@ begin
    End
   End
    else
-   ShowMessage('Den här Last Ordern är inte tillgänglig, kanske LO status inte är accept eller att avropet inte är aktivt längre?') ;
+   ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_25' (* 'Den här Last Ordern är inte tillgänglig, kanske LO status inte är accept eller att avropet inte är aktivt längre?' *) )) ;
   Finally
    Screen.Cursor := Save_Cursor;
    sq_Booking_Data.Close ;
@@ -2533,7 +2533,7 @@ Begin
      on eDatabaseError do
      Begin
       Raise ;
-      ShowMessage('Paketnr finns redan i lasten.') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_10' (* 'Paketnr finns redan i lasten.' *) )) ;
       cds_LoadPackages.Cancel ;
      End ;
     End ;
@@ -2663,21 +2663,21 @@ begin
 
     if AfterAddedPkgNo(Sender, PkgNo,PkgSupplierCode, ProductNo, ProductLengthNo, 1 {NoOfLengths}) <> eaACCEPT then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte i lager ' + Trim(lcPIP.Text)
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text)
     +'/'+'') ;//Trim(bcLogicalInventory.Text)) ;
     End ;
   End
    else
    if Action = eaREJECT then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte i lager '
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) )
      +Trim(lcPIP.Text)
     +'/'+'');//Trim(bcLogicalInventory.Text)) ;
     End
    else
    if Action = eaReserved then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' är reserverat av '+Res_UserName) ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) )+Res_UserName) ;
     End
   finally
     Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -2753,7 +2753,7 @@ begin
      PkgSupplierCode:= EgenPkgSupplierCode ;
      if NewPkgNo = 0 then
      Begin
-      ShowMessage('Koden kunde inte översättas till ett Paketnr') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) )) ;
       Exit ;
      End ;
     End ;
@@ -2779,9 +2779,9 @@ begin
      InsertScannedPkgNo(Sender, NewPkgNo, PkgSupplierCode)
       else
        if Action = eaReserved then
-        ShowMessage('Paketnr '+IntToStr(NewPkgNo)+' är reserverat av '+Res_UserName)
+        ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) )+Res_UserName)
          else
-          ShowMessage('Paketnr '+IntToStr(NewPkgNo)+' finns inte') ;
+          ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
 
    SaveLoad ;
 
@@ -2857,12 +2857,12 @@ begin
       if AfterAddedPkgNo(Sender, cds_LoadPackagesPACKAGENO.AsInteger, cds_LoadPackagesSupplierCode.AsString,
       cds_LoadPackagesProductNo.AsInteger, cds_LoadPackagesProductLengthNo.AsInteger, cds_LoadPackagesNoOfLengths.AsInteger) <> eaACCEPT then
       Begin
-       ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte') ;
+       ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
       End ;
 
      End
       else
-       ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte') ;
+       ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
 
       Except
        on eDatabaseError do
@@ -2955,7 +2955,7 @@ begin
      NewPkgNo:= StrToIntDef(PkgNo,0) ;
      if NewPkgNo = 0 then
      Begin
-      ShowMessage('Koden kunde inte översättas till ett Paketnr') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) )) ;
       Exit ;
      End ;
 
@@ -2988,9 +2988,9 @@ begin
      InsertScannedPkgNo(Sender, NewPkgNo, PkgSupplierCode)
       else
        if Action = eaReserved then
-        ShowMessage('Paketnr '+IntToStr(NewPkgNo)+' är reserverat av '+Res_UserName)
+        ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) )+Res_UserName)
          else
-          ShowMessage('Paketnr '+IntToStr(NewPkgNo)+' finns inte') ;
+          ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_20' (* ' finns inte' *) )) ;
 
    SaveLoad ;
 
@@ -3022,7 +3022,7 @@ begin
 
   End
   else
-   ShowMessage('Raden ligger i ändringsläge, spara raden genom pil upp eller ner först.') ;
+   ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_47' (* 'Raden ligger i ändringsläge, spara raden genom pil upp eller ner först.' *) )) ;
 
  finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -3147,7 +3147,7 @@ end;
 procedure TfLoadEntrySSP.acRemovePkgFromSystemExecute(Sender: TObject);
 Var  Save_Cursor:TCursor;
 Begin
- if MessageDlg('Är du säker? markerade paket kommer att fösvinna från systemet!',
+ if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_48' (* 'Är du säker? markerade paket kommer att fösvinna från systemet!' *) ),
  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  With dmLoadEntrySSP do
  Begin
@@ -3181,7 +3181,7 @@ end;
 procedure TfLoadEntrySSP.acRemoveAllPkgsFromSystemExecute(Sender: TObject);
 Var  Save_Cursor:TCursor;
 Begin
-  if MessageDlg('Är du säker? paketen kommer att fösvinna från systemet!',
+  if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_49' (* 'Är du säker? paketen kommer att fösvinna från systemet!' *) ),
  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
   Save_Cursor := Screen.Cursor;
@@ -3385,8 +3385,8 @@ begin
     Begin
      if noofpkgs <> strtointdef(Trim(fEntryField.eNoofpkgs.Text),0) then
      Begin
-      if MessageDlg('Du begärde '+Trim(fEntryField.eNoofpkgs.Text)+' paket med det finns endast '+inttostr(noofpkgs)
-      +' vill du lägga '+inttostr(noofpkgs)+' paket till lasten?',
+      if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_50' (* 'Du begärde ' *) )+Trim(fEntryField.eNoofpkgs.Text)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_51' (* ' paket med det finns endast ' *) )+inttostr(noofpkgs)
+      +siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_52' (* ' vill du lägga ' *) )+inttostr(noofpkgs)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_53' (* ' paket till lasten?' *) ),
       mtConfirmation, [mbYes, mbNo], 0) = mrYes then
       InsertPkgNo(Sender) ;
      End
@@ -3394,7 +3394,7 @@ begin
      InsertPkgNo(Sender) ;
     End
     else
-    showmessage('Det finns inga paket av pktkod '+trim(cdsLORowsPKGCODE.AsString)+' i lager '+Trim(lcPIP.Text)
+    showmessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_54' (* 'Det finns inga paket av pktkod ' *) )+trim(cdsLORowsPKGCODE.AsString)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_55' (* ' i lager ' *) )+Trim(lcPIP.Text)
     +'/'+Trim(lcLIP.Text)) ;
     Finally
      Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -3410,7 +3410,7 @@ begin
   SaveLoad ;
  End
  else
-   ShowMessage('Spara lasten först.') ;
+   ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
  End ; //with
 end;
 
@@ -3427,7 +3427,7 @@ var fPickPkgNo: TfPickPkgNo;
 begin
  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
  Begin
-  ShowMessage('Spara lasten först.') ;
+  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
   Exit ;
  End ;
 
@@ -3546,7 +3546,7 @@ Begin
     if (cds_LSP.Active) AND (cds_LSP.RecordCount > 0) then
     SaveLOData(cds_LoadHeadLoadNo.AsInteger)
      else
-      ShowMessage('Lägg till minst en LO.') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_58' (* 'Lägg till minst en LO.' *) )) ;
     if (cds_LoadHeadSenderLoadStatus.AsInteger = 1) and (cds_LoadPackages.RecordCount > 0) then
     Begin
      ShowMessage('Alla paket matchar inte, status kan inte sättas till OK.') ;
@@ -3565,7 +3565,7 @@ Begin
 
   End //if SQLTimeStampToDateTime(cds_LoadHeadLoadedDate.AsSQLTimeStamp) < Date then
    else
-    ShowMessage('Utlastningsdatum får inte vara större än aktuellt datum&tid, var vänlig justera.') ;
+    ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_59' (* 'Utlastningsdatum får inte vara större än aktuellt datum&tid, var vänlig justera.' *) )) ;
 
 
   if (cds_LoadHeadSenderLoadStatus.AsInteger = 2) and (not ControlInvDate) then
@@ -3759,7 +3759,7 @@ begin
       cds_LoadPackagesChanged.AsInteger                 := 1 ;
       cds_LoadPackagesOverrideMatch.AsInteger           := 1 ;
       cds_LoadPackagesPackageOK.AsInteger               := BAD_PKG ;
-      cds_LoadPackagesProblemPackageLog.AsString        := 'Manuell koppling' ;
+      cds_LoadPackagesProblemPackageLog.AsString        := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_60' (* 'Manuell koppling' *) ) ;
 //Validera varje paket som har manuell koppling      
       ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
       dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
@@ -3790,11 +3790,11 @@ begin
  LONo   := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger ;
  if dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0 then
   Begin
-   ShowMessage('Ta bort paketen från lasten först.') ;
+   ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_61' (* 'Ta bort paketen från lasten först.' *) )) ;
   End
   else
   Begin
-   if MessageDlg('Är du säker?',
+   if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_62' (* 'Är du säker?' *) ),
    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     Try
      dmLoadEntrySSP.DeleteOneLoad(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
@@ -3829,7 +3829,7 @@ begin
  if Val > 0 then
  Begin
   if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
-   if TfConfirm.Execute ('Avsluta lasten') = mrYes then
+   if TfConfirm.Execute (siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_63' (* 'Avsluta lasten' *) )) = mrYes then
     Avsluta := True ;
   if Val = 2 then
    PreviewFS(Sender)
@@ -4157,17 +4157,17 @@ begin
 
  End
  else
-  ShowMessage('Lägg till en LO först.') ;
+  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_64' (* 'Lägg till en LO först.' *) )) ;
  End//if (dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LoadHeadLIPNo.IsNull = False) then
  else
- ShowMessage('Välj en Lagergrupp först.') ;
+ ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_65' (* 'Välj en Lagergrupp först.' *) )) ;
  End //
  else
-  ShowMessage('Välj lager först.') ;
+  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_66' (* 'Välj lager först.' *) )) ;
 
  End
  else
-  ShowMessage('Spara lasten först.') ;
+  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
 
  if mePackageNo.Enabled then
   mePackageNo.SetFocus ;
@@ -4184,7 +4184,7 @@ begin
  fScanLoadPkgNo:= TfScanLoadPkgNo.Create(Nil);
  Try
   fScanLoadPkgNo.EgenPkgSupplierCode  := dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
-  fScanLoadPkgNo.cbEgenLevKod.Caption := 'Scanna endast in paket med leverantörskod ' + fScanLoadPkgNo.EgenPkgSupplierCode ;
+  fScanLoadPkgNo.cbEgenLevKod.Caption := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_68' (* 'Scanna endast in paket med leverantörskod ' *) ) + fScanLoadPkgNo.EgenPkgSupplierCode ;
   fScanLoadPkgNo.ShowModal ;
   acValidateAllPkgsExecute(Sender) ;
 //  acSaveLoad.Enabled:= True ;
@@ -4950,7 +4950,7 @@ Begin
      on eDatabaseError do
      Begin
       Raise ;
-      ShowMessage('Paketnr finns redan i lasten.') ;
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_10' (* 'Paketnr finns redan i lasten.' *) )) ;
       cds_LoadPackages.Cancel ;
      End ;
     End ;
@@ -4984,7 +4984,7 @@ begin
 
     if AfterAddedPkgNo_WhenPickPkgNo(Sender, PkgNo,PkgSupplierCode, ProductNo, ProductLengthNo, 1 {NoOfLengths}) <> eaACCEPT then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte i lager '
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) )
      +Trim(lcPIP.Text)
     +'/'+'') ;//Trim(lcLIP.Text)) ;
     End ;
@@ -4992,14 +4992,14 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' finns inte i lager '
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) )
      +Trim(lcPIP.Text)
     +'/'+'');//Trim(lcLIP.Text)) ;
     End
    else
    if Action = eaReserved then
     Begin
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+' är reserverat av '+Res_UserName) ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) )+IntToStr(PkgNo)+siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) )+Res_UserName) ;
     End
   finally
     Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -5042,15 +5042,15 @@ Begin
       case ValidPackage of
         VP_LengthNotInLengthGroup : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= VP_LengthNotInLengthGroup ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'Längd matchar ej längdgruppen' ;
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_6' (* 'Längd matchar ej längdgruppen' *) ) ;
                      End ;
         ALL_OK     : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'OK';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
                      End ;
         BAD_PKG    : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_PKG ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_PKG';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_8' (* 'BAD_PKG' *) );
                      End ;
 {        PKG_OK     : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= PKG_OK ;
@@ -5062,7 +5062,7 @@ Begin
                      End ; }
         BAD_LENGTH : Begin
                       cds_LoadPackagesPackageOK.AsInteger:= BAD_LENGTH ;
-                      cds_LoadPackagesProblemPackageLog.AsString:= 'BAD_LENGTH ';
+                      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_9' (* 'BAD_LENGTH ' *) );
                      End ;
         VP_BadThickness : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_BadThickness ;
@@ -5123,7 +5123,7 @@ Begin
      on eDatabaseError do
      Begin
       Raise ;
-     ShowMessage('Paketnr finns redan i lasten.') ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_10' (* 'Paketnr finns redan i lasten.' *) )) ;
      cds_LoadPackages.Cancel ;
      End ;
     End ; //Except
@@ -5360,7 +5360,7 @@ Begin
   Begin
     if cdsLORowsPkgDiff.AsInteger <> 0 then
     Begin
-     ShowMessage('Varning! Utlastade paket stämmer inte överens med antal paket på order') ;
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_81' (* 'Varning! Utlastade paket stämmer inte överens med antal paket på order' *) )) ;
     // Result := False ;
      Exit ;
     End;
@@ -5381,7 +5381,7 @@ begin
  Begin
     if DagensDag <> UtlastningsDatum then
     Begin
-    if MessageDlg('Vill du ändra till dagens datum?',
+    if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_82' (* 'Vill du ändra till dagens datum?' *) ),
     mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
      if cds_LoadHead.State in [dsBrowse] then
@@ -5569,9 +5569,9 @@ begin
  dm_SendMapiMail  := Tdm_SendMapiMail.Create(nil);
  Try
   dm_SendMapiMail.SendMail('Följesedel. FSnr: '+dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
-  'Följesedel bifogad. '
+  siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_83' (* 'Följesedel bifogad. ' *) )
   +LF+''
-  +'Load tally attached. '
+  +siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_84' (* 'Load tally attached. ' *) )
   +LF+''
   +LF+''
   +LF+'MVH/Best Regards, '
@@ -5611,7 +5611,7 @@ begin
   End
    else
     Begin
-     ShowMessage('Lasten kan inte sättas till preliminär för att den är ankomstregistrerad.');
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_85' (* 'Lasten kan inte sättas till preliminär för att den är ankomstregistrerad.' *) ));
      SetLoadEnabled ;
     End ;
  End ;
@@ -5630,7 +5630,7 @@ var fPickVPPkgs: TfPickVPPkgs;
 begin
  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
  Begin
-  ShowMessage('Spara lasten först.') ;
+  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
   Exit ;
  End ;
 
@@ -5725,7 +5725,7 @@ begin
        NewPkgNo:= StrToIntDef(PackageNo,0) ;
        if NewPkgNo = 0 then
        Begin
-        Errortext := 'Koden kunde inte översättas till ett Paketnr' ;
+        Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) ) ;
         Exit ;
        End ;
 
@@ -5750,7 +5750,7 @@ begin
 //Långsamt här
     if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
     Begin
-     Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' + PkgSupplierCode + ' finns inte i lager ' + Trim(lcPIP.Text) ;
+     Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
      Error      := True ;
     End
     else
@@ -5761,19 +5761,19 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' + PkgSupplierCode + ' finns inte i lager ' + Trim(lcPIP.Text) ;
+     Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
      Error      := True ;
     End
     else
      if Action = eaReserved then
       Begin
-       Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' + PkgSupplierCode + ' är reserverat av ' + Res_UserName ;
+       Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) ) + Res_UserName ;
        Error      := True ;
       End
       else
        if Action = eaDuplicate then
         Begin
-         Errortext  := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' + PkgSupplierCode + ' är redan inmatat' ;
+         Errortext  := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_99' (* ' är redan inmatat' *) ) ;
          Error      := True ;
         End ;
     End
@@ -5860,7 +5860,7 @@ Begin
 
   End //if SQLTimeStampToDateTime(cds_LoadHeadLoadedDate.AsSQLTimeStamp) < Date then
    else
-    ShowMessage('Utlastningsdatum får inte vara större än aktuellt datum&tid, var vänlig justera.') ;
+    ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_59' (* 'Utlastningsdatum får inte vara större än aktuellt datum&tid, var vänlig justera.' *) )) ;
 
 
   if (cds_LoadHeadSenderLoadStatus.AsInteger = 2) and (not ControlInvDate) then

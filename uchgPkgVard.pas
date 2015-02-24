@@ -498,7 +498,7 @@ begin
     StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
 
     if NoOfPkgsInSerie > 100 then
-    ResultButton:= MessageDlg('Upp till '+IntToStr(NoOfPkgsInSerie)+' paket kanske hämtas, är det korrekt?',
+    ResultButton:= MessageDlg(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_0' (* 'Upp till ' *) )+IntToStr(NoOfPkgsInSerie)+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_1' (* ' paket kanske hämtas, är det korrekt?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -544,7 +544,7 @@ begin
       End  //if dmsSystem.Pkg_Reserved(
       else
       Begin
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+' är reserverat av '+Res_UserName) ;
+       ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_3' (* ' är reserverat av ' *) )+Res_UserName) ;
       End ;
 
       sq_OnePkgDetailData.Next ;
@@ -743,7 +743,7 @@ Begin
    End ; //   if not mtLoadPackages.FindKey(
    End  //if
    else
-    ShowMessage('Paketnr '+sq_GetPkgsByLONoPACKAGENO.AsString+'/'+sq_GetPkgsByLONoSUPP_CODE.AsString+'  är reserverat av '+Res_UserName) ;
+    ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) )+sq_GetPkgsByLONoPACKAGENO.AsString+'/'+sq_GetPkgsByLONoSUPP_CODE.AsString+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_5' (* '  är reserverat av ' *) )+Res_UserName) ;
    sq_GetPkgsByLONo.Next ;
   End ; //While
   sq_GetPkgsByLONo.Close ;
@@ -842,7 +842,7 @@ Begin
       End  //if..
       else
       Begin
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+'  är reserverat av '+Res_UserName) ;
+       ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_5' (* '  är reserverat av ' *) )+Res_UserName) ;
       End ;
      End ; //if not...
      sq_OneUniquePkg.Close ;
@@ -997,7 +997,7 @@ begin
  With dmPkgs do
  Begin
   mtUserProp.Edit ;
-  mtUserPropProductDescription.AsString := 'Ingen ändring' ;
+  mtUserPropProductDescription.AsString := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
   mtUserPropProductNo.AsInteger         := -1 ;
   mtUserPropProductGroupNo.AsInteger    := -1 ;
   mtUserProp.Post ;
@@ -1009,7 +1009,7 @@ begin
  mtUserPropRegDate.AsDateTime           := Now ;
  mtUserPropProductGroupNo.AsInteger     := -1 ;
  mtUserPropProductNo.AsInteger          := -1 ;
- mtUserPropProductDescription.AsString  := 'Ingen ändring' ;
+ mtUserPropProductDescription.AsString  := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
  mtUserPropLIPChange.AsInteger          := 0 ;
  mtUserPropVerkNo.AsInteger             := 0 ;
 end;
@@ -1041,14 +1041,14 @@ var
 Begin
  if mtUserPropRegDate.AsDateTime > Now then
  Begin
-  ShowMessage('Registreringsdatum får inte vara större än aktuellt datum');
+  ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_10' (* 'Registreringsdatum får inte vara större än aktuellt datum' *) ));
   Exit ;
  End ;
 
  RowNoNotValid  := PackagesValidToSave ;
  if RowNoNotValid > -1 then
  Begin
-  ShowMessage('Radnr ' + inttostr(RowNoNotValid) + ' innehåller inte paketdata, måste åtgärdas innan ändringar kan utföras.') ;
+  ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_11' (* 'Radnr ' *) ) + inttostr(RowNoNotValid) + siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_12' (* ' innehåller inte paketdata, måste åtgärdas innan ändringar kan utföras.' *) )) ;
   Exit ;
  End ;
 
@@ -1058,7 +1058,7 @@ Begin
  if ControlInvDate(Sender) then
  Begin
 
-  if MessageDlg('Vill du ändra utvalda paket?',    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  if MessageDlg(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_13' (* 'Vill du ändra utvalda paket?' *) ),    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   Begin
    Save_Cursor := Screen.Cursor;
    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -1074,14 +1074,14 @@ Begin
       mtPackages.Post ;
       if SaveChgPkgVard(mtUserProp) then
       Begin
-       ShowMessage('Paket ändrade.') ;
+       ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_14' (* 'Paket ändrade.' *) )) ;
        acCleanPkgsExecute(Sender) ;
       End
       else
-      ShowMessage('Problem ändra paket.') ;
+      ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_15' (* 'Problem ändra paket.' *) )) ;
      End
      else
-     ShowMessage('Välj paket att ändra.') ;
+     ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_16' (* 'Välj paket att ändra.' *) )) ;
 
     End ; //with
   finally
@@ -1091,7 +1091,7 @@ Begin
 
  End //if ControlInvDate(Sender) then
  else
- ShowMessage('Paket, markerade med röd färg, kan inte ändras pga att avregistreringsdatum är före maxdatum i senaste inventeringen') ; 
+ ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_17' (* 'Paket, markerade med röd färg, kan inte ändras pga att avregistreringsdatum är före maxdatum i senaste inventeringen' *) )) ;
 end;
 
 procedure TfchgPkgVard.acPkgNoSerieExecute(Sender: TObject);
@@ -1197,13 +1197,13 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     ErrorText:= 'Package number '+NewValue+' does not exist' ;
+     ErrorText:= siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_18' (* 'Package number ' *) )+NewValue+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_19' (* ' does not exist' *) ) ;
      Error:= True ;
     End
     else
    if Action = eaReserved then
     Begin
-     ErrorText:= 'Package number '+NewValue+' is reserved by '+Res_UserName ;
+     ErrorText:= siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_18' (* 'Package number ' *) )+NewValue+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_21' (* ' is reserved by ' *) )+Res_UserName ;
      Error:= True ;
     End ;
 
@@ -1373,7 +1373,7 @@ begin
  mtUserPropGradeStampNo.AsInteger       := 0 ;
  mtUserPropBarCodeNo.AsInteger          := 0 ;
  mtUserPropLIPChange.AsInteger          := 0 ;
- mtUserPropProductDescription.AsString  := 'Ingen ändring' ;
+ mtUserPropProductDescription.AsString  := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
  mtUserPropProductNo.AsInteger          := -1 ;
  mtUserPropProductGroupNo.AsInteger     := -1 ;
  mtUserProp.Post ;
@@ -1387,7 +1387,7 @@ begin
   if (mtLoadPackages.Active) and (mtLoadPackages.RecordCount > 0) then
   Begin
    Error := True ;
-   ErrorText:= 'Får inte ändra ägare om paket finns i tabellen' ;
+   ErrorText:= siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_23' (* 'Får inte ändra ägare om paket finns i tabellen' *) ) ;
   End
    else
     Error := False ;
@@ -1572,7 +1572,7 @@ begin
       AColumn.Position.BandIndex    := 0 ;
      End
       else
-       ShowMessage('Längd '+fAddSpecialLengths.lbSpecialLengths.Items[x]+' finns redan i tabellen.') ;
+       ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_24' (* 'Längd ' *) )+fAddSpecialLengths.lbSpecialLengths.Items[x]+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_25' (* ' finns redan i tabellen.' *) )) ;
     End ;//x
    End //if fAddSpecialLengths
    else
@@ -1591,7 +1591,7 @@ begin
       AColumn.Position.BandIndex    := 0 ;
      End
       else
-       ShowMessage('Längd '+CurrentLengths.Strings[x]+' finns redan i tabellen.') ;
+       ShowMessage(siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_24' (* 'Längd ' *) )+CurrentLengths.Strings[x]+siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_25' (* ' finns redan i tabellen.' *) )) ;
     End ;//x
    End ;
 

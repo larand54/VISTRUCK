@@ -51,7 +51,6 @@ type
     grdPkgStdPcsDBTableView1Produkt: TcxGridDBColumn;
     cxGridPopupMenu1: TcxGridPopupMenu;
     cxLabel1: TcxLabel;
-    siLangLinked_fSetStdPkgSizeIntervall: TsiLangLinked;
     procedure acRefreshExecute(Sender: TObject);
   private
     { Private declarations }

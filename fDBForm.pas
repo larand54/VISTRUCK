@@ -296,7 +296,7 @@ begin
 
   if IsModified then begin
 
-    wRet := MessageDlg('Spara ändringar?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
+    wRet := MessageDlg(siLangLinked_frmDBForm.GetTextOrDefault('IDS_0' (* 'Spara ändringar?' *) ), mtConfirmation, [mbYes, mbNo, mbCancel], 0);
 
     case wRet of
 

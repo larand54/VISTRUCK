@@ -54,10 +54,10 @@ begin
     (StrToInt(Trim(Self.eFromPkgNo.Text)) > Const_MAX_PKG_NO) then
   Begin
    CanClose := False ;
-   ShowMessage('Paket nummer kan inte överskrida '+IntToStr(Const_MAX_PKG_NO)) ;
+   ShowMessage(siLangLinked_frmPkgNoSeries.GetTextOrDefault('IDS_0' (* 'Paket nummer kan inte överskrida ' *) )+IntToStr(Const_MAX_PKG_NO)) ;
   End ;
   Except
-   ShowMessage('Paket nummer kan inte överskrida '+IntToStr(Const_MAX_PKG_NO)) ;
+   ShowMessage(siLangLinked_frmPkgNoSeries.GetTextOrDefault('IDS_0' (* 'Paket nummer kan inte överskrida ' *) )+IntToStr(Const_MAX_PKG_NO)) ;
    CanClose := False ;
   End ;
 end;

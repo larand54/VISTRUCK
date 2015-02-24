@@ -752,7 +752,7 @@ end;
 procedure TfkilnHandling.acCancelMoveFromKilnExecute(Sender: TObject);
 Var VagnNo, MoveToLIPNo, NewVagnStatus : Integer ;
 begin
- if MessageDlg('Sista vagnen inmatad till efter tork flyttas tillbaka till i tork(om det finns plats i torken), fortsätta?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ if MessageDlg(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_0' (* 'Sista vagnen inmatad till efter tork flyttas tillbaka till i tork(om det finns plats i torken), fortsätta?' *) ),  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
    With dmInventory do
    Begin
@@ -768,10 +768,10 @@ begin
        FlyttaVagn(mtUserPropKilnChargeNo.AsInteger, VagnNo, MoveToLIPNo, NewVagnStatus) ;
       End
         else
-         ShowMessage('KilnChargeNo = ' + inttostr(KilnChargeNo) + ' VagnNo = ' + inttostr(VagnNo) + ' MoveToLIPNo = ' + inttostr(MoveToLIPNo)) ;
+         ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_1' (* 'KilnChargeNo = ' *) ) + inttostr(KilnChargeNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_2' (* ' VagnNo = ' *) ) + inttostr(VagnNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_3' (* ' MoveToLIPNo = ' *) ) + inttostr(MoveToLIPNo)) ;
     End
      else
-      ShowMessage('Torken är full, det finns inte plats för mera vagnar.') ;
+      ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_4' (* 'Torken är full, det finns inte plats för mera vagnar.' *) )) ;
    End; //With
   acPkgTypeTableExecute(Sender) ;
  End;
@@ -780,7 +780,7 @@ end;
 procedure TfkilnHandling.acCancelMoveVagnIntoKilnExecute(Sender: TObject);
 Var VagnNo, MoveToLIPNo, NewVagnStatus : Integer ;
 begin
- if MessageDlg('Sista vagnen inmatad till tork flyttas tillbaka till "In till tork", fortsätta?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ if MessageDlg(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_5' (* 'Sista vagnen inmatad till tork flyttas tillbaka till "In till tork", fortsätta?' *) ),  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
    With dmInventory do
    Begin
@@ -796,7 +796,7 @@ begin
      //Om antal vagnar i tork nu är större än vad som ryms i torken så måste en vagn flyttas ut
     End
       else
-       ShowMessage('Problem: KilnChargeNo = ' + inttostr(KilnChargeNo) + ' VagnNo = ' + inttostr(VagnNo) + ' MoveToLIPNo = ' + inttostr(MoveToLIPNo)) ;
+       ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_6' (* 'Problem: KilnChargeNo = ' *) ) + inttostr(KilnChargeNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_2' (* ' VagnNo = ' *) ) + inttostr(VagnNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_3' (* ' MoveToLIPNo = ' *) ) + inttostr(MoveToLIPNo)) ;
    End;
   acPkgTypeTableExecute(Sender) ;
  End;
@@ -1002,10 +1002,10 @@ begin
      End;//if..
     End //if..
      else
-      ShowMessage('Endast vagnar "In till tork" kan ändras.') ;
+      ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_9' (* 'Endast vagnar "In till tork" kan ändras.' *) )) ;
    End
     else
-     ShowMessage('Välj en vagn att ändra.') ;
+     ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_10' (* 'Välj en vagn att ändra.' *) )) ;
  End;
 end;
 
@@ -1024,7 +1024,7 @@ begin
    if ReportInProgress then  Exit ;
 
    SelectedVagnNo := -1 ;
-   cxLabelVagn.Caption      := 'Markerad vagn: ' + inttostr(SelectedVagnNo) ;
+   cxLabelVagn.Caption      := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_11' (* 'Markerad vagn: ' *) ) + inttostr(SelectedVagnNo) ;
 
 //   if mtUserProp.State in [dsEdit, dsInsert] then
 //   mtUserProp.Post ;
@@ -1140,7 +1140,7 @@ begin
 
    if AntalStatus_1_Vagnar = -1 then
    Begin
-     ShowMessage('Antal vagnar för vald tork saknas') ;
+     ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_12' (* 'Antal vagnar för vald tork saknas' *) )) ;
      Exit ;
    End;
 
@@ -1359,7 +1359,7 @@ begin
  mtUserPropRegDate.AsDateTime           := Now ;
 // mtUserPropProductGroupNo.AsInteger     := -1 ;
  mtUserPropProductNo.AsInteger          := -1 ;
- mtUserPropProductDescription.AsString  := 'Ingen ändring' ;
+ mtUserPropProductDescription.AsString  := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_13' (* 'Ingen ändring' *) ) ;
  mtUserPropLIPChange.AsInteger          := 0 ;
  mtUserPropVerkNo.AsInteger             := 0 ;
 end;
@@ -1415,7 +1415,7 @@ end;
 procedure TfkilnHandling.acMoveFromKilnExecute(Sender: TObject);
 Var VagnNo, MoveToLIPNo, NewVagnStatus : Integer ;
 begin
- if MessageDlg('En vagn stegas ut ur torken till lager efter tork, fortsätta?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ if MessageDlg(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_14' (* 'En vagn stegas ut ur torken till lager efter tork, fortsätta?' *) ),  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
    With dmInventory do
    Begin
@@ -1429,7 +1429,7 @@ begin
      FlyttaVagn(mtUserPropKilnChargeNo.AsInteger, VagnNo, MoveToLIPNo, NewVagnStatus) ;
     End
       else
-       ShowMessage('KilnChargeNo = ' + inttostr(KilnChargeNo) + ' VagnNo = ' + inttostr(VagnNo) + ' MoveToLIPNo = ' + inttostr(MoveToLIPNo)) ;
+       ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_1' (* 'KilnChargeNo = ' *) ) + inttostr(KilnChargeNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_2' (* ' VagnNo = ' *) ) + inttostr(VagnNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_3' (* ' MoveToLIPNo = ' *) ) + inttostr(MoveToLIPNo)) ;
    End;
   acPkgTypeTableExecute(Sender) ;
  End;
@@ -1468,7 +1468,7 @@ begin
    cds_KilnVagnar.Filtered  := True ;
    Try
    SelectedVagnNo           := StrToIntDef(Trim(cds_KilnVagnar.FieldByName(Trim(SelectedLength)).AsString),-1) ;
-   cxLabelVagn.Caption      := 'Markerad vagn: ' + inttostr(SelectedVagnNo) ;
+   cxLabelVagn.Caption      := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_11' (* 'Markerad vagn: ' *) ) + inttostr(SelectedVagnNo) ;
    Finally
     cds_KilnVagnar.Filter    := OldFilter ;
    // cds_KilnVagnar.Filtered  := False ;
@@ -1503,7 +1503,7 @@ begin
    cds_KilnVagnar.Filtered  := True ;
    Try
    SelectedVagnNo           := StrToIntDef(Trim(cds_KilnVagnar.FieldByName(Trim(SelectedLength)).AsString),-1) ;
-   cxLabelVagn.Caption      := 'Markerad vagn: ' + inttostr(SelectedVagnNo) ;
+   cxLabelVagn.Caption      := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_11' (* 'Markerad vagn: ' *) ) + inttostr(SelectedVagnNo) ;
    Finally
     cds_KilnVagnar.Filter   := OldFilter ;
    // cds_KilnVagnar.Filtered  := False ;
@@ -1553,7 +1553,7 @@ begin
      End;
     End
       else
-       ShowMessage('Problem: KilnChargeNo = ' + inttostr(KilnChargeNo) + ' VagnNo = ' + inttostr(VagnNo) + ' MoveToLIPNo = ' + inttostr(MoveToLIPNo)) ;
+       ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_6' (* 'Problem: KilnChargeNo = ' *) ) + inttostr(KilnChargeNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_2' (* ' VagnNo = ' *) ) + inttostr(VagnNo) + siLangLinked_fkilnHandling.GetTextOrDefault('IDS_3' (* ' MoveToLIPNo = ' *) ) + inttostr(MoveToLIPNo)) ;
    End;
   acPkgTypeTableExecute(Sender) ;
 // End;
@@ -1570,13 +1570,13 @@ procedure TfkilnHandling.cxGrid1DBBandedTableView1V1GetDisplayText(
   var AText: string);
 begin
  if AText = '0' then
-  AText := 'In till Tork'
+  AText := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_23' (* 'In till Tork' *) )
    else
     if AText = '1' then
-     AText := 'i Tork'
+     AText := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_24' (* 'i Tork' *) )
       else
        if AText = '2' then
-        AText := 'Efter Tork' ;
+        AText := siLangLinked_fkilnHandling.GetTextOrDefault('IDS_25' (* 'Efter Tork' *) ) ;
 end;
 
 procedure TfkilnHandling.cxGrid1DBBandedTableView1V1StylesGetContentStyle(

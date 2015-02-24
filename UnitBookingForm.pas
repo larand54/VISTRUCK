@@ -240,7 +240,11 @@ begin
   else
   Begin
    cdsBooking.Insert ;
-   cdsBookingBookingNo.AsInteger        := dmsConnector.NextMaxNo('Booking') ;
+   cdsBookingBookingNo.AsInteger        := dmsConnector.NextMaxNo(
+{TSI:IGNORE ON}
+	'Booking'
+{TSI:IGNORE OFF}
+) ;
    cdsBookingShippingPlanNo.AsInteger   := ShippingPlanNo ;
    cdsBookingLOText.AsVariant           := cdsAvropInfoLOText.AsVariant ;
    cdsBookingInvoiceText.AsVariant      := cdsAvropInfoInvoiceText.AsVariant ;
@@ -289,7 +293,7 @@ begin
  with dm_Booking do
  Begin
   if DataSaved = False then
-  if MessageDlg('Data ej sparad, vill du avsluta?',
+  if MessageDlg(siLangLinked_FormBookingForm.GetTextOrDefault('IDS_1' (* 'Data ej sparad, vill du avsluta?' *) ),
   mtConfirmation, [mbYes, mbNo], 0) = mrYes then
    CanClose:= True
     else

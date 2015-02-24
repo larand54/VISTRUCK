@@ -729,7 +729,7 @@ begin
 //   cdsPortArrivingLoads.LogChanges:= False ;
    if not cdsPortArrivingLoads.FindKey([StrToIntDef(Trim(Edit1.Text),0)]) then
    Begin
-    ShowMessage('No luck') ;
+    ShowMessage(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_4' (* 'No luck' *) )) ;
     SomethingChanged := True ;
    End
    else
@@ -782,7 +782,7 @@ begin
 //   cdsPortArrivingLoads.LogChanges:= False ;
    if not cdsPortArrivingLoads.FindKey([StrToIntDef(Trim(Edit2.Text),0)]) then
    Begin
-    ShowMessage('No luck') ;
+    ShowMessage(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_4' (* 'No luck' *) )) ;
     SomethingChanged := True ;
    End
    else
@@ -921,7 +921,7 @@ begin
 
   if lbLO_To_Invoice.Items.Count < 1 then
    Begin
-    ShowMessage('Måste välja en last') ;
+    ShowMessage(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_6' (* 'Måste välja en last' *) )) ;
     Exit ;
    End ;
 
@@ -1316,7 +1316,7 @@ var
   Save_Cursor : TCursor;
   FileName    : String ;
 begin
- if MessageDlg('Vill du exportera till excel?',
+ if MessageDlg(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_7' (* 'Vill du exportera till excel?' *) ),
  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
  Save_Cursor := Screen.Cursor;
@@ -1327,11 +1327,11 @@ begin
 // SaveDialog2.InitialDir:= ExcelDir ;
 // if SaveDialog2.Execute then
 // Begin
-  FileName:= 'C:\AnkomstLast.XLS' ; //SaveDialog2.FileName ;
+  FileName:= siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_8' (* 'C:\AnkomstLast.XLS' *) ) ; //SaveDialog2.FileName ;
 
   Try
   ExportGridToExcel(FileName, grdPortLoads, False, False, True,'xls');
-  ShowMessage('Tabell exporterad till Excel fil '+FileName);
+  ShowMessage(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_9' (* 'Tabell exporterad till Excel fil ' *) )+FileName);
   Except
   End ;
 // End ;
@@ -2336,7 +2336,7 @@ begin
   LoadNo:= dmArrivingLoads.SearchLoadNoByPkgNo(strToIntDef(ePkgNo.text,0), cds_PropsOwnerNo.AsInteger, S) ;
 
  if LoadNo > -1 then
-  ShowMessage('Paketnr ' + ePkgNo.text + ' finns på lastnr ' + IntToStr(LoadNo)) ;
+  ShowMessage(siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_10' (* 'Paketnr ' *) ) + ePkgNo.text + siLangLinked_frmPortArrivals.GetTextOrDefault('IDS_11' (* ' finns på lastnr ' *) ) + IntToStr(LoadNo)) ;
  Finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;

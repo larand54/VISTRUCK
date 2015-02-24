@@ -77,9 +77,9 @@ begin
   sq_POorderInfo.Open ;
   Try
 
-  PanelPOName.Caption       := 'Leverantör: ' + sq_POorderInfoLeverantr.AsString
-                              + '   Inköpskontrakt: ' + sq_POorderInfoKontrakt.AsString
-                              + '   Avropsnr: ' + sq_POorderInfoAvropsnr.AsString ;
+  PanelPOName.Caption       := siLangLinked_fTradingLinkMult.GetTextOrDefault('IDS_0' (* 'Leverantör: ' *) ) + sq_POorderInfoLeverantr.AsString
+                              + siLangLinked_fTradingLinkMult.GetTextOrDefault('IDS_1' (* '   Inköpskontrakt: ' *) ) + sq_POorderInfoKontrakt.AsString
+                              + siLangLinked_fTradingLinkMult.GetTextOrDefault('IDS_2' (* '   Avropsnr: ' *) ) + sq_POorderInfoAvropsnr.AsString ;
   cds_AvropLink.Active:= False ;
   cds_AvropLink.ParamByName('POShippingPlanNo').AsInteger:= POShippingPlanNo ;
   cds_AvropLink.Active:= True ;

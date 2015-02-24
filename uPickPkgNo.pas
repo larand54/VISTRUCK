@@ -254,7 +254,7 @@ Begin
 //  if lbShowMatchingProductAndLength.Down then
   if ButtonDown = ProductAndLength then
   Begin
-  cxLabel_Val.Caption := 'Urval produkt && längd' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_0' (* 'Urval produkt && längd' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -266,11 +266,11 @@ Begin
   Add('p.ProductDisplayName AS Produkt,') ;
 
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
 
   Add('PN.REFERENCE,') ;
@@ -302,7 +302,7 @@ Begin
 
   if cbFilterOnLength.Checked then
   Begin
-   Add('and '+ALMM+' in (Select pl.ActualLengthMM from dbo.PackageTypeDetail ptd') ;
+   Add(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_5' (* 'and ' *) )+ALMM+' in (Select pl.ActualLengthMM from dbo.PackageTypeDetail ptd') ;
    Add('inner join dbo.ProductLength pl on pl.productlengthno = ptd.productlengthno') ;
    Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo') ;
    Add('WHERE') ;
@@ -325,7 +325,7 @@ Begin
  // if lbShowMatchingProduct.Down then
  if ButtonDown = MatchingProduct then
   Begin
-  cxLabel_Val.Caption := 'Urval produkt' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_6' (* 'Urval produkt' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -336,11 +336,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
@@ -373,7 +373,7 @@ Begin
 //  if lbShowAddLOPkgsWithMatchingProduct.Down then
   if ButtonDown = AddLOPkgsWithMatchingProduct then
   Begin
-  cxLabel_Val.Caption := 'Urval add LO && produkt' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_11' (* 'Urval add LO && produkt' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -384,11 +384,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
@@ -430,7 +430,7 @@ Begin
 //  if lbShowAllAddLOPkgs.Down then
   if ButtonDown = ShowAllAddLOPkgs then
   Begin
-  cxLabel_Val.Caption := 'Urval add LO' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_16' (* 'Urval add LO' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -441,11 +441,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
@@ -487,7 +487,7 @@ Begin
 //  if lbShowTM.Down then
   if ButtonDown = ShowTM then
   Begin
-  cxLabel_Val.Caption := 'Urval TM' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_21' (* 'Urval TM' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -498,11 +498,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
@@ -539,7 +539,7 @@ Begin
 //  if lbShowTM.Down then
   if ButtonDown = ShowLIP then
   Begin
-  cxLabel_Val.Caption := 'Urval Lagergrupp' ;
+  cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_26' (* 'Urval Lagergrupp' *) ) ;
   Clear ;
   Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
   Add('pt.productno,') ;
@@ -550,11 +550,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
@@ -604,11 +604,11 @@ Begin
   Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
   Add('p.ProductDisplayName AS Produkt,') ;
   Add('CASE') ;
-  Add('WHEN htf.Status = 1 THEN ' + QuotedStr('Modtaget')) ;
-  Add('WHEN htf.Status = 2 THEN ' + QuotedStr('Klar til produktion')) ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
   Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
-  Add('WHEN htf.Status = 4 THEN ' + QuotedStr('Klar til afgang')) ;
-  Add('WHEN htf.Status = 5 THEN ' + QuotedStr('Udleverat')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
   Add('End AS StatusHTF,') ;
   Add('PN.REFERENCE,') ;
   Add('PN.BL_NO,') ;
