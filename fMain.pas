@@ -39,7 +39,8 @@ uses
   dxSkinXmas2008Blue, dxRibbonSkins, dxSkinsdxRibbonPainter,
   dxSkinsdxBarPainter, dxBarApplicationMenu, dxScreenTip, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, dxRibbonCustomizationForm ;
+  dxSkinOffice2013White, dxRibbonCustomizationForm, siComp, siLngLnk,
+  System.Actions ;
 
 
 
@@ -174,8 +175,8 @@ type
     cxButton1: TcxButton;
     dxBarLargeButton29: TdxBarLargeButton;
     acPkgStdSizeIntervall: TAction;
-    dxBarLargeButton30:
-    siLangLinked1: TsiLangLinked;TdxBarLargeButton;
+    dxBarLargeButton30: TdxBarLargeButton;
+    siLangLinked1: TsiLangLinked;
     acTorkhanteraren: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);

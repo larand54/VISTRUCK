@@ -26,13 +26,11 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 116
-    ExplicitHeight = 679
     object panelBase: TPanel
       Left = 0
       Top = 0
       Width = 1132
-      Height = 679
+      Height = 669
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
