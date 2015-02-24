@@ -16,7 +16,9 @@ uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue ;
+  dxSkinXmas2008Blue, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  siComp, siLngLnk ;
 
 type
   TfrmPkgNoSeries = class(TForm)
@@ -27,6 +29,7 @@ type
     bbCancel: TBitBtn;
     eFromPkgNo: TcxTextEdit;
     eToPkgNo: TcxTextEdit;
+    siLangLinked_frmPkgNoSeries: TsiLangLinked;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure bbCancelClick(Sender: TObject);
   private

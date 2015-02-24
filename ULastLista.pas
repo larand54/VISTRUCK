@@ -27,7 +27,9 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter ;
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions ;
 
 type
   TfLastLista = class(TForm)
@@ -151,6 +153,7 @@ type
     cxStyleHeader: TcxStyle;
     cxStyleContent: TcxStyle;
     cxStyleContentOdd: TcxStyle;
+    siLangLinked_fLastLista: TsiLangLinked;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure PackageInfo1Click(Sender: TObject);

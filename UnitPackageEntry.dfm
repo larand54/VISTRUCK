@@ -25,15 +25,12 @@ object frmPackageEntry: TfrmPackageEntry
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 287
-    ExplicitWidth = 1094
     object StatusBar1: TStatusBar
       Left = 0
       Top = 297
       Width = 1216
       Height = 19
       Panels = <>
-      ExplicitWidth = 1094
     end
     object TPanel
       Left = 0
@@ -42,7 +39,6 @@ object frmPackageEntry: TfrmPackageEntry
       Height = 59
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 1094
       object seColWidth: TcxSpinEdit
         Left = 995
         Top = 32
@@ -239,7 +235,6 @@ object frmPackageEntry: TfrmPackageEntry
       Height = 238
       Align = alClient
       TabOrder = 2
-      ExplicitWidth = 1094
       object grdPackagesDBBandedTableView1: TcxGridDBBandedTableView
         Navigator.Buttons.CustomButtons = <>
         OnEditKeyDown = grdPackagesDBBandedTableView1EditKeyDown
@@ -275,8 +270,6 @@ object frmPackageEntry: TfrmPackageEntry
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salBottom
     Control = Panel1
-    ExplicitTop = 279
-    ExplicitWidth = 1094
   end
   object Panel2: TPanel
     Left = 0
@@ -285,8 +278,6 @@ object frmPackageEntry: TfrmPackageEntry
     Height = 282
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 1094
-    ExplicitHeight = 214
     object grdLORows: TcxGrid
       Left = 1
       Top = 1
@@ -294,8 +285,6 @@ object frmPackageEntry: TfrmPackageEntry
       Height = 280
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 1092
-      ExplicitHeight = 212
       object grdLORowsDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmsProduct.ds_mtLO_Records
@@ -490,7 +479,6 @@ object frmPackageEntry: TfrmPackageEntry
     BevelOuter = bvNone
     Caption = 'Panel3'
     TabOrder = 7
-    ExplicitWidth = 1094
     object Panel4: TPanel
       Left = 0
       Top = 0
@@ -502,7 +490,7 @@ object frmPackageEntry: TfrmPackageEntry
         Left = 1
         Top = 1
         Width = 449
-        Height = 44
+        Height = 46
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -514,7 +502,6 @@ object frmPackageEntry: TfrmPackageEntry
       Height = 65
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 575
       object cbInputOption: TcxComboBox
         Left = 120
         Top = 18
@@ -552,12 +539,11 @@ object frmPackageEntry: TfrmPackageEntry
       Align = alRight
       Constraints.MinWidth = 50
       TabOrder = 2
-      ExplicitLeft = 1026
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
         Width = 66
-        Height = 44
+        Height = 46
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -566,8 +552,8 @@ object frmPackageEntry: TfrmPackageEntry
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     CanCustomize = False
     Categories.Strings = (
@@ -1585,7 +1571,7 @@ object frmPackageEntry: TfrmPackageEntry
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -1934,5 +1920,66 @@ object frmPackageEntry: TfrmPackageEntry
       Origin = 'LIPName'
       Size = 50
     end
+  end
+  object siLangLinked_frmPackageEntry: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 600
+    Top = 344
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

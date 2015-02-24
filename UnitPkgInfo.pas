@@ -22,7 +22,9 @@ uses
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, Vcl.Buttons,
-  Vcl.Menus;
+  Vcl.Menus, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, siComp,
+  siLngLnk, System.Actions;
 
 type
   TfrmPkgInfo = class(TForm)
@@ -162,6 +164,7 @@ type
     BitBtn1: TBitBtn;
     PopupMenu1: TPopupMenu;
     StngF121: TMenuItem;
+    siLangLinked_frmPkgInfo: TsiLangLinked;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lbExitClick(Sender: TObject);

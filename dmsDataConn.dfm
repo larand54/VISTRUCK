@@ -1826,13 +1826,16 @@ object dmsConnector: TdmsConnector
     Params.Strings = (
       'Server=alvesql03'
       'Database=Vis_Vida'
-      'OSAuthent=Yes'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
+      'User_Name=Lars'
+      'Password=woods2011'
       'DriverID=MSSQL')
     ResourceOptions.AssignedValues = [rvDirectExecute]
     UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]
     UpdateOptions.LockMode = lmOptimistic
+    Connected = True
     LoginPrompt = False
     Left = 464
     Top = 24
@@ -1842,6 +1845,7 @@ object dmsConnector: TdmsConnector
     Top = 80
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
     ScreenCursor = gcrHourGlass
     Left = 464
     Top = 128

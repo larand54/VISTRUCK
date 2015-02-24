@@ -1,15 +1,7 @@
 program VISTRUCK;
 
 
-uses  {
-  EMemLeaks,
-  EResLeaks,
-  ESendMailSMAPI,
-  EDialogWinAPIMSClassic,
-  EDebugExports,
-  EDebugJCL,
-  EAppVCL,
-  ExceptionLog7,}
+uses
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -89,7 +81,8 @@ uses  {
   dmc_DryKiln in 'dmc_DryKiln.pas' {dm_DryKiln: TDataModule},
   uKilnHandling in 'uKilnHandling.pas' {fkilnHandling},
   uEnterKilnVagn in 'uEnterKilnVagn.pas' {fEnterKilnVagn},
-  uPickPkgNoTork in 'uPickPkgNoTork.pas' {fPickPkgNoTork};
+  uPickPkgNoTork in 'uPickPkgNoTork.pas' {fPickPkgNoTork},
+  udmLanguage in 'udmLanguage.pas' {dmLanguage: TDataModule};
 
 {$R *.res}
 begin
@@ -103,5 +96,6 @@ begin
   Application.CreateForm(Tdm_UserProps, dm_UserProps);
   Application.CreateForm(TdmLoadEntrySSP, dmLoadEntrySSP);
   Application.CreateForm(TdmInventory, dmInventory);
+  Application.CreateForm(TdmLanguage, dmLanguage);
   Application.Run
 end.

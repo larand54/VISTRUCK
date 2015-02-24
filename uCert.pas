@@ -20,7 +20,9 @@ uses
   cxFilter, cxData, cxDataStorage, cxEdit, Data.DB, cxDBData, cxLabel,
   cxTextEdit, cxGridLevel, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls,
-  cxButtons, Vcl.ExtCtrls;
+  cxButtons, Vcl.ExtCtrls, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  cxNavigator, siComp, siLngLnk;
 
 type
   TfCert = class(TForm)
@@ -34,6 +36,7 @@ type
     cxGrid1DBTableView1CertNo: TcxGridDBColumn;
     cxGrid1DBTableView1CertName: TcxGridDBColumn;
     cxGrid1DBTableView1CertShortName: TcxGridDBColumn;
+    siLangLinked_fCert: TsiLangLinked;
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

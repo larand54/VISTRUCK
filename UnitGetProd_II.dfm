@@ -1,10 +1,10 @@
 object frmGetProd_II: TfrmGetProd_II
   Left = 252
   Top = 138
-  Width = 1067
-  Height = 673
   ActiveControl = meAT
   Caption = 'PRODUKTLISTA'
+  ClientHeight = 635
+  ClientWidth = 1051
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,8 +23,8 @@ object frmGetProd_II: TfrmGetProd_II
   TextHeight = 13
   object Panel2: TPanel
     Left = 0
-    Top = 602
-    Width = 1059
+    Top = 591
+    Width = 1051
     Height = 44
     Align = alBottom
     TabOrder = 0
@@ -34,9 +34,10 @@ object frmGetProd_II: TfrmGetProd_II
       Width = 97
       Height = 33
       Caption = '&OK'
+      Kind = bkOK
+      NumGlyphs = 2
       TabOrder = 0
       OnClick = bbOKClick
-      Kind = bkOK
     end
     object bbCancel: TBitBtn
       Left = 504
@@ -44,14 +45,15 @@ object frmGetProd_II: TfrmGetProd_II
       Width = 97
       Height = 33
       Caption = '&Cancel'
-      TabOrder = 1
       Kind = bkCancel
+      NumGlyphs = 2
+      TabOrder = 1
     end
   end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1059
+    Width = 1051
     Height = 89
     Align = alTop
     TabOrder = 1
@@ -104,7 +106,6 @@ object frmGetProd_II: TfrmGetProd_II
       Height = 33
       Action = acSearch
       Caption = '&S'#246'k'
-      TabOrder = 7
       Glyph.Data = {
         76060000424D7606000000000000360400002800000018000000180000000100
         08000000000040020000320B0000320B000000010000000100005A5A5A005263
@@ -158,6 +159,7 @@ object frmGetProd_II: TfrmGetProd_II
         5656560F505E5E3F1C0B101C3242460E5656565656565656565656561F4F5448
         3C33333C4240165656565656565656565656565656062A404242424030155656
         565656565656565656565656565656080F222216565656565656}
+      TabOrder = 7
     end
     object meAT: TcxTextEdit
       Left = 47
@@ -186,8 +188,6 @@ object frmGetProd_II: TfrmGetProd_II
       Height = 33
       Action = acProductRegister
       Caption = '&Skapa produkt'
-      TabOrder = 9
-      Visible = False
       Glyph.Data = {
         76060000424D7606000000000000360400002800000018000000180000000100
         0800000000004002000000000000000000000001000000000000000000000000
@@ -241,6 +241,8 @@ object frmGetProd_II: TfrmGetProd_II
         FDFBFB07FBFB07FBFB07FBFB07FBFB073FFDFDFDFDFDFDFDFDFDFBFB07FBFB07
         FBFB07FBFB07FBFB07FDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFD
         FDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFDFD}
+      TabOrder = 9
+      Visible = False
     end
     object lcGrade: TcxDBLookupComboBox
       Left = 220
@@ -373,9 +375,6 @@ object frmGetProd_II: TfrmGetProd_II
       Height = 33
       Action = acCreateProduct
       Caption = 'Skapa produkt'
-      ModalResult = 1
-      TabOrder = 10
-      Visible = False
       Glyph.Data = {
         DE010000424DDE01000000000000760000002800000024000000120000000100
         0400000000006801000000000000000000001000000000000000000000000000
@@ -393,30 +392,34 @@ object frmGetProd_II: TfrmGetProd_II
         3338F38F000033333333333333A223333333333333338F830000333333333333
         333A333333333333333338330000333333333333333333333333333333333333
         0000}
+      ModalResult = 1
       NumGlyphs = 2
+      TabOrder = 10
+      Visible = False
     end
   end
   object PageControl: TcxPageControl
     Left = 0
     Top = 89
-    Width = 1059
-    Height = 354
-    ActivePage = tsProduktLista
+    Width = 1051
+    Height = 343
     Align = alClient
-    LookAndFeel.Kind = lfFlat
     TabOrder = 2
-    ClientRectBottom = 353
-    ClientRectLeft = 1
-    ClientRectRight = 1058
-    ClientRectTop = 21
+    Properties.ActivePage = tsProduktLista
+    Properties.CustomButtons.Buttons = <>
+    LookAndFeel.Kind = lfFlat
+    ClientRectBottom = 339
+    ClientRectLeft = 4
+    ClientRectRight = 1047
+    ClientRectTop = 24
     object tsProduktLista: TcxTabSheet
       Caption = 'Produkter'
       ImageIndex = 0
       object grdProdList: TcxGrid
         Left = 0
         Top = 0
-        Width = 1057
-        Height = 332
+        Width = 1043
+        Height = 315
         Align = alClient
         TabOrder = 0
         LookAndFeel.Kind = lfFlat
@@ -424,7 +427,7 @@ object frmGetProd_II: TfrmGetProd_II
           PopupMenu = pmProduktList
           OnDblClick = grdProdListDBTableView1DblClick
           OnKeyDown = grdProdListDBTableView1KeyDown
-          NavigatorButtons.ConfirmDelete = False
+          Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = ds_ProdList
           DataController.KeyFieldNames = 'ProductNo'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -530,6 +533,10 @@ object frmGetProd_II: TfrmGetProd_II
       Caption = 'Kundspecifika produkter'
       ImageIndex = 2
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -564,7 +571,7 @@ object frmGetProd_II: TfrmGetProd_II
           TabOrder = 1
           LookAndFeel.Kind = lfFlat
           object grdClientProdDBTableView1: TcxGridDBTableView
-            NavigatorButtons.ConfirmDelete = False
+            Navigator.Buttons.CustomButtons = <>
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
@@ -647,6 +654,10 @@ object frmGetProd_II: TfrmGetProd_II
       Caption = 'Anpassade produkter'
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object grdCustDimProd: TcxGrid
         Left = 0
         Top = 0
@@ -655,7 +666,7 @@ object frmGetProd_II: TfrmGetProd_II
         Align = alClient
         TabOrder = 0
         object grdCustDimProdDBTableView1: TcxGridDBTableView
-          NavigatorButtons.ConfirmDelete = False
+          Navigator.Buttons.CustomButtons = <>
           DataController.KeyFieldNames = 'ProductNo'
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -752,8 +763,8 @@ object frmGetProd_II: TfrmGetProd_II
   end
   object PanelSelectedProducts: TPanel
     Left = 0
-    Top = 451
-    Width = 1059
+    Top = 440
+    Width = 1051
     Height = 151
     Align = alBottom
     TabOrder = 3
@@ -761,7 +772,7 @@ object frmGetProd_II: TfrmGetProd_II
     object Panel6: TPanel
       Left = 1
       Top = 1
-      Width = 1057
+      Width = 1049
       Height = 28
       Align = alTop
       BevelOuter = bvNone
@@ -773,8 +784,7 @@ object frmGetProd_II: TfrmGetProd_II
         Width = 89
         Height = 24
         Action = acDeleteSelectedProduct
-        TabOrder = 0
-        Glyph.Data = {
+        OptionsImage.Glyph.Data = {
           36050000424D3605000000000000360400002800000010000000100000000100
           08000000000000010000220B0000220B000000010000000000000031DE000031
           E7000031EF000031F700FF00FF000031FF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -817,17 +827,18 @@ object frmGetProd_II: TfrmGetProd_II
           0404040405030404040404040303050404040404040303040404040303030404
           0404040404040403040403030304040404040404040404040404030304040404
           0404040404040404040404040404040404040404040404040404}
+        TabOrder = 0
       end
     end
     object grdSelectedProducts: TcxGrid
       Left = 1
       Top = 29
-      Width = 1057
+      Width = 1049
       Height = 121
       Align = alClient
       TabOrder = 1
       object grdSelectedProductsDBTableView1: TcxGridDBTableView
-        NavigatorButtons.ConfirmDelete = False
+        Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dsMarkedProd
         DataController.KeyFieldNames = 'ProductNo'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -893,8 +904,8 @@ object frmGetProd_II: TfrmGetProd_II
   end
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 443
-    Width = 1059
+    Top = 432
+    Width = 1051
     Height = 8
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salBottom
@@ -905,7 +916,6 @@ object frmGetProd_II: TfrmGetProd_II
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
-    NativeStyle = True
     Left = 177
     Top = 172
   end
@@ -1045,7 +1055,7 @@ object frmGetProd_II: TfrmGetProd_II
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -1161,8 +1171,8 @@ object frmGetProd_II: TfrmGetProd_II
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
       'Default')
@@ -1709,5 +1719,66 @@ object frmGetProd_II: TfrmGetProd_II
       Required = True
       Size = 48
     end
+  end
+  object siLangLinked_frmGetProd_II: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 520
+    Top = 320
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

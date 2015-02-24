@@ -40,8 +40,8 @@ uses
   cxCurrencyEdit, kbmMemTable, cxSplitter,
   cxShellBrowserDialog, ShlObj, cxShellCommon, cxShellListView,
   cxLookAndFeelPainters, cxButtons, cxPC, cxCalendar, cxDBEdit, cxCheckBox,
-  clFTPUtils,
-  clTcpClient, clFtp, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+ { clFTPUtils,
+  clTcpClient, clFtp,} FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxGridCustomPopupMenu, cxGridPopupMenu,
@@ -62,7 +62,8 @@ uses
   cxPCdxBarPopupMenu, dxSkinsdxBarPainter, dxPScxGridLnk,
   dxPScxGridLayoutViewLnk, dxSkinsdxRibbonPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
+  siLngLnk, System.Actions ;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -231,7 +232,7 @@ type
     acImportPkgs: TAction;
     acOpenFS: TAction;
     acDeleteLoad_Imp: TAction;
-    clFTP: TclFtp;
+{    clFTP: TclFtp; }
     acSendLoadOrderNoToHH: TAction;
     acAddMarkedLONoToSendList: TAction;
     acAddLOnoToSendList: TAction;
@@ -431,6 +432,7 @@ type
     grdLODBTableView1ProducedAM3: TcxGridDBColumn;
     grdLODBTableView1ProducedPKT: TcxGridDBColumn;
     grdLODBTableView1Order_AM3: TcxGridDBColumn;
+    siLangLinked_frmVisTruckLoadOrder: TsiLangLinked;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -877,8 +879,8 @@ begin
 //  mtProps.Post ;
 // End ;
 
-  if clFTP.Active then
-  clFTP.Close() ;
+{  if clFTP.Active then
+  clFTP.Close() ;  }
   CheckIfChangesUnSaved(Sender) ;
   SaveUserPreferences;
 

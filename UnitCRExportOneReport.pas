@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, OleCtrls,  OleServer, 
-  StdCtrls, Printers, CRAXDDRT_TLB;
+  StdCtrls, Printers, CRAXDRT_TLB;
 
 type
   TFormCRExportOneReport = class(TForm)
@@ -70,8 +70,8 @@ begin
   CRreport.ParameterFields.Item[1+I].AddCurrentValue(A[I]);
 
   // Export the report.
-  crReport.ExportOptions.FormatType       := CRAXDDRT_TLB.crEFTPortableDocFormat;
-  crReport.ExportOptions.DestinationType  := CRAXDDRT_TLB.crEDTDiskFile;
+  crReport.ExportOptions.FormatType       := CRAXDRT_TLB.crEFTPortableDocFormat;
+  crReport.ExportOptions.DestinationType  := CRAXDRT_TLB.crEDTDiskFile;
   crReport.ExportOptions.DiskFileName     := ExportFile+'.pdf';
   crReport.Export(false);
  Finally

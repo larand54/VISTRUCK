@@ -27,7 +27,6 @@ object FormBookingForm: TFormBookingForm
     Height = 129
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 1091
     object Label27: TLabel
       Left = 24
       Top = 18
@@ -386,8 +385,6 @@ object FormBookingForm: TFormBookingForm
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 1091
-    ExplicitHeight = 494
     object PanelConfirm: TPanel
       Left = 0
       Top = 375
@@ -395,8 +392,6 @@ object FormBookingForm: TFormBookingForm
       Height = 108
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 386
-      ExplicitWidth = 1091
       DesignSize = (
         1083
         108)
@@ -449,7 +444,6 @@ object FormBookingForm: TFormBookingForm
         Height = 24
         Action = acNewVesselName
         Anchors = [akTop, akRight]
-        DoubleBuffered = True
         Glyph.Data = {
           36090000424D3609000000000000360000002800000018000000180000000100
           2000000000000009000000000000000000000000000000000000FF00FF00FF00
@@ -525,7 +519,6 @@ object FormBookingForm: TFormBookingForm
           2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C
           2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000FF9E
           4600FF9E4600FF8C2000FF8C2000FF8C2000FF8C2000FF8C2000}
-        ParentDoubleBuffered = False
         TabOrder = 6
       end
       object eShippingCompanyBookingID: TcxDBTextEdit
@@ -612,7 +605,6 @@ object FormBookingForm: TFormBookingForm
         Height = 45
         Align = alBottom
         TabOrder = 7
-        ExplicitWidth = 1089
         object bbOK: TBitBtn
           Left = 320
           Top = 7
@@ -620,10 +612,8 @@ object FormBookingForm: TFormBookingForm
           Height = 33
           Action = acSave
           Caption = 'Spara F3'
-          DoubleBuffered = True
           Kind = bkOK
           NumGlyphs = 2
-          ParentDoubleBuffered = False
           TabOrder = 0
         end
         object bbCancel: TBitBtn
@@ -631,10 +621,8 @@ object FormBookingForm: TFormBookingForm
           Top = 7
           Width = 97
           Height = 33
-          DoubleBuffered = True
           Kind = bkCancel
           NumGlyphs = 2
-          ParentDoubleBuffered = False
           TabOrder = 2
         end
         object BitBtn1: TBitBtn
@@ -644,10 +632,8 @@ object FormBookingForm: TFormBookingForm
           Height = 33
           Action = acSetETDandSaveAndExit
           Caption = 'S'#228'tt ETD=dagens datum, st'#228'ng F11'
-          DoubleBuffered = True
           Kind = bkOK
           NumGlyphs = 2
-          ParentDoubleBuffered = False
           TabOrder = 1
         end
       end
@@ -659,7 +645,6 @@ object FormBookingForm: TFormBookingForm
       Height = 225
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 1091
       DesignSize = (
         1083
         225)
@@ -751,17 +736,16 @@ object FormBookingForm: TFormBookingForm
       Align = alClient
       Caption = 'PanelTEXT'
       TabOrder = 2
-      ExplicitWidth = 1091
-      ExplicitHeight = 153
       object grdOrderDocument: TcxGrid
         Left = 1
         Top = 1
-        Width = 1089
-        Height = 151
+        Width = 1081
+        Height = 140
         Align = alClient
         TabOrder = 0
         LookAndFeel.Kind = lfFlat
         object grdOrderDocumentDBTableView1: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
           DataController.DataModeController.GridMode = True
           DataController.DataSource = dm_Booking.ds_DocText
           DataController.KeyFieldNames = 'DocTextNo'
@@ -798,7 +782,6 @@ object FormBookingForm: TFormBookingForm
       Control = PanelFixedNotes
       Color = clMaroon
       ParentColor = False
-      ExplicitWidth = 8
     end
   end
   object grdLoRows: TcxGrid
@@ -808,8 +791,8 @@ object FormBookingForm: TFormBookingForm
     Height = 206
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1091
     object grdLoRowsDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dm_Booking.dsBookingProducts
       DataController.KeyFieldNames = 'CSDNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -891,7 +874,6 @@ object FormBookingForm: TFormBookingForm
     Control = grdLoRows
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object ImageList1: TImageList
     Height = 24
@@ -899,7 +881,7 @@ object FormBookingForm: TFormBookingForm
     Left = 680
     Top = 168
     Bitmap = {
-      494C010104000900080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1576,5 +1558,66 @@ object FormBookingForm: TFormBookingForm
     object SttETDdagensdatumstngF111: TMenuItem
       Action = acSetETDandSaveAndExit
     end
+  end
+  object siLangLinked_FormBookingForm: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 536
+    Top = 416
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

@@ -30,7 +30,8 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, ComCtrls, dxCore, dxSkinsdxBarPainter,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, cxDateUtils ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, cxDateUtils,
+  siComp, siLngLnk, System.Actions ;
 
 type
   TfrmPortArrivals = class(TForm)
@@ -223,6 +224,7 @@ type
     cds_PropsCustomerNo: TIntegerField;
     cds_PropsShowProduct: TIntegerField;
     cds_PropsShipper: TStringField;
+    siLangLinked_frmPortArrivals: TsiLangLinked;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);

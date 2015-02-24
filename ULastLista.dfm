@@ -17,8 +17,6 @@ object fLastLista: TfLastLista
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -109,6 +107,7 @@ object fLastLista: TfLastLista
     BevelOuter = bvNone
     TabOrder = 1
     object grdLastListaDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dmArrivingLoads.ds_verkLaster
       DataController.KeyFieldNames = 'LASTNR'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -269,6 +268,7 @@ object fLastLista: TfLastLista
       PopupMenu = PopupMenu2
       TabOrder = 1
       object grdLoadPackagesDBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmArrivingLoads.ds_VerkLastPkgs
         DataController.KeyFieldNames = 'LOAD_DETAILNO'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -380,7 +380,6 @@ object fLastLista: TfLastLista
     Control = grdLastLista
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object imglistActions: TImageList
     Height = 24
@@ -388,7 +387,7 @@ object fLastLista: TfLastLista
     Left = 480
     Top = 216
     Bitmap = {
-      494C01010D000E00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D001100040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       000000000000000000000000000000000000000000000000000000000000AD7B
       7B00B5848400B5848400B5848400B5848400B5848400B5848400B5848400B584
@@ -1595,7 +1594,7 @@ object fLastLista: TfLastLista
     Left = 424
     Top = 176
     Bitmap = {
-      494C010103000400080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000500040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00009C9C9C006B6B6B00525252004A4A4A004A4A4A004A4A4A00525252009C9C
@@ -1746,7 +1745,7 @@ object fLastLista: TfLastLista
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.02.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2185,5 +2184,66 @@ object fLastLista: TfLastLista
       Font.Name = 'MS Sans Serif'
       Font.Style = []
     end
+  end
+  object siLangLinked_fLastLista: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 472
+    Top = 280
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

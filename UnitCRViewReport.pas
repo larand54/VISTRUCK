@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, OleCtrls, OleServer,
-  StdCtrls, CRAXDDRT_TLB, CrystalActiveXReportViewerLib11_TLB;
+  StdCtrls, CRAXDRT_TLB, CrystalActiveXReportViewerLib11_5_TLB;
 
 type
   TFormCRViewReport = class(TForm)

@@ -28,7 +28,7 @@ uses
   dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter,
   dxSkinsdxBarPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  Vcl.Menus, cxButtons;
+  Vcl.Menus, cxButtons, siComp, siLngLnk, System.Actions;
 
   const ProductAndLength = 1 ;
   MatchingProduct = 2 ;
@@ -161,6 +161,7 @@ type
     cds_LIP2LIPNo: TIntegerField;
     cds_LIP2LIPName: TStringField;
     mtPropsLIP: TStringField;
+    siLangLinked_fPickPkgNo: TsiLangLinked;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ds_SelectedPkgNoDataChange(Sender: TObject; Field: TField);

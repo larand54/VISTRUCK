@@ -24,7 +24,9 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter ;
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions ;
 
 type
   TFormBookingForm = class(TForm)
@@ -127,6 +129,7 @@ type
     grdOrderDocumentDBTableView1DocText: TcxGridDBColumn;
     grdOrderDocumentLevel1: TcxGridLevel;
     cxSplitter2: TcxSplitter;
+    siLangLinked_FormBookingForm: TsiLangLinked;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);

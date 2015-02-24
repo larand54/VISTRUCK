@@ -19,7 +19,9 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView,
-  cxGrid, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxLabel, cxTextEdit;
+  cxGrid, Vcl.ExtCtrls, Vcl.Menus, Vcl.StdCtrls, cxButtons, cxLabel, cxTextEdit,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk;
 
 type
   TfLagerPos = class(TForm)
@@ -33,6 +35,7 @@ type
     grdLagerPosDBTableView1LagerPositionText: TcxGridDBColumn;
     cxButton1: TcxButton;
     cxButton2: TcxButton;
+    siLangLinked_fLagerPos: TsiLangLinked;
   private
     { Private declarations }
   public

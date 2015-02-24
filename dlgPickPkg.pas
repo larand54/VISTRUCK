@@ -20,7 +20,9 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter ;
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk ;
 
 type
   TfrmPackagePicker = class(TForm)
@@ -39,6 +41,7 @@ type
     grdPackagesProductNo: TcxGridDBColumn;
     grdPackagesNoOfLengths: TcxGridDBColumn;
     grdPackagesProductLengthNo: TcxGridDBColumn;
+    siLangLinked_frmPackagePicker: TsiLangLinked;
     procedure btnOKClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private

@@ -30,7 +30,7 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
   dxSkinsdxBarPainter, cxSpinEdit, cxBarEditItem, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, dxBarBuiltInMenu ;
+  dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -353,6 +353,7 @@ type
     cxGridPopupMenu3: TcxGridPopupMenu;
     Visahuvud1: TMenuItem;
     cbShowOriginalLO: TcxDBCheckBox;
+    siLangLinked_fLoadEntrySSP: TsiLangLinked;
 
 
     procedure lbRemovePackageClick(Sender: TObject);

@@ -26,7 +26,6 @@ object frmBaseFormA: TfrmBaseFormA
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 760
     object cxButton1: TcxButton
       Left = 8
       Top = 5
@@ -268,7 +267,7 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 4
     end
     object Panel2: TPanel
-      Left = 650
+      Left = 642
       Top = 1
       Width = 109
       Height = 39
@@ -336,8 +335,6 @@ object frmBaseFormA: TfrmBaseFormA
     Height = 41
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 299
-    ExplicitWidth = 760
   end
   object cxGrid1: TcxGrid
     Left = 0
@@ -346,9 +343,8 @@ object frmBaseFormA: TfrmBaseFormA
     Height = 247
     Align = alClient
     TabOrder = 2
-    ExplicitWidth = 760
-    ExplicitHeight = 258
     object cxGrid1DBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
       OnEditKeyDown = cxGrid1DBTableView1EditKeyDown
       DataController.DataSource = DataSource1
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -372,7 +368,7 @@ object frmBaseFormA: TfrmBaseFormA
     Left = 480
     Top = 216
     Bitmap = {
-      494C01010C000E00080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010C001100040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1629,6 +1625,7 @@ object frmBaseFormA: TfrmBaseFormA
     Top = 88
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1641,6 +1638,7 @@ object frmBaseFormA: TfrmBaseFormA
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -1670,5 +1668,66 @@ object frmBaseFormA: TfrmBaseFormA
   object FDQuery1: TFDQuery
     Left = 208
     Top = 160
+  end
+  object siLangLinked_frmBaseFormA: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 368
+    Top = 168
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

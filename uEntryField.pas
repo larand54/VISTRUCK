@@ -17,7 +17,9 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue;
+  dxSkinXmas2008Blue, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  siComp, siLngLnk;
 
 type
   TfEntryField = class(TForm)
@@ -25,6 +27,7 @@ type
     bbcancel: TBitBtn;
     Label1: TLabel;
     eNoofpkgs: TcxMaskEdit;
+    siLangLinked_fEntryField: TsiLangLinked;
   private
     { Private declarations }
   public

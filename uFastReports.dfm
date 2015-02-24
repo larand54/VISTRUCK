@@ -1,7 +1,5 @@
 object dmFR: TdmFR
   OldCreateOrder = False
-  Left = 197
-  Top = 107
   Height = 442
   Width = 824
   object sp_vis_FR_Invoice: TFDStoredProc
@@ -41,10 +39,12 @@ object dmFR: TdmFR
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    DataOnly = False
     PrintOptimized = False
     Outline = False
     Background = False
     HTMLTags = True
+    Quality = 95
     Author = 'FastReport'
     Subject = 'FastReport PDF export'
     ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
@@ -54,6 +54,7 @@ object dmFR: TdmFR
     FitWindow = False
     CenterWindow = False
     PrintScaling = False
+    CheckboxAsShape = False
     Left = 232
     Top = 80
   end
@@ -62,7 +63,7 @@ object dmFR: TdmFR
     Top = 32
   end
   object frxReport1: TfrxReport
-    Version = '4.9.106'
+    Version = '4.15.13'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -171,7 +172,7 @@ object dmFR: TdmFR
             7B5C727466315C616E73695C616E7369637067313235325C64656666305C6465
             666C616E67313035337B5C666F6E7474626C7B5C66305C666E696C204D532053
             616E732053657269663B7D7D0D0A7B5C2A5C67656E657261746F72204D736674
-            6564697420352E34312E31352E313531353B7D5C766965776B696E64345C7563
+            6564697420352E34312E32312E323531303B7D5C766965776B696E64345C7563
             315C706172645C66305C66733136205B496E766F6963652E22494E565F544558
             54225D5C7061720D0A7D0D0A00}
         end
@@ -186,7 +187,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FAKTURA'
             'ADRESS')
           ParentFont = False
@@ -205,7 +206,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CustomerName"]')
           ParentFont = False
           Style = 'Arial9'
@@ -224,7 +225,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."AddressLine1"]')
           ParentFont = False
           Style = 'Arial9'
@@ -239,7 +240,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'Agent')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -258,7 +259,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."VAT"]')
           ParentFont = False
         end
@@ -276,7 +277,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'MOMS REG')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -292,7 +293,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'LEV VILLK.')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -308,7 +309,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'BET VILLK.')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -324,7 +325,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."AddressLine2"]')
           ParentFont = False
         end
@@ -339,7 +340,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."AddressLine3"]')
           ParentFont = False
         end
@@ -354,7 +355,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."AddressLine4"]')
           ParentFont = False
         end
@@ -370,7 +371,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."PaymentDescription"]')
           ParentFont = False
         end
@@ -385,7 +386,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CityName"] [Invoice."StateOrProvince"]')
           ParentFont = False
         end
@@ -400,7 +401,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CountryName"]')
           ParentFont = False
         end
@@ -415,7 +416,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."AgentName"]')
           ParentFont = False
         end
@@ -436,7 +437,7 @@ object dmFR: TdmFR
           DataField = 'LevVillkor'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."LevVillkor"]')
         end
       end
@@ -457,7 +458,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haCenter
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'Faktura')
           ParentFont = False
         end
@@ -472,7 +473,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."INV_NO"]')
           ParentFont = False
         end
@@ -487,7 +488,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FAKTURA NR')
           ParentFont = False
         end
@@ -504,7 +505,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."INV_DATE"]')
           ParentFont = False
         end
@@ -519,7 +520,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FAKTURA DATUM')
           ParentFont = False
         end
@@ -534,7 +535,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'Kund')
           ParentFont = False
         end
@@ -549,7 +550,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."SearchName"]')
           ParentFont = False
         end
@@ -589,7 +590,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."OurReference"]')
           ParentFont = False
           Style = 'Arial9'
@@ -605,7 +606,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CUSTREF"]')
           ParentFont = False
           Style = 'Arial9'
@@ -621,7 +622,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."OrderNoText"]')
           ParentFont = False
           Style = 'Arial9'
@@ -637,7 +638,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."SalesMan"]')
           ParentFont = False
           Style = 'Arial9'
@@ -653,7 +654,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Shipper"]')
           ParentFont = False
           Style = 'Arial9'
@@ -669,7 +670,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."BookingNo"] / [Invoice."SHIPCOMPBOOKID"]')
           ParentFont = False
           Style = 'Arial9'
@@ -687,7 +688,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."TRPID_1"]')
           ParentFont = False
           Style = 'Arial9'
@@ -703,8 +704,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'V'#195#8230'R REF')
+          Memo.UTF8W = (
+            'V'#197'R REF')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -719,7 +720,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'ER REF')
           ParentFont = False
         end
@@ -734,7 +735,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'KONTRAKT')
           ParentFont = False
         end
@@ -749,8 +750,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'S'#195#8222'LJARE')
+          Memo.UTF8W = (
+            'S'#196'LJARE')
           ParentFont = False
         end
         object Memo14: TfrxMemoView
@@ -764,8 +765,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'SPEDIT'#195#8211'R')
+          Memo.UTF8W = (
+            'SPEDIT'#214'R')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -780,7 +781,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'BOKN. NR.')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -796,7 +797,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'TRP. ID.')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -812,7 +813,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FARTYG')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -830,7 +831,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."VESSEL"]')
           ParentFont = False
           Style = 'Arial9'
@@ -846,7 +847,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'ETD')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -864,7 +865,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."ETD_1"]')
           ParentFont = False
           Style = 'Arial9'
@@ -880,7 +881,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'ETA')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -898,7 +899,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."ETA_1"]')
           ParentFont = False
           Style = 'Arial9'
@@ -920,7 +921,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = []
           HAlign = haCenter
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Page#]')
           ParentFont = False
         end
@@ -935,7 +936,7 @@ object dmFR: TdmFR
           Font.Height = -13
           Font.Name = 'Arial Narrow'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'VIDA Wood AB')
           ParentFont = False
         end
@@ -960,7 +961,7 @@ object dmFR: TdmFR
           Font.Height = -11
           Font.Name = 'Arial Narrow'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Adress"]')
           ParentFont = False
         end
@@ -977,7 +978,7 @@ object dmFR: TdmFR
           Font.Height = -11
           Font.Name = 'Arial Narrow'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."TelefonFax"]')
           ParentFont = False
         end
@@ -994,7 +995,7 @@ object dmFR: TdmFR
           Font.Height = -11
           Font.Name = 'Arial Narrow'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Internet"]')
           ParentFont = False
         end
@@ -1011,7 +1012,7 @@ object dmFR: TdmFR
           Font.Height = -11
           Font.Name = 'Arial Narrow'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."OrgVatNr"]')
           ParentFont = False
         end
@@ -1046,7 +1047,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."ProductDescription"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1062,7 +1063,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."LengthDescription"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1082,7 +1083,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = []
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."NoOfPkgs"]')
           ParentFont = False
         end
@@ -1100,7 +1101,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = []
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Volume_OrderUnit"] [Invoice."PrisEnhet"]')
           ParentFont = False
         end
@@ -1118,7 +1119,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = []
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"] [Invoice."Price"]')
           ParentFont = False
         end
@@ -1136,7 +1137,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = []
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"] [Invoice."ProductValue"]')
           ParentFont = False
         end
@@ -1154,7 +1155,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."KR_REF"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1176,7 +1177,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'ADRESS:')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1192,7 +1193,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'SKEPP. REF.:')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1211,7 +1212,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Reference"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1230,7 +1231,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             
               '[Invoice."AddressName"] [Invoice."AddressLine1_1"] [Invoice."Add' +
               'ressLine2_1"] [Invoice."AddressLine3_1"] [Invoice."AddressLine4_' +
@@ -1261,7 +1262,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[SUM(<Invoice."NoOfPkgs">,0,0)] PKT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1284,7 +1285,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[SUM(<Invoice."LinealMeter">,0,0)] M1')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1300,7 +1301,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[SUM(<Invoice."ActualNetM3">,0,0)] AM3')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1316,7 +1317,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[SUM(<Invoice."NominalM3">,0,0)] NM3')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1332,7 +1333,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'SUM')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1354,7 +1355,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'PKT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1371,7 +1372,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'VOLYM')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1388,7 +1389,7 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'PRIS')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1405,8 +1406,8 @@ object dmFR: TdmFR
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
-          Memo.UTF8 = (
-            'V'#195#8222'RDE')
+          Memo.UTF8W = (
+            'V'#196'RDE')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -1421,8 +1422,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'PKT M'#195#8222'RKN.')
+          Memo.UTF8W = (
+            'PKT M'#196'RKN.')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -1437,7 +1438,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'PRODUKT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1466,7 +1467,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."SUM_FreigthCost"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1485,7 +1486,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Total_Product_Value_No_Freight"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1501,7 +1502,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FRAKT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1517,8 +1518,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'V'#195#8222'RDE EXW')
+          Memo.UTF8W = (
+            'V'#196'RDE EXW')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -1533,7 +1534,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'KASSARABATT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1549,8 +1550,8 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'F'#195#8211'RFALLODAG')
+          Memo.UTF8W = (
+            'F'#214'RFALLODAG')
           ParentFont = False
           Style = 'Arial7Bold'
         end
@@ -1568,7 +1569,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1587,7 +1588,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1606,7 +1607,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1625,7 +1626,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Discount"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1641,8 +1642,8 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
-            'FAKTURAV'#195#8222'RDE EXKL. MOMS')
+          Memo.UTF8W = (
+            'FAKTURAV'#196'RDE EXKL. MOMS')
           ParentFont = False
         end
         object Memo40: TfrxMemoView
@@ -1656,7 +1657,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'MOMS 25%')
           ParentFont = False
         end
@@ -1671,7 +1672,7 @@ object dmFR: TdmFR
           Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             'FRAKT')
           ParentFont = False
           Style = 'Arial7Bold'
@@ -1704,7 +1705,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
         end
@@ -1722,7 +1723,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
         end
@@ -1740,7 +1741,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."CURRENCY"]')
           ParentFont = False
         end
@@ -1758,7 +1759,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Tot_Inv_Inc_Freight_Extras"]')
           ParentFont = False
         end
@@ -1776,7 +1777,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."VAT_Value"]')
           ParentFont = False
         end
@@ -1794,7 +1795,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = [fsBold]
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Inv_Value_To_Be_Paid_2"]')
           ParentFont = False
         end
@@ -1813,7 +1814,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."PAYMENT_TEXT"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1834,7 +1835,7 @@ object dmFR: TdmFR
           Font.Height = -12
           Font.Name = 'Arial'
           Font.Style = []
-          Memo.UTF8 = (
+          Memo.UTF8W = (
             '[Invoice."Forfallodag"]')
           ParentFont = False
           Style = 'Arial9'
@@ -1863,7 +1864,7 @@ object dmFR: TdmFR
         Font.Height = -13
         Font.Name = 'Arial'
         Font.Style = [fsBold]
-        Memo.UTF8 = (
+        Memo.UTF8W = (
           '[Invoice."CustomerName"]')
         ParentFont = False
       end
@@ -1878,10 +1879,71 @@ object dmFR: TdmFR
         Font.Height = -13
         Font.Name = 'Arial'
         Font.Style = [fsBold]
-        Memo.UTF8 = (
+        Memo.UTF8W = (
           'subreport')
         ParentFont = False
       end
     end
+  end
+  object siLangLinked_dmFR: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 400
+    Top = 208
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

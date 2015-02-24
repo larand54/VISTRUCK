@@ -144,8 +144,6 @@ object fchgPkgVard: TfchgPkgVard
       Height = 22
       Action = acSearchRunNo
       Caption = 'S'#246'k k'#246'rnr'
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
       TabOrder = 5
       Visible = False
     end
@@ -376,6 +374,7 @@ object fchgPkgVard: TfchgPkgVard
         Align = alClient
         TabOrder = 1
         object grdLengthsDBTableView1: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dmPkgs.dsmtPackages
           DataController.KeyFieldNames = 'RecId'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -384,6 +383,7 @@ object fchgPkgVard: TfchgPkgVard
           OptionsView.GroupByBox = False
         end
         object grdLengthsDBBandedTableView1: TcxGridDBBandedTableView
+          Navigator.Buttons.CustomButtons = <>
           OnEditing = grdLengthsDBBandedTableView1Editing
           OnEditKeyDown = grdLengthsDBBandedTableView1EditKeyDown
           DataController.DataSource = dmPkgs.dsmtPackages
@@ -508,6 +508,7 @@ object fchgPkgVard: TfchgPkgVard
       Align = alClient
       TabOrder = 0
       object grdPaketDBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'LoadDetailNo'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -610,6 +611,7 @@ object fchgPkgVard: TfchgPkgVard
         end
       end
       object grdPaketDBBandedTableView1: TcxGridDBBandedTableView
+        Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'ROWNO'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -937,13 +939,11 @@ object fchgPkgVard: TfchgPkgVard
         Height = 25
         Action = acCleanPkgs
         Caption = 'Rensa tabell'
-        DoubleBuffered = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ParentDoubleBuffered = False
         ParentFont = False
         TabOrder = 0
       end
@@ -954,13 +954,11 @@ object fchgPkgVard: TfchgPkgVard
         Height = 25
         Action = acAppendPkg
         Caption = 'L'#228'gg till rad'
-        DoubleBuffered = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ParentDoubleBuffered = False
         ParentFont = False
         TabOrder = 1
       end
@@ -971,13 +969,11 @@ object fchgPkgVard: TfchgPkgVard
         Height = 25
         Action = acRemoveRow
         Caption = 'Ta bort rad'
-        DoubleBuffered = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ParentDoubleBuffered = False
         ParentFont = False
         TabOrder = 2
       end
@@ -1185,7 +1181,7 @@ object fchgPkgVard: TfchgPkgVard
     Left = 448
     Top = 344
     Bitmap = {
-      494C010107000900080018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010107000900040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1790,7 +1786,7 @@ object fchgPkgVard: TfchgPkgVard
     Left = 408
     Top = 344
     Bitmap = {
-      494C010103000400080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103000500040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       00009C9C9C006B6B6B00525252004A4A4A004A4A4A004A4A4A00525252009C9C
@@ -2070,7 +2066,7 @@ object fchgPkgVard: TfchgPkgVard
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.02.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2339,5 +2335,66 @@ object fchgPkgVard: TfchgPkgVard
       Color = clRed
       TextColor = clWhite
     end
+  end
+  object siLangLinked_fchgPkgVard: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 496
+    Top = 296
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

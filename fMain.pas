@@ -174,7 +174,8 @@ type
     cxButton1: TcxButton;
     dxBarLargeButton29: TdxBarLargeButton;
     acPkgStdSizeIntervall: TAction;
-    dxBarLargeButton30: TdxBarLargeButton;
+    dxBarLargeButton30:
+    siLangLinked1: TsiLangLinked;TdxBarLargeButton;
     acTorkhanteraren: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);

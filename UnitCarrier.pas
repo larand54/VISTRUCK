@@ -20,7 +20,9 @@ uses
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter;
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions;
 
 type
   TFormCarrier = class(TForm)
@@ -39,6 +41,7 @@ type
     acNewCarrier: TAction;
     acSave: TAction;
     acClose: TAction;
+    siLangLinked_FormCarrier: TsiLangLinked;
     procedure acNewCarrierExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);

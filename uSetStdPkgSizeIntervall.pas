@@ -11,7 +11,21 @@ uses
   cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxGridCustomView, cxGrid, cxLabel,
-  cxCalc, cxContainer, cxGridCustomPopupMenu, cxGridPopupMenu;
+  cxCalc, cxContainer, cxGridCustomPopupMenu, cxGridPopupMenu, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
+  dxSkinXmas2008Blue, dxSkinsdxBarPainter, dxSkinscxPCPainter, cxNavigator,
+  siComp, siLngLnk, System.Actions;
 
 type
   TfSetStdPkgSizeIntervall = class(TfBaseListForm)
@@ -37,6 +51,7 @@ type
     grdPkgStdPcsDBTableView1Produkt: TcxGridDBColumn;
     cxGridPopupMenu1: TcxGridPopupMenu;
     cxLabel1: TcxLabel;
+    siLangLinked_fSetStdPkgSizeIntervall: TsiLangLinked;
     procedure acRefreshExecute(Sender: TObject);
   private
     { Private declarations }

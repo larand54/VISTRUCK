@@ -26,7 +26,9 @@ uses
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxStatusBarPainter,
-  dxSkinsdxBarPainter ;
+  dxSkinsdxBarPainter, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  cxNavigator, siComp, siLngLnk, System.Actions ;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -242,6 +244,7 @@ type
     mtUserPropBookingTypeNo: TIntegerField;
     mtUserPropCustomerNo: TIntegerField;
     mtUserPropShowProduct: TIntegerField;
+    siLangLinked_fchgPkgVard: TsiLangLinked;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure bcStdLenGrpChange(Sender: TObject);

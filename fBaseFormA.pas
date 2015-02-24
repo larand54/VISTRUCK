@@ -99,7 +99,10 @@ uses
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxPScxGridLnk,
-  dxPScxGridLayoutViewLnk, dxSkinsdxBarPainter, dxSkinsdxRibbonPainter  {$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
+  dxPScxGridLayoutViewLnk, dxSkinsdxBarPainter, dxSkinsdxRibbonPainter,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, siComp,
+  siLngLnk, System.Actions  {$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
 
 
 Const
@@ -139,6 +142,7 @@ type
     SkrivutF83: TMenuItem;
     StngF122: TMenuItem;
     FDQuery1: TFDQuery;
+    siLangLinked_frmBaseFormA: TsiLangLinked;
 
     procedure atExitExecute(Sender: TObject);
     procedure acAddRecordExecute(Sender: TObject);

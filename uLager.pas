@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, dxBarExtItems, StdCtrls, ImgList, OleServer, OleCtrls,
-  Menus, CRAXDDRT_TLB, DB, ActnList, cxGraphics, cxControls,
+  Menus, CRAXDRT_TLB, DB, ActnList, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxStyles,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxDBData, cxLabel, cxCalc,
   cxCurrencyEdit, cxTextEdit, cxDBLookupComboBox, cxCheckBox, dxPSGlbl,
@@ -20,7 +20,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridDBBandedTableView,
   cxGridCustomView, cxGrid, cxDBLabel, cxMaskEdit, cxLookupEdit,
   cxDBLookupEdit, DateUtils,
-  CrystalActiveXReportViewerLib11_TLB,
+  CrystalActiveXReportViewerLib11_5_TLB,
   Provider, SqlExpr, cxCheckComboBox, cxDBCheckComboBox, dxPSPDFExportCore,
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxEditorProducers, dxPScxExtEditorProducers,
@@ -39,7 +39,7 @@ uses
   dxSkinsdxBarPainter, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxRibbonPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  dxBarBuiltInMenu ;
+  dxBarBuiltInMenu, System.Actions, siComp, siLngLnk ;
 
 const cFirstLengthFieldNumber = 38 ;
 cFirstLengthFieldNumberPaketnr = 37 ;
@@ -339,6 +339,7 @@ type
     cxLabel9: TcxLabel;
     acSetStdGridLayout: TAction;
     cxButton11: TcxButton;
+    siLangLinked_fLager: TsiLangLinked;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);

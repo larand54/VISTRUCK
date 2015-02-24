@@ -22,7 +22,10 @@ uses
   dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
   dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
   dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
-  dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator;
+  dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk,
+  System.Actions;
 
 type
   TfLoadOrderSearch = class(TForm)
@@ -73,6 +76,7 @@ type
     cds_SearchOrderProduktmarkning: TStringField;
     grdLoadOrderSearchDBTableView1Avropsreferens: TcxGridDBColumn;
     grdLoadOrderSearchDBTableView1Produktmarkning: TcxGridDBColumn;
+    siLangLinked_fLoadOrderSearch: TsiLangLinked;
     procedure FormCreate(Sender: TObject);
     procedure atOKExecute(Sender: TObject);
     procedure atOKUpdate(Sender: TObject);

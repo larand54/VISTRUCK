@@ -346,6 +346,11 @@
         <DCCReference Include="uPickPkgNoTork.pas">
             <Form>fPickPkgNoTork</Form>
         </DCCReference>
+        <DCCReference Include="udmLanguage.pas">
+            <Form>dmLanguage</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">

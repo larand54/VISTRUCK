@@ -29,9 +29,9 @@ object fLager: TfLager
   TextHeight = 13
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 129
+    Top = 131
     Width = 1342
-    Height = 567
+    Height = 565
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tsTABELL
@@ -41,31 +41,36 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 567
+    ExplicitTop = 129
+    ExplicitHeight = 567
+    ClientRectBottom = 565
     ClientRectRight = 1342
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
+      ExplicitHeight = 567
       object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 1342
-        Height = 567
+        Height = 565
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitHeight = 567
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
           Width = 1342
-          Height = 269
+          Height = 267
           Align = alClient
           PopupMenu = pmSortimentsVy
           TabOrder = 0
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
+          ExplicitHeight = 269
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -191,12 +196,13 @@ object fLager: TfLager
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 277
+          Top = 275
           Width = 1342
           Height = 290
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitTop = 277
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -414,7 +420,7 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 269
+          Top = 267
           Width = 1342
           Height = 8
           HotZoneClassName = 'TcxMediaPlayer8Style'
@@ -422,6 +428,7 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
+          ExplicitTop = 269
           ExplicitWidth = 8
         end
       end
@@ -431,17 +438,18 @@ object fLager: TfLager
     Left = 0
     Top = 0
     Width = 1342
-    Height = 19
+    Height = 21
     Align = dalTop
     BarManager = dxBarManager1
   end
   object Panel3: TPanel
     Left = 0
-    Top = 19
+    Top = 21
     Width = 1342
     Height = 110
     Align = alTop
     TabOrder = 6
+    ExplicitTop = 19
     DesignSize = (
       1342
       110)
@@ -772,8 +780,8 @@ object fLager: TfLager
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
       'Default'
@@ -1112,7 +1120,6 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1133,14 +1140,12 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1159,7 +1164,6 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -2117,7 +2121,7 @@ object fLager: TfLager
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -4618,13 +4622,13 @@ object fLager: TfLager
       item
         Name = 'USERID'
         DataType = ftInteger
-        ADDataType = dtUInt32
+        FDDataType = dtUInt32
         ParamType = ptInput
       end
       item
         Name = 'FORM'
         DataType = ftString
-        ADDataType = dtByteString
+        FDDataType = dtByteString
         ParamType = ptInput
       end>
     object cds_PropsVerkNo: TIntegerField
@@ -6260,5 +6264,66 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 552
     Top = 313
+  end
+  object siLangLinked_fLager: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 656
+    Top = 336
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0073007400480069006E00740073005F0055006E0069006300
+      6F00640065000D000A007300740044006900730070006C00610079004C006100
+      620065006C0073005F0055006E00690063006F00640065000D000A0073007400
+      46006F006E00740073005F0055006E00690063006F00640065000D000A007300
+      74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
+      6F00640065000D000A007300740053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A00730074004F0074006800650072005300
+      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
+      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
+      690063006F00640065000D000A00730074004300680061007200530065007400
+      73005F0055006E00690063006F00640065000D000A00}
   end
 end

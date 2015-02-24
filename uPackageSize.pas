@@ -19,7 +19,10 @@ uses
   dxSkinXmas2008Blue, cxControls, cxStyles, dxSkinscxPCPainter, cxCustomData,
   cxFilter, cxData, cxDataStorage, cxEdit, Data.DB, cxDBData, cxLabel,
   cxTextEdit, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGridLevel, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxButtons;
+  cxGridLevel, cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, cxButtons,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, siComp,
+  siLngLnk;
 
 type
   TfPackageSize = class(TForm)
@@ -36,6 +39,7 @@ type
     cxGrid1DBTableView1DateCreated: TcxGridDBColumn;
     cxGrid1DBTableView1CreatedUser: TcxGridDBColumn;
     cxGrid1DBTableView1Act: TcxGridDBColumn;
+    siLangLinked_fPackageSize: TsiLangLinked;
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
