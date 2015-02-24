@@ -10,10 +10,10 @@ uses
   cxCustomData, cxFilter, cxData, cxDataStorage, cxDBData, cxLabel, cxCalc,
   cxCurrencyEdit, cxTextEdit, cxDBLookupComboBox, cxCheckBox, dxPSGlbl,
   dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
-  dxPSFillPatterns, dxPSEdgePatterns, uADStanIntf, uADStanOption,
-  uADStanParam, uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf,
-  uADStanAsync, uADDAptManager, cxPropertiesStore, uADCompDataSet,
-  uADCompClient, kbmMemTable, cxGridCustomPopupMenu, cxGridPopupMenu,
+  dxPSFillPatterns, dxPSEdgePatterns, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, cxPropertiesStore, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, kbmMemTable, cxGridCustomPopupMenu, cxGridPopupMenu,
   cxGridBandedTableView, cxGridTableView, dxPSCore, dxPScxCommon,
   cxClasses, cxSplitter, cxDropDownEdit, cxCalendar,
   cxDBEdit, cxImageComboBox, cxButtons, cxPC, cxGridDBTableView,
@@ -93,17 +93,17 @@ type
     dxBarButton40: TdxBarButton;
     acExportToExcel: TAction;
     dxBarButton42: TdxBarButton;
-    cdsVerk: TADQuery;
+    cdsVerk: TFDQuery;
     cdsVerkClientNo: TIntegerField;
     cdsVerkClientName: TStringField;
     cdsVerkSearchName: TStringField;
     cdsVerkSalesRegionNo: TIntegerField;
     cdsVerkPktNrLevKod: TStringField;
-    cds_PLIP: TADQuery;
+    cds_PLIP: TFDQuery;
     cds_PLIPPLIP: TStringField;
     cds_PLIPLogicalInventoryName: TStringField;
     cds_PLIPInvCode: TStringField;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsVerkNo: TIntegerField;
     cds_PropsOwnerNo: TIntegerField;
     cds_PropsPIPNo: TIntegerField;
@@ -157,7 +157,7 @@ type
     dxBarDockControl1: TdxBarDockControl;
     cxStyleBrist: TcxStyle;
     ds_PIP: TDataSource;
-    cds_PIP: TADQuery;
+    cds_PIP: TFDQuery;
     cds_PIPPIPNo: TIntegerField;
     cds_PIPORT: TStringField;
     cds_PIPOwnerNo: TIntegerField;
@@ -261,7 +261,7 @@ type
     Panel4: TPanel;
     grdBoT: TcxGrid;
     grdBoTLevel1: TcxGridLevel;
-    ad_Query: TADQuery;
+    FD_Query: TFDQuery;
     grdDBBandedPerSortiment: TcxGridDBBandedTableView;
     grdDBBandedPerSortimentColumn1: TcxGridDBBandedColumn;
     ds_invpiv: TDataSource;
@@ -853,7 +853,7 @@ Begin
   if cds_OtherBookings.Active then
    cds_OtherBookings.Active  := False ;
 
-  dmsConnector.ADTransaction1.StartTransaction;
+  dmsConnector.FDTransaction1.StartTransaction;
   try
   sp_PeriodBooking.ParamByName('@UserID').AsInteger      := ThisUser.UserID ;
   sp_PeriodBooking.ParamByName('@ProductNo').AsInteger   := grdDBBandedPerSortiment.DataController.DataSource.DataSet.FieldByName('ProductNo').AsInteger ;
@@ -861,13 +861,13 @@ Begin
   sp_PeriodBooking.ParamByName('@ALMM').AsFloat          := ALMM ;
   sp_PeriodBooking.ParamByName('@InvGrouping').AsInteger := grdDBBandedPerSortiment.DataController.DataSource.DataSet.FieldByName('LIPGroupNo').AsInteger ;
   sp_PeriodBooking.ExecProc ;
-  dmsConnector.ADTransaction1.Commit ;
+  dmsConnector.FDTransaction1.Commit ;
   Except
 //   On E: Exception do
    on E: eDatabaseError do
    Begin
     dmsSystem.FDoLog(E.Message + ' sp_PeriodBooking ') ;
-    dmsConnector.ADTransaction1.Rollback ;
+    dmsConnector.FDTransaction1.Rollback ;
 //    ShowMessage('sp_PeriodBooking ' + E.Message) ;
 //   E.CreateFmt ('Fel i sp_NewLoad, Error message %s', [E.Message]) ;
     Raise ;

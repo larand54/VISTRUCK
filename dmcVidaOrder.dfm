@@ -378,14 +378,14 @@ object dmcOrder: TdmcOrder
     Left = 712
     Top = 304
   end
-  object ADQuery1: TADQuery
+  object FDQuery1: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     Left = 72
     Top = 584
   end
-  object cdsSawmillLoadOrders: TADQuery
+  object cdsSawmillLoadOrders: TFDQuery
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -402,7 +402,7 @@ object dmcOrder: TdmcOrder
       end>
     IndexName = 'cdsSawmillLoadOrdersLONo'
     OnUpdateRecord = cdsSawmillLoadOrdersUpdateRecord
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode, rvDirectExecute]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -1340,11 +1340,11 @@ object dmcOrder: TdmcOrder
       DisplayFormat = '#,###,###.0'
     end
   end
-  object cdsBooking: TADQuery
+  object cdsBooking: TFDQuery
     AfterInsert = cdsBookingAfterInsert
     MasterSource = dsrcSawmillLoadOrders
     MasterFields = 'LONumber'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT'
       '         Cr.CarrierName            ,           -- Char 50'
@@ -1473,10 +1473,10 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_PPNo: TADQuery
+  object cds_PPNo: TFDQuery
     AfterInsert = cds_PPNoAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select pcp.*'
@@ -1580,11 +1580,11 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_ELOLengths: TADQuery
+  object cds_ELOLengths: TFDQuery
     AfterInsert = cds_ELOLengthsAfterInsert
     BeforePost = cds_ELOLengthsBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.LO_Lengths'
     SQL.Strings = (
@@ -1627,9 +1627,9 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_PP_Layout: TADQuery
+  object cds_PP_Layout: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.PackageCode_Layout'
@@ -1660,11 +1660,11 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_LOLengths: TADQuery
+  object cds_LOLengths: TFDQuery
     AfterInsert = cds_LOLengthsAfterInsert
     BeforePost = cds_LOLengthsBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.LO_Lengths'
     SQL.Strings = (
@@ -1707,9 +1707,9 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_ZeroGroup: TADQuery
+  object cds_ZeroGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM'
@@ -1736,9 +1736,9 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object sq_CheckSupplierNo: TADQuery
+  object sq_CheckSupplierNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select Count(SupplierNo) AS NoOfSuppliers'
@@ -1758,9 +1758,9 @@ object dmcOrder: TdmcOrder
       ReadOnly = True
     end
   end
-  object sq_SetLOStatus: TADQuery
+  object sq_SetLOStatus: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.SupplierShippingPlan'
@@ -1781,9 +1781,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sq_SearchALOByMainLO: TADQuery
+  object sq_SearchALOByMainLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -1814,9 +1814,9 @@ object dmcOrder: TdmcOrder
       Origin = 'ShippingPlanNo'
     end
   end
-  object sq_BTHExistInLager: TADQuery
+  object sq_BTHExistInLager: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT PN.PackageNo'
@@ -1882,9 +1882,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sq_FindLONo: TADQuery
+  object sq_FindLONo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -1906,9 +1906,9 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object cds_PI_ELO: TADQuery
+  object cds_PI_ELO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select  P.* FROM dbo.ProdInstru P'
@@ -2092,10 +2092,10 @@ object dmcOrder: TdmcOrder
       Origin = 'StrapTypeNo'
     end
   end
-  object cds_PkgOwner: TADQuery
+  object cds_PkgOwner: TFDQuery
     AfterInsert = cds_PkgOwnerAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.PkgCodeOwners'
@@ -2123,10 +2123,10 @@ object dmcOrder: TdmcOrder
       Origin = 'DateCreated'
     end
   end
-  object cds_ELOLayout: TADQuery
+  object cds_ELOLayout: TFDQuery
     AfterInsert = cds_ELOLayoutAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select SL.* FROM dbo.ELOSpecLayout SL'
@@ -2157,9 +2157,9 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_GetPPNo: TADQuery
+  object sq_GetPPNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select PkgCodePPNo from dbo.Packagecode_printparams'
@@ -2209,10 +2209,10 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object cds_OLLayout: TADQuery
+  object cds_OLLayout: TFDQuery
     Filtered = True
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.OrderRowSpecLayout'
@@ -2255,10 +2255,10 @@ object dmcOrder: TdmcOrder
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_PkgCodeO: TADQuery
+  object cds_PkgCodeO: TFDQuery
     AfterInsert = cds_PkgCodeOAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * From dbo.PkgVarCode'
@@ -2319,9 +2319,9 @@ object dmcOrder: TdmcOrder
       Origin = 'MarketRegionNo'
     end
   end
-  object sq_PkgStatus: TADQuery
+  object sq_PkgStatus: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select PN.Status'
@@ -2358,9 +2358,9 @@ object dmcOrder: TdmcOrder
       Origin = 'Status'
     end
   end
-  object sq_RemFromZeroGroup: TADQuery
+  object sq_RemFromZeroGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgCodePPZeroGroup'
@@ -2380,9 +2380,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sq_OrderType: TADQuery
+  object sq_OrderType: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct CASE WHEN SP.SupplierNo = :SupplierNo THEN 0'
@@ -2411,9 +2411,9 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object sq_LegoHasLL: TADQuery
+  object sq_LegoHasLL: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct SSP.LoadingLocationNo'
@@ -2442,9 +2442,9 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object sq_ValidLONr: TADQuery
+  object sq_ValidLONr: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -2480,10 +2480,10 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object cds_LOListHH: TADQuery
+  object cds_LOListHH: TFDQuery
     AfterInsert = cds_LOListHHAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select LOHH.*, SSP.ProductDescription AS Produkt,'
@@ -2538,8 +2538,8 @@ object dmcOrder: TdmcOrder
       Size = 100
     end
   end
-  object cdsLoadsForLO: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsLoadsForLO: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_LoadsForLO_VII'
     Left = 320
@@ -2673,9 +2673,9 @@ object dmcOrder: TdmcOrder
       Origin = 'PackageEntryOption'
     end
   end
-  object sp_Populate_One_PkgTypeLengths: TADStoredProc
+  object sp_Populate_One_PkgTypeLengths: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Populate_One_PackageTypeLengths'
     Left = 896
@@ -2694,9 +2694,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_CngLOonLoad: TADStoredProc
+  object sp_CngLOonLoad: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.CngLOonLoad'
     Left = 896
@@ -2721,9 +2721,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_PackageTypes: TADStoredProc
+  object sp_PackageTypes: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_PkgType'
     Left = 896
@@ -2760,9 +2760,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_PackageTypeDetail: TADStoredProc
+  object sp_PackageTypeDetail: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_PackageTypeDetail'
     Left = 896
@@ -2781,9 +2781,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_NewPackageType_II: TADStoredProc
+  object sp_NewPackageType_II: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_NewPkgType'
     Left = 896
@@ -2838,9 +2838,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_NewPackageDetail: TADStoredProc
+  object sp_NewPackageDetail: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_NewPackageDetail'
     Left = 896
@@ -2877,9 +2877,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_PackageTotals: TADStoredProc
+  object sp_PackageTotals: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_PackageTotals'
     Left = 896
@@ -2898,9 +2898,9 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_lencolpcspkgtypeno: TADStoredProc
+  object sp_lencolpcspkgtypeno: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_lencolpcspkgtypeno'
     Left = 896
@@ -2919,10 +2919,10 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object cds_Props: TADQuery
+  object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.userprops'
@@ -3244,8 +3244,8 @@ object dmcOrder: TdmcOrder
     Left = 536
     Top = 424
   end
-  object ADUpdateSQL1: TADUpdateSQL
-    Connection = dmsConnector.ADConnection1
+  object FDUpdateSQL1: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS'
     ModifySQL.Strings = (
       'UPDATE SUPPLIERSHIPPINGPLAN'
@@ -3310,8 +3310,8 @@ object dmcOrder: TdmcOrder
     Left = 72
     Top = 520
   end
-  object sq_City: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_City: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select C.CityName AS Ort, C.CityNo FROM dbo.City C'
       
@@ -3339,8 +3339,8 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object cdsLoadsForLO_forVW: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsLoadsForLO_forVW: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_LoadsForLO_X'
     Left = 320
     Top = 144
@@ -3470,8 +3470,8 @@ object dmcOrder: TdmcOrder
       Origin = 'PackageEntryOption'
     end
   end
-  object sq_Dest: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_Dest: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select C.CityName AS Ort, C.CityNo FROM dbo.City C'
       
@@ -3494,9 +3494,9 @@ object dmcOrder: TdmcOrder
       Required = True
     end
   end
-  object cds_LSP: TADQuery
+  object cds_LSP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT'
@@ -3531,8 +3531,8 @@ object dmcOrder: TdmcOrder
       Origin = 'AVROP_STATUS'
     end
   end
-  object upd_LO: TADUpdateSQL
-    Connection = dmsConnector.ADConnection1
+  object upd_LO: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS'
     InsertSQL.Strings = (
       'INSERT INTO SupplierShippingPlan'
@@ -3625,8 +3625,8 @@ object dmcOrder: TdmcOrder
     Left = 56
     Top = 136
   end
-  object sp_GetLO_Avrop_Status: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_GetLO_Avrop_Status: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_GetLO_Avrop_Status'
     Left = 680
     Top = 520
@@ -3644,8 +3644,8 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_SetIntHdrStatus: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_SetIntHdrStatus: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.Vis_SetIntHdrStatus'
     Left = 896
     Top = 608
@@ -3669,8 +3669,8 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
-  object sp_SetLOStatus: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_SetLOStatus: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_SetLOStatus'
     Left = 680
     Top = 608

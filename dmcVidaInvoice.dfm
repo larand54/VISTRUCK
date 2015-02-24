@@ -285,7 +285,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'Pcs'
       'Mark'
       'PEFC')
-    About = '(About EMS AdvancedExport)'
+    About = '(About EMS FDvancedExport)'
     _Version = '3.40'
     FileName = 'C:\Projects\VIS\VIS Trusted III\VIS 1211\TestExport.xls'
     Options.PageFooter = 'Page &P of &N'
@@ -322,7 +322,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'Pcs'
       'Mark'
       'PEFC')
-    About = '(About EMS AdvancedExport)'
+    About = '(About EMS FDvancedExport)'
     _Version = '3.40'
     OnBeforeExportRow = QExport3ASCII1BeforeExportRow
     UserFormats.Strings = (
@@ -342,7 +342,7 @@ object dmVidaInvoice: TdmVidaInvoice
     ExportedFields.Strings = (
       'FieldValue')
     OnlyVisibleFields = True
-    About = '(About EMS AdvancedExport)'
+    About = '(About EMS FDvancedExport)'
     _Version = '3.40'
     OnBeforeExportRow = QExport3ASCII2BeforeExportRow
     AllowCaptions = False
@@ -360,11 +360,11 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 1016
     Top = 586
   end
-  object cdsInvoiceHead: TADQuery
+  object cdsInvoiceHead: TFDQuery
     AfterInsert = cdsInvoiceHeadAfterInsert
     BeforePost = cdsInvoiceHeadBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'InvoiceHeader'
     SQL.Strings = (
@@ -994,9 +994,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'MultFactor'
     end
   end
-  object cds_LoadPackagesIII: TADQuery
+  object cds_LoadPackagesIII: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'IH_PkgsRem'
     SQL.Strings = (
@@ -1321,9 +1321,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object cdsInvoiceLO: TADQuery
+  object cdsInvoiceLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT * FROM dbo.INVOICELO ILO'
@@ -1455,10 +1455,10 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 50
     end
   end
-  object cdsInvoiceDetail: TADQuery
+  object cdsInvoiceDetail: TFDQuery
     AfterInsert = cdsInvoiceDetailAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT *'
@@ -1782,9 +1782,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Expression = 'SUM(ProductValue)'
     end
   end
-  object cdsInvoiceShipTo: TADQuery
+  object cdsInvoiceShipTo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.InvoiceShipToAddress'
@@ -1820,7 +1820,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsInvoiceShipToAddress: TADQuery
+  object cdsInvoiceShipToAddress: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -1832,7 +1832,7 @@ object dmVidaInvoice: TdmVidaInvoice
     IndexName = 'cdsinvShipToAdr_Index01'
     MasterSource = dsrcInvoiceHead
     MasterFields = 'InternalInvoiceNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'InvoiceShipToAddress'
     SQL.Strings = (
@@ -1849,9 +1849,9 @@ object dmVidaInvoice: TdmVidaInvoice
         'ssLine2),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.AddressLine3),'#39#39')+'#39', '#39'+isNul' +
         'l(RTRIM(Addr.AddressLine4),'#39#39')'
       
-        '+'#39', '#39'+isNull(RTRIM(AdrCY.CityName),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.Po' +
+        '+'#39', '#39'+isNull(RTRIM(FDrCY.CityName),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.Po' +
         'stalCode),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.StateOrProvince),'#39#39')+'#39', '#39'+i' +
-        'sNull(RTRIM( AdrCtry.CountryName ),'#39#39') as ADDR,'
+        'sNull(RTRIM( FDrCtry.CountryName ),'#39#39') as ADDR,'
       ''
       'Addr.AddressLine1,'
       'Addr.AddressLine2,'
@@ -1859,14 +1859,14 @@ object dmVidaInvoice: TdmVidaInvoice
       'Addr.AddressLine4,'
       'Addr.StateOrProvince    AS STATE,'
       'Addr.PostalCode         AS POSTAL_CODE,'
-      'AdrCY.CityName'#9'        AS CITY,'
-      'AdrCtry.CountryName'#9'AS COUNTRY'
+      'FDrCY.CityName'#9'        AS CITY,'
+      'FDrCtry.CountryName'#9'AS COUNTRY'
       ''
       'from dbo.InvoiceShipToAddress IST'
       ' Left Outer Join dbo.Address Addr'#9
-      ' '#9'INNER JOIN dbo.CITY'#9#9#9'AdrCY'#9'ON'#9'AdrCY.CityNo '#9#9'= Addr.CityNo'
+      ' '#9'INNER JOIN dbo.CITY'#9#9#9'FDrCY'#9'ON'#9'FDrCY.CityNo '#9#9'= Addr.CityNo'
       
-        #9'INNER JOIN dbo.Country'#9#9#9'AdrCtry'#9'ON'#9'AdrCtry.CountryNo '#9'= Addr.C' +
+        #9'INNER JOIN dbo.Country'#9#9#9'FDrCtry'#9'ON'#9'FDrCtry.CountryNo '#9'= Addr.C' +
         'ountryNo'
       '  ON Addr.AddressNo = IST.AddressNo'
       ''
@@ -1976,7 +1976,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 30
     end
   end
-  object cdsInvoiceNumber: TADQuery
+  object cdsInvoiceNumber: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -1986,7 +1986,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cdsInvoiceNumbersInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT * FROM dbo.InvoiceNumber')
@@ -2016,7 +2016,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateCreated'
     end
   end
-  object cdsProformaInvNo: TADQuery
+  object cdsProformaInvNo: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -2026,7 +2026,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'ProformaInvoiceNo'
       end>
     IndexName = 'cdsProformaInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -2057,7 +2057,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateCreated'
     end
   end
-  object cdsFWInvNo: TADQuery
+  object cdsFWInvNo: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -2067,7 +2067,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cdsFWInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -2098,7 +2098,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateCreated'
     end
   end
-  object cdsUSAInvNo: TADQuery
+  object cdsUSAInvNo: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -2108,7 +2108,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cdsUSAInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -2138,9 +2138,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateCreated'
     end
   end
-  object cdsInvoiceList: TADQuery
+  object cdsInvoiceList: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -2649,10 +2649,10 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 2
     end
   end
-  object cds_IH_SpecLoad: TADQuery
+  object cds_IH_SpecLoad: TFDQuery
     AfterInsert = cds_IH_SpecLoadAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.IH_SpecLoad'
@@ -2705,9 +2705,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Lookup = True
     end
   end
-  object cds_ExportTyp1: TADQuery
+  object cds_ExportTyp1: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -2859,9 +2859,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 18
     end
   end
-  object sq_GetInvoiceHeadData: TADQuery
+  object sq_GetInvoiceHeadData: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -2883,15 +2883,15 @@ object dmVidaInvoice: TdmVidaInvoice
       'OH.CurrencyNo,'
       ''
       'OH.ClientBillingAddressNo,'
-      'ADR.AddressName'#9#9#9'AS BILL_ADDRESS_NAME,'
-      'ADR.AddressLine1,'
-      'ADR.AddressLine2,'
-      'ADR.AddressLine3,'
-      'ADR.AddressLine4,'
-      'ADR.StateOrProvince,'
-      'ADR.PostalCode,'
-      'AdrCY.CityName as AddressCity,'
-      'AdrCtry.CountryName as AddressCountry,'
+      'FDR.AddressName'#9#9#9'AS BILL_ADDRESS_NAME,'
+      'FDR.AddressLine1,'
+      'FDR.AddressLine2,'
+      'FDR.AddressLine3,'
+      'FDR.AddressLine4,'
+      'FDR.StateOrProvince,'
+      'FDR.PostalCode,'
+      'FDrCY.CityName as AddressCity,'
+      'FDrCtry.CountryName as AddressCountry,'
       ''
       ''
       'C.ClientName as CustomerName,'
@@ -2941,7 +2941,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'PayT.NoOfDaysDiscount2,'
       'PayT.FreightInDiscount AS SetDueDateBlank,'
       'PayT.FreightInCommission AS FreeDelMonth,'
-      'ADR.CountryNo AS BillingCountryNo,'
+      'FDR.CountryNo AS BillingCountryNo,'
       'isg.SalesGroupNo,'
       'OH.IntraStatCountryNo,'
       'DTOH.FreightIncluded'
@@ -2981,12 +2981,12 @@ object dmVidaInvoice: TdmVidaInvoice
         'sponsibleSeller'
       ''
       ''
-      #9'LEFT OUTER JOIN dbo.Address '#9#9'ADR'
-      #9'INNER JOIN dbo.CITY'#9#9#9'AdrCY'#9'ON'#9'AdrCY.CityNo '#9#9'= ADR.CityNo'
+      #9'LEFT OUTER JOIN dbo.Address '#9#9'FDR'
+      #9'INNER JOIN dbo.CITY'#9#9#9'FDrCY'#9'ON'#9'FDrCY.CityNo '#9#9'= FDR.CityNo'
       
-        #9'INNER JOIN dbo.Country'#9#9#9'AdrCtry'#9'ON'#9'AdrCtry.CountryNo '#9'= ADR.Co' +
+        #9'INNER JOIN dbo.Country'#9#9#9'FDrCtry'#9'ON'#9'FDrCtry.CountryNo '#9'= FDR.Co' +
         'untryNo'
-      #9#9#9#9#9#9#9'ON'#9'ADR.AddressNo'#9#9'= CSH.ClientBillingAddressNo'
+      #9#9#9#9#9#9#9'ON'#9'FDR.AddressNo'#9#9'= CSH.ClientBillingAddressNo'
       ''
       
         '        LEFT OUTER Join dbo.PaymentText PayText                 ' +
@@ -2996,7 +2996,7 @@ object dmVidaInvoice: TdmVidaInvoice
         'PayText.LanguageCode = OH.LanguageCode'
       
         '                                                        AND     ' +
-        'PayText.CountryNo = ADR.CountryNo'
+        'PayText.CountryNo = FDR.CountryNo'
       ''
       #9'LEFT OUTER JOIN dbo.Address '#9#9'Agent_ADR'
       
@@ -3419,9 +3419,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'FreightIncluded'
     end
   end
-  object sq_GetLOData: TADQuery
+  object sq_GetLOData: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -3583,9 +3583,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ADDITION_PRICEUNIT'
     end
   end
-  object sq_GetInvoiceDetailData: TADQuery
+  object sq_GetInvoiceDetailData: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT'
@@ -3882,9 +3882,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_GetShipToAddress: TADQuery
+  object sq_GetShipToAddress: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select ShippingPlanNo, AddressNo, Reference'
@@ -3918,9 +3918,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 50
     end
   end
-  object sq_GetNextInvoiceNo: TADQuery
+  object sq_GetNextInvoiceNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT MAX(InvoiceNo) + 1 AS NEXT_INVNO FROM dbo.InvoiceNumber')
@@ -3932,9 +3932,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sq_GetProFormInvNo: TADQuery
+  object sq_GetProFormInvNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT ProformaInvoiceNo'
@@ -3955,7 +3955,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object cds_PurchaseInvNo: TADQuery
+  object cds_PurchaseInvNo: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -3965,7 +3965,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'PO_InvoiceNo'
       end>
     IndexName = 'cds_PurchaseInvoiceInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -4006,9 +4006,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 10
     end
   end
-  object cds_InvoiceGroup: TADQuery
+  object cds_InvoiceGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -4182,9 +4182,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'Inv_Value_To_Be_Paid_2'
     end
   end
-  object cds_InvoiceInGroup: TADQuery
+  object cds_InvoiceInGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select *'
@@ -4212,9 +4212,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object cdsBookingData: TADQuery
+  object cdsBookingData: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select'
@@ -4318,9 +4318,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 5
     end
   end
-  object cds_InvDtl_Att: TADQuery
+  object cds_InvDtl_Att: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT *'
@@ -4515,12 +4515,12 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 2
     end
   end
-  object cds_Att_Ext_ServicesII: TADQuery
+  object cds_Att_Ext_ServicesII: TFDQuery
     AfterInsert = cds_Att_Ext_ServicesIIAfterInsert
     BeforeDelete = cds_Att_Ext_ServicesIIBeforeDelete
     AfterScroll = cds_Att_Ext_ServicesIIAfterScroll
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'Att_Ext_Services'
     SQL.Strings = (
@@ -4651,7 +4651,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsInvoiceHead_II: TADQuery
+  object cdsInvoiceHead_II: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -4661,7 +4661,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InternalInvoiceNo'
       end>
     IndexName = 'cdsInvoiceHead_II_Index01'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM InvoiceHeader IH'
@@ -5156,9 +5156,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'Invoiced'
     end
   end
-  object cds_PIP: TADQuery
+  object cds_PIP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -5191,7 +5191,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 50
     end
   end
-  object cds_LoadPackagesII: TADQuery
+  object cds_LoadPackagesII: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -5206,7 +5206,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'LoadNo;LoadDetailNo'
       end>
     IndexName = 'cds_LoadPackagesIndex1'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -5512,9 +5512,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_GetPkgType_Invoice: TADQuery
+  object sq_GetPkgType_Invoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       '-- DROP TABLE #Vols'
@@ -5826,7 +5826,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN VU.VolumeUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxaL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxaL'#39' THEN'
       'CASE'
       ' WHEN PG.SequenceNo = 0 THEN'
       
@@ -5902,7 +5902,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE'
       'WHEN PG.SequenceNo = 0 THEN'
       'CASE'
@@ -6051,7 +6051,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN '
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN '
       'CASE WHEN PG.SequenceNo = 0 THEN '
       'ROUND(CAST(('
       'PTD.NoOfPieces * PG.ActualThicknessMM * PG.ActualWidthMM *'
@@ -6125,7 +6125,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE WHEN PG.SequenceNo = 0 THEN'
       'CASE'
       '-- random length'
@@ -6233,7 +6233,7 @@ object dmVidaInvoice: TdmVidaInvoice
       #9'Sum([SQMofActualWidth]) AS AM2AW,'
       #9'Sum([SQMofCoveringWidth]) AS AM2CW,'
       #9'Sum([LinealMeterActualLength]) AS AM1,'
-      #9'Sum([m3ActualSizeNomLength]) AS AdNl,'
+      #9'Sum([m3ActualSizeNomLength]) AS FDNl,'
       #9'Sum([m3NomSizeActualLength]) AS NdAl,'
       #9'Sum([LinealMeterNominalLength]) AS NM1,'
       #9'Sum([OrderVolume]) AS OrderVol,'
@@ -6307,8 +6307,8 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 3
     end
     object sq_GetPkgType_InvoiceAdNl: TFMTBCDField
-      FieldName = 'AdNl'
-      Origin = 'AdNl'
+      FieldName = 'FDNl'
+      Origin = 'FDNl'
       ReadOnly = True
       Precision = 38
       Size = 3
@@ -6342,9 +6342,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 3
     end
   end
-  object sq_PkgType_Invoice: TADQuery
+  object sq_PkgType_Invoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert into dbo.PkgType_Invoice'
@@ -6664,7 +6664,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN VU.VolumeUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxaL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxaL'#39' THEN'
       'CASE'
       ' WHEN PG.SequenceNo = 0 THEN'
       
@@ -6740,7 +6740,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE'
       'WHEN PG.SequenceNo = 0 THEN'
       'CASE'
@@ -6889,7 +6889,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN '
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN '
       'CASE WHEN PG.SequenceNo = 0 THEN '
       'ROUND(CAST(('
       'PTD.NoOfPieces * PG.ActualThicknessMM * PG.ActualWidthMM *'
@@ -6963,7 +6963,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE WHEN PG.SequenceNo = 0 THEN'
       'CASE'
       '-- random length'
@@ -7124,9 +7124,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object cdsInvoice_Load: TADQuery
+  object cdsInvoice_Load: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT * FROM DBO.Invoiced_Load')
@@ -7163,9 +7163,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ModifiedUser'
     end
   end
-  object sq_LONoInInvoice: TADQuery
+  object sq_LONoInInvoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct LD.ShippingPlanNo'
@@ -7187,9 +7187,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
   end
-  object cdsInvoice_Credited: TADQuery
+  object cdsInvoice_Credited: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.Invoice_Credited'
@@ -7229,9 +7229,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_LIP: TADQuery
+  object cds_LIP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -7258,9 +7258,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'PIPNo'
     end
   end
-  object cds_CopyLSP: TADQuery
+  object cds_CopyLSP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT LSP.*'
@@ -7320,9 +7320,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ShipToInvPointNo'
     end
   end
-  object cds_CopyLD: TADQuery
+  object cds_CopyLD: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT LD.*'
@@ -7418,9 +7418,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'OldPackageTypeNo'
     end
   end
-  object cds_LoadHead: TADQuery
+  object cds_LoadHead: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select *'
@@ -7527,7 +7527,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ShippingPlanNo'
     end
   end
-  object cds_LoadPackages: TADQuery
+  object cds_LoadPackages: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -7537,7 +7537,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'PACKAGENO'
       end>
     IndexName = 'cds_LoadPackagesPackageNoIndex'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -7844,9 +7844,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cds_NoOfInvoices: TADQuery
+  object cds_NoOfInvoices: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -7884,9 +7884,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_PkgType_Inv: TADQuery
+  object sq_PkgType_Inv: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert into dbo.PkgType_Invoice'
@@ -8119,7 +8119,7 @@ object dmVidaInvoice: TdmVidaInvoice
         'WHEN VU.VolumeUnitName = '#39'Lopm a'#39' THEN ROUND(CAST((       PTD.Li' +
         'nealMeterActualLength )   As decimal(10,3)),3)'
       'WHEN VU.VolumeUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxaL'#39' THEN ROUND(CAST(('
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxaL'#39' THEN ROUND(CAST(('
       'PTD.NoOfPieces * PG.ActualThicknessMM * PG.ActualWidthMM *'
       ' PL.ActualLengthMM) / (1000 * 1000 * 1000) As decimal(10,3)),3)'
       ''
@@ -8168,7 +8168,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE'
       '-- random length'
       'WHEN PL_CSD.ProductLengthGroupNo > 0 AND OL.OverrideRL = 0 THEN'
@@ -8268,7 +8268,7 @@ object dmVidaInvoice: TdmVidaInvoice
         'WHEN PU.TemplateUnitName = '#39'Lopm a'#39' THEN ROUND(CAST((       PTD.' +
         'LinealMeterActualLength )   As decimal(10,3)),3)'
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN ROUND(CAST(('
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN ROUND(CAST(('
       'PTD.NoOfPieces * PG.ActualThicknessMM * PG.ActualWidthMM *'
       'CASE WHEN 0 > 0.05'
       
@@ -8322,7 +8322,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE'
       '-- random length'
       'WHEN PL_CSD.ProductLengthGroupNo > 0 AND OL.OverrideRL = 0 THEN'
@@ -8453,9 +8453,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_LoadToInvoice: TADQuery
+  object sq_LoadToInvoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT LO.LoadNo'
@@ -8481,9 +8481,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object cds_ExpSoftSet: TADQuery
+  object cds_ExpSoftSet: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select FieldValue from dbo.SoftSet where FieldValue > '#39#39
@@ -8515,9 +8515,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 200
     end
   end
-  object sq_GetInvNo: TADQuery
+  object sq_GetInvNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT InvoiceNo FROM dbo.InvoiceNumber'
@@ -8590,9 +8590,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetLODataII: TADQuery
+  object sq_GetLODataII: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -8757,9 +8757,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ADDITION_PRICEUNIT'
     end
   end
-  object sq_GetInvoiceDetailDataII: TADQuery
+  object sq_GetInvoiceDetailDataII: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT'
@@ -9044,9 +9044,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'InternalPrice'
     end
   end
-  object cds_AttestRow: TADQuery
+  object cds_AttestRow: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM'
@@ -9085,19 +9085,19 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetPaymentText: TADQuery
+  object sq_GetPaymentText: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
         'Select PaymentText FROM dbo.PaymentText PayText, dbo.Address '#9#9'A' +
         'DR'
       'WHERE'
-      'ADR.AddressNo = :AddressNo'
+      'FDR.AddressNo = :AddressNo'
       'AND PayText.CurrencyNo = :CurrencyNo'
       'AND     PayText.LanguageCode = :LanguageCode'
-      'AND     PayText.CountryNo = ADR.CountryNo')
+      'AND     PayText.CountryNo = FDR.CountryNo')
     Left = 144
     Top = 672
     ParamData = <
@@ -9122,9 +9122,9 @@ object dmVidaInvoice: TdmVidaInvoice
       BlobType = ftMemo
     end
   end
-  object sq_Del_AttestRow: TADQuery
+  object sq_Del_AttestRow: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete FROM dbo.Attestrow'
@@ -9139,9 +9139,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_updInvPkgDtl: TADQuery
+  object sq_updInvPkgDtl: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert into dbo.invPkgDtl'
@@ -9228,9 +9228,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetLoadIDII: TADQuery
+  object sq_GetLoadIDII: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT LO.LoadNo, LO.LoadID'
@@ -9276,9 +9276,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 50
     end
   end
-  object sq_VolUnit: TADQuery
+  object sq_VolUnit: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.UnitName')
@@ -9297,9 +9297,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 10
     end
   end
-  object sq_PriceUnit: TADQuery
+  object sq_PriceUnit: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.PackUnit')
@@ -9317,9 +9317,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_DelIH: TADQuery
+  object sq_DelIH: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.InvoiceHeader'
@@ -9334,9 +9334,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_DelIHEmptyLoads: TADQuery
+  object sq_DelIHEmptyLoads: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.Loads'
@@ -9359,9 +9359,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_SearchLoadNo: TADQuery
+  object sq_SearchLoadNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -9390,9 +9390,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetAttestRow: TADQuery
+  object sq_GetAttestRow: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT *'
@@ -9431,9 +9431,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_DeleteInvoice: TADQuery
+  object sq_DeleteInvoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.InvoiceHeader'
@@ -9458,9 +9458,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_InvAttested: TADQuery
+  object sq_InvAttested: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select SequensNo'
@@ -9481,9 +9481,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetInvoiceType: TADQuery
+  object sq_GetInvoiceType: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select Top 1 InvoiceType from dbo.InvoiceHeader IH'
@@ -9504,9 +9504,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'InvoiceType'
     end
   end
-  object sq_Invoiced_Load: TADQuery
+  object sq_Invoiced_Load: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'INSERT INTO dbo.Invoiced_Load'
@@ -9581,9 +9581,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetIntInvNo: TADQuery
+  object sq_GetIntInvNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select Top 1 invno.InternalInvoiceNo, ih.InvoiceType'
@@ -9655,9 +9655,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sq_CghInv_PkgNos: TADQuery
+  object sq_CghInv_PkgNos: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.PackageNumber'
@@ -9692,9 +9692,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_Delete_Confirmed_Load: TADQuery
+  object sq_Delete_Confirmed_Load: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.Confirmed_Load'
@@ -9716,9 +9716,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_CopyLSPByLoNo: TADQuery
+  object sq_CopyLSPByLoNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT LSP.*'
@@ -9787,9 +9787,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ShipToInvPointNo'
     end
   end
-  object sq_GetNextLDNo: TADQuery
+  object sq_GetNextLDNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT MAX(LD.LoadDetailNo) + 1 AS NextLDNo'
@@ -9810,9 +9810,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sq_SearchLONo: TADQuery
+  object sq_SearchLONo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT IL.InternalInvoiceNo'
@@ -9845,9 +9845,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetInvoicedLods: TADQuery
+  object sq_GetInvoicedLods: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select IL.LoadNo, IL.ShippingPlanNo'
@@ -9880,9 +9880,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_GetLoadID: TADQuery
+  object sq_GetLoadID: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT LO.LoadNo, LO.LoadID'
@@ -9936,9 +9936,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 50
     end
   end
-  object sq_Ins_AttestRow: TADQuery
+  object sq_Ins_AttestRow: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert  INTO dbo.Attestrow'
@@ -9997,9 +9997,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_CheckLoadNo: TADQuery
+  object sq_CheckLoadNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select LoadNo'
@@ -10021,9 +10021,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_CreditInv: TADQuery
+  object sq_CreditInv: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select InternalInvoiceNo, CustomerNo from dbo.InvoiceHeader'
@@ -10044,9 +10044,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'CustomerNo'
     end
   end
-  object sq_GetInvTexts: TADQuery
+  object sq_GetInvTexts: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DT.DocText FROM'
@@ -10074,9 +10074,9 @@ object dmVidaInvoice: TdmVidaInvoice
       BlobType = ftMemo
     end
   end
-  object sq_GetClientInvTexts: TADQuery
+  object sq_GetClientInvTexts: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DT.DocText FROM'
@@ -10106,9 +10106,9 @@ object dmVidaInvoice: TdmVidaInvoice
       BlobType = ftMemo
     end
   end
-  object sq_DeletePkgTypeLoad: TADQuery
+  object sq_DeletePkgTypeLoad: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgType_Load'
@@ -10127,9 +10127,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_RemoveFrom_InvLoad: TADQuery
+  object sq_RemoveFrom_InvLoad: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete from dbo.Invoiced_Load '
@@ -10145,9 +10145,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_DelPkgTypeByIntInv: TADQuery
+  object sq_DelPkgTypeByIntInv: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgType_Invoice'
@@ -10162,9 +10162,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_KortSkeppFS: TADQuery
+  object sq_KortSkeppFS: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -10259,9 +10259,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_AnyLoadsToInvoice: TADQuery
+  object sq_AnyLoadsToInvoice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT LO.LoadNo'
@@ -10304,9 +10304,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetFreightCost: TADQuery
+  object sq_GetFreightCost: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT'
@@ -10357,9 +10357,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sp_RemPkgFromLoad: TADStoredProc
+  object sp_RemPkgFromLoad: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_remLoadPkg'
     Left = 480
@@ -10427,9 +10427,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_vida_Populate_SamFaktura: TADStoredProc
+  object sp_vida_Populate_SamFaktura: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Populate_SamFaktura'
     Left = 64
@@ -10448,9 +10448,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_GenSoftSet700790: TADStoredProc
+  object sp_GenSoftSet700790: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_GenSoftSet700790'
     Left = 1016
@@ -10475,9 +10475,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_GenSoftSet449: TADStoredProc
+  object sp_GenSoftSet449: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_GenSoftSet449'
     Left = 1016
@@ -10509,9 +10509,9 @@ object dmVidaInvoice: TdmVidaInvoice
         Size = 1
       end>
   end
-  object sp_GetNextProformaInvNo: TADStoredProc
+  object sp_GetNextProformaInvNo: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_GetMaxProformaNo'
     Left = 392
@@ -10541,10 +10541,10 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 720
     Top = 304
   end
-  object cds_Props: TADQuery
+  object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.userprops'
@@ -10828,9 +10828,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Lookup = True
     end
   end
-  object cds_KontoLogik: TADQuery
+  object cds_KontoLogik: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.KontoLogik'
@@ -10954,9 +10954,9 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 256
     Top = 464
   end
-  object ad_GetSalesManGroupNo: TADQuery
+  object FD_GetSalesManGroupNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select SalesGroupNo from dbo.SalesManGroupRow smg'
@@ -10969,7 +10969,7 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object amt_Credit: TADMemTable
+  object amt_Credit: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -10985,8 +10985,8 @@ object dmVidaInvoice: TdmVidaInvoice
       FieldName = 'IntInvNo'
     end
   end
-  object sq_RemInvLoadII: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_RemInvLoadII: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Delete from dbo.Invoiced_Load '
       'FROM '
@@ -11147,9 +11147,9 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 1112
     Top = 16
   end
-  object sq_StoreTransferFile: TADQuery
+  object sq_StoreTransferFile: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -11208,14 +11208,14 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_TransferFiles: TADQuery
+  object sq_TransferFiles: TFDQuery
     Indexes = <
       item
         Active = True
         Name = 'sq_TransferFilesIndex01'
         Fields = 'FileName;TransferType'
       end>
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.TransferFile'
@@ -11295,9 +11295,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_PackageStatusHTF: TADQuery
+  object sq_PackageStatusHTF: TFDQuery
     BeforePost = sq_PackageStatusHTFBeforePost
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.PackageStatusHTF'
       'WHERE Paketnr = :Paketnr'
@@ -11438,9 +11438,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateAndTime'
     end
   end
-  object sq_PackageStatusHTFByFileName: TADQuery
+  object sq_PackageStatusHTFByFileName: TFDQuery
     BeforePost = sq_PackageStatusHTFBeforePost
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.PackageStatusHTF'
       'WHERE LoadNo = :LoadNo')
@@ -11534,8 +11534,8 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_HTFPkgStatus: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_HTFPkgStatus: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select htf.*, pt.TotalNoOfPieces, pt.BarCodeID, pt.Gradestamp, p' +
@@ -11699,7 +11699,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_LD: TADQuery
+  object sq_LD: TFDQuery
     BeforePost = sq_LDBeforePost
     Indexes = <
       item
@@ -11709,7 +11709,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'PackageNo;SupplierCode'
       end>
     IndexName = 'sq_LDIndex01'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -11836,10 +11836,10 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_LDMax: TADQuery
+  object sq_LDMax: TFDQuery
     BeforePost = sq_LDBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -11861,10 +11861,10 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sq_GetLDLIPNo: TADQuery
+  object sq_GetLDLIPNo: TFDQuery
     BeforePost = sq_LDBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -11890,9 +11890,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'LIPNo'
     end
   end
-  object sq_RemovePkgs: TADQuery
+  object sq_RemovePkgs: TFDQuery
     BeforePost = sq_LDBeforePost
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -11912,9 +11912,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetLONoByLoadNo: TADQuery
+  object sq_GetLONoByLoadNo: TFDQuery
     BeforePost = sq_LDBeforePost
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'LoadDetail'
     SQL.Strings = (
@@ -11935,9 +11935,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_UpdateTransferFile: TADQuery
+  object sq_UpdateTransferFile: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.TransferFile'
@@ -11963,9 +11963,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_GenSoftSet449SP: TADStoredProc
+  object sp_GenSoftSet449SP: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_GenSoftSet449_SP'
     Left = 1016
@@ -11997,14 +11997,14 @@ object dmVidaInvoice: TdmVidaInvoice
         Size = 1
       end>
   end
-  object sq_TransferFilesTillHTF: TADQuery
+  object sq_TransferFilesTillHTF: TFDQuery
     Indexes = <
       item
         Active = True
         Name = 'sq_TransferFilesIndex01'
         Fields = 'FileName;TransferType'
       end>
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.TransferFile'
@@ -12220,9 +12220,9 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 1112
     Top = 114
   end
-  object cdsInvTrfLogg: TADQuery
+  object cdsInvTrfLogg: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.InvoiceTrfLogg'
@@ -12449,9 +12449,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 0
     end
   end
-  object sq_InvTotals: TADQuery
+  object sq_InvTotals: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select'
@@ -12536,7 +12536,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'ih.InvoiceDate ,'
       'ih.InvoiceDate +  isnull(pte.NoOfDaysDiscount2,0) AS DueDate,'
       
-        'isnull(R.Region,'#39'N/A'#39') AS Region, Adr.CountryNo,  IH.InternalInv' +
+        'isnull(R.Region,'#39'N/A'#39') AS Region, FDr.CountryNo,  IH.InternalInv' +
         'oiceNo, '
       ''
       
@@ -12756,7 +12756,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'WHERE invd2.InternalInvoiceNo = IH.InternalInvoiceNo'
       'AND invd2.TypeOfRow =1) AS VaruGrupp,'
       ''
-      '(Select TOP 1 AdrPO.CountryNo FROM'
+      '(Select TOP 1 FDrPO.CountryNo FROM'
       'dbo.InvoiceLO ILO'
       
         'Inner Join dbo.CustomerShippingPlanHeader CSHSales on CSHSales.S' +
@@ -12774,7 +12774,7 @@ object dmVidaInvoice: TdmVidaInvoice
         'Inner Join dbo.InvoiceHeader IHPO on IHPO.InternalInvoiceNo = IL' +
         'OPO.InternalInvoiceNo'
       
-        'Inner Join dbo.Address AdrPO ON AdrPO.AddressNo = IHPO.ClientBil' +
+        'Inner Join dbo.Address FDrPO ON FDrPO.AddressNo = IHPO.ClientBil' +
         'lingAddressNo'
       'WHERE'
       'ILO.InternalInvoiceNo = IH.InternalInvoiceNo) AS PO_CountryNo,'
@@ -12787,9 +12787,9 @@ object dmVidaInvoice: TdmVidaInvoice
         'onsibleSeller'
       ''
       
-        'Inner Join dbo.Address Adr ON Adr.AddressNo = IH.ClientBillingAd' +
+        'Inner Join dbo.Address FDr ON FDr.AddressNo = IH.ClientBillingAd' +
         'dressNo'
-      'Left Outer Join dbo.Regions R ON R.CountryNo = Adr.CountryNo'
+      'Left Outer Join dbo.Regions R ON R.CountryNo = FDr.CountryNo'
       'Inner Join dbo.Currency Curr ON Curr.CurrencyNo = IH.CurrencyNo'
       
         'Left Outer Join dbo.PaymentTerms pte ON pte.PaymentTermsNo = ih.' +
@@ -13021,9 +13021,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 4
     end
   end
-  object sq_invoiceTrf: TADQuery
+  object sq_invoiceTrf: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT Invno FROM ALVESQL04.xor_VIDA.dbo.voulogx'
@@ -13043,7 +13043,7 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_VIS_xp_voulogwrite: TADStoredProc
+  object sp_VIS_xp_voulogwrite: TFDStoredProc
     CachedUpdates = True
     Connection = dmsConnector.SQLConn_XOR
     FetchOptions.AssignedValues = [evCache]
@@ -13116,7 +13116,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Size = 8
       end>
   end
-  object sp_VIS_xp_vourowlogwrite: TADStoredProc
+  object sp_VIS_xp_vourowlogwrite: TFDStoredProc
     CachedUpdates = True
     Connection = dmsConnector.SQLConn_XOR
     FetchOptions.AssignedValues = [evCache]
@@ -13224,7 +13224,7 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInputOutput
       end>
   end
-  object sp_xp_ldglogwrite: TADStoredProc
+  object sp_xp_ldglogwrite: TFDStoredProc
     CachedUpdates = True
     Connection = dmsConnector.SQLConn_XOR
     FetchOptions.AssignedValues = [evCache]
@@ -13387,9 +13387,9 @@ object dmVidaInvoice: TdmVidaInvoice
         Size = 8
       end>
   end
-  object sq_Region: TADQuery
+  object sq_Region: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select Region FROM dbo.Regions R'
@@ -13412,7 +13412,7 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 728
     Top = 88
   end
-  object cdsInvoiceShipToAddress_II: TADQuery
+  object cdsInvoiceShipToAddress_II: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -13424,7 +13424,7 @@ object dmVidaInvoice: TdmVidaInvoice
     IndexName = 'cdsinvShipToAdr_Index01_II'
     MasterSource = dsrcInvoiceHead_II
     MasterFields = 'InternalInvoiceNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'InvoiceShipToAddress'
     SQL.Strings = (
@@ -13441,9 +13441,9 @@ object dmVidaInvoice: TdmVidaInvoice
         'ssLine2),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.AddressLine3),'#39#39')+'#39', '#39'+isNul' +
         'l(RTRIM(Addr.AddressLine4),'#39#39')'
       
-        '+'#39', '#39'+isNull(RTRIM(AdrCY.CityName),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.Po' +
+        '+'#39', '#39'+isNull(RTRIM(FDrCY.CityName),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.Po' +
         'stalCode),'#39#39')+'#39', '#39'+isNull(RTRIM(Addr.StateOrProvince),'#39#39')+'#39', '#39'+i' +
-        'sNull(RTRIM( AdrCtry.CountryName ),'#39#39') as ADDR,'
+        'sNull(RTRIM( FDrCtry.CountryName ),'#39#39') as ADDR,'
       ''
       'Addr.AddressLine1,'
       'Addr.AddressLine2,'
@@ -13451,14 +13451,14 @@ object dmVidaInvoice: TdmVidaInvoice
       'Addr.AddressLine4,'
       'Addr.StateOrProvince    AS STATE,'
       'Addr.PostalCode         AS POSTAL_CODE,'
-      'AdrCY.CityName'#9'        AS CITY,'
-      'AdrCtry.CountryName'#9'AS COUNTRY'
+      'FDrCY.CityName'#9'        AS CITY,'
+      'FDrCtry.CountryName'#9'AS COUNTRY'
       ''
       'from dbo.InvoiceShipToAddress IST'
       ' Left Outer Join dbo.Address Addr'#9
-      ' '#9'INNER JOIN dbo.CITY'#9#9#9'AdrCY'#9'ON'#9'AdrCY.CityNo '#9#9'= Addr.CityNo'
+      ' '#9'INNER JOIN dbo.CITY'#9#9#9'FDrCY'#9'ON'#9'FDrCY.CityNo '#9#9'= Addr.CityNo'
       
-        #9'INNER JOIN dbo.Country'#9#9#9'AdrCtry'#9'ON'#9'AdrCtry.CountryNo '#9'= Addr.C' +
+        #9'INNER JOIN dbo.Country'#9#9#9'FDrCtry'#9'ON'#9'FDrCtry.CountryNo '#9'= Addr.C' +
         'ountryNo'
       '  ON Addr.AddressNo = IST.AddressNo'
       ''
@@ -13566,10 +13566,10 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 30
     end
   end
-  object cds_Att_Ext_LO: TADQuery
+  object cds_Att_Ext_LO: TFDQuery
     AfterInsert = cds_Att_Ext_LOAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select AEL.InternalInvoiceNo,'
@@ -13587,9 +13587,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object ad_InsAttLO: TADQuery
+  object FD_InsAttLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -13635,10 +13635,10 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object adDeleteAttExtLO: TADQuery
+  object adDeleteAttExtLO: TFDQuery
     AfterInsert = cds_Att_Ext_LOAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.Att_Ext_LO'
@@ -13652,17 +13652,17 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetPOCountry: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetPOCountry: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
-      'Select AdrPO.CountryNo FROM'
+      'Select FDrPO.CountryNo FROM'
       'dbo.CSHTradingLink CTL'
       
         'Inner Join dbo.CustomerShippingPlanHeader CSH_PO on CSH_PO.Shipp' +
         'ingPlanNo = CTL.POShippingPlanNo'
       'Inner Join dbo.Orders oh on oh.OrderNo = CSH_PO.OrderNo'
       
-        'Inner Join dbo.Address AdrPO ON AdrPO.AddressNo = oh.ClientBilli' +
+        'Inner Join dbo.Address FDrPO ON FDrPO.AddressNo = oh.ClientBilli' +
         'ngAddressNo'
       'WHERE'
       'CTL.SalesShippingPlanNo = :SalesShippingPlanNo')
@@ -13679,9 +13679,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'CountryNo'
     end
   end
-  object sq_FSKonton: TADQuery
+  object sq_FSKonton: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select'
@@ -13714,7 +13714,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'ih.InvoiceDate ,'
       'ih.InvoiceDate +  isnull(pte.NoOfDaysDiscount2,0) AS DueDate,'
       
-        'isnull(R.Region,'#39'N/A'#39') AS Region, Adr.CountryNo,  IH.InternalInv' +
+        'isnull(R.Region,'#39'N/A'#39') AS Region, FDr.CountryNo,  IH.InternalInv' +
         'oiceNo, '
       
         'ROUND(CAST((  IH.Inv_Value_To_Be_Paid_2     ) As decimal(18,2)),' +
@@ -13932,7 +13932,7 @@ object dmVidaInvoice: TdmVidaInvoice
       'WHERE invd2.InternalInvoiceNo = IH.InternalInvoiceNo'
       'AND invd2.TypeOfRow =1) AS VaruGrupp,'
       ''
-      '(Select TOP 1 AdrPO.CountryNo FROM'
+      '(Select TOP 1 FDrPO.CountryNo FROM'
       'dbo.InvoiceLO ILO'
       
         'Inner Join dbo.CustomerShippingPlanHeader CSHSales on CSHSales.S' +
@@ -13950,7 +13950,7 @@ object dmVidaInvoice: TdmVidaInvoice
         'Inner Join dbo.InvoiceHeader IHPO on IHPO.InternalInvoiceNo = IL' +
         'OPO.InternalInvoiceNo'
       
-        'Inner Join dbo.Address AdrPO ON AdrPO.AddressNo = IHPO.ClientBil' +
+        'Inner Join dbo.Address FDrPO ON FDrPO.AddressNo = IHPO.ClientBil' +
         'lingAddressNo'
       'WHERE'
       'ILO.InternalInvoiceNo = IH.InternalInvoiceNo) AS PO_CountryNo,'
@@ -13963,9 +13963,9 @@ object dmVidaInvoice: TdmVidaInvoice
         'onsibleSeller'
       ''
       
-        'Inner Join dbo.Address Adr ON Adr.AddressNo = IH.ClientBillingAd' +
+        'Inner Join dbo.Address FDr ON FDr.AddressNo = IH.ClientBillingAd' +
         'dressNo'
-      'Left Outer Join dbo.Regions R ON R.CountryNo = Adr.CountryNo'
+      'Left Outer Join dbo.Regions R ON R.CountryNo = FDr.CountryNo'
       'Inner Join dbo.Currency Curr ON Curr.CurrencyNo = IH.CurrencyNo'
       
         'Left Outer Join dbo.PaymentTerms pte ON pte.PaymentTermsNo = ih.' +
@@ -14193,9 +14193,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'invoicetype'
     end
   end
-  object sq_Del_AttestKoppling: TADQuery
+  object sq_Del_AttestKoppling: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete FROM dbo.Attestrow'
@@ -14228,9 +14228,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_GenSoftSet700790_SP: TADStoredProc
+  object sp_GenSoftSet700790_SP: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_GenSoftSet700790_SP'
     Left = 1016
@@ -14255,8 +14255,8 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetPackageData: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetPackageData: TFDQuery
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -14303,8 +14303,8 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 255
     end
   end
-  object sq_GetFileNameOfLoadNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetFileNameOfLoadNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select FileName FROM dbo.TransferFile'
@@ -14325,8 +14325,8 @@ object dmVidaInvoice: TdmVidaInvoice
       Size = 255
     end
   end
-  object sq_GetNettoPris: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetNettoPris: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Netto.ValueField FROM dbo.OrderLineCostSum Netto'
       'WHERE Netto.OrderNo = :OrderNo'
@@ -14350,8 +14350,8 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ValueField'
     end
   end
-  object sq_GetBruttoPris: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetBruttoPris: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Netto.ValueField FROM dbo.OrderLineCostSum Netto'
       'WHERE Netto.OrderNo = :OrderNo'
@@ -14375,7 +14375,7 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ValueField'
     end
   end
-  object sq_InsInvNo: TADQuery
+  object sq_InsInvNo: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -14385,7 +14385,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cdsInvoiceNumbersInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -14424,12 +14424,12 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_CopyLoad: TADQuery
+  object sq_CopyLoad: TFDQuery
     Left = 40
     Top = 808
   end
-  object sp_vis_CopyLoad: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_vis_CopyLoad: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CopyLoad'
     Left = 144
     Top = 824
@@ -14459,9 +14459,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sq_GetOrgInvoiceNoByCredit: TADQuery
+  object sq_GetOrgInvoiceNoByCredit: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select InternalInvoiceNo from dbo.Invoice_Credited'
@@ -14480,7 +14480,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
   end
-  object ADQuery1: TADQuery
+  object FDQuery1: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -14490,7 +14490,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cdsInvoiceNumbersInvNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT InvoiceNo FROM dbo.InvoiceNumber'
@@ -14526,9 +14526,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'DateCreated'
     end
   end
-  object sq_GetArticleNo: TADQuery
+  object sq_GetArticleNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select TOP 1 FSAL.ArticleNo'
@@ -14585,9 +14585,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Origin = 'ArticleNo'
     end
   end
-  object sq_InvLOs: TADQuery
+  object sq_InvLOs: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT ILO.ShippingPlanNo FROM dbo.INVOICELO ILO'
@@ -14608,9 +14608,9 @@ object dmVidaInvoice: TdmVidaInvoice
       Required = True
     end
   end
-  object sq_PkgType_InvoiceForCredit: TADQuery
+  object sq_PkgType_InvoiceForCredit: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert into dbo.PkgType_Invoice'
@@ -14930,7 +14930,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN VU.VolumeUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxaL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxaL'#39' THEN'
       'CASE'
       ' WHEN PG.SequenceNo = 0 THEN'
       
@@ -15006,7 +15006,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN VU.VolumeUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN VU.VolumeUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE'
       'WHEN PG.SequenceNo = 0 THEN'
       'CASE'
@@ -15155,7 +15155,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ''
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN PTD.NoOfPieces'
       ''
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN '
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN '
       'CASE WHEN PG.SequenceNo = 0 THEN '
       'ROUND(CAST(('
       'PTD.NoOfPieces * PG.ActualThicknessMM * PG.ActualWidthMM *'
@@ -15229,7 +15229,7 @@ object dmVidaInvoice: TdmVidaInvoice
       
         '-- m3ActualSizeNomLength ***************************************' +
         '******'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN'
       'CASE WHEN PG.SequenceNo = 0 THEN'
       'CASE'
       '-- random length'
@@ -15373,9 +15373,9 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object sp_InvTotals: TADStoredProc
+  object sp_InvTotals: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.InvTotals'
     Left = 776
@@ -15621,8 +15621,8 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sp_TransformHTFPkgs: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_TransformHTFPkgs: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_TransformHTFPkgs'
     Left = 688
     Top = 816
@@ -15640,7 +15640,7 @@ object dmVidaInvoice: TdmVidaInvoice
         ParamType = ptInput
       end>
   end
-  object mt_VerLogg: TADMemTable
+  object mt_VerLogg: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -15690,9 +15690,9 @@ object dmVidaInvoice: TdmVidaInvoice
     Left = 840
     Top = 552
   end
-  object sq_GetTotalFreigthInPrice: TADQuery
+  object sq_GetTotalFreigthInPrice: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT SUM(invd.ProductValue) AS Freight'
@@ -15727,9 +15727,9 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object sq_GetTotalAM3PerLO: TADQuery
+  object sq_GetTotalAM3PerLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT DISTINCT SUM(invd.ActualNetM3) AS AM3'
@@ -15757,7 +15757,7 @@ object dmVidaInvoice: TdmVidaInvoice
       ReadOnly = True
     end
   end
-  object cds_InvNoAGENT: TADQuery
+  object cds_InvNoAGENT: TFDQuery
     Indexes = <
       item
         Active = True
@@ -15766,7 +15766,7 @@ object dmVidaInvoice: TdmVidaInvoice
         Fields = 'InvoiceNo'
       end>
     IndexName = 'cds_InvNoAGENT_InvoiceNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * '
       'From dbo.InvoiceNumber_AGENT')

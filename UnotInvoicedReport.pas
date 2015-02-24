@@ -9,10 +9,10 @@ uses
   dxDBCtrl, dxDBGrid, Buttons, OleCtrls, CRAXDDRT_TLB,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar,   DateUtils, CrystalActiveXReportViewerLib11_TLB, ActnList,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, cxGraphics,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, cxGraphics,
   cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, DB,
-  uADCompDataSet, uADCompClient, SqlTimSt, cxClasses, cxImageComboBox,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, SqlTimSt, cxClasses, cxImageComboBox,
   cxLookAndFeels, cxLookAndFeelPainters, cxLabel ;
 
 type
@@ -27,7 +27,7 @@ type
     StngF121: TMenuItem;
     UppdateraF61: TMenuItem;
     ds_Props: TDataSource;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;

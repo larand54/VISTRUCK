@@ -6,14 +6,14 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, dxBar, dxBarExtItems, ExtCtrls, ImgList, dxCntner, dxEditor,
   dxExEdtr, dxEdLib, dxTL, dxDBCtrl, dxDBGrid, StdCtrls, dxDBELib,
-  dxDBTLCl, dxGrClms, DB, uADStanIntf, uADStanOption, uADStanParam,
-  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
-  uADDAptManager, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  dxDBTLCl, dxGrClms, DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, cxDBData, cxDropDownEdit, cxContainer, cxTextEdit,
   cxMaskEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   cxGridLevel, cxClasses, cxControls, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  uADCompDataSet, uADCompClient ;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
 
 type
   TfrmGenShipCost = class(TForm)
@@ -41,7 +41,7 @@ type
     grdGenFreightCostModifiedUser: TdxDBGridMaskColumn;
     grdGenFreightCostVALUTA: TdxDBGridLookupColumn;
     grdGenFreightCostENHET: TdxDBGridLookupColumn;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;

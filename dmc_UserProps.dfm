@@ -141,9 +141,9 @@ object dm_UserProps: Tdm_UserProps
     Left = 128
     Top = 400
   end
-  object cds_UserDir: TADQuery
+  object cds_UserDir: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.UserDir '
@@ -187,9 +187,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 255
     end
   end
-  object cds_Verk: TADQuery
+  object cds_Verk: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -227,9 +227,9 @@ object dm_UserProps: Tdm_UserProps
       Origin = 'SalesRegionNo'
     end
   end
-  object cds_producer: TADQuery
+  object cds_producer: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT Distinct C.ClientNo, C.ClientName, C.SearchName'
@@ -260,9 +260,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 80
     end
   end
-  object cds_PIP: TADQuery
+  object cds_PIP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -305,9 +305,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 50
     end
   end
-  object cds_LIP: TADQuery
+  object cds_LIP: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -338,9 +338,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 50
     end
   end
-  object cds_RegPoint: TADQuery
+  object cds_RegPoint: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT   Distinct RP.RegPointName AS ProductionUnitName,'
@@ -371,9 +371,9 @@ object dm_UserProps: Tdm_UserProps
       Origin = 'RegistrationPointNo'
     end
   end
-  object cds_LengthGroup: TADQuery
+  object cds_LengthGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT  Distinct GroupNo, GroupName '
@@ -393,9 +393,9 @@ object dm_UserProps: Tdm_UserProps
       FixedChar = True
     end
   end
-  object cdsBarCodes: TADQuery
+  object cdsBarCodes: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select bc.*,'
@@ -453,9 +453,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 25
     end
   end
-  object cdsGradeStamps: TADQuery
+  object cdsGradeStamps: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select GS.*,'
@@ -497,9 +497,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 25
     end
   end
-  object cds_VU: TADQuery
+  object cds_VU: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.UnitName')
@@ -518,9 +518,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 10
     end
   end
-  object cds_SR: TADQuery
+  object cds_SR: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT  Distinct C.ClientNo, C.ClientName, C.SearchName'
@@ -552,9 +552,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 80
     end
   end
-  object cds_Props: TADQuery
+  object cds_Props: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.userprops'
@@ -753,9 +753,9 @@ object dm_UserProps: Tdm_UserProps
       Origin = 'ShowProduct'
     end
   end
-  object cds_PIP2: TADQuery
+  object cds_PIP2: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -799,9 +799,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 50
     end
   end
-  object cds_LIP2: TADQuery
+  object cds_LIP2: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -832,9 +832,9 @@ object dm_UserProps: Tdm_UserProps
       Size = 50
     end
   end
-  object cds_Shippers: TADQuery
+  object cds_Shippers: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT  Distinct C.ClientNo, C.ClientName'

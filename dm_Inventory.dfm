@@ -12,7 +12,7 @@ object dmInventory: TdmInventory
     Left = 656
     Top = 112
   end
-  object sq_Specie: TADQuery
+  object sq_Specie: TFDQuery
     SQL.Strings = (
       'Select  s.speciescode, S.SpeciesNo,'
       'CASE WHEN s.speciescode is null then'
@@ -44,7 +44,7 @@ object dmInventory: TdmInventory
       Size = 38
     end
   end
-  object sq_grade: TADQuery
+  object sq_grade: TFDQuery
     SQL.Strings = (
       'Select '
       'CASE WHEN g.gradecode is null then'
@@ -77,7 +77,7 @@ object dmInventory: TdmInventory
       Size = 5
     end
   end
-  object sq_Surfacing: TADQuery
+  object sq_Surfacing: TFDQuery
     SQL.Strings = (
       'Select  s.Surfacingcode, S.SurfacingNo,'
       'CASE WHEN s.Surfacingcode is null then'
@@ -110,7 +110,7 @@ object dmInventory: TdmInventory
       Size = 38
     end
   end
-  object cds_PC: TADQuery
+  object cds_PC: TFDQuery
     SQL.Strings = (
       'Select  s.ImpCode, S.ProductCategoryNo,'
       'CASE WHEN s.ImpCode is null then'
@@ -142,7 +142,7 @@ object dmInventory: TdmInventory
       Size = 28
     end
   end
-  object cds_LengthGroup: TADQuery
+  object cds_LengthGroup: TFDQuery
     SQL.Strings = (
       
         'SELECT distinct PG.GroupNo, GroupName, Count(PLG.ProductLengthNo' +
@@ -174,7 +174,7 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object sq_AT: TADQuery
+  object sq_AT: TFDQuery
     SQL.Strings = (
       'Select Distinct ActualThicknessMM AS AT FROM dbo.ProductGroup'
       'Order By ActualThicknessMM')
@@ -185,7 +185,7 @@ object dmInventory: TdmInventory
       Origin = '[AT]'
     end
   end
-  object sq_AB: TADQuery
+  object sq_AB: TFDQuery
     SQL.Strings = (
       'Select Distinct ActualWidthMM AS AB FROM dbo.ProductGroup'
       'Order By ActualWidthMM')
@@ -196,7 +196,7 @@ object dmInventory: TdmInventory
       Origin = 'AB'
     end
   end
-  object sq_AL: TADQuery
+  object sq_AL: TFDQuery
     SQL.Strings = (
       'SELECT Distinct'
       'PL.ActualLengthMM AS AL'
@@ -212,7 +212,7 @@ object dmInventory: TdmInventory
       Required = True
     end
   end
-  object sq_GroupLengths: TADQuery
+  object sq_GroupLengths: TFDQuery
     SQL.Strings = (
       'SELECT distinct pl.ActualLengthMM'
       'FROM dbo.ProductLengthGroup PLG'
@@ -236,7 +236,7 @@ object dmInventory: TdmInventory
       Required = True
     end
   end
-  object cds_ProductLengthInGroup: TADQuery
+  object cds_ProductLengthInGroup: TFDQuery
     SQL.Strings = (
       'SELECT ActualLengthMM AS ALMM,'
       'NominalLengthMM AS NLMM,'
@@ -278,7 +278,7 @@ object dmInventory: TdmInventory
       Size = 15
     end
   end
-  object cds_BookingHdr: TADQuery
+  object cds_BookingHdr: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     BeforePost = cds_BookingHdrBeforePost
     OnCalcFields = cds_BookingHdrCalcFields
@@ -567,7 +567,7 @@ object dmInventory: TdmInventory
     Left = 808
     Top = 72
   end
-  object cds_BookingDtl: TADQuery
+  object cds_BookingDtl: TFDQuery
     OnCalcFields = cds_BookingDtlCalcFields
     OnPostError = cds_BookingDtlPostError
     ResourceOptions.AssignedValues = [rvCmdExecMode]
@@ -829,7 +829,7 @@ object dmInventory: TdmInventory
     Left = 904
     Top = 72
   end
-  object cds_BookingMaster: TADQuery
+  object cds_BookingMaster: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     AfterScroll = cds_BookingMasterAfterScroll
     SQL.Strings = (
@@ -916,7 +916,7 @@ object dmInventory: TdmInventory
     Left = 808
     Top = 176
   end
-  object cds_VolResDtl: TADQuery
+  object cds_VolResDtl: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     SQL.Strings = (
       'SELECT *'
@@ -1057,7 +1057,7 @@ object dmInventory: TdmInventory
     Left = 808
     Top = 296
   end
-  object sp_PeriodBooking: TADStoredProc
+  object sp_PeriodBooking: TFDStoredProc
     StoredProcName = 'dbo.vis_PeriodBooking_II'
     Left = 808
     Top = 360
@@ -1100,7 +1100,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object sp_GetCurrentSD: TADStoredProc
+  object sp_GetCurrentSD: TFDStoredProc
     StoredProcName = 'dbo.vis_GetCurrentSD'
     Left = 808
     Top = 416
@@ -1144,7 +1144,7 @@ object dmInventory: TdmInventory
         ParamType = ptInputOutput
       end>
   end
-  object sp_GetVolPerLG: TADStoredProc
+  object sp_GetVolPerLG: TFDStoredProc
     StoredProcName = 'dbo.vis_GetVolPerLG_II'
     Left = 808
     Top = 472
@@ -1208,7 +1208,7 @@ object dmInventory: TdmInventory
     Left = 912
     Top = 296
   end
-  object cds_ProductionUnit: TADQuery
+  object cds_ProductionUnit: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -1281,7 +1281,7 @@ object dmInventory: TdmInventory
       Size = 1
     end
   end
-  object cds_OtherBookings: TADQuery
+  object cds_OtherBookings: TFDQuery
     OnUpdateRecord = cds_OtherBookingsUpdateRecord
     SQL.Strings = (
       'SELECT p.productDisplayName AS Produkt,'
@@ -1535,7 +1535,7 @@ object dmInventory: TdmInventory
     Left = 912
     Top = 408
   end
-  object cds_Scheduler: TADQuery
+  object cds_Scheduler: TFDQuery
     BeforePost = cds_SchedulerBeforePost
     SQL.Strings = (
       'SELECT ST.*, usd.UserName'
@@ -1729,7 +1729,7 @@ object dmInventory: TdmInventory
     Left = 912
     Top = 520
   end
-  object sq_PopulateTabs: TADQuery
+  object sq_PopulateTabs: TFDQuery
     ConnectionName = 'VIS_VIDA'
     SQL.Strings = (
       'Select st.ID, st.YearWeek from dbo.RawMtrlBookedMaster rmm'
@@ -1756,7 +1756,7 @@ object dmInventory: TdmInventory
       Size = 4
     end
   end
-  object upd_OtherBookings: TADUpdateSQL
+  object upd_OtherBookings: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.rawmtrlbookeddtl'
@@ -1865,7 +1865,7 @@ object dmInventory: TdmInventory
     Left = 1016
     Top = 360
   end
-  object upd_cxSchedulerTable: TADUpdateSQL
+  object upd_cxSchedulerTable: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.cxschedulertable'
@@ -1921,7 +1921,7 @@ object dmInventory: TdmInventory
     Left = 912
     Top = 584
   end
-  object cds_Dim: TADQuery
+  object cds_Dim: TFDQuery
     OnCalcFields = cds_BookingDtlCalcFields
     OnPostError = cds_BookingDtlPostError
     SQL.Strings = (
@@ -1961,7 +1961,7 @@ object dmInventory: TdmInventory
       Origin = 'AB'
     end
   end
-  object cds_BookHdrLink: TADQuery
+  object cds_BookHdrLink: TFDQuery
     SQL.Strings = (
       'Select * from dbo.RawMtrlBookedLink rml'
       'WHERE rml.BookingNo =:BookingNo')
@@ -1984,7 +1984,7 @@ object dmInventory: TdmInventory
       Size = 4
     end
   end
-  object sp_MergeBookings: TADStoredProc
+  object sp_MergeBookings: TFDStoredProc
     StoredProcName = 'dbo.vis_MergeBookings'
     Left = 912
     Top = 648
@@ -2014,7 +2014,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object mt_temp: TADMemTable
+  object mt_temp: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -2027,7 +2027,7 @@ object dmInventory: TdmInventory
       FieldName = 'sspNo'
     end
   end
-  object cds_Products: TADQuery
+  object cds_Products: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -2048,7 +2048,7 @@ object dmInventory: TdmInventory
       Size = 100
     end
   end
-  object cds_fAT: TADQuery
+  object cds_fAT: TFDQuery
     SQL.Strings = (
       'Select * FROM dbo.fAT'
       'WHERE UserID = :UserID')
@@ -2069,7 +2069,7 @@ object dmInventory: TdmInventory
       Origin = 'UserID'
     end
   end
-  object cds_GetDimensions: TADQuery
+  object cds_GetDimensions: TFDQuery
     OnCalcFields = cds_BookingDtlCalcFields
     OnPostError = cds_BookingDtlPostError
     ResourceOptions.AssignedValues = [rvCmdExecMode]
@@ -2154,7 +2154,7 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object cds_DeleteBookingGroup: TADQuery
+  object cds_DeleteBookingGroup: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     AfterScroll = cds_BookingMasterAfterScroll
     SQL.Strings = (
@@ -2194,7 +2194,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object cdsSawmillLoadOrders: TADQuery
+  object cdsSawmillLoadOrders: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -3053,7 +3053,7 @@ object dmInventory: TdmInventory
     Left = 158
     Top = 168
   end
-  object cds_PIP: TADQuery
+  object cds_PIP: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -3082,7 +3082,7 @@ object dmInventory: TdmInventory
       Origin = 'OwnerNo'
     end
   end
-  object cds_LIP: TADQuery
+  object cds_LIP: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -3114,7 +3114,7 @@ object dmInventory: TdmInventory
     Left = 48
     Top = 488
   end
-  object cds_LOBuffertParams: TADQuery
+  object cds_LOBuffertParams: TFDQuery
     AfterInsert = cds_LOBuffertParamsAfterInsert
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
@@ -3216,7 +3216,7 @@ object dmInventory: TdmInventory
     Left = 302
     Top = 64
   end
-  object cds_producer: TADQuery
+  object cds_producer: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -3248,7 +3248,7 @@ object dmInventory: TdmInventory
       Size = 80
     end
   end
-  object cds_LOBuffert: TADQuery
+  object cds_LOBuffert: TFDQuery
     CachedUpdates = True
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
@@ -3416,7 +3416,7 @@ object dmInventory: TdmInventory
     Left = 48
     Top = 304
   end
-  object sp_LOBUffertStep1: TADStoredProc
+  object sp_LOBUffertStep1: TFDStoredProc
     StoredProcName = 'dbo.vis_LOBUffertStep1'
     Left = 48
     Top = 360
@@ -3434,7 +3434,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object cdsLOLayer1: TADQuery
+  object cdsLOLayer1: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -3998,7 +3998,7 @@ object dmInventory: TdmInventory
     Left = 160
     Top = 296
   end
-  object admLOLayer: TADMemTable
+  object FDmLOLayer: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -4007,67 +4007,67 @@ object dmInventory: TdmInventory
     UpdateOptions.CheckRequired = False
     Left = 48
     Top = 696
-    object admLOLayerALMM: TFloatField
+    object FDmLOLayerALMM: TFloatField
       FieldName = 'ALMM'
     end
-    object admLOLayerProductLengthNo: TIntegerField
+    object FDmLOLayerProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
     end
-    object admLOLayerPackageTypeNo: TIntegerField
+    object FDmLOLayerPackageTypeNo: TIntegerField
       FieldName = 'PackageTypeNo'
     end
-    object admLOLayersALMM: TStringField
+    object FDmLOLayersALMM: TStringField
       FieldName = 'sALMM'
       Size = 10
     end
-    object admLOLayerNoOfPcs: TIntegerField
+    object FDmLOLayerNoOfPcs: TIntegerField
       FieldName = 'NoOfPcs'
     end
-    object admLOLayerProductNo: TIntegerField
+    object FDmLOLayerProductNo: TIntegerField
       FieldName = 'ProductNo'
     end
-    object admLOLayersspNo: TIntegerField
+    object FDmLOLayersspNo: TIntegerField
       FieldName = 'sspNo'
     end
-    object admLOLayerPcsPerLength: TStringField
+    object FDmLOLayerPcsPerLength: TStringField
       FieldName = 'PcsPerLength'
       Size = 100
     end
-    object admLOLayerNomThick: TFloatField
+    object FDmLOLayerNomThick: TFloatField
       FieldName = 'NomThick'
     end
-    object admLOLayerSurfacingNo: TIntegerField
+    object FDmLOLayerSurfacingNo: TIntegerField
       FieldName = 'SurfacingNo'
     end
-    object admLOLayerNoOfUnits: TFloatField
+    object FDmLOLayerNoOfUnits: TFloatField
       FieldName = 'NoOfUnits'
     end
-    object admLOLayerLengthDesc: TStringField
+    object FDmLOLayerLengthDesc: TStringField
       FieldName = 'LengthDesc'
       Size = 100
     end
-    object admLOLayerAM3: TFloatField
+    object FDmLOLayerAM3: TFloatField
       FieldName = 'AM3'
     end
-    object admLOLayerNM3: TFloatField
+    object FDmLOLayerNM3: TFloatField
       FieldName = 'NM3'
     end
-    object admLOLayerVolumeUnitNo: TIntegerField
+    object FDmLOLayerVolumeUnitNo: TIntegerField
       FieldName = 'VolumeUnitNo'
     end
-    object admLOLayerLONo: TIntegerField
+    object FDmLOLayerLONo: TIntegerField
       FieldName = 'LONo'
     end
-    object admLOLayerLOBuffertNo: TIntegerField
+    object FDmLOLayerLOBuffertNo: TIntegerField
       FieldName = 'LOBuffertNo'
     end
   end
   object dsadmLOLayer: TDataSource
-    DataSet = admLOLayer
+    DataSet = FDmLOLayer
     Left = 48
     Top = 752
   end
-  object sp_CrePkgType: TADStoredProc
+  object sp_CrePkgType: TFDStoredProc
     StoredProcName = 'dbo.vis_CrePkgType'
     Left = 152
     Top = 696
@@ -4116,7 +4116,7 @@ object dmInventory: TdmInventory
         ParamType = ptInputOutput
       end>
   end
-  object sp_insLOLayer2: TADStoredProc
+  object sp_insLOLayer2: TFDStoredProc
     StoredProcName = 'dbo.vis_insLOLayer2'
     Left = 152
     Top = 752
@@ -4197,7 +4197,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object upd_SawMillLoadOrders: TADUpdateSQL
+  object upd_SawMillLoadOrders: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.suppliershippingplan'
@@ -4286,7 +4286,7 @@ object dmInventory: TdmInventory
     Left = 48
     Top = 16
   end
-  object sp_LOLevelOne: TADStoredProc
+  object sp_LOLevelOne: TFDStoredProc
     Indexes = <
       item
         Active = True
@@ -4564,7 +4564,7 @@ object dmInventory: TdmInventory
     Left = 432
     Top = 760
   end
-  object sp_LOLevelTwo: TADStoredProc
+  object sp_LOLevelTwo: TFDStoredProc
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_LOLevelTwo'
     Left = 536
@@ -4941,7 +4941,7 @@ object dmInventory: TdmInventory
     Left = 536
     Top = 760
   end
-  object sp_LOLevelThree: TADStoredProc
+  object sp_LOLevelThree: TFDStoredProc
     UpdateOptions.UpdateTableName = 'dbo.suppliershippingplan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     StoredProcName = 'dbo.vis_LOLevelThree'
@@ -5321,7 +5321,7 @@ object dmInventory: TdmInventory
     Left = 640
     Top = 760
   end
-  object sp_InsIntLOHdr: TADStoredProc
+  object sp_InsIntLOHdr: TFDStoredProc
     StoredProcName = 'dbo.vis_InsIntLOHdr'
     Left = 152
     Top = 640
@@ -5357,7 +5357,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object sp_LOEjBokade: TADStoredProc
+  object sp_LOEjBokade: TFDStoredProc
     Indexes = <
       item
         Active = True
@@ -5808,7 +5808,7 @@ object dmInventory: TdmInventory
     Left = 248
     Top = 696
   end
-  object upd_LOLevelOne: TADUpdateSQL
+  object upd_LOLevelOne: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO VIS_VIDA.dbo.internalorderhead'
@@ -5954,7 +5954,7 @@ object dmInventory: TdmInventory
     Left = 432
     Top = 664
   end
-  object upd_LOLevelThree: TADUpdateSQL
+  object upd_LOLevelThree: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO VIS_VIDA.dbo.suppliershippingplan'
@@ -6152,7 +6152,7 @@ object dmInventory: TdmInventory
     Left = 640
     Top = 664
   end
-  object sp_InqLevelOne: TADStoredProc
+  object sp_InqLevelOne: TFDStoredProc
     UpdateOptions.UpdateTableName = 'dbo.InternalOrderHead'
     UpdateOptions.KeyFields = 'OrderNo'
     StoredProcName = 'dbo.vis_InqLevelOne'
@@ -6298,7 +6298,7 @@ object dmInventory: TdmInventory
     Left = 432
     Top = 568
   end
-  object sp_InqLevelTwo: TADStoredProc
+  object sp_InqLevelTwo: TFDStoredProc
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     UpdateObject = upd_InqLevelTwo
@@ -6660,7 +6660,7 @@ object dmInventory: TdmInventory
     Left = 536
     Top = 568
   end
-  object sp_InqLevelThree: TADStoredProc
+  object sp_InqLevelThree: TFDStoredProc
     Indexes = <
       item
         Active = True
@@ -7051,7 +7051,7 @@ object dmInventory: TdmInventory
     Left = 640
     Top = 568
   end
-  object upd_InqLevelTwo: TADUpdateSQL
+  object upd_InqLevelTwo: TFDUpdateSQL
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.suppliershippingplan'
@@ -7249,7 +7249,7 @@ object dmInventory: TdmInventory
     Left = 536
     Top = 464
   end
-  object sp_UtlastLevelOne: TADStoredProc
+  object sp_UtlastLevelOne: TFDStoredProc
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.InternalOrderHead'
     UpdateOptions.KeyFields = 'OrderNo'
@@ -7523,7 +7523,7 @@ object dmInventory: TdmInventory
     Left = 432
     Top = 392
   end
-  object sp_UtlastLevelTwo: TADStoredProc
+  object sp_UtlastLevelTwo: TFDStoredProc
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_UtlastLevelTwo'
     Left = 536
@@ -7899,7 +7899,7 @@ object dmInventory: TdmInventory
     Left = 536
     Top = 392
   end
-  object sp_UtlastLevelThree: TADStoredProc
+  object sp_UtlastLevelThree: TFDStoredProc
     UpdateOptions.UpdateTableName = 'dbo.suppliershippingplan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     StoredProcName = 'dbo.vis_UtlastLevelThree'
@@ -8278,9 +8278,9 @@ object dmInventory: TdmInventory
     Left = 640
     Top = 392
   end
-  object sp_invpiv: TADStoredProc
+  object sp_invpiv: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -8354,9 +8354,9 @@ object dmInventory: TdmInventory
     Left = 216
     Top = 584
   end
-  object sp_invpivPkgDtl: TADStoredProc
+  object sp_invpivPkgDtl: TFDStoredProc
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     UpdateObject = upd_invpivPkgDtl
     StoredProcName = 'dbo.Vis_LagerDTL_v1'
     Left = 216
@@ -8443,9 +8443,9 @@ object dmInventory: TdmInventory
     Left = 216
     Top = 480
   end
-  object sp_invpivPkg: TADStoredProc
+  object sp_invpivPkg: TFDStoredProc
     OnUpdateRecord = sp_invpivPkgUpdateRecord
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.PackageNumber'
     UpdateOptions.KeyFields = 'PackageNo;SupplierCode'
     UpdateObject = upd_invpivPkg
@@ -8519,8 +8519,8 @@ object dmInventory: TdmInventory
     Left = 320
     Top = 480
   end
-  object upd_invpivPkg: TADUpdateSQL
-    Connection = dmsConnector.ADConnection1
+  object upd_invpivPkg: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS'
     ModifySQL.Strings = (
       'UPDATE dbo.packagenumber'
@@ -8544,8 +8544,8 @@ object dmInventory: TdmInventory
     Left = 320
     Top = 376
   end
-  object upd_invpivPkgDtl: TADUpdateSQL
-    Connection = dmsConnector.ADConnection1
+  object upd_invpivPkgDtl: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS'
     InsertSQL.Strings = (
       'INSERT INTO PackageNumber'
@@ -8606,8 +8606,8 @@ object dmInventory: TdmInventory
     Left = 216
     Top = 376
   end
-  object ADStoredProc1: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDStoredProc1: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.Vis_invpivPkgDtl_II'
     Left = 360
     Top = 264
@@ -8662,8 +8662,8 @@ object dmInventory: TdmInventory
         Value = 4
       end>
   end
-  object ADStoredProc2: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDStoredProc2: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.Vis_invpivPkgDtl_v2'
     Left = 504
     Top = 280
@@ -8725,8 +8725,8 @@ object dmInventory: TdmInventory
         Value = 0
       end>
   end
-  object sp_CngArtNoByPkgSize: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_CngArtNoByPkgSize: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CngArtNoByPkgSize'
     Left = 1032
     Top = 24
@@ -8763,8 +8763,8 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object sp_CngCert: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_CngCert: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CngCert'
     Left = 1032
     Top = 80
@@ -8886,7 +8886,7 @@ object dmInventory: TdmInventory
       FieldName = 'MARKERAD'
     end
   end
-  object cds_KilnChargeRows: TADQuery
+  object cds_KilnChargeRows: TFDQuery
     AfterInsert = cds_KilnChargeRowsAfterInsert
     AfterPost = cds_KilnChargeRowsAfterPost
     BeforeDelete = cds_KilnChargeRowsBeforeDelete
@@ -8898,7 +8898,7 @@ object dmInventory: TdmInventory
         Fields = 'RowNo'
       end>
     IndexName = 'cds_KilnChargeRowsIndexRowNo'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select kcr.*, P.ProductDisplayName,'
       
@@ -8995,8 +8995,8 @@ object dmInventory: TdmInventory
       Size = 255
     end
   end
-  object cds_KilnChargeHdr: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_KilnChargeHdr: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select KCH.*, KP.Kiln_PIPNo, KP.[BeforeKiln_LIPNo], KP.[Kiln_LIP' +
@@ -9087,9 +9087,9 @@ object dmInventory: TdmInventory
     Left = 1032
     Top = 488
   end
-  object sq_PkgExistInInventory: TADQuery
+  object sq_PkgExistInInventory: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT PN.PackageNo'
@@ -9126,8 +9126,8 @@ object dmInventory: TdmInventory
       Required = True
     end
   end
-  object cds_SelectProgressKiln: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_SelectProgressKiln: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select KP.KilnName + '#39' - '#39' + KCH.Info + '#39'  ['#39' + CAST(ISNULL(KCH.' +
@@ -9168,10 +9168,10 @@ object dmInventory: TdmInventory
       Size = 93
     end
   end
-  object cds_KilnVagn: TADQuery
+  object cds_KilnVagn: TFDQuery
     AfterInsert = cds_KilnVagnAfterInsert
     BeforePost = cds_KilnVagnBeforePost
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.KilnVagn'
       'WHERE KilnChargeNo = :KilnChargeNo'
@@ -9227,8 +9227,8 @@ object dmInventory: TdmInventory
     Left = 1144
     Top = 600
   end
-  object sc_GetProductNoByPackageNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sc_GetProductNoByPackageNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT pt.productno'
       'FROM  dbo.PackageNumber PN'
@@ -9256,8 +9256,8 @@ object dmInventory: TdmInventory
       Origin = 'productno'
     end
   end
-  object cds_GetSistaVagnNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_GetSistaVagnNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT     Max(kv.VagnNo) AS SistaVagnNo'
       'FROM       dbo.KilnVagn kv'
@@ -9280,8 +9280,8 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object cds_Vagnar: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_Vagnar: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select distinct top 10 kv.VagnNo'
       'FROM dbo.KilnChargeHdr KCH'
@@ -9303,8 +9303,8 @@ object dmInventory: TdmInventory
       Required = True
     end
   end
-  object cds_AntalVagnarPerStatus: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_AntalVagnarPerStatus: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT     Count(*) AS AntalVagnar'
       'FROM       dbo.KilnVagn kv'
@@ -9333,8 +9333,8 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object cds_GetAntalVagnar: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_GetAntalVagnar: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select K.[ClientNo]'
       '      ,K.[KilnNo]'
@@ -9374,8 +9374,8 @@ object dmInventory: TdmInventory
       Origin = 'NoOfVagnar'
     end
   end
-  object cds_KilnVagnar: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_KilnVagnar: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select distinct '#39'Radnr '#39' + CAST(kcr.RowNo AS Varchar(2)) AS Rad,' +
@@ -9748,8 +9748,8 @@ object dmInventory: TdmInventory
     Left = 808
     Top = 840
   end
-  object sp_MoveVagn: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_MoveVagn: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_MoveVagn'
     Left = 688
     Top = 848
@@ -9785,8 +9785,8 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object cds_VagnStatus: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_VagnStatus: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.KilnVagn'
       'WHERE VagnNo = :VagnNo'
@@ -9837,8 +9837,8 @@ object dmInventory: TdmInventory
       Origin = 'CreatedUser'
     end
   end
-  object cds_GetFirstVagnNoPerVagnStatus: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_GetFirstVagnNoPerVagnStatus: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select MAX(kv.VagnNo) AS VagnNo FROM dbo.KilnVagn kv'
       'WHERE kv.VagnStatus = :VagnStatus'
@@ -9863,8 +9863,8 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object cds_GetLastVagnNoPerVagnStatus: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_GetLastVagnNoPerVagnStatus: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select MIN(kv.VagnNo) AS VagnNo FROM dbo.KilnVagn kv'
       'WHERE kv.VagnStatus = :VagnStatus'
@@ -9889,8 +9889,8 @@ object dmInventory: TdmInventory
       ReadOnly = True
     end
   end
-  object sp_MovePackage: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_MovePackage: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_MovePackage'
     Left = 1048
     Top = 896
@@ -9933,8 +9933,8 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-  object sp_PkgExistInLIP: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_PkgExistInLIP: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_PkgExistInLIP'
     Left = 1160
     Top = 24

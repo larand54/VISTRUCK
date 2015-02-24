@@ -4,9 +4,9 @@ interface
 
 uses
   SysUtils, Classes, FMTBcd, DB, kbmMemTable,
-  dxmdaset, SqlTimSt, Dialogs, Controls, uADStanIntf, uADStanOption,
-  uADStanParam, uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf,
-  uADStanAsync, uADDAptManager, uADCompDataSet, uADCompClient ;
+  dxmdaset, SqlTimSt, Dialogs, Controls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
 
 type
   TdmModule1 = class(TDataModule)
@@ -24,7 +24,7 @@ type
     mtShippersShipperNo: TIntegerField;
     mtShippersAvrakningsNr: TIntegerField;
     ds_LoadFC: TDataSource;
-    cds_PkgInfo: TADQuery;
+    cds_PkgInfo: TFDQuery;
     cds_PkgInfoPKG_CREATED_BY: TStringField;
     cds_PkgInfoPKG_NO: TIntegerField;
     cds_PkgInfoPKG_CREATED: TSQLTimeStampField;
@@ -53,8 +53,8 @@ type
     cds_PkgInfoPACKAGETYPENO: TIntegerField;
     cds_PkgInfoKORTAKODEN: TStringField;
     cds_PkgInfoLANGAKODEN: TStringField;
-    sqGetSupplierNo: TADQuery;
-    cds_LoadPkgInfo: TADQuery;
+    sqGetSupplierNo: TFDQuery;
+    cds_LoadPkgInfo: TFDQuery;
     cds_LoadPkgInfoLOAD_CUSTOMER: TStringField;
     cds_LoadPkgInfoLOAD_SUPPLIER: TStringField;
     cds_LoadPkgInfoLOAD_DATE: TSQLTimeStampField;
@@ -71,7 +71,7 @@ type
     cds_LoadPkgInfoDEBIT_CREDIT: TStringField;
     cds_LoadPkgInfoORDER_NO: TStringField;
     cds_LoadPkgInfoORDER_CUSTOMER: TStringField;
-    cds_LoadFreightCostHeader: TADQuery;
+    cds_LoadFreightCostHeader: TFDQuery;
     cds_LoadFreightCostHeaderAvrakningsNo: TIntegerField;
     cds_LoadFreightCostHeaderStatus: TIntegerField;
     cds_LoadFreightCostHeaderLocalShipperNo: TIntegerField;
@@ -83,10 +83,10 @@ type
     cds_LoadFreightCostHeaderNote: TMemoField;
     cds_LoadFreightCostHeaderShippersInvoiceNo: TStringField;
     cds_LoadFreightCostHeaderVerkNo: TIntegerField;
-    cdsClient: TADStoredProc;
+    cdsClient: TFDStoredProc;
     cdsClientClientNo: TIntegerField;
     cdsClientClientName: TStringField;
-    sq_ClientData: TADQuery;
+    sq_ClientData: TFDQuery;
     sq_ClientDataDefaultBillingAddressNo: TIntegerField;
     sq_ClientDataClientName: TStringField;
     sq_ClientDataClientNo: TIntegerField;
@@ -120,13 +120,13 @@ type
     sq_ClientDataSHIPTO_POSTALCODE: TStringField;
     sq_ClientDataSHIPTO_CITY: TStringField;
     sq_ClientDataSHIPTO_COUNTRY: TStringField;
-    cdsDestination: TADStoredProc;
+    cdsDestination: TFDStoredProc;
     cdsDestinationCityNo: TIntegerField;
     cdsDestinationCityName: TStringField;
-    sq_UpdateLoad: TADQuery;
-    sq_UpdLoadII: TADQuery;
-    sq_InsFakturaLoads: TADQuery;
-    cdsClientAddress: TADQuery;
+    sq_UpdateLoad: TFDQuery;
+    sq_UpdLoadII: TFDQuery;
+    sq_InsFakturaLoads: TFDQuery;
+    cdsClientAddress: TFDQuery;
     cdsClientAddressADDRESS_NO: TIntegerField;
     cdsClientAddressADDRESS_NAME: TStringField;
     cdsClientAddressADDRESSLINE1: TStringField;
@@ -137,7 +137,7 @@ type
     cdsClientAddressPOSTALCODE: TStringField;
     cdsClientAddressCITY: TStringField;
     cdsClientAddressCOUNTRY: TStringField;
-    cds_LoadFC: TADQuery;
+    cds_LoadFC: TFDQuery;
     cds_LoadFCLastnr: TIntegerField;
     cds_LoadFCFS: TStringField;
     cds_LoadFCLastID: TStringField;
@@ -158,7 +158,7 @@ type
     cds_LoadFCCustomerNo: TIntegerField;
     cds_LoadFCssp_CustomerNo: TIntegerField;
     cds_LoadFCNote: TStringField;
-    cdsLoadFreightCost: TADQuery;
+    cdsLoadFreightCost: TFDQuery;
     cdsLoadFreightCostAvrakningsNo: TIntegerField;
     cdsLoadFreightCostLoadNo: TIntegerField;
     cdsLoadFreightCostM3_NET: TFloatField;
@@ -169,18 +169,18 @@ type
     cdsLoadFreightCostDateCreated: TSQLTimeStampField;
     cdsLoadFreightCostDateModified: TSQLTimeStampField;
     cdsLoadFreightCostNote: TStringField;
-    cds_LF: TADQuery;
+    cds_LF: TFDQuery;
     cds_LFAM3: TFloatField;
     cds_LFInternalInvoiceNo: TIntegerField;
-    sq_GetLoadNo: TADQuery;
+    sq_GetLoadNo: TFDQuery;
     sq_GetLoadNoLoadNo: TIntegerField;
-    sq_FindAvr: TADQuery;
+    sq_FindAvr: TFDQuery;
     sq_FindAvrAvrakningsNo: TIntegerField;
     sq_FindAvrVERK: TStringField;
     sq_FindAvrVerkNo: TIntegerField;
-    sq_GetAddressNo: TADQuery;
+    sq_GetAddressNo: TFDQuery;
     sq_GetAddressNoAddressNo: TIntegerField;
-    sp_PcsPerLength: TADStoredProc;
+    sp_PcsPerLength: TFDStoredProc;
     sqGetSupplierNoSupplierNo: TIntegerField;
     cds_LFKommission_Percent: TFloatField;
     cds_LFKommission_Sum: TFloatField;
@@ -201,26 +201,26 @@ type
     cds_LFVaruvrde: TFloatField;
     cds_LFFakturavrde: TFloatField;
     cds_LFConfirmKomm: TIntegerField;
-    admSelectedRows: TADMemTable;
-    admSelectedRowsInternalInvoiceNo: TIntegerField;
-    admSelectedRowsLONo: TIntegerField;
-    admSelectedRowsSupplier_InvoiceNo: TStringField;
-    admSelectedRowsSupplier_InvoiceDate: TDateTimeField;
+    FDmSelectedRows: TFDMemTable;
+    FDmSelectedRowsInternalInvoiceNo: TIntegerField;
+    FDmSelectedRowsLONo: TIntegerField;
+    FDmSelectedRowsSupplier_InvoiceNo: TStringField;
+    FDmSelectedRowsSupplier_InvoiceDate: TDateTimeField;
     cds_LFFrakt: TFloatField;
     cds_LFKomm: TFloatField;
-    admSelectedRowsTotalAmount: TFloatField;
-    admSelectedRowsAmount: TFloatField;
-    admSelectedRowsSHIPPINGCOMPANYNO: TIntegerField;
-    admSelectedRowsCURRENCYNO: TIntegerField;
+    FDmSelectedRowsTotalAmount: TFloatField;
+    FDmSelectedRowsAmount: TFloatField;
+    FDmSelectedRowsSHIPPINGCOMPANYNO: TIntegerField;
+    FDmSelectedRowsCURRENCYNO: TIntegerField;
     cds_LFFraktCurrencyNo: TIntegerField;
     cds_LFKommCurrencyNo: TIntegerField;
-    admSelectedRowsFakturanr: TIntegerField;
+    FDmSelectedRowsFakturanr: TIntegerField;
     cds_LFAgentNo: TIntegerField;
     cds_LFInvoiceType: TIntegerField;
     cds_LFValutaNr: TIntegerField;
     cds_LFEgenValuta: TStringField;
     ds_LFALL: TDataSource;
-    admSelectedRowsNote: TStringField;
+    FDmSelectedRowsNote: TStringField;
     procedure cds_LFFraktChange(Sender: TField);
     procedure cds_LFConfirmFraktChange(Sender: TField);
     procedure cds_LFConfirmKommChange(Sender: TField);

@@ -270,8 +270,8 @@ object dmsSystem: TdmsSystem
     Left = 744
     Top = 496
   end
-  object spAccessRights: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object spAccessRights: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vida_UserRights_V4'
     Left = 48
     Top = 16
@@ -423,9 +423,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInputOutput
       end>
   end
-  object cds_Grade_SV: TADQuery
+  object cds_Grade_SV: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * From  dbo.Grade_SV G'
@@ -447,9 +447,9 @@ object dmsSystem: TdmsSystem
       Size = 30
     end
   end
-  object cds_Surfacing_SV: TADQuery
+  object cds_Surfacing_SV: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * From  dbo.Surfacing S'
@@ -518,9 +518,9 @@ object dmsSystem: TdmsSystem
     Left = 335
     Top = 184
   end
-  object cds_Species_SV: TADQuery
+  object cds_Species_SV: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * From  dbo.Species S'
@@ -590,9 +590,9 @@ object dmsSystem: TdmsSystem
     Left = 510
     Top = 184
   end
-  object cds_grade: TADQuery
+  object cds_grade: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select G.*,'
@@ -678,8 +678,8 @@ object dmsSystem: TdmsSystem
       Lookup = True
     end
   end
-  object sp_OneLoad: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_OneLoad: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_OneLoad'
     Left = 40
     Top = 616
@@ -769,8 +769,8 @@ object dmsSystem: TdmsSystem
       BlobType = ftMemo
     end
   end
-  object sp_Delete_Res_Pkgs: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_Delete_Res_Pkgs: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_Del_Pkg_ResModul'
     Left = 40
     Top = 664
@@ -795,14 +795,14 @@ object dmsSystem: TdmsSystem
         Size = 20
       end>
   end
-  object cdsBarCodes: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsBarCodes: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vida_BarCodes'
     Left = 128
     Top = 16
   end
-  object sp_Pkg_Res: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_Pkg_Res: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vida_Pkg_ResModul'
     Left = 40
     Top = 136
@@ -861,8 +861,8 @@ object dmsSystem: TdmsSystem
         Size = 20
       end>
   end
-  object sp_DelUserResPkgs: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_DelUserResPkgs: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_Del_UserResPkgs'
     Left = 40
     Top = 192
@@ -880,8 +880,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sp_CopyPOLoadToSales: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_CopyPOLoadToSales: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CopyPOLoadToSalesII'
     Left = 56
     Top = 256
@@ -929,8 +929,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sp_lencolpcspkgtypeno: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_lencolpcspkgtypeno: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vis_lencolpcspkgtypeno'
     Left = 152
     Top = 136
@@ -948,8 +948,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sp_lencolm3pkgtypeno: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_lencolm3pkgtypeno: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vis_lencolm3pkgtypeno'
     Left = 152
     Top = 192
@@ -967,9 +967,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_GridSettings: TADQuery
+  object cds_GridSettings: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.GridSettings'
@@ -1007,9 +1007,9 @@ object dmsSystem: TdmsSystem
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsPkgsByInvOwner: TADQuery
+  object cdsPkgsByInvOwner: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT PN.PackageNo,'
@@ -1068,10 +1068,10 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_ProductLength: TADQuery
+  object cds_ProductLength: TFDQuery
     AfterInsert = cds_ProductLengthAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'ProductLength'
     SQL.Strings = (
@@ -1149,8 +1149,8 @@ object dmsSystem: TdmsSystem
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_GetPkgPos: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetPkgPos: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'select C.ClientCode, C.PktNrLevKod, C.PaketNoPos, C.PaketNoLengt' +
@@ -1195,8 +1195,8 @@ object dmsSystem: TdmsSystem
       Origin = 'SupplierCodeLength'
     end
   end
-  object sq_GetInventoryNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetInventoryNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT PH.PhysicalInventoryPointNo'
       'FROM'
@@ -1224,14 +1224,14 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cdsGradeStamps: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsGradeStamps: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vida_GradeStamps'
     Left = 216
     Top = 16
   end
-  object cdsPaperWraps: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsPaperWraps: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_PaperWraps'
     Left = 304
     Top = 16
@@ -1243,8 +1243,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptResult
       end>
   end
-  object cdsPksByInvOwner_II: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cdsPksByInvOwner_II: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       ''
       'SELECT PN.PackageNo,'
@@ -1288,8 +1288,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_pkgLog: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cds_pkgLog: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.Vida_PkgLogII'
     Left = 528
     Top = 24
@@ -1389,9 +1389,9 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cds_PksByInventoryPlace: TADQuery
+  object cds_PksByInventoryPlace: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       ''
@@ -1483,9 +1483,9 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object sq_GetRPName: TADQuery
+  object sq_GetRPName: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from ReportNames'
@@ -1517,8 +1517,8 @@ object dmsSystem: TdmsSystem
       Size = 100
     end
   end
-  object cds_LastLoadNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LastLoadNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.LastUsedLoadNo'
       'WHERE UserID = :UserID')
@@ -1544,8 +1544,8 @@ object dmsSystem: TdmsSystem
       Size = 50
     end
   end
-  object sq_DelLastLoadUsed: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_DelLastLoadUsed: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Delete FROM dbo.LastUsedLoadNo'
       'WHERE UserID = :UserID'
@@ -1559,8 +1559,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_Article: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_Article: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select a.ArticleNo, a.ArticleName FROM dbo.FS_Article a')
     Left = 856
@@ -1577,9 +1577,9 @@ object dmsSystem: TdmsSystem
       Size = 50
     end
   end
-  object cds_GridSets: TADQuery
+  object cds_GridSets: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.GridSettings'
@@ -1632,10 +1632,10 @@ object dmsSystem: TdmsSystem
       Size = 50
     end
   end
-  object cdsClientPrefDocs: TADQuery
+  object cdsClientPrefDocs: TFDQuery
     AfterInsert = cdsClientPrefDocsAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.ClientPrefDoc'
@@ -1719,8 +1719,8 @@ object dmsSystem: TdmsSystem
       Lookup = True
     end
   end
-  object cds_PkgsByInventering: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_PkgsByInventering: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT Distinct PN.PackageNo,'
       '       PN.SupplierCode,'
@@ -1796,8 +1796,8 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cds_LO_Lengths: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LO_Lengths: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select PLG.ProductLengthNo, PL.ActualLengthMM, PL.NominalLengthM' +
@@ -1835,8 +1835,8 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cdsLenaRapporter: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cdsLenaRapporter: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * from dbo.ClientPrefDoc cpd'
       'Inner Join dbo.ReportNames rn on rn.ReportNo = cpd.ReportNo'
@@ -1920,8 +1920,8 @@ object dmsSystem: TdmsSystem
       Size = 100
     end
   end
-  object sq_GetXRate: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetXRate: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select top 1 IsNull(EX.ExChangeRate, 0) as ExchangeRate'
       'FROM ExChangeRate EX, Currency C'
@@ -1946,8 +1946,8 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object sq_LastInvDate: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_LastInvDate: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Top 1 icg.MaxDatum, '
       'icg.Inventeringsdatum, '
@@ -1986,8 +1986,8 @@ object dmsSystem: TdmsSystem
       Origin = 'Status'
     end
   end
-  object sp_LoadAR: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_LoadAR: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vis_LoadAR'
     Left = 840
     Top = 136
@@ -2010,8 +2010,8 @@ object dmsSystem: TdmsSystem
       Origin = 'LoadAR'
     end
   end
-  object cds_LoadPlanDest: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LoadPlanDest: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select LPH.Status,'
       'LPH.LoadingNo,'
@@ -2093,8 +2093,8 @@ object dmsSystem: TdmsSystem
       Origin = 'ETD'
     end
   end
-  object cds_LengthGroup: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LengthGroup: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT GroupNo, GroupName '
       'FROM dbo.ProductLengthGroupName '
@@ -2113,9 +2113,9 @@ object dmsSystem: TdmsSystem
       FixedChar = True
     end
   end
-  object cds_Language: TADQuery
+  object cds_Language: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.Language')
@@ -2159,8 +2159,8 @@ object dmsSystem: TdmsSystem
     Left = 144
     Top = 496
   end
-  object cds_PkgImp: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_PkgImp: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT TOP 1'
       '       PN.PackageNo,'
@@ -2261,9 +2261,9 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cds_FtpParam: TADQuery
+  object cds_FtpParam: TFDQuery
     AfterInsert = cds_FtpParamAfterInsert
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.FtpParam'
       'WHERE UserID = :UserID')
@@ -2355,8 +2355,8 @@ object dmsSystem: TdmsSystem
       Size = 255
     end
   end
-  object cds_PriceList: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_PriceList: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select templateno, PriceListName FROM dbo.PriceTemplateHeader')
     Left = 424
@@ -2374,9 +2374,9 @@ object dmsSystem: TdmsSystem
       Size = 30
     end
   end
-  object cds_Props: TADQuery
+  object cds_Props: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.userDir'
@@ -2473,9 +2473,9 @@ object dmsSystem: TdmsSystem
       Size = 255
     end
   end
-  object cds_PkgTypeLengths: TADQuery
+  object cds_PkgTypeLengths: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select PTD.ProductLengthNo, PL.ActualLengthMM AS ALMM'
@@ -2507,14 +2507,14 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object qryExec: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object qryExec: TFDQuery
+    Connection = dmsConnector.FDConnection1
     Left = 1120
     Top = 352
   end
-  object sq_ConfirmedLoad: TADQuery
+  object sq_ConfirmedLoad: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select IsNull(NewLoadNo, 0) AS NewLoadNo, NewShippingPlanNo'
@@ -2539,9 +2539,9 @@ object dmsSystem: TdmsSystem
       FieldName = 'NewShippingPlanNo'
     end
   end
-  object sq_dbProps: TADQuery
+  object sq_dbProps: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.dbProps')
@@ -2573,9 +2573,9 @@ object dmsSystem: TdmsSystem
       Size = 255
     end
   end
-  object sq_GetLoadPlanPkgs: TADQuery
+  object sq_GetLoadPlanPkgs: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -2653,10 +2653,10 @@ object dmsSystem: TdmsSystem
       Size = 102
     end
   end
-  object cdsRptNames: TADQuery
+  object cdsRptNames: TFDQuery
     AfterInsert = cdsRptNamesAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.ReportNames')
@@ -2697,8 +2697,8 @@ object dmsSystem: TdmsSystem
       Lookup = True
     end
   end
-  object sq_DoLog: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_DoLog: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Insert into dbo.DoLog(ProgramName, CreatedDate, UserID, LogText)'
       'Select :ProgramName, GetDate(), :UserID, :LogText')
@@ -2721,9 +2721,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_PkgImpNoLO: TADQuery
+  object cds_PkgImpNoLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT TOP 1'
@@ -2779,8 +2779,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_ProdLength: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_ProdLength: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select distinct LRR.NomLength'
       'FROM dbo.LengthRuleRow LRR'
@@ -2853,8 +2853,8 @@ object dmsSystem: TdmsSystem
       Origin = 'NomLength'
     end
   end
-  object cds_Currency: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_Currency: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * from dbo.Currency')
     Left = 456
@@ -2898,9 +2898,9 @@ object dmsSystem: TdmsSystem
     Left = 360
     Top = 304
   end
-  object cdsPaymentTerm: TADQuery
+  object cdsPaymentTerm: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -2959,10 +2959,10 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object cds_PaymentText: TADQuery
+  object cds_PaymentText: TFDQuery
     AfterInsert = cds_PaymentTextAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from '
@@ -3024,9 +3024,9 @@ object dmsSystem: TdmsSystem
     Left = 560
     Top = 304
   end
-  object cds_ExchangeRate: TADQuery
+  object cds_ExchangeRate: TFDQuery
     AfterInsert = cds_ExchangeRateAfterInsert
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * From DBO.ExchangeRate'
       'WHERE CurrencyNo = :CurrencyNo')
@@ -3076,10 +3076,10 @@ object dmsSystem: TdmsSystem
       ProviderFlags = [pfInUpdate]
     end
   end
-  object cdsCarrier: TADQuery
+  object cdsCarrier: TFDQuery
     AfterInsert = cdsCarrierAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select *'
@@ -3131,9 +3131,9 @@ object dmsSystem: TdmsSystem
     Left = 896
     Top = 496
   end
-  object cdsBookingType: TADQuery
+  object cdsBookingType: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from BookingType')
@@ -3168,9 +3168,9 @@ object dmsSystem: TdmsSystem
       Origin = 'SequenceNo'
     end
   end
-  object sq_PkgType_InvoiceByCSD: TADQuery
+  object sq_PkgType_InvoiceByCSD: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgType_Invoice'
@@ -3397,9 +3397,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sq_DelPkgType: TADQuery
+  object sq_DelPkgType: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgType_Invoice'
@@ -3414,9 +3414,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sq_PkgType_InvoiceByLO: TADQuery
+  object sq_PkgType_InvoiceByLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.PkgType_Invoice'
@@ -3649,9 +3649,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sq_GetPackagetypeTotalPcs: TADQuery
+  object sq_GetPackagetypeTotalPcs: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select pt.TotalNoOfPieces, pn.PackageTypeNo, pt.ProductNo,'
@@ -3700,9 +3700,9 @@ object dmsSystem: TdmsSystem
       ReadOnly = True
     end
   end
-  object sq_InsTempPkg: TADQuery
+  object sq_InsTempPkg: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -3728,9 +3728,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sp_NewCSDLoad: TADStoredProc
+  object sp_NewCSDLoad: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.Vis_newLoad_cds'
     Left = 664
@@ -3781,9 +3781,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInputOutput
       end>
   end
-  object sq_DelTempPkg: TADQuery
+  object sq_DelTempPkg: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.SortingOrderMarkedPkgs'
@@ -3797,9 +3797,9 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sq_InsLoad_Imp: TADQuery
+  object sq_InsLoad_Imp: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Insert into dbo.Load_Imp(TempLoadNo, DateCreated, CreatedUser,'
@@ -3840,10 +3840,10 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object cds_Load_Imp: TADQuery
+  object cds_Load_Imp: TFDQuery
     AfterInsert = cds_Load_ImpAfterInsert
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.Load_Imp'
@@ -3892,9 +3892,9 @@ object dmsSystem: TdmsSystem
     Left = 760
     Top = 376
   end
-  object sq_GetProductNoByProductCode: TADQuery
+  object sq_GetProductNoByProductCode: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select p.ProductNo'
@@ -3915,8 +3915,8 @@ object dmsSystem: TdmsSystem
       Required = True
     end
   end
-  object sq_SetMallAsStd: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_SetMallAsStd: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Update dbo.userprops'
       'Set LOObjectType = 0'
@@ -3958,14 +3958,14 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
-  object sp_PopLengthSpecII: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_PopLengthSpecII: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vida_PopLengthSpecII'
     Left = 48
     Top = 736
   end
-  object sp_DelLoad_Res: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_DelLoad_Res: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_DelLoad_Res'
     Left = 40
     Top = 384
@@ -3990,8 +3990,8 @@ object dmsSystem: TdmsSystem
         Size = 50
       end>
   end
-  object sp_Load_Res: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_Load_Res: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Load_Res'
     Left = 40
     Top = 328
@@ -4023,8 +4023,8 @@ object dmsSystem: TdmsSystem
         Size = 50
       end>
   end
-  object cds_LoadWeigth: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LoadWeigth: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select LDW.LoadNo, LDW.Reference, LDW.LoadWeightKG'
       #9'FROM dbo.LoadWeight LDW '
@@ -4058,8 +4058,8 @@ object dmsSystem: TdmsSystem
       ProviderFlags = [pfInUpdate]
     end
   end
-  object sq_GenerateLoadWeight: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GenerateLoadWeight: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Insert into dbo.LoadWeight'
       ''
@@ -4179,8 +4179,8 @@ object dmsSystem: TdmsSystem
       FieldName = 'NIW'
     end
   end
-  object cds_PackageSize: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_PackageSize: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT TOP 1000 [PackageSizeNo]'
       '      ,[PackageSizeName]'
@@ -4230,8 +4230,8 @@ object dmsSystem: TdmsSystem
     Left = 232
     Top = 496
   end
-  object cds_Cert: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_Cert: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.CertificationWood')
     Left = 232
@@ -4256,8 +4256,8 @@ object dmsSystem: TdmsSystem
     Left = 232
     Top = 776
   end
-  object sp_vis_Del_OLD_Load_Res: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_vis_Del_OLD_Load_Res: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Del_OLD_Load_Res'
     Left = 160
     Top = 384
@@ -4269,8 +4269,8 @@ object dmsSystem: TdmsSystem
         ParamType = ptResult
       end>
   end
-  object ADStoredProc1: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDStoredProc1: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'Vida_PkgLog_IIII'
     Left = 360
     Top = 360
@@ -4297,8 +4297,8 @@ object dmsSystem: TdmsSystem
         Value = ''
       end>
   end
-  object sp_SetInfo2Text: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_SetInfo2Text: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_SetInfo2Text'
     Left = 1128
     Top = 560
@@ -4330,8 +4330,8 @@ object dmsSystem: TdmsSystem
         Size = 30
       end>
   end
-  object sp_LagerPos: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_LagerPos: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_LagerPos'
     Left = 1128
     Top = 616
@@ -4344,8 +4344,8 @@ object dmsSystem: TdmsSystem
         Value = 0
       end>
   end
-  object sp_PksByLIPNo: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_PksByLIPNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_PkgsByLIPNo'
     Left = 864
     Top = 280
@@ -4374,8 +4374,8 @@ object dmsSystem: TdmsSystem
     Left = 864
     Top = 328
   end
-  object sq_GridSets2: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GridSets2: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.GridSettings'
       'WHERE ViewName = :ViewName'

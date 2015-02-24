@@ -136,8 +136,8 @@ inherited fSetStdPkgSizeIntervall: TfSetStdPkgSizeIntervall
       OnExecute = acRefreshExecute
     end
   end
-  object cds_PkgStdPcs: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_PkgStdPcs: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select psp.Clientno, psp.ProductNo,  psp.ALMM, psp.NoOfPcsFullPk' +

@@ -41,10 +41,10 @@ uses
   cxShellBrowserDialog, ShlObj, cxShellCommon, cxShellListView,
   cxLookAndFeelPainters, cxButtons, cxPC, cxCalendar, cxDBEdit, cxCheckBox,
   clFTPUtils,
-  clTcpClient, clFtp, uADStanIntf, uADStanOption, uADStanParam,
-  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
-  uADDAptManager, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
-  uADCompDataSet, uADCompClient, cxGridCustomPopupMenu, cxGridPopupMenu,
+  clTcpClient, clFtp, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxGridCustomPopupMenu, cxGridPopupMenu,
   dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd,
   dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxEditorProducers,
   dxPScxExtEditorProducers, dxPScxPageControlProducer, cxPropertiesStore,
@@ -3066,10 +3066,10 @@ end;
 procedure TfrmVisTruckLoadOrder.acNewLoadWithLOExecute(Sender: TObject);
 Var LOStatus : Integer ;
 begin
-// if not dmsConnector.ADMoniFlatFileClientLink1.Tracing then
+// if not dmsConnector.FDMoniFlatFileClientLink1.Tracing then
 // Begin
-//  dmsConnector.ADConnection1.Params.Values['MonitorBy'] := 'FlatFile';
-//  dmsConnector.ADMoniFlatFileClientLink1.Tracing  := True ;
+//  dmsConnector.FDConnection1.Params.Values['MonitorBy'] := 'FlatFile';
+//  dmsConnector.FDMoniFlatFileClientLink1.Tracing  := True ;
 // End ;
  LOStatus := dmcOrder.LO_Status(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
  if LOStatus in [1,3,6,9] then
@@ -3129,8 +3129,8 @@ begin
 //  end;
 
 //  Finally
-//   dmsConnector.ADMoniFlatFileClientLink1.Tracing  := False ;
-//   dmsConnector.ADConnection1.Params.Values['MonitorBy'] := '';
+//   dmsConnector.FDMoniFlatFileClientLink1.Tracing  := False ;
+//   dmsConnector.FDConnection1.Params.Values['MonitorBy'] := '';
 //  End ;
 end;
 

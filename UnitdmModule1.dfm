@@ -95,9 +95,9 @@ object dmModule1: TdmModule1
     Left = 224
     Top = 80
   end
-  object cds_PkgInfo: TADQuery
+  object cds_PkgInfo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -354,9 +354,9 @@ object dmModule1: TdmModule1
       Size = 50
     end
   end
-  object sqGetSupplierNo: TADQuery
+  object sqGetSupplierNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select distinct SupplierNo From dbo.Loads LO'
@@ -380,9 +380,9 @@ object dmModule1: TdmModule1
       Required = True
     end
   end
-  object cds_LoadPkgInfo: TADQuery
+  object cds_LoadPkgInfo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -543,9 +543,9 @@ object dmModule1: TdmModule1
       Size = 80
     end
   end
-  object cds_LoadFreightCostHeader: TADQuery
+  object cds_LoadFreightCostHeader: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -607,9 +607,9 @@ object dmModule1: TdmModule1
       Origin = 'VerkNo'
     end
   end
-  object cdsClient: TADStoredProc
+  object cdsClient: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Clients'
     Left = 424
@@ -639,9 +639,9 @@ object dmModule1: TdmModule1
       Size = 80
     end
   end
-  object sq_ClientData: TADQuery
+  object sq_ClientData: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -663,15 +663,15 @@ object dmModule1: TdmModule1
       'CU.CurrencyNo,'
       ''
       'CU.CurrencyName'#9#9#9'AS CURRENCYNAME,'
-      'ADR.AddressName'#9#9#9'AS BILL_ADDRESS_NAME,'
-      'ADR.AddressLine1'#9#9'AS BILL_ADDRESSLINE1,'
-      'ADR.AddressLine2'#9#9'AS BILL_ADDRESSLINE2,'
-      'ADR.AddressLine3'#9#9'AS BILL_ADDRESSLINE3,'
-      'ADR.AddressLine4'#9#9'AS BILL_ADDRESSLINE4,'
-      'ADR.StateOrProvince'#9#9'AS BILL_STATEORPROVINCE,'
-      'ADR.PostalCode'#9#9#9'AS BILL_POSTALCODE,'
-      'AdrCY.CityName '#9#9#9'AS BILL_ADDRESSCITY,'
-      'AdrCtry.CountryName '#9#9'AS BILL_ADDRESSCOUNTRY,'
+      'FDR.AddressName'#9#9#9'AS BILL_ADDRESS_NAME,'
+      'FDR.AddressLine1'#9#9'AS BILL_ADDRESSLINE1,'
+      'FDR.AddressLine2'#9#9'AS BILL_ADDRESSLINE2,'
+      'FDR.AddressLine3'#9#9'AS BILL_ADDRESSLINE3,'
+      'FDR.AddressLine4'#9#9'AS BILL_ADDRESSLINE4,'
+      'FDR.StateOrProvince'#9#9'AS BILL_STATEORPROVINCE,'
+      'FDR.PostalCode'#9#9#9'AS BILL_POSTALCODE,'
+      'FDrCY.CityName '#9#9#9'AS BILL_ADDRESSCITY,'
+      'FDrCtry.CountryName '#9#9'AS BILL_ADDRESSCOUNTRY,'
       ''
       'ST_ADR.AddressName'#9#9#9'AS SHIPTO_ADDRESS_NAME,'
       'ST_ADR.AddressLine1'#9#9#9'AS SHIPTO_ADDRESSLINE1,'
@@ -708,11 +708,11 @@ object dmModule1: TdmModule1
       ''
       ''
       
-        #9'INNER JOIN dbo.Address '#9#9'ADR'#9#9'ON'#9'ADR.AddressNo'#9#9'= CP.DefaultBil' +
+        #9'INNER JOIN dbo.Address '#9#9'FDR'#9#9'ON'#9'FDR.AddressNo'#9#9'= CP.DefaultBil' +
         'lingAddressNo'
-      #9'INNER JOIN dbo.CITY'#9#9'AdrCY'#9#9'ON'#9'AdrCY.CityNo '#9#9'= ADR.CityNo'
+      #9'INNER JOIN dbo.CITY'#9#9'FDrCY'#9#9'ON'#9'FDrCY.CityNo '#9#9'= FDR.CityNo'
       
-        #9'INNER JOIN dbo.Country'#9#9'AdrCtry'#9#9'ON'#9'AdrCtry.CountryNo '#9'= ADR.Co' +
+        #9'INNER JOIN dbo.Country'#9#9'FDrCtry'#9#9'ON'#9'FDrCtry.CountryNo '#9'= FDR.Co' +
         'untryNo'
       ''
       #9'LEFT OUTER JOIN dbo.Address '#9#9'ST_ADR'#9#9
@@ -902,8 +902,8 @@ object dmModule1: TdmModule1
       Size = 30
     end
   end
-  object cdsDestination: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object cdsDestination: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_Cities'
     Left = 616
     Top = 16
@@ -926,9 +926,9 @@ object dmModule1: TdmModule1
       Size = 50
     end
   end
-  object sq_UpdateLoad: TADQuery
+  object sq_UpdateLoad: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Loads'
@@ -948,9 +948,9 @@ object dmModule1: TdmModule1
         ParamType = ptInput
       end>
   end
-  object sq_UpdLoadII: TADQuery
+  object sq_UpdLoadII: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Loads'
@@ -976,9 +976,9 @@ object dmModule1: TdmModule1
         ParamType = ptInput
       end>
   end
-  object sq_InsFakturaLoads: TADQuery
+  object sq_InsFakturaLoads: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1051,9 +1051,9 @@ object dmModule1: TdmModule1
         ParamType = ptInput
       end>
   end
-  object cdsClientAddress: TADQuery
+  object cdsClientAddress: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -1155,9 +1155,9 @@ object dmModule1: TdmModule1
       Size = 30
     end
   end
-  object cds_LoadFC: TADQuery
+  object cds_LoadFC: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -1221,7 +1221,7 @@ object dmModule1: TdmModule1
         'bjectNo = LD.DefsspNo'
       
         'Inner Join dbo.Confirmed_Load CL ON CL.Confirmed_LoadNo = LSP.Lo' +
-        'adNo'
+        'FDNo'
       '  '#9#9#9#9'and CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo'
       ''
       
@@ -1235,7 +1235,7 @@ object dmModule1: TdmModule1
       'AND  L.LoadNo NOT IN (Select LoadNo FROM dbo.LoadFreightCost)'
       
         'group by L.LocalShippingCompanyNo,L.LoadNo, L.FS, L.LoadID, L.Lo' +
-        'adedDate, shipper.clientname,'
+        'FDedDate, shipper.clientname,'
       'FromPlace.CityName, ToPlace.CityName,'
       'L.SupplierNo, LSP.ShippingPlanNo, L.LocalShippingCompanyNo,'
       'LSP.LoadingLocationNo, csh.CustomerNo, ssp.CustomerNo'
@@ -1376,9 +1376,9 @@ object dmModule1: TdmModule1
       Size = 30
     end
   end
-  object cdsLoadFreightCost: TADQuery
+  object cdsLoadFreightCost: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     SQL.Strings = (
@@ -1431,7 +1431,7 @@ object dmModule1: TdmModule1
       Size = 30
     end
   end
-  object cds_LF: TADQuery
+  object cds_LF: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -1441,7 +1441,7 @@ object dmModule1: TdmModule1
         Fields = 'InternalInvoiceNo;ShippingPlanNo'
       end>
     IndexName = 'cds_LFIndex01'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -1717,8 +1717,8 @@ object dmModule1: TdmModule1
       Lookup = True
     end
   end
-  object sq_GetLoadNo: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_GetLoadNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'select distinct LoadNo From dbo.LoadShippingPlan'
       'Where ShippingPlanNo = :LO')
@@ -1737,9 +1737,9 @@ object dmModule1: TdmModule1
       Required = True
     end
   end
-  object sq_FindAvr: TADQuery
+  object sq_FindAvr: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -1775,9 +1775,9 @@ object dmModule1: TdmModule1
       Origin = 'VerkNo'
     end
   end
-  object sq_GetAddressNo: TADQuery
+  object sq_GetAddressNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select AddressNo From ShippingPlan_ShippingAddress'
@@ -1803,8 +1803,8 @@ object dmModule1: TdmModule1
       Required = True
     end
   end
-  object sp_PcsPerLength: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object sp_PcsPerLength: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_GetPiecesPerLengthTEST'
     Left = 40
     Top = 264
@@ -1836,7 +1836,7 @@ object dmModule1: TdmModule1
         Size = 8000
       end>
   end
-  object admSelectedRows: TADMemTable
+  object FDmSelectedRows: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -1845,35 +1845,35 @@ object dmModule1: TdmModule1
     UpdateOptions.CheckRequired = False
     Left = 592
     Top = 416
-    object admSelectedRowsInternalInvoiceNo: TIntegerField
+    object FDmSelectedRowsInternalInvoiceNo: TIntegerField
       FieldName = 'InternalInvoiceNo'
     end
-    object admSelectedRowsLONo: TIntegerField
+    object FDmSelectedRowsLONo: TIntegerField
       FieldName = 'LONo'
     end
-    object admSelectedRowsSupplier_InvoiceNo: TStringField
+    object FDmSelectedRowsSupplier_InvoiceNo: TStringField
       FieldName = 'Supplier_InvoiceNo'
       Size = 50
     end
-    object admSelectedRowsSupplier_InvoiceDate: TDateTimeField
+    object FDmSelectedRowsSupplier_InvoiceDate: TDateTimeField
       FieldName = 'Supplier_InvoiceDate'
     end
-    object admSelectedRowsTotalAmount: TFloatField
+    object FDmSelectedRowsTotalAmount: TFloatField
       FieldName = 'TotalAmount'
     end
-    object admSelectedRowsAmount: TFloatField
+    object FDmSelectedRowsAmount: TFloatField
       FieldName = 'Amount'
     end
-    object admSelectedRowsSHIPPINGCOMPANYNO: TIntegerField
+    object FDmSelectedRowsSHIPPINGCOMPANYNO: TIntegerField
       FieldName = 'SHIPPINGCOMPANYNO'
     end
-    object admSelectedRowsCURRENCYNO: TIntegerField
+    object FDmSelectedRowsCURRENCYNO: TIntegerField
       FieldName = 'CURRENCYNO'
     end
-    object admSelectedRowsFakturanr: TIntegerField
+    object FDmSelectedRowsFakturanr: TIntegerField
       FieldName = 'Fakturanr'
     end
-    object admSelectedRowsNote: TStringField
+    object FDmSelectedRowsNote: TStringField
       FieldName = 'Note'
       Size = 255
     end

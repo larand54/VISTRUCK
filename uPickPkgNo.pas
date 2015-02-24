@@ -12,9 +12,9 @@ uses
   cxCheckBox, cxCalendar, cxContainer, 
   cxTextEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, cxLabel, FMTBcd, DBClient, Provider, SqlExpr,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet,
-  uADCompClient, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
   dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
   dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
   dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
@@ -95,7 +95,7 @@ type
     lbShowTM: TdxBarLargeButton;
     acShowPkgsWithSameActDimOnly: TAction;
     grdPickPkgNosDBTableView1Produkt: TcxGridDBColumn;
-    sq_PaketLista: TADQuery;
+    sq_PaketLista: TFDQuery;
     sq_PaketListaPackageNo: TIntegerField;
     sq_PaketListaLEVKOD: TStringField;
     sq_PaketListaproductno: TIntegerField;
@@ -105,7 +105,7 @@ type
     sq_PaketListaDateCreated: TSQLTimeStampField;
     sq_PaketListaNOOFLENGTHS: TIntegerField;
     sq_PaketListaProdukt: TStringField;
-    cds_ProdInLager: TADQuery;
+    cds_ProdInLager: TFDQuery;
     cds_ProdInLagerProductDisplayName: TStringField;
     cds_ProdInLagerProductNo: TIntegerField;
     grdPickPkgNosDBTableView1HTFStatus: TcxGridDBColumn;
@@ -147,17 +147,17 @@ type
     acShowMatchingLIP: TAction;
     cxButton1: TcxButton;
     BitBtn3: TBitBtn;
-    mtPkgNos: TADMemTable;
+    mtPkgNos: TFDMemTable;
     mtPkgNosPackageNo: TIntegerField;
     mtPkgNosPrefix: TStringField;
-    mtProps: TADMemTable;
+    mtProps: TFDMemTable;
     dsProps: TDataSource;
     cxLabel5: TcxLabel;
     lcLIP: TcxDBLookupComboBox;
     mtPropsPIPNo: TIntegerField;
     mtPropsLIPNo: TIntegerField;
     ds_LIP2: TDataSource;
-    cds_LIP2: TADQuery;
+    cds_LIP2: TFDQuery;
     cds_LIP2LIPNo: TIntegerField;
     cds_LIP2LIPName: TStringField;
     mtPropsLIP: TStringField;

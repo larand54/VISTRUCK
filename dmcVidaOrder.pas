@@ -11,9 +11,9 @@ uses
   Controls,
   SqlTimSt,
   Vidatype, dxmdaset, FMTBcd, Variants, kbmMemTable,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet,
-  uADCompClient ;
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client ;
 const
  Const_SupplierShippingPlan = 'SupplierShippingPlan' ;
  Const_Booking                  = 'Booking' ;
@@ -87,8 +87,8 @@ type
     dsProps: TDataSource;
     mtPropsLengthGrupp: TStringField;
     ds_LOListHH: TDataSource;
-    ADQuery1: TADQuery;
-    cdsSawmillLoadOrders: TADQuery;
+    FDQuery1: TFDQuery;
+    cdsSawmillLoadOrders: TFDQuery;
     cdsSawmillLoadOrdersKONTRAKTSBESKRIVNING: TStringField;
     cdsSawmillLoadOrdersShippersShipDate: TSQLTimeStampField;
     cdsSawmillLoadOrdersREADYDATE: TStringField;
@@ -156,7 +156,7 @@ type
     cdsSawmillLoadOrdersOrderNo: TIntegerField;
     cdsSawmillLoadOrdersModifiedUser: TIntegerField;
     cdsSawmillLoadOrdersLagergrupp: TStringField;
-    cdsBooking: TADQuery;
+    cdsBooking: TFDQuery;
     cdsBookingCarrierName: TStringField;
     cdsBookingETD: TSQLTimeStampField;
     cdsBookingBookingNo: TIntegerField;
@@ -172,7 +172,7 @@ type
     cdsBookingInvoiceText: TMemoField;
     cdsBookingNoteForLoadSheet: TMemoField;
     cdsBookingVoyageNo: TIntegerField;
-    cds_PPNo: TADQuery;
+    cds_PPNo: TFDQuery;
     cds_PPNoPkgCodePPNo: TIntegerField;
     cds_PPNoPackageTypeNo: TIntegerField;
     cds_PPNoPackageCode: TStringField;
@@ -187,32 +187,32 @@ type
     cds_PPNoModifiedDate: TSQLTimeStampField;
     cds_PPNoTagNo: TIntegerField;
     cds_PPNoActive: TIntegerField;
-    cds_ELOLengths: TADQuery;
+    cds_ELOLengths: TFDQuery;
     cds_ELOLengthsActualLengthMM: TFloatField;
     cds_ELOLengthsSupplierShipPlanObjectNo: TIntegerField;
     cds_ELOLengthsProductLengthNo: TIntegerField;
     cds_ELOLengthsPkgCodePPNo: TIntegerField;
-    cds_PP_Layout: TADQuery;
+    cds_PP_Layout: TFDQuery;
     cds_PP_LayoutPkgCodePPNo: TIntegerField;
     cds_PP_LayoutLayoutNo: TIntegerField;
     cds_PP_LayoutAntalKopior: TIntegerField;
-    cds_LOLengths: TADQuery;
+    cds_LOLengths: TFDQuery;
     cds_LOLengthsActualLengthMM: TFloatField;
     cds_LOLengthsSupplierShipPlanObjectNo: TIntegerField;
     cds_LOLengthsProductLengthNo: TIntegerField;
     cds_LOLengthsPkgCodePPNo: TIntegerField;
-    cds_ZeroGroup: TADQuery;
+    cds_ZeroGroup: TFDQuery;
     cds_ZeroGroupPkgCodePPZeroGroupNo: TIntegerField;
     cds_ZeroGroupPkgCodePPNo: TIntegerField;
-    sq_CheckSupplierNo: TADQuery;
+    sq_CheckSupplierNo: TFDQuery;
     sq_CheckSupplierNoNoOfSuppliers: TIntegerField;
-    sq_SetLOStatus: TADQuery;
-    sq_SearchALOByMainLO: TADQuery;
+    sq_SetLOStatus: TFDQuery;
+    sq_SearchALOByMainLO: TFDQuery;
     sq_SearchALOByMainLOShippingPlanNo: TIntegerField;
-    sq_BTHExistInLager: TADQuery;
-    sq_FindLONo: TADQuery;
+    sq_BTHExistInLager: TFDQuery;
+    sq_FindLONo: TFDQuery;
     sq_FindLONoLONo: TIntegerField;
-    cds_PI_ELO: TADQuery;
+    cds_PI_ELO: TFDQuery;
     cds_PI_ELOProdInstruNo: TIntegerField;
     cds_PI_ELOFOHCpercent: TFloatField;
     cds_PI_ELOMiniBundleHeight: TIntegerField;
@@ -252,23 +252,23 @@ type
     cds_PI_ELOExternalNote: TMemoField;
     cds_PI_ELOTruckSticksNo: TIntegerField;
     cds_PI_ELOStrapTypeNo: TIntegerField;
-    cds_PkgOwner: TADQuery;
+    cds_PkgOwner: TFDQuery;
     cds_PkgOwnerPkgCodePPNo: TIntegerField;
     cds_PkgOwnerClientNo: TIntegerField;
     cds_PkgOwnerCreatedUser: TIntegerField;
     cds_PkgOwnerDateCreated: TSQLTimeStampField;
-    cds_ELOLayout: TADQuery;
+    cds_ELOLayout: TFDQuery;
     cds_ELOLayoutSupplierShipPlanObjectNo: TIntegerField;
     cds_ELOLayoutLayoutNo: TIntegerField;
     cds_ELOLayoutAntalKopior: TIntegerField;
-    sq_GetPPNo: TADQuery;
+    sq_GetPPNo: TFDQuery;
     sq_GetPPNoPkgCodePPNo: TIntegerField;
-    cds_OLLayout: TADQuery;
+    cds_OLLayout: TFDQuery;
     cds_OLLayoutOrderNo: TIntegerField;
     cds_OLLayoutOrderLineNo: TIntegerField;
     cds_OLLayoutLayoutNo: TIntegerField;
     cds_OLLayoutAntalKopior: TIntegerField;
-    cds_PkgCodeO: TADQuery;
+    cds_PkgCodeO: TFDQuery;
     cds_PkgCodeOPkgCodePPNo: TIntegerField;
     cds_PkgCodeOPackageTypeNo: TIntegerField;
     cds_PkgCodeOPackageMainCode: TStringField;
@@ -279,18 +279,18 @@ type
     cds_PkgCodeODateModified: TSQLTimeStampField;
     cds_PkgCodeOLengthDescription: TStringField;
     cds_PkgCodeOMarketRegionNo: TIntegerField;
-    sq_PkgStatus: TADQuery;
+    sq_PkgStatus: TFDQuery;
     sq_PkgStatusStatus: TIntegerField;
-    sq_RemFromZeroGroup: TADQuery;
-    sq_OrderType: TADQuery;
+    sq_RemFromZeroGroup: TFDQuery;
+    sq_OrderType: TFDQuery;
     sq_OrderTypeOrderType: TIntegerField;
-    sq_LegoHasLL: TADQuery;
+    sq_LegoHasLL: TFDQuery;
     sq_LegoHasLLLoadingLocationNo: TIntegerField;
-    sq_ValidLONr: TADQuery;
+    sq_ValidLONr: TFDQuery;
     sq_ValidLONrShippingPlanNo: TIntegerField;
     sq_ValidLONrSupplierNo: TIntegerField;
     sq_ValidLONrLoadingLocationNo: TIntegerField;
-    cds_LOListHH: TADQuery;
+    cds_LOListHH: TFDQuery;
     cds_LOListHHCreatedUser: TIntegerField;
     cds_LOListHHSSPNo: TIntegerField;
     cds_LOListHHLONo: TIntegerField;
@@ -298,15 +298,15 @@ type
     cds_LOListHHVolume: TFloatField;
     cds_LOListHHProdukt: TStringField;
     cds_LOListHHLngd: TStringField;
-    cdsLoadsForLO: TADStoredProc;
-    sp_Populate_One_PkgTypeLengths: TADStoredProc;
-    sp_CngLOonLoad: TADStoredProc;
-    sp_PackageTypes: TADStoredProc;
-    sp_PackageTypeDetail: TADStoredProc;
-    sp_NewPackageType_II: TADStoredProc;
-    sp_NewPackageDetail: TADStoredProc;
-    sp_PackageTotals: TADStoredProc;
-    sp_lencolpcspkgtypeno: TADStoredProc;
+    cdsLoadsForLO: TFDStoredProc;
+    sp_Populate_One_PkgTypeLengths: TFDStoredProc;
+    sp_CngLOonLoad: TFDStoredProc;
+    sp_PackageTypes: TFDStoredProc;
+    sp_PackageTypeDetail: TFDStoredProc;
+    sp_NewPackageType_II: TFDStoredProc;
+    sp_NewPackageDetail: TFDStoredProc;
+    sp_PackageTotals: TFDStoredProc;
+    sp_lencolpcspkgtypeno: TFDStoredProc;
     cdsLoadsForLOFS: TStringField;
     cdsLoadsForLOShippingPlanNo: TIntegerField;
     cdsLoadsForLOLoadNo: TIntegerField;
@@ -328,7 +328,7 @@ type
     cds_PPNoCreatedDate: TSQLTimeStampField;
     cds_PPNoModifiedUser: TIntegerField;
     cds_PPNoprodinstruno: TIntegerField;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;
@@ -379,14 +379,14 @@ type
     cds_PropsVerk: TStringField;
     ds_Props: TDataSource;
     cdsSawmillLoadOrdersLngd: TStringField;
-    ADUpdateSQL1: TADUpdateSQL;
+    FDUpdateSQL1: TFDUpdateSQL;
     cdsLoadsForLOAR_AV: TStringField;
-    sq_City: TADQuery;
+    sq_City: TFDQuery;
     sq_CityOrt: TStringField;
     sq_CityCityNo: TIntegerField;
     cds_PropsLaststlle: TStringField;
     cds_PropsDestination: TStringField;
-    cdsLoadsForLO_forVW: TADStoredProc;
+    cdsLoadsForLO_forVW: TFDStoredProc;
     cdsLoadsForLO_forVWFS: TStringField;
     cdsLoadsForLO_forVWShippingPlanNo: TIntegerField;
     cdsLoadsForLO_forVWLoadNo: TIntegerField;
@@ -404,27 +404,27 @@ type
     cdsLoadsForLO_forVWLoadAR: TIntegerField;
     cdsLoadsForLO_forVWAR: TSQLTimeStampField;
     cdsLoadsForLO_forVWAR_AV: TStringField;
-    sq_Dest: TADQuery;
+    sq_Dest: TFDQuery;
     sq_DestOrt: TStringField;
     sq_DestCityNo: TIntegerField;
     cdsLoadsForLOPackageEntryOption: TIntegerField;
     cdsLoadsForLO_forVWPackageEntryOption: TIntegerField;
-    cds_LSP: TADQuery;
+    cds_LSP: TFDQuery;
     cds_LSPSSP_STATUS: TIntegerField;
     cds_LSPAVROP_STATUS: TIntegerField;
     cdsSawmillLoadOrdersETD: TSQLTimeStampField;
     cdsSawmillLoadOrdersETA: TSQLTimeStampField;
     cdsSawmillLoadOrdersPackage_Size: TIntegerField;
     cdsSawmillLoadOrdersPackageSizeName: TStringField;
-    upd_LO: TADUpdateSQL;
+    upd_LO: TFDUpdateSQL;
     cdsSawmillLoadOrdersPkgArticleNo: TIntegerField;
     cdsSawmillLoadOrdersLOGroupNo: TIntegerField;
     cdsSawmillLoadOrdersLOBuffertName: TStringField;
     cdsSawmillLoadOrdersLoadedPkgs: TIntegerField;
     cdsSawmillLoadOrdersLoadedNM3: TFloatField;
-    sp_GetLO_Avrop_Status: TADStoredProc;
-    sp_SetIntHdrStatus: TADStoredProc;
-    sp_SetLOStatus: TADStoredProc;
+    sp_GetLO_Avrop_Status: TFDStoredProc;
+    sp_SetIntHdrStatus: TFDStoredProc;
+    sp_SetLOStatus: TFDStoredProc;
     cdsSawmillLoadOrdersPlanPaket: TFMTBCDField;
     cdsSawmillLoadOrdersPlanAM3: TFMTBCDField;
     cdsSawmillLoadOrdersProducedAM3: TFloatField;
@@ -457,8 +457,8 @@ type
     procedure cdsSawmillLoadOrdersBeforeScroll(DataSet: TDataSet);
     procedure cds_PropsOrderTypeNoChange(Sender: TField);
     procedure cdsSawmillLoadOrdersUpdateRecord(ASender: TDataSet;
-      ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-      AOptions: TADUpdateRowOptions);
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
 
   private
     PackageCode_Layout  : Array of array of variant ;
@@ -2389,8 +2389,8 @@ begin
 end;
 
 procedure TdmcOrder.cdsSawmillLoadOrdersUpdateRecord(ASender: TDataSet;
-  ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-  AOptions: TADUpdateRowOptions);
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
 begin
  upd_LO.ConnectionName := cdsSawmillLoadOrders.ConnectionName ;
  upd_LO.DataSet        := cdsSawmillLoadOrders ;

@@ -207,10 +207,10 @@ Try
 
 
      {
-  ADStoredProc1.Active := False ;
-  ADStoredProc1.ParamByName('@PackageNo').AsInteger   := PackageNo ;
-  ADStoredProc1.ParamByName('@SupplierCode').AsString := SupplierCode ;
-  ADStoredProc1.Active := True ;           }
+  FDStoredProc1.Active := False ;
+  FDStoredProc1.ParamByName('@PackageNo').AsInteger   := PackageNo ;
+  FDStoredProc1.ParamByName('@SupplierCode').AsString := SupplierCode ;
+  FDStoredProc1.Active := True ;           }
 
   cds_PkgLog.Active := False ;
   cds_PkgLog.ParamByName('@PackageNo').AsInteger   := PackageNo ;

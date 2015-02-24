@@ -766,9 +766,9 @@ object fPickPkgNo: TfPickPkgNo
     Left = 272
     Top = 432
   end
-  object sq_PaketLista: TADQuery
+  object sq_PaketLista: TFDQuery
     ConstraintsEnabled = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select pn.PackageNo, pn.SupplierCode AS LEVKOD,'
       'pt.productno,'
@@ -897,8 +897,8 @@ object fPickPkgNo: TfPickPkgNo
       Size = 5
     end
   end
-  object cds_ProdInLager: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_ProdInLager: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Distinct pr.ProductDisplayName, pr.ProductNo FROM '
       'dbo.PackageNumber pn'
@@ -985,7 +985,7 @@ object fPickPkgNo: TfPickPkgNo
       Font.Style = []
     end
   end
-  object mtPkgNos: TADMemTable
+  object mtPkgNos: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -1002,7 +1002,7 @@ object fPickPkgNo: TfPickPkgNo
       Size = 3
     end
   end
-  object mtProps: TADMemTable
+  object mtProps: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -1041,8 +1041,8 @@ object fPickPkgNo: TfPickPkgNo
     Left = 464
     Top = 400
   end
-  object cds_LIP2: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_LIP2: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'SELECT  Distinct LogicalInventoryPointNo AS LIPNo, LogicalInvent' +

@@ -13,9 +13,9 @@ uses
   dxPScxCommon, dxPScxGrid6Lnk, DBClient, ActnList, ImgList, cxGridLevel,
   cxClasses, cxControls, cxGridCustomView, cxGrid, StdCtrls, cxButtons,
   ExtCtrls, cxTextEdit, cxSplitter, cxImageComboBox, cxLabel, Buttons,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet,
-  uADCompClient{$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client{$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
 
 type
   TfArticle = class(TfrmBaseFormA)
@@ -56,17 +56,17 @@ uses dmsVidaSystem;
 
 procedure TfArticle.FormCreate(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1143 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1143 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   inherited;
  With dmsSystem do
  Begin
 //  cds_ArticleGroup.Active := False ;
 //  cds_ArticleGroup.Active := True ;
 
-//  ad_accountRow.Active    := False ;
-//  ad_accountRow.Active    := True ;  
+//  FD_accountRow.Active    := False ;
+//  FD_accountRow.Active    := True ;  
  End ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1143; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1143; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfArticle.acSaveExecute(Sender: TObject);
@@ -74,12 +74,12 @@ begin
   inherited;
 { With dmsSystem do
  Begin
-  if ad_accountRow.State in [dsEdit, dsInsert] then
-   ad_accountRow.Post ;
-  if ad_accountRow.ChangeCount > 0 then
+  if FD_accountRow.State in [dsEdit, dsInsert] then
+   FD_accountRow.Post ;
+  if FD_accountRow.ChangeCount > 0 then
   Begin
-   ad_accountRow.ApplyUpdates(0) ;
-   ad_accountRow.CommitUpdates ;
+   FD_accountRow.ApplyUpdates(0) ;
+   FD_accountRow.CommitUpdates ;
   End ;
  End ;}
 end;
@@ -89,10 +89,10 @@ begin
   inherited;
 { With dmsSystem do
  Begin
-  if ad_accountRow.State in [dsEdit, dsInsert] then
-   ad_accountRow.Cancel ;
-  if ad_accountRow.ChangeCount > 0 then
-   ad_accountRow.CancelUpdates ;
+  if FD_accountRow.State in [dsEdit, dsInsert] then
+   FD_accountRow.Cancel ;
+  if FD_accountRow.ChangeCount > 0 then
+   FD_accountRow.CancelUpdates ;
  End ; }
 end;
 
@@ -104,11 +104,11 @@ begin
  Begin
   For x := 1 to 4 do
   Begin
-   if not ad_accountRow.Locate('AccountType', x, []) then
+   if not FD_accountRow.Locate('AccountType', x, []) then
    Begin
-    ad_accountRow.Insert ;
-    ad_accountRowAccountType.AsInteger  := x ;
-    ad_accountRow.Post ;
+    FD_accountRow.Insert ;
+    FD_accountRowAccountType.AsInteger  := x ;
+    FD_accountRow.Post ;
    End ;
   End ;
  End ;}
@@ -119,8 +119,8 @@ begin
   inherited;
 { With dmsSystem do
  Begin
-  acSave.Enabled  := (ad_accountRow.Active)
-  and (ad_accountRow.ChangeCount > 0) ;
+  acSave.Enabled  := (FD_accountRow.Active)
+  and (FD_accountRow.ChangeCount > 0) ;
  End ; }
 end;
 

@@ -4,9 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uBaseListForm, uADStanIntf, uADStanOption, uADStanParam,
-  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
-  uADDAptManager, DB, uADCompDataSet, uADCompClient, ActnList, dxBar,
+  Dialogs, uBaseListForm, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, ActnList, dxBar,
   cxClasses, ExtCtrls, cxGraphics, cxControls, cxLookAndFeels,
   cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
   cxDataStorage, cxEdit, cxDBData, cxGridCustomTableView, cxGridTableView,
@@ -19,7 +19,7 @@ type
     grdPkgStdPcsLevel1: TcxGridLevel;
     grdPkgStdPcs: TcxGrid;
     Panel6: TPanel;
-    cds_PkgStdPcs: TADQuery;
+    cds_PkgStdPcs: TFDQuery;
     ds_PkgStdPcs: TDataSource;
     cds_PkgStdPcsClientno: TIntegerField;
     cds_PkgStdPcsProductNo: TIntegerField;

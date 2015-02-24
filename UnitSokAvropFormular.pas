@@ -16,10 +16,10 @@ uses
   dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
   dxPSFillPatterns, dxPSEdgePatterns, dxPSCore, dxPScxCommon, 
   cxGridExportLink, cxExport, cxCalc, cxLabel, cxLookAndFeels,
-  cxCurrencyEdit, dxPScxGrid6Lnk, kbmMemTable, uADStanIntf, uADStanOption,
-  uADStanParam, uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf,
-  uADStanAsync, uADDAptManager, cxCheckBox, cxDBEdit, cxImageComboBox,
-  uADCompDataSet, uADCompClient, cxLookupEdit, cxDBLookupEdit,
+  cxCurrencyEdit, dxPScxGrid6Lnk, kbmMemTable, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, cxCheckBox, cxDBEdit, cxImageComboBox,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, cxGridCustomPopupMenu, cxGridPopupMenu, cxDBLabel,
   cxLookAndFeelPainters ;
 
@@ -143,7 +143,7 @@ type
     dxBarButton8: TdxBarButton;
     lcSR: TcxDBLookupComboBox;
     lcLaststalle: TcxDBLookupComboBox;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;
@@ -226,7 +226,7 @@ type
     meAvropsPeriodStart: TcxDBMaskEdit;
     meAvropsPeriodEnd: TcxDBMaskEdit;
     cxLabel1: TcxLabel;
-    cds_mall: TADQuery;
+    cds_mall: TFDQuery;
     ds_mall: TDataSource;
     cds_mallUserID: TIntegerField;
     cds_mallForm: TStringField;

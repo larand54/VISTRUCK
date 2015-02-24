@@ -219,9 +219,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 100
     end
   end
-  object sq_GetDMR: TADQuery
+  object sq_GetDMR: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -312,9 +312,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 30
     end
   end
-  object cds_DMWH: TADQuery
+  object cds_DMWH: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.DeliveryMessageWoodHeader'
@@ -407,9 +407,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_Ins_wx_prod_trsl: TADQuery
+  object sq_Ins_wx_prod_trsl: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete From dbo.wx_prod_trsl'
@@ -459,9 +459,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_SearchPkgNo: TADQuery
+  object sq_SearchPkgNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select PackageNo FROM dbo.PackageNumber'
@@ -487,7 +487,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object cds_ImpLenMap: TADQuery
+  object cds_ImpLenMap: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -499,7 +499,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     IndexName = 'cds_ImpLenMapIndex01'
     MasterSource = ds_ImpProdMap
     MasterFields = 'Identifier;DeliveryMessageNumber'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -574,9 +574,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ReadOnly = True
     end
   end
-  object sq_GetISOCtry: TADQuery
+  object sq_GetISOCtry: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select CountryCode FROM dbo.Country'
@@ -596,9 +596,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 5
     end
   end
-  object cds_ImpProdMap: TADQuery
+  object cds_ImpProdMap: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select distinct'
@@ -776,9 +776,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object sq_Delete: TADQuery
+  object sq_Delete: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.DeliveryMessageWoodHeader'
@@ -799,9 +799,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_GetLONos: TADQuery
+  object sq_GetLONos: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -847,9 +847,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'InvoiceNo'
     end
   end
-  object cds_ImpClientMap: TADQuery
+  object cds_ImpClientMap: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select distinct c.ClientName,'
@@ -945,9 +945,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_ClrPartyID: TADQuery
+  object sq_ClrPartyID: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Client'
@@ -962,9 +962,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_UpdateClient: TADQuery
+  object sq_UpdateClient: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Client'
@@ -990,9 +990,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object cds_ImpLengths: TADQuery
+  object cds_ImpLengths: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select LS.*'
@@ -1045,9 +1045,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object cds_Products: TADQuery
+  object cds_Products: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT pd.ProductNo, pg.ProductGroupNo, gd.GradeName,'
@@ -1169,9 +1169,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'NominalWidthINCH'
     end
   end
-  object cdsClient: TADQuery
+  object cdsClient: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1223,9 +1223,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_GetOLDesc: TADQuery
+  object sq_GetOLDesc: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT OL.OrderLineDescription'#9'AS ProductDescription'
@@ -1282,9 +1282,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 100
     end
   end
-  object sq_GetLinkedProductNo: TADQuery
+  object sq_GetLinkedProductNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select ProductNo From dbo.wx_prod_trsl'
@@ -1309,9 +1309,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetDMHW: TADQuery
+  object sq_GetDMHW: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -1347,9 +1347,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'WHEN PU.TemplateUnitName = '#39'Lopm a'#39'     THEN SUM(PTD.LinealMeter' +
         'ActualLength)'
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39'  THEN SUM(PTD.NoOfPieces)'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39'   THEN SUM(PTD.m3Actual)'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39'   THEN SUM(PTD.m3Actual)'
       
-        'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39'   THEN SUM(PTD.m3ActualSiz' +
+        'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39'   THEN SUM(PTD.m3ActualSiz' +
         'eNomLength)'
       
         'WHEN PU.TemplateUnitName = '#39'm3 nDxaL'#39'   THEN SUM(PTD.m3NomSizeAc' +
@@ -1457,9 +1457,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ReadOnly = True
     end
   end
-  object sq_GetPGNo: TADQuery
+  object sq_GetPGNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1499,7 +1499,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'NominalThicknessMM'
     end
   end
-  object cds_ProdLength: TADQuery
+  object cds_ProdLength: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -1509,7 +1509,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         Fields = 'ActualLengthMM;NominalLengthMM'
       end>
     IndexName = 'cds_ProdLengthIndex1'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.ProductLength')
@@ -1574,9 +1574,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'Act'
     end
   end
-  object cds_DMR: TADQuery
+  object cds_DMR: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryMessageReference'
@@ -1624,9 +1624,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetPartyID: TADQuery
+  object sq_GetPartyID: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       '-- //PartyIdentifiers'
@@ -1658,12 +1658,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'IH.ST_CountryName'#9'AS ShipToCountry,'
       ''
       'Supp.ClientName '#9'AS SupplierName,'
-      'Ad.AddressLine1'#9#9'AS SupplierAddressLine1,'
-      'Ad.AddressLine2'#9#9'AS SupplierAddressLine2,'
-      'Ad.AddressLine3'#9#9'AS SupplierAddressLine3,'
-      'Ad.AddressLine4'#9#9'AS SupplierAddressLine4,'
-      'Ad.StateOrProvince'#9'AS SupplierStateOrProvince,'
-      'Ad.PostalCode'#9#9'AS SupplierPostalCode,'
+      'FD.AddressLine1'#9#9'AS SupplierAddressLine1,'
+      'FD.AddressLine2'#9#9'AS SupplierAddressLine2,'
+      'FD.AddressLine3'#9#9'AS SupplierAddressLine3,'
+      'FD.AddressLine4'#9#9'AS SupplierAddressLine4,'
+      'FD.StateOrProvince'#9'AS SupplierStateOrProvince,'
+      'FD.PostalCode'#9#9'AS SupplierPostalCode,'
       'City.CityName'#9#9'AS SupplierCity,'
       'Country.CountryName'#9'AS SupplierCountry,'
       'Supp.VATNo'#9#9'AS SupplierVatNo,'
@@ -1677,9 +1677,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       #9'inner JOIN dbo.Client Supp'#9#9'ON Supp.ClientNo = IH.SupplierNo'
       #9'Inner Join dbo.CompanyAddress CA on CA.ClientNo = Supp.ClientNo'
       #9#9#9#9#9'AND CA.AddressType = 1'
-      #9'Inner Join dbo.Address Ad on Ad.AddressNo = CA.AddressNo'
-      #9'Inner Join dbo.City on City.CityNo = Ad.CityNo'
-      #9'Inner Join dbo.Country on Country.CountryNo = Ad.CountryNo'
+      #9'Inner Join dbo.Address FD on FD.AddressNo = CA.AddressNo'
+      #9'Inner Join dbo.City on City.CityNo = FD.CityNo'
+      #9'Inner Join dbo.Country on Country.CountryNo = FD.CountryNo'
       #9
       ''
       
@@ -1906,9 +1906,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_PartyID: TADQuery
+  object cds_PartyID: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.PartyIdentifier'
@@ -1958,9 +1958,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetAddress: TADQuery
+  object sq_GetAddress: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       '-- //PartyIdentifiers'
@@ -1992,12 +1992,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'IH.ST_CountryName'#9'AS ShipToCountry,'
       ''
       'Supp.ClientName '#9'AS SupplierName,'
-      'Ad.AddressLine1'#9#9'AS SupplierAddressLine1,'
-      'Ad.AddressLine2'#9#9'AS SupplierAddressLine2,'
-      'Ad.AddressLine3'#9#9'AS SupplierAddressLine3,'
-      'Ad.AddressLine4'#9#9'AS SupplierAddressLine4,'
-      'Ad.StateOrProvince'#9'AS SupplierStateOrProvince,'
-      'Ad.PostalCode'#9#9'AS SupplierPostalCode,'
+      'FD.AddressLine1'#9#9'AS SupplierAddressLine1,'
+      'FD.AddressLine2'#9#9'AS SupplierAddressLine2,'
+      'FD.AddressLine3'#9#9'AS SupplierAddressLine3,'
+      'FD.AddressLine4'#9#9'AS SupplierAddressLine4,'
+      'FD.StateOrProvince'#9'AS SupplierStateOrProvince,'
+      'FD.PostalCode'#9#9'AS SupplierPostalCode,'
       'City.CityName'#9#9'AS SupplierCity,'
       'Country.CountryName'#9'AS SupplierCountry,'
       'Supp.VATNo'#9#9'AS SupplierVatNo,'
@@ -2011,9 +2011,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       #9'inner JOIN dbo.Client Supp'#9#9'ON Supp.ClientNo = IH.SupplierNo'
       #9'Inner Join dbo.CompanyAddress CA on CA.ClientNo = Supp.ClientNo'
       #9#9#9#9#9'AND CA.AddressType = 1'
-      #9'Inner Join dbo.Address Ad on Ad.AddressNo = CA.AddressNo'
-      #9'Inner Join dbo.City on City.CityNo = Ad.CityNo'
-      #9'Inner Join dbo.Country on Country.CountryNo = Ad.CountryNo'
+      #9'Inner Join dbo.Address FD on FD.AddressNo = CA.AddressNo'
+      #9'Inner Join dbo.City on City.CityNo = FD.CityNo'
+      #9'Inner Join dbo.Country on Country.CountryNo = FD.CountryNo'
       ''
       ''
       
@@ -2242,9 +2242,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_NameAddress: TADQuery
+  object cds_NameAddress: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.NameAddress'
@@ -2350,9 +2350,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object cds_DMS: TADQuery
+  object cds_DMS: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryMessageShipment'
@@ -2491,9 +2491,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_GetDSDMR: TADQuery
+  object sq_GetDSDMR: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -2590,9 +2590,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 30
     end
   end
-  object cds_DSDMR: TADQuery
+  object cds_DSDMR: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryShipmentDeliveryMessageReference'
@@ -2647,9 +2647,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetTrp: TADQuery
+  object sq_GetTrp: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -2689,9 +2689,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'WHEN PU.TemplateUnitName = '#39'Lopm a'#39' THEN SUM(PTD.LinealMeterActu' +
         'alLength)'
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN SUM(PTD.NoOfPieces)'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN SUM(PTD.m3Actual)'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN SUM(PTD.m3Actual)'
       
-        'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN SUM(PTD.m3ActualSizeN' +
+        'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN SUM(PTD.m3ActualSizeN' +
         'omLength)'
       
         'WHEN PU.TemplateUnitName = '#39'm3 nDxaL'#39' THEN SUM(PTD.m3NomSizeActu' +
@@ -2864,9 +2864,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 13
     end
   end
-  object cds_TrpPkgInfo: TADQuery
+  object cds_TrpPkgInfo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.Transportpackageinformation'
@@ -2956,9 +2956,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetIQ: TADQuery
+  object sq_GetIQ: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3132,9 +3132,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_InfoQuant: TADQuery
+  object cds_InfoQuant: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.InformationalQuantity'
@@ -3201,9 +3201,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetLS: TADQuery
+  object sq_GetLS: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3248,9 +3248,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'WHEN PU.TemplateUnitName = '#39'Lopm a'#39' THEN SUM(PTD.LinealMeterActu' +
         'alLength)'
       'WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN SUM(PTD.NoOfPieces)'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN SUM(PTD.m3Actual)'
+      'WHEN PU.TemplateUnitName = '#39'm3 FDxaL'#39' THEN SUM(PTD.m3Actual)'
       
-        'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN SUM(PTD.m3ActualSizeN' +
+        'WHEN PU.TemplateUnitName = '#39'm3 FDxnL'#39' THEN SUM(PTD.m3ActualSizeN' +
         'omLength)'
       
         'WHEN PU.TemplateUnitName = '#39'm3 nDxaL'#39' THEN SUM(PTD.m3NomSizeActu' +
@@ -3390,9 +3390,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 10
     end
   end
-  object cds_LengthSpec: TADQuery
+  object cds_LengthSpec: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.LengthSpecification'
@@ -3458,9 +3458,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetDMS: TADQuery
+  object sq_GetDMS: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3715,9 +3715,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 5
     end
   end
-  object cds_ProdID: TADQuery
+  object cds_ProdID: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.ProductIdentifier'
@@ -3818,8 +3818,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       FieldName = 'PartyIdentifierType'
     end
   end
-  object sq_UpdPrefix: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_UpdPrefix: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Update dbo.Transportpackageinformation2'
       'Set Prefix = :Prefix'
@@ -3844,8 +3844,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object cds_DSDMR2: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object cds_DSDMR2: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'Select distinct * FROM dbo.DeliveryShipmentDeliveryMessageRefere' +

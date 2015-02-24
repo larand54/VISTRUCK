@@ -2561,8 +2561,8 @@ object dmPkgs: TdmPkgs
     Left = 192
     Top = 512
   end
-  object adsp_vida_ChgPkgVard: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vida_ChgPkgVard: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_ChgPkgVard'
     Left = 824
     Top = 24
@@ -2623,8 +2623,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object adsp_vis_PkgType_II: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vis_PkgType_II: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vis_PkgType_II'
     Left = 952
     Top = 24
@@ -2667,8 +2667,8 @@ object dmPkgs: TdmPkgs
         Size = 255
       end>
   end
-  object adsp_vis_NewPkgType: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vis_NewPkgType: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vis_NewPkgType'
     Left = 952
     Top = 80
@@ -2722,8 +2722,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object adsp_vida_NewPackageDetail: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vida_NewPackageDetail: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_NewPackageDetail'
     Left = 952
     Top = 128
@@ -2759,8 +2759,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object adsp_vida_Populate_One_PackageTypeLengths: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vida_Populate_One_PackageTypeLengths: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_Populate_One_PackageTypeLengths'
     Left = 952
     Top = 192
@@ -2778,8 +2778,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object adsp_vida_PackageTotals: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vida_PackageTotals: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_PackageTotals'
     Left = 952
     Top = 256
@@ -2797,8 +2797,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object sq_OneUniquePkg: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_OneUniquePkg: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT distinct'
       '        PR.ProductDisplayName           AS PRODUCT,'
@@ -3048,8 +3048,8 @@ object dmPkgs: TdmPkgs
       Origin = 'ONSTICKS'
     end
   end
-  object sq_ProductLengths: TADQuery
-    Connection = dmsConnector.ADConnection1
+  object sq_ProductLengths: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'SELECT Distinct PL.ProductLengthNo, PL.ActualLengthMM, PL.Nomina' +
@@ -3098,8 +3098,8 @@ object dmPkgs: TdmPkgs
       Origin = 'FingerJoint'
     end
   end
-  object adsp_vida_PackageTypeDetail: TADStoredProc
-    Connection = dmsConnector.ADConnection1
+  object FDsp_vida_PackageTypeDetail: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'vida_PackageTypeDetail'
     Left = 680
     Top = 24

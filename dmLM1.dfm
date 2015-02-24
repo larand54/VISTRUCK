@@ -45,7 +45,7 @@ object daMoLM1: TdaMoLM1
     Left = 184
     Top = 232
   end
-  object cdsAvrop1: TADQuery
+  object cdsAvrop1: TFDQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -55,7 +55,7 @@ object daMoLM1: TdaMoLM1
         Fields = 'CustShipPlanDetailObjectNo'
       end>
     IndexName = 'cdsAvropIndex5'
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode, rvCmdExecTimeout, rvDirectExecute]
     ResourceOptions.CmdExecMode = amCancelDialog
@@ -321,9 +321,9 @@ object daMoLM1: TdaMoLM1
       Required = True
     end
   end
-  object cdsNormalLO: TADQuery
+  object cdsNormalLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache, evUnidirectional]
     SQL.Strings = (
       'SELECT'
@@ -355,7 +355,7 @@ object daMoLM1: TdaMoLM1
       'CASE'
       '-- use sub query to get volume if  not packages'
       'WHEN  UN.VolumeUnitName = '#39'Packages'#39' THEN COUNT(LD.LOADDETAILNO)'
-      'WHEN  UN.VolumeUnitName = '#39'm3 aDxaL'#39' THEN SUM(PTD.m3Actual)'
+      'WHEN  UN.VolumeUnitName = '#39'm3 FDxaL'#39' THEN SUM(PTD.m3Actual)'
       'WHEN  UN.VolumeUnitName = '#39'm3 nDxnL'#39' THEN SUM(PTD.m3Nominal)'
       
         'WHEN  UN.VolumeUnitName = '#39'Lopm a'#39' THEN SUM(PTD.LinealMeterActua' +
@@ -576,9 +576,9 @@ object daMoLM1: TdaMoLM1
       Calculated = True
     end
   end
-  object cdsExtraLO: TADQuery
+  object cdsExtraLO: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -612,7 +612,7 @@ object daMoLM1: TdaMoLM1
       
         'WHEN  UN.VolumeUnitName = '#39'Packages'#39' THEN COUNT( LD.LOADDETAILNO' +
         ')'
-      'WHEN  UN.VolumeUnitName = '#39'm3 aDxaL'#39' THEN SUM(PTD.m3Actual)'
+      'WHEN  UN.VolumeUnitName = '#39'm3 FDxaL'#39' THEN SUM(PTD.m3Actual)'
       'WHEN  UN.VolumeUnitName = '#39'm3 nDxnL'#39' THEN SUM(PTD.m3Nominal)'
       
         'WHEN  UN.VolumeUnitName = '#39'Lopm a'#39' THEN SUM(PTD.LinealMeterActua' +
@@ -799,9 +799,9 @@ object daMoLM1: TdaMoLM1
       DisplayFormat = '#.000'
     end
   end
-  object cdsLoads: TADQuery
+  object cdsLoads: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'Loads'
     SQL.Strings = (
@@ -986,9 +986,9 @@ object daMoLM1: TdaMoLM1
       Size = 11
     end
   end
-  object cdsOrder: TADQuery
+  object cdsOrder: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT Str(od.OrderNo) + Str(ol.OrderLineNo) as PKValue, '
@@ -1154,9 +1154,9 @@ object daMoLM1: TdaMoLM1
       Origin = 'OrderLineValueCurrency'
     end
   end
-  object cdsSetAvrop: TADQuery
+  object cdsSetAvrop: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT * FROM dbo.CustomerShippingPlanHeader CSH')
@@ -1173,9 +1173,9 @@ object daMoLM1: TdaMoLM1
       Origin = 'ShippingPlanStatus'
     end
   end
-  object cds_GetLOByInvNo: TADQuery
+  object cds_GetLOByInvNo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select ILO.ShippingPlanNo AS LO,'
@@ -1281,9 +1281,9 @@ object daMoLM1: TdaMoLM1
       ReadOnly = True
     end
   end
-  object sq_FindLONo: TADQuery
+  object sq_FindLONo: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'
@@ -1305,9 +1305,9 @@ object daMoLM1: TdaMoLM1
       Required = True
     end
   end
-  object sq_Get_CSH_Status: TADQuery
+  object sq_Get_CSH_Status: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT ShippingPlanStatus'
@@ -1327,9 +1327,9 @@ object daMoLM1: TdaMoLM1
       Origin = 'ShippingPlanStatus'
     end
   end
-  object sq_ValidLONr: TADQuery
+  object sq_ValidLONr: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -1362,16 +1362,16 @@ object daMoLM1: TdaMoLM1
       Origin = 'SalesRegionNo'
     end
   end
-  object sq_SearchLOByCSD_Ref: TADQuery
+  object sq_SearchLOByCSD_Ref: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     Left = 520
     Top = 192
   end
-  object sq_SetRowStatus: TADQuery
+  object sq_SetRowStatus: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.CustomerShippingPlanDetails'
@@ -1391,9 +1391,9 @@ object daMoLM1: TdaMoLM1
         ParamType = ptInput
       end>
   end
-  object sq_SetHdrStatus: TADQuery
+  object sq_SetHdrStatus: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.CustomerShippingPlanHeader'
@@ -1413,9 +1413,9 @@ object daMoLM1: TdaMoLM1
         ParamType = ptInput
       end>
   end
-  object sp_CngLOonLoad_csd: TADStoredProc
+  object sp_CngLOonLoad_csd: TFDStoredProc
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.CngLOonLoad_csd'
     Left = 48
@@ -1440,9 +1440,9 @@ object daMoLM1: TdaMoLM1
         ParamType = ptInput
       end>
   end
-  object cds_InvoiceGroup: TADQuery
+  object cds_InvoiceGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * '
@@ -1617,9 +1617,9 @@ object daMoLM1: TdaMoLM1
       Origin = 'Inv_Value_To_Be_Paid_2'
     end
   end
-  object cds_InvoiceInGroup: TADQuery
+  object cds_InvoiceInGroup: TFDQuery
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select *'
@@ -1674,11 +1674,11 @@ object daMoLM1: TdaMoLM1
         ParamType = ptInput
       end>
   end
-  object cds_KontoLogik: TADQuery
+  object cds_KontoLogik: TFDQuery
     AfterInsert = cds_KontoLogikAfterInsert
     BeforePost = cds_KontoLogikBeforePost
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.KontoLogik')
@@ -1848,10 +1848,10 @@ object daMoLM1: TdaMoLM1
     Left = 56
     Top = 424
   end
-  object cdsAvrop: TADQuery
+  object cdsAvrop: TFDQuery
     OnCalcFields = cdsAvropCalcFields
     CachedUpdates = True
-    Connection = dmsConnector.ADConnection1
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT'

@@ -82,9 +82,9 @@ uses
   dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
   dxPSFillPatterns, dxPSEdgePatterns, dxPScxCommon,
   dxPSCore, cxCalc,
-  cxCurrencyEdit, uADStanIntf, uADStanOption,
-  uADStanParam, uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf,
-  uADStanAsync, uADDAptManager, uADCompDataSet, uADCompClient,
+  cxCurrencyEdit, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   cxLookAndFeels, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
   dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxEditorProducers,
   dxPScxExtEditorProducers, dxPScxPageControlProducer, dxSkinsCore, dxSkinBlack,
@@ -138,7 +138,7 @@ type
     SkrivutF82: TMenuItem;
     SkrivutF83: TMenuItem;
     StngF122: TMenuItem;
-    ADQuery1: TADQuery;
+    FDQuery1: TFDQuery;
 
     procedure atExitExecute(Sender: TObject);
     procedure acAddRecordExecute(Sender: TObject);
@@ -201,7 +201,7 @@ uses
 
 Class procedure TfrmBaseFormA.Execute ;
 Begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,819 or $6ECA0000; xor eax,eax; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,819 or $6ECA0000; xor eax,eax; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  With Self.Create(nil) do begin
 
   try
@@ -210,27 +210,27 @@ Begin
    Free ;
   End
  End ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,819; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,819; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End ;
 
 procedure TfrmBaseFormA.CMMoveIt(var Msg: TMessage);
 var AGoForward: Boolean;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,820 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,820 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
    AGoForward := Boolean(Msg.WParam);
    cxGrid1DBTableView1.Controller.EditingController.HideEdit(True);
    cxGrid1DBTableView1.Controller.FocusNextCell(AGoForward)
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,820; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,820; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 function TfrmBaseFormA.DataSaved : Boolean ;
 Begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,821 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,821 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  Result:= True ;
- if ((DataSource1.DataSet as TADQuery).ChangeCount > 0)
+ if ((DataSource1.DataSet as TFDQuery).ChangeCount > 0)
  or (DataSource1.DataSet.State in [dsEdit, dsInsert]) then
   Result:= False ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,821; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,821; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End ;
 
 //-------------------------------------------------------------------
@@ -246,7 +246,7 @@ End ;
 //-------------------------------------------------------------------
 function TfrmBaseFormA.DataValidate: Boolean;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,822 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,822 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   assert(False,'TfrmDBForm.DataValidate called.');
   {$IFDEF DEBUG}
   ShowMessage('LOGIC ERROR: TfrmDBForm Descendants MUST override DataValidate');
@@ -258,7 +258,7 @@ begin
   // that effect and return True.
   // Do not call inherited from your descendant class.
   Result := False;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,822; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,822; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 
@@ -271,7 +271,7 @@ function TfrmBaseFormA.ApplyModified : Boolean;
 //  i: Integer;
 //  SavePlace: TBookmark;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,823 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,823 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 //  Result := False;
 //
 //  for i:=1 to FDataSetCount do
@@ -303,15 +303,15 @@ begin
 //  end;
 //  ApplyModifiedExit;
   Result := TRUE; // Keep compiler happy for now. Change this later.
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,823; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,823; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 //-------------------------------------------------------------------
 function TfrmBaseFormA.IsModified: Boolean;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,824 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,824 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   Result := FIsModified;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,824; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,824; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 
@@ -321,7 +321,7 @@ procedure TfrmBaseFormA.CancelModified;
 //var
 //  i: Integer;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,825 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,825 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 //  try
 //    CancelModifiedEnter;
 //    for i:=1 to FDataSetCount do
@@ -329,7 +329,7 @@ begin
 //  finally
 //    CancelModifiedExit;
 //  end;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,825; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,825; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 //-------------------------------------------------------------------
@@ -355,9 +355,9 @@ end;
 //-------------------------------------------------------------------
 procedure TfrmBaseFormA.atExitExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,826 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,826 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   Close;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,826; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,826; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 //-------------------------------------------------------------------
@@ -378,34 +378,34 @@ end;
 
 constructor TfrmBaseFormA.Create(AOwner: TComponent);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,827 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,827 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   inherited;
   FIsModified := FALSE;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,827; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,827; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acAddRecordExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,828 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,828 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  cxGrid1DBTableView1.DataController.Insert ;
  cxGrid1.SetFocus ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,828; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,828; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acDeleteRecordExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,829 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,829 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 
  cxGrid1DBTableView1.DataController.DeleteSelection ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,829; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,829; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.FormCreate(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,830 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,830 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  DataSource1.DataSet.Active:= False ;
  DataSource1.DataSet.Active:= True ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,830; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,830; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.FormCloseQuery(Sender: TObject;
@@ -413,7 +413,7 @@ procedure TfrmBaseFormA.FormCloseQuery(Sender: TObject;
 var
   wRet: Word;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,831 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,831 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
   if DataSaved = False then begin
 
     wRet := MessageDlg('Data är inte sparade, vill du spara?', mtConfirmation, [mbYes, mbNo, mbCancel], 0);
@@ -436,50 +436,50 @@ begin
 
 // if CanClose then
 //  DataSource1.DataSet.Active:= False ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,831; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,831; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acSaveExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,832 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
- if (DataSource1.DataSet as TADQuery).State in [dsEdit, dsInsert] then
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,832 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
+ if (DataSource1.DataSet as TFDQuery).State in [dsEdit, dsInsert] then
  Begin
-  (DataSource1.DataSet as TADQuery).Post ;
+  (DataSource1.DataSet as TFDQuery).Post ;
  End ;
 
- if (DataSource1.DataSet as TADQuery).ChangeCount > 0 then
+ if (DataSource1.DataSet as TFDQuery).ChangeCount > 0 then
  Begin
-  (DataSource1.DataSet as TADQuery).ApplyUpdates(0) ;
+  (DataSource1.DataSet as TFDQuery).ApplyUpdates(0) ;
  End ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,832; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,832; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acSaveUpdate(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,833 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,833 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  acSave.Enabled:= not DataSaved  ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,833; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,833; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acDeleteRecordUpdate(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,834 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
- acDeleteRecord.Enabled:= (DataSource1.DataSet as TADQuery).RecordCount > 0 ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,834; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,834 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
+ acDeleteRecord.Enabled:= (DataSource1.DataSet as TFDQuery).RecordCount > 0 ;
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,834; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acCancelChangesExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,835 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
- (DataSource1.DataSet as TADQuery).CancelUpdates ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,835; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,835 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
+ (DataSource1.DataSet as TFDQuery).CancelUpdates ;
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,835; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acCancelChangesUpdate(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,836 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,836 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  acCancelChanges.Enabled:= not DataSaved ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,836; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,836; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.cxGrid1DBTableView1EditKeyDown(
@@ -487,7 +487,7 @@ procedure TfrmBaseFormA.cxGrid1DBTableView1EditKeyDown(
   AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
 //var AGoForward: Boolean;
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,837 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,837 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  Try
   if AEdit is TcxCustomTextEdit then
     with TcxCustomTextEdit(AEdit) do begin
@@ -503,18 +503,18 @@ begin
     end;
  Except
  End ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,837; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,837; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 procedure TfrmBaseFormA.acPrintTableExecute(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,838 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; {$ENDIF}
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,838 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  dxComponentPrinter1Link1.ReportTitleText:= self.Caption ;
  dxComponentPrinter1Link1.PrinterPage.Orientation:= poPortrait ;
 // dxComponentPrinter1Link2.PreviewWindow.ZoomFactor:= 200 ;
  dxComponentPrinter1Link1.ShrinkToPageWidth:= True ;
  dxComponentPrinter1.Preview(True, dxComponentPrinter1Link1);
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,838; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; adc[ecx].4,edx; end; end; {$ENDIF}
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,838; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
 end.

@@ -62,9 +62,9 @@ uses
   Forms,
   ImgList,
   ToolWin,
-  Windows, uADStanIntf, uADStanOption, uADStanParam, uADStanError,
-  uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager,
-  DB, uADCompDataSet, uADCompClient, dxBar, cxClasses, StdCtrls;
+  Windows, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
+  FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dxBar, cxClasses, StdCtrls;
 
 type
 
@@ -72,7 +72,7 @@ type
     ActionList_DBForm: TActionList;
     imglistActions: TImageList;
     atExit: TAction;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;

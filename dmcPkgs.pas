@@ -4,9 +4,9 @@ interface
 
 uses
   SysUtils, Classes, FMTBcd, DB, SqlExpr, Provider, DBClient, kbmMemTable, SqlTimSt, Dialogs,
-  VidaType, Controls, Forms, uADStanIntf, uADStanOption, uADStanParam,
-  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
-  uADDAptManager, uADCompDataSet, uADCompClient ;
+  VidaType, Controls, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
 
 type
 
@@ -238,13 +238,13 @@ type
     sq_OneUniquePkgExtPIP: TIntegerField;
     sq_OneUniquePkgExtStatus: TIntegerField;
     sp_AktiveraPktExt: TSQLStoredProc;
-    adsp_vida_ChgPkgVard: TADStoredProc;
-    adsp_vis_PkgType_II: TADStoredProc;
-    adsp_vis_NewPkgType: TADStoredProc;
-    adsp_vida_NewPackageDetail: TADStoredProc;
-    adsp_vida_Populate_One_PackageTypeLengths: TADStoredProc;
-    adsp_vida_PackageTotals: TADStoredProc;
-    sq_OneUniquePkg: TADQuery;
+    FDsp_vida_ChgPkgVard: TFDStoredProc;
+    FDsp_vis_PkgType_II: TFDStoredProc;
+    FDsp_vis_NewPkgType: TFDStoredProc;
+    FDsp_vida_NewPackageDetail: TFDStoredProc;
+    FDsp_vida_Populate_One_PackageTypeLengths: TFDStoredProc;
+    FDsp_vida_PackageTotals: TFDStoredProc;
+    sq_OneUniquePkg: TFDQuery;
     sq_OneUniquePkgPRODUCT: TStringField;
     sq_OneUniquePkgPACKAGENO: TIntegerField;
     sq_OneUniquePkgPACKAGETYPENO: TIntegerField;
@@ -276,7 +276,7 @@ type
     sq_OneUniquePkgPIP: TIntegerField;
     sq_OneUniquePkgStatus: TIntegerField;
     sq_OneUniquePkgSurfacingNo: TIntegerField;
-    sq_ProductLengths: TADQuery;
+    sq_ProductLengths: TFDQuery;
     sq_ProductLengthsProductLengthNo: TIntegerField;
     sq_ProductLengthsActualLengthMM: TFloatField;
     sq_ProductLengthsNominalLengthMM: TFloatField;
@@ -284,7 +284,7 @@ type
     sq_ProductLengthsActualLengthINCH: TStringField;
     sq_ProductLengthsPET: TIntegerField;
     sq_ProductLengthsFingerJoint: TIntegerField;
-    adsp_vida_PackageTypeDetail: TADStoredProc;
+    FDsp_vida_PackageTypeDetail: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtPackagesBeforePost(DataSet: TDataSet);
     procedure mtLoadPackagesAfterInsert(DataSet: TDataSet);
@@ -778,36 +778,36 @@ Var
     function SelectMatchingPkgTypeHdrs : Integer;
     begin
       // First get all package type (header) records that match
-      adsp_vis_PkgType_II.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      adsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := 0
+      FDsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := 0
       else
-      adsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNo.AsInteger < 1 then
-      adsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := 0
+      FDsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := 0
       else
-      adsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      adsp_vis_PkgType_II.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
 
       if (mtpackages.Active) AND (mtpackages.Fields[1].AsInteger > 0) then
-       adsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered
+       FDsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered
       else
-       adsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
+       FDsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
 
-      adsp_vis_PkgType_II.Open;
+      FDsp_vis_PkgType_II.Open;
       try
-//        adsp_vis_PkgType_II.First;
-        if not adsp_vis_PkgType_II.Eof then begin
-          Result := adsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
-//          adsp_vis_PkgType_II.Next;
+//        FDsp_vis_PkgType_II.First;
+        if not FDsp_vis_PkgType_II.Eof then begin
+          Result := FDsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
+//          FDsp_vis_PkgType_II.Next;
         end
          else
           Result:= -1 ;
 
       finally
-        adsp_vis_PkgType_II.Close;
+        FDsp_vis_PkgType_II.Close;
         end;
 
     end;
@@ -822,27 +822,27 @@ Var
       PackageTypeNo := dmsConnector.NextMaxNo('PackageType');
 
       Try
-      adsp_vis_NewPkgType.Close ;
-      adsp_vis_NewPkgType.ParamByName('@PackageTypeNo'   ).AsInteger := PackageTypeNo;
-      adsp_vis_NewPkgType.ParamByName('@ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      FDsp_vis_NewPkgType.Close ;
+      FDsp_vis_NewPkgType.ParamByName('@PackageTypeNo'   ).AsInteger := PackageTypeNo;
+      FDsp_vis_NewPkgType.ParamByName('@ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      adsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := 0
+      FDsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := 0
       else
-      adsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNO.AsInteger < 1 then
-      adsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := 0
+      FDsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := 0
       else
-      adsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      adsp_vis_NewPkgType.ParamByName('@TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
-      adsp_vis_NewPkgType.ParamByName('@UserID').AsInteger := ThisUser.UserID;
-//      adsp_vis_NewPkgType.ParamByName('ProdInstruNo').AsInteger := -1 ;
-      adsp_vis_NewPkgType.ExecProc;
+      FDsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('@TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('@UserID').AsInteger := ThisUser.UserID;
+//      FDsp_vis_NewPkgType.ParamByName('ProdInstruNo').AsInteger := -1 ;
+      FDsp_vis_NewPkgType.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vis_NewPkgType.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vis_NewPkgType.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -852,15 +852,15 @@ Var
       While not mtPcsPerLength.Eof do
       Begin
        Try
-        adsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
-        adsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
-        adsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
-        adsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
-        adsp_vida_NewPackageDetail.ExecProc;
+        FDsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
+        FDsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
+        FDsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
+        FDsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
+        FDsp_vida_NewPackageDetail.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_NewPackageDetail.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_NewPackageDetail.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -871,32 +871,32 @@ Var
     procedure  SavePackageTypeLengths ;
     Begin
      Try
-      adsp_vida_Populate_One_PackageTypeLengths.Close ;
-      adsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
-      adsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
+      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
+      FDsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
+      FDsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
       Raise ;
      End ;
     end;
-      adsp_vida_Populate_One_PackageTypeLengths.Close ;
+      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
     End ;
 
   procedure SavePkgTotals( PackageTypeNo : Integer );
   begin
    Try
-    adsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
-    adsp_vida_PackageTotals.ExecProc;
+    FDsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
+    FDsp_vida_PackageTotals.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_PackageTotals.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_PackageTotals.ExecProc') ;
       Raise ;
      End ;
     end;
-    adsp_vida_PackageTotals.Close;
+    FDsp_vida_PackageTotals.Close;
   end;
 
 
@@ -916,24 +916,24 @@ Var
   function AndraPaket : Integer ;
   begin
     Try
-    adsp_vida_ChgPkgVard.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
-    adsp_vida_ChgPkgVard.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
-    adsp_vida_ChgPkgVard.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
-    adsp_vida_ChgPkgVard.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-    adsp_vida_ChgPkgVard.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
-    adsp_vida_ChgPkgVard.ParamByName('@RegistrationPointNo'    ).AsInteger  := 2 ; //2 = Lagevård. mtUserProp.FieldByName('RegPointNo').AsInteger ;
-    adsp_vida_ChgPkgVard.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
-//    adsp_vida_ChgPkgVard.ParamByName('SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
-    adsp_vida_ChgPkgVard.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-//    adsp_vida_ChgPkgVard.ParamByName('MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
-//    adsp_vida_ChgPkgVard.ParamByName('RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+    FDsp_vida_ChgPkgVard.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
+    FDsp_vida_ChgPkgVard.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+    FDsp_vida_ChgPkgVard.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
+    FDsp_vida_ChgPkgVard.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    FDsp_vida_ChgPkgVard.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+    FDsp_vida_ChgPkgVard.ParamByName('@RegistrationPointNo'    ).AsInteger  := 2 ; //2 = Lagevård. mtUserProp.FieldByName('RegPointNo').AsInteger ;
+    FDsp_vida_ChgPkgVard.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
+//    FDsp_vida_ChgPkgVard.ParamByName('SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
+    FDsp_vida_ChgPkgVard.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+//    FDsp_vida_ChgPkgVard.ParamByName('MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
+//    FDsp_vida_ChgPkgVard.ParamByName('RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
 
     //Result:=
-    adsp_vida_ChgPkgVard.ExecProc ;
+    FDsp_vida_ChgPkgVard.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_ChgPkgVard.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_ChgPkgVard.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -995,36 +995,36 @@ Var
     function SelectMatchingPkgTypeHdrs : Integer;
     begin
       // First get all package type (header) records that match
-      adsp_vis_PkgType_II.ParamByName('ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      adsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := 0
+      FDsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := 0
       else
-      adsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNo.AsInteger < 1 then
-      adsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := 0
+      FDsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := 0
       else
-      adsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      adsp_vis_PkgType_II.ParamByName('TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      FDsp_vis_PkgType_II.ParamByName('TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
 
       if (mtpackages.Active) AND (mtpackages.Fields[1].AsInteger > 0) then
-       adsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetLengthsEntered
+       FDsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetLengthsEntered
       else
-       adsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
+       FDsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
 
-      adsp_vis_PkgType_II.Open;
+      FDsp_vis_PkgType_II.Open;
       try
-//        adsp_vis_PkgType_II.First;
-        if not adsp_vis_PkgType_II.Eof then begin
-          Result := adsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
-//          adsp_vis_PkgType_II.Next;
+//        FDsp_vis_PkgType_II.First;
+        if not FDsp_vis_PkgType_II.Eof then begin
+          Result := FDsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
+//          FDsp_vis_PkgType_II.Next;
         end
          else
           Result:= -1 ;
 
       finally
-        adsp_vis_PkgType_II.Close;
+        FDsp_vis_PkgType_II.Close;
         end;
 
     end;
@@ -1040,26 +1040,26 @@ Var
       PackageTypeNo := dmsConnector.NextMaxNo('PackageType');
 
       Try
-      adsp_vis_NewPkgType.Close ;
-      adsp_vis_NewPkgType.ParamByName('PackageTypeNo'   ).AsInteger := PackageTypeNo;
-      adsp_vis_NewPkgType.ParamByName('ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      FDsp_vis_NewPkgType.Close ;
+      FDsp_vis_NewPkgType.ParamByName('PackageTypeNo'   ).AsInteger := PackageTypeNo;
+      FDsp_vis_NewPkgType.ParamByName('ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      adsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := 0
+      FDsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := 0
       else
-      adsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNO.AsInteger < 1 then
-      adsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := 0
+      FDsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := 0
       else
-      adsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      adsp_vis_NewPkgType.ParamByName('TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
-      adsp_vis_NewPkgType.ParamByName('UserID').AsInteger := ThisUser.UserID;
-      adsp_vis_NewPkgType.ExecProc;
+      FDsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      FDsp_vis_NewPkgType.ParamByName('UserID').AsInteger := ThisUser.UserID;
+      FDsp_vis_NewPkgType.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vis_NewPkgType.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vis_NewPkgType.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -1069,15 +1069,15 @@ Var
       While not mtPcsPerLength.Eof do
       Begin
        Try
-        adsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
-        adsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
-        adsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
-        adsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
-        adsp_vida_NewPackageDetail.ExecProc;
+        FDsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
+        FDsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
+        FDsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
+        FDsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
+        FDsp_vida_NewPackageDetail.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_NewPackageDetail.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_NewPackageDetail.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -1090,32 +1090,32 @@ Var
     procedure  SavePackageTypeLengths ;
     Begin
      Try
-      adsp_vida_Populate_One_PackageTypeLengths.Close ;
-      adsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
-      adsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
+      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
+      FDsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
+      FDsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
       Raise ;
      End ;
     end;
-      adsp_vida_Populate_One_PackageTypeLengths.Close ;
+      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
     End ;
 
   procedure SavePkgTotals( PackageTypeNo : Integer );
   begin
    Try
-    adsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
-    adsp_vida_PackageTotals.ExecProc;
+    FDsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
+    FDsp_vida_PackageTotals.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :adsp_vida_PackageTotals.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :FDsp_vida_PackageTotals.ExecProc') ;
       Raise ;
      End ;
     end;
-    adsp_vida_PackageTotals.Close;
+    FDsp_vida_PackageTotals.Close;
   end;
 
 
@@ -1704,18 +1704,18 @@ End ;
 Function TdmPkgs.GetNoOfOriginalLengthsInPkg : String ;
 Begin
      Result:= '' ;
-     adsp_vida_PackageTypeDetail.Close;
-     adsp_vida_PackageTypeDetail.ParamByName('@PackageTypeNo').AsInteger := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-     adsp_vida_PackageTypeDetail.Open;
-     adsp_vida_PackageTypeDetail.First;
-          // NB We know that both the data retrieved from adsp_vida_PackageTypeDetail and the
+     FDsp_vida_PackageTypeDetail.Close;
+     FDsp_vida_PackageTypeDetail.ParamByName('@PackageTypeNo').AsInteger := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+     FDsp_vida_PackageTypeDetail.Open;
+     FDsp_vida_PackageTypeDetail.First;
+          // NB We know that both the data retrieved from FDsp_vida_PackageTypeDetail and the
           // grid column info are in length order, smallest to largest.
 
-      while not adsp_vida_PackageTypeDetail.Eof  do
+      while not FDsp_vida_PackageTypeDetail.Eof  do
       begin
        mtPcsPerLength.Insert ;
-       mtPcsPerLengthProductLengthNo.AsInteger :=  adsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
-       mtPcsPerLengthNoOfPieces.AsInteger       := adsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
+       mtPcsPerLengthProductLengthNo.AsInteger :=  FDsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
+       mtPcsPerLengthNoOfPieces.AsInteger       := FDsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
        mtPcsPerLengthProductNo.AsInteger        := mtPackages.Fields[cPRODUCTNO].AsInteger ;
        mtPcsPerLengthUserID.AsInteger           := ThisUser.UserID ;
 //       mtPcsPerLengthALMM.AsFloat               := StrToFloat(mtPackages.Fields[x].DisplayLabel) ;
@@ -1723,12 +1723,12 @@ Begin
 
 
 {       New(ARecord);
-       ARecord^.ProductLengthNo:= adsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
-       ARecord^.NoOfPieces:= adsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
+       ARecord^.ProductLengthNo:= FDsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
+       ARecord^.NoOfPieces:= FDsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
        MyList.Add(ARecord);      }
-       adsp_vida_PackageTypeDetail.Next;
+       FDsp_vida_PackageTypeDetail.Next;
       end;
-     adsp_vida_PackageTypeDetail.Close;
+     FDsp_vida_PackageTypeDetail.Close;
 
      mtPcsPerLength.First ;
      While not mtPcsPerLength.Eof do

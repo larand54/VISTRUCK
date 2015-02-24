@@ -1,7 +1,7 @@
 program VISTRUCK;
 
 
-uses
+uses  {
   EMemLeaks,
   EResLeaks,
   ESendMailSMAPI,
@@ -9,7 +9,7 @@ uses
   EDebugExports,
   EDebugJCL,
   EAppVCL,
-  ExceptionLog7,
+  ExceptionLog7,}
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -86,10 +86,10 @@ uses
   uPackageSize in 'uPackageSize.pas' {fPackageSize},
   uCert in 'uCert.pas' {fCert},
   uLagerPos in 'uLagerPos.pas' {fLagerPos},
-  dmc_DryKiln in '..\..\LagerTrusted IIII\VIS 1211\dmc_DryKiln.pas' {dm_DryKiln: TDataModule},
-  uKilnHandling in '..\..\LagerTrusted IIII\VIS 1211\uKilnHandling.pas' {fkilnHandling},
-  uEnterKilnVagn in '..\..\LagerTrusted IIII\VIS 1211\uEnterKilnVagn.pas' {fEnterKilnVagn},
-  uPickPkgNoTork in '..\..\LagerTrusted IIII\VIS 1211\uPickPkgNoTork.pas' {fPickPkgNoTork};
+  dmc_DryKiln in 'dmc_DryKiln.pas' {dm_DryKiln: TDataModule},
+  uKilnHandling in 'uKilnHandling.pas' {fkilnHandling},
+  uEnterKilnVagn in 'uEnterKilnVagn.pas' {fEnterKilnVagn},
+  uPickPkgNoTork in 'uPickPkgNoTork.pas' {fPickPkgNoTork};
 
 {$R *.res}
 begin

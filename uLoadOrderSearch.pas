@@ -9,9 +9,9 @@ uses
   cxEdit, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
   cxGrid, cxLabel, cxImageComboBox, ImgList, cxGridCustomPopupMenu,
-  cxGridPopupMenu, cxLookAndFeels, cxLookAndFeelPainters, uADStanIntf,
-  uADStanOption, uADStanParam, uADStanError, uADDatSManager, uADPhysIntf,
-  uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet, uADCompClient,
+  cxGridPopupMenu, cxLookAndFeels, cxLookAndFeelPainters, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel,
   dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
   dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
@@ -55,7 +55,7 @@ type
     EditSlutkund: TEdit;
     Label4: TLabel;
     cxGridPopupMenu1: TcxGridPopupMenu;
-    cds_SearchOrder: TADQuery;
+    cds_SearchOrder: TFDQuery;
     cds_SearchOrderKund: TStringField;
     cds_SearchOrderLO: TIntegerField;
     cds_SearchOrderReferens: TStringField;

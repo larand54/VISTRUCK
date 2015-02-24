@@ -4,53 +4,53 @@ interface
 
 uses
   Forms,  SysUtils, Classes, FMTBcd, kbmMemTable, Dialogs, Controls, VidaType, SqlTimSt,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet,
-  uADCompClient, DateUtils, DB ;
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, DateUtils, DB ;
 
 type
   TdmInventory = class(TDataModule)
     ds_LengthGroup: TDataSource;
     ds_ProductLengthInGroup: TDataSource;
-    sq_Specie: TADQuery;
+    sq_Specie: TFDQuery;
     sq_Speciespeciescode: TStringField;
     sq_SpecieSpeciesNo: TIntegerField;
     sq_SpeciespeciesName: TStringField;
-    sq_grade: TADQuery;
+    sq_grade: TFDQuery;
     sq_gradeGradeName: TStringField;
     sq_gradeGradeNo: TIntegerField;
     sq_gradegradecode: TStringField;
-    sq_Surfacing: TADQuery;
+    sq_Surfacing: TFDQuery;
     sq_SurfacingSurfacingcode: TStringField;
     sq_SurfacingSurfacingNo: TIntegerField;
     sq_SurfacingSurfacingName: TStringField;
-    cds_PC: TADQuery;
+    cds_PC: TFDQuery;
     cds_PCImpCode: TStringField;
     cds_PCProductCategoryNo: TIntegerField;
     cds_PCProductCategoryName: TStringField;
-    cds_LengthGroup: TADQuery;
+    cds_LengthGroup: TFDQuery;
     cds_LengthGroupGroupNo: TIntegerField;
     cds_LengthGroupGroupName: TStringField;
     cds_LengthGroupNoOfLengths: TIntegerField;
-    sq_AT: TADQuery;
+    sq_AT: TFDQuery;
     sq_ATAT: TFloatField;
-    sq_AB: TADQuery;
+    sq_AB: TFDQuery;
     sq_ABAB: TFloatField;
-    sq_AL: TADQuery;
+    sq_AL: TFDQuery;
     sq_ALAL: TFloatField;
-    sq_GroupLengths: TADQuery;
+    sq_GroupLengths: TFDQuery;
     sq_GroupLengthsActualLengthMM: TFloatField;
-    cds_ProductLengthInGroup: TADQuery;
+    cds_ProductLengthInGroup: TFDQuery;
     cds_ProductLengthInGroupALMM: TFloatField;
     cds_ProductLengthInGroupNLMM: TFloatField;
     cds_ProductLengthInGroupFOT: TFloatField;
     cds_ProductLengthInGroupTUM: TStringField;
-    cds_BookingHdr: TADQuery;
+    cds_BookingHdr: TFDQuery;
     cds_BookingHdrBookingNo: TIntegerField;
     cds_BookingHdrsspNo: TIntegerField;
     cds_BookingHdrUtfall: TBCDField;
     ds_BookingHdr: TDataSource;
-    cds_BookingDtl: TADQuery;
+    cds_BookingDtl: TFDQuery;
     ds_BookingDtl: TDataSource;
     cds_BookingDtlBookingNo: TIntegerField;
     cds_BookingDtlBookedProductNo: TIntegerField;
@@ -65,7 +65,7 @@ type
     cds_BookingHdrProdukt: TStringField;
     cds_BookingHdrALMM: TFloatField;
     cds_BookingHdrLngdbeskrivning: TStringField;
-    cds_BookingMaster: TADQuery;
+    cds_BookingMaster: TFDQuery;
     ds_BookingMaster: TDataSource;
     cds_BookingMasterBookingNo: TIntegerField;
     cds_BookingMasterYearWeek: TStringField;
@@ -79,7 +79,7 @@ type
     cds_BookingDtlBookedALMM: TFloatField;
     cds_BookingDtlProductLengthNo: TIntegerField;
     cds_BookingDtlBookedAM3: TBCDField;
-    cds_VolResDtl: TADQuery;
+    cds_VolResDtl: TFDQuery;
     ds_VolResDtl: TDataSource;
     cds_VolResDtlUserID: TIntegerField;
     cds_VolResDtlProductNo: TIntegerField;
@@ -97,7 +97,7 @@ type
     cds_VolResDtlWeek8: TBCDField;
     cds_VolResDtlWeek9: TBCDField;
     cds_VolResDtlWeek10: TBCDField;
-    sp_PeriodBooking: TADStoredProc;
+    sp_PeriodBooking: TFDStoredProc;
     cds_BookingDtlUserName: TStringField;
     cds_BookingDtlPIPNo: TIntegerField;
     cds_BookingDtlStatus: TIntegerField;
@@ -106,8 +106,8 @@ type
     cds_BookingDtlUsedAM3: TBCDField;
     cds_BookingDtlPlannedOutputAM3: TBCDField;
     cds_BookingMasterUserName: TStringField;
-    sp_GetCurrentSD: TADStoredProc;
-    sp_GetVolPerLG: TADStoredProc;
+    sp_GetCurrentSD: TFDStoredProc;
+    sp_GetVolPerLG: TFDStoredProc;
     ds_GetVolPerLG: TDataSource;
     sp_GetVolPerLGNM3: TFloatField;
     sp_GetVolPerLGLagergrupp: TStringField;
@@ -124,7 +124,7 @@ type
     cds_BookingMasterProductionUnitNo: TIntegerField;
     cds_BookingMasterPlannedProductionTime: TBCDField;
     ds_ProductionUnit: TDataSource;
-    cds_ProductionUnit: TADQuery;
+    cds_ProductionUnit: TFDQuery;
     cds_ProductionUnitProductionUnitNo: TIntegerField;
     cds_ProductionUnitMTPUNKT: TStringField;
     cds_ProductionUnitProducerNo: TIntegerField;
@@ -133,7 +133,7 @@ type
     cds_ProductionUnitCost: TFloatField;
     cds_ProductionUnitLonPerTimme: TFloatField;
     cds_ProductionUnitLegoCostPerAM3: TBCDField;
-    cds_OtherBookings: TADQuery;
+    cds_OtherBookings: TFDQuery;
     cds_OtherBookingsProdukt: TStringField;
     cds_OtherBookingsYearWeek: TStringField;
     cds_OtherBookingsKund: TStringField;
@@ -141,7 +141,7 @@ type
     cds_OtherBookingsLO_Lngdbesk: TStringField;
     ds_OtherBookings: TDataSource;
     cds_OtherBookingsRegAv: TStringField;
-    cds_Scheduler: TADQuery;
+    cds_Scheduler: TFDQuery;
     ds_Scheduler: TDataSource;
     cds_SchedulerResourceID: TIntegerField;
     cds_SchedulerStart: TSQLTimeStampField;
@@ -153,7 +153,7 @@ type
     cds_SchedulerMtpunkt: TStringField;
     cds_SchedulerUserID: TIntegerField;
     cds_SchedulerVerkNo: TIntegerField;
-    sq_PopulateTabs: TADQuery;
+    sq_PopulateTabs: TFDQuery;
     sq_PopulateTabsID: TIntegerField;
     sq_PopulateTabsYearWeek: TStringField;
     cds_SchedulerBookingNo: TIntegerField;
@@ -165,7 +165,7 @@ type
     cds_BookingHdrNM3PlanFardig: TFMTBCDField;
     cds_OtherBookingsBookingNo: TIntegerField;
     cds_OtherBookingsID: TIntegerField;
-    upd_OtherBookings: TADUpdateSQL;
+    upd_OtherBookings: TFDUpdateSQL;
     cds_OtherBookingsProductNo: TIntegerField;
     cds_OtherBookingsProductLengthNo: TIntegerField;
     cds_OtherBookingsBookedProductNo: TIntegerField;
@@ -178,7 +178,7 @@ type
     cds_OtherBookingsCreatedUser: TIntegerField;
     cds_OtherBookingsUtfall: TBCDField;
     cds_OtherBookingsPkgFormat: TIntegerField;
-    upd_cxSchedulerTable: TADUpdateSQL;
+    upd_cxSchedulerTable: TFDUpdateSQL;
     cds_SchedulerPostningstid: TBCDField;
     cds_SchedulerPreCalcEfficiencyFactor: TBCDField;
     cds_SchedulerFeedSpeed: TBCDField;
@@ -188,14 +188,14 @@ type
     cds_SchedulerDateCreated: TSQLTimeStampField;
     cds_SchedulerUserName: TStringField;
     cds_BookingDtlM1: TFloatField;
-    cds_Dim: TADQuery;
+    cds_Dim: TFDQuery;
     cds_DimNT: TFloatField;
     cds_DimNB: TFloatField;
     cds_SchedulerFixedDate: TIntegerField;
     cds_SchedulerOwnerNo: TIntegerField;
     cds_SchedulerWeekNo: TIntegerField;
     cds_SchedulerYearNo: TIntegerField;
-    cds_BookHdrLink: TADQuery;
+    cds_BookHdrLink: TFDQuery;
     IntegerField1: TIntegerField;
     StringField1: TStringField;
     cds_BookingHdrRestNM3: TFloatField;
@@ -205,7 +205,7 @@ type
     cds_BookingHdrVolumeUnitNo: TIntegerField;
     cds_BookingHdrBookedByID: TFMTBCDField;
     cds_SchedulerFinish: TSQLTimeStampField;
-    sp_MergeBookings: TADStoredProc;
+    sp_MergeBookings: TFDStoredProc;
     cds_BookingDtlBookedProductLengthNo: TIntegerField;
     cds_BookingDtlModifiedUser: TIntegerField;
     cds_BookingDtlMainRawMtrl: TIntegerField;
@@ -227,28 +227,28 @@ type
     cds_BookingHdrAT: TFloatField;
     cds_BookingHdrAB: TFloatField;
     cds_BookingHdrUnit: TStringField;
-    mt_temp: TADMemTable;
-    cds_Products: TADQuery;
+    mt_temp: TFDMemTable;
+    cds_Products: TFDQuery;
     cds_ProductsProductNo: TIntegerField;
     cds_ProductsProductDisplayName: TStringField;
-    cds_fAT: TADQuery;
+    cds_fAT: TFDQuery;
     cds_fATAT: TFloatField;
     cds_fATUserID: TIntegerField;
     cds_SchedulerEventType: TIntegerField;
     cds_SchedulerLabelColor: TIntegerField;
     cds_SchedulerOptions: TIntegerField;
     cds_SchedulerState: TIntegerField;
-    cds_GetDimensions: TADQuery;
+    cds_GetDimensions: TFDQuery;
     cds_GetDimensionsFirstAT: TFloatField;
     cds_GetDimensionsLastAT: TFloatField;
     cds_GetDimensionsFirstAB: TFloatField;
     cds_GetDimensionsLastAB: TFloatField;
     cds_OtherBookingsOrgYearWeek: TStringField;
-    cds_DeleteBookingGroup: TADQuery;
+    cds_DeleteBookingGroup: TFDQuery;
     mt_tempsspNo: TIntegerField;
     cds_SchedulerProductionUnitNo: TIntegerField;
     cds_BookingDtlPlannedAM1: TBCDField;
-    cdsSawmillLoadOrders: TADQuery;
+    cdsSawmillLoadOrders: TFDQuery;
     cdsSawmillLoadOrdersKONTRAKTSBESKRIVNING: TStringField;
     cdsSawmillLoadOrdersShippersShipDate: TSQLTimeStampField;
     cdsSawmillLoadOrdersREADYDATE: TStringField;
@@ -323,16 +323,16 @@ type
     dsrcSawmillLoadOrders: TDataSource;
     ds_PIP: TDataSource;
     ds_LIP: TDataSource;
-    cds_PIP: TADQuery;
+    cds_PIP: TFDQuery;
     cds_PIPPIPNo: TIntegerField;
     cds_PIPORT: TStringField;
     cds_PIPOwnerNo: TIntegerField;
-    cds_LIP: TADQuery;
+    cds_LIP: TFDQuery;
     cds_LIPLIPNo: TIntegerField;
     cds_LIPLAGERGRUPP: TStringField;
     cds_LIPPIPNo: TIntegerField;
     ds_LOBuffertParams: TDataSource;
-    cds_LOBuffertParams: TADQuery;
+    cds_LOBuffertParams: TFDQuery;
     cds_LOBuffertParamsLOBuffertNo: TIntegerField;
     cds_LOBuffertParamsVerkNo: TIntegerField;
     cds_LOBuffertParamsPIPNo: TIntegerField;
@@ -341,19 +341,19 @@ type
     cds_LOBuffertParamsPIP: TStringField;
     cds_LOBuffertParamsLIP: TStringField;
     ds_Producer: TDataSource;
-    cds_producer: TADQuery;
+    cds_producer: TFDQuery;
     cds_producerClientNo: TIntegerField;
     cds_producerClientName: TStringField;
     cds_producerSearchName: TStringField;
     cds_LOBuffertParamsVerk: TStringField;
-    cds_LOBuffert: TADQuery;
+    cds_LOBuffert: TFDQuery;
     cds_LOBuffertLOBuffertNo: TIntegerField;
     cds_LOBuffertPackageTypeNo: TIntegerField;
     cds_LOBuffertProdukt: TStringField;
     cds_LOBuffertProductNo: TIntegerField;
     cds_LOBuffertLengthSpec: TStringField;
     ds_LOBuffert: TDataSource;
-    sp_LOBUffertStep1: TADStoredProc;
+    sp_LOBUffertStep1: TFDStoredProc;
     cds_LOBuffertInventory: TFloatField;
     cds_LOBuffertOnOrder: TFloatField;
     cds_LOBuffertRest: TFloatField;
@@ -380,7 +380,7 @@ type
     cds_BookingHdrPackageTypeNo: TIntegerField;
     cds_SchedulerLocationNo: TIntegerField;
     cds_SchedulerLOBuffertNo: TIntegerField;
-    cdsLOLayer1: TADQuery;
+    cdsLOLayer1: TFDQuery;
     cdsLOLayer1KONTRAKTSBESKRIVNING: TStringField;
     cdsLOLayer1ShippersShipDate: TSQLTimeStampField;
     cdsLOLayer1READYDATE: TStringField;
@@ -455,35 +455,35 @@ type
     cdsLOLayer1SurfacingNo: TIntegerField;
     dsLOLayer: TDataSource;
     cdsSawmillLoadOrdersAcceptedBySupplier: TIntegerField;
-    admLOLayer: TADMemTable;
-    admLOLayerALMM: TFloatField;
-    admLOLayerProductLengthNo: TIntegerField;
-    admLOLayerPackageTypeNo: TIntegerField;
-    admLOLayersALMM: TStringField;
-    admLOLayerNoOfPcs: TIntegerField;
-    admLOLayerProductNo: TIntegerField;
-    admLOLayersspNo: TIntegerField;
-    admLOLayerPcsPerLength: TStringField;
-    admLOLayerNomThick: TFloatField;
-    admLOLayerSurfacingNo: TIntegerField;
-    admLOLayerNoOfUnits: TFloatField;
-    admLOLayerLengthDesc: TStringField;
-    admLOLayerAM3: TFloatField;
-    admLOLayerNM3: TFloatField;
-    admLOLayerVolumeUnitNo: TIntegerField;
+    FDmLOLayer: TFDMemTable;
+    FDmLOLayerALMM: TFloatField;
+    FDmLOLayerProductLengthNo: TIntegerField;
+    FDmLOLayerPackageTypeNo: TIntegerField;
+    FDmLOLayersALMM: TStringField;
+    FDmLOLayerNoOfPcs: TIntegerField;
+    FDmLOLayerProductNo: TIntegerField;
+    FDmLOLayersspNo: TIntegerField;
+    FDmLOLayerPcsPerLength: TStringField;
+    FDmLOLayerNomThick: TFloatField;
+    FDmLOLayerSurfacingNo: TIntegerField;
+    FDmLOLayerNoOfUnits: TFloatField;
+    FDmLOLayerLengthDesc: TStringField;
+    FDmLOLayerAM3: TFloatField;
+    FDmLOLayerNM3: TFloatField;
+    FDmLOLayerVolumeUnitNo: TIntegerField;
     dsadmLOLayer: TDataSource;
-    sp_CrePkgType: TADStoredProc;
-    sp_insLOLayer2: TADStoredProc;
+    sp_CrePkgType: TFDStoredProc;
+    sp_insLOLayer2: TFDStoredProc;
     cdsSawmillLoadOrdersSurfacingNo: TIntegerField;
-    admLOLayerLONo: TIntegerField;
-    admLOLayerLOBuffertNo: TIntegerField;
+    FDmLOLayerLONo: TIntegerField;
+    FDmLOLayerLOBuffertNo: TIntegerField;
     cdsSawmillLoadOrdersOrderBy: TFloatField;
-    upd_SawMillLoadOrders: TADUpdateSQL;
-    sp_LOLevelOne: TADStoredProc;
+    upd_SawMillLoadOrders: TFDUpdateSQL;
+    sp_LOLevelOne: TFDStoredProc;
     ds_LOLevelOne: TDataSource;
-    sp_LOLevelTwo: TADStoredProc;
+    sp_LOLevelTwo: TFDStoredProc;
     ds_LOLevelTwo: TDataSource;
-    sp_LOLevelThree: TADStoredProc;
+    sp_LOLevelThree: TFDStoredProc;
     ds_LOLevelThree: TDataSource;
     sp_LOLevelTwoKontraktsbeskrivning: TStringField;
     sp_LOLevelTwoShippersShipDate: TSQLTimeStampField;
@@ -558,7 +558,7 @@ type
     sp_LOLevelTwoAcceptedBySupplier: TIntegerField;
     sp_LOLevelTwoSurfacingNo: TIntegerField;
     sp_LOLevelTwoOrderBy: TFloatField;
-    sp_InsIntLOHdr: TADStoredProc;
+    sp_InsIntLOHdr: TFDStoredProc;
     sp_LOLevelOneShippersShipDate: TSQLTimeStampField;
     sp_LOLevelOnePreliminaryRequestedPeriod: TStringField;
     sp_LOLevelOneStatus: TIntegerField;
@@ -575,7 +575,7 @@ type
     sp_LOLevelOneDef_LoadingLocationNo: TIntegerField;
     sp_LOLevelOneKundreferens: TStringField;
     sp_LOLevelOneOrderType: TIntegerField;
-    sp_LOEjBokade: TADStoredProc;
+    sp_LOEjBokade: TFDStoredProc;
     ds_LOEjBokade: TDataSource;
     sp_LOEjBokadeKONTRAKTSBESKRIVNING: TStringField;
     sp_LOEjBokadeShippersShipDate: TSQLTimeStampField;
@@ -652,8 +652,8 @@ type
     sp_LOEjBokadeAcceptedBySupplier: TIntegerField;
     sp_LOEjBokadeSurfacingNo: TIntegerField;
     sp_LOEjBokadeOrderBy: TFloatField;
-    upd_LOLevelOne: TADUpdateSQL;
-    upd_LOLevelThree: TADUpdateSQL;
+    upd_LOLevelOne: TFDUpdateSQL;
+    upd_LOLevelThree: TFDUpdateSQL;
     sp_LOLevelThreeSupplierShipPlanObjectNo: TIntegerField;
     sp_LOLevelThreeCustShipPlanDetailObjectNo: TIntegerField;
     sp_LOLevelThreeShipType: TIntegerField;
@@ -720,7 +720,7 @@ type
     sp_LOLevelThreeRegAv: TStringField;
     sp_LOLevelThreeAvailPeriod: TFloatField;
     sp_LOLevelThreeAvailNetto: TFloatField;
-    sp_InqLevelOne: TADStoredProc;
+    sp_InqLevelOne: TFDStoredProc;
     ds_InqLevelOne: TDataSource;
     cds_LOBuffertParamsUserID: TIntegerField;
     cds_LOBuffertParamsMarketRegionNo: TIntegerField;
@@ -745,7 +745,7 @@ type
     sp_InqLevelOneDateCreated: TSQLTimeStampField;
     sp_InqLevelOnePeriod: TIntegerField;
     sp_InqLevelOneVoyageNo: TIntegerField;
-    sp_InqLevelTwo: TADStoredProc;
+    sp_InqLevelTwo: TFDStoredProc;
     ds_InqLevelTwo: TDataSource;
     sp_InqLevelTwoSupplierShipPlanObjectNo: TIntegerField;
     sp_InqLevelTwoCustShipPlanDetailObjectNo: TIntegerField;
@@ -811,7 +811,7 @@ type
     sp_InqLevelTwoALMM: TFloatField;
     sp_InqLevelTwoSurfacingNo: TIntegerField;
     sp_InqLevelTwoRegAv: TStringField;
-    sp_InqLevelThree: TADStoredProc;
+    sp_InqLevelThree: TFDStoredProc;
     ds_InqLevelThree: TDataSource;
     sp_InqLevelThreeSupplierShipPlanObjectNo: TIntegerField;
     sp_InqLevelThreeCustShipPlanDetailObjectNo: TIntegerField;
@@ -878,7 +878,7 @@ type
     sp_InqLevelThreeSurfacingNo: TIntegerField;
     sp_InqLevelThreeRegAv: TStringField;
     cds_LOBuffertPPP: TIntegerField;
-    upd_InqLevelTwo: TADUpdateSQL;
+    upd_InqLevelTwo: TFDUpdateSQL;
     cds_LOBuffertALMM: TFloatField;
     sp_InqLevelThreeAvailPeriod: TFloatField;
     sp_InqLevelThreeAvailNetto: TFloatField;
@@ -916,7 +916,7 @@ type
     sp_LOLevelOneMiniTextLO: TIntegerField;
     sp_LOLevelOnePeriod: TIntegerField;
     sp_LOLevelOneObjecttype: TIntegerField;
-    sp_UtlastLevelOne: TADStoredProc;
+    sp_UtlastLevelOne: TFDStoredProc;
     sp_UtlastLevelOneShippersShipDate: TSQLTimeStampField;
     sp_UtlastLevelOnePreliminaryRequestedPeriod: TStringField;
     sp_UtlastLevelOneStatus: TIntegerField;
@@ -964,7 +964,7 @@ type
     sp_UtlastLevelOnePeriod: TIntegerField;
     sp_UtlastLevelOneObjecttype: TIntegerField;
     ds_UtlastLevelOne: TDataSource;
-    sp_UtlastLevelTwo: TADStoredProc;
+    sp_UtlastLevelTwo: TFDStoredProc;
     sp_UtlastLevelTwoKontraktsbeskrivning: TStringField;
     sp_UtlastLevelTwoShippersShipDate: TSQLTimeStampField;
     sp_UtlastLevelTwoPreliminaryRequestedPeriod: TStringField;
@@ -1039,7 +1039,7 @@ type
     sp_UtlastLevelTwoSurfacingNo: TIntegerField;
     sp_UtlastLevelTwoOrderBy: TFloatField;
     ds_UtlastLevelTwo: TDataSource;
-    sp_UtlastLevelThree: TADStoredProc;
+    sp_UtlastLevelThree: TFDStoredProc;
     sp_UtlastLevelThreeSupplierShipPlanObjectNo: TIntegerField;
     sp_UtlastLevelThreeCustShipPlanDetailObjectNo: TIntegerField;
     sp_UtlastLevelThreeShipType: TIntegerField;
@@ -1107,18 +1107,18 @@ type
     sp_UtlastLevelThreeAvailPeriod: TFloatField;
     sp_UtlastLevelThreeAvailNetto: TFloatField;
     ds_UtlastLevelThree: TDataSource;
-    sp_invpiv: TADStoredProc;
+    sp_invpiv: TFDStoredProc;
     ds_invpiv: TDataSource;
-    sp_invpivPkgDtl: TADStoredProc;
+    sp_invpivPkgDtl: TFDStoredProc;
     ds_invpivPkgDtl: TDataSource;
-    sp_invpivPkg: TADStoredProc;
+    sp_invpivPkg: TFDStoredProc;
     ds_invpivPkg: TDataSource;
-    upd_invpivPkg: TADUpdateSQL;
-    upd_invpivPkgDtl: TADUpdateSQL;
-    ADStoredProc1: TADStoredProc;
-    ADStoredProc2: TADStoredProc;
-    sp_CngArtNoByPkgSize: TADStoredProc;
-    sp_CngCert: TADStoredProc;
+    upd_invpivPkg: TFDUpdateSQL;
+    upd_invpivPkgDtl: TFDUpdateSQL;
+    FDStoredProc1: TFDStoredProc;
+    FDStoredProc2: TFDStoredProc;
+    sp_CngArtNoByPkgSize: TFDStoredProc;
+    sp_CngCert: TFDStoredProc;
     mtSelectedPkgNo: TkbmMemTable;
     mtSelectedPkgNoPAKETNR: TIntegerField;
     mtSelectedPkgNoLEVKOD: TStringField;
@@ -1128,7 +1128,7 @@ type
     mtSelectedPkgNoREGISTRERAT: TSQLTimeStampField;
     mtSelectedPkgNoProductNo: TIntegerField;
     mtSelectedPkgNoMARKERAD: TIntegerField;
-    cds_KilnChargeRows: TADQuery;
+    cds_KilnChargeRows: TFDQuery;
     cds_KilnChargeRowsKilnChargeNo: TIntegerField;
     cds_KilnChargeRowsPackageNo: TIntegerField;
     cds_KilnChargeRowsSupplierCode: TStringField;
@@ -1139,7 +1139,7 @@ type
     cds_KilnChargeRowsRowNo: TIntegerField;
     cds_KilnChargeRowsProductDisplayName: TStringField;
     cds_KilnChargeRowsPcsPerLength: TStringField;
-    cds_KilnChargeHdr: TADQuery;
+    cds_KilnChargeHdr: TFDQuery;
     cds_KilnChargeHdrClientNo: TIntegerField;
     cds_KilnChargeHdrKilnChargeNo: TIntegerField;
     cds_KilnChargeHdrKilnNo: TIntegerField;
@@ -1157,14 +1157,14 @@ type
     cds_KilnChargeHdrNoOfVagnar: TIntegerField;
     cds_KilnChargeHdrNoOfVagnarBefore: TIntegerField;
     ds_KilnChargeRows: TDataSource;
-    sq_PkgExistInInventory: TADQuery;
+    sq_PkgExistInInventory: TFDQuery;
     sq_PkgExistInInventoryPackageNo: TIntegerField;
-    cds_SelectProgressKiln: TADQuery;
+    cds_SelectProgressKiln: TFDQuery;
     cds_SelectProgressKilnClientNo: TIntegerField;
     cds_SelectProgressKilnKilnChargeNo: TIntegerField;
     cds_SelectProgressKilnKilnNo: TIntegerField;
     cds_SelectProgressKilnKilnName: TStringField;
-    cds_KilnVagn: TADQuery;
+    cds_KilnVagn: TFDQuery;
     cds_KilnVagnKilnChargeNo: TIntegerField;
     cds_KilnVagnVagnNo: TIntegerField;
     cds_KilnVagnInDate: TSQLTimeStampField;
@@ -1173,20 +1173,20 @@ type
     cds_KilnVagnCreatedUser: TIntegerField;
     cds_KilnVagnDateCreated: TSQLTimeStampField;
     ds_KilnChargeHdr: TDataSource;
-    sc_GetProductNoByPackageNo: TADQuery;
+    sc_GetProductNoByPackageNo: TFDQuery;
     sc_GetProductNoByPackageNoproductno: TIntegerField;
-    cds_GetSistaVagnNo: TADQuery;
+    cds_GetSistaVagnNo: TFDQuery;
     cds_GetSistaVagnNoSistaVagnNo: TIntegerField;
-    cds_Vagnar: TADQuery;
+    cds_Vagnar: TFDQuery;
     cds_VagnarVagnNo: TIntegerField;
-    cds_AntalVagnarPerStatus: TADQuery;
+    cds_AntalVagnarPerStatus: TFDQuery;
     cds_AntalVagnarPerStatusAntalVagnar: TIntegerField;
-    cds_GetAntalVagnar: TADQuery;
+    cds_GetAntalVagnar: TFDQuery;
     cds_GetAntalVagnarClientNo: TIntegerField;
     cds_GetAntalVagnarKilnNo: TIntegerField;
     cds_GetAntalVagnarKilnName: TStringField;
     cds_GetAntalVagnarNoOfVagnar: TIntegerField;
-    cds_KilnVagnar: TADQuery;
+    cds_KilnVagnar: TFDQuery;
     cds_KilnVagnarRad: TStringField;
     cds_KilnVagnarRowNo: TIntegerField;
     cds_KilnVagnarL1: TStringField;
@@ -1225,8 +1225,8 @@ type
     cds_KilnVagnarL34: TStringField;
     cds_KilnVagnarL35: TStringField;
     ds_KilnVagnar: TDataSource;
-    sp_MoveVagn: TADStoredProc;
-    cds_VagnStatus: TADQuery;
+    sp_MoveVagn: TFDStoredProc;
+    cds_VagnStatus: TFDQuery;
     cds_VagnStatusKilnChargeNo: TIntegerField;
     cds_VagnStatusVagnNo: TIntegerField;
     cds_VagnStatusInDate: TSQLTimeStampField;
@@ -1234,9 +1234,9 @@ type
     cds_VagnStatusVagnStatus: TIntegerField;
     cds_VagnStatusDateCreated: TSQLTimeStampField;
     cds_VagnStatusCreatedUser: TIntegerField;
-    cds_GetFirstVagnNoPerVagnStatus: TADQuery;
+    cds_GetFirstVagnNoPerVagnStatus: TFDQuery;
     cds_GetFirstVagnNoPerVagnStatusVagnNo: TIntegerField;
-    cds_GetLastVagnNoPerVagnStatus: TADQuery;
+    cds_GetLastVagnNoPerVagnStatus: TFDQuery;
     cds_GetLastVagnNoPerVagnStatusVagnNo: TIntegerField;
     cds_KilnVagnarL36: TStringField;
     cds_KilnVagnarL37: TStringField;
@@ -1248,8 +1248,8 @@ type
     cds_KilnVagnarL43: TStringField;
     cds_KilnVagnarL44: TStringField;
     cds_KilnVagnarL45: TStringField;
-    sp_MovePackage: TADStoredProc;
-    sp_PkgExistInLIP: TADStoredProc;
+    sp_MovePackage: TFDStoredProc;
+    sp_PkgExistInLIP: TFDStoredProc;
     mtSelectedPkgNoMaxlangd: TFloatField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -1257,8 +1257,8 @@ type
     procedure cds_BookingDtlUtfallChange(Sender: TField);
     procedure cds_BookingMasterClientNoChange(Sender: TField);
     procedure cds_OtherBookingsUpdateRecord(ASender: TDataSet;
-      ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-      AOptions: TADUpdateRowOptions);
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
     procedure cds_BookingMasterAfterScroll(DataSet: TDataSet);
     procedure cds_SchedulerBeforePost(DataSet: TDataSet);
     procedure cds_BookingDtlCalcFields(DataSet: TDataSet);
@@ -1270,11 +1270,11 @@ type
     procedure cds_BookingDtlPlannedOutputNM3Change(Sender: TField);
     procedure cds_LOBuffertParamsAfterInsert(DataSet: TDataSet);
     procedure sp_invpivPkgUpdateRecord(ASender: TDataSet;
-      ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-      AOptions: TADUpdateRowOptions);
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
     procedure sp_invpivPkgDtlUpdateRecord(ASender: TDataSet;
-      ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-      AOptions: TADUpdateRowOptions);
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
     procedure cds_KilnChargeRowsAfterInsert(DataSet: TDataSet);
     procedure cds_KilnVagnAfterInsert(DataSet: TDataSet);
     procedure cds_KilnVagnBeforePost(DataSet: TDataSet);
@@ -1585,8 +1585,8 @@ Begin
 End ;
 
 procedure TdmInventory.cds_OtherBookingsUpdateRecord(ASender: TDataSet;
-ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-  AOptions: TADUpdateRowOptions);
+ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
 begin
  upd_OtherBookings.ConnectionName := cds_OtherBookings.ConnectionName;
  upd_OtherBookings.DataSet        := cds_OtherBookings;
@@ -1633,26 +1633,26 @@ End ;
 
 (*
 Function TdmInventory.GetAM1ToRun : Double ;
-Var ADMemTable1 : TADMemTable ;
+Var FDMemTable1 : TFDMemTable ;
 Begin
- ADMemTable1 := TADMemTable.Create(Self);
- ADMemTable1.Data := cds_BookingDtl.Data ;
+ FDMemTable1 := TFDMemTable.Create(Self);
+ FDMemTable1.Data := cds_BookingDtl.Data ;
  Try
- ADMemTable1.Active  := True ;
+ FDMemTable1.Active  := True ;
  Result                   := 0 ;
- ADMemTable1.Filter    :=  'ID = ' + cds_SchedulerID.AsString ;
- ADMemTable1.Filtered  := True ;
- ADMemTable1.First ;
+ FDMemTable1.Filter    :=  'ID = ' + cds_SchedulerID.AsString ;
+ FDMemTable1.Filtered  := True ;
+ FDMemTable1.First ;
 
-  ADMemTable1.First ;
-  While not ADMemTable1.Eof do
+  FDMemTable1.First ;
+  While not FDMemTable1.Eof do
   Begin
-   Result  := Result + ADMemTable1.FieldByName('UsedAM3').AsFloat ;
-   ADMemTable1.Next ;
+   Result  := Result + FDMemTable1.FieldByName('UsedAM3').AsFloat ;
+   FDMemTable1.Next ;
   End ;
 
  Finally
-  ADMemTable1.Free ;
+  FDMemTable1.Free ;
  End ;
 End ; *)
 
@@ -1697,7 +1697,7 @@ End ;
 
 procedure TdmInventory.cds_SchedulerBeforePost(DataSet: TDataSet);
 Var AYear, AWeekOfYear: Word;
-    ADayOfWeek: Word ;
+    FDayOfWeek: Word ;
     YearWeekString : String ;
     Start   : TDateTime ;
     Year    : String ;
@@ -1713,10 +1713,10 @@ Begin
 
  if (cds_SchedulerFixedDate.AsInteger = 1) and (cds_SchedulerTaskStatusField.AsInteger = 7) then
  Begin
-  ADayOfWeek   := 1 ;
+  FDayOfWeek   := 1 ;
   AYear        := StrToIntDef('20' + Copy(cds_SchedulerYearWeek.AsString, 1,2),0) ;
   AWeekOfYear  := StrToIntDef(Copy(cds_SchedulerYearWeek.AsString, 3,2),0) ;
-  Start        := EncodeDateWeek(AYear, AWeekOfYear, ADayOfWeek) ;
+  Start        := EncodeDateWeek(AYear, AWeekOfYear, FDayOfWeek) ;
   Start        := IncHour(Start, 6) ;
   cds_SchedulerStart.AsSQLTimeStamp  := DateTimeToSQLTimeStamp(Start) ;
 
@@ -1756,10 +1756,10 @@ Begin
 
  if (cds_SchedulerFixedDate.AsInteger = 1) and (cds_SchedulerTaskStatusField.AsInteger = 7) then
  Begin
-  ADayOfWeek   := 1 ;
+  FDayOfWeek   := 1 ;
   AYear        := StrToIntDef('20' + Copy(cds_SchedulerYearWeek.AsString, 1,2),0) ;
   AWeekOfYear  := StrToIntDef(Copy(cds_SchedulerYearWeek.AsString, 3,2),0) ;
-  Start        := EncodeDateWeek(AYear, AWeekOfYear, ADayOfWeek) ;
+  Start        := EncodeDateWeek(AYear, AWeekOfYear, FDayOfWeek) ;
   Start        := IncHour(Start, 6) ;
   cds_SchedulerStart.AsSQLTimeStamp  := DateTimeToSQLTimeStamp(Start) ;
  End ;
@@ -1817,27 +1817,27 @@ begin
 end;
 
 function TdmInventory.GetAntalLamellerOfRawMtrl : Integer ;
-Var ADMemTable1 : TADMemTable ;
+Var FDMemTable1 : TFDMemTable ;
 Begin
- ADMemTable1 := TADMemTable.Create(Self);
- ADMemTable1.Data := cds_BookingHdr.Data ;
+ FDMemTable1 := TFDMemTable.Create(Self);
+ FDMemTable1.Data := cds_BookingHdr.Data ;
  Try
- ADMemTable1.Active  := True ;
+ FDMemTable1.Active  := True ;
  Result                   := 1 ;
-// ADMemTable1.Filter    := 'MCClassNo <> 1' ;
-// ADMemTable1.Filtered  := True ;
- ADMemTable1.First ;
+// FDMemTable1.Filter    := 'MCClassNo <> 1' ;
+// FDMemTable1.Filtered  := True ;
+ FDMemTable1.First ;
 
-// if ADMemTable1.FieldByName('Urlagg').AsInteger = 0 then
+// if FDMemTable1.FieldByName('Urlagg').AsInteger = 0 then
 // Begin
-  if ADMemTable1.FieldByName('AB').AsFloat > 0 then
-  Result := trunc(cds_BookingDtlAB.AsFloat / ADMemTable1.FieldByName('AB').AsFloat) ;
+  if FDMemTable1.FieldByName('AB').AsFloat > 0 then
+  Result := trunc(cds_BookingDtlAB.AsFloat / FDMemTable1.FieldByName('AB').AsFloat) ;
   if Result = 1 then
    Result := 0 ;
-  if ADMemTable1.FieldByName('AT').AsFloat > 0 then
+  if FDMemTable1.FieldByName('AT').AsFloat > 0 then
   Begin
-   if trunc(cds_BookingDtlAT.AsFloat / ADMemTable1.FieldByName('AT').AsFloat) > 1 then
-   Result := Result + trunc(cds_BookingDtlAT.AsFloat / ADMemTable1.FieldByName('AT').AsFloat) ;
+   if trunc(cds_BookingDtlAT.AsFloat / FDMemTable1.FieldByName('AT').AsFloat) > 1 then
+   Result := Result + trunc(cds_BookingDtlAT.AsFloat / FDMemTable1.FieldByName('AT').AsFloat) ;
   End ;
 
   if Result = 0 then
@@ -1845,7 +1845,7 @@ Begin
 // End ;
 
  Finally
-  ADMemTable1.Free ;
+  FDMemTable1.Free ;
  End ;
 End ;
 
@@ -1874,15 +1874,15 @@ end;
 
 procedure TdmInventory.cds_SchedulerYearWeekChange(Sender: TField);
 Var AYear, AWeekOfYear  : Word;
-    ADayOfWeek          : Word ;
+    FDayOfWeek          : Word ;
     Start               : TDateTime ;
 begin
  if (cds_SchedulerFixedDate.AsInteger = 1) and (cds_SchedulerTaskStatusField.AsInteger = 7) then
  Begin
-  ADayOfWeek   := 1 ;
+  FDayOfWeek   := 1 ;
   AYear        := StrToIntDef('20' + Copy(cds_SchedulerYearWeek.AsString, 1,2),0) ;
   AWeekOfYear  := StrToIntDef(Copy(cds_SchedulerYearWeek.AsString, 3,2),0) ;
-  Start        := EncodeDateWeek(AYear, AWeekOfYear, ADayOfWeek) ;
+  Start        := EncodeDateWeek(AYear, AWeekOfYear, FDayOfWeek) ;
   Start        := IncHour(Start, 6) ;
   cds_SchedulerStart.AsSQLTimeStamp  := DateTimeToSQLTimeStamp(Start) ;
  End ; 
@@ -2145,8 +2145,8 @@ End ;
 
 
 procedure TdmInventory.sp_invpivPkgDtlUpdateRecord(ASender: TDataSet;
-  ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-  AOptions: TADUpdateRowOptions);
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
 begin
  upd_invpivPkgDtl.ConnectionName := sp_invpivPkgDtl.ConnectionName;
  upd_invpivPkgDtl.DataSet        := sp_invpivPkgDtl;
@@ -2156,8 +2156,8 @@ begin
 end;
 
 procedure TdmInventory.sp_invpivPkgUpdateRecord(ASender: TDataSet;
-  ARequest: TADUpdateRequest; var AAction: TADErrorAction;
-  AOptions: TADUpdateRowOptions);
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
 begin
  upd_invpivPkg.ConnectionName := sp_invpivPkg.ConnectionName;
  upd_invpivPkg.DataSet        := sp_invpivPkg;

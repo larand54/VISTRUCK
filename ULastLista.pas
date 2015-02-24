@@ -11,10 +11,10 @@ uses
   cxCalendar, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxDBData, kbmMemTable, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGridLevel, cxClasses,
-  cxGridCustomView, cxGrid, cxSplitter, cxImageComboBox, uADStanIntf, uADStanOption, uADStanParam,
-  uADStanError, uADDatSManager, uADPhysIntf, uADDAptIntf, uADStanAsync,
-  uADDAptManager, cxDBEdit, cxLookupEdit, cxDBLookupEdit,
-  cxDBLookupComboBox, uADCompDataSet, uADCompClient, cxLookAndFeels,
+  cxGridCustomView, cxGrid, cxSplitter, cxImageComboBox, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, cxDBEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxLookAndFeels,
   cxLookAndFeelPainters, cxLabel, cxGridCustomPopupMenu, cxGridPopupMenu,
   ActnList, cxButtons, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
   dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
@@ -72,7 +72,7 @@ type
     grdLoadPackagesDBTableView1PACKAGEOK: TcxGridDBColumn;
     grdLoadPackagesLevel1: TcxGridLevel;
     ds_Props: TDataSource;
-    cds_Props: TADQuery;
+    cds_Props: TFDQuery;
     cds_PropsUserID: TIntegerField;
     cds_PropsForm: TStringField;
     cds_PropsName: TStringField;

@@ -16,9 +16,9 @@ uses
   cxGridDBTableView, cxGrid, cxGridBandedTableView, cxGridDBBandedTableView,
   cxCheckBox, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxMemo,
   dxBarExtItems, Menus, cxLookAndFeelPainters, cxButtons, cxSplitter,
-  uADStanIntf, uADStanOption, uADStanParam, uADStanError, uADDatSManager,
-  uADPhysIntf, uADDAptIntf, uADStanAsync, uADDAptManager, uADCompDataSet,
-  uADCompClient, DateUtils ;
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, DateUtils ;
 
 type
   TfLoadEntryCSD = class(TForm)
