@@ -82,7 +82,8 @@ uses
   uKilnHandling in 'uKilnHandling.pas' {fkilnHandling},
   uEnterKilnVagn in 'uEnterKilnVagn.pas' {fEnterKilnVagn},
   uPickPkgNoTork in 'uPickPkgNoTork.pas' {fPickPkgNoTork},
-  udmLanguage in 'udmLanguage.pas' {dmLanguage: TDataModule};
+  udmLanguage in 'udmLanguage.pas' {dmLanguage: TDataModule},
+  ufrmChangeLanguage in 'ufrmChangeLanguage.pas' {frmChangeLanguage};
 
 {$R *.res}
 begin
@@ -97,5 +98,6 @@ begin
   Application.CreateForm(TdmLoadEntrySSP, dmLoadEntrySSP);
   Application.CreateForm(TdmInventory, dmInventory);
   Application.CreateForm(TdmLanguage, dmLanguage);
+  Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.Run
 end.

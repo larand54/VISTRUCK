@@ -178,6 +178,9 @@ type
     dxBarLargeButton30: TdxBarLargeButton;
     siLangLinked1: TsiLangLinked;
     acTorkhanteraren: TAction;
+    acChangeLanguage: TAction;
+    dxBarButton12: TdxBarButton;
+    cxButton2: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -197,6 +200,7 @@ type
     procedure acPkgStdSizeIntervallExecute(Sender: TObject);
     procedure acAndraPaketExecute(Sender: TObject);
     procedure acTorkhanterarenExecute(Sender: TObject);
+    procedure acChangeLanguageExecute(Sender: TObject);
 
   private
     a : String ;
@@ -247,7 +251,7 @@ uses
   uEncode , //fAvrakningar, //fSkapaAvrakning,
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
-  uKilnHandling;
+  uKilnHandling, ufrmChangeLanguage, udmLanguage;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -558,6 +562,22 @@ begin
  End
   else
    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_10' (* 'No access' *) ));
+end;
+
+procedure TfrmMain.acChangeLanguageExecute(Sender: TObject);
+var
+  frm: TfrmChangeLanguage;
+begin
+  try
+    frm := TfrmChangeLanguage.Create(nil);
+    if (frm <> nil) then
+    begin
+      if (frm.ShowModal = mrOk) then
+        dmLanguage.siLangDispatcher1.LoadAllFromFile(dmLanguage.siLangDispatcher1.FileName);
+    end;
+  finally
+    FreeAndNil(frm);
+  end;
 end;
 
 procedure TfrmMain.Timer1Timer(Sender: TObject);

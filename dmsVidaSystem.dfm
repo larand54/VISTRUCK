@@ -64,7 +64,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -159,7 +159,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -185,7 +185,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -251,7 +251,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2572,6 +2572,16 @@ object dmsSystem: TdmsSystem
       Origin = 'CRPath'
       Size = 255
     end
+    object sq_dbPropsLangPath: TStringField
+      FieldName = 'LangPath'
+      Origin = 'LangPath'
+      Size = 255
+    end
+    object sq_dbPropsFastPath: TStringField
+      FieldName = 'FastPath'
+      Origin = 'FastPath'
+      Size = 255
+    end
   end
   object sq_GetLoadPlanPkgs: TFDQuery
     CachedUpdates = True
@@ -4122,7 +4132,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

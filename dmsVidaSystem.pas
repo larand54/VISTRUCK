@@ -464,6 +464,8 @@ type
     sq_GridSets2Sets: TBlobField;
     sq_GridSets2Name: TStringField;
     sq_GridSets2Form: TStringField;
+    sq_dbPropsLangPath: TStringField;
+    sq_dbPropsFastPath: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -517,7 +519,7 @@ type
     procedure GenerateLoadWeight(const LoadNo : Integer) ;
     procedure DelLoad_Res(const LoadNo : Integer) ;
     function  Load_Reserved(const LoadNo  : Integer): String ;
-    function  SP_Load_Reserved(const LoadNo: Integer): String;    
+    function  SP_Load_Reserved(const LoadNo: Integer): String;
     procedure RunLengthSpec ;
     Function  DeleteAssigned(const FormNamn, AssignedDMmodul : String) : Boolean ;//frmAvrop.Name, 'dmVidaInvoice'
     Function  AssignDMToThisWork(const FormNamn, AssignedDMmodul : String) : Boolean ;//frmAvrop.Name, 'dmVidaInvoice'
@@ -606,6 +608,8 @@ type
     function  GetUserExportDir(const ExportDir : Integer;const UserID : Integer;const Form : String) : String ;
     function  Get_Dir(const pFieldName : String) : String ;
     function  Get_SystemDir(const Form, pFieldName : String) : String ;
+    function  GetLangPath(): String;
+
 
     property  OnAmbiguousPkgNo : TAmbiguityEvent read  FOnAmbiguousPkgNo write FOnAmbiguousPkgNo;
 
@@ -691,6 +695,20 @@ begin
     FreeAndNil(fLagerPos) ;
   End;
  End;
+end;
+
+function TdmsSystem.GetLangPath: String;
+begin
+ sq_dbProps.Open;
+  Try
+    if not sq_dbProps.Eof then Begin
+      Result := sq_dbPropsLangPath.AsString;
+    End
+    else
+      Result := '';
+  Finally
+    sq_dbProps.Close;
+  End;
 end;
 
 (*procedure TdmsSystem.FDoLog(s: string);
@@ -1017,7 +1035,7 @@ Begin
    Raise ;
   End ;
  end;
- Try    
+ Try
  sp_lencolpcspkgtypeno.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
  sp_lencolpcspkgtypeno.ExecProc ;
      except
@@ -1419,7 +1437,7 @@ begin
  mtReportTypes.InsertRecord(['Lastorder inköp', 8]);
  mtReportTypes.InsertRecord(['Transportorder inköp', 9]);
  mtReportTypes.InsertRecord(['Följesedel inköp', 10]);
- mtReportTypes.InsertRecord(['Följesedel USA', 12]); 
+ mtReportTypes.InsertRecord(['Följesedel USA', 12]);
  mtReportTypes.InsertRecord(['Transportbrev', 13]);
  mtReportTypes.InsertRecord(['Transportorder avrop', 14]);
 end;
@@ -2285,7 +2303,7 @@ Begin
  Result:= sp_NewCSDLoad.ParamByName('@LoadNo').AsInteger ;
  Finally
   sp_NewCSDLoad.Close ;
- End ; 
+ End ;
 End ;
 
 procedure TdmsSystem.InsLoad_Imp(const TempLoadNo, LoadNo, LONo, AntalPaket : Integer) ;

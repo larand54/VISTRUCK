@@ -37,7 +37,7 @@ begin
   path := dmsSystem.GetLangPath();
 {$ENDIF}
   path := path+ChangeFileExt(ExtractFileName(ParamStr(0)),'')+'.sib';
-  assert(path <> '',siLang1.GetTextOrDefault('IDS_1' (* 'Path to languagefiles not defined in database' *) ));
+  assert(path <> '','Path to languagefiles not defined in database');
   siLangDispatcher1.FileName := Path;
 end;
 
