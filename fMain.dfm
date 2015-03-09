@@ -20,9 +20,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 126
+    Top = 124
     Width = 1132
-    Height = 669
+    Height = 671
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
@@ -30,7 +30,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 1132
-      Height = 669
+      Height = 671
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
@@ -56,7 +56,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1132
-    Height = 126
+    Height = 124
     ApplicationButton.Glyph.Data = {
       36090000424D3609000000000000360000002800000018000000180000000100
       2000000000000009000000000000000000000000000000000000000000000000
@@ -3059,7 +3059,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (

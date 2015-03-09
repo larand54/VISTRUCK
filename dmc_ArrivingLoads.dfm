@@ -118,7 +118,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -248,7 +248,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -371,7 +371,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -486,7 +486,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -616,7 +616,12 @@ object dmArrivingLoads: TdmArrivingLoads
       
         'isNull(PIPCity.CityName,'#39'/'#39') + '#39'/'#39' + LIP.LogicalInventoryName'#9'AS' +
         #9'ARtillLager,'
-      'IsNull(IName.ImpVerk,0) AS ImpVerk'
+      'IsNull(IName.ImpVerk,0) AS ImpVerk,'
+      ''
+      '(Select Count(*) FROM dbo.LoadDetail LD'
+      'WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,'
+      '(Select Count(*) FROM dbo.PackageARConfirmed PC'
+      'WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed'
       ''
       ''
       ''
@@ -886,9 +891,18 @@ object dmArrivingLoads: TdmArrivingLoads
       ReadOnly = True
       Required = True
     end
+    object cdsArrivingLoadsNoOfPackages: TIntegerField
+      FieldName = 'NoOfPackages'
+      Origin = 'NoOfPackages'
+      ReadOnly = True
+    end
+    object cdsArrivingLoadsPackagesConfirmed: TIntegerField
+      FieldName = 'PackagesConfirmed'
+      Origin = 'PackagesConfirmed'
+      ProviderFlags = []
+    end
   end
   object cdsArrivingPackages: TFDQuery
-    CachedUpdates = True
     Indexes = <
       item
         Active = True
@@ -899,6 +913,7 @@ object dmArrivingLoads: TdmArrivingLoads
     IndexName = 'cdsArrPkgIndex'
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
+    UpdateObject = upd_ArrivingPackages
     SQL.Strings = (
       'SELECT DISTINCT'
       'PTD.ProductLengthNo,'
@@ -906,9 +921,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'LSP.ShippingPlanNo'#9#9'AS'#9'LO,'
       'LD.PackageNo'#9#9#9'AS'#9'PACKAGE_NO,'
       'LD.SUPPLIERCODE'#9#9#9'AS '#9'SUPPLIERCODE,'
-      '-- P.Totalm3Actual'#9#9#9'AS '#9'M3_NET,'
-      '-- P.Totalm3Nominal'#9#9'AS '#9'M3_NOM,'
-      '-- P.TotalMFBMNominal              AS      MFBM,'
+      ''
       ''
       'PTD.m3Actual'#9#9#9'    AS '#9'M3_NET,'
       'PTD.m3Nominal'#9#9'      AS '#9'M3_NOM,'
@@ -930,24 +943,10 @@ object dmArrivingLoads: TdmArrivingLoads
       'LD.ProblemPackageLog'#9#9'AS'#9'PACKAGE_LOG,'
       'LD.LoadDetailNo                 AS      LOAD_DETAILNO,'
       ''
-      
-        '-- CASE WHEN isnull(ptbypp.PackageTypeNo, 0) = 0 THEN PTL.PcsPer' +
-        'Length'
-      '--  WHEN ptbypp.Langd = '#39'0'#39' THEN PTL.PcsPerLength'
-      '-- ELSE'
-      
-        '-- CAST( p.TotalNoOfPieces  As varchar(5))+'#39' / '#39'+CAST( ptbypp.La' +
-        'ngd  As varchar(15))'
-      '-- END'
-      '-- AS '#9'PSCPERLENGTH,'
-      ''
       ''
       'BC.BarCode '#9#9#9'AS '#9'BC,'
       'GS.GradeStamp '#9#9#9'AS '#9'GS,'
-      '-- p.TotalNoOfPieces AS PPP,'
-      '-- LDV.SubSum            ,'
-      '-- LDV.Price             AS  PRICE,'
-      '-- LDV.OldPrice,'
+      ''
       ''
       ''
       'CASE'
@@ -1000,7 +999,12 @@ object dmArrivingLoads: TdmArrivingLoads
       'pkg.AvRegPackageNo = LD.PackageNo'
       'and pkg.AvRegPrefix = LD.SupplierCode'
       'and pkg.ProducerNo = csh.CustomerNo),0) AS Used,'
-      'pn.Info2'
+      'pn.Info2,'
+      'pac.PackageNo,'
+      'pac.SupplierCode,'
+      'pac.LoadNo,'
+      'pac.CreatedUser,'
+      'pac.DateCreated'
       ''
       ''
       'FROM dbo.LoadShippingPlan LSP'
@@ -1011,6 +1015,13 @@ object dmArrivingLoads: TdmArrivingLoads
         'Left Outer Join dbo.PackageNumber pn on pn.PackageNo = LD.Packag' +
         'eNo'
       'and pn.SupplierCode = LD.SupplierCode'
+      ''
+      
+        'Left Outer Join dbo.PackageARConfirmed pac on pac.PackageNo = LD' +
+        '.PackageNo'
+      'and pac.SupplierCode = LD.SupplierCode'
+      'and pac.LoadNo = LD.LoadNo'
+      ''
       
         'Left Outer Join dbo.SupplierShippingPlan SSP on SSP.SupplierShip' +
         'PlanObjectNo = LD.defsspno'
@@ -1062,6 +1073,7 @@ object dmArrivingLoads: TdmArrivingLoads
     object cdsArrivingPackagesProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
       Origin = 'PackageTypeNo'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesLoadNo: TIntegerField
@@ -1073,18 +1085,21 @@ object dmArrivingLoads: TdmArrivingLoads
     object cdsArrivingPackagesLO: TIntegerField
       FieldName = 'LO'
       Origin = 'LO'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesPACKAGE_NO: TIntegerField
       DisplayLabel = 'Paketnr'
       FieldName = 'PACKAGE_NO'
       Origin = 'PACKAGE_NO'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesSUPPLIERCODE: TStringField
       DisplayLabel = 'Prefix'
       FieldName = 'SUPPLIERCODE'
       Origin = 'SUPPLIERCODE'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       FixedChar = True
       Size = 3
     end
@@ -1092,28 +1107,33 @@ object dmArrivingLoads: TdmArrivingLoads
       DisplayLabel = 'AM3'
       FieldName = 'M3_NET'
       Origin = 'M3_NET'
+      ProviderFlags = []
       DisplayFormat = '#.000'
     end
     object cdsArrivingPackagesM3_NOM: TFloatField
       DisplayLabel = 'NM3'
       FieldName = 'M3_NOM'
       Origin = 'M3_NOM'
+      ProviderFlags = []
       DisplayFormat = '#.000'
     end
     object cdsArrivingPackagesPCS: TIntegerField
       DisplayLabel = 'Styck'
       FieldName = 'PCS'
       Origin = 'PCS'
+      ProviderFlags = []
     end
     object cdsArrivingPackagesMFBM: TFloatField
       FieldName = 'MFBM'
       Origin = 'MFBM'
+      ProviderFlags = []
       DisplayFormat = '#.000'
     end
     object cdsArrivingPackagesPRODUCT_DESCRIPTION: TStringField
       DisplayLabel = 'Produkt'
       FieldName = 'PRODUCT_DESCRIPTION'
       Origin = 'PRODUCT_DESCRIPTION'
+      ProviderFlags = []
       ReadOnly = True
       Size = 112
     end
@@ -1121,62 +1141,73 @@ object dmArrivingLoads: TdmArrivingLoads
       DisplayLabel = 'Status'
       FieldName = 'PACKAGEOK'
       Origin = 'PACKAGEOK'
+      ProviderFlags = []
     end
     object cdsArrivingPackagesPACKAGE_LOG: TStringField
       DisplayLabel = 'Logg'
       FieldName = 'PACKAGE_LOG'
       Origin = 'PACKAGE_LOG'
+      ProviderFlags = []
       Size = 50
     end
     object cdsArrivingPackagesLOAD_DETAILNO: TIntegerField
       DisplayLabel = 'Radnr'
       FieldName = 'LOAD_DETAILNO'
       Origin = 'LOAD_DETAILNO'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesBC: TStringField
       DisplayLabel = 'Streckkod'
       FieldName = 'BC'
       Origin = 'BC'
+      ProviderFlags = []
       FixedChar = True
     end
     object cdsArrivingPackagesGS: TStringField
       DisplayLabel = 'Kvalitetsst'#228'mpel'
       FieldName = 'GS'
       Origin = 'GS'
+      ProviderFlags = []
       FixedChar = True
     end
     object cdsArrivingPackagesPRICE: TFloatField
       DisplayLabel = 'Pris'
       FieldName = 'PRICE'
       Origin = 'PRICE'
+      ProviderFlags = []
       ReadOnly = True
     end
     object cdsArrivingPackagesSubSum: TFloatField
       DisplayLabel = 'V'#228'rde'
       FieldName = 'SubSum'
       Origin = 'SubSum'
+      ProviderFlags = []
       ReadOnly = True
       DisplayFormat = '#.00'
     end
     object cdsArrivingPackagesNLMM: TFloatField
       FieldName = 'NLMM'
       Origin = 'NLMM'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesALMM: TFloatField
       FieldName = 'ALMM'
       Origin = 'ALMM'
+      ProviderFlags = []
       Required = True
     end
     object cdsArrivingPackagesPackageTypeNo: TIntegerField
       FieldName = 'PackageTypeNo'
       Origin = 'PackageTypeNo'
+      ProviderFlags = []
     end
     object cdsArrivingPackagesUsed: TIntegerField
       DisplayLabel = 'F'#246'rbrukad'
       FieldName = 'Used'
       Origin = 'Used'
+      ProviderFlags = []
       ReadOnly = True
     end
     object cdsArrivingPackagesInfo2: TStringField
@@ -1184,6 +1215,21 @@ object dmArrivingLoads: TdmArrivingLoads
       Origin = 'Info2'
       ProviderFlags = []
       Size = 30
+    end
+    object cdsArrivingPackagesPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object cdsArrivingPackagesCreatedUser: TIntegerField
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cdsArrivingPackagesDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+      ProviderFlags = [pfInUpdate]
     end
   end
   object sq_GetDefaultCSObjectNo: TFDQuery
@@ -2948,7 +2994,7 @@ object dmArrivingLoads: TdmArrivingLoads
     SQL.Strings = (
       'Select * FROM dbo.LoadDtlVal'
       'WHERE LoadNo = :LoadNo')
-    Left = 216
+    Left = 312
     Top = 304
     ParamData = <
       item
@@ -3070,7 +3116,7 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       'ORDER BY LD.PACKAGENO'
       '')
-    Left = 216
+    Left = 312
     Top = 256
     ParamData = <
       item
@@ -3186,7 +3232,7 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       'FROM     dbo.LoadShippingPlan LP'
       'WHERE LP.LOADNO = :LOADNO')
-    Left = 216
+    Left = 312
     Top = 160
     ParamData = <
       item
@@ -3242,7 +3288,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'AND PN.SupplierCode = LD.SupplierCode'
       'Where '
       'LD.LoadNo = :LoadNo')
-    Left = 216
+    Left = 312
     Top = 208
     ParamData = <
       item
@@ -3942,7 +3988,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'AND LD.PackageNo = :PackageNo'
       ''
       '')
-    Left = 216
+    Left = 312
     Top = 368
     ParamData = <
       item
@@ -3974,7 +4020,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'Inner Join dbo.Currency c on c.CurrencyNo = ssp.CurrencyNo'
       'Where lsp.LoadNo = :LoadNo'
       '')
-    Left = 360
+    Left = 456
     Top = 288
     ParamData = <
       item
@@ -4012,7 +4058,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'Inner Join dbo.Orders oh on oh.orderno = ssp.orderno'
       'Inner Join dbo.Currency c on c.CurrencyNo = OH.CurrencyNo'
       'Where lsp.LoadNo = :LoadNo')
-    Left = 360
+    Left = 456
     Top = 224
     ParamData = <
       item
@@ -4034,7 +4080,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'Delete dbo.Confirmed_Load '
       'where'
       'Confirmed_LoadNo = :LoadNo')
-    Left = 360
+    Left = 456
     Top = 160
     ParamData = <
       item
@@ -5412,6 +5458,236 @@ object dmArrivingLoads: TdmArrivingLoads
     object sq_IsEXTLoadConfirmedUserName: TStringField
       FieldName = 'UserName'
       Origin = 'UserName'
+    end
+  end
+  object upd_ArrivingPackages: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
+    InsertSQL.Strings = (
+      'INSERT INTO PackageARConfirmed'
+      '(PackageNo, SupplierCode, LoadNo, CreatedUser, '
+      '  DateCreated)'
+      
+        'VALUES (:NEW_PackageNo, :NEW_SupplierCode, :NEW_LoadNo, :NEW_Cre' +
+        'atedUser, '
+      '  :NEW_DateCreated)')
+    ModifySQL.Strings = (
+      'UPDATE PackageARConfirmed'
+      
+        'SET PackageNo = :NEW_PackageNo, SupplierCode = :NEW_SupplierCode' +
+        ', '
+      
+        '  LoadNo = :NEW_LoadNo, CreatedUser = :NEW_CreatedUser, DateCrea' +
+        'ted = :NEW_DateCreated'
+      
+        'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
+        'rCode AND '
+      '  LoadNo = :OLD_LoadNo')
+    DeleteSQL.Strings = (
+      'DELETE FROM PackageARConfirmed'
+      
+        'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
+        'rCode AND '
+      '  LoadNo = :OLD_LoadNo')
+    LockSQL.Strings = (
+      'SELECT PackageNo, SupplierCode, LoadNo, CreatedUser, DateCreated'
+      'FROM PackageARConfirmed'
+      
+        'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
+        'rCode AND '
+      '  LoadNo = :OLD_LoadNo')
+    FetchRowSQL.Strings = (
+      'SELECT PackageNo, SupplierCode, LoadNo, CreatedUser, DateCreated'
+      'FROM PackageARConfirmed'
+      
+        'WHERE PackageNo = :PackageNo AND SupplierCode = :SupplierCode AN' +
+        'D '
+      '  LoadNo = :LoadNo')
+    Left = 168
+    Top = 136
+  end
+  object cdsAllPackageNos: TFDQuery
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'cdsAllPackageNosIndex01'
+        Fields = 'PackageNo;SupplierCode'
+      end>
+    IndexName = 'cdsAllPackageNosIndex01'
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT DISTINCT  L.LoadNo, LD.PackageNo, LD.SupplierCode'
+      'FROM dbo.SupplierShippingPlan       SP'
+      'Left Outer Join dbo.LogicalInventoryPoint LIP'
+      
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      
+        'inner JOIN dbo.City PIPCity'#9#9#9'ON'#9'PIPCity.CityNo = PIP.PhyInvPoin' +
+        'tNameNo'
+      'on LIP.LogicalInventoryPointNo = SP.LIPNo'
+      
+        'INNER JOIN dbo.LoadShippingPlan LSP '#9#9'ON '#9'LSP.ShippingPlanNo = S' +
+        'P.ShippingPlanNo'
+      'Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo'
+      'INNER JOIN dbo.Loads L ON'#9'LSP.LoadNo '#9#9'= L.LoadNo'
+      'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
+      'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
+      'WHERE'
+      '(SP.CustomerNo = 741 OR SP.CustomerNo = 741)'
+      'AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)'
+      'AND (SP.ObjectType in (0, 2))'
+      'AND L.LoadAR = 0'
+      'AND L.LoadNo= -1'
+      ''
+      'UNION'
+      ''
+      'SELECT DISTINCT   L.LoadNo, LD.PackageNo, LD.SupplierCode'
+      'FROM dbo.SupplierShippingPlan       SP'
+      
+        'INNER JOIN dbo.LoadShippingPlan LSP '#9#9'ON '#9'LSP.ShippingPlanNo = S' +
+        'P.ShippingPlanNo'
+      'Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo'
+      'INNER JOIN dbo.Loads L '#9#9#9#9'ON'#9'LSP.LoadNo '#9#9'= L.LoadNo'
+      #9#9#9#9'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
+      #9#9#9#9'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
+      'WHERE'
+      '(SP.CustomerNo = 741 ) --OR SP.CustomerNo = 741)'
+      'AND (L.SenderLoadStatus IN (1,2))'
+      'AND SP.ObjectType = 1'
+      'AND L.LoadAR = 0'
+      'AND L.LoadNo= -1'
+      ''
+      'UNION'
+      ''
+      'SELECT DISTINCT L.LoadNo, LD.PackageNo, LD.SupplierCode'
+      'FROM dbo.SupplierShippingPlan       SP'
+      'Left Outer JOIN dbo.CustomerShippingPlanDetails CSD'
+      
+        'INNER JOIN dbo.CustomerShippingPlanHeader CSH'#9'ON CSH.ShippingPla' +
+        'nNo = CSD.ShippingPlanNo'
+      
+        'ON CSD.CustShipPlanDetailObjectNo = SP.CustShipPlanDetailObjectN' +
+        'o'
+      
+        'Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInve' +
+        'ntoryPointNo = CSH.ShipToLIPNo'
+      
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      
+        'inner JOIN dbo.City PIPCity ON PIPCity.CityNo = PIP.PhyInvPointN' +
+        'ameNo'
+      
+        'INNER JOIN dbo.LoadShippingPlan LSP ON LSP.ShippingPlanNo = SP.S' +
+        'hippingPlanNo'
+      'Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo'
+      'INNER JOIN dbo.Loads L ON'#9'LSP.LoadNo '#9#9'= L.LoadNo'
+      'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
+      'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
+      
+        'Inner Join dbo.UserArrivalPoint uap on uap.PhyInvPointNameNo = P' +
+        'IPCity.CityNo'
+      'WHERE'
+      'CSH.CustomerNo = 741'
+      'AND (L.SenderLoadStatus = 2)'
+      'AND SP.ObjectType < 3'
+      'AND uap.UserID = 258'
+      'AND L.LoadNo= -1'
+      '--AND PIPCity.CityNo = -99'
+      
+        'AND not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_L' +
+        'oad_EXT cl2'
+      'WHERE cl2.Confirmed_LoadNo = LSP.LoadNo'
+      'AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)')
+    Left = 168
+    Top = 192
+    object cdsAllPackageNosLoadNo: TIntegerField
+      FieldName = 'LoadNo'
+      Origin = 'LoadNo'
+      ReadOnly = True
+      Required = True
+    end
+    object cdsAllPackageNosPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      ReadOnly = True
+      Required = True
+    end
+    object cdsAllPackageNosSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      ReadOnly = True
+      FixedChar = True
+      Size = 3
+    end
+  end
+  object dsAllPackageNos: TDataSource
+    DataSet = cdsAllPackageNos
+    Left = 168
+    Top = 248
+  end
+  object sp_AddPackageARConfirmed: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_AddPackageARConfirmed'
+    Left = 1032
+    Top = 416
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prefix'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@Scanned'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sq_NoOfConfirmedPkgsInLoad: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select Count(*) AS NoOfPkgs FROM dbo.PackageARConfirmed LD'
+      'WHERE LD.LoadNo = :LoadNo')
+    Left = 192
+    Top = 320
+    ParamData = <
+      item
+        Name = 'LOADNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_NoOfConfirmedPkgsInLoadNoOfPkgs: TIntegerField
+      FieldName = 'NoOfPkgs'
+      Origin = 'NoOfPkgs'
+      ReadOnly = True
     end
   end
 end

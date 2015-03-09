@@ -378,7 +378,7 @@ End ;
 
 //-------------------------------------------------------------
 procedure TfrmMain.FormShow(Sender: TObject);
-var Height, Width, Top, Left : Integer ;
+var Height, Width, Top, Left, LanguageNo : Integer ;
 begin
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
@@ -416,6 +416,13 @@ begin
   frmMain.Top     := Top ;
   frmMain.Left    := Left ;
  End ;
+
+  LanguageNo  :=  dmsSystem.GetLanguageNo ;
+  if LanguageNo > -1 then
+  Begin
+   dmLanguage.siLangDispatcher1.ActiveLanguage := LanguageNo ;
+   dmLanguage.siLangDispatcher1.LoadAllFromFile(dmLanguage.siLangDispatcher1.FileName);
+  End;
 end;
 
 //Sparas centralt
@@ -573,7 +580,10 @@ begin
     if (frm <> nil) then
     begin
       if (frm.ShowModal = mrOk) then
+      Begin
         dmLanguage.siLangDispatcher1.LoadAllFromFile(dmLanguage.siLangDispatcher1.FileName);
+        dmsSystem.SaveLanguage(dmLanguage.siLangDispatcher1.ActiveLanguage) ;
+      End;
     end;
   finally
     FreeAndNil(frm);

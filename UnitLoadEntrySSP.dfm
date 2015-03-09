@@ -56,16 +56,15 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.Kind = lfUltraFlat
     LookAndFeel.SkinName = ''
-    ClientRectBottom = 212
-    ClientRectLeft = 4
-    ClientRectRight = 1236
+    ClientRectBottom = 216
+    ClientRectRight = 1240
     ClientRectTop = 24
     object tsLoadData: TcxTabSheet
       Caption = 'Leveranshuvud'
       object Splitter1: TSplitter
         Left = 0
-        Top = 139
-        Width = 1232
+        Top = 143
+        Width = 1240
         Height = 3
         Cursor = crVSplit
         Align = alBottom
@@ -77,7 +76,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object pLoadHead: TPanel
         Left = 0
         Top = 0
-        Width = 1232
+        Width = 1240
         Height = 74
         Align = alTop
         BevelOuter = bvNone
@@ -391,8 +390,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object grdAddress: TcxGrid
         Left = 0
-        Top = 142
-        Width = 1232
+        Top = 146
+        Width = 1240
         Height = 46
         Align = alBottom
         TabOrder = 1
@@ -434,8 +433,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object grdLO: TcxGrid
         Left = 0
         Top = 74
-        Width = 1232
-        Height = 65
+        Width = 1240
+        Height = 69
         Align = alClient
         TabOrder = 2
         object grdLODBTableView1: TcxGridDBTableView
@@ -622,10 +621,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object tsLoadNote: TcxTabSheet
       Caption = 'Notering'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object meInternalNote: TcxDBMemo
         Left = 0
         Top = 0
@@ -633,8 +628,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         DataBinding.DataField = 'InternalNote'
         DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
         TabOrder = 0
-        Height = 188
-        Width = 1232
+        Height = 192
+        Width = 1240
       end
     end
   end
@@ -657,7 +652,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 1144
-        Height = 45
+        Height = 44
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -689,7 +684,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 64
-        Height = 45
+        Height = 44
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -1823,7 +1818,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False
@@ -3920,6 +3915,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1

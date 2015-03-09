@@ -31,7 +31,7 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk,
-  System.Actions ;
+  System.Actions, VidaType ;
 
 type
   TfrmLoadArrivals = class(TForm)
@@ -290,6 +290,15 @@ type
     cxButton1: TcxButton;
     acSetInfo2Text: TAction;
     siLangLinked_frmLoadArrivals: TsiLangLinked;
+    grdPkgsDBTableView1PackageNo: TcxGridDBColumn;
+    grdPkgsDBTableView1CreatedUser: TcxGridDBColumn;
+    grdPkgsDBTableView1DateCreated: TcxGridDBColumn;
+    mePackageNo: TcxMaskEdit;
+    cxLabel10: TcxLabel;
+    Timer3: TTimer;
+    grdLoadsDBTableView1NoOfPackages: TcxGridDBColumn;
+    grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn;
+    cxStyleGreen: TcxStyle;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -329,9 +338,7 @@ type
     procedure acShowGroupBoxExecute(Sender: TObject);
     procedure acExpandAllExecute(Sender: TObject);
     procedure acCollapseAllExecute(Sender: TObject);
-    procedure grdLoadsDBTableView1StylesGetContentStyle(
-      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-      AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+
     procedure acPrintTallyUSNoteExecute(Sender: TObject);
     procedure acConfirmOneLoadExecute(Sender: TObject);
     procedure acPrintDirectFSExecute(Sender: TObject);
@@ -343,9 +350,7 @@ type
     procedure cds_PropsAfterInsert(DataSet: TDataSet);
     procedure acConfirmOneLoadUpdate(Sender: TObject);
     procedure acPrintExecute(Sender: TObject);
-    procedure grdPkgsDBTableView1StylesGetContentStyle(
-      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-      AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+
     procedure grdPkgsDBTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems4GetText(
       Sender: TcxDataSummaryItem; const AValue: Variant;
       AIsFooter: Boolean; var AText: String);
@@ -353,10 +358,23 @@ type
     procedure cds_PropsClientNoChange(Sender: TField);
     procedure FormShow(Sender: TObject);
     procedure acSetInfo2TextExecute(Sender: TObject);
+    procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure grdPkgsDBTableView1StylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure Timer3Timer(Sender: TObject);
+    procedure grdLoadsDBTableView1StylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
 
 
   private
     { Private declarations }
+    function IdentifyPackageSupplier(const PkgNo : Integer;
+    var PkgSupplierCode: String3) : TEditAction;
+    procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
+    procedure BuildPackageQuery ;
     procedure LoadLagerPos ;
     procedure SetLagerPosOnMarkedPkgs (const LagerPos : String) ;
     function  AreMarkedLoadsSameObjectTypeAndNOTEGEN : Boolean ;
@@ -406,14 +424,14 @@ implementation
 
 uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils,
   Vidauser, UnitPkgInfo, dmsVidaContact, //dmcVidaSystem,
-  dmsDataConn ,
+  dmsDataConn,
 //  fConfirmIntLoad,
   //fConfirmManyIntLoads,
   uSelectLIP, uAnkomstRegProgress, VidaConst ,
 //  fConfirmManyNormalLoad,
   UnitCRPrintOneReport, dmsVidaSystem, //dmc_Filter,
   uTradingLinkMult, dmc_UserProps,
-  uWait, uLagerPos;
+  uWait, uLagerPos, udmLanguage;
 
 {$R *.dfm}
 
@@ -501,7 +519,7 @@ begin
  RefreshDest ;
  cds_Props.Refresh ;
 
- dmArrivingLoads.cdsArrivingLoads.Active:= True ;
+// dmArrivingLoads.cdsArrivingLoads.Active:= True ;
  if (ThisUser.UserID = 4) OR (ThisUser.UserID = 8) then
   acSetLoadToConfirmed.Enabled:= True ;
 end;
@@ -585,12 +603,16 @@ begin
    cdsArrivingLoads.Active      := False ;
    BuildARQuery (-1, -1) ;
    cdsArrivingLoads.Active      := True ;
-//   cdsArrivingLoads.LogChanges  := False ;
    cdsArrivingLoads.FindKey([LoadNo]) ;
+
    RefreshArrivingPackages ;
+
+   cdsAllPackageNos.Active      := False ;
+   BuildPackageQuery  ;
+   cdsAllPackageNos.Active      := True ;
 //  end ;
  finally
-  dsrcArrivingLoads.DataSet:= cdsArrivingLoads ;
+  dsrcArrivingLoads.DataSet :=  cdsArrivingLoads ;
  end;
  finally
   cdsArrivingLoads.EnableControls ;
@@ -760,7 +782,12 @@ Begin
 
  cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/')+')+' + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
 
- cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk') ;
+ cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,') ;
+
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+ cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+ cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
 
  cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP') ;
@@ -942,7 +969,12 @@ Begin
  cdsArrivingLoads.SQL.Add('isNull(SP.LipNo,-1) AS LipNo,') ;
  cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
  cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/')+')+' + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
- cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk') ;
+ cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,') ;
+
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+ cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+ cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
  cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP') ;
  cdsArrivingLoads.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP ') ;
@@ -1123,7 +1155,12 @@ Begin
  cdsArrivingLoads.SQL.Add('CSH.ShipToLIPNo AS LipNo,') ;
  cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
  cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/')+')+' + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
- cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk') ;
+ cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,') ;
+
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+ cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+ cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+ cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
 { cdsArrivingLoads.SQL.Add('IsNull(cl.Confirmed_LoadNo,0) AS AR_LoadNo') ;
  cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ') ;
@@ -1236,6 +1273,98 @@ Begin
 // if thisuser.UserID = 8 then cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
  End ;
 End ;
+
+procedure TfrmLoadArrivals.BuildPackageQuery  ;
+Begin
+ with dmArrivingLoads do
+ Begin
+  if cds_PropsNewItemRow.AsInteger = 0 then
+  Begin
+   cdsAllPackageNos.SQL.Clear ;
+   cdsAllPackageNos.SQL.Add('SELECT DISTINCT  L.LoadNo, LD.PackageNo, LD.SupplierCode') ;
+
+   cdsAllPackageNos.SQL.Add('FROM dbo.SupplierShippingPlan       SP') ;
+   cdsAllPackageNos.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP') ;
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo') ;
+   cdsAllPackageNos.SQL.Add('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo') ;
+   cdsAllPackageNos.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo') ;
+
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo') ;
+
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo') ;
+
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo') ;
+   cdsAllPackageNos.SQL.Add('AND     L.supplierno 		= SP.SUPPLIERno') ;
+   cdsAllPackageNos.SQL.Add('AND     L.CustomerNo 		= SP.CustomerNo') ;
+   cdsAllPackageNos.SQL.Add('WHERE') ;
+ //  cdsAllPackageNos.SQL.Add('(SP.CustomerNo = 741 OR SP.CustomerNo = 741)') ;
+   cdsAllPackageNos.SQL.Add('SP.CustomerNo = ' +  cds_PropsVerkNo.AsString) ;
+   cdsAllPackageNos.SQL.Add('AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)') ;
+   cdsAllPackageNos.SQL.Add('AND (SP.ObjectType in (0, 2))') ;
+   cdsAllPackageNos.SQL.Add('AND L.LoadAR = 0') ;
+
+
+   cdsAllPackageNos.SQL.Add('UNION') ;
+   cdsAllPackageNos.SQL.Add('SELECT DISTINCT   L.LoadNo, LD.PackageNo, LD.SupplierCode') ;
+   cdsAllPackageNos.SQL.Add('FROM dbo.SupplierShippingPlan       SP') ;
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo') ;
+
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo') ;
+
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.Loads L 				ON	LSP.LoadNo 		= L.LoadNo') ;
+   cdsAllPackageNos.SQL.Add('				AND     L.supplierno 		= SP.SUPPLIERno') ;
+   cdsAllPackageNos.SQL.Add('				AND     L.CustomerNo 		= SP.CustomerNo') ;
+
+   cdsAllPackageNos.SQL.Add('WHERE') ;
+//   cdsAllPackageNos.SQL.Add('(SP.CustomerNo = 741)') ;
+   cdsAllPackageNos.SQL.Add('SP.CustomerNo = ' +  cds_PropsVerkNo.AsString) ;
+   cdsAllPackageNos.SQL.Add('AND (L.SenderLoadStatus IN (1,2))') ;
+   cdsAllPackageNos.SQL.Add('AND SP.ObjectType = 1') ;
+   cdsAllPackageNos.SQL.Add('AND L.LoadAR = 0') ;
+
+   cdsAllPackageNos.SQL.Add('UNION') ;
+
+  End //if cds_PropsNewItemRow.AsInteger = 0 then
+    else
+     cdsAllPackageNos.SQL.Clear ;
+
+
+   cdsAllPackageNos.SQL.Add('SELECT DISTINCT L.LoadNo, LD.PackageNo, LD.SupplierCode') ;
+   cdsAllPackageNos.SQL.Add('FROM dbo.SupplierShippingPlan       SP') ;
+   cdsAllPackageNos.SQL.Add('Left Outer JOIN dbo.CustomerShippingPlanDetails CSD') ;
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo') ;
+   cdsAllPackageNos.SQL.Add('ON CSD.CustShipPlanDetailObjectNo = SP.CustShipPlanDetailObjectNo') ;
+
+   cdsAllPackageNos.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = CSH.ShipToLIPNo') ;
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo') ;
+   cdsAllPackageNos.SQL.Add('inner JOIN dbo.City PIPCity ON PIPCity.CityNo = PIP.PhyInvPointNameNo') ;
+
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP ON LSP.ShippingPlanNo = SP.ShippingPlanNo') ;
+
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo') ;
+
+   cdsAllPackageNos.SQL.Add('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo') ;
+   cdsAllPackageNos.SQL.Add('AND     L.supplierno 		= SP.SUPPLIERno') ;
+   cdsAllPackageNos.SQL.Add('AND     L.CustomerNo 		= SP.CustomerNo') ;
+
+   cdsAllPackageNos.SQL.Add('Inner Join dbo.UserArrivalPoint uap on uap.PhyInvPointNameNo = PIPCity.CityNo') ;
+   cdsAllPackageNos.SQL.Add('WHERE') ;
+ //  cdsAllPackageNos.SQL.Add('CSH.CustomerNo = 741') ;
+   cdsAllPackageNos.SQL.Add('CSH.CustomerNo = ' +  cds_PropsVerkNo.AsString) ;
+
+   cdsAllPackageNos.SQL.Add('AND (L.SenderLoadStatus = 2)') ;
+   cdsAllPackageNos.SQL.Add('AND SP.ObjectType < 3') ;
+ //  cdsAllPackageNos.SQL.Add('AND uap.UserID = 258') ;
+   cdsAllPackageNos.SQL.Add('AND uap.UserID = ' + IntToStr(ThisUser.UserID)) ;
+   cdsAllPackageNos.SQL.Add('--AND PIPCity.CityNo = -99') ;
+
+   cdsAllPackageNos.SQL.Add('AND not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+   cdsAllPackageNos.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+   cdsAllPackageNos.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
+   cdsAllPackageNos.SQL.SaveToFile('cdsAllPackageNos.txt') ;
+ End;
+End ;
+
 
 //make an entry for the load that is confirmed
 procedure TfrmLoadArrivals.SetConfirmed_Load_Table(Sender: TObject) ;
@@ -2744,47 +2873,6 @@ Begin
  End ;//with
 End ;
 
-procedure TfrmLoadArrivals.grdLoadsDBTableView1StylesGetContentStyle(
-  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
-var
-  AColumn: TcxCustomGridTableItem;
-  iObjectType: integer;
-  iObjectType2: integer;
-  LoadAR : Integer ;
-begin
-  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('OBJECTTYPE') ;
-  iObjectType   := ARecord.Values[AColumn.Index] ;
-  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('ORDERTYPE') ;
-  iObjectType2  := ARecord.Values[AColumn.Index] ;
-  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('LoadAR') ;
-  LoadAR        := ARecord.Values[AColumn.Index] ;
-
-
-{  iObjectTypeColumn2 := grdLoadHead.ColumnByName('grdLoadHeadOBJECTTYPE').Index;
-  iObjectType2 := ANode.Values[iObjectTypeColumn2];
-
-  iObjectTypeColumn := grdLoadHead.ColumnByName('grdLoadHeadORDERTYPE').Index;
-  iObjectType := ANode.Values[iObjectTypeColumn]; }
-
-//  if ANode.Values[iObjectTypeColumn] <> null then
-  Begin
-  // Set the color for this row, based on LO status
-   if iObjectType2 = 1 then
-   iObjectType := 4 ;
-
-//   if AColor <> clOlive then
-//   AColor :=
-   Case iObjectType of
-    0 : AStyle := cxStyle_0 ;
-    1 : AStyle := cxStyle_1 ;
-    4 : AStyle := cxStyle_4 ;
-   End ;
-   if LoadAR = 1 then
-    AStyle := cxStyleLoadAR ;
-  End ;
-end;
-
 function TfrmLoadArrivals.AreMarkedLoadsSameObjectTypeAndNotNormalLOType : Boolean ;
  Var i, RecIDX  : Integer ;
  Save_Cursor    : TCursor;
@@ -3218,6 +3306,12 @@ begin
  Timer2.Enabled:= False ;
 end;
 
+procedure TfrmLoadArrivals.Timer3Timer(Sender: TObject);
+begin
+ mePackageNo.SetFocus ;
+ Timer3.Enabled := False ;
+end;
+
 procedure TfrmLoadArrivals.acGetIntPricesExecute(Sender: TObject);
 begin
  with dmArrivingLoads do
@@ -3272,27 +3366,81 @@ begin
  pmPrint.Popup(300, 200) ;
 end;
 
+
+
+
+procedure TfrmLoadArrivals.grdLoadsDBTableView1StylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+var
+  AColumn: TcxCustomGridTableItem;
+  NoOfPackages      : integer;
+  PackagesConfirmed : integer;
+  LoadAR : Integer ;
+begin
+  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('NoOfPackages') ;
+  NoOfPackages   := ARecord.Values[AColumn.Index] ;
+  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('PackagesConfirmed') ;
+  PackagesConfirmed  := ARecord.Values[AColumn.Index] ;
+//  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('LoadAR') ;
+//  LoadAR        := ARecord.Values[AColumn.Index] ;
+
+
+{  iObjectTypeColumn2 := grdLoadHead.ColumnByName('grdLoadHeadOBJECTTYPE').Index;
+  iObjectType2 := ANode.Values[iObjectTypeColumn2];
+
+  iObjectTypeColumn := grdLoadHead.ColumnByName('grdLoadHeadORDERTYPE').Index;
+  iObjectType := ANode.Values[iObjectTypeColumn]; }
+
+//  if ANode.Values[iObjectTypeColumn] <> null then
+//  Begin
+  // Set the color for this row, based on LO status
+   if PackagesConfirmed > 0 then
+    AStyle :=   cxStyleAvraknad ; //Gul
+   if NoOfPackages = PackagesConfirmed then
+    AStyle := cxStyleGreen ;
+
+//   if AColor <> clOlive then
+//   AColor :=
+{
+     Case iObjectType of
+      0 : AStyle := cxStyle_0 ;
+      1 : AStyle := cxStyle_1 ;
+      4 : AStyle := cxStyle_4 ;
+     End ;
+     if LoadAR = 1 then
+      AStyle := cxStyleLoadAR ;
+}
+ // End ;
+end;
+
 procedure TfrmLoadArrivals.grdPkgsDBTableView1StylesGetContentStyle(
   Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
-  AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
 Var
-  PRICE : Double ;
+  PackageNo : Integer ;
   Used  : Integer ;
 begin
- if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PRICE').Index] <> null then
- PRICE:= ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PRICE').Index] ;
-
- if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] <> null then
- Used:= ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] ;
-
- if Used = 1 then
- AStyle := cxStyleAvraknad
+ if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageNo').Index] <> null then
+ PackageNo  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageNo').Index]
  else
- Begin
-  if (dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger <> dmArrivingLoads.cdsArrivingLoadsSupplierNO.AsInteger)
-  AND (Price = 0) then
-  AStyle := cxStyleLoadAR ;
- End ;
+ PackageNo  := 0 ;
+
+{
+   if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] <> null then
+   Used:= ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] ;
+}
+
+ if PackageNo > 1 then
+  AStyle := cxStyleAvraknad  ;
+{
+   else
+   Begin
+    if (dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger <> dmArrivingLoads.cdsArrivingLoadsSupplierNO.AsInteger)
+    AND (Price = 0) then
+    AStyle := cxStyleLoadAR ;
+   End ;
+}
 end;
 
 procedure TfrmLoadArrivals.grdPkgsDBTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems4GetText(
@@ -4171,5 +4319,180 @@ Begin
   end;
  End;
 End ;
+
+procedure TfrmLoadArrivals.mePackageNoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+ if Key <> VK_RETURN then Exit;
+
+ if Length(mePackageNo.Text) > 0 then
+  GetpackageNoEntered(Sender, mePackageNo.Text) ;
+
+ Timer3.Enabled   := True ;
+ mePackageNo.Text := '' ;
+end;
+
+function TfrmLoadArrivals.IdentifyPackageSupplier(
+  const PkgNo : Integer;
+  var PkgSupplierCode: String3) : TEditAction;
+  Var Res_UserName : String;
+const
+  NO_USER_HAS_THIS_PACKAGE_RESERVED = '0' ;
+  PACKAGE_NOT_IN_INVENTORY = 0 ;
+begin
+ //check that package is available in inventory and Get supplier code
+    PkgSupplierCode := dmArrivingLoads.PkgNoToSuppCodeAR (PkgNo);
+
+    if PkgSupplierCode = '' then
+    Begin
+     Result := eaREJECT;
+    End
+    else
+
+//  check that no user has reserved the package
+    if dmsSystem.Pkg_Reserved(PkgNo,
+    PkgSupplierCode,
+    'TfrmLoadArrivals', //Self.Name,
+    Res_UserName          ) = ThisUser.UserName + '/' + 'TfrmLoadArrivals' //{ NO_USER_HAS_THIS_PACKAGE_RESERVED }
+    then
+     begin
+      Result := eaACCEPT ;
+     end
+    else
+    begin
+      MessageBeep(MB_ICONEXCLAMATION);
+      Result := eaReserved ; //eaREJECT;
+    end;
+
+
+
+
+  {  if dmLoadEntrySSP.cds_LoadPackages.FindKey([PkgNo, PkgSupplierCode]) then
+    Begin
+      Result:= eaDuplicate ;
+    End ;  }
+end;
+
+procedure TfrmLoadArrivals.GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
+//  ; var DisplayValue: Variant; var ErrorText: TCaption;
+//  var Error: Boolean);
+var
+  PkgSupplierCode   : String3;
+  PkgSupplierNo     : Integer ;
+  Action            : TEditAction;
+  ProductNo         : Integer ;
+  Save_Cursor       : TCursor;
+  Res_UserName      : String ;
+  ProductLengthNo   : Integer ;
+  NoOfLengths       : Integer ;
+  Error             : Boolean ;
+  NewPkgNo          : Integer ;
+  PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
+  ErrorText         : String ;
+  LoadNo            : Integer ;
+begin
+ With dmArrivingLoads do
+ Begin
+  NewPkgNo := 0 ;
+
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  try
+    { Do some lengthy operation }
+   if Length(Trim(PackageNo)) > 0 then
+   Begin
+    if Length(Trim(PackageNo)) > 10 then
+    Begin //LÅNGA KODEN
+     Try
+     NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
+     Except
+      on E: EConvertError do
+         ShowMessage(E.ClassName + E.Message);
+     End ;
+     if NewPkgNo < 1 then
+      Exit ;
+     PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
+     PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
+
+     //if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
+     LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, PkgSupplierCode) ;
+     if LoadNo > 0 then
+      Action := eaAccept
+       else
+        Action :=  eaREJECT ;
+
+    End
+     else //Length < 11
+      Begin
+       NewPkgNo:= StrToIntDef(PackageNo,0) ;
+       if NewPkgNo = 0 then
+       Begin
+        Errortext := 'Koden kunde inte översättas till ett Paketnr' ;
+        Exit ;
+       End ;
+
+        Action := IdentifyPackageSupplier(NewPkgNo, PkgSupplierCode);
+        LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, PkgSupplierCode) ;
+        if LoadNo > 0 then
+          Action := eaAccept
+           else
+            Action :=  eaREJECT ;
+      End ;
+   End ; //if StrToInt(Trim(PackageNo)) > 0 then
+
+   if NewPkgNo > 0 then
+   Begin
+    if Action = eaACCEPT then
+    Begin
+    //const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
+      AddPkgTo_PackageARConfirmed(NewPkgNo, LoadNo, 1, PkgSupplierCode) ;
+ //     AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
+  //Långsamt här
+ //     if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
+ //     Begin
+ //      Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
+ //      Error      := True ;
+ //     End
+ //     else
+ //     Begin
+ //      Error:= False ;
+ //     End ;
+    End
+   else
+   if Action = eaREJECT then
+    Begin
+     Errortext  :=  'Could not find a matching packageno [' + inttostr(NewPkgNo) + '] in arriving loads.' ;
+     Error      :=  True ;
+    End
+    else
+     if Action = eaReserved then
+      Begin
+       Errortext  := 'Packageno [' + inttostr(NewPkgNo) + '] is reserved by other user.' ;
+       Error      := True ;
+      End
+      else
+       if Action = eaDuplicate then
+        Begin
+         Errortext  := ' är redan inmatat'  ;
+         Error      := True ;
+        End ;
+    End // if NewPkgNo > 0 then
+     else
+      Begin
+       Errortext := 'Paketnr saknas.' ;
+       Error      := True ;
+      End ;
+
+     if Error then
+      ShowMessage(ErrorText) ;
+  //    ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext) ;
+
+  finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  end;
+ End ;//With
+end;
+
+
 
 end.

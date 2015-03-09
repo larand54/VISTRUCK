@@ -548,6 +548,20 @@ type
     sq_IsEXTLoadConfirmedUserName: TStringField;
     cdsArrivingPackagesUsed: TIntegerField;
     cdsArrivingPackagesInfo2: TStringField;
+    cdsArrivingPackagesPackageNo: TIntegerField;
+    cdsArrivingPackagesCreatedUser: TIntegerField;
+    cdsArrivingPackagesDateCreated: TSQLTimeStampField;
+    upd_ArrivingPackages: TFDUpdateSQL;
+    cdsAllPackageNos: TFDQuery;
+    cdsAllPackageNosLoadNo: TIntegerField;
+    cdsAllPackageNosPackageNo: TIntegerField;
+    cdsAllPackageNosSupplierCode: TStringField;
+    dsAllPackageNos: TDataSource;
+    sp_AddPackageARConfirmed: TFDStoredProc;
+    cdsArrivingLoadsNoOfPackages: TIntegerField;
+    cdsArrivingLoadsPackagesConfirmed: TIntegerField;
+    sq_NoOfConfirmedPkgsInLoad: TFDQuery;
+    sq_NoOfConfirmedPkgsInLoadNoOfPkgs: TIntegerField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -557,6 +571,7 @@ type
   private
     { Private declarations }
     FOnAmbiguousPkgNo: TAmbiguityEvent;
+    function  NoOfConfirmedPkgs(const LoadNo : Integer): Integer ;
     Function  GetCurrentXrate(const LoadNo : Integer)  : Double ;
     Function  GetXrateAtDateOfDelivery(const LoadNo : Integer)  : Double ;
     procedure InsertLoadDtlVal(const Inkop : Boolean; const SupplierNo, PaymentType, PaymentNo, LoadNo : Integer;const Update_OldPrice : Boolean) ;
@@ -574,6 +589,9 @@ type
   public
     { Public declarations }
     LoadConfirmedOK : Boolean ;
+    Procedure AddPkgTo_PackageARConfirmed(const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
+    function  PkgNoToSuppCodeAR(const PkgNo : Integer) : string3;
+    function  SearchPackageNo(const PackageNo  : Integer;const Prefix  : String) : Integer ;//LoadNo
     function  AR_ExternLoad(const LoadNo, Status, LIPNo, CreatedUser : Integer) : Boolean ;
     procedure RefreshArrivingPackages ;
 //    procedure LoadUserProps (const Form : String) ;
@@ -2412,6 +2430,128 @@ Begin
  end;
 End ;
 
+function TdmArrivingLoads.SearchPackageNo(const PackageNo  : Integer;const Prefix  : String) : Integer ;//LoadNo
+Begin
+  if cdsAllPackageNos.FindKey([PackageNo, Prefix]) then
+  Begin
+    Result  :=  cdsAllPackageNosLoadNo.AsInteger ;
+  end
+   else
+    Result  := -1 ;
+End;
+
+
+Procedure TdmArrivingLoads.AddPkgTo_PackageARConfirmed(const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
+Begin
+// if cdsArrivingPackages.FindKey([NewPkgNo, Prefix]) then
+// Begin
+{
+    if cdsArrivingPackagesPackageNo.IsNull then
+      Begin
+       cdsArrivingPackages.Edit ;
+  //     cdsArrivingPackagesLoadNo.AsInteger            :=  cdsArrivingPackagesLoadNo.AsInteger ;
+  //     cdsArrivingPackagesSUPPLIERCODE.AsString       :=  cdsArrivingPackagesSUPPLIERCODE.AsString ;
+  //     cdsArrivingPackagesPackageNo.AsInteger         :=  NewPkgNo ;
+  //     cdsArrivingPackagesCreatedUser.AsInteger       :=  ThisUser.UserID ;
+  //     cdsArrivingPackagesDateCreated.AsSQLTimeStamp  :=  DateTimeToSQLTimeStamp(Now) ;
+  //     cdsArrivingPackages.Post ;
+      End;
+}
+
+
+ Try
+ sp_AddPackageARConfirmed.ParamByName('@PackageNo').AsInteger :=  NewPkgNo ;
+ sp_AddPackageARConfirmed.ParamByName('@Prefix').AsString     :=  Prefix ;
+ sp_AddPackageARConfirmed.ParamByName('@LoadNo').AsInteger    :=  LoadNo ;
+ sp_AddPackageARConfirmed.ParamByName('@UserID').AsInteger    :=  ThisUser.UserID ;
+ sp_AddPackageARConfirmed.ParamByName('@Scanned').AsInteger   :=  Scanned ;
+ sp_AddPackageARConfirmed.Execproc ;
+ if cdsArrivingPackages.FindKey([NewPkgNo, Prefix]) then
+  cdsArrivingPackages.Refresh ;
+ NoOfConfirmedPkgs(LoadNo) ;
+  except
+   On E: Exception do
+   Begin
+    dmsSystem.FDoLog('sp_AddPackageARConfirmed' + E.Message) ;
+    Raise ;
+   End ;
+  end;
+  {
+    End//if ..FindKey
+      else
+       ShowMessage('Could not find a matching packageno [' + inttostr(NewPkgNo) + '] in arriving loads.') ;
+ }
+End;
+
+function TdmArrivingLoads.NoOfConfirmedPkgs(const LoadNo : Integer): Integer ;
+Var NoOfPkgs  : Integer ;
+Begin
+  Try
+  sq_NoOfConfirmedPkgsInLoad.Active := False ;
+  sq_NoOfConfirmedPkgsInLoad.ParamByName('LoadNo').AsInteger  := LoadNo ;
+  sq_NoOfConfirmedPkgsInLoad.Active := True ;
+  if not sq_NoOfConfirmedPkgsInLoad.Eof then
+    NoOfPkgs  := sq_NoOfConfirmedPkgsInLoadNoOfPkgs.AsInteger
+     else
+      NoOfPkgs  := 0 ;
+  Finally
+   sq_NoOfConfirmedPkgsInLoad.Active := False ;
+  End ;
+
+
+  if cdsArrivingLoads.FindKey([LoadNo]) then
+  Begin
+    cdsArrivingLoads.Edit ;
+    cdsArrivingLoadsPackagesConfirmed.AsInteger :=  NoOfPkgs ;
+    cdsArrivingLoads.Post ;
+  End;
+End;
+
+function TdmArrivingLoads.PkgNoToSuppCodeAR(const PkgNo : Integer): string3;
+var
+  SuppCode : string3;
+begin
+//  cdsAllPackageNos.Active:= False ;
+//  getPkgsByInvOwner(PkgNo, InventoryOwner, PIPNo);
+//  cdsPkgsByInvOwner.SetProvider(provPkgsByInvOwner);
+//  cdsPkgsByInvOwner.Active:= True ;
+
+  cdsAllPackageNos.Filter   :=  'PackageNo = ' + IntToStr(PkgNo) ;
+  cdsAllPackageNos.Filtered :=  True ;
+  Try
+  case cdsAllPackageNos.RecordCount of
+
+    0 : begin
+           // There are no packages in inventories owned by the specified owner that
+           // have the specified package number.
+           SuppCode := '';
+        end;
+
+    1 : begin
+           // There is only one package number with the specified package number in
+           // inventories owned by the specified owner, so this must be the one
+           // the user wants.
+           SuppCode           := cdsAllPackageNos.FieldByName('SupplierCode').AsString ;
+//           SupplierNo         := cdsAllPackageNos.FieldByName('SupplierNo'  ).AsInteger ;
+//           ProductNo          := cdsAllPackageNos.FieldByName('ProductNo'  ).AsInteger ;
+//           ProductLengthNo    := cdsAllPackageNos.FieldByName('ProductLengthNo'  ).AsInteger ;
+//           NoOfLengths        := TdmArrivingLoads.FieldByName('NoOfLengths'  ).AsInteger ;
+        end;
+        else
+        begin
+           // More than one package in inventories owned by the specified owner has
+           // the specified package number. (They must have different suppliers).
+           // Allow the user to specify which one they want.
+           if assigned(FOnAmbiguousPkgNo) then
+             FOnAmbiguousPkgNo(Self,Self.dsAllPackageNos,SuppCode);
+        end;
+    end;
+  Finally
+    cdsAllPackageNos.Filtered := False ;
+  End;
+
+  Result := SuppCode;
+end;
 
 
 end.

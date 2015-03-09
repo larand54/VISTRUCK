@@ -5795,7 +5795,7 @@ procedure TfLoadEntrySSP.mePackageNoKeyDown(Sender: TObject; var Key: Word;
 begin
  if Key <> VK_RETURN then Exit;
  if Length(mePackageNo.Text) > 0 then
- GetpackageNoEntered(Sender, mePackageNo.Text) ;
+  GetpackageNoEntered(Sender, mePackageNo.Text) ;
  Timer1.Enabled   := True ;
  mePackageNo.Text := '' ;
  SaveLoad ;
