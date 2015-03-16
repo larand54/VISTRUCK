@@ -388,10 +388,10 @@ begin
 
 // ThisUser.Database:= 'carmak-speed\SQLEXPRESS:vis_vida' ;
 // ThisUser.Database:= '172.24.0.40:vis_vida' ;
- //ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+ ThisUser.Database:= 'vis.vida.se:vis_vida' ;
 // ThisUser.Database:= 'alvevistest01:vis_vida' ;
 
- ThisUser.Database  := 'alvesql03:vis_vida' ;
+// ThisUser.Database  := 'alvesql03:vis_vida' ;
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then
     Close

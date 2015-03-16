@@ -299,6 +299,7 @@ type
     grdLoadsDBTableView1NoOfPackages: TcxGridDBColumn;
     grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn;
     cxStyleGreen: TcxStyle;
+    cxLabelEntryMetod: TcxLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -371,9 +372,11 @@ type
 
   private
     { Private declarations }
+    LastTime  : TTime ;
+    SecondsBetweenKeyPressed  : Double ;
     function IdentifyPackageSupplier(const PkgNo : Integer;
     var PkgSupplierCode: String3) : TEditAction;
-    procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
+    procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String;const Scanned : Integer) ;
     procedure BuildPackageQuery ;
     procedure LoadLagerPos ;
     procedure SetLagerPosOnMarkedPkgs (const LagerPos : String) ;
@@ -1361,7 +1364,7 @@ Begin
    cdsAllPackageNos.SQL.Add('AND not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
    cdsAllPackageNos.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
    cdsAllPackageNos.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
-   cdsAllPackageNos.SQL.SaveToFile('cdsAllPackageNos.txt') ;
+  // cdsAllPackageNos.SQL.SaveToFile('cdsAllPackageNos.txt') ;
  End;
 End ;
 
@@ -4322,12 +4325,35 @@ End ;
 
 procedure TfrmLoadArrivals.mePackageNoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+Var NuTid           : TTime ;
+    ManualKeyBoard  : Integer ;
 begin
+ NuTid  := Time ;
+ if Length(mePackageNo.Text) < 2 then
+  LastTime  := NuTid ;
+
+
+
+ if Length(mePackageNo.Text) > 1 then
+  SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
+
+ if SecondsBetweenKeyPressed > 0.01 then
+ Begin
+  ManualKeyBoard            := 1 ;
+  cxLabelEntryMetod.Caption := 'Manual' ;
+ End
+   else
+    Begin
+      ManualKeyBoard            := 0 ;
+      cxLabelEntryMetod.Caption := 'Scanned' ;
+    End;
+
  if Key <> VK_RETURN then Exit;
 
  if Length(mePackageNo.Text) > 0 then
-  GetpackageNoEntered(Sender, mePackageNo.Text) ;
+  GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
 
+ LastTime         := NuTid ;
  Timer3.Enabled   := True ;
  mePackageNo.Text := '' ;
 end;
@@ -4373,7 +4399,7 @@ begin
     End ;  }
 end;
 
-procedure TfrmLoadArrivals.GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
+procedure TfrmLoadArrivals.GetpackageNoEntered(Sender: TObject;const PackageNo : String;const Scanned : Integer) ;
 //  ; var DisplayValue: Variant; var ErrorText: TCaption;
 //  var Error: Boolean);
 var
@@ -4445,7 +4471,7 @@ begin
     if Action = eaACCEPT then
     Begin
     //const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
-      AddPkgTo_PackageARConfirmed(NewPkgNo, LoadNo, 1, PkgSupplierCode) ;
+      AddPkgTo_PackageARConfirmed(NewPkgNo, LoadNo, Scanned, PkgSupplierCode) ;
  //     AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
   //Långsamt här
  //     if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then

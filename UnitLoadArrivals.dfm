@@ -62,17 +62,17 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1LO: TcxGridDBColumn
         DataBinding.FieldName = 'LO'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 65
+        Width = 54
       end
       object grdLoadsDBTableView1LOADNO: TcxGridDBColumn
         DataBinding.FieldName = 'LOADNO'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 51
+        Width = 43
       end
       object grdLoadsDBTableView1LOADEDDATE: TcxGridDBColumn
         DataBinding.FieldName = 'LOADEDDATE'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 65
+        Width = 55
       end
       object grdLoadsDBTableView1LOAD_STATUS: TcxGridDBColumn
         DataBinding.FieldName = 'LOAD_STATUS'
@@ -94,67 +94,67 @@ object frmLoadArrivals: TfrmLoadArrivals
             ImageIndex = 2
             Value = 2
           end>
-        Width = 35
+        Width = 29
       end
       object grdLoadsDBTableView1FS: TcxGridDBColumn
         DataBinding.FieldName = 'FS'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 44
+        Width = 37
       end
       object grdLoadsDBTableView1LOAD_ID: TcxGridDBColumn
         DataBinding.FieldName = 'LOAD_ID'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 54
+        Width = 45
       end
       object grdLoadsDBTableView1AVROP_CUSTOMER: TcxGridDBColumn
         DataBinding.FieldName = 'AVROP_CUSTOMER'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 81
+        Width = 68
       end
       object grdLoadsDBTableView1SUPPLIER: TcxGridDBColumn
         DataBinding.FieldName = 'SUPPLIER'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 74
+        Width = 62
       end
       object grdLoadsDBTableView1DESTINATION: TcxGridDBColumn
         DataBinding.FieldName = 'DESTINATION'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 73
+        Width = 61
       end
       object grdLoadsDBTableView1INVPOINTNAME: TcxGridDBColumn
         DataBinding.FieldName = 'INVPOINTNAME'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 74
+        Width = 62
       end
       object grdLoadsDBTableView1SUPPCODE: TcxGridDBColumn
         DataBinding.FieldName = 'SUPPCODE'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 61
+        Width = 51
       end
       object grdLoadsDBTableView1CUSTOMER: TcxGridDBColumn
         DataBinding.FieldName = 'CUSTOMER'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 63
+        Width = 53
       end
       object grdLoadsDBTableView1INITIALS: TcxGridDBColumn
         DataBinding.FieldName = 'INITIALS'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 69
+        Width = 58
       end
       object grdLoadsDBTableView1CountryCode: TcxGridDBColumn
         DataBinding.FieldName = 'CountryCode'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 47
+        Width = 39
       end
       object grdLoadsDBTableView1LOINI: TcxGridDBColumn
         DataBinding.FieldName = 'LOINI'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 54
+        Width = 45
       end
       object grdLoadsDBTableView1LASTSTLLE: TcxGridDBColumn
         DataBinding.FieldName = 'LASTST'#196'LLE'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 20
+        Width = 57
       end
       object grdLoadsDBTableView1ORDER_NO: TcxGridDBColumn
         DataBinding.FieldName = 'ORDER_NO'
@@ -186,7 +186,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1OrderType: TcxGridDBColumn
         DataBinding.FieldName = 'OrderType'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 41
+        Width = 29
       end
       object grdLoadsDBTableView1SUPPLIERNO: TcxGridDBColumn
         DataBinding.FieldName = 'SUPPLIERNO'
@@ -243,21 +243,24 @@ object frmLoadArrivals: TfrmLoadArrivals
         PropertiesClassName = 'TcxCheckBoxProperties'
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
-        Width = 41
+        Width = 29
       end
       object grdLoadsDBTableView1EGEN: TcxGridDBColumn
         DataBinding.FieldName = 'EGEN'
         PropertiesClassName = 'TcxCheckBoxProperties'
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
+        Width = 45
       end
       object grdLoadsDBTableView1NoOfPackages: TcxGridDBColumn
         Caption = 'Antal paket'
         DataBinding.FieldName = 'NoOfPackages'
+        Width = 45
       end
       object grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn
         Caption = 'Paket bekr'#228'ftade'
         DataBinding.FieldName = 'PackagesConfirmed'
+        Width = 45
       end
     end
     object grdLoadsLevel1: TcxGridLevel
@@ -532,7 +535,6 @@ object frmLoadArrivals: TfrmLoadArrivals
       Height = 57
       Align = alTop
       TabOrder = 0
-      ExplicitTop = 6
       object cxButton1: TcxButton
         Left = 8
         Top = 8
@@ -542,31 +544,35 @@ object frmLoadArrivals: TfrmLoadArrivals
         TabOrder = 0
       end
       object mePackageNo: TcxMaskEdit
-        Left = 341
-        Top = 13
+        Left = 458
+        Top = 6
         ParentFont = False
         Properties.ReadOnly = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clBlack
-        Style.Font.Height = -16
+        Style.Font.Height = -32
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 1
         OnKeyDown = mePackageNoKeyDown
-        Width = 217
+        Width = 479
       end
       object cxLabel10: TcxLabel
         Left = 248
-        Top = 19
+        Top = 12
         Caption = 'Ange paketnr:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clNavy
-        Style.Font.Height = -15
+        Style.Font.Height = -32
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
+      end
+      object cxLabelEntryMetod: TcxLabel
+        Left = 952
+        Top = 16
       end
     end
     object grdPkgs: TcxGrid
@@ -635,58 +641,58 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_NO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 37
+          Width = 70
         end
         object grdPkgsDBTableView1SUPPLIERCODE: TcxGridDBColumn
           DataBinding.FieldName = 'SUPPLIERCODE'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 30
+          Width = 61
         end
         object grdPkgsDBTableView1PRODUCT_DESCRIPTION: TcxGridDBColumn
           DataBinding.FieldName = 'PRODUCT_DESCRIPTION'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 175
+          Width = 164
         end
         object grdPkgsDBTableView1GS: TcxGridDBColumn
           DataBinding.FieldName = 'GS'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 65
+          Width = 61
         end
         object grdPkgsDBTableView1BC: TcxGridDBColumn
           DataBinding.FieldName = 'BC'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 56
+          Width = 53
         end
         object grdPkgsDBTableView1M3_NET: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NET'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 31
+          Width = 29
         end
         object grdPkgsDBTableView1PCS: TcxGridDBColumn
           DataBinding.FieldName = 'PCS'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 30
+          Width = 28
         end
         object grdPkgsDBTableView1M3_NOM: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NOM'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 26
+          Width = 25
         end
         object grdPkgsDBTableView1MFBM: TcxGridDBColumn
           DataBinding.FieldName = 'MFBM'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 46
+          Width = 42
         end
         object grdPkgsDBTableView1LoadNo: TcxGridDBColumn
           DataBinding.FieldName = 'LoadNo'
@@ -699,7 +705,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'LO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 34
+          Width = 32
         end
         object grdPkgsDBTableView1LOAD_DETAILNO: TcxGridDBColumn
           DataBinding.FieldName = 'LOAD_DETAILNO'
@@ -719,52 +725,52 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_LOG'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 50
+          Width = 48
         end
         object grdPkgsDBTableView1SubSum: TcxGridDBColumn
           DataBinding.FieldName = 'SubSum'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 41
+          Width = 38
         end
         object grdPkgsDBTableView1PRICE: TcxGridDBColumn
           DataBinding.FieldName = 'PRICE'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 40
+          Width = 37
         end
         object grdPkgsDBTableView1NLMM: TcxGridDBColumn
           DataBinding.FieldName = 'NLMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 40
+          Width = 38
         end
         object grdPkgsDBTableView1ALMM: TcxGridDBColumn
           DataBinding.FieldName = 'ALMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 41
+          Width = 39
         end
         object grdPkgsDBTableView1Used: TcxGridDBColumn
           DataBinding.FieldName = 'Used'
           PropertiesClassName = 'TcxCheckBoxProperties'
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          Width = 40
+          Width = 37
         end
         object grdPkgsDBTableView1Info2: TcxGridDBColumn
           Caption = 'Info2 (position)'
           DataBinding.FieldName = 'Info2'
           PropertiesClassName = 'TcxComboBoxProperties'
-          Width = 116
+          Width = 109
         end
         object grdPkgsDBTableView1PackageNo: TcxGridDBColumn
           DataBinding.FieldName = 'PackageNo'
-          Width = 70
+          Width = 65
         end
         object grdPkgsDBTableView1CreatedUser: TcxGridDBColumn
           DataBinding.FieldName = 'CreatedUser'
-          Width = 34
+          Width = 32
         end
         object grdPkgsDBTableView1DateCreated: TcxGridDBColumn
           DataBinding.FieldName = 'DateCreated'
-          Width = 108
+          Width = 102
         end
       end
       object grdPkgsLevel1: TcxGridLevel
