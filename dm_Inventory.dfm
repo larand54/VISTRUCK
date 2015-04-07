@@ -1234,7 +1234,7 @@ object dmInventory: TdmInventory
       item
         Name = 'PRODUCERNO'
         DataType = ftInteger
-        ADDataType = dtUInt32
+        FDDataType = dtUInt32
         ParamType = ptInput
       end>
     object cds_ProductionUnitProductionUnitNo: TIntegerField
@@ -8284,7 +8284,7 @@ object dmInventory: TdmInventory
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
-    StoredProcName = 'dbo.Vis_Lager_v2'
+    StoredProcName = 'dbo.Vis_Lager_v3'
     Left = 216
     Top = 536
     ParamData = <
@@ -8315,34 +8315,40 @@ object dmInventory: TdmInventory
       end
       item
         Position = 5
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
         Name = '@AT'
         DataType = ftFloat
         Precision = 16
         ParamType = ptInput
       end
       item
-        Position = 6
+        Position = 7
         Name = '@AB'
         DataType = ftFloat
         Precision = 16
         ParamType = ptInput
       end
       item
-        Position = 7
+        Position = 8
         Name = '@Ref'
         DataType = ftString
         ParamType = ptInput
         Size = 30
       end
       item
-        Position = 8
+        Position = 9
         Name = '@BL'
         DataType = ftString
         ParamType = ptInput
         Size = 30
       end
       item
-        Position = 9
+        Position = 10
         Name = '@Info2'
         DataType = ftString
         ParamType = ptInput
@@ -8358,9 +8364,9 @@ object dmInventory: TdmInventory
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = upd_invpivPkgDtl
-    StoredProcName = 'dbo.Vis_LagerDTL_v1'
+    StoredProcName = 'dbo.Vis_LagerDTL_v2'
     Left = 216
-    Top = 432
+    Top = 424
     ParamData = <
       item
         Position = 1
@@ -8412,27 +8418,33 @@ object dmInventory: TdmInventory
       end
       item
         Position = 9
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 10
         Name = '@Ref'
         DataType = ftString
         ParamType = ptInput
         Size = 30
       end
       item
-        Position = 10
+        Position = 11
         Name = '@BL'
         DataType = ftString
         ParamType = ptInput
         Size = 30
       end
       item
-        Position = 11
+        Position = 12
         Name = '@Info2'
         DataType = ftString
         ParamType = ptInput
         Size = 30
       end
       item
-        Position = 12
+        Position = 13
         Name = '@InventorySource'
         DataType = ftInteger
         ParamType = ptInput
@@ -8604,7 +8616,7 @@ object dmInventory: TdmInventory
       'FROM PackageNumber'
       'WHERE PackageNo = :PackageNo AND SupplierCode = :SupplierCode')
     Left = 216
-    Top = 376
+    Top = 368
   end
   object FDStoredProc1: TFDStoredProc
     Connection = dmsConnector.FDConnection1
@@ -8847,7 +8859,7 @@ object dmInventory: TdmInventory
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

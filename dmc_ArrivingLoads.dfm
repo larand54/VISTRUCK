@@ -618,6 +618,9 @@ object dmArrivingLoads: TdmArrivingLoads
         #9'ARtillLager,'
       'IsNull(IName.ImpVerk,0) AS ImpVerk,'
       ''
+      'LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs'
+      ',SC.ClientName, Bt.BookingType,'
+      ''
       '(Select Count(*) FROM dbo.LoadDetail LD'
       'WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,'
       '(Select Count(*) FROM dbo.PackageARConfirmed PC'
@@ -657,6 +660,10 @@ object dmArrivingLoads: TdmArrivingLoads
       'INNER JOIN dbo.Loads L '#9#9#9#9'ON'#9'LSP.LoadNo '#9#9'= L.LoadNo'
       #9#9#9#9#9#9'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
       #9#9#9#9#9#9'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
+      ''
+      ''
+      'Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo'
+      ''
       ''
       'INNER JOIN dbo.Client Mill'#9#9#9'ON'#9'Mill.ClientNo '#9#9'= SP.SupplierNo'
       ''
@@ -892,11 +899,13 @@ object dmArrivingLoads: TdmArrivingLoads
       Required = True
     end
     object cdsArrivingLoadsNoOfPackages: TIntegerField
+      DisplayLabel = 'Antal paket'
       FieldName = 'NoOfPackages'
       Origin = 'NoOfPackages'
       ReadOnly = True
     end
     object cdsArrivingLoadsPackagesConfirmed: TIntegerField
+      DisplayLabel = 'Paket bekr'#228'ftade'
       FieldName = 'PackagesConfirmed'
       Origin = 'PackagesConfirmed'
       ProviderFlags = []
@@ -5689,5 +5698,24 @@ object dmArrivingLoads: TdmArrivingLoads
       Origin = 'NoOfPkgs'
       ReadOnly = True
     end
+  end
+  object sp_IsLoadAvr: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_IsLoadAvr'
+    Left = 736
+    Top = 360
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

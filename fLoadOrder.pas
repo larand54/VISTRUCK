@@ -433,6 +433,7 @@ type
     grdLODBTableView1ProducedPKT: TcxGridDBColumn;
     grdLODBTableView1Order_AM3: TcxGridDBColumn;
     siLangLinked_frmVisTruckLoadOrder: TsiLangLinked;
+    cxButton9: TcxButton;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -885,7 +886,7 @@ begin
   SaveUserPreferences;
 
   CloseDataSet;
-  FreeAndNil(dmcOrder) ;//.free ;
+//  FreeAndNil(dmcOrder) ;//.free ;
   CanClose:= True ;
 end;
 
@@ -895,12 +896,12 @@ begin
 
  if (not Assigned(dmArrivingLoads)) then
  dmArrivingLoads  := TdmArrivingLoads.Create(nil);
- dmsSystem.AssignDMToThisWork('TfrmLoadOrder', 'dmArrivingLoads') ;
+ dmsSystem.AssignDMToThisWork('TfrmVisTruckLoadOrder', 'dmArrivingLoads') ;
 
 
  if (not Assigned(dm_Booking)) then
  dm_Booking  := Tdm_Booking.Create(nil);
- dmsSystem.AssignDMToThisWork('TfrmLoadOrder1', 'dm_Booking') ;
+ dmsSystem.AssignDMToThisWork('TfrmVisTruckLoadOrder', 'dm_Booking') ;
 
 
   dmcOrder.LoadUserProps(Self.Name) ;
@@ -3626,11 +3627,14 @@ begin
    dmArrivingLoads := Nil ;
   End ;
 
-  if dmsSystem.DeleteAssigned('TfrmVisTruckLoadOrder1', 'dm_Booking') = True then
+  if dmsSystem.DeleteAssigned('TfrmVisTruckLoadOrder', 'dm_Booking') = True then
   Begin
    dm_Booking.Free ;
    dm_Booking := Nil ;
   End ;
+
+ If Assigned(dmcOrder) then
+  FreeAndNil(dmcOrder) ;
 end;
 
 procedure TfrmVisTruckLoadOrder.Timer1Timer(Sender: TObject);

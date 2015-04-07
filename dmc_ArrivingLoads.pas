@@ -562,6 +562,7 @@ type
     cdsArrivingLoadsPackagesConfirmed: TIntegerField;
     sq_NoOfConfirmedPkgsInLoad: TFDQuery;
     sq_NoOfConfirmedPkgsInLoadNoOfPkgs: TIntegerField;
+    sp_IsLoadAvr: TFDStoredProc;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -571,6 +572,7 @@ type
   private
     { Private declarations }
     FOnAmbiguousPkgNo: TAmbiguityEvent;
+    function  IsLoadAvr(const LoadNo : Integer) : Boolean ;
     function  NoOfConfirmedPkgs(const LoadNo : Integer): Integer ;
     Function  GetCurrentXrate(const LoadNo : Integer)  : Double ;
     Function  GetXrateAtDateOfDelivery(const LoadNo : Integer)  : Double ;
@@ -1669,6 +1671,21 @@ Begin
  cds_LoadRow.Active:= False ;
 End ;
 
+
+function TdmArrivingLoads.IsLoadAvr(const LoadNo : Integer) : Boolean ;
+Begin
+  Try
+  sp_IsLoadAvr.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_IsLoadAvr.Active := True ;
+  if not sp_IsLoadAvr.Eof then
+   Result := True
+    else
+     Result := False ;
+  Finally
+   sp_IsLoadAvr.Active := False ;
+  End ;
+End;
+
 //P_SupplierNo (kan vara både kund eller leverantör) används bara när det anropas från avräkningen, då det är en specifik LoadDtlVal som uppdateras
 //För att veta om lasten är ett inköp eller försäljning
 procedure TdmArrivingLoads.GetIntPrice(const P_SupplierNo, PaymentType, PaymentNo, LoadNo : Integer;const Update_OldPrice : Boolean) ;
@@ -1680,63 +1697,67 @@ Var Price               : Double ;
     MakeForVerk         : Boolean ;
     P_Inkop             : Boolean;
 Begin
- if P_SupplierNo > 0 then
+ if not IsLoadAvr(LoadNo) then
  Begin
-  //OM LO är ett "inköp" körs denna rutin
-  P_Inkop:= Inkop(LoadNo, P_SupplierNo) ;
-  InsertLoadDtlVal(P_Inkop, P_SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
-  Exit ;
- End ;
- //cds_LoadRow innehåller alla lastrader i lasten.
- cds_LoadRow.Active:= False ;
- cds_LoadRow.ParamByName('LoadNo').AsInteger:= LoadNo ;
- cds_LoadRow.Active:= True ;
- if not cds_LoadRow.Eof then
- Begin
-  CustomerNo          := cds_LoadRowSSP_CustomerNo.AsInteger ;
-  SupplierNo          := cds_LoadRowSSP_SupplierNo.AsInteger ;
-  MakeForCustAndSupp  := False ;
-  MakeForInkop        := False ;
-  MakeForVerk         := False ;
 
-  //OM leverantör och kund är samma görs ingenting
-  if cds_LoadRowSSP_CustomerNo.AsInteger = cds_LoadRowSSP_SupplierNo.AsInteger then
-  Exit ;
-
-  //Bestäm vilken typ av affär det är
-  if (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_DANMARK)
-  and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_DANMARK) then
-  MakeForCustAndSupp := True //verk säljer till verk
-   else
-   if (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_DANMARK)
-   and ((cds_LoadRowSSP_SupplierNo.AsInteger = VIDA_WOOD_COMPANY_NO) or (cds_LoadRowSSP_SupplierNo.AsInteger = VIDA_DANMARK)) then
-   MakeForInkop:= True //vidawood säljer till verk INKÖP
-    else
-    if ((cds_LoadRowSSP_CustomerNo.AsInteger = VIDA_WOOD_COMPANY_NO) or (cds_LoadRowSSP_CustomerNo.AsInteger = VIDA_DANMARK))
-    and ((cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_DANMARK)) then
-     MakeForVerk := True ;//verk säljer till vidawood
-
-  cds_LoadRow.Active:= False ;
- End //if not cds_LoadRow.Eof then
-  else
+   if P_SupplierNo > 0 then
    Begin
-    //Om inga lastrader hittades görs ingenting
-    cds_LoadRow.Active:= False ;
+    //OM LO är ett "inköp" körs denna rutin
+    P_Inkop:= Inkop(LoadNo, P_SupplierNo) ;
+    InsertLoadDtlVal(P_Inkop, P_SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
     Exit ;
    End ;
+   //cds_LoadRow innehåller alla lastrader i lasten.
+   cds_LoadRow.Active:= False ;
+   cds_LoadRow.ParamByName('LoadNo').AsInteger:= LoadNo ;
+   cds_LoadRow.Active:= True ;
+   if not cds_LoadRow.Eof then
+   Begin
+    CustomerNo          := cds_LoadRowSSP_CustomerNo.AsInteger ;
+    SupplierNo          := cds_LoadRowSSP_SupplierNo.AsInteger ;
+    MakeForCustAndSupp  := False ;
+    MakeForInkop        := False ;
+    MakeForVerk         := False ;
 
-//Anropa InsertLoadDtlVal beroende på vilken typ av affär
- if MakeForCustAndSupp then
- Begin
-  InsertLoadDtlVal(False, SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
-  InsertLoadDtlVal(True, CustomerNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
- End
-  else
-  if MakeForVerk then
-   InsertLoadDtlVal(False, SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice)
+    //OM leverantör och kund är samma görs ingenting
+    if cds_LoadRowSSP_CustomerNo.AsInteger = cds_LoadRowSSP_SupplierNo.AsInteger then
+    Exit ;
+
+    //Bestäm vilken typ av affär det är
+    if (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_DANMARK)
+    and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_DANMARK) then
+    MakeForCustAndSupp := True //verk säljer till verk
+     else
+     if (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_CustomerNo.AsInteger <> VIDA_DANMARK)
+     and ((cds_LoadRowSSP_SupplierNo.AsInteger = VIDA_WOOD_COMPANY_NO) or (cds_LoadRowSSP_SupplierNo.AsInteger = VIDA_DANMARK)) then
+     MakeForInkop:= True //vidawood säljer till verk INKÖP
+      else
+      if ((cds_LoadRowSSP_CustomerNo.AsInteger = VIDA_WOOD_COMPANY_NO) or (cds_LoadRowSSP_CustomerNo.AsInteger = VIDA_DANMARK))
+      and ((cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_WOOD_COMPANY_NO) and (cds_LoadRowSSP_SupplierNo.AsInteger <> VIDA_DANMARK)) then
+       MakeForVerk := True ;//verk säljer till vidawood
+
+    cds_LoadRow.Active:= False ;
+   End //if not cds_LoadRow.Eof then
     else
-     if MakeForInkop then
-      InsertLoadDtlVal(True, CustomerNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
+     Begin
+      //Om inga lastrader hittades görs ingenting
+      cds_LoadRow.Active:= False ;
+      Exit ;
+     End ;
+
+  //Anropa InsertLoadDtlVal beroende på vilken typ av affär
+   if MakeForCustAndSupp then
+   Begin
+    InsertLoadDtlVal(False, SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
+    InsertLoadDtlVal(True, CustomerNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
+   End
+    else
+    if MakeForVerk then
+     InsertLoadDtlVal(False, SupplierNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice)
+      else
+       if MakeForInkop then
+        InsertLoadDtlVal(True, CustomerNo, PaymentType, PaymentNo, LoadNo, Update_OldPrice) ;
+ End;
 End ;
 
 //PaymentType, vilken typ av avräkning som tex priskorrigering (kredit) eller vanlig debit.

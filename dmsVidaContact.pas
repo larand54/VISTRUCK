@@ -330,10 +330,11 @@ type
     fClientNo : Integer ;
     function  FinnsAddressName (const AddressNo : Integer;const AddressName : String) : Boolean ;
     Function  IsClientRoleType(const ClientNo, RoleType: Integer) : Boolean ;
-    function  ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
+
 //    function  WhoBelongsToLoadingLocation(const LoadingLocationNo : Integer) : Integer ;
 
   public
+    function  ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
     function  Get_PktNrLevKod(const ClientNo : Integer) : String ;
     function  GetPIPNoOfCityNoByOwnerNo (const OwnerNo, CityNo : Integer) : Integer ;
     Function  GetMaxLIPNoOfPIPNo(const PIPNo  : Integer) : Integer ;

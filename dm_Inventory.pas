@@ -1109,7 +1109,6 @@ type
     ds_UtlastLevelThree: TDataSource;
     sp_invpiv: TFDStoredProc;
     ds_invpiv: TDataSource;
-    sp_invpivPkgDtl: TFDStoredProc;
     ds_invpivPkgDtl: TDataSource;
     sp_invpivPkg: TFDStoredProc;
     ds_invpivPkg: TDataSource;
@@ -1251,6 +1250,7 @@ type
     sp_MovePackage: TFDStoredProc;
     sp_PkgExistInLIP: TFDStoredProc;
     mtSelectedPkgNoMaxlangd: TFloatField;
+    sp_invpivPkgDtl: TFDStoredProc;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -2008,30 +2008,31 @@ Begin
  End ;
 
 
- sp_invpiv.ParamByName('@LIPNo').AsString       := LIPNos ;
- sp_invpiv.ParamByName('@PivotUnit').AsInteger  := PivotUnit ;
- sp_invpiv.ParamByName('@OwnerNo').AsInteger    := OwnerNo ;
+ sp_invpiv.ParamByName('@LIPNo').AsString           := LIPNos ;
+ sp_invpiv.ParamByName('@PivotUnit').AsInteger      := PivotUnit ;
+ sp_invpiv.ParamByName('@LanguageCode').AsInteger   := ThisUser.LanguageID ;
+ sp_invpiv.ParamByName('@OwnerNo').AsInteger        := OwnerNo ;
  if AT > 0 then
- sp_invpiv.ParamByName('@AT').AsFloat           := AT
+ sp_invpiv.ParamByName('@AT').AsFloat               := AT
  else
  sp_invpiv.ParamByName('@AT').Clear();
  if AB > 0 then
- sp_invpiv.ParamByName('@AB').AsFloat           := AB
+ sp_invpiv.ParamByName('@AB').AsFloat               := AB
  else
  sp_invpiv.ParamByName('@AB').Clear();
 
  if Length(Trim(Ref)) > 0 then
- sp_invpiv.ParamByName('@Ref').AsString         := Trim(Ref)
+ sp_invpiv.ParamByName('@Ref').AsString             := Trim(Ref)
  else
  sp_invpiv.ParamByName('@Ref').Clear ;
 
  if Length(Trim(BL)) > 0 then
- sp_invpiv.ParamByName('@BL').AsString          := Trim(BL)
+ sp_invpiv.ParamByName('@BL').AsString              := Trim(BL)
  else
  sp_invpiv.ParamByName('@BL').Clear ;
 
  if Length(Trim(Info2)) > 0 then
- sp_invpiv.ParamByName('@Info2').AsString          := Trim(Info2)
+ sp_invpiv.ParamByName('@Info2').AsString           := Trim(Info2)
  else
  sp_invpiv.ParamByName('@Info2').Clear ;
 
@@ -2108,6 +2109,7 @@ Begin
  End ;
  sp_invpivPkgDtl.ParamByName('@LIPNo').AsInteger            := LIPNo ;
  sp_invpivPkgDtl.ParamByName('@PivotUnit').AsInteger        := PivotUnit ;
+ sp_invpivPkgDtl.ParamByName('@LanguageCode').AsInteger     := ThisUser.LanguageID ;
  sp_invpivPkgDtl.ParamByName('@ProductNo').AsInteger        := ProductNo ;
  sp_invpivPkgDtl.ParamByName('@ALMM').AsInteger             := L ;
  sp_invpivPkgDtl.ParamByName('@LP').AsInteger               := LP ;
