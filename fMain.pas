@@ -408,14 +408,17 @@ begin
       Begin
        Close ;
       End ;
- dm_UserProps.GetAppFormSize(frmMain.Name, Height, Width, Top, Left) ;
- if (Height > 0) and (Width > 0) then //and (Top > 0) and (Left > 0) then
+ if forms.Screen.MonitorCount = 2 then
  Begin
-  frmMain.Height  := Height ;
-  frmMain.Width   := Width ;
-  frmMain.Top     := Top ;
-  frmMain.Left    := Left ;
- End ;
+   dm_UserProps.GetAppFormSize(frmMain.Name, Height, Width, Top, Left) ;
+   if (Height > 0) and (Width > 0) then //and (Top > 0) and (Left > 0) then
+   Begin
+    frmMain.Height  := Height ;
+    frmMain.Width   := Width ;
+    frmMain.Top     := Top ;
+    frmMain.Left    := Left ;
+   End ;
+ End;
 
   LanguageNo  :=  dmsSystem.GetLanguageNo ;
   if LanguageNo > -1 then
