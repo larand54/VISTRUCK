@@ -774,7 +774,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'ShippingPlanNo'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 43
+          Width = 38
           Position.BandIndex = 1
           Position.ColIndex = 1
           Position.RowIndex = 0
@@ -793,7 +793,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'INTERNPRODDESC'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 211
+          Width = 188
           Position.BandIndex = 1
           Position.ColIndex = 6
           Position.RowIndex = 0
@@ -803,36 +803,44 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'LENGTHDESC'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 83
+          Width = 73
           Position.BandIndex = 1
           Position.ColIndex = 9
+          Position.RowIndex = 0
+        end
+        object grdLORowsDBBandedTableView1Internnotering: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Internnotering'
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 132
+          Position.BandIndex = 1
+          Position.ColIndex = 10
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1NOOFUNITS: TcxGridDBBandedColumn
           DataBinding.FieldName = 'NOOFUNITS'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 72
+          Width = 68
           Position.BandIndex = 1
-          Position.ColIndex = 12
+          Position.ColIndex = 13
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1VOLUNIT: TcxGridDBBandedColumn
           DataBinding.FieldName = 'VOLUNIT'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 52
+          Width = 50
           Position.BandIndex = 1
-          Position.ColIndex = 13
+          Position.ColIndex = 14
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PRICE: TcxGridDBBandedColumn
           DataBinding.FieldName = 'PRICE'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 43
+          Width = 40
           Position.BandIndex = 1
-          Position.ColIndex = 38
+          Position.ColIndex = 39
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PRICEUNIT: TcxGridDBBandedColumn
@@ -842,7 +850,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           Width = 84
           Position.BandIndex = 1
-          Position.ColIndex = 15
+          Position.ColIndex = 16
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
@@ -850,9 +858,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'REFERENCE'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 88
+          Width = 83
           Position.BandIndex = 1
-          Position.ColIndex = 14
+          Position.ColIndex = 15
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1LEV_PERIOD_START: TcxGridDBBandedColumn
@@ -862,7 +870,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           Width = 44
           Position.BandIndex = 1
-          Position.ColIndex = 21
+          Position.ColIndex = 22
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1LEV_PERIOD_END: TcxGridDBBandedColumn
@@ -872,7 +880,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           Width = 43
           Position.BandIndex = 1
-          Position.ColIndex = 22
+          Position.ColIndex = 23
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ORDERNO: TcxGridDBBandedColumn
@@ -883,7 +891,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           VisibleForCustomization = False
           Width = 86
           Position.BandIndex = 1
-          Position.ColIndex = 23
+          Position.ColIndex = 24
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1KR_Ref: TcxGridDBBandedColumn
@@ -894,7 +902,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           Width = 49
           Position.BandIndex = 1
-          Position.ColIndex = 24
+          Position.ColIndex = 25
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1NOM_THICK: TcxGridDBBandedColumn
@@ -904,7 +912,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 27
+          Position.ColIndex = 28
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1NOM_WIDTH: TcxGridDBBandedColumn
@@ -914,7 +922,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 28
+          Position.ColIndex = 29
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PRODUCTGROUPNO: TcxGridDBBandedColumn
@@ -924,15 +932,16 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 26
+          Position.ColIndex = 27
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PCSPERPKG: TcxGridDBBandedColumn
           DataBinding.FieldName = 'PCSPERPKG'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
+          Width = 61
           Position.BandIndex = 1
-          Position.ColIndex = 25
+          Position.ColIndex = 26
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ProductLengthNo: TcxGridDBBandedColumn
@@ -942,7 +951,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 20
+          Position.ColIndex = 21
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1LoadNo: TcxGridDBBandedColumn
@@ -963,7 +972,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           VisibleForCustomization = False
           Width = 67
           Position.BandIndex = 1
-          Position.ColIndex = 30
+          Position.ColIndex = 31
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ACT_THICK: TcxGridDBBandedColumn
@@ -973,7 +982,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 18
+          Position.ColIndex = 19
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ACT_WIDTH: TcxGridDBBandedColumn
@@ -983,7 +992,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 19
+          Position.ColIndex = 20
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ACT_LENGTH: TcxGridDBBandedColumn
@@ -991,9 +1000,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'ACT_LENGTH'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 67
+          Width = 63
           Position.BandIndex = 1
-          Position.ColIndex = 11
+          Position.ColIndex = 12
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1LoadingLocationNo: TcxGridDBBandedColumn
@@ -1044,7 +1053,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 16
+          Position.ColIndex = 17
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1MAX_LENGTH: TcxGridDBBandedColumn
@@ -1054,7 +1063,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 17
+          Position.ColIndex = 18
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1CustomerNo: TcxGridDBBandedColumn
@@ -1075,7 +1084,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           VisibleForCustomization = False
           Width = 67
           Position.BandIndex = 1
-          Position.ColIndex = 29
+          Position.ColIndex = 30
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1ProductLengthGroupNo: TcxGridDBBandedColumn
@@ -1085,7 +1094,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 31
+          Position.ColIndex = 32
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1INCH_THICK: TcxGridDBBandedColumn
@@ -1095,7 +1104,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 32
+          Position.ColIndex = 33
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1INVCH_WIDTH: TcxGridDBBandedColumn
@@ -1105,7 +1114,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 33
+          Position.ColIndex = 34
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn
@@ -1115,7 +1124,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 34
+          Position.ColIndex = 35
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1SpeciesNo: TcxGridDBBandedColumn
@@ -1125,7 +1134,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 35
+          Position.ColIndex = 36
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1GradeNo: TcxGridDBBandedColumn
@@ -1135,7 +1144,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 36
+          Position.ColIndex = 37
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PackageTypeNo: TcxGridDBBandedColumn
@@ -1145,7 +1154,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           VisibleForCustomization = False
           Position.BandIndex = 1
-          Position.ColIndex = 37
+          Position.ColIndex = 38
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1Prislista: TcxGridDBBandedColumn
@@ -1154,7 +1163,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Options.Filtering = False
           Width = 59
           Position.BandIndex = 1
-          Position.ColIndex = 39
+          Position.ColIndex = 40
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
@@ -1164,16 +1173,16 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Properties.ReadOnly = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          Width = 52
+          Width = 49
           Position.BandIndex = 1
-          Position.ColIndex = 40
+          Position.ColIndex = 41
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1CERTI: TcxGridDBBandedColumn
           DataBinding.FieldName = 'CERTI'
-          Width = 41
+          Width = 40
           Position.BandIndex = 1
-          Position.ColIndex = 41
+          Position.ColIndex = 42
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1Trslag: TcxGridDBBandedColumn
@@ -1181,14 +1190,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Visible = False
           Width = 144
           Position.BandIndex = 1
-          Position.ColIndex = 42
+          Position.ColIndex = 43
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1LoadedPkgs: TcxGridDBBandedColumn
           DataBinding.FieldName = 'LoadedPkgs'
-          Width = 110
+          Width = 104
           Position.BandIndex = 1
-          Position.ColIndex = 43
+          Position.ColIndex = 44
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1PkgDiff: TcxGridDBBandedColumn
@@ -1196,17 +1205,17 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.FieldName = 'PkgDiff'
           PropertiesClassName = 'TcxLabelProperties'
           Styles.OnGetContentStyle = grdLORowsDBBandedTableView1PkgDiffStylesGetContentStyle
-          Width = 76
+          Width = 72
           Position.BandIndex = 1
-          Position.ColIndex = 44
+          Position.ColIndex = 45
           Position.RowIndex = 0
         end
         object grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Paketstorlek'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 101
+          Width = 96
           Position.BandIndex = 1
-          Position.ColIndex = 10
+          Position.ColIndex = 11
           Position.RowIndex = 0
         end
       end

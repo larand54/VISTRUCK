@@ -60,7 +60,7 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -166,7 +166,7 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -305,7 +305,7 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -386,6 +386,7 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
+    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -520,8 +521,8 @@ object dmcOrder: TdmcOrder
       #9#9#9#9#9#9#9#9#9#9'AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
       ''
-      'SP.ActualM3Net AS Order_AM3'
-      ''
+      'SP.ActualM3Net AS Order_AM3,'
+      'SP.InternRowNote AS Internnotering'
       'FROM   dbo.Client_LoadingLocation     CLL'
       
         'INNER JOIN dbo.SupplierShippingPlan       SP    ON  SP.LoadingLo' +
@@ -746,7 +747,8 @@ object dmcOrder: TdmcOrder
       #9#9#9#9#9#9#9#9#9#9'AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
       ''
-      'SP.ActualM3Net AS Order_AM3'
+      'SP.ActualM3Net AS Order_AM3,'
+      'SP.InternRowNote AS Internnotering'
       ''
       'FROM   dbo.Client_LoadingLocation     CLL'
       
@@ -1338,6 +1340,12 @@ object dmcOrder: TdmcOrder
       ProviderFlags = []
       ReadOnly = True
       DisplayFormat = '#,###,###.0'
+    end
+    object cdsSawmillLoadOrdersInternnotering: TStringField
+      FieldName = 'Internnotering'
+      Origin = 'Internnotering'
+      ReadOnly = True
+      Size = 100
     end
   end
   object cdsBooking: TFDQuery

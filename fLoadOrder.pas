@@ -434,6 +434,7 @@ type
     grdLODBTableView1Order_AM3: TcxGridDBColumn;
     siLangLinked_frmVisTruckLoadOrder: TsiLangLinked;
     cxButton9: TcxButton;
+    grdLODBTableView1Internnotering: TcxGridDBColumn;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -1208,7 +1209,7 @@ Begin
 End ;
 
 begin
- CheckIfChangesUnSaved(Sender) ;
+CheckIfChangesUnSaved(Sender) ;
 
 // icStatusChange(Sender) ;
  With dmcOrder do
@@ -1323,7 +1324,7 @@ begin
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
   cdsSawmillLoadOrders.SQL.Add('FROM dbo.Client_LoadingLocation     CLL') ;
 
@@ -1508,7 +1509,7 @@ begin
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
   cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
 
@@ -1849,7 +1850,7 @@ begin
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
 
 
@@ -2061,7 +2062,7 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
 
   cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
@@ -2315,7 +2316,7 @@ begin
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
 
   cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
@@ -2503,7 +2504,7 @@ begin
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering') ;
 
 
   cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');

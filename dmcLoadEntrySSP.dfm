@@ -54,7 +54,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -178,7 +178,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -209,7 +209,6 @@
     end
   end
   object cds_LoadHead: TFDQuery
-    Active = True
     AfterInsert = cds_LoadHeadAfterInsert
     BeforePost = cds_LoadHeadBeforePost
     CachedUpdates = True
@@ -695,6 +694,7 @@
     end
   end
   object cdsLORows: TFDQuery
+    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -789,7 +789,8 @@
       'AND LD.ShippingPlanNo = LS.ShippingPlanNo'
       'AND LD.Defsspno = SSP.SupplierShipPlanObjectNo ) AS LoadedPkgs,'
       'ps.PackageSizeName AS Paketstorlek,'
-      'SSP.ObjectType'
+      'SSP.ObjectType,'
+      'SSP.InternRowNote AS Internnotering'
       ''
       'FROM  '#9'dbo.Loads L'
       #9'Inner Join dbo.LoadShippingPlan LS ON LS.LoadNo = L.LoadNo'
@@ -1112,6 +1113,11 @@
     object cdsLORowsObjectType: TIntegerField
       FieldName = 'ObjectType'
       Origin = 'ObjectType'
+    end
+    object cdsLORowsInternnotering: TStringField
+      FieldName = 'Internnotering'
+      Origin = 'Internnotering'
+      Size = 100
     end
   end
   object sq_GetLO_Records: TFDQuery
@@ -3029,7 +3035,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3100,7 +3106,6 @@
     Top = 328
   end
   object cds_PIP2: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -3148,7 +3153,6 @@
     end
   end
   object cds_LIP2: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

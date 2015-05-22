@@ -383,6 +383,7 @@ type
     cds_LoadHeadShowOriginalLO: TIntegerField;
     cds_ObjecType: TFDQuery;
     cds_ObjecTypeMaxObjectType: TIntegerField;
+    cdsLORowsInternnotering: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);

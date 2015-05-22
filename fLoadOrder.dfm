@@ -29,7 +29,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 1121
     object cxSplitter1: TcxSplitter
       Left = 0
       Top = 335
@@ -40,7 +39,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Control = Panel1
       Color = clMaroon
       ParentColor = False
-      ExplicitWidth = 1121
     end
     object Memo1: TMemo
       Left = 616
@@ -67,7 +65,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Align = alTop
       Caption = 'Panel1'
       TabOrder = 3
-      ExplicitWidth = 1121
       object grdLO: TcxGrid
         Left = 1
         Top = 97
@@ -76,7 +73,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Align = alClient
         PopupMenu = pmLOGrid
         TabOrder = 0
-        ExplicitWidth = 1119
         object grdLODBTableView1: TcxGridDBTableView
           OnDblClick = grdLODBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
@@ -573,6 +569,12 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
             DataBinding.FieldName = 'Order_AM3'
             PropertiesClassName = 'TcxLabelProperties'
           end
+          object grdLODBTableView1Internnotering: TcxGridDBColumn
+            DataBinding.FieldName = 'Internnotering'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Width = 200
+          end
         end
         object grdLOLevel1: TcxGridLevel
           GridView = grdLODBTableView1
@@ -586,7 +588,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Align = alTop
         BevelOuter = bvLowered
         TabOrder = 1
-        ExplicitWidth = 1119
         object teSearchLONo: TcxTextEdit
           Left = 64
           Top = 11
@@ -1006,6 +1007,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           DataBinding.DataField = 'AutoColWidth'
           DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
+          Properties.ImmediatePost = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           Style.StyleController = cxEditStyleControllerFileldLabels
@@ -1059,7 +1061,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Align = alClient
       Constraints.MinWidth = 400
       TabOrder = 4
-      ExplicitWidth = 1121
       object grdFS: TcxGrid
         Left = 1
         Top = 53
@@ -1068,7 +1069,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Align = alClient
         PopupMenu = pmLoadGrid
         TabOrder = 0
-        ExplicitWidth = 1119
         object grdFSDBTableView1: TcxGridDBTableView
           OnDblClick = acOpenLoadExecute
           Navigator.Buttons.CustomButtons = <>
@@ -1280,7 +1280,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Font.Style = []
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1119
         object Label1: TLabel
           Left = 211
           Top = 10
@@ -1679,7 +1678,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
-    ExplicitWidth = 1121
     object Panel5: TPanel
       Left = 0
       Top = 0
@@ -1705,7 +1703,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 87
     end
     object Panel7: TPanel
       Left = 1171
@@ -1715,7 +1712,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 1058
       object dxBarDockControl3: TdxBarDockControl
         Left = 0
         Top = 0
@@ -1746,7 +1742,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       'Lastorderlista')
     OnCanClose = tcLOCanClose
     OnChange = tcLOChange
-    ExplicitWidth = 1121
     ClientRectBottom = 38
     ClientRectRight = 1234
     ClientRectTop = 35
@@ -6793,6 +6788,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6807,6 +6803,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -6971,8 +6968,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
-    Left = 608
-    Top = 574
+    Left = 544
+    Top = 622
   end
   object Timer1: TTimer
     Enabled = False
@@ -8216,8 +8213,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Style.ButtonStyle = btsOffice11
     Style.ButtonTransparency = ebtHideUnselected
     Style.IsFontAssigned = True
-    Left = 520
-    Top = 464
+    Left = 544
+    Top = 672
     PixelsPerInch = 96
   end
   object cxEditStyleControllerFileldLabels: TcxEditStyleController
@@ -8235,8 +8232,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     StyleDisabled.LookAndFeel.Kind = lfFlat
     StyleFocused.LookAndFeel.Kind = lfFlat
     StyleHot.LookAndFeel.Kind = lfFlat
-    Left = 656
-    Top = 296
+    Left = 544
+    Top = 720
     PixelsPerInch = 96
   end
   object Timer3: TTimer

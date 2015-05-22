@@ -430,6 +430,7 @@ type
     cdsSawmillLoadOrdersProducedAM3: TFloatField;
     cdsSawmillLoadOrdersProducedPKT: TIntegerField;
     cdsSawmillLoadOrdersOrder_AM3: TFloatField;
+    cdsSawmillLoadOrdersInternnotering: TStringField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;

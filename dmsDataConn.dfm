@@ -1826,9 +1826,11 @@ object dmsConnector: TdmsConnector
     Params.Strings = (
       'Server=vis.vida.se'
       'Database=Vis_Vida'
-      'OSAuthent=Yes'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
+      'User_Name=Lars'
+      'Password=woods2011'
       'DriverID=MSSQL')
     ResourceOptions.AssignedValues = [rvDirectExecute]
     UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]

@@ -354,6 +354,7 @@ type
     Visahuvud1: TMenuItem;
     cbShowOriginalLO: TcxDBCheckBox;
     siLangLinked_fLoadEntrySSP: TsiLangLinked;
+    grdLORowsDBBandedTableView1Internnotering: TcxGridDBBandedColumn;
 
 
     procedure lbRemovePackageClick(Sender: TObject);

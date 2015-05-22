@@ -31,7 +31,7 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk,
-  System.Actions, VidaType ;
+  System.Actions, VidaType, dximctrl ;
 
 type
   TfrmLoadArrivals = class(TForm)
@@ -300,6 +300,7 @@ type
     grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn;
     cxStyleGreen: TcxStyle;
     cxLabelEntryMetod: TcxLabel;
+    dxImageListBox1: TdxImageListBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
