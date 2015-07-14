@@ -382,13 +382,13 @@ var Height, Width, Top, Left, LanguageNo : Integer ;
 begin
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
-  ShowMessage(siLangLinked1.GetTextOrDefault('IDS_8' (* 'Ändra till H:' *) )) ;
+  ShowMessage('Change drive to H:\') ;
 
  CheckMappar ;
 
 // ThisUser.Database:= 'carmak-speed\SQLEXPRESS:vis_vida' ;
 // ThisUser.Database:= '172.24.0.40:vis_vida' ;
- ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+  ThisUser.Database:= 'vis.vida.se:vis_vida' ;
 //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
 
 // ThisUser.Database  := 'alvesql03:vis_vida' ;

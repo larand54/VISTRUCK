@@ -3,12 +3,12 @@ object frmMain: TfrmMain
   Top = 102
   Hint = 'Currency'
   Caption = 'VIS'
-  ClientHeight = 795
-  ClientWidth = 1132
+  ClientHeight = 978
+  ClientWidth = 1393
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
@@ -16,37 +16,53 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Panel1: TPanel
     Left = 0
-    Top = 124
-    Width = 1132
-    Height = 671
+    Top = 134
+    Width = 1393
+    Height = 844
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
     object panelBase: TPanel
       Left = 0
       Top = 0
-      Width = 1132
-      Height = 671
+      Width = 1393
+      Height = 844
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
       object cxButton1: TcxButton
-        Left = 48
-        Top = 24
-        Width = 161
-        Height = 49
+        Left = 59
+        Top = 30
+        Width = 198
+        Height = 60
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Action = acBytAnvandare
         TabOrder = 0
       end
       object cxButton2: TcxButton
-        Left = 48
-        Top = 88
-        Width = 161
-        Height = 49
+        Left = 59
+        Top = 108
+        Width = 198
+        Height = 61
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Action = acChangeLanguage
         TabOrder = 1
       end
@@ -55,8 +71,12 @@ object frmMain: TfrmMain
   object dxRibbon1: TdxRibbon
     Left = 0
     Top = 0
-    Width = 1132
-    Height = 124
+    Width = 1393
+    Height = 134
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     ApplicationButton.Glyph.Data = {
       36090000424D3609000000000000360000002800000018000000180000000100
       2000000000000009000000000000000000000000000000000000000000000000
@@ -3059,7 +3079,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (

@@ -1013,7 +1013,10 @@ object dmArrivingLoads: TdmArrivingLoads
       'pac.SupplierCode,'
       'pac.LoadNo,'
       'pac.CreatedUser,'
-      'pac.DateCreated'
+      'pac.DateCreated,'
+      'IsNull(pn.Package_Size,12) AS Package_Size,'
+      'ps.PackageSizeName'
+      ''
       ''
       ''
       'FROM dbo.LoadShippingPlan LSP'
@@ -1024,6 +1027,11 @@ object dmArrivingLoads: TdmArrivingLoads
         'Left Outer Join dbo.PackageNumber pn on pn.PackageNo = LD.Packag' +
         'eNo'
       'and pn.SupplierCode = LD.SupplierCode'
+      ''
+      
+        'Left Outer Join [dbo].[PackageSize] ps on ps.PackageSizeNo = IsN' +
+        'ull(pn.Package_Size,12)'
+      'and ps.LanguageCode = 1'
       ''
       
         'Left Outer Join dbo.PackageARConfirmed pac on pac.PackageNo = LD' +
@@ -1239,6 +1247,21 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'DateCreated'
       Origin = 'DateCreated'
       ProviderFlags = [pfInUpdate]
+    end
+    object cdsArrivingPackagesPackage_Size: TIntegerField
+      DisplayLabel = 'Pktstorlek id'
+      FieldName = 'Package_Size'
+      Origin = 'Package_Size'
+      ProviderFlags = []
+      ReadOnly = True
+      Required = True
+    end
+    object cdsArrivingPackagesPackageSizeName: TStringField
+      DisplayLabel = 'Paketstorlek'
+      FieldName = 'PackageSizeName'
+      Origin = 'PackageSizeName'
+      ProviderFlags = []
+      Size = 50
     end
   end
   object sq_GetDefaultCSObjectNo: TFDQuery
@@ -5714,6 +5737,44 @@ object dmArrivingLoads: TdmArrivingLoads
       item
         Position = 2
         Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_CngArtNoByPkgSize: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_CngArtNoByPkgSize'
+    Left = 1032
+    Top = 496
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@Package_Size'
         DataType = ftInteger
         ParamType = ptInput
       end>

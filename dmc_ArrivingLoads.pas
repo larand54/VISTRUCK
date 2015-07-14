@@ -563,6 +563,9 @@ type
     sq_NoOfConfirmedPkgsInLoad: TFDQuery;
     sq_NoOfConfirmedPkgsInLoadNoOfPkgs: TIntegerField;
     sp_IsLoadAvr: TFDStoredProc;
+    sp_CngArtNoByPkgSize: TFDStoredProc;
+    cdsArrivingPackagesPackage_Size: TIntegerField;
+    cdsArrivingPackagesPackageSizeName: TStringField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -591,6 +594,8 @@ type
   public
     { Public declarations }
     LoadConfirmedOK : Boolean ;
+    procedure CngArtNoByPkgSize (const PackageNo, Package_Size : Integer; Prefix : string) ;
+    function  GetNewPackage_Size(var PackageSizeName : String) : Integer ;
     Procedure AddPkgTo_PackageARConfirmed(const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
     function  PkgNoToSuppCodeAR(const PkgNo : Integer) : string3;
     function  SearchPackageNo(const PackageNo  : Integer;const Prefix  : String) : Integer ;//LoadNo
@@ -623,7 +628,8 @@ var
 
 implementation
 
-uses recerror, dmsDataConn, dmsVidaSystem, VidaConst, VidaUser,   dlgPickPkg_II ;
+uses recerror, dmsDataConn, dmsVidaSystem, VidaConst, VidaUser,   dlgPickPkg_II ,
+  uPackageSize;
 
 {$R *.dfm}
 
@@ -2573,6 +2579,45 @@ begin
 
   Result := SuppCode;
 end;
+
+function TdmArrivingLoads.GetNewPackage_Size(var PackageSizeName : String) : Integer ;
+var fPackageSize: TfPackageSize;
+Begin
+ fPackageSize := TfPackageSize.Create(nil);
+ dmsSystem.cds_PackageSize.Active := True ;
+ Try
+  if fPackageSize.ShowModal = mrOK then
+  Begin
+   Result           := dmsSystem.cds_PackageSizePackageSizeNo.AsInteger ;
+   PackageSizeName  := dmsSystem.cds_PackageSizePackageSizeName.AsString ;
+  End
+    else
+     Begin
+      Result            := -1 ;
+      PackageSizeName   := '' ;
+     End;
+ Finally
+  dmsSystem.cds_PackageSize.Active := False ;
+  FreeAndNil(fPackageSize) ;
+ End;
+End;
+
+procedure TdmArrivingLoads.CngArtNoByPkgSize (const PackageNo, Package_Size : Integer; Prefix : string) ;
+Begin
+ sp_CngArtNoByPkgSize.ParamByName('@PackageNo').AsInteger     := PackageNo ;
+ sp_CngArtNoByPkgSize.ParamByName('@SupplierCode').AsString   := Prefix ;
+ sp_CngArtNoByPkgSize.ParamByName('@UserID').AsInteger        := ThisUser.UserID ;
+ sp_CngArtNoByPkgSize.ParamByName('@Package_Size').AsInteger  := Package_Size ;
+ Try
+  sp_CngArtNoByPkgSize.ExecProc ;
+ Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_CngArtNoByPkgSize.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
+End ;
 
 
 end.

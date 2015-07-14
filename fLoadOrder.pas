@@ -893,6 +893,10 @@ end;
 
 procedure TfrmVisTruckLoadOrder.FormCreate(Sender: TObject);
 begin
+ if (not Assigned(dm_Booking)) then
+ dm_Booking  := Tdm_Booking.Create(nil);
+ dmsSystem.AssignDMToThisWork('TfrmVisTruckLoadOrder', 'dm_Booking') ;
+
  dmcOrder:= TdmcOrder.Create(Nil);
 
  if (not Assigned(dmArrivingLoads)) then
@@ -900,9 +904,7 @@ begin
  dmsSystem.AssignDMToThisWork('TfrmVisTruckLoadOrder', 'dmArrivingLoads') ;
 
 
- if (not Assigned(dm_Booking)) then
- dm_Booking  := Tdm_Booking.Create(nil);
- dmsSystem.AssignDMToThisWork('TfrmVisTruckLoadOrder', 'dm_Booking') ;
+
 
 
   dmcOrder.LoadUserProps(Self.Name) ;

@@ -5,12 +5,12 @@ object frmLoadArrivals: TfrmLoadArrivals
   Align = alClient
   BorderStyle = bsNone
   Caption = 'frmLoadArrivals'
-  ClientHeight = 753
-  ClientWidth = 1126
+  ClientHeight = 927
+  ClientWidth = 1386
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
@@ -20,13 +20,17 @@ object frmLoadArrivals: TfrmLoadArrivals
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 496
-    Width = 1126
+    Top = 612
+    Width = 1386
     Height = 8
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salBottom
     Control = Panel5
@@ -35,9 +39,13 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object grdLoads: TcxGrid
     Left = 0
-    Top = 154
-    Width = 1126
-    Height = 342
+    Top = 190
+    Width = 1386
+    Height = 422
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 2
@@ -266,11 +274,14 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object lbLO_To_Invoice: TListBox
-    Left = 816
-    Top = 181
-    Width = 169
-    Height = 193
-    ItemHeight = 13
+    Left = 1004
+    Top = 223
+    Width = 208
+    Height = 237
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Sorted = True
     TabOrder = 0
     Visible = False
@@ -278,39 +289,75 @@ object frmLoadArrivals: TfrmLoadArrivals
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1126
-    Height = 154
+    Width = 1386
+    Height = 190
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 3
     object Panel2: TPanel
-      Left = 465
+      Left = 572
       Top = 0
-      Width = 598
-      Height = 154
+      Width = 736
+      Height = 190
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
       object dxBarDockControl1: TdxBarDockControl
         Left = 1
         Top = 1
-        Width = 596
-        Height = 44
+        Width = 734
+        Height = 48
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = dalTop
         BarManager = dxBarManager1
       end
+      object cbpaketpositionering: TcxDBCheckBox
+        Left = 21
+        Top = 78
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Caption = 'Ankomstregistrera med paketpositionering'
+        DataBinding.DataField = 'MarketRegionNo'
+        DataBinding.DataSource = ds_Props
+        Properties.ImmediatePost = True
+        Properties.ValueChecked = 1
+        Properties.ValueUnchecked = 0
+        TabOrder = 1
+        Width = 295
+      end
     end
     object Panel3: TPanel
-      Left = 1063
+      Left = 1308
       Top = 0
-      Width = 63
-      Height = 154
+      Width = 78
+      Height = 190
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alRight
       TabOrder = 1
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
-        Width = 61
-        Height = 44
+        Width = 76
+        Height = 48
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -318,13 +365,21 @@ object frmLoadArrivals: TfrmLoadArrivals
     object Panel4: TPanel
       Left = 0
       Top = 0
-      Width = 465
-      Height = 154
+      Width = 572
+      Height = 190
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alLeft
       TabOrder = 2
       object bcConfirmed: TcxComboBox
-        Left = 78
-        Top = 59
+        Left = 96
+        Top = 73
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Properties.DropDownListStyle = lsFixedList
         Properties.ImmediatePost = True
         Properties.Items.Strings = (
@@ -334,52 +389,84 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.OnChange = bcConfirmedPropertiesChange
         TabOrder = 2
         Text = 'Att ankomstregistrera'
-        Width = 147
+        Width = 181
       end
       object cxLabel1: TcxLabel
-        Left = 243
-        Top = 15
+        Left = 299
+        Top = 18
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Mottagare:'
       end
       object cxLabel2: TcxLabel
-        Left = 11
-        Top = 64
+        Left = 14
+        Top = 79
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Visa:'
       end
       object cxLabel3: TcxLabel
-        Left = 11
-        Top = 16
+        Left = 14
+        Top = 20
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'LO:'
       end
       object Edit1: TEdit
-        Left = 78
-        Top = 11
-        Width = 59
-        Height = 21
+        Left = 96
+        Top = 14
+        Width = 73
+        Height = 24
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 0
         OnKeyDown = Edit1KeyDown
       end
       object Edit2: TEdit
-        Left = 78
-        Top = 35
-        Width = 59
-        Height = 21
+        Left = 96
+        Top = 43
+        Width = 73
+        Height = 24
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         TabOrder = 1
         OnKeyDown = Edit2KeyDown
       end
       object cxLabel4: TcxLabel
-        Left = 11
-        Top = 40
+        Left = 14
+        Top = 49
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Lastnr:'
       end
       object cxLabel5: TcxLabel
-        Left = 11
-        Top = 88
+        Left = 14
+        Top = 108
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Period:'
       end
       object cbShowOnlyVWLoads: TcxDBCheckBox
-        Left = 305
-        Top = 131
+        Left = 375
+        Top = 161
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Visa endast VW leveranser'
         DataBinding.DataField = 'NewItemRow'
         DataBinding.DataSource = ds_Props
@@ -387,11 +474,15 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         TabOrder = 10
-        Width = 144
+        Width = 178
       end
       object lcVerk: TcxDBLookupComboBox
-        Left = 309
-        Top = 11
+        Left = 380
+        Top = 14
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'Verk'
         DataBinding.DataSource = ds_Props
         Properties.DropDownWidth = 350
@@ -400,31 +491,43 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ListOptions.AnsiSort = True
         Properties.ListOptions.ShowHeader = False
         TabOrder = 5
-        Width = 145
+        Width = 179
       end
       object deStartPeriod: TcxDBDateEdit
-        Left = 78
-        Top = 84
+        Left = 96
+        Top = 103
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'StartPeriod'
         DataBinding.DataSource = ds_Props
         Enabled = False
         Properties.ImmediatePost = True
         TabOrder = 3
-        Width = 147
+        Width = 181
       end
       object deEndPeriod: TcxDBDateEdit
-        Left = 78
-        Top = 107
+        Left = 96
+        Top = 132
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'EndPeriod'
         DataBinding.DataSource = ds_Props
         Enabled = False
         Properties.ImmediatePost = True
         TabOrder = 4
-        Width = 147
+        Width = 181
       end
       object cbAllaVerk: TcxDBCheckBox
-        Left = 153
-        Top = 11
+        Left = 188
+        Top = 14
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Alla verk'
         DataBinding.DataField = 'GradeStampNo'
         DataBinding.DataSource = ds_Props
@@ -433,11 +536,15 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ValueUnchecked = 0
         TabOrder = 11
         Visible = False
-        Width = 66
+        Width = 82
       end
       object lcInternKund: TcxDBLookupComboBox
-        Left = 309
-        Top = 60
+        Left = 380
+        Top = 74
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'Kund'
         DataBinding.DataSource = ds_Props
         Properties.ClearKey = 46
@@ -447,16 +554,24 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ListOptions.AnsiSort = True
         Properties.ListOptions.ShowHeader = False
         TabOrder = 7
-        Width = 145
+        Width = 179
       end
       object cxLabel6: TcxLabel
-        Left = 243
-        Top = 63
+        Left = 299
+        Top = 78
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Leverant'#246'r:'
       end
       object lcLaststlle: TcxDBLookupComboBox
-        Left = 309
-        Top = 83
+        Left = 380
+        Top = 102
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'Lastst'#228'lle'
         DataBinding.DataSource = ds_Props
         Properties.ClearKey = 46
@@ -469,11 +584,15 @@ object frmLoadArrivals: TfrmLoadArrivals
           end>
         Properties.ListOptions.ShowHeader = False
         TabOrder = 8
-        Width = 145
+        Width = 179
       end
       object lcDestination: TcxDBLookupComboBox
-        Left = 309
-        Top = 35
+        Left = 380
+        Top = 43
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'Destination'
         DataBinding.DataSource = ds_Props
         Properties.ClearKey = 46
@@ -486,21 +605,33 @@ object frmLoadArrivals: TfrmLoadArrivals
           end>
         Properties.ListOptions.ShowHeader = False
         TabOrder = 6
-        Width = 145
+        Width = 179
       end
       object cxLabel7: TcxLabel
-        Left = 243
-        Top = 87
+        Left = 299
+        Top = 107
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Lastst'#228'lle:'
       end
       object cxLabel8: TcxLabel
-        Left = 243
-        Top = 39
+        Left = 299
+        Top = 48
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Leverera till:'
       end
       object lcSlutKund: TcxDBLookupComboBox
-        Left = 309
-        Top = 107
+        Left = 380
+        Top = 132
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         DataBinding.DataField = 'Slutkund'
         DataBinding.DataSource = ds_Props
         Properties.ClearKey = 46
@@ -510,76 +641,120 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ListOptions.AnsiSort = True
         Properties.ListOptions.ShowHeader = False
         TabOrder = 9
-        Width = 145
+        Width = 179
       end
       object cxLabel9: TcxLabel
-        Left = 243
-        Top = 110
+        Left = 299
+        Top = 135
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Kund extern:'
       end
     end
   end
   object Panel5: TPanel
     Left = 0
-    Top = 504
-    Width = 1126
-    Height = 249
+    Top = 620
+    Width = 1386
+    Height = 307
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
-    TabOrder = 8
+    TabOrder = 7
     object Panel6: TPanel
       Left = 1
       Top = 1
-      Width = 1124
-      Height = 57
+      Width = 1384
+      Height = 70
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alTop
       TabOrder = 0
       object cxButton1: TcxButton
-        Left = 8
-        Top = 8
-        Width = 201
-        Height = 41
+        Left = 12
+        Top = 10
+        Width = 248
+        Height = 50
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Action = acSetInfo2Text
         TabOrder = 0
       end
       object mePackageNo: TcxMaskEdit
-        Left = 458
+        Left = 794
         Top = 6
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         ParentFont = False
         Properties.ReadOnly = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clBlack
-        Style.Font.Height = -32
+        Style.Font.Height = -38
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 1
         Visible = False
         OnKeyDown = mePackageNoKeyDown
-        Width = 479
+        Width = 589
       end
       object cxLabel10: TcxLabel
-        Left = 248
+        Left = 535
         Top = 12
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Caption = 'Ange paketnr:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clNavy
-        Style.Font.Height = -32
+        Style.Font.Height = -38
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
         Visible = False
       end
       object cxLabelEntryMetod: TcxLabel
-        Left = 952
-        Top = 16
+        Left = 1172
+        Top = 20
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+      end
+      object cxButton2: TcxButton
+        Left = 266
+        Top = 10
+        Width = 228
+        Height = 50
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Action = acSetPaketStorlek
+        TabOrder = 4
       end
     end
     object grdPkgs: TcxGrid
       Left = 1
-      Top = 58
-      Width = 1124
-      Height = 190
+      Top = 71
+      Width = 1384
+      Height = 235
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alClient
       TabOrder = 1
       object grdPkgsDBTableView1: TcxGridDBTableView
@@ -641,58 +816,58 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_NO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 70
+          Width = 53
         end
         object grdPkgsDBTableView1SUPPLIERCODE: TcxGridDBColumn
           DataBinding.FieldName = 'SUPPLIERCODE'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 61
+          Width = 45
         end
         object grdPkgsDBTableView1PRODUCT_DESCRIPTION: TcxGridDBColumn
           DataBinding.FieldName = 'PRODUCT_DESCRIPTION'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 164
+          Width = 123
         end
         object grdPkgsDBTableView1GS: TcxGridDBColumn
           DataBinding.FieldName = 'GS'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 61
+          Width = 46
         end
         object grdPkgsDBTableView1BC: TcxGridDBColumn
           DataBinding.FieldName = 'BC'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 53
+          Width = 40
         end
         object grdPkgsDBTableView1M3_NET: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NET'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 29
+          Width = 22
         end
         object grdPkgsDBTableView1PCS: TcxGridDBColumn
           DataBinding.FieldName = 'PCS'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 28
+          Width = 21
         end
         object grdPkgsDBTableView1M3_NOM: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NOM'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 25
+          Width = 20
         end
         object grdPkgsDBTableView1MFBM: TcxGridDBColumn
           DataBinding.FieldName = 'MFBM'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 42
+          Width = 31
         end
         object grdPkgsDBTableView1LoadNo: TcxGridDBColumn
           DataBinding.FieldName = 'LoadNo'
@@ -705,7 +880,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'LO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 32
+          Width = 24
         end
         object grdPkgsDBTableView1LOAD_DETAILNO: TcxGridDBColumn
           DataBinding.FieldName = 'LOAD_DETAILNO'
@@ -725,52 +900,60 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_LOG'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 48
+          Width = 36
         end
         object grdPkgsDBTableView1SubSum: TcxGridDBColumn
           DataBinding.FieldName = 'SubSum'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 38
+          Width = 29
         end
         object grdPkgsDBTableView1PRICE: TcxGridDBColumn
           DataBinding.FieldName = 'PRICE'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 37
+          Width = 27
         end
         object grdPkgsDBTableView1NLMM: TcxGridDBColumn
           DataBinding.FieldName = 'NLMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 38
+          Width = 29
         end
         object grdPkgsDBTableView1ALMM: TcxGridDBColumn
           DataBinding.FieldName = 'ALMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 39
+          Width = 29
         end
         object grdPkgsDBTableView1Used: TcxGridDBColumn
           DataBinding.FieldName = 'Used'
           PropertiesClassName = 'TcxCheckBoxProperties'
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          Width = 37
+          Width = 28
         end
         object grdPkgsDBTableView1Info2: TcxGridDBColumn
           Caption = 'Info2 (position)'
           DataBinding.FieldName = 'Info2'
           PropertiesClassName = 'TcxComboBoxProperties'
-          Width = 109
+          Width = 82
         end
         object grdPkgsDBTableView1PackageNo: TcxGridDBColumn
           DataBinding.FieldName = 'PackageNo'
-          Width = 65
+          Width = 48
         end
         object grdPkgsDBTableView1CreatedUser: TcxGridDBColumn
           DataBinding.FieldName = 'CreatedUser'
-          Width = 32
+          Width = 57
         end
         object grdPkgsDBTableView1DateCreated: TcxGridDBColumn
           DataBinding.FieldName = 'DateCreated'
-          Width = 102
+          Width = 151
+        end
+        object grdPkgsDBTableView1Package_Size: TcxGridDBColumn
+          DataBinding.FieldName = 'Package_Size'
+          Width = 51
+        end
+        object grdPkgsDBTableView1PackageSizeName: TcxGridDBColumn
+          DataBinding.FieldName = 'PackageSizeName'
+          Width = 118
         end
       end
       object grdPkgsLevel1: TcxGridLevel
@@ -778,92 +961,10 @@ object frmLoadArrivals: TfrmLoadArrivals
       end
     end
   end
-  object dxImageListBox1: TdxImageListBox
-    Left = 753
-    Top = 107
-    Width = 249
-    Height = 481
-    Alignment = taLeftJustify
-    ImageAlign = dxliLeft
-    ItemHeight = 0
-    ImageList = dmsConnector.imglistActions
-    MultiLines = False
-    VertAlignment = tvaCenter
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -67
-    Font.Name = 'Verdana'
-    Font.Style = []
-    Items.Strings = (
-      'A1'
-      'A2'
-      'A3'
-      'A4'
-      'A5'
-      'A6')
-    ParentFont = False
-    TabOrder = 9
-    Visible = False
-    SaveStrings = (
-      '1,'
-      '2,'
-      '3,'
-      '4,'
-      '5,'
-      '6,'
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      ''
-      '')
-  end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (
@@ -2899,6 +3000,14 @@ object frmLoadArrivals: TfrmLoadArrivals
       Caption = 'Ange paketposition p'#229' markerade paket'
       OnExecute = acSetInfo2TextExecute
     end
+    object acChangePackageSize: TAction
+      Caption = #196'ndra paketstorlek'
+      OnExecute = acChangePackageSizeExecute
+    end
+    object acSetPaketStorlek: TAction
+      Caption = #196'ndra paketstorlek'
+      OnExecute = acSetPaketStorlekExecute
+    end
   end
   object pmPkgs: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -3004,7 +3113,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object cxStyleRepository1: TcxStyleRepository
     Left = 512
     Top = 408
-    PixelsPerInch = 96
+    PixelsPerInch = 120
     object cxStyle_1: TcxStyle
       AssignedValues = [svColor]
       Color = 15138815
@@ -4154,5 +4263,50 @@ object frmLoadArrivals: TfrmLoadArrivals
     OnTimer = Timer3Timer
     Left = 136
     Top = 304
+  end
+  object mtPkgNos: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexDefs = <>
+    SortOptions = []
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    LoadedCompletely = False
+    SavedCompletely = False
+    FilterOptions = []
+    Version = '7.63.00 Standard Edition'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 184
+    Top = 257
+    object mtPkgNosPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+    end
+    object mtPkgNosSupp_Code: TStringField
+      FieldName = 'Supp_Code'
+      Size = 3
+    end
+    object mtPkgNosOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+    end
+    object mtPkgNosLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+    end
+    object mtPkgNosPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+    end
+    object mtPkgNosStatus: TIntegerField
+      FieldName = 'Status'
+    end
+    object mtPkgNosPackage_Size: TIntegerField
+      FieldName = 'Package_Size'
+    end
+    object mtPkgNosCertNo: TIntegerField
+      FieldName = 'CertNo'
+    end
   end
 end

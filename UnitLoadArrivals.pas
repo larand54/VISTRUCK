@@ -300,7 +300,21 @@ type
     grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn;
     cxStyleGreen: TcxStyle;
     cxLabelEntryMetod: TcxLabel;
-    dxImageListBox1: TdxImageListBox;
+    cbpaketpositionering: TcxDBCheckBox;
+    acChangePackageSize: TAction;
+    acSetPaketStorlek: TAction;
+    mtPkgNos: TkbmMemTable;
+    mtPkgNosPackageNo: TIntegerField;
+    mtPkgNosSupp_Code: TStringField;
+    mtPkgNosOwnerNo: TIntegerField;
+    mtPkgNosLIPNo: TIntegerField;
+    mtPkgNosPIPNo: TIntegerField;
+    mtPkgNosStatus: TIntegerField;
+    mtPkgNosPackage_Size: TIntegerField;
+    mtPkgNosCertNo: TIntegerField;
+    cxButton2: TcxButton;
+    grdPkgsDBTableView1Package_Size: TcxGridDBColumn;
+    grdPkgsDBTableView1PackageSizeName: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -369,12 +383,15 @@ type
     procedure grdLoadsDBTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure acChangePackageSizeExecute(Sender: TObject);
+    procedure acSetPaketStorlekExecute(Sender: TObject);
 
 
   private
     { Private declarations }
     LastTime  : TTime ;
     SecondsBetweenKeyPressed  : Double ;
+    procedure SelectedPkgsOfPkgNosTable ;
     function IdentifyPackageSupplier(const PkgNo : Integer;
     var PkgSupplierCode: String3) : TEditAction;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String;const Scanned : Integer) ;
@@ -504,6 +521,8 @@ begin
 
   cds_Props.Edit ;
   cds_PropsNewItemRow.AsInteger := 0 ;
+  if cds_PropsMarketRegionNo.IsNull then
+   cds_PropsMarketRegionNo.AsInteger  := 0 ;
   cds_Props.Post ;
 
  if (cds_Props.State in [dsEdit, dsInsert]) or (cds_Props.ChangeCount > 0) then
@@ -619,9 +638,14 @@ end;
 
      RefreshArrivingPackages ;
 
-     cdsAllPackageNos.Active      := False ;
-     BuildPackageQuery  ;
-     cdsAllPackageNos.Active      := True ;
+
+     if cds_PropsMarketRegionNo.AsInteger = 1 then
+     Begin
+       cdsAllPackageNos.Active      := False ;
+       BuildPackageQuery  ;
+       cdsAllPackageNos.Active      := True ;
+     End;
+
   //  end ;
    finally
     dsrcArrivingLoads.DataSet :=  cdsArrivingLoads ;
@@ -825,40 +849,6 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
       cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
-{
-        cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
-        cdsArrivingLoads.SQL.Add
-          ('Left Outer Join dbo.LogicalInventoryPoint LIP ');
-        cdsArrivingLoads.SQL.Add
-          ('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
-        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
-        cdsArrivingLoads.SQL.Add
-          ('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo');
-        cdsArrivingLoads.SQL.Add
-          (' AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
-
-        if (LONo = -1) and (LoadNo = -1) then
-          if bcConfirmed.ItemIndex = 2 then
-          Begin
-            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
-            cdsArrivingLoads.SQL.Add
-              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
-          End;
-
-        cdsArrivingLoads.SQL.Add
-          ('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo');
-        cdsArrivingLoads.SQL.Add('AND     L.supplierno 		= SP.SUPPLIERno');
-        cdsArrivingLoads.SQL.Add('AND     L.CustomerNo 		= SP.CustomerNo');
-
-}
-
-
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
@@ -919,7 +909,7 @@ Begin
         ('							AND	ST.Reference		= CSD.Reference');
 
       cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
-      // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.VoyageDestination	VD 	ON  	Bk.BookingNo		= vd.BookingNo
+
       cdsArrivingLoads.SQL.Add
         ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
       cdsArrivingLoads.SQL.Add
@@ -950,10 +940,6 @@ Begin
       End
       else
         cdsArrivingLoads.SQL.Add('1=1');
-
-      // Filter out VP's own purchasing loads
-      // if cds_PropsVerkNo.AsInteger = VIDA_PACKAGING_NO then
-      // cdsArrivingLoads.SQL.Add('and OH.OrderType = 1') ;
 
       if LONo > -1 then
         cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
@@ -1014,15 +1000,9 @@ Begin
             cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
             cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
               IntToStr(ThisUser.UserID));
-            // LM June 14  deStartPeriod.Date:= RecodeHour(deStartPeriod.Date,0) ;
-            // LM June 14  deStartPeriod.Date:= RecodeMinute(deStartPeriod.Date,0) ;
-            // LM June 14  deStartPeriod.Date:= RecodeSecond(deStartPeriod.Date,0) ;
             cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
               QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
               DateTimeToSQLTimeStamp(deStartPeriod.Date))));
-            // LM June 14  deEndPeriod.Date:= RecodeHour(deEndPeriod.Date,23) ;
-            // LM June 14  deEndPeriod.Date:= RecodeMinute(deEndPeriod.Date,59) ;
-            // LM June 14  deEndPeriod.Date:= RecodeSecond(deEndPeriod.Date,59) ;
             cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
               QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
               DateTimeToSQLTimeStamp(deEndPeriod.Date))));
@@ -1111,44 +1091,6 @@ Begin
    cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
    cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
-{
-        cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
-        cdsArrivingLoads.SQL.Add
-          ('Left Outer Join dbo.LogicalInventoryPoint LIP ');
-        cdsArrivingLoads.SQL.Add
-          ('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
-        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
-        cdsArrivingLoads.SQL.Add
-          ('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
-        cdsArrivingLoads.SQL.Add
-          ('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo');
-        cdsArrivingLoads.SQL.Add
-          (' AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
-
-        if (LONo = -1) and (LoadNo = -1) then
-        Begin
-          if bcConfirmed.ItemIndex = 2 then
-          Begin
-            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
-            cdsArrivingLoads.SQL.Add
-              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
-          End;
-        End;
-
-        cdsArrivingLoads.SQL.Add
-          ('INNER JOIN dbo.Loads L 				ON	LSP.LoadNo 		= L.LoadNo');
-        cdsArrivingLoads.SQL.Add
-          ('				AND     L.supplierno 		= SP.SUPPLIERno');
-        cdsArrivingLoads.SQL.Add
-          ('				AND     L.CustomerNo 		= SP.CustomerNo');
-
-}
-
-
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
@@ -1199,7 +1141,7 @@ Begin
         ('							ON	ST_ADR.AddressNo	= OH.DestinationNo');
 
       cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
-      // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.VoyageDestination	VD 	ON  	Bk.BookingNo		= vd.BookingNo
+
       cdsArrivingLoads.SQL.Add
         ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
       cdsArrivingLoads.SQL.Add
@@ -1289,15 +1231,9 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
             IntToStr(ThisUser.UserID));
-          // LM June 14  deStartPeriod.Date:= RecodeHour(deStartPeriod.Date,0) ;
-          // LM June 14  deStartPeriod.Date:= RecodeMinute(deStartPeriod.Date,0) ;
-          // LM June 14  deStartPeriod.Date:= RecodeSecond(deStartPeriod.Date,0) ;
           cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
             QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
             DateTimeToSQLTimeStamp(deStartPeriod.Date))));
-          // LM June 14  deEndPeriod.Date:= RecodeHour(deEndPeriod.Date,23) ;
-          // LM June 14  deEndPeriod.Date:= RecodeMinute(deEndPeriod.Date,59) ;
-          // LM June 14  deEndPeriod.Date:= RecodeSecond(deEndPeriod.Date,59) ;
           cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
             QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
             DateTimeToSQLTimeStamp(deEndPeriod.Date))));
@@ -1394,13 +1330,6 @@ Begin
    cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
    cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
-    { cdsArrivingLoads.SQL.Add('IsNull(cl.Confirmed_LoadNo,0) AS AR_LoadNo') ;
-      cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ') ;
-      cdsArrivingLoads.SQL.Add('isNull(SP.LipNo,-1) AS LipNo,') ;
-      cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
-
-      cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/')+')+' + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
-      cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk') ; }
 
     cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
 
@@ -1433,9 +1362,6 @@ Begin
     cdsArrivingLoads.SQL.Add
       ('AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
 
-
-    // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Confirmed_Load_EXT cl on ') ;
-    // cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
 
     cdsArrivingLoads.SQL.Add
       ('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo');
@@ -2176,6 +2102,79 @@ begin
       end;
 end;
 
+procedure TfrmLoadArrivals.SelectedPkgsOfPkgNosTable ;
+ Var i, RecIDX  : Integer ;
+ RecID          : Variant ;
+ ADATASET       : TDATASET;
+ Save_Cursor    : TCursor;
+begin
+ Save_Cursor    := Screen.Cursor;
+ Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+ grdPkgsDBTableView1.BeginUpdate ;
+ grdPkgsDBTableView1.DataController.BeginLocate ;
+ Try
+   ADataSet := grdPkgsDBTableView1.DataController.DataSource.DataSet ;
+   For I    := 0 to grdPkgsDBTableView1.Controller.SelectedRecordCount - 1 do
+   Begin
+    RecIDx  := grdPkgsDBTableView1.Controller.SelectedRecords[i].RecordIndex ;
+    RecID   := grdPkgsDBTableView1.DataController.GetRecordId(RecIdx) ;
+    ADataSet.Locate('LOAD_DETAILNO;ProductLengthNo', RecID,[]) ;
+
+    mtPkgNos.Insert ;
+    mtPkgNosPackageNo.AsInteger := ADataSet.FieldByName('PACKAGE_NO').AsInteger ;
+    mtPkgNosSupp_Code.AsString  := ADataSet.FieldByName('SUPPLIERCODE').AsString ;
+{
+      mtPkgNosOwnerNo.AsInteger   := cds_PropsOwnerNo.AsInteger ;
+      mtPkgNosPIPNo.AsInteger     := ADataSet.FieldByName('PIPNo').AsInteger ;
+      mtPkgNosLIPNo.AsInteger     := ADataSet.FieldByName('LIPNo').AsInteger ;
+      mtPkgNosStatus.AsInteger    := 1 ;// ADataSet.FieldByName('Status').AsInteger ;
+}
+    mtPkgNos.Post ;
+   End ;
+
+ Finally
+  grdPkgsDBTableView1.DataController.EndLocate ;
+  grdPkgsDBTableView1.EndUpdate ;
+  Screen.Cursor := Save_Cursor;  { Always restore to normal }
+ End ;
+end;
+
+procedure TfrmLoadArrivals.acChangePackageSizeExecute(Sender: TObject);
+Var Package_Size      : Integer ;
+    PackageSizeName   : String ;
+begin
+ With dmArrivingLoads do
+ Begin
+  Package_Size  :=  GetNewPackage_Size(PackageSizeName) ;
+  if Package_Size > -1 then
+  Begin
+    mtPkgNos.Active := True ;
+    cdsArrivingPackages.DisableControls ;
+    Try
+    SelectedPkgsOfPkgNosTable ;
+    mtPkgNos.First ;
+    while not mtPkgNos.Eof do
+    Begin
+     if cdsArrivingPackages.Locate('PACKAGE_NO;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+     Begin
+{      sp_invpivPkgDtl.Edit ;
+      sp_invpivPkgDtl.FieldByName('Package_Size').AsInteger     := Package_Size ;
+      sp_invpivPkgDtl.FieldByName('PackageSizeName').AsString   := PackageSizeName ;
+      sp_invpivPkgDtl.Post ;   }
+
+      CngArtNoByPkgSize(mtPkgNosPackageNo.AsInteger, Package_Size, mtPkgNosSupp_Code.AsString) ;
+     End;
+     mtPkgNos.Next ;
+    End;
+     cdsArrivingPackages.Refresh ;
+    Finally
+     cdsArrivingPackages.EnableControls ;
+     mtPkgNos.Active := False ;
+    End;
+  End;
+ End;
+end;
+
 procedure TfrmLoadArrivals.acChangePkgLayoutExecute(Sender: TObject);
 begin
   if grdPkgs.FocusedView is TcxCustomGridTableView then
@@ -2209,6 +2208,42 @@ end;
 procedure TfrmLoadArrivals.acSetLoadToConfirmedExecute(Sender: TObject);
 begin
  SetConfirmed_Load_Table(Sender) ;
+end;
+
+procedure TfrmLoadArrivals.acSetPaketStorlekExecute(Sender: TObject);
+Var Package_Size      : Integer ;
+    PackageSizeName   : String ;
+begin
+ With dmArrivingLoads do
+ Begin
+  Package_Size  :=  GetNewPackage_Size(PackageSizeName) ;
+  if Package_Size > -1 then
+  Begin
+    mtPkgNos.Active := True ;
+    cdsArrivingPackages.DisableControls ;
+    Try
+    SelectedPkgsOfPkgNosTable ;
+    mtPkgNos.First ;
+    while not mtPkgNos.Eof do
+    Begin
+     if cdsArrivingPackages.Locate('PACKAGE_NO;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+     Begin
+{      sp_invpivPkgDtl.Edit ;
+      sp_invpivPkgDtl.FieldByName('Package_Size').AsInteger     := Package_Size ;
+      sp_invpivPkgDtl.FieldByName('PackageSizeName').AsString   := PackageSizeName ;
+      sp_invpivPkgDtl.Post ;   }
+
+      CngArtNoByPkgSize(mtPkgNosPackageNo.AsInteger, Package_Size, mtPkgNosSupp_Code.AsString) ;
+     End;
+     mtPkgNos.Next ;
+    End;
+     cdsArrivingPackages.Refresh ;
+    Finally
+     cdsArrivingPackages.EnableControls ;
+     mtPkgNos.Active := False ;
+    End;
+  End;
+ End;
 end;
 
 procedure TfrmLoadArrivals.acConfirmedLoadExecute(Sender: TObject);
@@ -4597,34 +4632,37 @@ procedure TfrmLoadArrivals.mePackageNoKeyDown(Sender: TObject; var Key: Word;
 Var NuTid           : TTime ;
     ManualKeyBoard  : Integer ;
 begin
- NuTid  := Time ;
- if Length(mePackageNo.Text) < 2 then
-  LastTime  := NuTid ;
-
-
-
- if Length(mePackageNo.Text) > 1 then
-  SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
-
- if SecondsBetweenKeyPressed > 0.01 then
+ if cds_PropsMarketRegionNo.AsInteger = 1 then
  Begin
-  ManualKeyBoard            := 1 ;
-  cxLabelEntryMetod.Caption := 'Manual' ;
- End
-   else
-    Begin
-      ManualKeyBoard            := 0 ;
-      cxLabelEntryMetod.Caption := 'Scanned' ;
-    End;
+   NuTid  := Time ;
+   if Length(mePackageNo.Text) < 2 then
+    LastTime  := NuTid ;
 
- if Key <> VK_RETURN then Exit;
 
- if Length(mePackageNo.Text) > 0 then
-  GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
 
- LastTime         := NuTid ;
- Timer3.Enabled   := True ;
- mePackageNo.Text := '' ;
+   if Length(mePackageNo.Text) > 1 then
+    SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
+
+   if SecondsBetweenKeyPressed > 0.01 then
+   Begin
+    ManualKeyBoard            := 1 ;
+    cxLabelEntryMetod.Caption := 'Manual' ;
+   End
+     else
+      Begin
+        ManualKeyBoard            := 0 ;
+        cxLabelEntryMetod.Caption := 'Scanned' ;
+      End;
+
+   if Key <> VK_RETURN then Exit;
+
+   if Length(mePackageNo.Text) > 0 then
+    GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
+
+   LastTime         := NuTid ;
+   Timer3.Enabled   := True ;
+   mePackageNo.Text := '' ;
+ End;
 end;
 
 function TfrmLoadArrivals.IdentifyPackageSupplier(

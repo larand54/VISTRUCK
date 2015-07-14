@@ -386,7 +386,6 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
-    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -1353,6 +1352,8 @@ object dmcOrder: TdmcOrder
     MasterSource = dsrcSawmillLoadOrders
     MasterFields = 'LONumber'
     Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
     SQL.Strings = (
       'SELECT'
       '         Cr.CarrierName            ,           -- Char 50'
@@ -1394,6 +1395,8 @@ object dmcOrder: TdmcOrder
         Name = 'LONUMBER'
         DataType = ftInteger
         ParamType = ptInput
+        Size = 4
+        Value = Null
       end>
     object cdsBookingBookingNo: TIntegerField
       FieldName = 'BookingNo'
