@@ -20,7 +20,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridDBBandedTableView,
   cxGridCustomView, cxGrid, cxDBLabel, cxMaskEdit, cxLookupEdit,
   cxDBLookupEdit, DateUtils,
-  CrystalActiveXReportViewerLib11_TLB,
+  CrystalActiveXReportViewerLib11_5_TLB,
   Provider, SqlExpr, cxCheckComboBox, cxDBCheckComboBox, dxPSPDFExportCore,
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxEditorProducers, dxPScxExtEditorProducers,
