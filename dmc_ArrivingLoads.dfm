@@ -1199,6 +1199,7 @@ object dmArrivingLoads: TdmArrivingLoads
       Origin = 'PRICE'
       ProviderFlags = []
       ReadOnly = True
+      DisplayFormat = '#######.00'
     end
     object cdsArrivingPackagesSubSum: TFloatField
       DisplayLabel = 'V'#228'rde'

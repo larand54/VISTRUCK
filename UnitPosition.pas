@@ -1074,6 +1074,7 @@ begin
    Finally
       Mem_PackProdList.filtered := False;
       CheckLastPkg;
+
       frmLoadArrivals.mePackageNo.SetFocus ;
    End;
 
