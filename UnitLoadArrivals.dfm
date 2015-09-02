@@ -13,12 +13,15 @@ object frmLoadArrivals: TfrmLoadArrivals
   Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
+  KeyPreview = True
+  OldCreateOrder = True
   PopupMenu = PopupMenu1
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
@@ -39,16 +42,18 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object grdLoads: TcxGrid
     Left = 0
-    Top = 190
+    Top = 145
     Width = 1386
-    Height = 422
+    Height = 467
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alClient
     PopupMenu = pmLoads
-    TabOrder = 2
+    TabOrder = 1
+    ExplicitTop = 161
+    ExplicitHeight = 451
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = dmArrivingLoads.dsrcArrivingLoads
@@ -273,42 +278,30 @@ object frmLoadArrivals: TfrmLoadArrivals
       GridView = grdLoadsDBTableView1
     end
   end
-  object lbLO_To_Invoice: TListBox
-    Left = 1004
-    Top = 223
-    Width = 208
-    Height = 237
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Sorted = True
-    TabOrder = 0
-    Visible = False
-  end
   object Panel1: TPanel
     Left = 0
     Top = 0
     Width = 1386
-    Height = 190
+    Height = 145
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 3
+    TabOrder = 2
     object Panel2: TPanel
       Left = 572
       Top = 0
       Width = 736
-      Height = 190
+      Height = 145
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
+      ExplicitHeight = 161
       object dxBarDockControl1: TdxBarDockControl
         Left = 1
         Top = 1
@@ -321,34 +314,254 @@ object frmLoadArrivals: TfrmLoadArrivals
         Align = dalTop
         BarManager = dxBarManager1
       end
-      object cbpaketpositionering: TcxDBCheckBox
-        Left = 21
-        Top = 78
+      object Panel7: TPanel
+        Left = 1
+        Top = 49
+        Width = 734
+        Height = 95
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        Caption = 'Ankomstregistrera med paketpositionering'
-        DataBinding.DataField = 'MarketRegionNo'
-        DataBinding.DataSource = ds_Props
-        Properties.ImmediatePost = True
-        Properties.ValueChecked = 1
-        Properties.ValueUnchecked = 0
+        Align = alClient
         TabOrder = 1
-        Width = 295
+        ExplicitHeight = 111
+        object cxLabel1: TcxLabel
+          Left = 4
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Mottagare:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+        end
+        object lcVerk: TcxDBLookupComboBox
+          Left = 124
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          DataBinding.DataField = 'Verk'
+          DataBinding.DataSource = ds_Props
+          Properties.DropDownWidth = 350
+          Properties.ImmediatePost = True
+          Properties.ListColumns = <>
+          Properties.ListOptions.AnsiSort = True
+          Properties.ListOptions.ShowHeader = False
+          Style.TextStyle = [fsBold]
+          TabOrder = 1
+          Width = 133
+        end
+        object cxLabel8: TcxLabel
+          Left = 4
+          Top = 48
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Leverera till:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+        end
+        object lcDestination: TcxDBLookupComboBox
+          Left = 123
+          Top = 45
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          DataBinding.DataField = 'Destination'
+          DataBinding.DataSource = ds_Props
+          Properties.ClearKey = 46
+          Properties.DropDownWidth = 200
+          Properties.ImmediatePost = True
+          Properties.KeyFieldNames = 'CityNo'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Ort'
+            end>
+          Properties.ListOptions.ShowHeader = False
+          Style.TextStyle = [fsBold]
+          TabOrder = 3
+          Width = 133
+        end
+        object cxLabel6: TcxLabel
+          Left = 265
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Leverant'#246'r:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+        end
+        object lcInternKund: TcxDBLookupComboBox
+          Left = 367
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          DataBinding.DataField = 'Kund'
+          DataBinding.DataSource = ds_Props
+          Properties.ClearKey = 46
+          Properties.DropDownWidth = 350
+          Properties.ImmediatePost = True
+          Properties.ListColumns = <>
+          Properties.ListOptions.AnsiSort = True
+          Properties.ListOptions.ShowHeader = False
+          Style.TextStyle = [fsBold]
+          TabOrder = 5
+          Width = 152
+        end
+        object cxLabel7: TcxLabel
+          Left = 268
+          Top = 46
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Lastst'#228'lle:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+        end
+        object lcLaststlle: TcxDBLookupComboBox
+          Left = 369
+          Top = 43
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          DataBinding.DataField = 'Lastst'#228'lle'
+          DataBinding.DataSource = ds_Props
+          Properties.ClearKey = 46
+          Properties.DropDownWidth = 200
+          Properties.ImmediatePost = True
+          Properties.KeyFieldNames = 'CityNo'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Ort'
+            end>
+          Properties.ListOptions.ShowHeader = False
+          Style.TextStyle = [fsBold]
+          TabOrder = 7
+          Width = 153
+        end
+        object lcSlutKund: TcxDBLookupComboBox
+          Left = 634
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          DataBinding.DataField = 'Slutkund'
+          DataBinding.DataSource = ds_Props
+          ParentFont = False
+          Properties.ClearKey = 46
+          Properties.DropDownWidth = 350
+          Properties.ImmediatePost = True
+          Properties.ListColumns = <>
+          Properties.ListOptions.AnsiSort = True
+          Properties.ListOptions.ShowHeader = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+          TabOrder = 8
+          Width = 146
+        end
+        object cxLabel9: TcxLabel
+          Left = 527
+          Top = 7
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Kund extern:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+        end
+        object cbShowOnlyVWLoads: TcxDBCheckBox
+          Left = 539
+          Top = 43
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabStop = False
+          Caption = 'Visa endast VW leveranser'
+          DataBinding.DataField = 'NewItemRow'
+          DataBinding.DataSource = ds_Props
+          ParentFont = False
+          Properties.ImmediatePost = True
+          Properties.ValueChecked = 1
+          Properties.ValueUnchecked = 0
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = 23
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.TextStyle = [fsBold]
+          Style.IsFontAssigned = True
+          TabOrder = 10
+          Width = 273
+        end
       end
     end
     object Panel3: TPanel
       Left = 1308
       Top = 0
       Width = 78
-      Height = 190
+      Height = 145
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alRight
       TabOrder = 1
+      ExplicitHeight = 161
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
@@ -361,25 +574,49 @@ object frmLoadArrivals: TfrmLoadArrivals
         Align = dalTop
         BarManager = dxBarManager1
       end
+      object btChangeStyle: TcxButton
+        Left = 6
+        Top = 65
+        Width = 65
+        Height = 53
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Caption = 'Styles'
+        TabOrder = 1
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        WordWrap = True
+        OnClick = btChangeStyleClick
+      end
     end
     object Panel4: TPanel
       Left = 0
       Top = 0
       Width = 572
-      Height = 190
+      Height = 145
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alLeft
       TabOrder = 2
+      ExplicitHeight = 161
       object bcConfirmed: TcxComboBox
         Left = 96
-        Top = 73
+        Top = 89
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
+        ParentFont = False
         Properties.DropDownListStyle = lsFixedList
         Properties.ImmediatePost = True
         Properties.Items.Strings = (
@@ -387,27 +624,33 @@ object frmLoadArrivals: TfrmLoadArrivals
           'Ankomstregistrerade'
           'Mina ankomstregistreringar')
         Properties.OnChange = bcConfirmedPropertiesChange
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
         TabOrder = 2
         Text = 'Att ankomstregistrera'
         Width = 181
       end
-      object cxLabel1: TcxLabel
-        Left = 299
-        Top = 18
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Mottagare:'
-      end
       object cxLabel2: TcxLabel
         Left = 14
-        Top = 79
+        Top = 98
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Caption = 'Visa:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
       end
       object cxLabel3: TcxLabel
         Left = 14
@@ -417,16 +660,31 @@ object frmLoadArrivals: TfrmLoadArrivals
         Margins.Right = 4
         Margins.Bottom = 4
         Caption = 'LO:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
       end
       object Edit1: TEdit
         Left = 96
         Top = 14
         Width = 73
-        Height = 24
+        Height = 28
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = 23
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
         OnKeyDown = Edit1KeyDown
       end
@@ -434,11 +692,18 @@ object frmLoadArrivals: TfrmLoadArrivals
         Left = 96
         Top = 43
         Width = 73
-        Height = 24
+        Height = 28
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = 23
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 1
         OnKeyDown = Edit2KeyDown
       end
@@ -450,207 +715,122 @@ object frmLoadArrivals: TfrmLoadArrivals
         Margins.Right = 4
         Margins.Bottom = 4
         Caption = 'Lastnr:'
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
       end
       object cxLabel5: TcxLabel
-        Left = 14
-        Top = 108
+        Left = 299
+        Top = 82
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Caption = 'Period:'
-      end
-      object cbShowOnlyVWLoads: TcxDBCheckBox
-        Left = 375
-        Top = 161
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Visa endast VW leveranser'
-        DataBinding.DataField = 'NewItemRow'
-        DataBinding.DataSource = ds_Props
-        Properties.ImmediatePost = True
-        Properties.ValueChecked = 1
-        Properties.ValueUnchecked = 0
-        TabOrder = 10
-        Width = 178
-      end
-      object lcVerk: TcxDBLookupComboBox
-        Left = 380
-        Top = 14
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        DataBinding.DataField = 'Verk'
-        DataBinding.DataSource = ds_Props
-        Properties.DropDownWidth = 350
-        Properties.ImmediatePost = True
-        Properties.ListColumns = <>
-        Properties.ListOptions.AnsiSort = True
-        Properties.ListOptions.ShowHeader = False
-        TabOrder = 5
-        Width = 179
+        ParentFont = False
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
       end
       object deStartPeriod: TcxDBDateEdit
-        Left = 96
-        Top = 103
+        Left = 377
+        Top = 82
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
         DataBinding.DataField = 'StartPeriod'
         DataBinding.DataSource = ds_Props
         Enabled = False
+        ParentFont = False
         Properties.ImmediatePost = True
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
         TabOrder = 3
-        Width = 181
+        Width = 188
       end
       object deEndPeriod: TcxDBDateEdit
-        Left = 96
-        Top = 132
+        Left = 377
+        Top = 111
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
         DataBinding.DataField = 'EndPeriod'
         DataBinding.DataSource = ds_Props
         Enabled = False
+        ParentFont = False
         Properties.ImmediatePost = True
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
         TabOrder = 4
-        Width = 181
+        Width = 188
       end
       object cbAllaVerk: TcxDBCheckBox
-        Left = 188
-        Top = 14
+        Left = 198
+        Top = 15
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
         Caption = 'Alla verk'
         DataBinding.DataField = 'GradeStampNo'
         DataBinding.DataSource = ds_Props
+        ParentFont = False
         Properties.ImmediatePost = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
-        TabOrder = 11
+        Style.Font.Charset = DEFAULT_CHARSET
+        Style.Font.Color = clWindowText
+        Style.Font.Height = 23
+        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Style = []
+        Style.TextStyle = [fsBold]
+        Style.IsFontAssigned = True
+        TabOrder = 5
         Visible = False
-        Width = 82
+        Width = 111
       end
-      object lcInternKund: TcxDBLookupComboBox
-        Left = 380
-        Top = 74
+      object btPrepareScan: TcxButton
+        Left = 377
+        Top = 1
+        Width = 188
+        Height = 74
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        DataBinding.DataField = 'Kund'
-        DataBinding.DataSource = ds_Props
-        Properties.ClearKey = 46
-        Properties.DropDownWidth = 350
-        Properties.ImmediatePost = True
-        Properties.ListColumns = <>
-        Properties.ListOptions.AnsiSort = True
-        Properties.ListOptions.ShowHeader = False
-        TabOrder = 7
-        Width = 179
-      end
-      object cxLabel6: TcxLabel
-        Left = 299
-        Top = 78
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Leverant'#246'r:'
-      end
-      object lcLaststlle: TcxDBLookupComboBox
-        Left = 380
-        Top = 102
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        DataBinding.DataField = 'Lastst'#228'lle'
-        DataBinding.DataSource = ds_Props
-        Properties.ClearKey = 46
-        Properties.DropDownWidth = 200
-        Properties.ImmediatePost = True
-        Properties.KeyFieldNames = 'CityNo'
-        Properties.ListColumns = <
-          item
-            FieldName = 'Ort'
-          end>
-        Properties.ListOptions.ShowHeader = False
-        TabOrder = 8
-        Width = 179
-      end
-      object lcDestination: TcxDBLookupComboBox
-        Left = 380
-        Top = 43
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        DataBinding.DataField = 'Destination'
-        DataBinding.DataSource = ds_Props
-        Properties.ClearKey = 46
-        Properties.DropDownWidth = 200
-        Properties.ImmediatePost = True
-        Properties.KeyFieldNames = 'CityNo'
-        Properties.ListColumns = <
-          item
-            FieldName = 'Ort'
-          end>
-        Properties.ListOptions.ShowHeader = False
-        TabOrder = 6
-        Width = 179
-      end
-      object cxLabel7: TcxLabel
-        Left = 299
-        Top = 107
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Lastst'#228'lle:'
-      end
-      object cxLabel8: TcxLabel
-        Left = 299
-        Top = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Leverera till:'
-      end
-      object lcSlutKund: TcxDBLookupComboBox
-        Left = 380
-        Top = 132
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        DataBinding.DataField = 'Slutkund'
-        DataBinding.DataSource = ds_Props
-        Properties.ClearKey = 46
-        Properties.DropDownWidth = 350
-        Properties.ImmediatePost = True
-        Properties.ListColumns = <>
-        Properties.ListOptions.AnsiSort = True
-        Properties.ListOptions.ShowHeader = False
-        TabOrder = 9
-        Width = 179
-      end
-      object cxLabel9: TcxLabel
-        Left = 299
-        Top = 135
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Kund extern:'
+        Action = acPrepareScan
+        TabOrder = 10
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = 25
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
     end
   end
@@ -664,12 +844,12 @@ object frmLoadArrivals: TfrmLoadArrivals
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alBottom
-    TabOrder = 7
+    TabOrder = 3
     object Panel6: TPanel
       Left = 1
       Top = 1
       Width = 1384
-      Height = 70
+      Height = 74
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -677,9 +857,9 @@ object frmLoadArrivals: TfrmLoadArrivals
       Align = alTop
       TabOrder = 0
       object cxButton1: TcxButton
-        Left = 12
-        Top = 10
-        Width = 248
+        Left = 13
+        Top = 7
+        Width = 127
         Height = 50
         Margins.Left = 4
         Margins.Top = 4
@@ -687,30 +867,39 @@ object frmLoadArrivals: TfrmLoadArrivals
         Margins.Bottom = 4
         Action = acSetInfo2Text
         TabOrder = 0
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        WordWrap = True
       end
       object mePackageNo: TcxMaskEdit
-        Left = 794
+        Left = 583
         Top = 6
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
+        TabStop = False
         ParentFont = False
         Properties.ReadOnly = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clBlack
-        Style.Font.Height = -38
-        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Height = -37
+        Style.Font.Name = 'Verdana'
         Style.Font.Style = []
+        Style.StyleController = cxEditStyleController1
         Style.IsFontAssigned = True
         TabOrder = 1
-        Visible = False
         OnKeyDown = mePackageNoKeyDown
-        Width = 589
+        Width = 570
       end
       object cxLabel10: TcxLabel
-        Left = 535
-        Top = 12
+        Left = 305
+        Top = 15
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -719,11 +908,10 @@ object frmLoadArrivals: TfrmLoadArrivals
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clNavy
-        Style.Font.Height = -38
-        Style.Font.Name = 'MS Sans Serif'
+        Style.Font.Height = -37
+        Style.Font.Name = 'Verdana'
         Style.Font.Style = []
         Style.IsFontAssigned = True
-        Visible = False
       end
       object cxLabelEntryMetod: TcxLabel
         Left = 1172
@@ -734,31 +922,39 @@ object frmLoadArrivals: TfrmLoadArrivals
         Margins.Bottom = 4
       end
       object cxButton2: TcxButton
-        Left = 266
-        Top = 10
-        Width = 228
+        Left = 145
+        Top = 7
+        Width = 144
         Height = 50
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        Action = acSetPaketStorlek
+        Action = acSetPktStorlek
         TabOrder = 4
+        TabStop = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        WordWrap = True
       end
     end
     object grdPkgs: TcxGrid
       Left = 1
-      Top = 71
+      Top = 75
       Width = 1384
-      Height = 235
+      Height = 231
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alClient
+      PopupMenu = pmPkgs
       TabOrder = 1
       object grdPkgsDBTableView1: TcxGridDBTableView
-        PopupMenu = pmPkgs
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmArrivingLoads.dsrcArrivingPackages
         DataController.KeyFieldNames = 'LOAD_DETAILNO;ProductLengthNo'
@@ -816,45 +1012,45 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_NO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 53
+          Width = 49
         end
         object grdPkgsDBTableView1SUPPLIERCODE: TcxGridDBColumn
           DataBinding.FieldName = 'SUPPLIERCODE'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 45
+          Width = 43
         end
         object grdPkgsDBTableView1PRODUCT_DESCRIPTION: TcxGridDBColumn
           DataBinding.FieldName = 'PRODUCT_DESCRIPTION'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 123
+          Width = 113
         end
         object grdPkgsDBTableView1GS: TcxGridDBColumn
           DataBinding.FieldName = 'GS'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 46
+          Width = 47
         end
         object grdPkgsDBTableView1BC: TcxGridDBColumn
           DataBinding.FieldName = 'BC'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 40
+          Width = 41
         end
         object grdPkgsDBTableView1M3_NET: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NET'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 22
+          Width = 20
         end
         object grdPkgsDBTableView1PCS: TcxGridDBColumn
           DataBinding.FieldName = 'PCS'
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 21
+          Width = 20
         end
         object grdPkgsDBTableView1M3_NOM: TcxGridDBColumn
           DataBinding.FieldName = 'M3_NOM'
@@ -867,7 +1063,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           PropertiesClassName = 'TcxCalcEditProperties'
           Properties.ReadOnly = True
           Options.Filtering = False
-          Width = 31
+          Width = 34
         end
         object grdPkgsDBTableView1LoadNo: TcxGridDBColumn
           DataBinding.FieldName = 'LoadNo'
@@ -880,7 +1076,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'LO'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 24
+          Width = 23
         end
         object grdPkgsDBTableView1LOAD_DETAILNO: TcxGridDBColumn
           DataBinding.FieldName = 'LOAD_DETAILNO'
@@ -900,66 +1096,89 @@ object frmLoadArrivals: TfrmLoadArrivals
           DataBinding.FieldName = 'PACKAGE_LOG'
           PropertiesClassName = 'TcxLabelProperties'
           Options.Filtering = False
-          Width = 36
+          Width = 32
         end
         object grdPkgsDBTableView1SubSum: TcxGridDBColumn
           DataBinding.FieldName = 'SubSum'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 29
+          Width = 32
         end
         object grdPkgsDBTableView1PRICE: TcxGridDBColumn
           DataBinding.FieldName = 'PRICE'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 27
+          Width = 25
         end
         object grdPkgsDBTableView1NLMM: TcxGridDBColumn
           DataBinding.FieldName = 'NLMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 29
+          Width = 27
         end
         object grdPkgsDBTableView1ALMM: TcxGridDBColumn
           DataBinding.FieldName = 'ALMM'
           PropertiesClassName = 'TcxLabelProperties'
-          Width = 29
+          Width = 26
         end
         object grdPkgsDBTableView1Used: TcxGridDBColumn
           DataBinding.FieldName = 'Used'
           PropertiesClassName = 'TcxCheckBoxProperties'
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          Width = 28
+          Width = 54
         end
         object grdPkgsDBTableView1Info2: TcxGridDBColumn
           Caption = 'Info2 (position)'
           DataBinding.FieldName = 'Info2'
           PropertiesClassName = 'TcxComboBoxProperties'
-          Width = 82
+          Width = 93
         end
         object grdPkgsDBTableView1PackageNo: TcxGridDBColumn
           DataBinding.FieldName = 'PackageNo'
-          Width = 48
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 175
         end
         object grdPkgsDBTableView1CreatedUser: TcxGridDBColumn
           DataBinding.FieldName = 'CreatedUser'
-          Width = 57
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 160
         end
         object grdPkgsDBTableView1DateCreated: TcxGridDBColumn
           DataBinding.FieldName = 'DateCreated'
-          Width = 151
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 109
+        end
+        object grdPkgsDBTableView1Position: TcxGridDBColumn
+          DataBinding.FieldName = 'Position'
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 68
         end
         object grdPkgsDBTableView1Package_Size: TcxGridDBColumn
           DataBinding.FieldName = 'Package_Size'
-          Width = 51
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 83
         end
         object grdPkgsDBTableView1PackageSizeName: TcxGridDBColumn
           DataBinding.FieldName = 'PackageSizeName'
-          Width = 118
+          PropertiesClassName = 'TcxLabelProperties'
+          Width = 76
         end
       end
       object grdPkgsLevel1: TcxGridLevel
         GridView = grdPkgsDBTableView1
       end
     end
+  end
+  object lbLO_To_Invoice: TListBox
+    Left = 1178
+    Top = 203
+    Width = 208
+    Height = 238
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Sorted = True
+    TabOrder = 5
+    Visible = False
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -2693,10 +2912,6 @@ object frmLoadArrivals: TfrmLoadArrivals
       7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object DataSource1: TDataSource
-    Left = 512
-    Top = 336
-  end
   object pmPrint: TdxBarPopupMenu
     BarManager = dxBarManager1
     ItemLinks = <
@@ -2997,16 +3212,12 @@ object frmLoadArrivals: TfrmLoadArrivals
       ImageIndex = 7
     end
     object acSetInfo2Text: TAction
-      Caption = 'Ange paketposition p'#229' markerade paket'
+      Caption = #196'ndra position p'#229' markerade paket'
       OnExecute = acSetInfo2TextExecute
     end
-    object acChangePackageSize: TAction
-      Caption = #196'ndra paketstorlek'
-      OnExecute = acChangePackageSizeExecute
-    end
-    object acSetPaketStorlek: TAction
-      Caption = #196'ndra paketstorlek'
-      OnExecute = acSetPaketStorlekExecute
+    object acSetPktStorlek: TAction
+      Caption = #196'ndra paketstorlek p'#229' markerade paket'
+      OnExecute = acSetPktStorlekExecute
     end
   end
   object pmPkgs: TdxBarPopupMenu
@@ -3142,7 +3353,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold, fsStrikeOut]
+      Font.Style = [fsBold]
     end
     object cxStyleGreen: TcxStyle
       AssignedValues = [svColor]
@@ -3242,6 +3453,8 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
+    AfterPost = cds_PropsAfterPost
+    AfterScroll = cds_PropsAfterScroll
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -3575,6 +3788,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Top = 240
   end
   object cxGridPopupMenu2: TcxGridPopupMenu
+    Grid = grdPkgs
     PopupMenus = <>
     Left = 688
     Top = 352
@@ -3796,23 +4010,12 @@ object frmLoadArrivals: TfrmLoadArrivals
       70002E006F00720074000100010001000D000A006700720064004C006F006100
       64007300440042005400610062006C0065005600690065007700310045004700
       45004E0001004500470045004E000100010001000D000A00630078004C006100
-      620065006C00310001004D006F0074007400610067006100720065003A000100
-      010001000D000A00630078004C006100620065006C0032000100560069007300
-      61003A000100010001000D000A00630078004C006100620065006C0033000100
-      4C004F003A000100010001000D000A00630078004C006100620065006C003400
-      01004C006100730074006E0072003A000100010001000D000A00630078004C00
-      6100620065006C003500010050006500720069006F0064003A00010001000100
-      0D000A0063006200530068006F0077004F006E006C007900560057004C006F00
-      61006400730001005600690073006100200065006E0064006100730074002000
-      5600570020006C00650076006500720061006E00730065007200010001000100
-      0D000A006300620041006C006C0061005600650072006B00010041006C006C00
-      610020007600650072006B000100010001000D000A00630078004C0061006200
-      65006C00360001004C00650076006500720061006E007400F60072003A000100
-      010001000D000A00630078004C006100620065006C00370001004C0061007300
-      740073007400E4006C006C0065003A000100010001000D000A00630078004C00
-      6100620065006C00380001004C00650076006500720065007200610020007400
-      69006C006C003A000100010001000D000A00630078004C006100620065006C00
-      390001004B0075006E0064002000650078007400650072006E003A0001000100
+      620065006C003200010056006900730061003A000100010001000D000A006300
+      78004C006100620065006C00330001004C004F003A000100010001000D000A00
+      630078004C006100620065006C00340001004C006100730074006E0072003A00
+      0100010001000D000A00630078004C006100620065006C003500010050006500
+      720069006F0064003A000100010001000D000A006300620041006C006C006100
+      5600650072006B00010041006C006C00610020007600650072006B0001000100
       01000D000A0067007200640050006B0067007300440042005400610062006C00
       6500560069006500770031005000410043004B004100470045005F004E004F00
       0100500061006B00650074006E0072000100010001000D000A00670072006400
@@ -4219,50 +4422,1604 @@ object frmLoadArrivals: TfrmLoadArrivals
       770031004C004F00410044005F005300540041005400550053002E0050007200
       6F0070006500720074006900650073002E004900740065006D0073005B003200
       5D002E004400650073006300720069007000740069006F006E00010041007600
-      73006C0075007400610064000100010001000D000A006C0063004C0061007300
-      7400730074006C006C0065002E00500072006F00700065007200740069006500
-      73002E004C0069007300740043006F006C0075006D006E0073005B0030005D00
-      2E00430061007000740069006F006E0001004F00720074000100010001000D00
-      0A006C006300440065007300740069006E006100740069006F006E002E005000
-      72006F0070006500720074006900650073002E004C0069007300740043006F00
-      6C0075006D006E0073005B0030005D002E00430061007000740069006F006E00
-      01004F00720074000100010001000D000A007300740043006800610072005300
-      6500740073005F0055006E00690063006F00640065000D000A00540066007200
-      6D004C006F00610064004100720072006900760061006C007300010044004500
-      4600410055004C0054005F004300480041005200530045005400010001000100
-      0D000A00640078004200610072004D0061006E00610067006500720031000100
+      73006C0075007400610064000100010001000D000A0073007400430068006100
+      720053006500740073005F0055006E00690063006F00640065000D000A005400
+      660072006D004C006F00610064004100720072006900760061006C0073000100
       440045004600410055004C0054005F0043004800410052005300450054000100
       010001000D000A00640078004200610072004D0061006E006100670065007200
-      310042006100720031000100440045004600410055004C0054005F0043004800
-      410052005300450054000100010001000D000A00640078004200610072004D00
-      61006E0061006700650072003100420061007200320001004400450046004100
-      55004C0054005F0043004800410052005300450054000100010001000D000A00
-      70006D005000720069006E0074000100440045004600410055004C0054005F00
-      43004800410052005300450054000100010001000D000A0070006D0050006B00
-      670073000100440045004600410055004C0054005F0043004800410052005300
-      450054000100010001000D000A0070006D004C006F0061006400730001004400
-      45004600410055004C0054005F00430048004100520053004500540001000100
-      01000D000A00630078005300740079006C0065005F0031000100440045004600
-      410055004C0054005F0043004800410052005300450054000100010001000D00
-      0A00630078005300740079006C0065005F003000010044004500460041005500
-      4C0054005F0043004800410052005300450054000100010001000D000A006300
-      78005300740079006C0065005F0034000100440045004600410055004C005400
-      5F0043004800410052005300450054000100010001000D000A00630078005300
-      740079006C0065005F0046006F00630075007300010044004500460041005500
-      4C0054005F0043004800410052005300450054000100010001000D000A006300
-      78005300740079006C0065004C006F0061006400410052000100440045004600
-      410055004C0054005F0043004800410052005300450054000100010001000D00
-      0A00630078005300740079006C00650041007600720061006B006E0061006400
+      31000100440045004600410055004C0054005F00430048004100520053004500
+      54000100010001000D000A00640078004200610072004D0061006E0061006700
+      65007200310042006100720031000100440045004600410055004C0054005F00
+      43004800410052005300450054000100010001000D000A006400780042006100
+      72004D0061006E00610067006500720031004200610072003200010044004500
+      4600410055004C0054005F004300480041005200530045005400010001000100
+      0D000A0070006D005000720069006E0074000100440045004600410055004C00
+      54005F0043004800410052005300450054000100010001000D000A0070006D00
+      50006B00670073000100440045004600410055004C0054005F00430048004100
+      52005300450054000100010001000D000A0070006D004C006F00610064007300
       0100440045004600410055004C0054005F004300480041005200530045005400
-      0100010001000D000A00630078005300740079006C0065004700720065006500
-      6E000100440045004600410055004C0054005F00430048004100520053004500
-      54000100010001000D000A00}
+      0100010001000D000A00630078005300740079006C0065005F00310001004400
+      45004600410055004C0054005F00430048004100520053004500540001000100
+      01000D000A00630078005300740079006C0065005F0030000100440045004600
+      410055004C0054005F0043004800410052005300450054000100010001000D00
+      0A00630078005300740079006C0065005F003400010044004500460041005500
+      4C0054005F0043004800410052005300450054000100010001000D000A006300
+      78005300740079006C0065005F0046006F006300750073000100440045004600
+      410055004C0054005F0043004800410052005300450054000100010001000D00
+      0A00630078005300740079006C0065004C006F00610064004100520001004400
+      45004600410055004C0054005F00430048004100520053004500540001000100
+      01000D000A00630078005300740079006C00650041007600720061006B006E00
+      610064000100440045004600410055004C0054005F0043004800410052005300
+      450054000100010001000D000A00630078005300740079006C00650047007200
+      650065006E000100440045004600410055004C0054005F004300480041005200
+      5300450054000100010001000D000A00}
   end
   object Timer3: TTimer
     Enabled = False
     OnTimer = Timer3Timer
     Left = 136
     Top = 304
+  end
+  object FDQ_Position: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evUnidirectional]
+    SQL.Strings = (
+      'SELECT PositionName, PositionID FROM dbo.Position')
+    Left = 616
+    Top = 592
+    object FDQ_PositionPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object FDQ_PositionPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = Mem_MatchaProduct
+    ScopeMappings = <>
+    Left = 736
+    Top = 656
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 28
+    Top = 165
+  end
+  object Mem_MatchaProduct: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    StoreDefs = True
+    Left = 328
+    Top = 600
+    object Mem_MatchaProductVald: TIntegerField
+      FieldName = 'Vald'
+    end
+    object Mem_MatchaProductFullt: TIntegerField
+      FieldName = 'Fullt'
+    end
+    object Mem_MatchaProductPositionNamn: TStringField
+      FieldName = 'PositionNamn'
+      Size = 25
+    end
+    object Mem_MatchaProductProductNamn: TStringField
+      FieldName = 'ProductNamn'
+      Size = 150
+    end
+    object Mem_MatchaProductNoOfPkgs: TIntegerField
+      FieldName = 'NoOfPkgs'
+    end
+    object Mem_MatchaProductProductNo: TIntegerField
+      FieldName = 'ProductNo'
+    end
+    object Mem_MatchaProductPositionID: TIntegerField
+      FieldName = 'PositionID'
+    end
+  end
+  object BindingsList2: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 584
+    Top = 664
+  end
+  object DS_Position: TDataSource
+    DataSet = FDQ_Position
+    Left = 688
+    Top = 592
+  end
+  object FDQ_MatchPosition: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    Left = 880
+    Top = 592
+    object FDQ_MatchPositionPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object FDQ_MatchPositionProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_MatchPositionPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+  end
+  object FDQ_ProductNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select distinct p.ProductDisplayName, p.ProductNo'
+      'from dbo.PackageNumber pn'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      
+        'inner join dbo.PackagetypeDetail ptd on ptd.packagetypeNo = pt.p' +
+        'ackagetypeNo'
+      
+        'inner join dbo.ProductLength t1 on t1.productLengthNo = ptd.prod' +
+        'uctLengthNo'
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      'WHERE '
+      'pn.PackageNo = :PaketNr'
+      'and pn.SupplierCode = :SupplierCode')
+    Left = 968
+    Top = 592
+    ParamData = <
+      item
+        Name = 'PAKETNR'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_ProductNoProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_ProductNoProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+  end
+  object BindSourceDB2: TBindSourceDB
+    DataSet = Mem_PackProdList
+    ScopeMappings = <>
+    Left = 512
+    Top = 664
+  end
+  object Mem_PackProdList: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'Mem_packlistindex01'
+        Fields = 'PaketNr;PktSupplierCode'
+      end>
+    IndexName = 'Mem_packlistindex01'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    StoreDefs = True
+    Left = 432
+    Top = 600
+    object Mem_PackProdListVald: TIntegerField
+      FieldName = 'Vald'
+    end
+    object Mem_PackProdListPaketNr: TIntegerField
+      FieldName = 'PaketNr'
+    end
+    object Mem_PackProdListPktSupplierCode: TStringField
+      FieldName = 'PktSupplierCode'
+      Size = 3
+    end
+    object Mem_PackProdListProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Size = 150
+    end
+    object Mem_PackProdListProductNo: TIntegerField
+      FieldName = 'ProductNo'
+    end
+  end
+  object FDQ_PhyInvPtNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'Select PIP.PhysicalInventoryPointNo  FROM dbo.PhysicalInventoryP' +
+        'oint PIP '
+      'WHERE PIP.PhyInvPointNameNo = :PhyInvPointNameNo'
+      'AND PIP.OwnerNo = :OWNERNo')
+    Left = 1056
+    Top = 592
+    ParamData = <
+      item
+        Name = 'PHYINVPOINTNAMENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'OWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_PhyInvPtNoPhysicalInventoryPointNo: TIntegerField
+      FieldName = 'PhysicalInventoryPointNo'
+      Origin = 'PhysicalInventoryPointNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object DS_ProductNo: TDataSource
+    DataSet = Mem_PackProdList
+    Left = 440
+    Top = 664
+  end
+  object ds_MatchPosition: TDataSource
+    DataSet = FDQ_MatchPosition
+    Left = 816
+    Top = 656
+  end
+  object ds_MatchaProduct: TDataSource
+    DataSet = Mem_MatchaProduct
+    Left = 336
+    Top = 656
+  end
+  object FDQ_StorePosID: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'Update dbo.PackageNumber Set PositionID = :PosID , StoredDate = ' +
+        ':CurrentDate , Status = 1'
+      'where SupplierCode = :Prefix AND PackageNo = :PkgNr')
+    Left = 536
+    Top = 592
+    ParamData = <
+      item
+        Name = 'POSID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'CURRENTDATE'
+        DataType = ftDateTime
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'PREFIX'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'PKGNR'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object FDQ_InitialMatchPos: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
+        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
+        'te,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PackageNumber pn'
+      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      ''
+      'WHERE '
+      'pt.ProductNo = :ProductNo'
+      'and pn.[Status] = 1'
+      
+        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
+        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus'
+      'order by PosStatus, StoredDate')
+    Left = 769
+    Top = 592
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_InitialMatchPosPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object FDQ_InitialMatchPosPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object FDQ_InitialMatchPosProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+    object FDQ_InitialMatchPosProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_InitialMatchPosPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object FDQ_InitialMatchPosStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object FDQ_InitialMatchPosNoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object FDQ_InitialMatchPosNoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
+  end
+  object Mem_StorePosition: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 656
+    Top = 648
+    object Mem_StorePositionPositionID: TIntegerField
+      FieldName = 'PositionID'
+    end
+    object Mem_StorePositionPrefix: TStringField
+      FieldName = 'Prefix'
+    end
+    object Mem_StorePositionPakageNr: TIntegerField
+      FieldName = 'PakageNr'
+    end
+  end
+  object FDQ_ProductPkg: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select distinct pn.PackageNo, pn.SupplierCode'
+      'from dbo.PackageNumber pn'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      
+        'inner join dbo.PackagetypeDetail ptd on ptd.packagetypeNo = pt.p' +
+        'ackagetypeNo'
+      
+        'inner join dbo.ProductLength t1 on t1.productLengthNo = ptd.prod' +
+        'uctLengthNo'
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      
+        'Inner Join dbo.LengthSpec LS ON LS.LengthSpecNo = pt.LengthSpecN' +
+        'o'
+      
+        'inner join dbo.ProductGroup pg on pg.ProductGroupNo = p.ProductG' +
+        'roupNo'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = pn.LogicalInventoryPointNo'
+      
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      'Inner Join dbo.City cy on cy.CityNo = PIP.PhyInvPointNameNo'
+      ''
+      'WHERE '
+      'p.ProductNo = :ProductNo')
+    Left = 216
+    Top = 560
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_ProductPkgPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object FDQ_ProductPkgSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+  end
+  object DS_StorePosition: TDataSource
+    DataSet = Mem_StorePosition
+    Left = 672
+    Top = 696
+  end
+  object FDQ_UpdatePosStatus: TFDQuery
+    Aggregates = <
+      item
+      end>
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'UPDATE [dbo].[Position] SET [PosStatus] = :PosStatus'
+      '  WHERE [PositionID] = :PositionID')
+    Left = 808
+    Top = 432
+    ParamData = <
+      item
+        Name = 'POSSTATUS'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'POSITIONID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object cxLookAndFeelController2: TcxLookAndFeelController
+    Kind = lfFlat
+    Left = 1040
+    Top = 288
+  end
+  object cxEditStyleController1: TcxEditStyleController
+    Style.Color = clInfoBk
+    Left = 912
+    Top = 240
+    PixelsPerInch = 120
+  end
+  object cxStyleRepository2: TcxStyleRepository
+    Left = 891
+    Top = 184
+    PixelsPerInch = 120
+    object cxStyle1: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 13160660
+      TextColor = clBlack
+    end
+    object cxStyle3: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = clWhite
+      TextColor = clBlack
+    end
+    object cxStyle4: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle5: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clGray
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 13160660
+    end
+    object cxStyle6: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10841658
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle7: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle8: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6956042
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle9: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 6956042
+    end
+    object cxStyle11: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6956042
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle12: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Garamond'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle13: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 14264494
+      TextColor = clBlack
+    end
+    object cxStyle14: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 15521240
+      TextColor = clBlack
+    end
+    object cxStyle15: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle16: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle17: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle18: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Garamond'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle19: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle20: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle21: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 11619930
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 11619930
+    end
+    object cxStyle22: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle23: TcxStyle
+      AssignedValues = [svColor]
+      Color = clWhite
+    end
+    object cxStyle24: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13158655
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      TextColor = clMaroon
+    end
+    object cxStyle25: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13158655
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      TextColor = clMaroon
+    end
+    object cxStyle26: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 15461375
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle27: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 15461375
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle28: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle29: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12103888
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clMaroon
+    end
+    object cxStyle30: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 9211088
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle31: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12103888
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle32: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = 7364768
+    end
+    object cxStyle33: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 5855675
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle34: TcxStyle
+      AssignedValues = [svColor]
+      Color = clSilver
+    end
+    object cxStyle35: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle36: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle37: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle38: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14671839
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle39: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle40: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle41: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11730944
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle42: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle43: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clNavy
+    end
+    object cxStyle44: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clNavy
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle45: TcxStyle
+      AssignedValues = [svColor]
+      Color = clSilver
+    end
+    object cxStyle46: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle47: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle48: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clYellow
+    end
+    object cxStyle49: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle50: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle51: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle52: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 4671452
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle53: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle54: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle55: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 206
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle56: TcxStyle
+      AssignedValues = [svColor]
+      Color = clWhite
+    end
+    object cxStyle57: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle58: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clYellow
+    end
+    object cxStyle59: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle60: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle61: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle62: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clYellow
+    end
+    object cxStyle63: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 8257535
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle64: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle65: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clYellow
+    end
+    object cxStyle66: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clYellow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle67: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle68: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle69: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle70: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle71: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 15658734
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle72: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle73: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 3355443
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle74: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle75: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle76: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle77: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Garamond'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle78: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 14264494
+      TextColor = clBlack
+    end
+    object cxStyle79: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 15521240
+      TextColor = clBlack
+    end
+    object cxStyle80: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle81: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle82: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clBlack
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle83: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Garamond'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle84: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle85: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 14264494
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle86: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 11619930
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 11619930
+    end
+    object cxStyle87: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 11619930
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle88: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle89: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = clSilver
+      TextColor = clBlack
+    end
+    object cxStyle90: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = clWhite
+      TextColor = clBlack
+    end
+    object cxStyle91: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle92: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clGray
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clSilver
+    end
+    object cxStyle93: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 4325376
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle94: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = 'Times New Roman'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle95: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clMaroon
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle96: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clSilver
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle97: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clMaroon
+    end
+    object cxStyle98: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clMaroon
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Times New Roman'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle99: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle100: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 10343916
+      TextColor = clBlack
+    end
+    object cxStyle101: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 13626101
+      TextColor = clBlack
+    end
+    object cxStyle102: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10343916
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle103: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 3122647
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = 13626101
+    end
+    object cxStyle104: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 4325442
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle105: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10343916
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle106: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 4944971
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle107: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10343916
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle108: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = 3122647
+    end
+    object cxStyle109: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 4944971
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object GridTableViewStyleSheetLilac: TcxGridTableViewStyleSheet
+      Caption = 'Lilac'
+      Styles.Content = cxStyle12
+      Styles.ContentEven = cxStyle13
+      Styles.ContentOdd = cxStyle14
+      Styles.Inactive = cxStyle19
+      Styles.Selection = cxStyle22
+      Styles.Footer = cxStyle15
+      Styles.Group = cxStyle16
+      Styles.GroupByBox = cxStyle17
+      Styles.Header = cxStyle18
+      Styles.Indicator = cxStyle20
+      Styles.Preview = cxStyle21
+      BuiltIn = True
+    end
+    object GridTableViewStyleSheetRedWhiteandBlueVGA: TcxGridTableViewStyleSheet
+      Caption = 'Red, White, and Blue (VGA)'
+      Styles.Content = cxStyle88
+      Styles.ContentEven = cxStyle89
+      Styles.ContentOdd = cxStyle90
+      Styles.Inactive = cxStyle95
+      Styles.Selection = cxStyle98
+      Styles.Footer = cxStyle91
+      Styles.Group = cxStyle92
+      Styles.GroupByBox = cxStyle93
+      Styles.Header = cxStyle94
+      Styles.Indicator = cxStyle96
+      Styles.Preview = cxStyle97
+      BuiltIn = True
+    end
+    object GridTableViewStyleSheetPumpkinlarge: TcxGridTableViewStyleSheet
+      Caption = 'Pumpkin (large)'
+      Styles.Content = cxStyle99
+      Styles.ContentEven = cxStyle100
+      Styles.ContentOdd = cxStyle101
+      Styles.Inactive = cxStyle106
+      Styles.Selection = cxStyle109
+      Styles.Footer = cxStyle102
+      Styles.Group = cxStyle103
+      Styles.GroupByBox = cxStyle104
+      Styles.Header = cxStyle105
+      Styles.Indicator = cxStyle107
+      Styles.Preview = cxStyle108
+      BuiltIn = True
+    end
+  end
+  object cxPropertiesStore1: TcxPropertiesStore
+    Components = <
+      item
+        Component = grdLoadsDBTableView1
+        Properties.Strings = (
+          'Styles.StyleSheet')
+      end
+      item
+        Component = grdPkgsDBTableView1
+        Properties.Strings = (
+          'Styles.StyleSheet')
+      end>
+    StorageName = 'cxPropertiesStore1'
+    Left = 744
+    Top = 184
+  end
+  object ActionList2: TActionList
+    Left = 200
+    Top = 160
+    object acPrepareScan: TAction
+      Caption = 'Prepare Scan'
+      ShortCut = 118
+      OnExecute = acPrepareScanExecute
+    end
   end
   object mtPkgNos: TkbmMemTable
     DesignActivation = True

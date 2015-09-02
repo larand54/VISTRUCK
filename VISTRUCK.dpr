@@ -88,7 +88,10 @@ uses
   uEnterKilnVagn in 'uEnterKilnVagn.pas' {fEnterKilnVagn},
   uPickPkgNoTork in 'uPickPkgNoTork.pas' {fPickPkgNoTork},
   udmLanguage in 'udmLanguage.pas' {dmLanguage: TDataModule},
-  ufrmChangeLanguage in 'ufrmChangeLanguage.pas' {frmChangeLanguage};
+  ufrmChangeLanguage in 'ufrmChangeLanguage.pas' {frmChangeLanguage},
+  UnitStylesOKCANCL in 'UnitStylesOKCANCL.pas' {OKRightDlg},
+  UnitExceptionPkgNrList in 'UnitExceptionPkgNrList.pas' {PkgNrExceptionList},
+  UnitPosition in 'UnitPosition.pas' {Position};
 
 {$R *.res}
 begin

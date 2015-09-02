@@ -4458,4 +4458,44 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
+  object FDQ_StyleSettings: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.StyleSettings'
+      'WHERE ViewName = :ViewName'
+      'AND UserID = :UserID')
+    Left = 43
+    Top = 75
+    ParamData = <
+      item
+        Name = 'VIEWNAME'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_StyleSettingsViewName: TStringField
+      FieldName = 'ViewName'
+      Origin = 'ViewName'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object FDQ_StyleSettingsUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object FDQ_StyleSettingsSets: TBlobField
+      FieldName = 'Sets'
+      Origin = 'Sets'
+    end
+  end
 end

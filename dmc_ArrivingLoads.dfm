@@ -912,6 +912,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cdsArrivingPackages: TFDQuery
+    Active = True
     Indexes = <
       item
         Active = True
@@ -1015,7 +1016,11 @@ object dmArrivingLoads: TdmArrivingLoads
       'pac.CreatedUser,'
       'pac.DateCreated,'
       'IsNull(pn.Package_Size,12) AS Package_Size,'
-      'ps.PackageSizeName'
+      'ps.PackageSizeName,'
+      
+        '(Select PositionName from dbo.Position po where po.PositionID = ' +
+        'pn.PositionID) as Position'
+      ''
       ''
       ''
       ''
@@ -1075,7 +1080,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'and LSP.ShippingPlanNo = :ShippingPlanNo'
       '')
     Left = 168
-    Top = 32
+    Top = 24
     ParamData = <
       item
         Name = 'LOADNO'
@@ -1261,6 +1266,12 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'PackageSizeName'
       Origin = 'PackageSizeName'
       ProviderFlags = []
+      Size = 50
+    end
+    object cdsArrivingPackagesPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      ReadOnly = True
       Size = 50
     end
   end
@@ -5566,11 +5577,11 @@ object dmArrivingLoads: TdmArrivingLoads
       'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
       'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
       'WHERE'
-      '(SP.CustomerNo = 741 OR SP.CustomerNo = 741)'
+      '(SP.CustomerNo = :CustomerNo)'
+      'AND LD.PackageNo = :PkgNo'
       'AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)'
       'AND (SP.ObjectType in (0, 2))'
       'AND L.LoadAR = 0'
-      'AND L.LoadNo= -1'
       ''
       'UNION'
       ''
@@ -5584,11 +5595,11 @@ object dmArrivingLoads: TdmArrivingLoads
       #9#9#9#9'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
       #9#9#9#9'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
       'WHERE'
-      '(SP.CustomerNo = 741 ) --OR SP.CustomerNo = 741)'
+      '(SP.CustomerNo = :CustomerNo)'
+      'AND LD.PackageNo = :PkgNo'
       'AND (L.SenderLoadStatus IN (1,2))'
       'AND SP.ObjectType = 1'
       'AND L.LoadAR = 0'
-      'AND L.LoadNo= -1'
       ''
       'UNION'
       ''
@@ -5621,19 +5632,36 @@ object dmArrivingLoads: TdmArrivingLoads
         'Inner Join dbo.UserArrivalPoint uap on uap.PhyInvPointNameNo = P' +
         'IPCity.CityNo'
       'WHERE'
-      'CSH.CustomerNo = 741'
+      'CSH.CustomerNo = :CustomerNo'
+      'AND LD.PackageNo = :PkgNo'
       'AND (L.SenderLoadStatus = 2)'
       'AND SP.ObjectType < 3'
-      'AND uap.UserID = 258'
-      'AND L.LoadNo= -1'
-      '--AND PIPCity.CityNo = -99'
+      'AND uap.UserID = :UserID'
       
         'AND not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_L' +
         'oad_EXT cl2'
       'WHERE cl2.Confirmed_LoadNo = LSP.LoadNo'
-      'AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)')
+      'AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)'
+      ''
+      '')
     Left = 168
     Top = 192
+    ParamData = <
+      item
+        Name = 'CUSTOMERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'PKGNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'USERID'
+        DataType = ftString
+        ParamType = ptInput
+      end>
     object cdsAllPackageNosLoadNo: TIntegerField
       FieldName = 'LoadNo'
       Origin = 'LoadNo'
@@ -5778,5 +5806,46 @@ object dmArrivingLoads: TdmArrivingLoads
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object FDQ_GetLoadNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select L.LoadNo From dbo.Loaddetail LD'
+      'Inner Join dbo.Loads L on L.LoadNo = LD.LoadNo'
+      'Inner join [dbo].[LoadShippingPlan] LS on LS.LoadNo = L.LoadNo'
+      'Where PackageNo = :PkgNo AND SupplierCode = :Prefix'
+      'and CustomerNo = :CustomerNo'
+      'and LS.ShipToInvPointNo = :ShipToInvPointNo')
+    Left = 440
+    Top = 376
+    ParamData = <
+      item
+        Name = 'PKGNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'PREFIX'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'CUSTOMERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SHIPTOINVPOINTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object FDQ_GetLoadNoLoadNo: TIntegerField
+      FieldName = 'LoadNo'
+      Origin = 'LoadNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
   end
 end

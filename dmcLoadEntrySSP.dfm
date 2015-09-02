@@ -694,7 +694,6 @@
     end
   end
   object cdsLORows: TFDQuery
-    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -3503,7 +3502,7 @@
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_LOBSetChanged'
     Left = 728
-    Top = 480
+    Top = 464
     ParamData = <
       item
         Position = 1

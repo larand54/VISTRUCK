@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, dxBarExtItems,
-  ImgList, StdCtrls, DB, Menus, SqlTimSt, 
+  ImgList, StdCtrls, DB, Menus, SqlTimSt,
   DateUtils, cxControls,
   cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar,
   cxStyles, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
@@ -31,7 +31,10 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk,
-  System.Actions, VidaType, dximctrl ;
+  System.Actions, VidaType, dximctrl, Vcl.ComCtrls, FMX.ListView,
+  System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
+  Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, cxListView, System.Generics.Collections,
+  UnitPosition, UnitStylesOKCANCL, UnitExceptionPkgNrList, cxPropertiesStore;
 
 type
   TfrmLoadArrivals = class(TForm)
@@ -42,14 +45,12 @@ type
     lbPrintLoad: TdxBarLargeButton;
     lbUndoConfirm: TdxBarLargeButton;
     imglistActions: TImageList;
-    DataSource1: TDataSource;
     lbPkgInfo: TdxBarLargeButton;
     lbExportToExcel: TdxBarLargeButton;
     bbCustomizeLayout: TdxBarButton;
     pmPrint: TdxBarPopupMenu;
     il_LastStatus: TImageList;
     bbSamlingsspecifikation: TdxBarButton;
-    lbLO_To_Invoice: TListBox;
     bbTally_Ver: TdxBarButton;
     dxBarButton1: TdxBarButton;
     dxBarButton2: TdxBarButton;
@@ -103,7 +104,6 @@ type
     acClose: TAction;
     acExportLoadsToExcel: TAction;
     acRefresh: TAction;
-    cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
     acUndoAR: TAction;
     acShowGroupBox: TAction;
@@ -150,7 +150,6 @@ type
     Timer2: TTimer;
     acGetIntPrices: TAction;
     dxBarLargeButton1: TdxBarLargeButton;
-    cbShowOnlyVWLoads: TcxDBCheckBox;
     grdLoadsDBTableView1Trading: TcxGridDBColumn;
     grdLoadsDBTableView1LoadAR: TcxGridDBColumn;
     cxStyleLoadAR: TcxStyle;
@@ -230,7 +229,6 @@ type
     cds_PropsSR: TStringField;
     cds_PropsSaljgrupp: TStringField;
     ds_Props: TDataSource;
-    lcVerk: TcxDBLookupComboBox;
     cds_PropsVerk: TStringField;
     deStartPeriod: TcxDBDateEdit;
     deEndPeriod: TcxDBDateEdit;
@@ -241,22 +239,14 @@ type
     acSendLoadToHampen: TAction;
     dxBarLargeButton2: TdxBarLargeButton;
     SaveDialog1: TSaveDialog;
-    lcInternKund: TcxDBLookupComboBox;
-    cxLabel6: TcxLabel;
-    lcLaststlle: TcxDBLookupComboBox;
-    lcDestination: TcxDBLookupComboBox;
     sq_City: TFDQuery;
     sq_CityOrt: TStringField;
     sq_CityCityNo: TIntegerField;
     cds_PropsLaststlle: TStringField;
-    cxLabel7: TcxLabel;
-    cxLabel8: TcxLabel;
     cds_PropsDestination: TStringField;
     sq_Dest: TFDQuery;
     sq_DestOrt: TStringField;
     sq_DestCityNo: TIntegerField;
-    lcSlutKund: TcxDBLookupComboBox;
-    cxLabel9: TcxLabel;
     cds_PropsSlutkund: TStringField;
     mtSelectedLoadsEGEN: TIntegerField;
     grdLoadsDBTableView1EGEN: TcxGridDBColumn;
@@ -300,9 +290,194 @@ type
     grdLoadsDBTableView1PackagesConfirmed: TcxGridDBColumn;
     cxStyleGreen: TcxStyle;
     cxLabelEntryMetod: TcxLabel;
-    cbpaketpositionering: TcxDBCheckBox;
-    acChangePackageSize: TAction;
-    acSetPaketStorlek: TAction;
+    FDQ_Position: TFDQuery;
+    BindSourceDB1: TBindSourceDB;
+    BindingsList1: TBindingsList;
+    Mem_MatchaProduct: TFDMemTable;
+    BindingsList2: TBindingsList;
+    DS_Position: TDataSource;
+    FDQ_MatchPosition: TFDQuery;
+    FDQ_ProductNo: TFDQuery;
+    FDQ_ProductNoProductDisplayName: TStringField;
+    FDQ_ProductNoProductNo: TIntegerField;
+    BindSourceDB2: TBindSourceDB;
+    Mem_PackProdList: TFDMemTable;
+    FDQ_MatchPositionPositionName: TStringField;
+    FDQ_MatchPositionProductDisplayName: TStringField;
+    FDQ_MatchPositionPositionID: TIntegerField;
+    FDQ_PositionPositionName: TStringField;
+    FDQ_PhyInvPtNo: TFDQuery;
+    FDQ_PhyInvPtNoPhysicalInventoryPointNo: TIntegerField;
+    DS_ProductNo: TDataSource;
+    ds_MatchPosition: TDataSource;
+    Mem_PackProdListPaketNr: TIntegerField;
+    Mem_PackProdListProductDisplayName: TStringField;
+    ds_MatchaProduct: TDataSource;
+    Mem_MatchaProductPositionNamn: TStringField;
+    Mem_MatchaProductProductNamn: TStringField;
+    Mem_MatchaProductNoOfPkgs: TIntegerField;
+    Mem_PackProdListVald: TIntegerField;
+    Mem_MatchaProductFullt: TIntegerField;
+    Mem_PackProdListPktSupplierCode: TStringField;
+    Mem_PackProdListProductNo: TIntegerField;
+    Mem_MatchaProductVald: TIntegerField;
+    FDQ_PositionPositionID: TIntegerField;
+    FDQ_StorePosID: TFDQuery;
+    FDQ_InitialMatchPos: TFDQuery;
+    FDQ_InitialMatchPosPosStatus: TIntegerField;
+    FDQ_InitialMatchPosPositionName: TStringField;
+    FDQ_InitialMatchPosProductNo: TIntegerField;
+    FDQ_InitialMatchPosProductDisplayName: TStringField;
+    FDQ_InitialMatchPosPositionID: TIntegerField;
+    FDQ_InitialMatchPosStoredDate: TSQLTimeStampField;
+    FDQ_InitialMatchPosNoOfPkgsByProduct: TIntegerField;
+    FDQ_InitialMatchPosNoOfPkgsByPosition: TIntegerField;
+    Mem_StorePosition: TFDMemTable;
+    Mem_StorePositionPositionID: TIntegerField;
+    Mem_StorePositionPrefix: TStringField;
+    Mem_StorePositionPakageNr: TIntegerField;
+    Mem_MatchaProductProductNo: TIntegerField;
+    Mem_MatchaProductPositionID: TIntegerField;
+    FDQ_ProductPkg: TFDQuery;
+    FDQ_ProductPkgPackageNo: TIntegerField;
+    FDQ_ProductPkgSupplierCode: TStringField;
+    DS_StorePosition: TDataSource;
+    FDQ_UpdatePosStatus: TFDQuery;
+    cxLookAndFeelController2: TcxLookAndFeelController;
+    cxEditStyleController1: TcxEditStyleController;
+    Panel7: TPanel;
+    lbLO_To_Invoice: TListBox;
+    cxLabel1: TcxLabel;
+    lcVerk: TcxDBLookupComboBox;
+    cxLabel8: TcxLabel;
+    lcDestination: TcxDBLookupComboBox;
+    cxLabel6: TcxLabel;
+    lcInternKund: TcxDBLookupComboBox;
+    cxLabel7: TcxLabel;
+    lcLaststlle: TcxDBLookupComboBox;
+    lcSlutKund: TcxDBLookupComboBox;
+    cxLabel9: TcxLabel;
+    btChangeStyle: TcxButton;
+    cxStyleRepository2: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    cxStyle2: TcxStyle;
+    cxStyle3: TcxStyle;
+    cxStyle4: TcxStyle;
+    cxStyle5: TcxStyle;
+    cxStyle6: TcxStyle;
+    cxStyle7: TcxStyle;
+    cxStyle8: TcxStyle;
+    cxStyle9: TcxStyle;
+    cxStyle10: TcxStyle;
+    cxStyle11: TcxStyle;
+    cxStyle12: TcxStyle;
+    cxStyle13: TcxStyle;
+    cxStyle14: TcxStyle;
+    cxStyle15: TcxStyle;
+    cxStyle16: TcxStyle;
+    cxStyle17: TcxStyle;
+    cxStyle18: TcxStyle;
+    cxStyle19: TcxStyle;
+    cxStyle20: TcxStyle;
+    cxStyle21: TcxStyle;
+    cxStyle22: TcxStyle;
+    cxStyle23: TcxStyle;
+    cxStyle24: TcxStyle;
+    cxStyle25: TcxStyle;
+    cxStyle26: TcxStyle;
+    cxStyle27: TcxStyle;
+    cxStyle28: TcxStyle;
+    cxStyle29: TcxStyle;
+    cxStyle30: TcxStyle;
+    cxStyle31: TcxStyle;
+    cxStyle32: TcxStyle;
+    cxStyle33: TcxStyle;
+    cxStyle34: TcxStyle;
+    cxStyle35: TcxStyle;
+    cxStyle36: TcxStyle;
+    cxStyle37: TcxStyle;
+    cxStyle38: TcxStyle;
+    cxStyle39: TcxStyle;
+    cxStyle40: TcxStyle;
+    cxStyle41: TcxStyle;
+    cxStyle42: TcxStyle;
+    cxStyle43: TcxStyle;
+    cxStyle44: TcxStyle;
+    cxStyle45: TcxStyle;
+    cxStyle46: TcxStyle;
+    cxStyle47: TcxStyle;
+    cxStyle48: TcxStyle;
+    cxStyle49: TcxStyle;
+    cxStyle50: TcxStyle;
+    cxStyle51: TcxStyle;
+    cxStyle52: TcxStyle;
+    cxStyle53: TcxStyle;
+    cxStyle54: TcxStyle;
+    cxStyle55: TcxStyle;
+    cxStyle56: TcxStyle;
+    cxStyle57: TcxStyle;
+    cxStyle58: TcxStyle;
+    cxStyle59: TcxStyle;
+    cxStyle60: TcxStyle;
+    cxStyle61: TcxStyle;
+    cxStyle62: TcxStyle;
+    cxStyle63: TcxStyle;
+    cxStyle64: TcxStyle;
+    cxStyle65: TcxStyle;
+    cxStyle66: TcxStyle;
+    cxStyle67: TcxStyle;
+    cxStyle68: TcxStyle;
+    cxStyle69: TcxStyle;
+    cxStyle70: TcxStyle;
+    cxStyle71: TcxStyle;
+    cxStyle72: TcxStyle;
+    cxStyle73: TcxStyle;
+    cxStyle74: TcxStyle;
+    cxStyle75: TcxStyle;
+    cxStyle76: TcxStyle;
+    cxStyle77: TcxStyle;
+    cxStyle78: TcxStyle;
+    cxStyle79: TcxStyle;
+    cxStyle80: TcxStyle;
+    cxStyle81: TcxStyle;
+    cxStyle82: TcxStyle;
+    cxStyle83: TcxStyle;
+    cxStyle84: TcxStyle;
+    cxStyle85: TcxStyle;
+    cxStyle86: TcxStyle;
+    cxStyle87: TcxStyle;
+    cxStyle88: TcxStyle;
+    cxStyle89: TcxStyle;
+    cxStyle90: TcxStyle;
+    cxStyle91: TcxStyle;
+    cxStyle92: TcxStyle;
+    cxStyle93: TcxStyle;
+    cxStyle94: TcxStyle;
+    cxStyle95: TcxStyle;
+    cxStyle96: TcxStyle;
+    cxStyle97: TcxStyle;
+    cxStyle98: TcxStyle;
+    cxStyle99: TcxStyle;
+    cxStyle100: TcxStyle;
+    cxStyle101: TcxStyle;
+    cxStyle102: TcxStyle;
+    cxStyle103: TcxStyle;
+    cxStyle104: TcxStyle;
+    cxStyle105: TcxStyle;
+    cxStyle106: TcxStyle;
+    cxStyle107: TcxStyle;
+    cxStyle108: TcxStyle;
+    cxStyle109: TcxStyle;
+    GridTableViewStyleSheetLilac: TcxGridTableViewStyleSheet;
+    GridTableViewStyleSheetRedWhiteandBlueVGA: TcxGridTableViewStyleSheet;
+    GridTableViewStyleSheetPumpkinlarge: TcxGridTableViewStyleSheet;
+    btPrepareScan: TcxButton;
+    cbShowOnlyVWLoads: TcxDBCheckBox;
+    cxPropertiesStore1: TcxPropertiesStore;
+    ActionList2: TActionList;
+    acPrepareScan: TAction;
+    grdPkgsDBTableView1Position: TcxGridDBColumn;
+    acSetPktStorlek: TAction;
     mtPkgNos: TkbmMemTable;
     mtPkgNosPackageNo: TIntegerField;
     mtPkgNosSupp_Code: TStringField;
@@ -374,8 +549,6 @@ type
     procedure cds_PropsClientNoChange(Sender: TField);
     procedure FormShow(Sender: TObject);
     procedure acSetInfo2TextExecute(Sender: TObject);
-    procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure grdPkgsDBTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
@@ -383,12 +556,34 @@ type
     procedure grdLoadsDBTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
-    procedure acChangePackageSizeExecute(Sender: TObject);
-    procedure acSetPaketStorlekExecute(Sender: TObject);
+    procedure btnStorePositionClick(Sender: TObject);
+    procedure listboxAllClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure cxGrid_MatchPositionDBTableView1CellClick(
+      Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure btChangeStyleClick(Sender: TObject);
+    procedure acPrepareScanExecute(Sender: TObject);
+    procedure cds_PropsAfterScroll(DataSet: TDataSet);
+    procedure cds_PropsAfterPost(DataSet: TDataSet);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure acSetPktStorlekExecute(Sender: TObject);
 
 
   private
     { Private declarations }
+
+    ProductNoList : TStringList;
+    PositionAllNameList: TStringList;
+    PositionAllIDList : TList<Integer>;
+    SelectedPositionAllName: string;
+    SelectedPositionAllID: Integer;
+    PositionNamnList, PositionIDList, ProductNamnList : TStringList;
+    PosStatusList, NoOfPkgsList : TList<Integer>;
+
     LastTime  : TTime ;
     SecondsBetweenKeyPressed  : Double ;
     procedure SelectedPkgsOfPkgNosTable ;
@@ -432,6 +627,13 @@ type
     procedure PrintDirectFS_USA(Sender: TObject);
     function  AreMarkedLoadsSameTRADINGType : Boolean ;
     function  SelectAvropsNrAttSkapaSalesLoadMot(const POLONo : Integer) : Integer ;
+    procedure ShowPaketNrList(PaketNr: Integer; pkgSupplierCode : String);
+    procedure ShowPosition;
+    procedure ShowMatchPosition(ProductNo : Integer; IsProductNoExist: Boolean);
+    //procedure CreateProductNoList(ProductNoList1: TStringList);
+    procedure SavetoMemPosition(PositionID: Integer; Prefix: String; PkgNr: Integer);
+    function GetPkgPrefix(ProductNo: Integer; PackageNo: Integer; Prefix: String): Boolean;
+    procedure DeleteMatchaProdNo(ProductNo: Integer);
   public
     { Public declarations }
     Procedure CreateCo(CompanyNo: Integer);
@@ -439,6 +641,7 @@ type
 
 var
   frmLoadArrivals: TfrmLoadArrivals;
+
 
 
 implementation
@@ -459,6 +662,9 @@ uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils,
 Procedure TfrmLoadArrivals.CreateCo(CompanyNo: Integer);
 Var x : Integer ;
 begin
+
+  if dmsSystem.LoadStyles(ThisUser.UserID, Self.Name, cxPropertiesStore1) = False then ;
+
   if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + grdLoads.Name, grdLoadsDBTableView1) = False then ;
   if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + grdPkgs.Name, grdPkgsDBTableView1) = False then ;
 
@@ -521,8 +727,6 @@ begin
 
   cds_Props.Edit ;
   cds_PropsNewItemRow.AsInteger := 0 ;
-  if cds_PropsMarketRegionNo.IsNull then
-   cds_PropsMarketRegionNo.AsInteger  := 0 ;
   cds_Props.Post ;
 
  if (cds_Props.State in [dsEdit, dsInsert]) or (cds_Props.ChangeCount > 0) then
@@ -547,6 +751,7 @@ begin
   acSetLoadToConfirmed.Enabled:= True ;
 end;
 
+
 procedure TfrmLoadArrivals.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -564,9 +769,59 @@ begin
   End ;
 end;
 
+procedure TfrmLoadArrivals.FormKeyPress(Sender: TObject; var Key: Char);
+Var NuTid           : TTime ;
+    ManualKeyBoard  : Integer ;
+begin
+
+  if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+  Begin
+   Try
+    GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
+
+    mePackageNo.Text:= '' ;
+   Except
+    mePackageNo.Text:= '' ;
+   End ;
+  End
+  else
+   Begin
+     NuTid  := Time ;
+       if Length(mePackageNo.Text) < 2 then
+      LastTime  := NuTid ;
+
+     if Length(mePackageNo.Text) > 1 then
+      SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
+
+     if SecondsBetweenKeyPressed > 0.01 then
+     Begin
+      ManualKeyBoard            := 1 ;
+      cxLabelEntryMetod.Caption := 'Manual' ;
+     End
+       else
+        Begin
+          ManualKeyBoard            := 0 ;
+          cxLabelEntryMetod.Caption := 'Scanned' ;
+        End;
+
+
+     LastTime         := NuTid ;
+     Timer3.Enabled   := True ;
+     mePackageNo.Text := '' ;
+//    if (acStart.Caption = 'Stoppa inläsning med skanner F10') then
+     if key in ['S','0','1','2','3','4','5','6','7','8','9'] then
+      mePackageNo.Text  := mePackageNo.Text + Key ;
+   End ;
+
+
+end;
+
 procedure TfrmLoadArrivals.FormShow(Sender: TObject);
 begin
  LoadLagerPos ;
+//  Self.KeyPreview              := True ;
+//  mePackageNo.Enabled         := False ;
+//  self.Enabled  := False ;
  With dmArrivingLoads do
  Begin
 //   cdsAllPackageNos.Active      := False ;
@@ -638,14 +893,12 @@ end;
 
      RefreshArrivingPackages ;
 
+(*
+         cdsAllPackageNos.Active      := False ;
+           BuildPackageQuery  ;
+         cdsAllPackageNos.Active      := True ;
 
-     if cds_PropsMarketRegionNo.AsInteger = 1 then
-     Begin
-       cdsAllPackageNos.Active      := False ;
-       BuildPackageQuery  ;
-       cdsAllPackageNos.Active      := True ;
-     End;
-
+*)
   //  end ;
    finally
     dsrcArrivingLoads.DataSet :=  cdsArrivingLoads ;
@@ -849,6 +1102,40 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
       cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
+{
+        cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
+        cdsArrivingLoads.SQL.Add
+          ('Left Outer Join dbo.LogicalInventoryPoint LIP ');
+        cdsArrivingLoads.SQL.Add
+          ('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
+        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
+        cdsArrivingLoads.SQL.Add
+          ('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo');
+        cdsArrivingLoads.SQL.Add
+          (' AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
+
+        if (LONo = -1) and (LoadNo = -1) then
+          if bcConfirmed.ItemIndex = 2 then
+          Begin
+            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
+            cdsArrivingLoads.SQL.Add
+              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
+          End;
+
+        cdsArrivingLoads.SQL.Add
+          ('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo');
+        cdsArrivingLoads.SQL.Add('AND     L.supplierno 		= SP.SUPPLIERno');
+        cdsArrivingLoads.SQL.Add('AND     L.CustomerNo 		= SP.CustomerNo');
+
+}
+
+
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
@@ -909,7 +1196,7 @@ Begin
         ('							AND	ST.Reference		= CSD.Reference');
 
       cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
-
+      // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.VoyageDestination	VD 	ON  	Bk.BookingNo		= vd.BookingNo
       cdsArrivingLoads.SQL.Add
         ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
       cdsArrivingLoads.SQL.Add
@@ -940,6 +1227,10 @@ Begin
       End
       else
         cdsArrivingLoads.SQL.Add('1=1');
+
+      // Filter out VP's own purchasing loads
+      // if cds_PropsVerkNo.AsInteger = VIDA_PACKAGING_NO then
+      // cdsArrivingLoads.SQL.Add('and OH.OrderType = 1') ;
 
       if LONo > -1 then
         cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
@@ -1000,9 +1291,15 @@ Begin
             cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
             cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
               IntToStr(ThisUser.UserID));
+            // LM June 14  deStartPeriod.Date:= RecodeHour(deStartPeriod.Date,0) ;
+            // LM June 14  deStartPeriod.Date:= RecodeMinute(deStartPeriod.Date,0) ;
+            // LM June 14  deStartPeriod.Date:= RecodeSecond(deStartPeriod.Date,0) ;
             cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
               QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
               DateTimeToSQLTimeStamp(deStartPeriod.Date))));
+            // LM June 14  deEndPeriod.Date:= RecodeHour(deEndPeriod.Date,23) ;
+            // LM June 14  deEndPeriod.Date:= RecodeMinute(deEndPeriod.Date,59) ;
+            // LM June 14  deEndPeriod.Date:= RecodeSecond(deEndPeriod.Date,59) ;
             cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
               QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
               DateTimeToSQLTimeStamp(deEndPeriod.Date))));
@@ -1091,6 +1388,44 @@ Begin
    cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
    cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
+{
+        cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
+        cdsArrivingLoads.SQL.Add
+          ('Left Outer Join dbo.LogicalInventoryPoint LIP ');
+        cdsArrivingLoads.SQL.Add
+          ('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
+        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
+        cdsArrivingLoads.SQL.Add
+          ('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
+        cdsArrivingLoads.SQL.Add
+          ('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.ShippingPlanNo = SP.ShippingPlanNo');
+        cdsArrivingLoads.SQL.Add
+          (' AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
+
+        if (LONo = -1) and (LoadNo = -1) then
+        Begin
+          if bcConfirmed.ItemIndex = 2 then
+          Begin
+            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
+            cdsArrivingLoads.SQL.Add
+              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
+          End;
+        End;
+
+        cdsArrivingLoads.SQL.Add
+          ('INNER JOIN dbo.Loads L 				ON	LSP.LoadNo 		= L.LoadNo');
+        cdsArrivingLoads.SQL.Add
+          ('				AND     L.supplierno 		= SP.SUPPLIERno');
+        cdsArrivingLoads.SQL.Add
+          ('				AND     L.CustomerNo 		= SP.CustomerNo');
+
+}
+
+
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
@@ -1141,7 +1476,7 @@ Begin
         ('							ON	ST_ADR.AddressNo	= OH.DestinationNo');
 
       cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
-
+      // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.VoyageDestination	VD 	ON  	Bk.BookingNo		= vd.BookingNo
       cdsArrivingLoads.SQL.Add
         ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
       cdsArrivingLoads.SQL.Add
@@ -1231,9 +1566,15 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
             IntToStr(ThisUser.UserID));
+          // LM June 14  deStartPeriod.Date:= RecodeHour(deStartPeriod.Date,0) ;
+          // LM June 14  deStartPeriod.Date:= RecodeMinute(deStartPeriod.Date,0) ;
+          // LM June 14  deStartPeriod.Date:= RecodeSecond(deStartPeriod.Date,0) ;
           cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
             QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
             DateTimeToSQLTimeStamp(deStartPeriod.Date))));
+          // LM June 14  deEndPeriod.Date:= RecodeHour(deEndPeriod.Date,23) ;
+          // LM June 14  deEndPeriod.Date:= RecodeMinute(deEndPeriod.Date,59) ;
+          // LM June 14  deEndPeriod.Date:= RecodeSecond(deEndPeriod.Date,59) ;
           cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
             QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
             DateTimeToSQLTimeStamp(deEndPeriod.Date))));
@@ -1330,6 +1671,13 @@ Begin
    cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
    cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed') ;
 
+    { cdsArrivingLoads.SQL.Add('IsNull(cl.Confirmed_LoadNo,0) AS AR_LoadNo') ;
+      cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ') ;
+      cdsArrivingLoads.SQL.Add('isNull(SP.LipNo,-1) AS LipNo,') ;
+      cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
+
+      cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/')+')+' + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
+      cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk') ; }
 
     cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
 
@@ -1362,6 +1710,9 @@ Begin
     cdsArrivingLoads.SQL.Add
       ('AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
 
+
+    // cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Confirmed_Load_EXT cl on ') ;
+    // cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
 
     cdsArrivingLoads.SQL.Add
       ('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo');
@@ -1563,6 +1914,11 @@ Begin
  End;
 End ;
 
+
+procedure TfrmLoadArrivals.Button1Click(Sender: TObject);
+begin
+
+end;
 
 //make an entry for the load that is confirmed
 procedure TfrmLoadArrivals.SetConfirmed_Load_Table(Sender: TObject) ;
@@ -1953,6 +2309,9 @@ begin
 
  dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  grdLoads.Name, grdLoadsDBTableView1) ;
  dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  grdPkgs.Name, grdPkgsDBTableView1) ;
+
+ dmsSystem.StoreStyles(ThisUser.UserID, Self.Name, cxPropertiesStore1);
+
  dmArrivingLoads.cdsArrivingLoads.Active  := False ;
 
 // With dmArrivingLoads do
@@ -2102,6 +2461,41 @@ begin
       end;
 end;
 
+procedure TfrmLoadArrivals.acChangePkgLayoutExecute(Sender: TObject);
+begin
+  if grdPkgs.FocusedView is TcxCustomGridTableView then
+    with TcxCustomGridTableController(grdPkgs.FocusedView.Controller) do
+      begin
+        Customization := True;
+        CustomizationForm.AlphaBlendValue := 255;
+        CustomizationForm.AlphaBlend := True;
+      end;
+end;
+
+procedure TfrmLoadArrivals.acSetInfo2TextExecute(Sender: TObject);
+var
+  fLagerPos: TfLagerPos;
+begin
+ With dmsSystem, dmArrivingLoads do
+ Begin
+  fLagerPos :=  TfLagerPos.Create(nil);
+  Try
+    if fLagerPos.ShowModal = mrOK then
+    Begin
+     SetLagerPosOnMarkedPkgs(sp_LagerPos.FieldByName('LagerPositionText').AsString) ;
+     cdsArrivingPackages.Refresh ;
+    End;
+  Finally
+    FreeAndNil(fLagerPos) ;
+  End;
+ End;
+end;
+
+procedure TfrmLoadArrivals.acSetLoadToConfirmedExecute(Sender: TObject);
+begin
+ SetConfirmed_Load_Table(Sender) ;
+end;
+
 procedure TfrmLoadArrivals.SelectedPkgsOfPkgNosTable ;
  Var i, RecIDX  : Integer ;
  RecID          : Variant ;
@@ -2139,78 +2533,7 @@ begin
  End ;
 end;
 
-procedure TfrmLoadArrivals.acChangePackageSizeExecute(Sender: TObject);
-Var Package_Size      : Integer ;
-    PackageSizeName   : String ;
-begin
- With dmArrivingLoads do
- Begin
-  Package_Size  :=  GetNewPackage_Size(PackageSizeName) ;
-  if Package_Size > -1 then
-  Begin
-    mtPkgNos.Active := True ;
-    cdsArrivingPackages.DisableControls ;
-    Try
-    SelectedPkgsOfPkgNosTable ;
-    mtPkgNos.First ;
-    while not mtPkgNos.Eof do
-    Begin
-     if cdsArrivingPackages.Locate('PACKAGE_NO;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
-     Begin
-{      sp_invpivPkgDtl.Edit ;
-      sp_invpivPkgDtl.FieldByName('Package_Size').AsInteger     := Package_Size ;
-      sp_invpivPkgDtl.FieldByName('PackageSizeName').AsString   := PackageSizeName ;
-      sp_invpivPkgDtl.Post ;   }
-
-      CngArtNoByPkgSize(mtPkgNosPackageNo.AsInteger, Package_Size, mtPkgNosSupp_Code.AsString) ;
-     End;
-     mtPkgNos.Next ;
-    End;
-     cdsArrivingPackages.Refresh ;
-    Finally
-     cdsArrivingPackages.EnableControls ;
-     mtPkgNos.Active := False ;
-    End;
-  End;
- End;
-end;
-
-procedure TfrmLoadArrivals.acChangePkgLayoutExecute(Sender: TObject);
-begin
-  if grdPkgs.FocusedView is TcxCustomGridTableView then
-    with TcxCustomGridTableController(grdPkgs.FocusedView.Controller) do
-      begin
-        Customization := True;
-        CustomizationForm.AlphaBlendValue := 255;
-        CustomizationForm.AlphaBlend := True;
-      end;
-end;
-
-procedure TfrmLoadArrivals.acSetInfo2TextExecute(Sender: TObject);
-var
-  fLagerPos: TfLagerPos;
-begin
- With dmsSystem, dmArrivingLoads do
- Begin
-  fLagerPos :=  TfLagerPos.Create(nil);
-  Try
-    if fLagerPos.ShowModal = mrOK then
-    Begin
-     SetLagerPosOnMarkedPkgs(sp_LagerPos.FieldByName('LagerPositionText').AsString) ;
-     cdsArrivingPackages.Refresh ;
-    End;
-  Finally
-    FreeAndNil(fLagerPos) ;
-  End;
- End;
-end;
-
-procedure TfrmLoadArrivals.acSetLoadToConfirmedExecute(Sender: TObject);
-begin
- SetConfirmed_Load_Table(Sender) ;
-end;
-
-procedure TfrmLoadArrivals.acSetPaketStorlekExecute(Sender: TObject);
+procedure TfrmLoadArrivals.acSetPktStorlekExecute(Sender: TObject);
 Var Package_Size      : Integer ;
     PackageSizeName   : String ;
 begin
@@ -2367,7 +2690,7 @@ begin
  With dmArrivingLoads do
  Begin
   acPkgInfo.Enabled:= cdsArrivingPackages.RecordCount > 0 ;
- End ; 
+ End ;
 end;
 
 procedure TfrmLoadArrivals.bcConfirmedPropertiesChange(Sender: TObject);
@@ -2424,7 +2747,7 @@ begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
  Try
- 
+
  if MessageDlg(siLangLinked_frmLoadArrivals.GetTextOrDefault('IDS_7' (* 'Vill du exportera till excel?' *) ),
  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  Begin
@@ -2476,6 +2799,7 @@ begin
   End ;
  End ; }
  RefreshLoads ;
+ mePackageNo.SetFocus;
 end;
 
 procedure TfrmLoadArrivals.acExportLoadsToExcelUpdate(Sender: TObject);
@@ -2511,7 +2835,7 @@ begin
       mtSelectedLoads.Edit ;
       mtSelectedLoadsStatus.AsInteger  := 0 ;
       mtSelectedLoads.Post ;
-     End ; 
+     End ;
     End
     else
     Begin
@@ -3491,6 +3815,11 @@ begin
  End ;
 end;
 
+procedure TfrmLoadArrivals.acPrepareScanExecute(Sender: TObject);
+begin
+  mePackageNo.SetFocus ;
+end;
+
 procedure TfrmLoadArrivals.acPrintDirectFSExecute(Sender: TObject);
 Var Save_Cursor  : TCursor;
 begin
@@ -3658,6 +3987,24 @@ begin
   cds_PropsVerkNo.AsInteger     := ThisUser.CompanyNo ;
 end;
 
+procedure TfrmLoadArrivals.cds_PropsAfterPost(DataSet: TDataSet);
+begin
+ With dmArrivingLoads do
+ Begin
+  CustomerNo        :=  cds_PropsVerkNo.AsInteger ;
+  SHIPTOINVPOINTNO  :=  cds_PropsBookingTypeNo.AsInteger ;
+ End;
+end;
+
+procedure TfrmLoadArrivals.cds_PropsAfterScroll(DataSet: TDataSet);
+begin
+ With dmArrivingLoads do
+ Begin
+  CustomerNo        :=  cds_PropsVerkNo.AsInteger ;
+  SHIPTOINVPOINTNO  :=  cds_PropsBookingTypeNo.AsInteger ;
+ End;
+end;
+
 procedure TfrmLoadArrivals.acConfirmOneLoadUpdate(Sender: TObject);
 begin
  With dmArrivingLoads do
@@ -3758,6 +4105,7 @@ if (Assigned(dmArrivingLoads)) then
  With dmArrivingLoads do
  AText  := IntToStr(GetNoOfPkgs) ;
 end;
+
 
 procedure TfrmLoadArrivals.AR_Sales_Loads(Sender: TObject);
 Var
@@ -4503,7 +4851,7 @@ begin
 
        if LoadAROK then
        Begin
-//Obs, laster som AR av externa kunder skall inte generera internpris!!       
+//Obs, laster som AR av externa kunder skall inte generera internpris!!
 //        GetIntPrice(-1, 0, -1, mtSelectedLoadsLoadNo.AsInteger, True) ;
         mtSelectedLoads.Edit ;
         mtSelectedLoadsStatus.AsInteger    := 1 ;
@@ -4632,37 +4980,33 @@ procedure TfrmLoadArrivals.mePackageNoKeyDown(Sender: TObject; var Key: Word;
 Var NuTid           : TTime ;
     ManualKeyBoard  : Integer ;
 begin
- if cds_PropsMarketRegionNo.AsInteger = 1 then
- Begin
-   NuTid  := Time ;
+ NuTid  := Time ;
    if Length(mePackageNo.Text) < 2 then
-    LastTime  := NuTid ;
+  LastTime  := NuTid ;
 
+ if Length(mePackageNo.Text) > 1 then
+  SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
 
+ if SecondsBetweenKeyPressed > 0.01 then
+ Begin
+  ManualKeyBoard            := 1 ;
+  cxLabelEntryMetod.Caption := 'Manual' ;
+ End
+   else
+    Begin
+      ManualKeyBoard            := 0 ;
+      cxLabelEntryMetod.Caption := 'Scanned' ;
+    End;
 
-   if Length(mePackageNo.Text) > 1 then
-    SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
+ if Key <> VK_RETURN then Exit;
 
-   if SecondsBetweenKeyPressed > 0.01 then
-   Begin
-    ManualKeyBoard            := 1 ;
-    cxLabelEntryMetod.Caption := 'Manual' ;
-   End
-     else
-      Begin
-        ManualKeyBoard            := 0 ;
-        cxLabelEntryMetod.Caption := 'Scanned' ;
-      End;
+ if Length(mePackageNo.Text) > 0 then
+  GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
 
-   if Key <> VK_RETURN then Exit;
+ LastTime         := NuTid ;
+ Timer3.Enabled   := True ;
+ mePackageNo.Text := '' ;
 
-   if Length(mePackageNo.Text) > 0 then
-    GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
-
-   LastTime         := NuTid ;
-   Timer3.Enabled   := True ;
-   mePackageNo.Text := '' ;
- End;
 end;
 
 function TfrmLoadArrivals.IdentifyPackageSupplier(
@@ -4674,7 +5018,7 @@ const
   PACKAGE_NOT_IN_INVENTORY = 0 ;
 begin
  //check that package is available in inventory and Get supplier code
-    PkgSupplierCode := dmArrivingLoads.PkgNoToSuppCodeAR (PkgNo);
+    PkgSupplierCode := dmArrivingLoads.PkgNoToSuppCodeAR (PkgNo, cds_PropsVerkNo.AsInteger);
 
     if PkgSupplierCode = '' then
     Begin
@@ -4748,7 +5092,7 @@ begin
      PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
 
      //if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
-     LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, PkgSupplierCode) ;
+     LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, cds_PropsVerkNo.AsInteger, dmArrivingLoads.SHIPTOINVPOINTNO, PkgSupplierCode) ;
      if LoadNo > 0 then
       Action := eaAccept
        else
@@ -4765,7 +5109,7 @@ begin
        End ;
 
         Action := IdentifyPackageSupplier(NewPkgNo, PkgSupplierCode);
-        LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, PkgSupplierCode) ;
+        LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, cds_PropsVerkNo.AsInteger, dmArrivingLoads.SHIPTOINVPOINTNO, PkgSupplierCode) ;
         if LoadNo > 0 then
           Action := eaAccept
            else
@@ -4778,7 +5122,7 @@ begin
     if Action = eaACCEPT then
     Begin
     //const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
-      AddPkgTo_PackageARConfirmed(NewPkgNo, LoadNo, Scanned, PkgSupplierCode) ;
+      //AddPkgTo_PackageARConfirmed(NewPkgNo, LoadNo, Scanned, PkgSupplierCode) ;
  //     AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
   //Långsamt här
  //     if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
@@ -4790,6 +5134,21 @@ begin
  //     Begin
  //      Error:= False ;
  //     End ;
+
+     //TPosition.ShowPaketNrList(NewPkgNo, pkgSupplierCode);    //-------
+
+     //-------
+
+     if not Assigned(frmPosition) then
+      Begin
+        frmPosition := TPosition.Create(Nil) ;
+      End;
+
+     frmPosition.Show;
+     frmPosition.ShowPaketNrList(NewPkgNo, pkgSupplierCode);
+
+     //--------
+
     End
    else
    if Action = eaREJECT then
@@ -4817,15 +5176,398 @@ begin
       End ;
 
      if Error then
-      ShowMessage(ErrorText) ;
+       begin
+        //ShowMessage(ErrorText) ;
+        
+        if not Assigned(PkgNrExceptionList) then
+        Begin
+          PkgNrExceptionList := TPkgNrExceptionList.Create(Nil) ;
+        End;
+
+        PkgNrExceptionList.Show;
+        PkgNrExceptionList.AddPkgNrExcepionList(inttostr(NewPkgNo));
+
+       end;
+
   //    ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext) ;
 
   finally
     Screen.Cursor := Save_Cursor;  { Always restore to normal }
   end;
  End ;//With
+
 end;
 
+procedure TfrmLoadArrivals.ShowPaketNrList(PaketNr : Integer; pkgSupplierCode : String);
+var
+  //PaketNrList, ProductNrList, ProductNamnList : TStringList;
+  Item : TListItem;
+  I: Integer;
+  ProductName, PositionName, Match_ProductName : String;
+  ProductNo : Integer;
+begin
 
+    (*
+    ProductNoList := TStringList.Create;
+
+      FDQ_ProductNo.Close;
+      FDQ_ProductNo.ParamByName('PaketNr').AsInteger := PaketNr;
+      FDQ_ProductNo.ParamByName('SupplierCode').AsString := pkgSupplierCode;
+      FDQ_ProductNo.Open;
+      FDQ_ProductNo.First;
+      ProductName := FDQ_ProductNoProductDisplayName.AsString;
+      ProductNo := FDQ_ProductNoProductNo.AsInteger;
+      //FDQ_ProductNo.Close;
+      PakagePanel.Visible := True;
+      grid_ProductList.Visible := True;
+
+
+        with Mem_PackProdList do
+        begin
+          Open;
+          Append;
+          FieldByName('Vald').AsInteger := 1;
+          FieldByName('PaketNr').AsInteger := PaketNr;
+          FieldByName('PktSupplierCode').AsString := pkgSupplierCode;
+          FieldByName('ProductDisplayName').AsString := ProductName;
+          FieldByName('ProductNo').AsInteger := ProductNo;
+          Post;
+        end;
+
+       ShowPosition;
+       ShowMatchPosition(ProductNo, True);//17247
+  *)
+end;
+
+procedure TfrmLoadArrivals.ShowPosition;
+var
+   Selected: String;
+
+   I : Integer;
+ begin
+      (*
+     PageControl_Position.Visible := True;
+        PageControl_Position.ActivePage := TabSheet_Match;
+
+         PositionAllNameList := TStringList.Create;
+         PositionAllIDList := TList<Integer>.Create;
+
+         FDQ_Position.Open;
+         FDQ_Position.First;
+         while not FDQ_Position.EOF do
+         begin
+           PositionAllNameList.Add(FDQ_PositionPositionName.AsString);
+           PositionAllIDList.Add(FDQ_PositionPositionID.AsInteger);
+           FDQ_Position.Next;
+         end;
+         FDQ_Position.Close;
+
+         listboxAll.Items.BeginUpdate;
+         listboxAll.Items.Clear;
+         listboxAll.Items.AddStrings(PositionAllNameList);
+         listboxAll.Items.EndUpdate;
+   *)
+
+end;
+
+procedure TfrmLoadArrivals.ShowMatchPosition(ProductNo : Integer; IsProductNoExist: Boolean);
+var
+   Match_PositionList : TStringList;
+   PositionID, PhyInvPtNo, Records, Count : Integer;
+
+begin
+    (*
+    if ( not Mem_MatchaProduct.Active) OR ( not Mem_MatchaProduct.Locate('ProductNo', ProductNo, [])) then
+      begin
+        Match_PositionList := TStringList.Create;
+        cxGrid_MatchPosition.Visible := True;
+        FDQ_InitialMatchPos.Close;
+        FDQ_InitialMatchPos.ParamByName('ProductNo').AsInteger := ProductNo;//Mem_PackProdListProductNo.AsInteger;
+        FDQ_InitialMatchPos.Open;
+        Records :=  FDQ_InitialMatchPos.recordcount;
+        Count := 1;
+        FDQ_InitialMatchPos.First;
+        while not FDQ_InitialMatchPos.Eof do
+        begin
+          with Mem_MatchaProduct do
+          begin
+            Open;
+            Append;
+            if (Records = Count) AND (FDQ_InitialMatchPosPosStatus.AsInteger = 1) then
+               FieldByName('Vald').AsInteger := 1
+            else
+               FieldByName('Vald').AsInteger := 0;
+
+            FieldByName('Fullt').AsInteger := FDQ_InitialMatchPosPosStatus.AsInteger;
+            FieldByName('PositionNamn').AsString := FDQ_InitialMatchPosPositionName.AsString;
+            FieldByName('ProductNamn').AsString := FDQ_InitialMatchPosProductDisplayName.AsString;
+            FieldByName('NoOfPkgs').AsInteger := FDQ_InitialMatchPosNoOfPkgsByPosition.AsInteger;
+            FieldByName('ProductNo').AsInteger := FDQ_InitialMatchPosProductNo.AsInteger;
+            FieldByName('PositionID').AsInteger := FDQ_InitialMatchPosPositionID.AsInteger;
+            Post;
+            Inc(Count);
+          end;
+          FDQ_InitialMatchPos.Next;
+        end;
+        Mem_PackProdList.Next;
+      end;
+  *)
+end;
+
+procedure TfrmLoadArrivals.cxGrid_MatchPositionDBTableView1CellClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+  var
+  ProductNo : Integer;
+  begin
+    //if (Mem_MatchaProduct.Locate('Vald', 1, [])) then
+    //ProductNo := ACellViewInfo.GridRecord.Values[cxGrid_MatchPositionDBTableView1(Sender).GetColumnByFieldName('ProductNo').Index];
+(*
+
+      Mem_MatchaProduct.First;
+      while not Mem_MatchaProduct.Eof do
+      begin
+      with Mem_MatchaProduct do
+        begin
+            Edit;
+            if (FieldByName('Vald').AsInteger = 1) then
+            begin
+              FieldByName('Vald').AsInteger := 0;
+              Post;
+            end;
+        end;
+      end;
+*)
+    //ACellViewInfo.GridView.Items[]
+end;
+
+procedure TfrmLoadArrivals.listboxAllClick(Sender: TObject);
+var
+   Packageno : Integer;
+   Prefix : String;
+begin
+    (*
+    if listboxAll.ItemIndex = -1 then
+       Exit;
+
+        Mem_PackProdList.filter := 'Vald = 1';
+        Mem_PackProdList.filtered := True ;
+        Try
+        Mem_PackProdList.RecordCount;
+        Mem_PackProdList.first ;
+         while not Mem_PackProdList.eof do
+         Begin
+            Packageno  := Mem_PackProdListPaketnr.AsInteger;
+            Prefix := Mem_PackProdListPktSupplierCode.AsString;
+            SelectedPositionAllName := listboxAll.Items[listboxAll.ItemIndex];
+            SelectedPositionAllID := PositionAllIDList.Items[listboxAll.ItemIndex];
+
+            SavetoMemPosition(SelectedPositionAllID, Prefix, Packageno);
+
+          Mem_PackProdList.next ;
+         End;
+        Finally
+             Mem_PackProdList.filtered := False ;
+        End;
+     //ShowMessage(SelectedPositionAllName +' and '+Sinttostr(electedPositionAllID));
+  *)
+end;
+
+procedure TfrmLoadArrivals.SavetoMemPosition(PositionID: Integer; Prefix: String; PkgNr: Integer);
+begin
+      (*
+     with Mem_StorePosition do
+         begin
+           Open;
+           Append;
+           FieldByName('PositionID').AsInteger := PositionID;
+           FieldByName('Prefix').AsString := Prefix;
+           FieldByName('PakageNr').AsInteger := PkgNr;
+           Post;
+         end;
+   *)
+end;
+
+procedure TfrmLoadArrivals.btChangeStyleClick(Sender: TObject);
+var
+ count, I: Integer;
+begin
+
+  OKRightDlg := TOKRightDlg.Create(Nil);
+  Try
+    count := cxStyleRepository2.StyleSheetCount;
+
+    for I := 0 to count - 1 do
+      OKRightDlg.lbStyleSheet.AddItem(cxStyleRepository2.StyleSheets[I]
+        .Caption, cxStyleRepository2.StyleSheets[I]);
+    OKRightDlg.lbStyleSheet.ItemIndex := 0;
+    if OKRightDlg.ShowModal = mrOk then
+    begin
+      with OKRightDlg.lbStyleSheet do
+        if Items.count > 0 then
+        begin
+          grdLoadsDBTableView1.Styles.StyleSheet :=
+            TcxGridTableViewStyleSheet(Items.Objects[ItemIndex]);
+          grdPkgsDBTableView1.Styles.StyleSheet :=
+            TcxGridTableViewStyleSheet(Items.Objects[ItemIndex]);
+
+          //dmsSystem.SaveProps ('fLastListaII', ItemIndex) ;
+        end;
+
+    end;
+
+  finally
+    FreeAndNil(OKRightDlg);
+  end;
+end;
+
+procedure TfrmLoadArrivals.btnStorePositionClick(Sender: TObject);
+var
+   CurrentTime : TDateTime;
+   ProductNo, PackageNo, PositionID : Integer;
+   Prefix : String;
+   LoadNo : Integer;
+begin
+    (*
+    CurrentTime := Now;
+
+       Mem_PackProdList.filter := 'Vald = 1';
+       Mem_PackProdList.filtered := True ;
+       Try
+       Mem_PackProdList.RecordCount;
+       Mem_PackProdList.First;
+        while not Mem_PackProdList.eof do
+         Begin
+          PackageNo := Mem_PackProdListPaketNr.AsInteger;
+          Prefix := Mem_PackProdListPktSupplierCode.AsString;
+
+          Mem_MatchaProduct.Open;
+          Mem_MatchaProduct.filter := 'Vald = 1';
+          Mem_MatchaProduct.filtered := True;
+          //Try
+            Mem_MatchaProduct.RecordCount;
+            Mem_MatchaProduct.First;
+            while not Mem_MatchaProduct.eof do
+             Begin
+              ProductNo := Mem_MatchaProductProductNo.AsInteger;
+              PositionID := Mem_MatchaProductPositionID.AsInteger;
+
+              if(GetPkgPrefix(ProductNo, PackageNo, Prefix)) then
+               SavetoMemPosition(PositionID, Prefix, PackageNo);
+
+              if Mem_PackProdList.RecordCount = 1 then
+              begin
+               Mem_MatchaProduct.Delete;
+               DeleteMatchaProdNo(ProductNo);
+              end
+              else
+              begin
+                Mem_MatchaProduct.Next;
+              end;
+
+             End;
+           //Finally
+           // Mem_MatchaProduct.filtered := False;
+           //End;
+          Mem_PackProdList.Delete;
+         End;
+
+        Mem_StorePosition.Open;
+        Mem_StorePosition.RecordCount;
+        Mem_StorePosition.first ;
+         while not Mem_StorePosition.eof do
+         Begin
+              Packageno  := Mem_StorePositionPakageNr.AsInteger;
+              Prefix := Mem_StorePositionPrefix.AsString;
+
+              FDQ_UpdatePosStatus.ParamByName('PositionID').AsInteger := Mem_StorePositionPositionID.AsInteger;
+              FDQ_UpdatePosStatus.ParamByName('PosStatus').AsInteger := 1;
+              FDQ_UpdatePosStatus.ExecSQL;
+
+              FDQ_StorePosID.Close;
+              FDQ_StorePosID.ParamByName('PosID').AsInteger := Mem_StorePositionPositionID.AsInteger;
+              FDQ_StorePosID.ParamByName('CurrentDate').AsDateTime := CurrentTime;
+              FDQ_StorePosID.ParamByName('Prefix').AsString := Prefix;
+              FDQ_StorePosID.ParamByName('PkgNr').AsInteger := Packageno;
+              FDQ_StorePosID.ExecSQL;
+
+          //ShowMessage('Position: '+inttostr(Mem_StorePositionPositionID.AsInteger) +' and '+Prefix+' and '+inttostr(Packageno));
+
+         LoadNo := dmArrivingLoads.SearchPackageNo(Packageno, Prefix) ;
+         dmArrivingLoads.AddPkgTo_PackageARConfirmed(Packageno, LoadNo, 1, Prefix) ;
+
+         Mem_StorePosition.Delete;
+         //Mem_StorePosition.Next;
+         //DS_StorePosition.DataSet.Delete;
+
+         End;
+
+        Mem_StorePosition.Close;
+        Mem_StorePosition.Open;
+       Finally
+          Mem_PackProdList.filtered := False;
+       //   Mem_PackProdList.Close;
+       ////   Mem_PackProdList.Open;
+          Mem_MatchaProduct.Filtered := False;
+         // Mem_MatchaProduct.Close;
+          //Mem_MatchaProduct.Open;
+       End;
+  *)
+
+end;
+
+procedure TfrmLoadArrivals.DeleteMatchaProdNo(ProductNo: Integer);
+begin
+    (*
+    Mem_MatchaProduct.filter := 'Vald = 0';
+          Mem_MatchaProduct.filtered := True;
+          Try
+            Mem_MatchaProduct.First;
+            while not Mem_MatchaProduct.Eof do
+            Begin
+              Mem_MatchaProduct.Delete;
+            End;
+          Finally
+            Mem_MatchaProduct.Filtered := False;
+          End;
+  *)
+end;
+
+function TfrmLoadArrivals.GetPkgPrefix(ProductNo: Integer;
+      PackageNo: Integer; Prefix: String): Boolean;
+var
+   PkgNoList: TList<Integer>;
+   PkgPrefixList: TStringList;
+   I: Integer;
+begin
+     //PkgNoList := TList<Integer>.Create;
+     //PkgPrefixList := TStringList.Create;
+        (*
+       Result := False;
+
+           FDQ_ProductPkg.Close;
+           FDQ_ProductPkg.ParamByName('ProductNo').AsInteger := ProductNo;
+           FDQ_ProductPkg.Open;
+           FDQ_ProductPkg.RecordCount;
+           FDQ_ProductPkg.First;
+            while not FDQ_ProductPkg.Eof do
+            begin
+              //PkgNoList.Add(FDQ_ProductPkgPackageNo.AsInteger);
+              //PkgPrefixList.Add(FDQ_ProductPkgSupplierCode.AsString);
+
+              //for I := 0 to FDQ_ProductPkg.RecordCount-1 do
+             //while not FDQ_ProductPkg.Eof do
+              //begin
+                //if (PkgNoList[I] = PackageNo) AND (PkgPrefixList[I] = Prefix) then
+                if (FDQ_ProductPkgPackageNo.AsInteger = PackageNo) AND (FDQ_ProductPkgSupplierCode.AsString = Prefix) then
+                begin
+                  Result := True;
+                  Exit;
+                end;
+               FDQ_ProductPkg.Next;
+              //end;
+            end;
+    *)
+end;
 
 end.

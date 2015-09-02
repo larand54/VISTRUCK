@@ -566,6 +566,9 @@ type
     sp_CngArtNoByPkgSize: TFDStoredProc;
     cdsArrivingPackagesPackage_Size: TIntegerField;
     cdsArrivingPackagesPackageSizeName: TStringField;
+    FDQ_GetLoadNo: TFDQuery;
+    FDQ_GetLoadNoLoadNo: TIntegerField;
+    cdsArrivingPackagesPosition: TStringField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -593,12 +596,13 @@ type
 
   public
     { Public declarations }
+    CustomerNo, SHIPTOINVPOINTNO  : Integer ;
     LoadConfirmedOK : Boolean ;
+    function  SearchPackageNo(const PackageNo, CustomerNo, SHIPTOINVPOINTNO  : Integer;const Prefix  : String) : Integer ;//LoadNo
     procedure CngArtNoByPkgSize (const PackageNo, Package_Size : Integer; Prefix : string) ;
     function  GetNewPackage_Size(var PackageSizeName : String) : Integer ;
     Procedure AddPkgTo_PackageARConfirmed(const NewPkgNo, LoadNo, Scanned : Integer;const Prefix : String) ;
-    function  PkgNoToSuppCodeAR(const PkgNo : Integer) : string3;
-    function  SearchPackageNo(const PackageNo  : Integer;const Prefix  : String) : Integer ;//LoadNo
+    function  PkgNoToSuppCodeAR(const PkgNo, CustomerNo : Integer): string3;
     function  AR_ExternLoad(const LoadNo, Status, LIPNo, CreatedUser : Integer) : Boolean ;
     procedure RefreshArrivingPackages ;
 //    procedure LoadUserProps (const Form : String) ;
@@ -2457,14 +2461,38 @@ Begin
  end;
 End ;
 
-function TdmArrivingLoads.SearchPackageNo(const PackageNo  : Integer;const Prefix  : String) : Integer ;//LoadNo
+function TdmArrivingLoads.SearchPackageNo(const PackageNo, CustomerNo, SHIPTOINVPOINTNO  : Integer;const Prefix  : String) : Integer ;//LoadNo
 Begin
-  if cdsAllPackageNos.FindKey([PackageNo, Prefix]) then
-  Begin
-    Result  :=  cdsAllPackageNosLoadNo.AsInteger ;
-  end
+//replace with search in db
+   FDQ_GetLoadNo.Close;
+   FDQ_GetLoadNo.ParamByName('PkgNo').AsInteger             := PackageNo;
+   FDQ_GetLoadNo.ParamByName('CustomerNo').AsInteger        := CustomerNo;
+   FDQ_GetLoadNo.ParamByName('Prefix').AsString             := Prefix;
+   FDQ_GetLoadNo.ParamByName('SHIPTOINVPOINTNO').AsInteger  := SHIPTOINVPOINTNO ;
+
+   FDQ_GetLoadNo.Open;
+   Try
+   if FDQ_GetLoadNo.RecordCount > 0 then
+    Result := FDQ_GetLoadNoLoadNo.AsInteger
    else
+   Result  := -1 ;
+
+   if not cdsArrivingLoads.FindKey([Result]) then
     Result  := -1 ;
+
+   Finally
+    FDQ_GetLoadNo.Close ;
+   End;
+
+  (*
+    if cdsAllPackageNos.FindKey([PackageNo, Prefix]) then
+     Begin
+       Result  :=  cdsAllPackageNosLoadNo.AsInteger ;
+     end
+      else
+       Result  := -1 ;
+ *)
+
 End;
 
 
@@ -2534,7 +2562,7 @@ Begin
   End;
 End;
 
-function TdmArrivingLoads.PkgNoToSuppCodeAR(const PkgNo : Integer): string3;
+function TdmArrivingLoads.PkgNoToSuppCodeAR(const PkgNo, CustomerNo : Integer): string3;
 var
   SuppCode : string3;
 begin
@@ -2543,8 +2571,15 @@ begin
 //  cdsPkgsByInvOwner.SetProvider(provPkgsByInvOwner);
 //  cdsPkgsByInvOwner.Active:= True ;
 
-  cdsAllPackageNos.Filter   :=  'PackageNo = ' + IntToStr(PkgNo) ;
-  cdsAllPackageNos.Filtered :=  True ;
+   //get PkgNo, CustomerNo as param in this procedure   and ThisUser.UserID
+  // execute cdsAllPackageNos query here without filter
+   cdsAllPackageNos.Close;
+   cdsAllPackageNos.ParamByName('PkgNo').AsInteger := PkgNo;
+   cdsAllPackageNos.ParamByName('CustomerNo').AsInteger := CustomerNo;
+   cdsAllPackageNos.ParamByName('UserID').AsInteger := ThisUser.UserID;
+   cdsAllPackageNos.Open;
+  //cdsAllPackageNos.Filter   :=  'PackageNo = ' + IntToStr(PkgNo) ;
+  //cdsAllPackageNos.Filtered :=  True ;
   Try
   case cdsAllPackageNos.RecordCount of
 
@@ -2574,7 +2609,7 @@ begin
         end;
     end;
   Finally
-    cdsAllPackageNos.Filtered := False ;
+    cdsAllPackageNos.Close;
   End;
 
   Result := SuppCode;

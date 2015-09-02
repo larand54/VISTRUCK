@@ -9,7 +9,7 @@ uses
   VidaType, Controls, Dialogs, kbmMemTable,
   cxGridTableView, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
-  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt ;
+  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore ;
 
 type
  TAmbiguityEvent = procedure(
@@ -467,6 +467,10 @@ type
     sq_dbPropsLangPath: TStringField;
     sq_dbPropsFastPath: TStringField;
     sp_Lang: TFDStoredProc;
+    FDQ_StyleSettings: TFDQuery;
+    FDQ_StyleSettingsViewName: TStringField;
+    FDQ_StyleSettingsUserID: TIntegerField;
+    FDQ_StyleSettingsSets: TBlobField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -613,6 +617,11 @@ type
     function  Get_Dir(const pFieldName : String) : String ;
     function  Get_SystemDir(const Form, pFieldName : String) : String ;
     function  GetLangPath(): String;
+
+        function LoadStyles(const UserID: Integer; const ViewName: String;
+      PropertiesStore: TcxPropertiesStore): Boolean;
+    procedure StoreStyles(const UserID: Integer; const ViewName: String;
+      PropertiesStore: TcxPropertiesStore);
 
 
     property  OnAmbiguousPkgNo : TAmbiguityEvent read  FOnAmbiguousPkgNo write FOnAmbiguousPkgNo;
@@ -1752,6 +1761,73 @@ begin
    End ;
   end;
   sq_GridSets2.Active:= False ;
+ End ;
+end;
+
+procedure TdmsSystem.StoreStyles(const UserID : Integer; const ViewName : String; PropertiesStore : TcxPropertiesStore) ;
+var
+  Stream: TMemoryStream;
+begin
+ With dmsSystem do
+ Begin
+  FDQ_StyleSettings.ParamByName('ViewName').AsString:= ViewName ;
+  FDQ_StyleSettings.ParamByName('UserID').AsInteger := UserID ;
+  FDQ_StyleSettings.Active:= True ;
+  if not FDQ_StyleSettings.Eof then
+  FDQ_StyleSettings.Edit
+  else
+  Begin
+   FDQ_StyleSettings.Insert ;
+   FDQ_StyleSettingsViewName.AsString:= ViewName ;
+   FDQ_StyleSettingsUserID.AsInteger := UserID ;
+  End ;
+  if FDQ_StyleSettings.State in  [dsEdit, dsInsert] then
+  begin
+   Stream := TMemoryStream.Create;
+   try
+   PropertiesStore.StorageStream := Stream;
+   PropertiesStore.StoreTo();
+    Stream.Position := 0;
+    FDQ_StyleSettingsSets.LoadFromStream(Stream);
+   finally
+    Stream.Free;
+   end;
+   FDQ_StyleSettings.Post;
+   if FDQ_StyleSettings.ChangeCount > 0 then
+   Begin
+    FDQ_StyleSettings.ApplyUpdates(0) ;
+    FDQ_StyleSettings.CommitUpdates ;
+   End ;
+  end;
+  FDQ_StyleSettings.Active:= False ;
+ End ;
+end;
+
+function TdmsSystem.LoadStyles(const UserID : Integer; const ViewName : String ; PropertiesStore : TcxPropertiesStore) : Boolean ;
+var
+  Stream: TMemoryStream;
+begin
+ Result:= False ;
+ With dmsSystem do
+ Begin
+  FDQ_StyleSettings.ParamByName('ViewName').AsString  := ViewName ;
+  FDQ_StyleSettings.ParamByName('UserID').AsInteger   := UserID ;
+  FDQ_StyleSettings.Active:= True ;
+  if not FDQ_StyleSettings.Eof then
+  Begin
+   Stream := TMemoryStream.Create;
+   try
+    FDQ_StyleSettingsSets.SaveToStream(Stream);
+    Stream.Position := 0;
+    //AGridView.RestoreFromStream(Stream);
+    PropertiesStore.StorageStream := Stream;
+    PropertiesStore.RestoreFrom;
+    Result:= True ;
+   finally
+    Stream.Free;
+   end;
+  End ;
+  FDQ_StyleSettings.Active:= False ;
  End ;
 end;
 
