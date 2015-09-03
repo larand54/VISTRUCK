@@ -860,7 +860,7 @@ object Position: TPosition
       'WHERE '
       'p.ProductNo = :ProductNo')
     Left = 32
-    Top = 130
+    Top = 106
     ParamData = <
       item
         Name = 'PRODUCTNO'

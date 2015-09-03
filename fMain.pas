@@ -335,35 +335,6 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 // ExceptionNotify := MyNotify; // Assign ExceptionNotify variable to MyNotify procedure.
   Application.OnException := AppException;
-{$IFDEF DEBUG}
-  if pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0  then begin
-    if GetEnvironmentVariable('COMPUTERNAME')= 'CARMAK-FASTER' then
-      dmsConnector.DriveLetter := 'D:\'
-    else
-      dmsConnector.DriveLetter := 'C:\';
-    ThisUser.Database:= 'alvesql03:vis_vida' ;
-      with dmsConnector.FDConnection1 do begin
-        Params.Clear;
-        Params.Add('Server=alvesql03');
-        Params.Add('Database=vis_vida');
-        Params.Add('OSAuthent=No');
-        Params.add('MetaDefCatalog=vis_vida');
-        Params.Add('MetaDefSchema=dbo');
-        Params.Add('User_Name=Lars');
-        Params.Add('Password=woods2011');
-        Params.Add('DriverID=MSSQL');
-      end;
-  end
-  else begin
-  //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-    ThisUser.Database:= 'vis.vida.se:vis_vida' ;
-  end;
-{$ELSE}
- //ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-  ThisUser.Database:= 'vis.vida.se:vis_vida' ;
- //   ThisUser.Database  := 'alvesql03:vis_vida' ;
-
-{$ENDIF}
 end;
 
 
@@ -420,40 +391,7 @@ begin
  // ThisUser.Database:= 'vis.vida.se:vis_vida' ;
 //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
 
-<<<<<<< HEAD
- ThisUser.Database  := 'alvesql03:vis_vida' ;
-=======
-// ThisUser.Database  := 'alvesql03:vis_vida' ;
-{$IFDEF DEBUG}
-  if pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0  then begin
-    if GetEnvironmentVariable('COMPUTERNAME')= 'CARMAK-FASTER' then
-      dmsConnector.DriveLetter := 'D:\'
-    else
-      dmsConnector.DriveLetter := 'C:\';
-    ThisUser.Database:= 'alvesql03:vis_vida' ;
-      with dmsConnector.FDConnection1 do begin
-        Params.Clear;
-        Params.Add('Server=alvesql03');
-        Params.Add('Database=vis_vida');
-        Params.Add('OSAuthent=No');
-        Params.add('MetaDefCatalog=vis_vida');
-        Params.Add('MetaDefSchema=dbo');
-        Params.Add('User_Name=Lars');
-        Params.Add('Password=woods2011');
-        Params.Add('DriverID=MSSQL');
-      end;
-  end
-  else begin
-  //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-    ThisUser.Database:= 'vis.vida.se:vis_vida' ;
-  end;
-{$ELSE}
- //ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-  ThisUser.Database:= 'vis.vida.se:vis_vida' ;
- //   ThisUser.Database  := 'alvesql03:vis_vida' ;
-
-{$ENDIF}
->>>>>>> origin/master
+ ThisUser.Database  := 'alvesql01:vis_vida' ;
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then
     Close

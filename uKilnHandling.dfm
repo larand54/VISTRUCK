@@ -4,12 +4,12 @@ object fkilnHandling: TfkilnHandling
   Align = alClient
   BorderStyle = bsNone
   Caption = 'LAGERRAPPORT'
-  ClientHeight = 822
-  ClientWidth = 1252
+  ClientHeight = 1012
+  ClientWidth = 1541
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -23,13 +23,17 @@ object fkilnHandling: TfkilnHandling
   OnShow = FormShow
   ExplicitWidth = 320
   ExplicitHeight = 240
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 68
-    Width = 1252
-    Height = 754
+    Top = 84
+    Width = 1541
+    Height = 928
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tsTABELL
@@ -39,19 +43,27 @@ object fkilnHandling: TfkilnHandling
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 754
-    ClientRectRight = 1252
+    ClientRectBottom = 928
+    ClientRectRight = 1541
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
       ExplicitWidth = 0
       ExplicitHeight = 0
       object Memo1: TMemo
-        Left = 64
-        Top = 112
-        Width = 153
-        Height = 65
+        Left = 79
+        Top = 138
+        Width = 188
+        Height = 80
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Lines.Strings = (
           'Memo1')
         TabOrder = 0
@@ -59,36 +71,49 @@ object fkilnHandling: TfkilnHandling
       end
       object pcPktNrAndTorkSats: TcxPageControl
         Left = 0
-        Top = 704
-        Width = 1252
-        Height = 50
+        Top = 866
+        Width = 1541
+        Height = 62
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alBottom
         TabOrder = 1
         Properties.CustomButtons.Buttons = <>
-        ClientRectBottom = 46
-        ClientRectLeft = 4
-        ClientRectRight = 1248
-        ClientRectTop = 4
+        ClientRectBottom = 61
+        ClientRectLeft = 1
+        ClientRectRight = 1540
+        ClientRectTop = 1
       end
       object cxSplitter1: TcxSplitter
         Left = 0
-        Top = 696
-        Width = 1252
+        Top = 858
+        Width = 1541
         Height = 8
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         HotZoneClassName = 'TcxMediaPlayer8Style'
         AlignSplitter = salBottom
         Control = pcPktNrAndTorkSats
         Color = clGreen
         ParentColor = False
-        ExplicitWidth = 8
+        ExplicitTop = 857
       end
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
-        Width = 1252
-        Height = 696
+        Width = 1541
+        Height = 858
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 3
+        ExplicitHeight = 857
         object cxGrid1DBBandedTableView1: TcxGridDBBandedTableView
           OnMouseDown = cxGrid1DBBandedTableView1MouseDown
           Navigator.Buttons.CustomButtons = <>
@@ -573,51 +598,75 @@ object fkilnHandling: TfkilnHandling
   object pgInventory: TcxPageControl
     Left = 0
     Top = 0
-    Width = 1252
-    Height = 68
+    Width = 1541
+    Height = 84
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     TabOrder = 5
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 64
-    ClientRectLeft = 4
-    ClientRectRight = 1248
-    ClientRectTop = 4
+    ClientRectBottom = 83
+    ClientRectLeft = 1
+    ClientRectRight = 1540
+    ClientRectTop = 1
     object tsLagret: TcxTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Lager'
       ImageIndex = 2
-      ExplicitLeft = 1
-      ExplicitTop = 1
-      ExplicitWidth = 1250
-      ExplicitHeight = 66
+      ExplicitLeft = 5
+      ExplicitTop = 5
+      ExplicitWidth = 1531
+      ExplicitHeight = 74
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1244
-        Height = 60
+        Width = 1539
+        Height = 82
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 1250
-        ExplicitHeight = 66
+        ExplicitWidth = 1531
+        ExplicitHeight = 74
         DesignSize = (
-          1244
-          60)
+          1539
+          82)
         object cxLabel2: TcxLabel
-          Left = 4
-          Top = 13
+          Left = 5
+          Top = 16
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = #196'gare:'
           Style.StyleController = cxEditStyleController1
         end
         object cxLabelVagn: TcxLabel
-          Left = 287
-          Top = 7
+          Left = 353
+          Top = 9
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Markerad vagn:'
         end
         object lcProgressKiln: TcxDBLookupComboBox
-          Left = 45
-          Top = 36
+          Left = 55
+          Top = 44
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           DataBinding.DataField = 'ProgressKiln'
           DataBinding.DataSource = dsUserProp
           Properties.ImmediatePost = True
@@ -629,90 +678,130 @@ object fkilnHandling: TfkilnHandling
           Properties.ListOptions.ShowHeader = False
           Style.StyleController = cxEditStyleController3
           TabOrder = 2
-          Width = 236
+          Width = 291
         end
         object cxButton3: TcxButton
-          Left = 810
-          Top = 12
-          Width = 82
-          Height = 50
+          Left = 997
+          Top = 15
+          Width = 101
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acMoveFromKiln
           TabOrder = 4
           WordWrap = True
         end
         object cxButton1: TcxButton
-          Left = 640
-          Top = 12
-          Width = 86
-          Height = 50
+          Left = 788
+          Top = 15
+          Width = 106
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acMoveVagnIntoKiln
           TabOrder = 5
           WordWrap = True
         end
         object cxButton6: TcxButton
-          Left = 566
-          Top = 12
-          Width = 73
-          Height = 50
+          Left = 697
+          Top = 15
+          Width = 89
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acEditVagn
           TabOrder = 6
           WordWrap = True
         end
         object cxButton5: TcxButton
-          Left = 484
-          Top = 12
-          Width = 81
-          Height = 50
+          Left = 596
+          Top = 15
+          Width = 99
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acAddVagn
           TabOrder = 7
           WordWrap = True
         end
         object cxButton2: TcxButton
-          Left = 412
-          Top = 12
-          Width = 71
-          Height = 50
+          Left = 507
+          Top = 15
+          Width = 87
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acPkgTypeTable
           OptionsImage.Layout = blGlyphTop
           TabOrder = 8
         end
         object cxLabel1: TcxLabel
-          Left = 4
-          Top = 36
+          Left = 5
+          Top = 44
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Tork:'
           Style.StyleController = cxEditStyleController1
         end
         object cxButton4: TcxButton
-          Left = 727
-          Top = 12
-          Width = 82
-          Height = 50
+          Left = 895
+          Top = 15
+          Width = 101
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acCancelMoveVagnIntoKiln
           LookAndFeel.SkinName = ''
           TabOrder = 10
           WordWrap = True
         end
         object cbColAutoWidth: TcxCheckBox
-          Left = 284
-          Top = 22
+          Left = 350
+          Top = 27
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Auto kolumnbredd'
           Properties.ImmediatePost = True
           Properties.OnChange = cbColAutoWidthPropertiesChange
           TabOrder = 11
-          Width = 119
+          Width = 146
         end
         object cxButton7: TcxButton
-          Left = 894
-          Top = 12
-          Width = 83
-          Height = 50
+          Left = 1100
+          Top = 15
+          Width = 102
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acCancelMoveFromKiln
           TabOrder = 12
           WordWrap = True
         end
         object lcOWNER: TcxDBLookupComboBox
-          Left = 45
-          Top = 14
+          Left = 55
+          Top = 17
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           DataBinding.DataField = 'OWNER'
           DataBinding.DataSource = dsUserProp
           Properties.DropDownListStyle = lsFixedList
@@ -725,50 +814,75 @@ object fkilnHandling: TfkilnHandling
           Properties.MaxLength = 0
           Style.StyleController = cxEditStyleController3
           TabOrder = 13
-          Width = 236
+          Width = 291
         end
         object lNoOfVagnarKiln: TcxDBLabel
-          Left = 1058
-          Top = 15
+          Left = 1302
+          Top = 18
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           DataBinding.DataField = 'NoOfVagnar'
-          Height = 21
-          Width = 85
+          Height = 26
+          Width = 105
         end
         object lAntalVagnarBefore: TcxDBLabel
-          Left = 1058
-          Top = 40
+          Left = 1302
+          Top = 49
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           DataBinding.DataField = 'NoOfVagnarBefore'
-          Height = 21
-          Width = 85
+          Height = 26
+          Width = 105
         end
         object cxButton9: TcxButton
-          Left = 1143
-          Top = 12
-          Width = 89
-          Height = 50
+          Left = 1415
+          Top = 15
+          Width = 109
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Anchors = [akTop, akRight]
           Caption = 'St'#228'ng'
           TabOrder = 3
           OnClick = cxButton9Click
+          ExplicitLeft = 1407
         end
         object seColWidth: TcxDBSpinEdit
-          Left = 345
-          Top = 43
+          Left = 425
+          Top = 53
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           DataBinding.DataField = 'CopyPcs'
           DataBinding.DataSource = dsUserProp
           TabOrder = 16
-          Width = 63
+          Width = 77
         end
         object cxLabel3: TcxLabel
-          Left = 287
-          Top = 45
+          Left = 353
+          Top = 55
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Caption = 'Kolbredd:'
         end
         object cxButton8: TcxButton
-          Left = 978
-          Top = 11
-          Width = 74
-          Height = 50
+          Left = 1204
+          Top = 14
+          Width = 91
+          Height = 61
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
           Action = acSaveProps
           TabOrder = 18
           WordWrap = True
@@ -779,8 +893,8 @@ object fkilnHandling: TfkilnHandling
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
+    Font.Height = -14
+    Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (
       'Default'
@@ -1480,7 +1594,6 @@ object fkilnHandling: TfkilnHandling
     Top = 457
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1497,13 +1610,11 @@ object fkilnHandling: TfkilnHandling
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1519,11 +1630,9 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link3: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1539,11 +1648,9 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link4: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1559,13 +1666,11 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link5: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1581,7 +1686,6 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -1622,7 +1726,7 @@ object fkilnHandling: TfkilnHandling
   object cxStyleRepository1: TcxStyleRepository
     Left = 312
     Top = 416
-    PixelsPerInch = 96
+    PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svTextColor]
       Color = clMaroon
@@ -2529,12 +2633,12 @@ object fkilnHandling: TfkilnHandling
     Style.TextStyle = [fsBold]
     Left = 312
     Top = 264
-    PixelsPerInch = 96
+    PixelsPerInch = 120
   end
   object cxEditStyleController2: TcxEditStyleController
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -8
+    Style.Font.Height = -10
     Style.Font.Name = 'Verdana'
     Style.Font.Style = []
     Style.LookAndFeel.Kind = lfFlat
@@ -2548,7 +2652,7 @@ object fkilnHandling: TfkilnHandling
     StyleHot.LookAndFeel.Kind = lfFlat
     Left = 312
     Top = 312
-    PixelsPerInch = 96
+    PixelsPerInch = 120
   end
   object cxEditStyleController3: TcxEditStyleController
     Style.BorderStyle = ebsNone
@@ -2556,7 +2660,7 @@ object fkilnHandling: TfkilnHandling
     Style.ButtonTransparency = ebtHideUnselected
     Left = 312
     Top = 368
-    PixelsPerInch = 96
+    PixelsPerInch = 120
   end
   object pmKilnPkgs: TdxBarPopupMenu
     BarManager = dxBarManager1
