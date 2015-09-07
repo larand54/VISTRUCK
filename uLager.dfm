@@ -5,7 +5,7 @@ object fLager: TfLager
   BorderStyle = bsNone
   Caption = 'fLager'
   ClientHeight = 857
-  ClientWidth = 1652
+  ClientWidth = 1578
   Color = clBtnFace
   DragKind = dkDock
   DragMode = dmAutomatic
@@ -23,14 +23,12 @@ object fLager: TfLager
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 120
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
     Top = 159
-    Width = 1652
+    Width = 1578
     Height = 698
     Margins.Left = 4
     Margins.Top = 4
@@ -45,8 +43,9 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
+    ExplicitWidth = 1652
     ClientRectBottom = 698
-    ClientRectRight = 1652
+    ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
       Margins.Left = 4
@@ -55,10 +54,11 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
+      ExplicitWidth = 1652
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 1652
+        Width = 1578
         Height = 698
         Margins.Left = 4
         Margins.Top = 4
@@ -67,10 +67,11 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 1652
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
-          Width = 1652
+          Width = 1578
           Height = 333
           Margins.Left = 4
           Margins.Top = 4
@@ -82,7 +83,7 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitHeight = 331
+          ExplicitWidth = 1652
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -209,7 +210,7 @@ object fLager: TfLager
         object PanelPaketnr: TPanel
           Left = 0
           Top = 341
-          Width = 1652
+          Width = 1578
           Height = 357
           Margins.Left = 4
           Margins.Top = 4
@@ -218,10 +219,11 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitWidth = 1652
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
-            Width = 1652
+            Width = 1578
             Height = 98
             Margins.Left = 4
             Margins.Top = 4
@@ -229,9 +231,7 @@ object fLager: TfLager
             Margins.Bottom = 4
             Align = alTop
             TabOrder = 0
-            DesignSize = (
-              1652
-              98)
+            ExplicitWidth = 1652
             object cxButton1: TcxButton
               Left = 12
               Top = 7
@@ -305,25 +305,6 @@ object fLager: TfLager
               Font.Style = []
               ParentFont = False
             end
-            object cxButton5: TcxButton
-              Left = 1537
-              Top = 10
-              Width = 107
-              Height = 60
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
-              Action = acClosePkgDtlVy
-              Anchors = [akTop, akRight]
-              TabOrder = 5
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -18
-              Font.Name = 'MS Sans Serif'
-              Font.Style = []
-              ParentFont = False
-            end
             object cxButton8: TcxButton
               Left = 460
               Top = 7
@@ -354,14 +335,14 @@ object fLager: TfLager
               ParentFont = False
               Style.StyleController = cxEditStyleControllerFileldLabels
               Properties.Alignment.Horz = taCenter
-              ExplicitTop = 77
-              AnchorX = 826
+              ExplicitTop = 76
+              AnchorX = 789
             end
             object cxButton6: TcxButton
               Left = 658
               Top = 7
               Width = 151
-              Height = 61
+              Height = 74
               Margins.Left = 4
               Margins.Top = 4
               Margins.Right = 4
@@ -380,7 +361,7 @@ object fLager: TfLager
               Left = 816
               Top = 7
               Width = 150
-              Height = 61
+              Height = 74
               Margins.Left = 4
               Margins.Top = 4
               Margins.Right = 4
@@ -399,7 +380,7 @@ object fLager: TfLager
               Left = 974
               Top = 7
               Width = 140
-              Height = 61
+              Height = 74
               Margins.Left = 4
               Margins.Top = 4
               Margins.Right = 4
@@ -415,11 +396,29 @@ object fLager: TfLager
               ParentFont = False
               WordWrap = True
             end
+            object cxButton5: TcxButton
+              Left = 1122
+              Top = 7
+              Width = 107
+              Height = 74
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              Action = acClosePkgDtlVy
+              TabOrder = 5
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -18
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
           end
           object grdPkgNos: TcxGrid
             Left = 0
             Top = 98
-            Width = 1652
+            Width = 1578
             Height = 259
             Margins.Left = 4
             Margins.Top = 4
@@ -428,6 +427,7 @@ object fLager: TfLager
             Align = alClient
             PopupMenu = pmPkgNos
             TabOrder = 1
+            ExplicitWidth = 1652
             object grdPkgNosDBBandedTableView1: TcxGridDBBandedTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dmInventory.ds_invpivPkgDtl
@@ -483,7 +483,7 @@ object fLager: TfLager
         object cxSplitter1: TcxSplitter
           Left = 0
           Top = 333
-          Width = 1652
+          Width = 1578
           Height = 8
           Margins.Left = 4
           Margins.Top = 4
@@ -494,7 +494,7 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitTop = 331
+          ExplicitWidth = 1652
         end
       end
     end
@@ -502,7 +502,7 @@ object fLager: TfLager
   object dxBarDockControl1: TdxBarDockControl
     Left = 0
     Top = 0
-    Width = 1652
+    Width = 1578
     Height = 23
     Margins.Left = 4
     Margins.Top = 4
@@ -510,11 +510,12 @@ object fLager: TfLager
     Margins.Bottom = 4
     Align = dalTop
     BarManager = dxBarManager1
+    ExplicitWidth = 1652
   end
   object Panel3: TPanel
     Left = 0
     Top = 23
-    Width = 1652
+    Width = 1578
     Height = 136
     Margins.Left = 4
     Margins.Top = 4
@@ -522,8 +523,10 @@ object fLager: TfLager
     Margins.Bottom = 4
     Align = alTop
     TabOrder = 6
+    ExplicitTop = 31
+    ExplicitWidth = 1650
     DesignSize = (
-      1652
+      1578
       136)
     object cxLabel1: TcxLabel
       Left = 12
@@ -551,8 +554,8 @@ object fLager: TfLager
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object bUpdate: TcxButton
-      Left = 1003
-      Top = 7
+      Left = 872
+      Top = 8
       Width = 94
       Height = 100
       Margins.Left = 4
@@ -570,10 +573,10 @@ object fLager: TfLager
       WordWrap = True
     end
     object bClearFilter: TcxButton
-      Left = 1217
-      Top = 58
+      Left = 560
+      Top = 78
       Width = 94
-      Height = 48
+      Height = 50
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -589,8 +592,8 @@ object fLager: TfLager
       WordWrap = True
     end
     object bClose: TcxButton
-      Left = 1536
-      Top = 10
+      Left = 1092
+      Top = 8
       Width = 96
       Height = 100
       Margins.Left = 4
@@ -598,7 +601,6 @@ object fLager: TfLager
       Margins.Right = 4
       Margins.Bottom = 4
       Action = acClose
-      Anchors = [akTop, akRight]
       TabOrder = 14
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -608,8 +610,8 @@ object fLager: TfLager
       ParentFont = False
     end
     object cxButtonSparaVyer: TcxButton
-      Left = 1217
-      Top = 7
+      Left = 658
+      Top = 78
       Width = 94
       Height = 50
       Margins.Left = 4
@@ -627,20 +629,21 @@ object fLager: TfLager
       WordWrap = True
     end
     object eFocusDummy: TEdit
-      Left = 1642
+      Left = 1568
       Top = 12
       Width = 1
-      Height = 21
+      Height = 24
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Anchors = [akTop, akRight]
       TabOrder = 17
+      ExplicitLeft = 1642
     end
     object cbHideZeroColumns: TcxCheckBox
-      Left = 591
-      Top = 98
+      Left = 1023
+      Top = 114
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -674,7 +677,7 @@ object fLager: TfLager
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 5
-      Width = 131
+      Width = 201
     end
     object cbLIP: TcxCheckComboBox
       Left = 393
@@ -693,7 +696,7 @@ object fLager: TfLager
       Properties.Items = <>
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 1
-      Width = 396
+      Width = 466
     end
     object lcOWNER: TcxDBLookupComboBox
       Left = 103
@@ -838,8 +841,8 @@ object fLager: TfLager
       Width = 149
     end
     object bPrint: TcxButton
-      Left = 1103
-      Top = 7
+      Left = 760
+      Top = 78
       Width = 99
       Height = 50
       Margins.Left = 4
@@ -857,10 +860,10 @@ object fLager: TfLager
       WordWrap = True
     end
     object cxButton7: TcxButton
-      Left = 1103
-      Top = 58
+      Left = 1023
+      Top = 115
       Width = 99
-      Height = 48
+      Height = 28
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -879,8 +882,8 @@ object fLager: TfLager
       OnClick = acPrintPkgTableExecute
     end
     object cbInklEjFakt: TcxComboBox
-      Left = 852
-      Top = 5
+      Left = 393
+      Top = 96
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -895,11 +898,11 @@ object fLager: TfLager
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 2
       Text = 'Lager'
-      Width = 112
+      Width = 149
     end
     object cxLabel8: TcxLabel
-      Left = 796
-      Top = 11
+      Left = 274
+      Top = 103
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -938,8 +941,8 @@ object fLager: TfLager
       Width = 88
     end
     object cxButton11: TcxButton
-      Left = 1319
-      Top = 7
+      Left = 974
+      Top = 8
       Width = 110
       Height = 100
       Margins.Left = 4

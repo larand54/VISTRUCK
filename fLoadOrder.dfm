@@ -846,9 +846,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Width = 144
         end
         object cxButton1: TcxButton
-          Left = 1198
+          Left = 1203
           Top = 6
-          Width = 70
+          Width = 85
           Height = 70
           Margins.Left = 4
           Margins.Top = 4
@@ -865,9 +865,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           ParentFont = False
         end
         object cxButton2: TcxButton
-          Left = 1275
+          Left = 1289
           Top = 6
-          Width = 73
+          Width = 88
           Height = 70
           Margins.Left = 4
           Margins.Top = 4
@@ -884,7 +884,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           ParentFont = False
         end
         object cxButton3: TcxButton
-          Left = 1003
+          Left = 1023
           Top = 6
           Width = 90
           Height = 70
@@ -906,7 +906,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         object cxButton4: TcxButton
           Left = 823
           Top = 6
-          Width = 110
+          Width = 130
           Height = 70
           Margins.Left = 4
           Margins.Top = 4
@@ -923,7 +923,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           ParentFont = False
         end
         object cxButton7: TcxButton
-          Left = 933
+          Left = 953
           Top = 6
           Width = 70
           Height = 70
@@ -1074,7 +1074,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cxButton8: TcxButton
-          Left = 1100
+          Left = 1113
           Top = 6
           Width = 90
           Height = 70
@@ -1174,7 +1174,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Visible = False
         end
         object cxButton9: TcxButton
-          Left = 1349
+          Left = 1385
           Top = 6
           Width = 100
           Height = 70
@@ -7047,6 +7047,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -7061,6 +7062,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -8545,53 +8547,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       'LookupResultField'
       'DataField'
       'KeyField'
-      'ListField'
-      'HelpFile'
-      'Origin'
-      'ConnectionName'
-      'DisplayChecked'
-      'DisplayUnchecked'
-      'HotZoneClassName'
-      'KeyFieldNames'
-      'ListFieldNames'
-      'OldName'
-      'PropertiesClassName'
-      'AutoIncFields'
-      'CaseInsFields'
-      'Categories'
-      'ClassName'
-      'CommandText'
-      'ConstraintErrorMessage'
-      'CustomConstraint'
-      'DataTypeName'
-      'DefaultExpression'
-      'DescFields'
-      'DetailFields'
-      'EditFormat'
-      'Expression'
-      'FetchRowSQL'
-      'Fields'
-      'Filter'
-      'FmtDisplayDate'
-      'FmtDisplayDateTime'
-      'FmtDisplayNumeric'
-      'FmtDisplayTime'
-      'FmtEditNumeric'
-      'GeneratorName'
-      'ImportedConstraint'
-      'IndexFieldNames'
-      'IniFileName'
-      'InsertSQL'
-      'LockSQL'
-      'PersistentFileName'
-      'PictureFilter'
-      'PictureGraphicClassName'
-      'RegistryPath'
-      'SkinName'
-      'StorageName'
-      'StoredProcName'
-      'UpdateTableName'
-      'Version'
       'ListField')
     Left = 544
     Top = 568

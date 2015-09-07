@@ -3621,6 +3621,7 @@ object frmMain: TfrmMain
     object dxBarLargeButton8: TdxBarLargeButton
       Action = acUtlastningVerk
       Category = 6
+      Width = 90
     end
     object dxBarLargeButton9: TdxBarLargeButton
       Action = acAnkomnaHamn

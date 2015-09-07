@@ -379,26 +379,63 @@ End ;
 //-------------------------------------------------------------
 procedure TfrmMain.FormShow(Sender: TObject);
 var Height, Width, Top, Left, LanguageNo : Integer ;
+    lCaption  : String ;
 begin
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
   ShowMessage('Change drive to H:\') ;
 
- CheckMappar ;
+// CheckMappar ;
 
-// ThisUser.Database:= 'carmak-speed\SQLEXPRESS:vis_vida' ;
-// ThisUser.Database:= '172.24.0.40:vis_vida' ;
- // ThisUser.Database:= 'vis.vida.se:vis_vida' ;
-//  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
+// ThisUser.Database:= 'carmak-faster\sqlexpress:vis_vida' ;
+ //ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
+ ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+// ThisUser.Database:= 'alvesql03:vis_vida' ;
 
- ThisUser.Database  := 'alvesql01:vis_vida' ;
+// ThisUser.Database:= 'alvesqltest01:vis_vida' ;
+
+
+// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+{$IFDEF DEBUG}
+  if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
+    dmsConnector.DriveLetter := 'C:\';
+    ThisUser.Database:= 'alvesql03:vis_vida' ;
+      with dmsConnector.FDConnection1 do begin
+        Params.Clear;
+        Params.Add('Server=alvesql03');
+        Params.Add('Database=vis_vida');
+        Params.Add('OSAuthent=No');
+        Params.add('MetaDefCatalog=vis_vida');
+        Params.Add('MetaDefSchema=dbo');
+        Params.Add('User_Name=Lars');
+        Params.Add('Password=woods2011');
+        Params.Add('DriverID=MSSQL');
+        Params.Add('ApplicationName=VIS_LAGER');
+      end;
+  end
+  else begin
+  //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
+    ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+  end;
+{$ELSE}
+ //ThisUser.Database:= 'alvesqltest01:vis_vida' ;
+  ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+{$ENDIF}
+// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+
+
+
+ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+
+
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then
     Close
      else
       if dmsConnector.FDConnection1.Connected then
       Begin
-       Caption  := Application.Title + '/' + dmsConnector.GetCompanyName (ThisUser.CompanyNo) + '/' + ThisUser.UserName + ' ver ' + GetVersion
+       lCaption  := Forms.Application.Title + '/' + dmsConnector.GetCompanyName (ThisUser.CompanyNo) + '/' + ThisUser.UserName + ' ver ' + GetVersion
        + ' - ' + dmsConnector.FDConnection1.Params.Values['Server']
        + '/' + dmsConnector.FDConnection1.Params.Values['Database'] + ' ' ;
 
@@ -426,6 +463,8 @@ begin
    dmLanguage.siLangDispatcher1.ActiveLanguage := LanguageNo ;
    dmLanguage.siLangDispatcher1.LoadAllFromFile(dmLanguage.siLangDispatcher1.FileName);
   End;
+
+  Caption  := lCaption ;
 end;
 
 //Sparas centralt
@@ -597,7 +636,7 @@ procedure TfrmMain.Timer1Timer(Sender: TObject);
 var
   i: Integer;
 begin
-  Application.Title   := a;
+  Forms.Application.Title   := a;
   frmMain.Caption     := a;
   for i := 1 to (Length(a) - 1) do
     a[i] := Application.Title[i + 1];
