@@ -181,7 +181,7 @@ End ;
 
 procedure TdmsConnector.Commit ;
 begin
- FDTransaction1.Commit ;
+// FDTransaction1.Commit ;
 end;
 
 constructor TdmsConnector.Create(AOwner : TComponent);
@@ -265,14 +265,14 @@ end;
 
 procedure TdmsConnector.Rollback ;
 begin
-  FDTransaction1.Rollback ;
+ // FDTransaction1.Rollback ;
 end;
 
 function TdmsConnector.StartTransaction : LongWord;
 begin
 // FDTransaction1.
 // FDConnection1.StartTransaction ;
- FDTransaction1.StartTransaction ;
+// FDTransaction1.StartTransaction ;
 end;
 
 function TdmsConnector.GetCompanyName (CompanyNo : Integer) : String ;

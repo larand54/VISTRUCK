@@ -5091,6 +5091,7 @@ begin
      PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
      PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
 
+
      //if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
      LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, cds_PropsVerkNo.AsInteger, dmArrivingLoads.SHIPTOINVPOINTNO, PkgSupplierCode) ;
      if LoadNo > 0 then

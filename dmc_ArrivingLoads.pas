@@ -2655,4 +2655,79 @@ Begin
 End ;
 
 
+//Result = Prefix
+function TdmArrivingLoads.GetPkgPos (Var PackageNoString : String) : String ;
+Var ClientID, PktnrLevKod : String ;
+Begin
+ dmc_DB.FDoLog('PackageNoString = ' + PackageNoString) ;
+ ClientID :=  Trim(Copy(PackageNoString, 1, 11)) ;
+// FDoLog('ClientID = ' + ClientID) ;
+
+ Try
+ sq_GetPkgPos.Close ;
+ sq_GetPkgPos.ParamByName('ClientID').Value:= ClientID ;
+ sq_GetPkgPos.Open ;
+ Try
+ except
+  On E: Exception do
+  Begin
+   dmc_DB.FDoLog(E.Message+' :sq_GetPkgPos.Open') ;
+   ShowMessage(E.Message+' :sq_GetPkgPos.Open') ;
+   Raise ;
+  End ;
+ end;
+
+ if not sq_GetPkgPos.Eof then
+ Begin
+  //Kopierar 2 siffrigt prefix från paketnrsträngen
+  PktnrLevKod:= Trim(Copy(PackageNoString, sq_GetPkgPosSupplierCodePos.AsInteger, sq_GetPkgPosSupplierCodeLength.AsInteger)) ;
+//  FDoLog('sq_GetPkgPosSupplierCodePos.AsString = ' + sq_GetPkgPosSupplierCodePos.AsString) ;
+//  FDoLog('sq_GetPkgPosSupplierCodeLength.AsString = ' + sq_GetPkgPosSupplierCodeLength.AsString) ;
+
+  PackageNoString:= Trim(Copy(PackageNoString, sq_GetPkgPosPaketNoPos.AsInteger, sq_GetPkgPosPaketNoLength.AsInteger)) ;
+//  FDoLog('PackageNoString = ' + PackageNoString) ;
+
+//Hämta in paketprefix från tabellen PkgPrefix
+   Try
+   Try
+   sq_GetPkgPrefix.ParamByName('ProductionUnitCode').Value := PktnrLevKod ;
+   sq_GetPkgPrefix.ParamByName('ClientID').Value           := ClientID ;
+   sq_GetPkgPrefix.Open ;
+
+  except
+   On E: Exception do
+    Begin
+     dmc_DB.FDoLog(E.Message+' :sq_GetPkgPrefix.Open') ;
+     ShowMessage(E.Message+' :sq_GetPkgPrefix.Open') ;
+    Raise ;
+   End ;
+  end;
+//   FDoLog('sq_GetPkgPrefixPkgPrefix.AsString = ' + sq_GetPkgPrefixPkgPrefix.AsString) ;
+
+   if (not sq_GetPkgPrefix.Eof) or (Length(sq_GetPkgPrefixPkgPrefix.AsString) > 1) then
+    Result  := sq_GetPkgPrefixPkgPrefix.AsString
+     else
+      Begin
+       Result           := '' ;
+       PackageNoString  := '-1' ;
+       dmc_DB.FDoLog('1:PackageNoString = ' + PackageNoString) ;
+      End ;
+   Finally
+    sq_GetPkgPrefix.Close ;
+   End ;
+ End
+ else//if not sq_GetPkgPos.Eof then
+ Begin
+  Result  := '' ;
+  PackageNoString:= '-1' ;
+  dmc_DB.FDoLog('2:PackageNoString = ' + PackageNoString) ;
+ End ;
+
+ Finally
+  sq_GetPkgPos.Close ;
+ End ;
+
+End ;
+
+
 end.

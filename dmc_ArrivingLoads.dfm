@@ -912,7 +912,6 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cdsArrivingPackages: TFDQuery
-    Active = True
     Indexes = <
       item
         Active = True
