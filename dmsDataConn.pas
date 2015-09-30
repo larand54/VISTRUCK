@@ -37,9 +37,14 @@ type
     sp_MaxNo: TFDStoredProc;
     sp_GetCurrPkgNo: TFDStoredProc;
     sp_MinNo: TFDStoredProc;
-    FDTransaction1: TFDTransaction;
     sp_GetMaxLoadDetailNo: TFDStoredProc;
     sp_UpdateMaxSecByLoad: TFDStoredProc;
+    sp_GetUserStartHostUserID: TIntegerField;
+    sp_GetUserStartHostHostName: TStringField;
+    sp_GetUserStartHostCanChangeUser: TIntegerField;
+    sp_GetUserStartHostSetOnStart: TIntegerField;
+    sp_GetUserStartHostChangeToUser: TStringField;
+    sp_GetUserStartHost: TFDStoredProc;
     procedure DataModuleCreate           (Sender: TObject);
     procedure DataModuleDestroy          (Sender: TObject);
   private
@@ -56,6 +61,7 @@ type
     Org_AD_Name : String ;
     Org_DB_Name : String ;
 //    DeleteTdmVidaInvoice  : Boolean ;
+    function  GetHostName(const UserID : Integer)  : String ;
     procedure UpdateMaxSecByLoad(const LoadNo : Integer) ;
     function  GetMaxLoadDetailNo(const LoadNo : Integer): Integer ;
     procedure InitProcedure(Proc: TFDStoredProc);
@@ -96,6 +102,35 @@ uses
 
 
 {$R *.dfm}
+function TdmsConnector.GetHostName(const UserID : Integer)  : String ;
+Var Dir : String ;
+LengthOfPath  : Integer ;
+begin
+ Dir          := GetCurrentDir ;
+// showmessage('Dir = ' + Dir) ;
+ LengthOfPath := Length(Dir) ;
+ Dir          := Copy(GetCurrentDir, LengthOfPath - 13, 14) ;
+
+// showmessage('Dir = ' + Dir) ;
+
+  Result  := '' ;
+
+  sp_GetUserStartHost.ParamByName('@UserID').AsInteger  :=  UserID ;
+  sp_GetUserStartHost.ParamByName('@AppDir').AsString   :=  'VisTruck' ;
+  sp_GetUserStartHost.ParamByName('@AppPath').AsString  :=  Dir ;
+  sp_GetUserStartHost.Active                            :=  True ;
+  Try
+  if not sp_GetUserStartHost.Eof then
+  Begin
+   if sp_GetUserStartHostSetOnStart.AsInteger = 1 then
+    Result := sp_GetUserStartHostHostName.AsString
+     else
+      Result  := '' ;
+  End;
+  Finally
+    sp_GetUserStartHost.Active  := False ;
+  End;
+End;
 
 procedure TdmsConnector.InitProcedure(Proc: TFDStoredProc);
 var

@@ -91,7 +91,8 @@ uses
   ufrmChangeLanguage in 'ufrmChangeLanguage.pas' {frmChangeLanguage},
   UnitStylesOKCANCL in 'UnitStylesOKCANCL.pas' {OKRightDlg},
   UnitExceptionPkgNrList in 'UnitExceptionPkgNrList.pas' {PkgNrExceptionList},
-  UnitPosition in 'UnitPosition.pas' {Position};
+  UnitPosition in 'UnitPosition.pas' {Position},
+  URegionToRegionSelectLIPNo in 'URegionToRegionSelectLIPNo.pas' {fRegionToRegionSelectLIPNo};
 
 {$R *.res}
 begin

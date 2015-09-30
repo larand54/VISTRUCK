@@ -2,8 +2,8 @@ object Position: TPosition
   Left = 0
   Top = 0
   Caption = 'Position'
-  ClientHeight = 543
-  ClientWidth = 1128
+  ClientHeight = 606
+  ClientWidth = 1132
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,13 +20,13 @@ object Position: TPosition
   object PageControl_Position: TPageControl
     Left = 577
     Top = 0
-    Width = 551
-    Height = 543
+    Width = 555
+    Height = 606
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
-    ActivePage = TabSheet_All
+    ActivePage = TabSheet_Match
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -36,30 +36,23 @@ object Position: TPosition
     ParentFont = False
     TabOrder = 0
     Visible = False
-    ExplicitLeft = 545
-    ExplicitWidth = 583
-    ExplicitHeight = 548
     object TabSheet_All: TTabSheet
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Alla Positioner'
-      ExplicitWidth = 532
-      ExplicitHeight = 512
       object cxGrid_AllPosition: TcxGrid
         Left = 0
-        Top = 51
-        Width = 543
-        Height = 456
+        Top = 49
+        Width = 547
+        Height = 521
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        Align = alBottom
+        Align = alClient
         TabOrder = 0
-        ExplicitTop = 56
-        ExplicitWidth = 575
         object cxGrid_AllPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = cxGrid_AllPositionDBTableView1CellClick
@@ -78,6 +71,7 @@ object Position: TPosition
           OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
           object cxGrid_AllPositionDBTableView1Vald: TcxGridDBColumn
             DataBinding.FieldName = 'Vald'
             PropertiesClassName = 'TcxCheckBoxProperties'
@@ -103,14 +97,14 @@ object Position: TPosition
       object TopPanelMatchProduct: TPanel
         Left = 0
         Top = 0
-        Width = 543
+        Width = 547
         Height = 49
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 575
         object cxTextEdit1: TcxTextEdit
           Left = 171
           Top = 12
+          TabStop = False
           TabOrder = 0
           Width = 121
         end
@@ -134,22 +128,19 @@ object Position: TPosition
       Font.Style = [fsBold]
       ImageIndex = 1
       ParentFont = False
-      ExplicitWidth = 532
-      ExplicitHeight = 484
       object cxGrid_MatchPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 543
-        Height = 507
+        Width = 547
+        Height = 570
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
+        TabStop = False
         Visible = False
-        ExplicitWidth = 532
-        ExplicitHeight = 484
         object cxGrid_MatchPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = cxGrid_MatchPositionDBTableView1CellClick
@@ -168,6 +159,7 @@ object Position: TPosition
           OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
           object cxGrid_MatchPositionDBTableView1Vald: TcxGridDBColumn
             DataBinding.FieldName = 'Vald'
             PropertiesClassName = 'TcxCheckBoxProperties'
@@ -222,7 +214,7 @@ object Position: TPosition
     Left = 0
     Top = 0
     Width = 577
-    Height = 543
+    Height = 606
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -235,7 +227,7 @@ object Position: TPosition
       Left = 1
       Top = 83
       Width = 575
-      Height = 459
+      Height = 522
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -249,11 +241,10 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
+      TabStop = False
       Visible = False
       LookAndFeel.Kind = lfOffice11
       LookAndFeel.SkinName = 'Office2010Blue'
-      ExplicitWidth = 543
-      ExplicitHeight = 464
       object grid_ProductListDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.Buttons.Append.Visible = True
@@ -273,6 +264,7 @@ object Position: TPosition
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
         OptionsView.GroupByBox = False
+        OptionsView.Indicator = True
         object grid_ProductListDBTableView1Vald: TcxGridDBColumn
           DataBinding.FieldName = 'Vald'
           PropertiesClassName = 'TcxCheckBoxProperties'
@@ -336,6 +328,7 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
+      TabStop = False
       OnClick = btnStorePositionClick
     end
     object btDelete: TButton
@@ -355,6 +348,7 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 2
+      TabStop = False
       OnClick = btDeleteClick
     end
     object btChangeStyle: TButton
@@ -374,6 +368,7 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 3
+      TabStop = False
       OnClick = btChangeStyleClick
     end
   end
@@ -527,9 +522,16 @@ object Position: TPosition
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evUnidirectional]
     SQL.Strings = (
-      'SELECT 0 as Vald, PositionName, PositionID FROM dbo.Position')
+      'SELECT 0 as Vald, PositionName, PositionID FROM dbo.Position'
+      'WHERE PIPNo = :PIPNo')
     Left = 480
     Top = 134
+    ParamData = <
+      item
+        Name = 'PIPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
     object FDQ_PositionVald: TIntegerField
       FieldName = 'Vald'
       Origin = 'Vald'

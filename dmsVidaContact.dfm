@@ -2302,4 +2302,8 @@ object dmsContact: TdmsContact
       Size = 5
     end
   end
+  object FDStoredProc1: TFDStoredProc
+    Left = 856
+    Top = 528
+  end
 end

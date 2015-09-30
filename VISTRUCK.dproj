@@ -3,7 +3,7 @@
         <ProjectGuid>{8743B446-FAAE-4E65-93E0-6A05B554552C}</ProjectGuid>
         <MainSource>VISTRUCK.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -92,9 +92,9 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>24</VerInfo_Build>
+        <VerInfo_Build>25</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.1.24;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.1.25;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <DCC_DebugInformation>1</DCC_DebugInformation>
@@ -105,10 +105,10 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Build>54</VerInfo_Build>
+        <VerInfo_Build>58</VerInfo_Build>
         <DCC_Define>EUREKALOG_VER7;madExcept;$(DCC_Define)</DCC_Define>
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.2.1.54;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.2.1.58;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <ItemGroup>
@@ -379,6 +379,10 @@
         </DCCReference>
         <DCCReference Include="UnitPosition.pas">
             <Form>Position</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="URegionToRegionSelectLIPNo.pas">
+            <Form>fRegionToRegionSelectLIPNo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <None Include="VISTRUCK.todo"/>

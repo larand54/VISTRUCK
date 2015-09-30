@@ -43,7 +43,6 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ExplicitWidth = 1652
     ClientRectBottom = 698
     ClientRectRight = 1578
     ClientRectTop = 0
@@ -54,7 +53,6 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
-      ExplicitWidth = 1652
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -67,7 +65,6 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 1652
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
@@ -83,7 +80,6 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitWidth = 1652
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -219,7 +215,6 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitWidth = 1652
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -231,7 +226,6 @@ object fLager: TfLager
             Margins.Bottom = 4
             Align = alTop
             TabOrder = 0
-            ExplicitWidth = 1652
             object cxButton1: TcxButton
               Left = 12
               Top = 7
@@ -335,7 +329,6 @@ object fLager: TfLager
               ParentFont = False
               Style.StyleController = cxEditStyleControllerFileldLabels
               Properties.Alignment.Horz = taCenter
-              ExplicitTop = 76
               AnchorX = 789
             end
             object cxButton6: TcxButton
@@ -427,7 +420,6 @@ object fLager: TfLager
             Align = alClient
             PopupMenu = pmPkgNos
             TabOrder = 1
-            ExplicitWidth = 1652
             object grdPkgNosDBBandedTableView1: TcxGridDBBandedTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dmInventory.ds_invpivPkgDtl
@@ -494,7 +486,6 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitWidth = 1652
         end
       end
     end
@@ -510,7 +501,6 @@ object fLager: TfLager
     Margins.Bottom = 4
     Align = dalTop
     BarManager = dxBarManager1
-    ExplicitWidth = 1652
   end
   object Panel3: TPanel
     Left = 0
@@ -523,8 +513,6 @@ object fLager: TfLager
     Margins.Bottom = 4
     Align = alTop
     TabOrder = 6
-    ExplicitTop = 31
-    ExplicitWidth = 1650
     DesignSize = (
       1578
       136)
@@ -639,7 +627,6 @@ object fLager: TfLager
       Margins.Bottom = 4
       Anchors = [akTop, akRight]
       TabOrder = 17
-      ExplicitLeft = 1642
     end
     object cbHideZeroColumns: TcxCheckBox
       Left = 1023

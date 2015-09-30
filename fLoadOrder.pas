@@ -4395,7 +4395,7 @@ begin
  End ;
  End
   else
-   ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_20' (* 'Emailadress saknas för klienten!' *) )) ;
+   ShowMessage('Emailaddress is missing') ;
 end;
 
 procedure TfrmVisTruckLoadOrder.grdLODBTableView1DblClick(Sender: TObject);

@@ -5705,20 +5705,29 @@ begin
     if Length(Trim(PackageNo)) > 10 then
     Begin //LÅNGA KODEN
      Try
-     NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
+     Action := eaAccept ;
+     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode) ;
+   //  NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
      Except
       on E: EConvertError do
          ShowMessage(E.ClassName + E.Message);
      End ;
      if NewPkgNo < 1 then
-      Exit ;
-     PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
-     PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
+       Action :=  eaREJECT ;
 
-     if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
-     Action := eaAccept
-     else
-     Action :=  eaREJECT ;
+     if Length(PkgSupplierCode) < 1 then
+       Action :=  eaREJECT ;
+
+//     PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
+//     PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
+
+     if Action =  eaAccept then
+     Begin
+       if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
+        Action := eaAccept
+          else
+            Action :=  eaREJECT ;
+     End;
 
     End
      else //Length < 11
@@ -5738,7 +5747,7 @@ begin
       End ;
    End ; //if StrToInt(Trim(PackageNo)) > 0 then
 
-   if NewPkgNo > 0 then
+   if (NewPkgNo > 0) and (Length(PkgSupplierCode) > 0) then
    Begin
 
 
@@ -5747,42 +5756,42 @@ begin
 //Får inte använda post själv, det gör rutinen automatiskt
   if Action = eaACCEPT then
   Begin
-    AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
-//Långsamt här
-    if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
-    Begin
-     Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
-     Error      := True ;
-    End
-    else
-    Begin
-     Error:= False ;
-    End ;
-  End
-   else
-   if Action = eaREJECT then
-    Begin
-     Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
-     Error      := True ;
-    End
-    else
-     if Action = eaReserved then
+      AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
+  //Långsamt här
+      if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
       Begin
-       Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) ) + Res_UserName ;
+       Errortext := 'Paketnr ' + IntToStr(NewPkgNo) +  ' prefix:'  + PkgSupplierCode +  ' does not exist in inventory ' + Trim(lcPIP.Text) ;
        Error      := True ;
       End
       else
-       if Action = eaDuplicate then
+      Begin
+       Error:= False ;
+      End ;
+  End
+     else
+     if Action = eaREJECT then
+      Begin
+       Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
+       Error      := True ;
+      End
+      else
+       if Action = eaReserved then
         Begin
-         Errortext  := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_99' (* ' är redan inmatat' *) ) ;
+         Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) ) + Res_UserName ;
+         Error      := True ;
+        End
+        else
+         if Action = eaDuplicate then
+          Begin
+           Errortext  := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_99' (* ' är redan inmatat' *) ) ;
+           Error      := True ;
+          End ;
+      End
+       else
+        Begin
+         Errortext := 'Paketnr saknas.' ;
          Error      := True ;
         End ;
-    End
-     else
-      Begin
-       Errortext := 'Paketnr saknas.' ;
-       Error      := True ;
-      End ;
    if Error then
     ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext) ;
   finally

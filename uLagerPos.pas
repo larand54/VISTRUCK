@@ -36,6 +36,10 @@ type
     cxButton1: TcxButton;
     cxButton2: TcxButton;
     siLangLinked_fLagerPos: TsiLangLinked;
+    grdLagerPosDBTableView1PIPNo: TcxGridDBColumn;
+    grdLagerPosDBTableView1CreatedUser: TcxGridDBColumn;
+    grdLagerPosDBTableView1DateCreated: TcxGridDBColumn;
+    grdLagerPosDBTableView1PosStatus: TcxGridDBColumn;
   private
     { Private declarations }
   public

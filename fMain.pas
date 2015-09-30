@@ -204,6 +204,7 @@ type
 
   private
     a : String ;
+    procedure ChangeUserSettingsOnStartUp ;
     function  FormOpen : Boolean ;
     procedure AppException(Sender: TObject; E: Exception);
     procedure CleanUpForms(Sender: TObject);
@@ -375,6 +376,35 @@ Begin
  End ;
 End ;
 
+procedure TfrmMain.ChangeUserSettingsOnStartUp ;
+Var HostName : String ;
+Begin
+ HostName := dmsConnector.GetHostName(ThisUser.UserID) ;
+ if Length(HostName) > 0 then
+ Begin
+  ThisUser.Database := HostName ;
+  if not ThisUser.Logon then
+  Close
+  else
+  Begin
+
+    Timer1.Enabled := True;
+    dmsConnector.LoginChanged := True;
+    // dxNavBar1.DefaultStyles.Background.BackColor:= clGreen ;
+
+    Application.Title := 'VIS';
+    a := Application.Title + '/' + dmsConnector.GetCompanyName
+      (ThisUser.CompanyNo) + '/' + ThisUser.UserName + ' ver ' +
+      GetVersion + ' - ' + dmsConnector.FDConnection1.Params.Values
+      ['Server'] + '/' + dmsConnector.FDConnection1.Params.Values
+      ['Database'] + ' ';
+
+
+
+  End;
+ End;
+End;
+
 
 //-------------------------------------------------------------
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -389,7 +419,7 @@ begin
 
 // ThisUser.Database:= 'carmak-faster\sqlexpress:vis_vida' ;
  //ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
- ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+ ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 // ThisUser.Database:= 'alvesql03:vis_vida' ;
 
 // ThisUser.Database:= 'alvesqltest01:vis_vida' ;
@@ -415,19 +445,16 @@ begin
   end
   else begin
   //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-    ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+    ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
   end;
 {$ELSE}
  //ThisUser.Database:= 'alvesqltest01:vis_vida' ;
-  ThisUser.Database:= 'vis.vida.se:vis_vida' ;
+  ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 {$ENDIF}
 // -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
 
-
-
-ThisUser.Database:= 'vis.vida.se:vis_vida' ;
-
+//ThisUser.Database:= 'alvesql03:vis_vida' ;
 
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then
@@ -445,6 +472,9 @@ ThisUser.Database:= 'vis.vida.se:vis_vida' ;
       Begin
        Close ;
       End ;
+
+ ChangeUserSettingsOnStartUp ;
+
  if forms.Screen.MonitorCount = 2 then
  Begin
    dm_UserProps.GetAppFormSize(frmMain.Name, Height, Width, Top, Left) ;
@@ -483,10 +513,12 @@ end;
 
 procedure TfrmMain.FormKeyPress(Sender: TObject; var Key: Char);
 begin
- if Key = #13 then begin
-    Key := #0;
-      Perform(Wm_NextDlgCtl,0,0);
-  end;
+{
+   if Key = #13 then begin
+      Key := #0;
+        Perform(Wm_NextDlgCtl,0,0);
+    end;
+}
 end;
 
 procedure TfrmMain.CleanUpForms(Sender: TObject);

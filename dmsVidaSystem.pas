@@ -471,6 +471,14 @@ type
     FDQ_StyleSettingsViewName: TStringField;
     FDQ_StyleSettingsUserID: TIntegerField;
     FDQ_StyleSettingsSets: TBlobField;
+    sp_ParsePkgID: TFDStoredProc;
+    sp_LagerPosPositionID: TIntegerField;
+    sp_LagerPosPositionName: TStringField;
+    sp_LagerPosPIPNo: TIntegerField;
+    sp_LagerPosCreatedUser: TIntegerField;
+    sp_LagerPosDateCreated: TSQLTimeStampField;
+    sp_LagerPosPosStatus: TIntegerField;
+    sp_SetpkgPosition: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -511,6 +519,8 @@ type
     LOG_ENABLE  : Boolean ;
     MarkedPkgs : Integer ;
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
+    procedure SetPkgPositionID (const PackageNo, PositionID : Integer;const Prefix : String) ;
+    procedure ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3) ;
     function  GetLanguageNo : Integer ;
     procedure SaveLanguage(const LanguageNo : Integer) ;
 
@@ -519,7 +529,7 @@ type
     var SupplierNo : Integer;
     Var ProductNo : Integer): string3;
 
-    function  GetLagerPos : String ;
+    function  GetLagerPos(const PIPNo : Integer) : Integer ;
     procedure SetInfo2Text (const PackageNo : Integer;const Prefix, Info2 : String) ;
     procedure vis_Del_OLD_Load_Res ;
     procedure Close_cds_LoadWeigth ;
@@ -684,25 +694,27 @@ begin
   End
 end;
 
-function TdmsSystem.GetLagerPos : String ;
+function TdmsSystem.GetLagerPos(const PIPNo : Integer) : Integer ;
 var
   fLagerPos: TfLagerPos;
 begin
  With dmsSystem do
  Begin
-  if not sp_LagerPos.Active then
-   sp_LagerPos.Active := True ;
+  if sp_LagerPos.Active then
+   sp_LagerPos.Active := False ;
+  sp_LagerPos.ParamByName('@PIPNo').AsInteger := PIPNo ;
+  sp_LagerPos.Active := True ;
   fLagerPos :=  TfLagerPos.Create(nil);
   Try
     if fLagerPos.ShowModal = mrOK then
     Begin
      if not sp_LagerPos.Eof then
-      Result := sp_LagerPos.FieldByName('LagerPositionText').AsString
+      Result := sp_LagerPos.FieldByName('PositionID').AsInteger
        else
-        Result  := '' ;
+        Result  := -1 ;
     End
     else
-    Result  := '' ;
+    Result  := -1 ;
   Finally
     sp_LagerPos.Active := False ;
     FreeAndNil(fLagerPos) ;
@@ -1006,17 +1018,29 @@ End ;
 
 function TdmsSystem.Get_Dir(const pFieldName : String) : String ;
 Begin
- cds_Props.Active:= False ;
- cds_Props.ParamByName('UserID').AsInteger := ThisUser.UserID ;
- cds_Props.ParamByName('Form').AsString    := 'Global' ;
- cds_Props.Active:= True ;
- if not cds_Props.Eof then
- Begin
-  Result:= cds_Props.FieldByName(pFieldName).AsString ;
- End
- else
- Result:= 'C:\';
- cds_Props.Active:= False ;
+  {$IFDEF DEBUG}
+    if copy(GetEnvironmentVariable('COMPUTERNAME'),0,6) = 'CARMAK' then begin
+      if AnsiUpperCase(pFieldName) = 'EXCELDIR' then
+        Result := dmsConnector.DriveLetter+'VIS\TEMP\EXCEL\'
+      else if pFieldName = 'MyEmailAddress' then
+        if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+           Result := 'larand54@gmail.com'
+      else
+        result := dmsConnector.DriveLetter + 'VIS\TEMP\';
+      exit;
+    end;
+  {$ENDIF}
+  cds_Props.Active := False;
+  cds_Props.ParamByName('UserID').AsInteger := ThisUser.UserID;
+  cds_Props.ParamByName('Form').AsString    := 'Global';
+  cds_Props.Active := True;
+  if not cds_Props.Eof then
+  Begin
+    Result := cds_Props.FieldByName(pFieldName).AsString;
+  End
+  else
+    Result := 'C:\';
+  cds_Props.Active := False;
 End ;
 
 function TdmsSystem.Get_SystemDir(const Form, pFieldName : String) : String ;
@@ -2579,6 +2603,23 @@ Begin
  end;
 End ;
 
+procedure TdmsSystem.SetPkgPositionID (const PackageNo, PositionID : Integer;const Prefix : String) ;
+Begin
+ Try
+ sp_SetPkgPosition.ParamByName('@PackageNo').AsInteger        := PackageNo ;
+ sp_SetpkgPosition.ParamByName('@Prefix').AsString            := Prefix ;
+ sp_SetpkgPosition.ParamByName('@PositionID').AsInteger       := PositionID ;
+ sp_SetpkgPosition.ExecProc ;
+ except
+  On E: Exception do
+  Begin
+//   dmsSystem.FDoLog(E.Message) ;
+   ShowMessage(E.Message);
+   Raise ;
+  End ;
+ end;
+End ;
+
 procedure TdmsSystem.SaveLanguage(const LanguageNo : Integer) ;
 Begin
   Try
@@ -2614,5 +2655,20 @@ Begin
      End
   End ;
 End;
+
+procedure TdmsSystem.ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3) ;
+Begin
+ sp_parsePkgID.ParamByName('@Paketnr').AsString :=  Paketnr ;
+ sp_parsePkgID.Active :=  True ;
+ Try
+ if not sp_parsePkgID.Eof then
+ Begin
+   PackageNo  := sp_parsePkgID.FieldByName('packageno').AsInteger ;
+   Prefix     := sp_parsePkgID.FieldByName('AliasPrefix').AsString ;
+ End;
+ Finally
+  sp_parsePkgID.Active :=  False ;
+ End;
+End ;
 
 end.

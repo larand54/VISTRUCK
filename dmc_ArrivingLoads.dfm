@@ -536,6 +536,7 @@ object dmArrivingLoads: TdmArrivingLoads
     Top = 528
   end
   object cdsArrivingLoads: TFDQuery
+    Active = True
     CachedUpdates = True
     Indexes = <
       item
@@ -567,6 +568,10 @@ object dmArrivingLoads: TdmArrivingLoads
     SQL.Strings = (
       'SELECT DISTINCT'
       '0 AS EGEN,'
+      '(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl'
+      'where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,'
+      '(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2'
+      'where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,'
       'L.LoadAR,'
       'ST_AdrCtry.CountryCode,'
       ''
@@ -697,6 +702,14 @@ object dmArrivingLoads: TdmArrivingLoads
       #9#9#9#9#9#9#9'ON'#9'ST.ShippingPlanNo'#9'= CSD.ShippingPlanNo'
       #9#9#9#9#9#9#9'AND'#9'ST.Reference'#9#9'= CSD.Reference'
       ''
+      'LEFT OUTER JOIN dbo.Booking'#9#9'Bk'
+      
+        'Left Outer JOIN dbo.Client'#9#9'SC '#9'ON  '#9'Bk.ShippingCompanyNo '#9'= SC.' +
+        'ClientNo'
+      
+        'Left Outer Join dbo.BookingType'#9#9'Bt'#9'ON'#9'Bt.BookingTypeNo'#9'= Bk.Boo' +
+        'kingTypeNo'
+      'ON  '#9'Bk.ShippingPlanNo = CSH.ShippingPlanNo'
       ''
       'WHERE'
       'CLL.ClientNo          = -1'
@@ -909,6 +922,16 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'PackagesConfirmed'
       Origin = 'PackagesConfirmed'
       ProviderFlags = []
+    end
+    object cdsArrivingLoadsOriginalLO: TIntegerField
+      FieldName = 'OriginalLO'
+      Origin = 'OriginalLO'
+      ReadOnly = True
+    end
+    object cdsArrivingLoadsOriginalLoadNo: TIntegerField
+      FieldName = 'OriginalLoadNo'
+      Origin = 'OriginalLoadNo'
+      ReadOnly = True
     end
   end
   object cdsArrivingPackages: TFDQuery
@@ -5847,5 +5870,119 @@ object dmArrivingLoads: TdmArrivingLoads
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
+  end
+  object sq_CheckObjectRegionToRegionLink: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'SELECT DISTINCT'
+      'IsNull(LD.DefsspNo,-1) AS SupplierShipPlanObjectNo,'
+      
+        'IsNull(LD.DefaultCustShipObjectNo,-1) AS CustShipPlanDetailObjec' +
+        'tNo'
+      ''
+      'FROM dbo.Loaddetail LD'
+      ''
+      'WHERE'
+      'LD.LoadNo = :LoadNo'
+      'AND LD.ShippingPlanNo = :ShippingPlanNo'
+      ''
+      
+        'AND LD.DefaultCustShipObjectNo NOT IN (Select CSD.CustShipPlanDe' +
+        'tailObjectNo'
+      'FROM dbo.CustomerShippingPlanDetails CSD)'
+      ' '
+      ' '
+      '')
+    Left = 476
+    Top = 808
+    ParamData = <
+      item
+        Name = 'LOADNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SHIPPINGPLANNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_CheckObjectRegionToRegionLinkSupplierShipPlanObjectNo: TIntegerField
+      FieldName = 'SupplierShipPlanObjectNo'
+      Origin = 'SupplierShipPlanObjectNo'
+      ReadOnly = True
+      Required = True
+    end
+    object sq_CheckObjectRegionToRegionLinkCustShipPlanDetailObjectNo: TIntegerField
+      FieldName = 'CustShipPlanDetailObjectNo'
+      Origin = 'CustShipPlanDetailObjectNo'
+      ReadOnly = True
+      Required = True
+    end
+  end
+  object sp_InsertPkgsScanned: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_InsertPkgsScanned'
+    Left = 328
+    Top = 776
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@ScannedString'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 50
+      end
+      item
+        Position = 3
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@Prefix'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 5
+        Name = '@CreatedUser'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@MottagareNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@LevereraTillNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@LeverantorNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 9
+        Name = '@Application'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 50
+      end>
   end
 end

@@ -19,6 +19,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 120
   TextHeight = 16
   object pnlLOList: TPanel
@@ -47,6 +49,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Control = Panel1
       Color = clMaroon
       ParentColor = False
+      ExplicitWidth = 8
     end
     object Memo1: TMemo
       Left = 758
@@ -846,7 +849,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Width = 144
         end
         object cxButton1: TcxButton
-          Left = 1203
+          Left = 1229
           Top = 6
           Width = 85
           Height = 70
@@ -865,7 +868,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           ParentFont = False
         end
         object cxButton2: TcxButton
-          Left = 1289
+          Left = 1315
           Top = 6
           Width = 88
           Height = 70
@@ -884,7 +887,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           ParentFont = False
         end
         object cxButton3: TcxButton
-          Left = 1023
+          Left = 1049
           Top = 6
           Width = 90
           Height = 70
@@ -925,7 +928,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         object cxButton7: TcxButton
           Left = 953
           Top = 6
-          Width = 70
+          Width = 96
           Height = 70
           Margins.Left = 4
           Margins.Top = 4
@@ -1074,7 +1077,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cxButton8: TcxButton
-          Left = 1113
+          Left = 1139
           Top = 6
           Width = 90
           Height = 70
@@ -1174,7 +1177,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Visible = False
         end
         object cxButton9: TcxButton
-          Left = 1385
+          Left = 1411
           Top = 6
           Width = 100
           Height = 70
@@ -7235,7 +7238,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Interval = 200
     OnTimer = Timer1Timer
     Left = 752
-    Top = 526
+    Top = 518
   end
   object Timer2: TTimer
     Enabled = False

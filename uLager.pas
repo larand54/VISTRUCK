@@ -854,7 +854,7 @@ Begin
   if cds_OtherBookings.Active then
    cds_OtherBookings.Active  := False ;
 
-  dmsConnector.FDTransaction1.StartTransaction;
+  dmsConnector.StartTransaction;
   try
   sp_PeriodBooking.ParamByName('@UserID').AsInteger      := ThisUser.UserID ;
   sp_PeriodBooking.ParamByName('@ProductNo').AsInteger   := grdDBBandedPerSortiment.DataController.DataSource.DataSet.FieldByName('ProductNo').AsInteger ;
@@ -862,13 +862,13 @@ Begin
   sp_PeriodBooking.ParamByName('@ALMM').AsFloat          := ALMM ;
   sp_PeriodBooking.ParamByName('@InvGrouping').AsInteger := grdDBBandedPerSortiment.DataController.DataSource.DataSet.FieldByName('LIPGroupNo').AsInteger ;
   sp_PeriodBooking.ExecProc ;
-  dmsConnector.FDTransaction1.Commit ;
+  dmsConnector.Commit ;
   Except
 //   On E: Exception do
    on E: eDatabaseError do
    Begin
     dmsSystem.FDoLog(E.Message + ' sp_PeriodBooking ') ;
-    dmsConnector.FDTransaction1.Rollback ;
+    dmsConnector.Rollback ;
 //    ShowMessage('sp_PeriodBooking ' + E.Message) ;
 //   E.CreateFmt ('Fel i sp_NewLoad, Error message %s', [E.Message]) ;
     Raise ;
@@ -1033,17 +1033,18 @@ begin
 end;
 
 procedure TfLager.acSetInfo2TextExecute(Sender: TObject);
-Var LagerPos   : String ;
+Var LagerPos   : Integer ;
 begin
  With dmsSystem, dmInventory do
  Begin
-  LagerPos  :=  GetLagerPos ;
-  if Length(LagerPos) > 0 then
+  SelectedPkgsOfPkgNosTable ;
+  LagerPos  :=  GetLagerPos(mtPkgNosPIPNo.AsInteger) ;
+  if LagerPos > 0 then
   Begin
     mtPkgNos.Active := True ;
     sp_invpivPkgDtl.DisableControls ;
     Try
-    SelectedPkgsOfPkgNosTable ;
+
     mtPkgNos.First ;
     while not mtPkgNos.Eof do
     Begin
@@ -1053,7 +1054,7 @@ begin
       sp_invpivPkgDtl.FieldByName('CertNo').AsInteger         := CertNo ;
       sp_invpivPkgDtl.FieldByName('CertShortName').AsString   := CertShortName ;
       sp_invpivPkgDtl.Post ;  }
-      SetInfo2Text(mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString, LagerPos) ;
+      SetPkgPositionID(mtPkgNosPackageNo.AsInteger, LagerPos, mtPkgNosSupp_Code.AsString) ;
      End;
      mtPkgNos.Next ;
     End;

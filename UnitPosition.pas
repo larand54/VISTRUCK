@@ -286,6 +286,7 @@ type
     //PositionAllNameList: TStringList;
     //PositionAllIDList : TList<Integer>;
 
+    Procedure CloseForm ;
     function GetPkgPrefix(ProductNo, PackageNo: Integer;
       Prefix: String): Boolean;
     procedure SavetoMemPosition(PositionID: Integer; Prefix: String;
@@ -314,6 +315,16 @@ implementation
 
 uses UnitLoadArrivals;
 
+Procedure TPosition.CloseForm ;
+begin
+ frmLoadArrivals.mePackageNo.SetFocus ;
+  if (Mem_PackProdList.Active) and (Mem_PackProdList.RecordCount = 0) then
+  Begin
+
+   Close ;
+  End;
+
+end;
 
 procedure TPosition.ShowPaketNrList(PaketNr : Integer; pkgSupplierCode : String);
 var
@@ -374,6 +385,9 @@ var
    if ( not FDQ_Position.Active) then
    begin
    //FDQ_Position.Active := True;
+    if FDQ_Position.Active then
+     FDQ_Position.Close ;
+    FDQ_Position.ParamByName('PIPNo').AsInteger :=  dmArrivingLoads.PIPNo ;
     FDQ_Position.Open;
     FDQ_Position.First;
     while not FDQ_Position.Eof do
@@ -382,9 +396,9 @@ var
       begin
         Open;
         Append;
-        FieldByName('Vald').AsInteger := FDQ_PositionVald.AsInteger;
-        FieldByName('PositionID').AsInteger := FDQ_PositionPositionID.AsInteger;
-        FieldByName('PositionName').AsString := FDQ_PositionPositionName.AsString;
+        FieldByName('Vald').AsInteger         := FDQ_PositionVald.AsInteger;
+        FieldByName('PositionID').AsInteger   := FDQ_PositionPositionID.AsInteger;
+        FieldByName('PositionName').AsString  := FDQ_PositionPositionName.AsString;
         Post;
       end;
       FDQ_Position.Next;
@@ -522,6 +536,8 @@ begin
 
      end;
 
+ if (Mem_MatchaProduct.Active) and (Mem_MatchaProduct.RecordCount = 0) then
+  PageControl_Position.ActivePage := TabSheet_All ;
 end;
 
 (*
@@ -818,6 +834,7 @@ begin
 
   finally
     FreeAndNil(OKRightDlg);
+    CloseForm ;
   end;
 end;
 
@@ -878,6 +895,8 @@ begin
    Finally
       Mem_PackProdList.filtered := False;
       CheckLastPkg;
+
+      CloseForm ;
    End;
 end;
 
@@ -1075,7 +1094,7 @@ begin
       Mem_PackProdList.filtered := False;
       CheckLastPkg;
 
-      frmLoadArrivals.mePackageNo.SetFocus ;
+      CloseForm ;
    End;
 
 end;

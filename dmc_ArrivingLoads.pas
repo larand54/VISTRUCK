@@ -569,6 +569,12 @@ type
     FDQ_GetLoadNo: TFDQuery;
     FDQ_GetLoadNoLoadNo: TIntegerField;
     cdsArrivingPackagesPosition: TStringField;
+    sq_CheckObjectRegionToRegionLink: TFDQuery;
+    sq_CheckObjectRegionToRegionLinkSupplierShipPlanObjectNo: TIntegerField;
+    sq_CheckObjectRegionToRegionLinkCustShipPlanDetailObjectNo: TIntegerField;
+    sp_InsertPkgsScanned: TFDStoredProc;
+    cdsArrivingLoadsOriginalLO: TIntegerField;
+    cdsArrivingLoadsOriginalLoadNo: TIntegerField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -596,8 +602,13 @@ type
 
   public
     { Public declarations }
+    PIPNo : Integer ;
     CustomerNo, SHIPTOINVPOINTNO  : Integer ;
     LoadConfirmedOK : Boolean ;
+    procedure InsertPkgsScanned(const ScannedString : String;const PackageNo  : Integer;
+    const Prefix, AppName : String;const
+    MottagareNo, LevereraTillNo, LeverantorNo : Integer) ;
+
     function  SearchPackageNo(const PackageNo, CustomerNo, SHIPTOINVPOINTNO  : Integer;const Prefix  : String) : Integer ;//LoadNo
     procedure CngArtNoByPkgSize (const PackageNo, Package_Size : Integer; Prefix : string) ;
     function  GetNewPackage_Size(var PackageSizeName : String) : Integer ;
@@ -739,7 +750,7 @@ begin
   //otherwise simply remove the verk load from confirmed_load table
 
 
-   dmsConnector.FDTransaction1.StartTransaction ;
+   dmsConnector.StartTransaction ;
   Try
 
 //Är lasten fakturerad?
@@ -2175,7 +2186,7 @@ end;
 Function TdmArrivingLoads.ex_AR_SALES_Loads(const OldLoadNo, LIPNo : Integer) : Integer ;
 Begin
    //START A TRANSACTION
- dmsConnector.FDTransaction1.StartTransaction ;
+ dmsConnector.StartTransaction ;
 
  Try
  Result := -1 ;
@@ -2654,80 +2665,30 @@ Begin
  End ;
 End ;
 
-
-//Result = Prefix
-function TdmArrivingLoads.GetPkgPos (Var PackageNoString : String) : String ;
-Var ClientID, PktnrLevKod : String ;
+procedure TdmArrivingLoads.InsertPkgsScanned(const ScannedString : String;const PackageNo  : Integer;
+const Prefix, AppName : String;const
+MottagareNo, LevereraTillNo, LeverantorNo : Integer) ;
 Begin
- dmc_DB.FDoLog('PackageNoString = ' + PackageNoString) ;
- ClientID :=  Trim(Copy(PackageNoString, 1, 11)) ;
-// FDoLog('ClientID = ' + ClientID) ;
-
+ sp_InsertPkgsScanned.ParamByName('@ScannedString').AsString    :=  ScannedString ;
+ sp_InsertPkgsScanned.ParamByName('@PackageNo').AsInteger       :=  PackageNo ;
+ sp_InsertPkgsScanned.ParamByName('@CreatedUser').AsInteger     :=  ThisUser.UserID ;
+ sp_InsertPkgsScanned.ParamByName('@Prefix').AsString           :=  Prefix ;
+ sp_InsertPkgsScanned.ParamByName('@MottagareNo').AsInteger     :=  MottagareNo ;
+ sp_InsertPkgsScanned.ParamByName('@LevereraTillNo').AsInteger  :=  LevereraTillNo ;
+ sp_InsertPkgsScanned.ParamByName('@LeverantorNo').AsInteger    :=  LeverantorNo ;
+ sp_InsertPkgsScanned.ParamByName('@Application').AsString      :=  AppName ;
  Try
- sq_GetPkgPos.Close ;
- sq_GetPkgPos.ParamByName('ClientID').Value:= ClientID ;
- sq_GetPkgPos.Open ;
- Try
- except
-  On E: Exception do
-  Begin
-   dmc_DB.FDoLog(E.Message+' :sq_GetPkgPos.Open') ;
-   ShowMessage(E.Message+' :sq_GetPkgPos.Open') ;
-   Raise ;
-  End ;
- end;
-
- if not sq_GetPkgPos.Eof then
- Begin
-  //Kopierar 2 siffrigt prefix från paketnrsträngen
-  PktnrLevKod:= Trim(Copy(PackageNoString, sq_GetPkgPosSupplierCodePos.AsInteger, sq_GetPkgPosSupplierCodeLength.AsInteger)) ;
-//  FDoLog('sq_GetPkgPosSupplierCodePos.AsString = ' + sq_GetPkgPosSupplierCodePos.AsString) ;
-//  FDoLog('sq_GetPkgPosSupplierCodeLength.AsString = ' + sq_GetPkgPosSupplierCodeLength.AsString) ;
-
-  PackageNoString:= Trim(Copy(PackageNoString, sq_GetPkgPosPaketNoPos.AsInteger, sq_GetPkgPosPaketNoLength.AsInteger)) ;
-//  FDoLog('PackageNoString = ' + PackageNoString) ;
-
-//Hämta in paketprefix från tabellen PkgPrefix
-   Try
-   Try
-   sq_GetPkgPrefix.ParamByName('ProductionUnitCode').Value := PktnrLevKod ;
-   sq_GetPkgPrefix.ParamByName('ClientID').Value           := ClientID ;
-   sq_GetPkgPrefix.Open ;
-
-  except
+ sp_InsertPkgsScanned.ExecProc ;
+ Except
    On E: Exception do
-    Begin
-     dmc_DB.FDoLog(E.Message+' :sq_GetPkgPrefix.Open') ;
-     ShowMessage(E.Message+' :sq_GetPkgPrefix.Open') ;
+   Begin
+    ShowMessage(E.Message+' :sp_InsertPkgsScanned.ExecProc') ;
     Raise ;
    End ;
-  end;
-//   FDoLog('sq_GetPkgPrefixPkgPrefix.AsString = ' + sq_GetPkgPrefixPkgPrefix.AsString) ;
-
-   if (not sq_GetPkgPrefix.Eof) or (Length(sq_GetPkgPrefixPkgPrefix.AsString) > 1) then
-    Result  := sq_GetPkgPrefixPkgPrefix.AsString
-     else
-      Begin
-       Result           := '' ;
-       PackageNoString  := '-1' ;
-       dmc_DB.FDoLog('1:PackageNoString = ' + PackageNoString) ;
-      End ;
-   Finally
-    sq_GetPkgPrefix.Close ;
-   End ;
- End
- else//if not sq_GetPkgPos.Eof then
- Begin
-  Result  := '' ;
-  PackageNoString:= '-1' ;
-  dmc_DB.FDoLog('2:PackageNoString = ' + PackageNoString) ;
  End ;
-
- Finally
-  sq_GetPkgPos.Close ;
- End ;
-
 End ;
+
+
 
 
 end.

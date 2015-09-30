@@ -4348,9 +4348,9 @@ object dmsSystem: TdmsSystem
   end
   object sp_LagerPos: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_LagerPos'
-    Left = 1128
-    Top = 616
+    StoredProcName = 'dbo.vis_Position'
+    Left = 1136
+    Top = 640
     ParamData = <
       item
         Position = 1
@@ -4358,7 +4358,39 @@ object dmsSystem: TdmsSystem
         DataType = ftInteger
         ParamType = ptResult
         Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
+    object sp_LagerPosPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object sp_LagerPosPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object sp_LagerPosPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object sp_LagerPosCreatedUser: TIntegerField
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+    end
+    object sp_LagerPosDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+    end
+    object sp_LagerPosPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
   end
   object sp_PksByLIPNo: TFDStoredProc
     Connection = dmsConnector.FDConnection1
@@ -4436,8 +4468,8 @@ object dmsSystem: TdmsSystem
   object sp_Lang: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Lang'
-    Left = 1064
-    Top = 752
+    Left = 984
+    Top = 760
     ParamData = <
       item
         Position = 1
@@ -4497,5 +4529,57 @@ object dmsSystem: TdmsSystem
       FieldName = 'Sets'
       Origin = 'Sets'
     end
+  end
+  object sp_ParsePkgID: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_ParsePkgID'
+    Left = 1128
+    Top = 744
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@Paketnr'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 21
+      end>
+  end
+  object sp_SetpkgPosition: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_SetPkgPosition]'
+    Left = 1128
+    Top = 808
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prefix'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@PositionID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

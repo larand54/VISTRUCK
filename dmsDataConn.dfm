@@ -1824,14 +1824,12 @@ object dmsConnector: TdmsConnector
   object FDConnection1: TFDConnection
     ConnectionName = 'VIS'
     Params.Strings = (
-      'Server=vis.vida.se'
+      'Server=visprodsql.vida.se '
       'Database=Vis_Vida'
-      'OSAuthent=No'
+      'OSAuthent=Yes'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
       'ApplicationName=VIS_TRUCK'
-      'User_Name=Lars'
-      'Password=woods2011'
       'DriverID=MSSQL')
     FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
     FetchOptions.Mode = fmAll
@@ -2118,11 +2116,6 @@ object dmsConnector: TdmsConnector
         ParamType = ptInputOutput
       end>
   end
-  object FDTransaction1: TFDTransaction
-    Connection = FDConnection1
-    Left = 584
-    Top = 24
-  end
   object sp_GetMaxLoadDetailNo: TFDStoredProc
     Connection = FDConnection1
     StoredProcName = 'dbo.vis_GetMaxLoadDetailNo'
@@ -2160,5 +2153,60 @@ object dmsConnector: TdmsConnector
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object sp_GetUserStartHost: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'vis_GetUserStartHost_v2'
+    Left = 461
+    Top = 193
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@AppDir'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 100
+      end
+      item
+        Position = 4
+        Name = '@AppPath'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 255
+      end>
+    object sp_GetUserStartHostUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+    end
+    object sp_GetUserStartHostHostName: TStringField
+      FieldName = 'HostName'
+      Origin = 'HostName'
+      Size = 50
+    end
+    object sp_GetUserStartHostCanChangeUser: TIntegerField
+      FieldName = 'CanChangeUser'
+      Origin = 'CanChangeUser'
+    end
+    object sp_GetUserStartHostSetOnStart: TIntegerField
+      FieldName = 'SetOnStart'
+      Origin = 'SetOnStart'
+    end
+    object sp_GetUserStartHostChangeToUser: TStringField
+      FieldName = 'ChangeToUser'
+      Origin = 'ChangeToUser'
+      Size = 50
+    end
   end
 end
