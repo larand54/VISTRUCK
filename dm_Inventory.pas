@@ -1991,13 +1991,15 @@ End ;
 
 procedure TdmInventory.Refresh_sp_invpiv(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
 Begin
- if sp_invpiv.Active then
- Begin
-  sp_invpiv.Fields.Clear ;
-  sp_invpiv.EmptyDataSet ;
-  sp_invpiv.Active := False ;
-  sp_invpiv.Disconnect(True);
- End ;
+
+   if sp_invpiv.Active then
+   Begin
+    sp_invpiv.Fields.Clear ;
+    sp_invpiv.EmptyDataSet ;
+    sp_invpiv.Active := False ;
+    sp_invpiv.Disconnect(True);
+   End ;
+
 
  if sp_invpivPkgDtl.Active then
  Begin
@@ -2015,26 +2017,26 @@ Begin
  if AT > 0 then
  sp_invpiv.ParamByName('@AT').AsFloat               := AT
  else
- sp_invpiv.ParamByName('@AT').Clear();
+ sp_invpiv.ParamByName('@AT').AsFloat               := 0 ;
  if AB > 0 then
  sp_invpiv.ParamByName('@AB').AsFloat               := AB
  else
- sp_invpiv.ParamByName('@AB').Clear();
+ sp_invpiv.ParamByName('@AB').AsFloat               := 0 ;
 
  if Length(Trim(Ref)) > 0 then
  sp_invpiv.ParamByName('@Ref').AsString             := Trim(Ref)
  else
- sp_invpiv.ParamByName('@Ref').Clear ;
+ sp_invpiv.ParamByName('@Ref').AsString             := '' ;
 
  if Length(Trim(BL)) > 0 then
  sp_invpiv.ParamByName('@BL').AsString              := Trim(BL)
  else
- sp_invpiv.ParamByName('@BL').Clear ;
+ sp_invpiv.ParamByName('@BL').AsString             := '' ;
 
  if Length(Trim(Info2)) > 0 then
  sp_invpiv.ParamByName('@Info2').AsString           := Trim(Info2)
  else
- sp_invpiv.ParamByName('@Info2').Clear ;
+ sp_invpiv.ParamByName('@Info2').AsString             := '' ;
 
 
  Try

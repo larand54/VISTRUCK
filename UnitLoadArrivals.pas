@@ -1939,7 +1939,7 @@ Begin
         ('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)');
     End;
 
-    // if thisuser.UserID = 8 then cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
+    if thisuser.UserID = 258 then cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
   End;
 End;
 
@@ -3837,8 +3837,9 @@ end;
 procedure TfrmLoadArrivals.acRefreshExecute(Sender: TObject);
  var Year, Month, Day: Word ;
 begin
- if bcConfirmed.ItemIndex > 1 then
+ if bcConfirmed.ItemIndex > 0 then
  Begin
+
   DecodeDate(deStartPeriod.Date, Year, Month, Day);
   if IsValidDate(Year, Month, Day) = False then
   Begin
@@ -3862,6 +3863,7 @@ begin
    Exit ;
   End ;
  End ; }
+ dmArrivingLoads.PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_PropsVerkNo.AsInteger, cds_PropsBookingTypeNo.AsInteger) ;
  RefreshLoads ;
  //frmLoadArrivals.SetFocus ;
  mePackageNo.SetFocus;

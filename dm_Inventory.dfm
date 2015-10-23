@@ -8284,7 +8284,7 @@ object dmInventory: TdmInventory
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
-    StoredProcName = 'dbo.Vis_Lager_v3'
+    StoredProcName = 'dbo.Vis_Lager_v4'
     Left = 216
     Top = 536
     ParamData = <
@@ -8364,7 +8364,7 @@ object dmInventory: TdmInventory
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = upd_invpivPkgDtl
-    StoredProcName = 'dbo.Vis_LagerDTL_v2'
+    StoredProcName = 'dbo.Vis_LagerDTL_v3'
     Left = 216
     Top = 424
     ParamData = <

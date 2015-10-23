@@ -390,6 +390,11 @@ object frmMain: TfrmMain
       Caption = 'Byt Spr'#229'k'
       OnExecute = acChangeLanguageExecute
     end
+    object acDeRegisterPackages: TAction
+      Caption = 'Avregistrera paket'
+      ImageIndex = 5
+      OnExecute = acDeRegisterPackagesExecute
+    end
   end
   object imglOutbar_large: TImageList
     Height = 24
@@ -3207,6 +3212,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxBarLargeButton30'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton31'
         end>
       OneOnRow = True
       Row = 0
@@ -3380,6 +3389,10 @@ object frmMain: TfrmMain
     end
     object dxBarButton12: TdxBarButton
       Action = acChangeLanguage
+      Category = 0
+    end
+    object dxBarLargeButton31: TdxBarLargeButton
+      Action = acDeRegisterPackages
       Category = 0
     end
     object dxBarButton1: TdxBarButton

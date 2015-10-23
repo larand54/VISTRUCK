@@ -7,6 +7,12 @@ uses
 
 
 const
+  cSawnSurface  = 79 ;
+
+//Paketserier
+  cDeladePaketSeries  = 1 ;
+  cSaknadePaketSeries = 2 ;
+  cNyregistreringar   = 3 ;
 
   c_Not_FixedPkg    = 0 ;
   c_FixedPkg        = 1 ;

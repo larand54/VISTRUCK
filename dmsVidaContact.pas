@@ -315,6 +315,19 @@ type
     sq_Get_PktNrLevKod: TFDQuery;
     sq_Get_PktNrLevKodPktNrLevKod: TStringField;
     FDStoredProc1: TFDStoredProc;
+    sq_GetProdUnitNo: TFDQuery;
+    sq_GetProdUnitNoProductionUnitNo: TIntegerField;
+    cds_Stacker: TFDQuery;
+    cds_StackerStackerNo: TIntegerField;
+    cds_StackerStackerName: TStringField;
+    cds_StackerProductionUnitNo: TIntegerField;
+    cds_StackerClientNo: TIntegerField;
+    ds_Stacker: TDataSource;
+    cds_TypeOfRun: TFDQuery;
+    cds_TypeOfRunTypeOfRunNo: TIntegerField;
+    cds_TypeOfRunTypeOfRunName: TStringField;
+    cds_TypeOfRunAffectOutturn: TIntegerField;
+    cds_TypeOfRunDefault: TIntegerField;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;
@@ -335,6 +348,7 @@ type
 //    function  WhoBelongsToLoadingLocation(const LoadingLocationNo : Integer) : Integer ;
 
   public
+    Function  Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
     function  ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
     function  Get_PktNrLevKod(const ClientNo : Integer) : String ;
     function  GetPIPNoOfCityNoByOwnerNo (const OwnerNo, CityNo : Integer) : Integer ;
@@ -379,6 +393,21 @@ uses dmsDataConn, VidaConst, VidaUser, dmsVidaSystem;
 
 
 { TdmsContact }
+
+Function TdmsContact.Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
+Begin
+ sq_GetProdUnitNo.ParamByName('ClientNo').AsInteger             := ClientNo ;
+ sq_GetProdUnitNo.ParamByName('RegistrationPointNo').AsInteger  := RegPointNo ;
+ sq_GetProdUnitNo.Active  := True ;
+ Try
+ if not sq_GetProdUnitNo.Eof then
+  Result  := sq_GetProdUnitNoProductionUnitNo.AsInteger
+   else
+    Result  := -1 ;
+ Finally
+  sq_GetProdUnitNo.Active := False ;
+ End ;
+End ;
 
 function TdmsContact.Get_PktNrLevKod(const ClientNo : Integer) : String ;
 Begin

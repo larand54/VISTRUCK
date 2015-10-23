@@ -4108,7 +4108,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxGridPopupMenu2: TcxGridPopupMenu
     Grid = grdLORows
     PopupMenus = <>
-    Left = 640
+    Left = 672
     Top = 409
   end
   object cxGridPopupMenu3: TcxGridPopupMenu
@@ -4209,8 +4209,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 616
-    Top = 384
+    Left = 672
+    Top = 464
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066004C006F006100640045006E007400720079005300

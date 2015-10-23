@@ -9,7 +9,7 @@ uses
   VidaType, Controls, Dialogs, kbmMemTable,
   cxGridTableView, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
-  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore ;
+  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore, dateutils ;
 
 type
  TAmbiguityEvent = procedure(
@@ -479,6 +479,94 @@ type
     sp_LagerPosDateCreated: TSQLTimeStampField;
     sp_LagerPosPosStatus: TIntegerField;
     sp_SetpkgPosition: TFDStoredProc;
+    dsMarkedCodes: TDataSource;
+    mtMarkedCodes: TkbmMemTable;
+    mtMarkedCodesPkgCodePPNo: TIntegerField;
+    mtMarkedCodesProduktionsinstruktion: TStringField;
+    mtMarkedCodesPackageTypeNo: TIntegerField;
+    mtMarkedCodessspNo: TIntegerField;
+    mtMarkedCodesNoOfUnits: TFloatField;
+    mtMarkedCodesVolUnitNo: TIntegerField;
+    mtMarkedCodesProducerNo: TIntegerField;
+    mtMarkedCodesMainProduct: TIntegerField;
+    mtMarkedCodesProductNo: TIntegerField;
+    mtMarkedCodesProductGroupNo: TIntegerField;
+    mtMarkedCodesProductLengthNo: TIntegerField;
+    mtMarkedCodesKortaKoden: TStringField;
+    mtMarkedCodesPPP: TIntegerField;
+    mtMarkedCodesMarketRegionNo: TIntegerField;
+    mtMarkedCodesProdInstruNo: TIntegerField;
+    mtMarkedCodesNT: TFloatField;
+    mtMarkedCodesNB: TFloatField;
+    mtMarkedCodesReference: TStringField;
+    mtMarkedCodesNL: TFloatField;
+    mtMarkedCodesLengthDesc: TStringField;
+    mtMarkedCodesALMM: TFloatField;
+    mtMarkedCodesAT: TFloatField;
+    mtMarkedCodesAB: TFloatField;
+    mtMarkedCodesSurfacingNo: TIntegerField;
+    mtMarkedCodesPackageWidth: TIntegerField;
+    mtMarkedCodesPackageHeight: TIntegerField;
+    mtMarkedCodesProdukt: TStringField;
+    mtMarkedCodesNM3: TFloatField;
+    mtMarkedCodesAM3: TFloatField;
+    mtMarkedCodesStartWeek: TStringField;
+    mtMarkedCodesEndWeek: TStringField;
+    mtMarkedCodesLO: TIntegerField;
+    mtMarkedCodesKund: TStringField;
+    mtMarkedCodesYearWeek: TStringField;
+    mtMarkedCodesLONo: TIntegerField;
+    mtMarkedCodesOwnerNo: TIntegerField;
+    mtMarkedCodesUrsVecka: TStringField;
+    mtMarkedCodesVolumeUnitNo: TIntegerField;
+    mtMarkedCodesKeyField: TIntegerField;
+    mtMarkedCodesVerkNo: TIntegerField;
+    mtMarkedCodesLengthSpec: TStringField;
+    mtMarkedCodesOrderNo: TIntegerField;
+    mtMarkedCodesPriceNM3: TFloatField;
+    sq_GetOrderPrice: TFDQuery;
+    sq_GetOrderPriceALMM: TFloatField;
+    sq_GetOrderPricePrice: TFloatField;
+    cds_GetOrderPrice: TFDQuery;
+    cds_GetOrderPricePrice: TFloatField;
+    mtSelectedPkgNoPackageTypeNo: TIntegerField;
+    mtSelectedPkgNoLIPNo: TIntegerField;
+    FD_LenGrpName: TFDQuery;
+    FD_LenGrpNameGroupName: TStringField;
+    sq_ClearRawTemp: TFDQuery;
+    sq_InsRawTemp: TFDQuery;
+    cds_AvregPkgHist: TFDQuery;
+    cds_AvregHist: TFDQuery;
+    cds_AvregHistPackageNo: TIntegerField;
+    cds_AvregHistPrefix: TStringField;
+    cds_AvregHistSortingOrderNo: TIntegerField;
+    cds_AvregHistDateCreated: TSQLTimeStampField;
+    cds_AvregHistAvRegStatus: TIntegerField;
+    cds_AvregHistScannedString: TStringField;
+    cds_AvregHistAvregStatusName: TStringField;
+    sq_DeleteAvregHistory: TFDQuery;
+    IntegerField16: TIntegerField;
+    StringField15: TStringField;
+    IntegerField17: TIntegerField;
+    SQLTimeStampField2: TSQLTimeStampField;
+    IntegerField18: TIntegerField;
+    StringField16: TStringField;
+    sq_GetVerkNoOfSortingOrderServer: TFDQuery;
+    sq_GetVerkNoOfSortingOrderServerVerkNo: TIntegerField;
+    ds_ProdCatg: TDataSource;
+    cds_ProdCatg: TFDQuery;
+    cds_ProdCatgProductCategoryNo: TIntegerField;
+    cds_ProdCatgImpCodeName: TStringField;
+    cds_ProdCatgProductCategoryName: TStringField;
+    cds_PkgLayouts: TFDQuery;
+    cds_PkgLayoutsPackageLogLayoutNo: TIntegerField;
+    cds_PkgLayoutsPackageLogLayoutName: TStringField;
+    cds_PkgLayoutsSequenceNo: TIntegerField;
+    cds_PkgLayoutsCreatedUser: TSmallintField;
+    cds_PkgLayoutsModifiedUser: TSmallintField;
+    cds_PkgLayoutsDateCreated: TSQLTimeStampField;
+    cds_PkgLayoutsPrintFileName: TStringField;
+    ds_PkgLayouts: TDataSource;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -491,11 +579,13 @@ type
     procedure cds_ExchangeRateAfterInsert(DataSet: TDataSet);
     procedure cdsCarrierAfterInsert(DataSet: TDataSet);
     procedure cds_Load_ImpAfterInsert(DataSet: TDataSet);
+    procedure mtMarkedCodesAfterInsert(DataSet: TDataSet);
 
   private
   { Private declarations }
     AssignedDM : TStrings ;
     FOnAmbiguousPkgNo: TAmbiguityEvent;
+
     procedure getPkgsByLIPNo(const PkgNo, LIPNo : Integer);
     function  SP_Pkg_Reserved(const PkgNo: Integer; const PkgSupplierCode : string3;const Modul : String;Var Res_UserName : String): String;
     procedure getPkgsByInvOwner(const PkgNo, InventoryOwner, UserCompanyLoggedOn : Integer);
@@ -514,11 +604,26 @@ type
       var ProductNo : Integer     );
 
   public
+    ShowAvregErrorDialog, AllowDeRegPkg, ShiftTeamNo  : Integer ;
     DeliveryMessageNumber : String ;
     ShippingPlanNo  : integer ;
     LOG_ENABLE  : Boolean ;
     MarkedPkgs : Integer ;
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
+
+   // function  GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
+    function  GetVerkNoForSortingOrderServer (const Default_SortingOrderNo : Integer) : Integer ;
+    procedure AddPkgToLoggs (const PackageNo, SortingOrderNo, AvRegStatus : Integer;
+    const Prefix, ScannedString : String) ;
+    procedure InsRawTemp(const BookingNo, ID : Integer) ;
+    function  GetOrderPrice(const OrderNo, ProductNo : Integer;const ALMM : Double) : Double ;
+    function  CreateNewLength(const ALMM, Feet : Double;const Inch  : String) : Integer ;
+    function  GetProductLengthNoByGroup(const GroupName : String) : Integer ;
+    function  GetALMMByProductLengthNo(const ProductLengthNo : Integer) : Double ;
+    function  GetProductLengthNoByInch(const Inch : String) : Integer ;
+    function  GetProductLengthNoByFeet(const Feet : String) : Integer ;
+    function  GetProductLengthNoByUserLengthSpec(const LengthString : String) : Integer ;
+    function  GetProductLengthNoByALMM_II (const ALMM : Double) : Integer ;
     procedure SetPkgPositionID (const PackageNo, PositionID : Integer;const Prefix : String) ;
     procedure ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3) ;
     function  GetLanguageNo : Integer ;
@@ -650,7 +755,8 @@ uses
   VidaConst, VidaUser,
   dlgPickPkg_II,
   //recerror ,
-  uShowMemo, dmsVidaContact, uSendMapiMail , uLagerPos;
+  uShowMemo, dmsVidaContact, uSendMapiMail , uLagerPos, VidaUtils ,
+  uEnterLengthData;
 
 
 { TdmsSystem }
@@ -672,6 +778,43 @@ begin
   }
 end;
 
+procedure TdmsSystem.AddPkgToLoggs (const PackageNo, SortingOrderNo, AvRegStatus : Integer;
+const Prefix, ScannedString : String) ;
+Begin
+ Try
+ cds_AvregPkgHist.ParamByName('PackageNo').AsInteger        := PackageNo ;
+ cds_AvregPkgHist.ParamByName('Prefix').AsString            := Prefix ;
+ cds_AvregPkgHist.ParamByName('SortingOrderNo').AsInteger   := SortingOrderNo ;
+ cds_AvregPkgHist.ParamByName('AvRegStatus').AsInteger      := AvRegStatus ;
+ cds_AvregPkgHist.ParamByName('DATECREATED').AsSQLTimeStamp := DateTimeToSQLTimeStamp(now) ;
+ cds_AvregPkgHist.ParamByName('SCANNEDSTRING').AsString     := ScannedString ;
+ cds_AvregPkgHist.ExecSQL ;
+ Except
+  On E: Exception do
+  Begin
+   FDoLog(E.Message+' :cds_AvregPkgHist') ;
+   Raise ;
+  End ;
+ End;
+End;
+
+procedure TdmsSystem.InsRawTemp(const BookingNo, ID : Integer) ;
+Begin
+ Try
+ sq_InsRawTemp.ParamByName('UserID').AsInteger      := ThisUser.UserID ;
+ sq_InsRawTemp.ParamByName('BookingNo').AsInteger   := BookingNo ;
+ sq_InsRawTemp.ParamByName('ID').AsInteger          := ID ;
+ sq_InsRawTemp.ExecSQL ;
+       Except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message + ' :sq_InsRawTemp.Exec') ;
+          ShowMessage(E.Message + ' :sq_InsRawTemp.Exec') ;
+          Raise ;
+         End ;
+       End ;
+End ;
+
 procedure TdmsSystem.FDoLog(s: string);
 var
   sName: string;
@@ -679,7 +822,7 @@ var
 begin
   if LOG_ENABLE then
   Begin
-   sName := dmsConnector.DriveLetter + 'VIS\TEMP\'  + Application.Title + '.log' ;
+   sName := dmsConnector.DriveLetter + 'VIS\TEMP\VISTRUCK'  + '.log' ;
    AssignFile(F, sName);
    if not FileExists(sName) then
     Rewrite(F)
@@ -693,6 +836,281 @@ begin
     RenameFile(sName, sName + FormatDateTime('.yyyy.mm.dd_hh.nn.ss.zzz', now))
   End
 end;
+
+
+function TdmsSystem.GetProductLengthNoByALMM_II(const ALMM : Double) : Integer ;
+Begin
+ Try
+  Result:= -1 ;
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('Select distinct * ') ;
+
+  cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
+  cds_ProductLength.SQL.Add('WHERE') ;
+  cds_ProductLength.SQL.Add('PL.ActualLengthMM = ' + ReplaceCommas(FloatToStr(ALMM))) ;
+  cds_ProductLength.Open ;
+
+  if not cds_ProductLength.Eof then
+   Result:= cds_ProductLength.FieldByName('ProductLengthNo').AsInteger
+    else
+     Result:= -1 ;
+ Finally
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
+  cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
+  cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
+  cds_ProductLength.SQL.Add('Order by PL.ActualLengthMM') ;
+ End ;
+End ;
+
+function TdmsSystem.GetProductLengthNoByFeet(const Feet : String) : Integer ;
+Begin
+ Try
+  Result:= -1 ;
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('Select distinct * ') ;
+
+  cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
+  cds_ProductLength.SQL.Add('WHERE') ;
+  cds_ProductLength.SQL.Add('PL.NominalLengthFEET = ' + ReplaceCommas(Feet)) ;
+  cds_ProductLength.Open ;
+
+  if not cds_ProductLength.Eof then
+   Result:= cds_ProductLength.FieldByName('ProductLengthNo').AsInteger
+    else
+     Result:= -1 ;
+ Finally
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
+  cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
+  cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
+  cds_ProductLength.SQL.Add('Order by PL.ActualLengthMM') ;
+ End ;
+End ;
+
+function TdmsSystem.GetProductLengthNoByInch(const Inch : String) : Integer ;
+Begin
+ Try
+  Result:= -1 ;
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('Select distinct * ') ;
+
+  cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
+  cds_ProductLength.SQL.Add('WHERE') ;
+  cds_ProductLength.SQL.Add('PL.ActualLengthINCH = ' + QuotedStr(Inch)) ;
+  cds_ProductLength.Open ;
+
+  if not cds_ProductLength.Eof then
+   Result:= cds_ProductLength.FieldByName('ProductLengthNo').AsInteger
+    else
+     Result:= -1 ;
+ Finally
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
+  cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
+  cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
+  cds_ProductLength.SQL.Add('Order by PL.ActualLengthMM') ;
+ End ;
+End ;
+
+function TdmsSystem.GetProductLengthNoByGroup(const GroupName : String) : Integer ;
+Begin
+ Try
+  Result:= -1 ;
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('Select distinct * ') ;
+
+  cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
+  cds_ProductLength.SQL.Add('Inner Join dbo.ProductLengthGroupName PLG on PLG.GroupNo = PL.ProductLengthGroupNo') ;
+  cds_ProductLength.SQL.Add('WHERE') ;
+  cds_ProductLength.SQL.Add('PLG.GroupName = ' + QuotedStr(GroupName)) ;
+  cds_ProductLength.Open ;
+
+  if not cds_ProductLength.Eof then
+   Result:= cds_ProductLength.FieldByName('ProductLengthNo').AsInteger
+    else
+     Result:= -1 ;
+ Finally
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
+  cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
+  cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
+  cds_ProductLength.SQL.Add('Order by PL.ActualLengthMM') ;
+ End ;
+End ;
+
+function TdmsSystem.GetOrderPrice(const OrderNo, ProductNo : Integer;const ALMM : Double) : Double ;
+Begin
+ sq_GetOrderPrice.Active                              := False ;
+ sq_GetOrderPrice.ParamByName('OrderNo').AsInteger    := OrderNo ;
+ sq_GetOrderPrice.ParamByName('ProductNo').AsInteger  := ProductNo ;
+ sq_GetOrderPrice.Active                              := True ;
+ Try
+ if not sq_GetOrderPrice.Eof then
+ Begin
+  Result  := sq_GetOrderPricePrice.AsFloat ;
+  sq_GetOrderPrice.Filter   := 'ALMM = ' + FloatToStr(ALMM) ;
+  sq_GetOrderPrice.Filtered := True ;
+  if not sq_GetOrderPrice.Eof then
+   Result  := sq_GetOrderPricePrice.AsFloat ;
+ End
+ else
+  Result  := 0 ;
+ Finally
+  sq_GetOrderPrice.Filtered := False ;
+  sq_GetOrderPrice.Active   := False ;
+ End ;
+End ;
+
+function TdmsSystem.GetProductLengthNoByUserLengthSpec(const LengthString : String) : Integer ;
+var fEnterLengthData  : TfEnterLengthData ;
+    PosChar           : Integer ;
+    pLengthString     : String ;
+Begin
+  Result  := -1 ;
+  PosChar  := POS('''', LengthString) ;
+  if PosChar > 0 then
+  Begin
+   pLengthString := Copy(LengthString, 1, PosChar - 1) ;
+   Result  := GetProductLengthNoByFeet(pLengthString) ;
+    if Result = -1 then
+    Begin
+     //Ange ALMM, Feet and Inch
+     fEnterLengthData:= TfEnterLengthData.Create(nil);
+     Try
+     fEnterLengthData.meFeet.Text := pLengthString ;
+     if fEnterLengthData.ShowModal = mrOK then
+      Result := dmsSystem.CreateNewLength(StrToFloat(fEnterLengthData.meALMM.Text), StrToFloat(fEnterLengthData.meFeet.Text), fEnterLengthData.meInch.Text) ;
+     Finally
+      FreeAndNil(fEnterLengthData) ;
+     End ;
+    End ;
+  End //if POS('''', LengthString) then
+  else
+  if POS('"', LengthString) > 0 then
+  Begin
+    PosChar  := POS('"', LengthString) ;
+    pLengthString := Copy(LengthString, 1, PosChar - 1) ;
+    Result  := GetProductLengthNoByInch(TRIM(pLengthString)) ;
+    if Result = -1 then
+    Begin
+     //Ange ALMM, Feet and Inch
+     fEnterLengthData:= TfEnterLengthData.Create(nil);
+     Try
+     if fEnterLengthData.ShowModal = mrOK then
+      Result := dmsSystem.CreateNewLength(StrToFloat(fEnterLengthData.meALMM.Text), StrToFloat(fEnterLengthData.meFeet.Text), fEnterLengthData.meInch.Text) ;
+     Finally
+      FreeAndNil(fEnterLengthData) ;
+     End ;
+    End ;
+  End //if POS('"', LengthString) then
+  else
+  if StrToFloatDef(LengthString,0) > 0 then
+  Begin
+   Result   := GetProductLengthNoByALMM_II(StrToFloatDef(LengthString,0)) ;
+   if Result  = -1 then
+    Result := dmsSystem.CreateNewLength(StrToFloat(LengthString), StrToFloat('0'), '0') ;
+  End //if StrToFloatDef(LengthString,0) > 0 then
+  else
+//  if POS('_', LengthString) > 0 then
+  Begin
+    Result  := GetProductLengthNoByGroup(LengthString) ;
+    if Result = -1 then
+    Begin
+     Result  := -2 ;
+     ShowMessage('Längdgruppen "' + LengthString + '" finns ej') ;
+     //Ange ALMM, Feet and Inch
+{     fEnterLengthData:= TfEnterLengthData.Create(nil);
+     Try
+     if fEnterLengthData.ShowModal = mrOK then
+      Result := dmProduct.CreateNewLength(StrToFloat(fEnterLengthData.meALMM.Text), StrToFloat(fEnterLengthData.meFeet.Text), fEnterLengthData.meInch.Text) ;
+     Finally
+      FreeAndNil(fEnterLengthData) ;
+     End ; }
+    End ;
+  End ; //if POS('''', LengthString) then
+
+
+// Get ProductLengthNo for mm, fot eller tum längd. Finns inte längden för fot och tum
+// måste user ange mm längden.
+//Beroende på vilken längd som anges skall den enhet user matade in längden i också sparas för att presentera
+//eller kanske bättre att man har ett nytt fält där texten sparas till, tror det.
+End ;
+
+function TdmsSystem.GetALMMByProductLengthNo(const ProductLengthNo : Integer) : Double ;
+Begin
+ Try
+  Result:= -1 ;
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('Select distinct * ') ;
+
+  cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
+  cds_ProductLength.SQL.Add('WHERE') ;
+  cds_ProductLength.SQL.Add('PL.ProductLengthNo = ' + IntToStr(ProductLengthNo)) ;
+  cds_ProductLength.Open ;
+
+  if not cds_ProductLength.Eof then
+   Result:= cds_ProductLength.FieldByName('ActualLengthMM').AsFloat
+    else
+     Result:= -1 ;
+ Finally
+  cds_ProductLength.Close ;
+  cds_ProductLength.SQL.Clear ;
+  cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
+  cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
+  cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
+  cds_ProductLength.SQL.Add('Order by PL.ActualLengthMM') ;
+ End ;
+End ;
+
+function TdmsSystem.CreateNewLength(const ALMM, Feet : Double;const Inch  : String) : Integer ;
+Begin
+ Try
+ Result := -1 ;
+ if not cds_ProductLength.Active then
+  cds_ProductLength.Active  := True ;
+
+{ if cds_ProductLength.Locate('ActualThicknessMM', ALMM, []) then
+ Begin
+
+ End //Update length
+ else
+ Begin }
+ Try
+ cds_ProductLength.Insert ;
+ cds_ProductLengthActualLengthMM.AsFloat      := ALMM ;
+ cds_ProductLengthNominalLengthMM.AsFloat     := ALMM ;
+ cds_ProductLengthNominalLengthFEET.AsFloat   := Feet ;
+ cds_ProductLengthActualLengthINCH.AsString   := Inch ;
+ cds_ProductLength.Post ;
+ Result := cds_ProductLengthProductLengthNo.AsInteger ;
+ if cds_ProductLength.ChangeCount > 0 then
+ Begin
+  cds_ProductLength.ApplyUpdates(0) ;
+  cds_ProductLength.CommitUpdates ;
+ End ;
+ Except
+  On E: Exception do
+  Begin
+   Result := -1 ;
+   ShowMessage('cds_ProductLength: ' + E.Message) ;
+   Raise ;
+  End
+ End ;
+// End ;//Insert new
+
+ Finally
+ End ;
+End ;
 
 function TdmsSystem.GetLagerPos(const PIPNo : Integer) : Integer ;
 var
@@ -1440,10 +1858,50 @@ begin
 end;
 
 
+  function TdmsSystem.GetVerkNoForSortingOrderServer (const Default_SortingOrderNo : Integer) : Integer ;
+  begin
+ //  cnnVIS_Vida.Connected  := True ;
+   sq_GetVerkNoOfSortingOrderServer.ParamByName('ID').AsInteger := Default_SortingOrderNo ;
+   sq_GetVerkNoOfSortingOrderServer.Active  := True ;
+   Try
+    if not sq_GetVerkNoOfSortingOrderServer.Eof then
+      Result  :=  sq_GetVerkNoOfSortingOrderServerVerkNo.AsInteger
+       else
+        Result  := -1 ;
+   Finally
+     sq_GetVerkNoOfSortingOrderServer.Active  := False ;
+  //   cnnVIS_Vida.Connected  := False ;
+   End;
+  end ;
+
+
+{
+  function TdmsSystem.GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
+  begin
+   sq_GetVerkNoOfSortingOrder.ParamByName('SortingOrderNo').AsInteger := Default_SortingOrderNo ;
+   sq_GetVerkNoOfSortingOrder.Active  := True ;
+   Try
+    if not sq_GetVerkNoOfSortingOrder.Eof then
+      Result  :=  sq_GetVerkNoOfSortingOrderVerkNr.AsInteger
+       else
+        Begin
+         Result := -1 ;
+        End;
+   Finally
+     sq_GetVerkNoOfSortingOrder.Active  := False ;
+   End;
+  end ;
+
+}
+
 procedure TdmsSystem.DataModuleCreate(Sender: TObject);
 begin
  AssignedDM := TStringList.Create ;
  dmsSystem.OnAmbiguousPkgNo := ResolvePkgNoAmbiguity;
+
+ ShowAvregErrorDialog := 1 ;
+ AllowDeRegPkg        := 1 ;
+ ShiftTeamNo          := 1 ;
 
  mtLengthFormat.Active:= True ;
  mtLengthFormat.AppendRecord([0,'AKT.MM']);
@@ -1540,6 +1998,26 @@ Begin
   cds_LO_Lengths.Active      := False ;
  End ;
 End ;
+
+procedure TdmsSystem.mtMarkedCodesAfterInsert(DataSet: TDataSet);
+Var Year, WeekStr    : String ;
+    YearNo, WeekNo  : Integer ;
+
+begin
+ WeekNo := WeekOf(Date) ;
+ YearNo := YearOf(Date) ;
+ if WeekNo < 10 then
+  WeekStr := '0'+inttostr(WeekNo)
+   else
+    WeekStr:= inttostr(WeekNo) ;
+
+ Year:= IntToStr(YearNo - 2000) ;
+
+ mtMarkedCodesOwnerNo.AsInteger    := ThisUser.CompanyNo ;
+ mtMarkedCodesVerkNo.AsInteger     := ThisUser.CompanyNo ;
+ mtMarkedCodesKeyField.AsInteger  := -1 ;
+ mtMarkedCodesYearWeek.AsString   := Year + WeekStr ;
+end;
 
 procedure TdmsSystem.mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
 begin

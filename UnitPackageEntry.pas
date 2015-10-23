@@ -481,7 +481,7 @@ Begin
    mtPackages.FieldByName('Defsspno').Visible:= False ;
 
 //25
-   mtPackages.FieldDefs.Add(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_4' (* 'Varuslag' *) ),ftInteger,0,False) ;
+   mtPackages.FieldDefs.Add('Varuslag',ftInteger,0,False) ;
    mtPackages.FieldDefs[cVaruslag].CreateField(nil);
    mtPackages.FieldByName('Varuslag').Visible:= False ;
 
@@ -506,7 +506,7 @@ MakeLengthQuery_STD_Lengths (mtUserPropLengthGroupNo.AsInteger)
              Begin
                bcLengthOption.ItemIndex:= 1 ;
                MakeLengthQueryAllaPGLength ; //All lengths
-               ShowMessage(siLangLinked_frmPackageEntry.GetTextOrDefault('IDS_5' (* 'Loading all lengths...' *) )) ;
+               ShowMessage('Loading all lengths...') ;
              End ;
          End
          else

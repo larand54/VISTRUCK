@@ -1826,10 +1826,12 @@ object dmsConnector: TdmsConnector
     Params.Strings = (
       'Server=visprodsql.vida.se '
       'Database=Vis_Vida'
-      'OSAuthent=Yes'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
       'ApplicationName=VIS_TRUCK'
+      'User_Name=Lars'
+      'Password=woods2011'
       'DriverID=MSSQL')
     FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
     FetchOptions.Mode = fmAll
@@ -2208,5 +2210,74 @@ object dmsConnector: TdmsConnector
       Origin = 'ChangeToUser'
       Size = 50
     end
+  end
+  object sp_GetSOPkgNo: TFDStoredProc
+    CachedUpdates = True
+    Connection = FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    StoredProcName = 'vis_vida.dbo.vis_GetSOPkgNo'
+    Left = 440
+    Top = 288
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@ClientNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@RegPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@SeriesType'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@fCurrentPkgNo'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 6
+        Name = '@Prefix'
+        DataType = ftFixedChar
+        ParamType = ptInputOutput
+        Size = 3
+      end>
+  end
+  object FD_DeleteSecondNo: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'Delete dbo.MaxSecKeyValue '
+      
+        'WHERE TableName = :TableName AND PrimaryKeyValue = :PrimaryKeyVa' +
+        'lue')
+    Left = 440
+    Top = 352
+    ParamData = <
+      item
+        Name = 'TABLENAME'
+        DataType = ftString
+        FDDataType = dtByteString
+        ParamType = ptInput
+      end
+      item
+        Name = 'PRIMARYKEYVALUE'
+        DataType = ftInteger
+        FDDataType = dtUInt32
+        ParamType = ptInput
+      end>
   end
 end

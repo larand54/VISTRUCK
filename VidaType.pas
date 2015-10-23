@@ -43,9 +43,14 @@ type
     eaREJECT,     // Reject the current value & force user to change it
     eaACCEPT,
     eaReserved,      // Accept the current value & allow focus to change
+    EFDuplicate,
     eaDuplicate,
-    eaAlreadyAvReg
+    eaAlreadyAvReg,
+    eaUserCancel
     );
+
+
+
 
   TDataCategory = (
     dcProductSection,

@@ -1,7 +1,7 @@
 object dmsSystem: TdmsSystem
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 865
+  Height = 1042
   Width = 1199
   object dsrcBarCodes: TDataSource
     DataSet = cdsBarCodes
@@ -130,6 +130,12 @@ object dmsSystem: TdmsSystem
     end
     object mtSelectedPkgNoMARKERAD: TIntegerField
       FieldName = 'MARKERAD'
+    end
+    object mtSelectedPkgNoPackageTypeNo: TIntegerField
+      FieldName = 'PackageTypeNo'
+    end
+    object mtSelectedPkgNoLIPNo: TIntegerField
+      FieldName = 'LIPNo'
     end
   end
   object ds_LoadPlanDest: TDataSource
@@ -430,6 +436,7 @@ object dmsSystem: TdmsSystem
       end>
   end
   object cds_Grade_SV: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -454,6 +461,7 @@ object dmsSystem: TdmsSystem
     end
   end
   object cds_Surfacing_SV: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -525,6 +533,7 @@ object dmsSystem: TdmsSystem
     Top = 184
   end
   object cds_Species_SV: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -4045,7 +4054,7 @@ object dmsSystem: TdmsSystem
       'Select LDW.LoadNo, LDW.Reference, LDW.LoadWeightKG'
       #9'FROM dbo.LoadWeight LDW '
       #9'WHERE LDW.LoadNo = :LoadNo')
-    Left = 456
+    Left = 408
     Top = 720
     ParamData = <
       item
@@ -4118,7 +4127,7 @@ object dmsSystem: TdmsSystem
   end
   object ds_LoadWeigth: TDataSource
     DataSet = cds_LoadWeigth
-    Left = 456
+    Left = 408
     Top = 768
   end
   object mtMarkedProd: TkbmMemTable
@@ -4581,5 +4590,667 @@ object dmsSystem: TdmsSystem
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object dsMarkedCodes: TDataSource
+    DataSet = mtMarkedCodes
+    Left = 914
+    Top = 168
+  end
+  object mtMarkedCodes: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <
+      item
+        Name = 'PkgCodePPNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Produktionsinstruktion'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'PackageTypeNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'sspNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NoOfUnits'
+        DataType = ftFloat
+      end
+      item
+        Name = 'VolUnitNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProducerNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'MainProduct'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductGroupNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductLengthNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'KortaKoden'
+        DataType = ftString
+        Size = 40
+      end
+      item
+        Name = 'PPP'
+        DataType = ftInteger
+      end
+      item
+        Name = 'MarketRegionNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProdInstruNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NB'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Reference'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'NL'
+        DataType = ftFloat
+      end
+      item
+        Name = 'LengthDesc'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'AT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'AB'
+        DataType = ftFloat
+      end
+      item
+        Name = 'SurfacingNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PackageWidth'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PackageHeight'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Produkt'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'NM3'
+        DataType = ftFloat
+      end
+      item
+        Name = 'AM3'
+        DataType = ftFloat
+      end
+      item
+        Name = 'StartWeek'
+        DataType = ftString
+        Size = 4
+      end
+      item
+        Name = 'EndWeek'
+        DataType = ftString
+        Size = 4
+      end>
+    IndexDefs = <>
+    SortOptions = []
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    LoadedCompletely = False
+    SavedCompletely = False
+    FilterOptions = []
+    Version = '7.63.00 Standard Edition'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    AfterInsert = mtMarkedCodesAfterInsert
+    Left = 914
+    Top = 120
+    object mtMarkedCodesPkgCodePPNo: TIntegerField
+      FieldName = 'PkgCodePPNo'
+    end
+    object mtMarkedCodesProduktionsinstruktion: TStringField
+      DisplayLabel = 'Produkt'
+      FieldName = 'Produktionsinstruktion'
+      Size = 255
+    end
+    object mtMarkedCodesPackageTypeNo: TIntegerField
+      FieldName = 'PackageTypeNo'
+    end
+    object mtMarkedCodessspNo: TIntegerField
+      FieldName = 'sspNo'
+    end
+    object mtMarkedCodesNoOfUnits: TFloatField
+      FieldName = 'NoOfUnits'
+    end
+    object mtMarkedCodesVolUnitNo: TIntegerField
+      FieldName = 'VolUnitNo'
+    end
+    object mtMarkedCodesProducerNo: TIntegerField
+      FieldName = 'ProducerNo'
+    end
+    object mtMarkedCodesMainProduct: TIntegerField
+      FieldName = 'MainProduct'
+    end
+    object mtMarkedCodesProductNo: TIntegerField
+      FieldName = 'ProductNo'
+    end
+    object mtMarkedCodesProductGroupNo: TIntegerField
+      FieldName = 'ProductGroupNo'
+    end
+    object mtMarkedCodesProductLengthNo: TIntegerField
+      FieldName = 'ProductLengthNo'
+    end
+    object mtMarkedCodesKortaKoden: TStringField
+      DisplayLabel = 'S'#246'knamn'
+      FieldName = 'KortaKoden'
+      Size = 40
+    end
+    object mtMarkedCodesPPP: TIntegerField
+      FieldName = 'PPP'
+    end
+    object mtMarkedCodesMarketRegionNo: TIntegerField
+      FieldName = 'MarketRegionNo'
+    end
+    object mtMarkedCodesProdInstruNo: TIntegerField
+      FieldName = 'ProdInstruNo'
+    end
+    object mtMarkedCodesNT: TFloatField
+      FieldName = 'NT'
+    end
+    object mtMarkedCodesNB: TFloatField
+      FieldName = 'NB'
+    end
+    object mtMarkedCodesReference: TStringField
+      FieldName = 'Reference'
+      Size = 50
+    end
+    object mtMarkedCodesNL: TFloatField
+      FieldName = 'NL'
+    end
+    object mtMarkedCodesLengthDesc: TStringField
+      FieldName = 'LengthDesc'
+      Size = 255
+    end
+    object mtMarkedCodesALMM: TFloatField
+      FieldKind = fkLookup
+      FieldName = 'ALMM'
+      LookupKeyFields = 'ProductLengthNo'
+      LookupResultField = 'ActualLengthMM'
+      KeyFields = 'ProductLengthNo'
+      Lookup = True
+    end
+    object mtMarkedCodesAT: TFloatField
+      FieldName = 'AT'
+    end
+    object mtMarkedCodesAB: TFloatField
+      FieldName = 'AB'
+    end
+    object mtMarkedCodesSurfacingNo: TIntegerField
+      FieldName = 'SurfacingNo'
+    end
+    object mtMarkedCodesPackageWidth: TIntegerField
+      FieldName = 'PackageWidth'
+    end
+    object mtMarkedCodesPackageHeight: TIntegerField
+      FieldName = 'PackageHeight'
+    end
+    object mtMarkedCodesProdukt: TStringField
+      FieldName = 'Produkt'
+      Size = 100
+    end
+    object mtMarkedCodesNM3: TFloatField
+      FieldName = 'NM3'
+    end
+    object mtMarkedCodesAM3: TFloatField
+      FieldName = 'AM3'
+    end
+    object mtMarkedCodesStartWeek: TStringField
+      FieldName = 'StartWeek'
+      Size = 4
+    end
+    object mtMarkedCodesEndWeek: TStringField
+      FieldName = 'EndWeek'
+      Size = 4
+    end
+    object mtMarkedCodesLO: TIntegerField
+      FieldName = 'LO'
+    end
+    object mtMarkedCodesKund: TStringField
+      FieldName = 'Kund'
+      Size = 80
+    end
+    object mtMarkedCodesYearWeek: TStringField
+      FieldName = 'YearWeek'
+      Size = 4
+    end
+    object mtMarkedCodesLONo: TIntegerField
+      FieldName = 'LONo'
+    end
+    object mtMarkedCodesOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+    end
+    object mtMarkedCodesUrsVecka: TStringField
+      FieldName = 'UrsVecka'
+      Size = 9
+    end
+    object mtMarkedCodesVolumeUnitNo: TIntegerField
+      FieldName = 'VolumeUnitNo'
+    end
+    object mtMarkedCodesKeyField: TIntegerField
+      FieldName = 'KeyField'
+    end
+    object mtMarkedCodesVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+    end
+    object mtMarkedCodesLengthSpec: TStringField
+      FieldName = 'LengthSpec'
+      Size = 15
+    end
+    object mtMarkedCodesOrderNo: TIntegerField
+      FieldName = 'OrderNo'
+    end
+    object mtMarkedCodesPriceNM3: TFloatField
+      FieldName = 'PriceNM3'
+    end
+  end
+  object sq_GetOrderPrice: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select pl.ActualLengthMM AS ALMM, ol.Price from dbo.OrderLine ol'
+      
+        'Inner Join dbo.ProductLength PL on PL.ProductLengthNo = OL.Produ' +
+        'ctLengthNo'
+      'WHERE ol.ProductNo = :ProductNo'
+      'and OL.OrderNo = :OrderNo')
+    Left = 736
+    Top = 744
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'ORDERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GetOrderPriceALMM: TFloatField
+      FieldName = 'ALMM'
+      Origin = 'ALMM'
+      Required = True
+    end
+    object sq_GetOrderPricePrice: TFloatField
+      FieldName = 'Price'
+      Origin = 'Price'
+    end
+  end
+  object cds_GetOrderPrice: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select ol.Price from dbo.OrderLine ol'
+      'WHERE ol.ProductNo = :ProductNo'
+      'and OL.OrderNo = :OrderNo')
+    Left = 736
+    Top = 800
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'ORDERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_GetOrderPricePrice: TFloatField
+      FieldName = 'Price'
+      Origin = 'Price'
+    end
+  end
+  object FD_LenGrpName: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'select Distinct GroupName from dbo.ProductLength pl'
+      
+        'inner join productlengthgroupname plg on plg.groupNO = pl.produc' +
+        'tlengthgroupno'
+      'WHERE plg.SequenceNo = 1')
+    Left = 728
+    Top = 544
+    object FD_LenGrpNameGroupName: TStringField
+      FieldName = 'GroupName'
+      Origin = 'GroupName'
+      FixedChar = True
+    end
+  end
+  object sq_ClearRawTemp: TFDQuery
+    ConnectionName = 'VIS_VIDA'
+    SQL.Strings = (
+      'Delete [dbo].[RawTemp]'
+      'WHERE UserID = :UserID')
+    Left = 992
+    Top = 568
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sq_InsRawTemp: TFDQuery
+    ConnectionName = 'VIS_VIDA'
+    SQL.Strings = (
+      'Insert into [dbo].[RawTemp](UserID, BookingNo, ID)'
+      'VALUES(:UserID, :BookingNo, :ID)')
+    Left = 992
+    Top = 624
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'BOOKINGNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object cds_AvregPkgHist: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'INSERT INTO [dbo].[AvRegHist]'
+      '           ([PackageNo]'
+      '           ,[Prefix]'
+      '           ,[SortingOrderNo]'
+      '           ,[DateCreated]'
+      '           ,[AvRegStatus]'
+      ',[ScannedString])'
+      '     VALUES'
+      '           (:PackageNo'
+      '           ,:Prefix'
+      '           ,:SortingOrderNo'
+      '           ,:DateCreated'
+      '           ,:AvRegStatus'
+      ',:ScannedString)'
+      '')
+    Left = 624
+    Top = 784
+    ParamData = <
+      item
+        Name = 'PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'PREFIX'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'SORTINGORDERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'DATECREATED'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end
+      item
+        Name = 'AVREGSTATUS'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SCANNEDSTRING'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+  end
+  object cds_AvregHist: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'select avr.*,'
+      'Case '
+      'WHEN avr.AvRegStatus = 0 THEN '#39'ABANDON'#39
+      'WHEN avr.AvRegStatus = 1 THEN '#39'REJECT'#39
+      'WHEN avr.AvRegStatus = 2 THEN '#39'ACCEPT'#39
+      'WHEN avr.AvRegStatus = 3 THEN '#39'Reserved'#39
+      'WHEN avr.AvRegStatus = 4 THEN '#39'Duplicate'#39
+      'WHEN avr.AvRegStatus = 5 THEN '#39'AlreadyAvReg'#39
+      'WHEN avr.AvRegStatus = 6 THEN '#39'UserCancel'#39
+      'END AS AvregStatusName'
+      ' from dbo.[AvRegHist] avr'
+      'WHERE ((SortingOrderNo = :ID) OR  (0 = :ID))')
+    Left = 624
+    Top = 840
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_AvregHistPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+    end
+    object cds_AvregHistPrefix: TStringField
+      FieldName = 'Prefix'
+      Origin = 'Prefix'
+      Size = 3
+    end
+    object cds_AvregHistSortingOrderNo: TIntegerField
+      FieldName = 'SortingOrderNo'
+      Origin = 'SortingOrderNo'
+    end
+    object cds_AvregHistDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+    end
+    object cds_AvregHistAvRegStatus: TIntegerField
+      FieldName = 'AvRegStatus'
+      Origin = 'AvRegStatus'
+    end
+    object cds_AvregHistScannedString: TStringField
+      FieldName = 'ScannedString'
+      Origin = 'ScannedString'
+      Size = 100
+    end
+    object cds_AvregHistAvregStatusName: TStringField
+      FieldName = 'AvregStatusName'
+      Origin = 'AvregStatusName'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 12
+    end
+  end
+  object sq_DeleteAvregHistory: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'DELETE dbo.[AvRegHist]')
+    Left = 624
+    Top = 912
+    object IntegerField16: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+    end
+    object StringField15: TStringField
+      FieldName = 'Prefix'
+      Origin = 'Prefix'
+      Size = 3
+    end
+    object IntegerField17: TIntegerField
+      FieldName = 'SortingOrderNo'
+      Origin = 'SortingOrderNo'
+    end
+    object SQLTimeStampField2: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+    end
+    object IntegerField18: TIntegerField
+      FieldName = 'AvRegStatus'
+      Origin = 'AvRegStatus'
+    end
+    object StringField16: TStringField
+      FieldName = 'ScannedString'
+      Origin = 'ScannedString'
+      Size = 100
+    end
+  end
+  object sq_GetVerkNoOfSortingOrderServer: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT VerkNo FROM dbo.cxSchedulerTable'
+      'where ID = :ID ')
+    Left = 408
+    Top = 824
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GetVerkNoOfSortingOrderServerVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+      Origin = 'VerkNo'
+    end
+  end
+  object ds_ProdCatg: TDataSource
+    DataSet = cds_ProdCatg
+    Left = 230
+    Top = 904
+  end
+  object cds_ProdCatg: TFDQuery
+    Active = True
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select pc.ProductCategoryNo,'
+      'pc.ProductCategoryName,'
+      ''
+      
+        'IsNull(pc.ImpCode,'#39#39') + '#39' - '#39' + IsNull(pc.ProductCategoryName,'#39#39 +
+        ')'
+      'AS ImpCodeName'
+      ''
+      'FROM dbo.ProductCategory pc'
+      'WHERE pc.LanguageCode = 1'
+      'and pc.Act = 1'
+      'Order By pc.ImpCode, pc.ProductCategoryName')
+    Left = 232
+    Top = 856
+    object cds_ProdCatgProductCategoryNo: TIntegerField
+      FieldName = 'ProductCategoryNo'
+      Origin = 'ProductCategoryNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_ProdCatgImpCodeName: TStringField
+      FieldName = 'ImpCodeName'
+      Origin = 'ImpCodeName'
+      ReadOnly = True
+      Required = True
+      Size = 28
+    end
+    object cds_ProdCatgProductCategoryName: TStringField
+      FieldName = 'ProductCategoryName'
+      Origin = 'ProductCategoryName'
+      Required = True
+    end
+  end
+  object cds_PkgLayouts: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select * FROM dbo.PackageLogLayout')
+    Left = 856
+    Top = 848
+    object cds_PkgLayoutsPackageLogLayoutNo: TIntegerField
+      FieldName = 'PackageLogLayoutNo'
+      Origin = 'PackageLogLayoutNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_PkgLayoutsPackageLogLayoutName: TStringField
+      FieldName = 'PackageLogLayoutName'
+      Origin = 'PackageLogLayoutName'
+      FixedChar = True
+    end
+    object cds_PkgLayoutsSequenceNo: TIntegerField
+      FieldName = 'SequenceNo'
+      Origin = 'SequenceNo'
+    end
+    object cds_PkgLayoutsCreatedUser: TSmallintField
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+    end
+    object cds_PkgLayoutsModifiedUser: TSmallintField
+      FieldName = 'ModifiedUser'
+      Origin = 'ModifiedUser'
+    end
+    object cds_PkgLayoutsDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+    end
+    object cds_PkgLayoutsPrintFileName: TStringField
+      FieldName = 'PrintFileName'
+      Origin = 'PrintFileName'
+      Size = 12
+    end
+  end
+  object ds_PkgLayouts: TDataSource
+    DataSet = cds_PkgLayouts
+    Left = 856
+    Top = 896
   end
 end

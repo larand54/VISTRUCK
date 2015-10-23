@@ -92,7 +92,27 @@ uses
   UnitStylesOKCANCL in 'UnitStylesOKCANCL.pas' {OKRightDlg},
   UnitExceptionPkgNrList in 'UnitExceptionPkgNrList.pas' {PkgNrExceptionList},
   UnitPosition in 'UnitPosition.pas' {Position},
-  URegionToRegionSelectLIPNo in 'URegionToRegionSelectLIPNo.pas' {fRegionToRegionSelectLIPNo};
+  URegionToRegionSelectLIPNo in 'URegionToRegionSelectLIPNo.pas' {fRegionToRegionSelectLIPNo},
+  dm_SortOrder in 'Visab\dm_SortOrder.pas' {dmsSortOrder: TDataModule},
+  dm_SortOrderList in 'Visab\dm_SortOrderList.pas' {dmSotOrderList: TDataModule},
+  dmsPkgWorkOrder in 'Visab\dmsPkgWorkOrder.pas' {dm_PkgWorkOrder: TDataModule},
+  fSortOrder in 'Visab\fSortOrder.pas' {frmSortOrder},
+  dmsProdPlan in 'Visab\dmsProdPlan.pas' {dm_ProdPlan: TDataModule},
+  WorkMinutesU in 'Visab\WorkMinutesU.pas',
+  uEnterLengthData in 'Visab\uEnterLengthData.pas' {fEnterLengthData},
+  uProdTimeSegment in 'Visab\uProdTimeSegment.pas' {fProdTimeSegment},
+  uSearchPkgToDeReg in 'Visab\uSearchPkgToDeReg.pas' {fSearchPkgToDeReg},
+  uPkgInfo in 'Visab\uPkgInfo.pas' {fPkgInfo},
+  uProductUtfall in 'Visab\uProductUtfall.pas' {fProductUtfall},
+  uSinglePkgEntry in 'Visab\uSinglePkgEntry.pas' {fSinglePkgEntry},
+  uOKDia in 'uOKDia.pas' {fOKDia},
+  dms_Vis_Vida in 'Visab\dms_Vis_Vida.pas' {dm_Vis_Vida: TDataModule},
+  dlgPickPkg_IIII in 'Visab\dlgPickPkg_IIII.pas' {frmPackagePicker_IIII},
+  uSelectProduct in 'Visab\uSelectProduct.pas' {fSelectProduct},
+  uAddPkgToRun in 'Visab\uAddPkgToRun.pas' {fAddPkgToRun},
+  uSelectLOfromAO in 'Visab\uSelectLOfromAO.pas' {fSelectLOfromAO},
+  dmsSinglePkg in 'Visab\dmsSinglePkg.pas' {dm_SinglePkg: TDataModule},
+  uSelectSortingOrderNo in 'Visab\uSelectSortingOrderNo.pas' {fSelectSortingOrderNo};
 
 {$R *.res}
 begin

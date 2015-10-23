@@ -3,7 +3,7 @@
         <ProjectGuid>{8743B446-FAAE-4E65-93E0-6A05B554552C}</ProjectGuid>
         <MainSource>VISTRUCK.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -92,9 +92,9 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <VerInfo_Build>25</VerInfo_Build>
+        <VerInfo_Build>29</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.1.25;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.1.29;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
         <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <DCC_DebugInformation>1</DCC_DebugInformation>
@@ -383,6 +383,89 @@
         </DCCReference>
         <DCCReference Include="URegionToRegionSelectLIPNo.pas">
             <Form>fRegionToRegionSelectLIPNo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\dm_SortOrder.pas">
+            <Form>dmsSortOrder</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\dm_SortOrderList.pas">
+            <Form>dmSotOrderList</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\dmsPkgWorkOrder.pas">
+            <Form>dm_PkgWorkOrder</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\fSortOrder.pas">
+            <Form>frmSortOrder</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\dmsProdPlan.pas">
+            <Form>dm_ProdPlan</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\WorkMinutesU.pas"/>
+        <DCCReference Include="Visab\uEnterLengthData.pas">
+            <Form>fEnterLengthData</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uProdTimeSegment.pas">
+            <Form>fProdTimeSegment</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uSearchPkgToDeReg.pas">
+            <Form>fSearchPkgToDeReg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uPkgInfo.pas">
+            <Form>fPkgInfo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uProductUtfall.pas">
+            <Form>fProductUtfall</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uSinglePkgEntry.pas">
+            <Form>fSinglePkgEntry</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uOKDia.pas">
+            <Form>fOKDia</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\dms_Vis_Vida.pas">
+            <Form>dm_Vis_Vida</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\dlgPickPkg_IIII.pas">
+            <Form>frmPackagePicker_IIII</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uSelectProduct.pas">
+            <Form>fSelectProduct</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uAddPkgToRun.pas">
+            <Form>fAddPkgToRun</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\uSelectLOfromAO.pas">
+            <Form>fSelectLOfromAO</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Visab\dmsSinglePkg.pas">
+            <Form>dm_SinglePkg</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Visab\uSelectSortingOrderNo.pas">
+            <Form>fSelectSortingOrderNo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <None Include="VISTRUCK.todo"/>

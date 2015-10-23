@@ -215,6 +215,7 @@ object dmsContact: TdmsContact
     end
   end
   object cds_Users: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -2305,5 +2306,98 @@ object dmsContact: TdmsContact
   object FDStoredProc1: TFDStoredProc
     Left = 856
     Top = 528
+  end
+  object sq_GetProdUnitNo: TFDQuery
+    AfterInsert = cds_ProductionUnitAfterInsert
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select ProductionUnitNo'
+      'FROM dbo.ProductionUnit'
+      'WHERE ClientNo = :ClientNo'
+      'AND RegistrationPointNo = :RegistrationPointNo')
+    Left = 520
+    Top = 560
+    ParamData = <
+      item
+        Name = 'CLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'REGISTRATIONPOINTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GetProdUnitNoProductionUnitNo: TIntegerField
+      FieldName = 'ProductionUnitNo'
+      Origin = 'ProductionUnitNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object cds_Stacker: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select * FROM dbo.Stacker')
+    Left = 624
+    Top = 560
+    object cds_StackerStackerNo: TIntegerField
+      FieldName = 'StackerNo'
+      Origin = 'StackerNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_StackerStackerName: TStringField
+      DisplayLabel = 'L'#228'ggare'
+      FieldName = 'StackerName'
+      Origin = 'StackerName'
+      Size = 50
+    end
+    object cds_StackerProductionUnitNo: TIntegerField
+      FieldName = 'ProductionUnitNo'
+      Origin = 'ProductionUnitNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_StackerClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+  end
+  object ds_Stacker: TDataSource
+    DataSet = cds_Stacker
+    Left = 624
+    Top = 608
+  end
+  object cds_TypeOfRun: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select * FROM dbo.TypeOfRun')
+    Left = 911
+    Top = 432
+    object cds_TypeOfRunTypeOfRunNo: TIntegerField
+      FieldName = 'TypeOfRunNo'
+      Origin = 'TypeOfRunNo'
+    end
+    object cds_TypeOfRunTypeOfRunName: TStringField
+      FieldName = 'TypeOfRunName'
+      Origin = 'TypeOfRunName'
+    end
+    object cds_TypeOfRunAffectOutturn: TIntegerField
+      FieldName = 'AffectOutturn'
+      Origin = 'AffectOutturn'
+    end
+    object cds_TypeOfRunDefault: TIntegerField
+      FieldName = 'Default'
+      Origin = '[Default]'
+    end
   end
 end

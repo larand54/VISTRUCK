@@ -41,9 +41,9 @@ uses
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   dxBarBuiltInMenu, System.Actions, siComp, siLngLnk ;
 
-const cFirstLengthFieldNumber = 38 ;
+const cFirstLengthFieldNumber = 39 ;
 cFirstLengthFieldNumberPaketnr = 37 ;
-      cFirstLengthFieldNumberPkgDtl = 38 ;
+      cFirstLengthFieldNumberPkgDtl = 39 ;
 type
   TfLager = class(TForm)
     dxBarManager1: TdxBarManager;
@@ -388,6 +388,7 @@ type
     procedure grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader(Sender: TcxGridTableView; ACanvas: TcxCanvas;
             AViewInfo: TcxGridColumnHeaderViewInfo; var ADone: Boolean);
     procedure acSetStdGridLayoutExecute(Sender: TObject);
+    procedure cbInklEjFaktPropertiesChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -397,6 +398,7 @@ type
 //    CurrentNoOfPkgs,
     SelectedProductNo     : Integer ;
     SelectedLength        : String ;
+    procedure ChangeInventorySource(Sender: TObject) ;
     procedure SetSTDLayoutPaketnr(Sender: TObject);
     procedure SetSTDLayoutSortiment(Sender: TObject);
     function  IsLIPChecked  : Boolean ;
@@ -496,6 +498,30 @@ begin
   (aValue < 0) then
    AStyle:= cxStyleBrist ;
 end;
+
+procedure TfLager.cbInklEjFaktPropertiesChange(Sender: TObject);
+begin
+ ChangeInventorySource(Sender) ;
+end;
+
+procedure TfLager.ChangeInventorySource(Sender: TObject) ;
+Begin
+  if dmInventory.sp_invpiv.RecordCount > 0 then
+  Begin
+   if cbInklEjFakt.ItemIndex <> 1 then
+   Begin
+    if cbInklEjFakt.ItemIndex = 0 then
+     dmInventory.sp_invpiv.Filter  := 'InventorySource = 0'
+      else
+       dmInventory.sp_invpiv.Filter  := 'InventorySource = 1' ;
+    dmInventory.sp_invpiv.Filtered  := True ;
+   End
+    else
+     dmInventory.sp_invpiv.Filtered  := False ;
+
+   SetGridParamsPerSortiment(Sender) ;
+  End;
+End;
 
 procedure TfLager.ClearProductFilter ;
 Begin
@@ -1037,14 +1063,13 @@ Var LagerPos   : Integer ;
 begin
  With dmsSystem, dmInventory do
  Begin
+  mtPkgNos.Active := True ;
+  sp_invpivPkgDtl.DisableControls ;
+  Try
   SelectedPkgsOfPkgNosTable ;
   LagerPos  :=  GetLagerPos(mtPkgNosPIPNo.AsInteger) ;
   if LagerPos > 0 then
   Begin
-    mtPkgNos.Active := True ;
-    sp_invpivPkgDtl.DisableControls ;
-    Try
-
     mtPkgNos.First ;
     while not mtPkgNos.Eof do
     Begin
@@ -1059,10 +1084,10 @@ begin
      mtPkgNos.Next ;
     End;
     sp_invpivPkgDtl.Refresh ;
-    Finally
-     sp_invpivPkgDtl.EnableControls ;
-     mtPkgNos.Active := False ;
-    End;
+  End;
+  Finally
+   sp_invpivPkgDtl.EnableControls ;
+   mtPkgNos.Active := False ;
   End;
  End;
 end;
@@ -1485,7 +1510,7 @@ begin
  Try
  LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
  grdDBBandedPerSortiment.ClearItems ;
-
+ dmInventory.sp_invpiv.Filtered  := False ;
  dmInventory.Refresh_sp_invpiv(LIPs, cds_PropsLengthVolUnitNo.AsInteger, cds_PropsOwnerNo.AsInteger,
  StrToFloatDef(eAT.Text,0), StrToFloatDef(eAB.Text,0),
  eReference.Text, eBL.Text, eInfo2.Text) ;
@@ -1669,6 +1694,7 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel          := 'Träslag' ;
  dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel        := 'Utförande' ;
  dmInventory.sp_invpiv.FieldByName('LPName').DisplayLabel           := 'LP' ;
+ dmInventory.sp_invpiv.FieldByName('PositionName').DisplayLabel     := 'Position' ;
  dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel    := 'Varugrupp' ;
 
  aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('productNo');
@@ -1784,6 +1810,10 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  aColumn.Position.BandIndex := 3 ;
 
  aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+ aColumn.Visible  := True ;
+ aColumn.Position.BandIndex := 3 ;
+
+ aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PositionName');
  aColumn.Visible  := True ;
  aColumn.Position.BandIndex := 3 ;
 
@@ -2329,6 +2359,7 @@ begin
  dmInventory.sp_invpivPkgDtl.FieldByName('PackageSizeName').DisplayLabel    := 'Storlek' ;
  dmInventory.sp_invpivPkgDtl.FieldByName('CertShortName').DisplayLabel      := 'Cert.' ;
  dmInventory.sp_invpivPkgDtl.FieldByName('PkgArticleNo').DisplayLabel       := 'Artikelnr' ;
+ dmInventory.sp_invpivPkgDtl.FieldByName('PositionName').DisplayLabel       := 'Position' ;
 // dmInventory.sp_invpivPkgDtl.FieldByName('Status').DisplayLabel             := 'Källa' ;
 
 // dmInventory.sp_invpivPkgDtl.FieldByName('LIPGroupNo').Visible              := False ;
@@ -2475,6 +2506,11 @@ begin
  aColumn.Width    := 400 ;
 
  aColumn:= grdPkgNosDBBandedTableView1.GetColumnByFieldName('CertShortName');
+ aColumn.Visible  := True ;
+ aColumn.Position.BandIndex := 1 ;
+ aColumn.Width    := 200 ;
+
+ aColumn:= grdPkgNosDBBandedTableView1.GetColumnByFieldName('PositionName');
  aColumn.Visible  := True ;
  aColumn.Position.BandIndex := 1 ;
  aColumn.Width    := 200 ;

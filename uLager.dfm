@@ -882,6 +882,7 @@ object fLager: TfLager
         'Lager + ej fakt'
         'Ej fakturerat')
       Properties.MaxLength = 0
+      Properties.OnChange = cbInklEjFaktPropertiesChange
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 2
       Text = 'Lager'

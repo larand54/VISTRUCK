@@ -3,77 +3,109 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   Top = 193
   ActiveControl = EFD_Name
   Caption = 'Byt anv'#228'ndare'
-  ClientHeight = 206
-  ClientWidth = 429
+  ClientHeight = 254
+  ClientWidth = 528
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Label1: TLabel
-    Left = 32
-    Top = 40
-    Width = 48
-    Height = 13
+    Left = 39
+    Top = 49
+    Width = 60
+    Height = 16
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'FD Namn:'
   end
   object Label2: TLabel
-    Left = 32
-    Top = 80
-    Width = 43
-    Height = 13
+    Left = 39
+    Top = 98
+    Width = 55
+    Height = 16
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Databas:'
   end
   object EFD_Name: TEdit
-    Left = 88
-    Top = 32
-    Width = 121
-    Height = 21
+    Left = 108
+    Top = 39
+    Width = 149
+    Height = 24
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 216
-    Top = 29
-    Width = 153
-    Height = 25
+    Left = 266
+    Top = 36
+    Width = 188
+    Height = 30
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'H'#228'mta standard FD namn'
     TabOrder = 2
     OnClick = Button1Click
   end
   object eDatabas: TEdit
-    Left = 88
-    Top = 72
-    Width = 121
-    Height = 21
+    Left = 108
+    Top = 89
+    Width = 149
+    Height = 24
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     TabOrder = 1
   end
   object Button2: TButton
-    Left = 216
-    Top = 69
-    Width = 153
-    Height = 25
+    Left = 266
+    Top = 85
+    Width = 188
+    Height = 31
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'H'#228'mta standard databas'
     TabOrder = 3
     OnClick = Button2Click
   end
   object BitBtn1: TBitBtn
-    Left = 128
-    Top = 184
-    Width = 75
-    Height = 25
+    Left = 158
+    Top = 186
+    Width = 92
+    Height = 50
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Kind = bkOK
     NumGlyphs = 2
     TabOrder = 4
   end
   object BitBtn2: TBitBtn
-    Left = 216
-    Top = 184
-    Width = 75
-    Height = 25
+    Left = 266
+    Top = 186
+    Width = 92
+    Height = 50
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Kind = bkCancel
     NumGlyphs = 2
     TabOrder = 5
@@ -83,6 +115,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1

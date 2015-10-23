@@ -3530,8 +3530,6 @@ Begin
  Begin
   if SQLTimeStampToDateTime(cds_LoadHeadLoadedDate.AsSQLTimeStamp) <= Now then
   Begin
-
-
    if cds_LoadHead.State in [dsEdit, dsInsert] then
    cds_LoadHead.Post ;
    if cds_LoadPackages.State in [dsEdit, dsInsert] then
@@ -5355,17 +5353,20 @@ function TfLoadEntrySSP.DiffOK : Boolean ;
 Begin
  with dmLoadEntrySSP do
  Begin
-  Result := True ;
-  cdsLORows.First ;
-  while not cdsLORows.Eof do
+  if cds_LoadHeadShowOriginalLO.AsInteger <> 1 then
   Begin
-    if cdsLORowsPkgDiff.AsInteger <> 0 then
+    Result := True ;
+    cdsLORows.First ;
+    while not cdsLORows.Eof do
     Begin
-     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_81' (* 'Varning! Utlastade paket stämmer inte överens med antal paket på order' *) )) ;
-    // Result := False ;
-     Exit ;
+      if cdsLORowsPkgDiff.AsInteger <> 0 then
+      Begin
+       ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_81' (* 'Varning! Utlastade paket stämmer inte överens med antal paket på order' *) )) ;
+      // Result := False ;
+       Exit ;
+      End;
+     cdsLORows.Next ;
     End;
-   cdsLORows.Next ;
   End;
  End;
 End;

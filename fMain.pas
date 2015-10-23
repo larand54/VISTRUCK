@@ -181,6 +181,8 @@ type
     acChangeLanguage: TAction;
     dxBarButton12: TdxBarButton;
     cxButton2: TcxButton;
+    dxBarLargeButton31: TdxBarLargeButton;
+    acDeRegisterPackages: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -201,9 +203,12 @@ type
     procedure acAndraPaketExecute(Sender: TObject);
     procedure acTorkhanterarenExecute(Sender: TObject);
     procedure acChangeLanguageExecute(Sender: TObject);
+    procedure acDeRegisterPackagesExecute(Sender: TObject);
 
   private
     a : String ;
+    function  SelectSortingOrderNo : Integer ;
+    procedure AvregistreraPaket ;
     procedure ChangeUserSettingsOnStartUp ;
     function  FormOpen : Boolean ;
     procedure AppException(Sender: TObject; E: Exception);
@@ -252,7 +257,8 @@ uses
   uEncode , //fAvrakningar, //fSkapaAvrakning,
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
-  uKilnHandling, ufrmChangeLanguage, udmLanguage;
+  uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
+  uSelectSortingOrderNo;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -662,6 +668,79 @@ begin
   finally
     FreeAndNil(frm);
   end;
+end;
+
+function TfrmMain.SelectSortingOrderNo : Integer ;
+var fSelectSortingOrderNo : TfSelectSortingOrderNo;
+    KorNr : String ;
+Begin
+ KorNr  := '' ;
+ with dmsSystem do
+ Begin
+  fSelectSortingOrderNo  := TfSelectSortingOrderNo.Create(nil) ;
+  Try
+  if fSelectSortingOrderNo.ShowModal = mrOK then
+  Begin
+   KorNr  := Copy(fSelectSortingOrderNo.meRunNo.Text, 1, 5) ;
+   Result  := StrToIntDef(Trim(KorNr),-1) ;
+  End
+    else
+     Result := -1 ;
+  Finally
+   FreeAndNil(fSelectSortingOrderNo) ;
+  End ;
+  Application.ProcessMessages ;
+ End ;
+End ;
+
+procedure TfrmMain.AvregistreraPaket ;
+var frmSortOrder        : TfrmSortOrder;
+    Default_SortingOrderNo,
+    Default_RegPointNo  : Integer ;
+    Save_Cursor         : TCursor;
+    VerkNo              : Integer ;
+Begin
+ Save_Cursor    := Screen.Cursor;
+ Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+ Try
+ Default_SortingOrderNo   := SelectSortingOrderNo ;// dmc_DB.sq_ProdSumPktKrNr.AsInteger ;
+ Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+ VerkNo         := dmsSystem.GetVerkNoForSortingOrderServer (Default_SortingOrderNo) ;
+ if (Default_SortingOrderNo > 0) and (VerkNo > -1) then
+ Begin
+  Default_RegPointNo        := -1 ;//dmc_DB.cds_MainParamsStandardMatPunkt.AsInteger ;
+  frmSortOrder              := TfrmSortOrder.Create(nil) ;
+  Try
+   Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+
+   frmSortOrder.CreateCo(VerkNo);
+   Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+
+   frmSortOrder.LOpenWorkOrder(Default_SortingOrderNo, -1) ;
+   Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+
+   frmSortOrder.ShowModal ;
+
+  Finally
+   FreeAndNil(frmSortOrder) ;
+  End ;
+ End
+  else
+   begin
+ //   if Default_SortingOrderNo < 1 then
+ //    Showmessage('Fel körordernr');
+     if VerkNo = -1 then
+      ShowMessage('Körordernr ' + inttostr(Default_SortingOrderNo) + ' saknas') ;
+   end;
+
+ Finally
+  Screen.Cursor := Save_Cursor;  { Always restore to normal }
+ End ;
+End ;
+
+procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);
+begin
+  AvregistreraPaket ;
 end;
 
 procedure TfrmMain.Timer1Timer(Sender: TObject);

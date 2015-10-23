@@ -252,7 +252,12 @@ object Position: TPosition
         DataController.DataSource = DS_ProductNo
         DataController.KeyFieldNames = 'PktSupplierCode;PaketNr'
         DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <
+          item
+            Kind = skCount
+            FieldName = 'PaketNr'
+            Column = grid_ProductListDBTableView1PaketNr1
+          end>
         DataController.Summary.SummaryGroups = <>
         OptionsBehavior.FocusFirstCellOnNewRecord = True
         OptionsBehavior.GoToNextCellOnEnter = True
@@ -263,6 +268,7 @@ object Position: TPosition
         OptionsSelection.MultiSelect = True
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
+        OptionsView.Footer = True
         OptionsView.GroupByBox = False
         OptionsView.Indicator = True
         object grid_ProductListDBTableView1Vald: TcxGridDBColumn
@@ -487,7 +493,7 @@ object Position: TPosition
     SQL.Strings = (
       
         'Update dbo.PackageNumber Set PositionID = :PosID , StoredDate = ' +
-        ':CurrentDate , Status = 1'
+        ':CurrentDate'
       'where SupplierCode = :Prefix AND PackageNo = :PkgNr')
     Left = 120
     Top = 134
@@ -576,119 +582,6 @@ object Position: TPosition
     DataSet = Mem_StorePosition
     Left = 376
     Top = 254
-  end
-  object FDQ_ProdRefLength: TFDQuery
-    Indexes = <
-      item
-        Name = 'ProdLenRef'
-        Fields = 'ProductNo;MaxLength;REFERENCE'
-      end>
-    Connection = dmsConnector.FDConnection1
-    SQL.Strings = (
-      
-        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
-        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
-        'te,'
-      ''
-      'pn.REFERENCE,'
-      ' '
-      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
-      
-        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
-        'uctLengthNo'
-      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID'
-      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
-      ''
-      'from dbo.PackageNumber pn'
-      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
-      
-        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
-        'peno'
-      ''
-      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
-      ''
-      'WHERE '
-      'pt.ProductNo = :ProductNo'
-      'and pn.[Status] = 1'
-      
-        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
-        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
-      'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
-      'order by PosStatus, StoredDate')
-    Left = 193
-    Top = 86
-    ParamData = <
-      item
-        Name = 'PRODUCTNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object FDQ_ProdRefLengthPosStatus: TIntegerField
-      FieldName = 'PosStatus'
-      Origin = 'PosStatus'
-    end
-    object FDQ_ProdRefLengthPositionName: TStringField
-      FieldName = 'PositionName'
-      Origin = 'PositionName'
-      Size = 50
-    end
-    object FDQ_ProdRefLengthProductNo: TIntegerField
-      FieldName = 'ProductNo'
-      Origin = 'ProductNo'
-      Required = True
-    end
-    object FDQ_ProdRefLengthProductDisplayName: TStringField
-      FieldName = 'ProductDisplayName'
-      Origin = 'ProductDisplayName'
-      Size = 150
-    end
-    object FDQ_ProdRefLengthPositionID: TIntegerField
-      FieldName = 'PositionID'
-      Origin = 'PositionID'
-      Required = True
-    end
-    object FDQ_ProdRefLengthStoredDate: TSQLTimeStampField
-      FieldName = 'StoredDate'
-      Origin = 'StoredDate'
-      ReadOnly = True
-    end
-    object FDQ_ProdRefLengthNoOfPkgsByProduct: TIntegerField
-      FieldName = 'NoOfPkgsByProduct'
-      Origin = 'NoOfPkgsByProduct'
-      ReadOnly = True
-    end
-    object FDQ_ProdRefLengthNoOfPkgsByPosition: TIntegerField
-      FieldName = 'NoOfPkgsByPosition'
-      Origin = 'NoOfPkgsByPosition'
-      ReadOnly = True
-    end
-    object FDQ_ProdRefLengthREFERENCE: TStringField
-      FieldName = 'REFERENCE'
-      Origin = 'REFERENCE'
-      Size = 30
-    end
-    object FDQ_ProdRefLengthMaxLength: TFloatField
-      FieldName = 'MaxLength'
-      Origin = 'MaxLength'
-      ReadOnly = True
-    end
   end
   object ds_MatchPosition: TDataSource
     DataSet = FDQ_MatchPosition
@@ -2022,185 +1915,251 @@ object Position: TPosition
     Left = 611
     Top = 347
   end
-  object FDQ_ProdLength: TFDQuery
+  object fdq_prodlength: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    SQL.Strings = (
-      
-        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
-        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
-        'te,'
-      ' '
-      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
-      
-        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
-        'uctLengthNo'
-      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID'
-      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
-      ''
-      'from dbo.PackageNumber pn'
-      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
-      
-        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
-        'peno'
-      ''
-      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
-      ''
-      'WHERE '
-      'pt.ProductNo = :ProductNo'
-      'and pn.[Status] = 1'
-      
-        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
-        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
-      'Po.PosStatus, pn.PackageTypeNo '
-      'order by PosStatus, StoredDate')
-    Left = 368
-    Top = 112
+    StoredProcName = 'dbo.vis_fdq_prodlength'
+    Left = 232
+    Top = 384
     ParamData = <
       item
-        Name = 'PRODUCTNO'
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
         DataType = ftInteger
         ParamType = ptInput
-        Value = Null
+      end
+      item
+        Position = 3
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
-    object FDQ_ProdLengthPosStatus: TIntegerField
+    object fdq_prodlengthPosStatus: TIntegerField
       FieldName = 'PosStatus'
-      Origin = 'NoOfPkgsByPosition'
+      Origin = 'PosStatus'
       ReadOnly = True
     end
-    object FDQ_ProdLengthPositionName: TStringField
+    object fdq_prodlengthPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
+      ReadOnly = True
       Size = 50
     end
-    object FDQ_ProdLengthProductNo: TIntegerField
+    object fdq_prodlengthProductNo: TIntegerField
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
-      Required = True
+      ReadOnly = True
     end
-    object FDQ_ProdLengthProductDisplayName: TStringField
+    object fdq_prodlengthProductDisplayName: TStringField
       FieldName = 'ProductDisplayName'
       Origin = 'ProductDisplayName'
+      ReadOnly = True
       Size = 150
     end
-    object FDQ_ProdLengthPositionID: TIntegerField
+    object fdq_prodlengthPositionID: TIntegerField
       FieldName = 'PositionID'
       Origin = 'PositionID'
+      ReadOnly = True
       Required = True
     end
-    object FDQ_ProdLengthStoredDate: TSQLTimeStampField
+    object fdq_prodlengthStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
       ReadOnly = True
     end
-    object FDQ_ProdLengthNoOfPkgsByProduct: TIntegerField
-      FieldName = 'NoOfPkgsByProduct'
-      Origin = 'NoOfPkgsByProduct'
+    object fdq_prodlengthREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
       ReadOnly = True
+      Size = 30
     end
-    object FDQ_ProdLengthNoOfPkgsByPosition: TIntegerField
-      FieldName = 'NoOfPkgsByPosition'
-      Origin = 'NoOfPkgsByPosition'
-      ReadOnly = True
-    end
-    object FDQ_ProdLengthMaxLength: TFloatField
+    object fdq_prodlengthMaxLength: TFloatField
       FieldName = 'MaxLength'
       Origin = 'MaxLength'
       ReadOnly = True
     end
+    object fdq_prodlengthNoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object fdq_prodlengthNoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
   end
-  object FDQ_MatchProductNo: TFDQuery
+  object FDQ_ProdRefLength: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    SQL.Strings = (
-      
-        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
-        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
-        'te,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID'
-      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
-      ''
-      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
-      
-        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
-        'etypeno'
-      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
-      'and pn2.[Status] = 1'
-      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
-      ''
-      'from dbo.PackageNumber pn'
-      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
-      
-        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
-        'peno'
-      ''
-      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
-      ''
-      'WHERE '
-      'pt.ProductNo = :ProductNo'
-      'and pn.[Status] = 1'
-      
-        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
-        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
-      'Po.PosStatus'
-      'order by PosStatus, StoredDate')
-    Left = 283
-    Top = 171
+    StoredProcName = 'dbo.vis_fdq_prodlength'
+    Left = 232
+    Top = 440
     ParamData = <
       item
-        Name = 'PRODUCTNO'
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
         DataType = ftInteger
         ParamType = ptInput
-        Value = Null
+      end
+      item
+        Position = 3
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object FDQ_ProdRefLengthPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLengthPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      ReadOnly = True
+      Size = 50
+    end
+    object FDQ_ProdRefLengthProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLengthProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      ReadOnly = True
+      Size = 150
+    end
+    object FDQ_ProdRefLengthPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      ReadOnly = True
+      Required = True
+    end
+    object FDQ_ProdRefLengthStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLengthREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      ReadOnly = True
+      Size = 30
+    end
+    object FDQ_ProdRefLengthMaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLengthNoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLengthNoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
+  end
+  object FDQ_MatchProductNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_fdq_prodlength'
+    Left = 232
+    Top = 336
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
     object FDQ_MatchProductNoPosStatus: TIntegerField
       FieldName = 'PosStatus'
       Origin = 'PosStatus'
+      ReadOnly = True
     end
     object FDQ_MatchProductNoPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
+      ReadOnly = True
       Size = 50
     end
     object FDQ_MatchProductNoProductNo: TIntegerField
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
-      Required = True
+      ReadOnly = True
     end
     object FDQ_MatchProductNoProductDisplayName: TStringField
       FieldName = 'ProductDisplayName'
       Origin = 'ProductDisplayName'
+      ReadOnly = True
       Size = 150
     end
     object FDQ_MatchProductNoPositionID: TIntegerField
       FieldName = 'PositionID'
       Origin = 'PositionID'
+      ReadOnly = True
       Required = True
     end
     object FDQ_MatchProductNoStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object FDQ_MatchProductNoREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      ReadOnly = True
+      Size = 30
+    end
+    object FDQ_MatchProductNoMaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
       ReadOnly = True
     end
     object FDQ_MatchProductNoNoOfPkgsByProduct: TIntegerField
@@ -2213,5 +2172,43 @@ object Position: TPosition
       Origin = 'NoOfPkgsByPosition'
       ReadOnly = True
     end
+  end
+  object sp_insPkgInvStat: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_insPkgInvStat'
+    Left = 392
+    Top = 408
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prefix'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

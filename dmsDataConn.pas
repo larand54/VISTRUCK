@@ -13,7 +13,7 @@ uses
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Comp.Client,
   FireDAC.Moni.Base, FireDAC.Moni.RemoteClient, FireDAC.VCLUI.Login, FireDAC.VCLUI.Error,
   FireDAC.VCLUI.Wait, FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, FireDAC.Comp.DataSet,
-  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI ;
+  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ;
 
 type
   TdmsConnector = class(TDataModule)
@@ -45,6 +45,8 @@ type
     sp_GetUserStartHostSetOnStart: TIntegerField;
     sp_GetUserStartHostChangeToUser: TStringField;
     sp_GetUserStartHost: TFDStoredProc;
+    sp_GetSOPkgNo: TFDStoredProc;
+    FD_DeleteSecondNo: TFDQuery;
     procedure DataModuleCreate           (Sender: TObject);
     procedure DataModuleDestroy          (Sender: TObject);
   private
@@ -61,6 +63,8 @@ type
     Org_AD_Name : String ;
     Org_DB_Name : String ;
 //    DeleteTdmVidaInvoice  : Boolean ;
+    procedure DeleteSecondNo(const TableName: String; const PrimaryKeyValue: Integer) ;
+    function  GetSOPkgNo(Var Prefix : String3;const ProducerNo, RegPointNo, SeriesType : Integer): Integer ;
     function  GetHostName(const UserID : Integer)  : String ;
     procedure UpdateMaxSecByLoad(const LoadNo : Integer) ;
     function  GetMaxLoadDetailNo(const LoadNo : Integer): Integer ;
@@ -102,6 +106,46 @@ uses
 
 
 {$R *.dfm}
+
+procedure TdmsConnector.DeleteSecondNo(const TableName: String; const PrimaryKeyValue: Integer) ;
+Begin
+ Try
+ FD_DeleteSecondNo.ParamByName('TableName').AsString        := TableName ;
+ FD_DeleteSecondNo.ParamByName('PrimaryKeyValue').AsInteger := PrimaryKeyValue ;
+ FD_DeleteSecondNo.ExecSQL ;
+  Except
+//   On E: Exception do
+   on E: eDatabaseError do
+   Begin
+    ShowMessage('FD_DeleteSecondNo ' + E.Message) ;
+//   E.CreateFmt ('Fel i sp_NewLoad, Error message %s', [E.Message]) ;
+    Raise ;
+   End ;
+  End ;
+End ;
+
+function TdmsConnector.GetSOPkgNo(Var Prefix : String3;const ProducerNo, RegPointNo, SeriesType : Integer): Integer ;
+begin
+  Try
+  sp_GetSOPkgNo.ParamByName('@ClientNo').AsInteger   := ProducerNo ;
+  sp_GetSOPkgNo.ParamByName('@RegPointNo').AsInteger := RegPointNo ;
+  sp_GetSOPkgNo.ParamByName('@SeriesType').AsInteger := SeriesType ;
+  sp_GetSOPkgNo.ExecProc;
+  try
+    Result := sp_GetSOPkgNo.ParamByName('@fCurrentPkgNo').AsInteger ;
+    Prefix := sp_GetSOPkgNo.ParamByName('@Prefix').AsString ;
+  finally
+    sp_GetSOPkgNo.Close;
+  end;
+  Except
+   on E: eDatabaseError do
+   Begin
+    ShowMessage('sp_GetSOPkgNo ' + E.Message) ;
+    Raise ;
+   End ;
+  End ;
+end;
+
 function TdmsConnector.GetHostName(const UserID : Integer)  : String ;
 Var Dir : String ;
 LengthOfPath  : Integer ;
