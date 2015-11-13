@@ -536,7 +536,6 @@ object dmArrivingLoads: TdmArrivingLoads
     Top = 528
   end
   object cdsArrivingLoads: TFDQuery
-    Active = True
     CachedUpdates = True
     Indexes = <
       item
@@ -935,6 +934,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cdsArrivingPackages: TFDQuery
+    Active = True
     Indexes = <
       item
         Active = True
@@ -1037,6 +1037,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'pac.LoadNo,'
       'pac.CreatedUser,'
       'pac.DateCreated,'
+      'pac.Scanned,'
       'IsNull(pn.Package_Size,12) AS Package_Size,'
       'ps.PackageSizeName,'
       
@@ -1296,6 +1297,10 @@ object dmArrivingLoads: TdmArrivingLoads
       Origin = 'Position'
       ReadOnly = True
       Size = 50
+    end
+    object cdsArrivingPackagesScanned: TIntegerField
+      FieldName = 'Scanned'
+      Origin = 'Scanned'
     end
   end
   object sq_GetDefaultCSObjectNo: TFDQuery

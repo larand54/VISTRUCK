@@ -1,10 +1,13 @@
 object Position: TPosition
   Left = 0
   Top = 0
+  AlphaBlend = True
+  AlphaBlendValue = 200
   Caption = 'Position'
-  ClientHeight = 606
-  ClientWidth = 1132
+  ClientHeight = 520
+  ClientWidth = 1093
   Color = clBtnFace
+  TransparentColorValue = clWindowText
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -14
@@ -18,16 +21,16 @@ object Position: TPosition
   PixelsPerInch = 120
   TextHeight = 17
   object PageControl_Position: TPageControl
-    Left = 577
+    Left = 553
     Top = 0
-    Width = 555
-    Height = 606
+    Width = 540
+    Height = 520
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     ActivePage = TabSheet_Match
-    Align = alClient
+    Align = alRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -17
@@ -41,12 +44,12 @@ object Position: TPosition
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
-      Caption = 'Alla Positioner'
+      Caption = 'Alla Position'
       object cxGrid_AllPosition: TcxGrid
         Left = 0
-        Top = 49
-        Width = 547
-        Height = 521
+        Top = 0
+        Width = 532
+        Height = 484
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -69,9 +72,7 @@ object Position: TPosition
           OptionsSelection.HideFocusRectOnExit = False
           OptionsSelection.InvertSelect = False
           OptionsView.CellAutoHeight = True
-          OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
-          OptionsView.Indicator = True
           object cxGrid_AllPositionDBTableView1Vald: TcxGridDBColumn
             DataBinding.FieldName = 'Vald'
             PropertiesClassName = 'TcxCheckBoxProperties'
@@ -82,7 +83,6 @@ object Position: TPosition
           end
           object cxGrid_AllPositionDBTableView1PositionName: TcxGridDBColumn
             DataBinding.FieldName = 'PositionName'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 298
           end
           object cxGrid_AllPositionDBTableView1PositionID: TcxGridDBColumn
@@ -94,33 +94,13 @@ object Position: TPosition
           GridView = cxGrid_AllPositionDBTableView1
         end
       end
-      object TopPanelMatchProduct: TPanel
-        Left = 0
-        Top = 0
-        Width = 547
-        Height = 49
-        Align = alTop
-        TabOrder = 1
-        object cxTextEdit1: TcxTextEdit
-          Left = 171
-          Top = 12
-          TabStop = False
-          TabOrder = 0
-          Width = 121
-        end
-        object cxLabel1: TcxLabel
-          Left = 48
-          Top = 16
-          Caption = 'S'#246'k position:'
-        end
-      end
     end
     object TabSheet_Match: TTabSheet
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
-      Caption = 'Matcha Produkt'
+      Caption = 'Matcha Product'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -17
@@ -131,15 +111,14 @@ object Position: TPosition
       object cxGrid_MatchPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 547
-        Height = 570
+        Width = 532
+        Height = 484
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
-        TabStop = False
         Visible = False
         object cxGrid_MatchPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
@@ -159,7 +138,6 @@ object Position: TPosition
           OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
-          OptionsView.Indicator = True
           object cxGrid_MatchPositionDBTableView1Vald: TcxGridDBColumn
             DataBinding.FieldName = 'Vald'
             PropertiesClassName = 'TcxCheckBoxProperties'
@@ -178,29 +156,24 @@ object Position: TPosition
           object cxGrid_MatchPositionDBTableView1PositionNamn: TcxGridDBColumn
             Caption = 'Position'
             DataBinding.FieldName = 'PositionNamn'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 48
           end
           object cxGrid_MatchPositionDBTableView1ProductNamn: TcxGridDBColumn
             Caption = 'Produkt'
             DataBinding.FieldName = 'ProductNamn'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 105
           end
           object cxGrid_MatchPositionDBTableView1NoOfPkgs1: TcxGridDBColumn
             Caption = 'Paket'
             DataBinding.FieldName = 'NoOfPkgs'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 49
           end
           object cxGrid_MatchPositionDBTableView1Reference: TcxGridDBColumn
             DataBinding.FieldName = 'Reference'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 76
           end
           object cxGrid_MatchPositionDBTableView1MaxLength: TcxGridDBColumn
             DataBinding.FieldName = 'MaxLength'
-            PropertiesClassName = 'TcxLabelProperties'
             Width = 58
           end
         end
@@ -209,12 +182,91 @@ object Position: TPosition
         end
       end
     end
+    object TabSheet_RefMatch: TTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Matcha Referens'
+      ImageIndex = 2
+      object grid_Matcha_Ref: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 532
+        Height = 484
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Align = alClient
+        TabOrder = 0
+        Visible = False
+        object grid_Matcha_RefDBTableView1: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          OnCellClick = grid_Matcha_RefDBTableView1CellClick
+          DataController.DataSource = DS_MatchaRef
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.DragHighlighting = False
+          OptionsBehavior.DragOpening = False
+          OptionsBehavior.DragScrolling = False
+          OptionsBehavior.ImmediateEditor = False
+          OptionsCustomize.GroupRowSizing = True
+          OptionsData.Appending = True
+          OptionsView.CellAutoHeight = True
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.GroupByBox = False
+          object grid_Matcha_RefDBTableView1Vald: TcxGridDBColumn
+            DataBinding.FieldName = 'Vald'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = '1'
+            Properties.ValueUnchecked = '0'
+            Width = 32
+          end
+          object grid_Matcha_RefDBTableView1Fullt: TcxGridDBColumn
+            Caption = 'Active'
+            DataBinding.FieldName = 'Fullt'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = '1'
+            Properties.ValueUnchecked = '0'
+            Width = 40
+          end
+          object grid_Matcha_RefDBTableView1PositionName: TcxGridDBColumn
+            Caption = 'Position'
+            DataBinding.FieldName = 'PositionName'
+            Width = 60
+          end
+          object grid_Matcha_RefDBTableView1ProductDisplayName: TcxGridDBColumn
+            Caption = 'Product'
+            DataBinding.FieldName = 'ProductName'
+            Width = 105
+          end
+          object grid_Matcha_RefDBTableView1NoOfPkgsByPosition: TcxGridDBColumn
+            Caption = 'Paket'
+            DataBinding.FieldName = 'NoOfPkgs'
+            Width = 49
+          end
+          object grid_Matcha_RefDBTableView1REFERENCE: TcxGridDBColumn
+            DataBinding.FieldName = 'Reference'
+            Width = 55
+          end
+          object grid_Matcha_RefDBTableView1MaxLength: TcxGridDBColumn
+            DataBinding.FieldName = 'MaxLength'
+            Width = 65
+          end
+        end
+        object grid_Matcha_RefLevel1: TcxGridLevel
+          GridView = grid_Matcha_RefDBTableView1
+        end
+      end
+    end
   end
   object PakagePanel: TPanel
     Left = 0
     Top = 0
-    Width = 577
-    Height = 606
+    Width = 545
+    Height = 520
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -225,15 +277,14 @@ object Position: TPosition
     Visible = False
     object grid_ProductList: TcxGrid
       Left = 1
-      Top = 83
-      Width = 575
-      Height = 522
+      Top = 105
+      Width = 543
+      Height = 414
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alBottom
-      Anchors = [akLeft, akTop, akRight, akBottom]
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -17
@@ -241,7 +292,6 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      TabStop = False
       Visible = False
       LookAndFeel.Kind = lfOffice11
       LookAndFeel.SkinName = 'Office2010Blue'
@@ -252,12 +302,7 @@ object Position: TPosition
         DataController.DataSource = DS_ProductNo
         DataController.KeyFieldNames = 'PktSupplierCode;PaketNr'
         DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Kind = skCount
-            FieldName = 'PaketNr'
-            Column = grid_ProductListDBTableView1PaketNr1
-          end>
+        DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsBehavior.FocusFirstCellOnNewRecord = True
         OptionsBehavior.GoToNextCellOnEnter = True
@@ -268,9 +313,7 @@ object Position: TPosition
         OptionsSelection.MultiSelect = True
         OptionsView.CellAutoHeight = True
         OptionsView.ColumnAutoWidth = True
-        OptionsView.Footer = True
         OptionsView.GroupByBox = False
-        OptionsView.Indicator = True
         object grid_ProductListDBTableView1Vald: TcxGridDBColumn
           DataBinding.FieldName = 'Vald'
           PropertiesClassName = 'TcxCheckBoxProperties'
@@ -281,35 +324,28 @@ object Position: TPosition
         end
         object grid_ProductListDBTableView1ProductNo: TcxGridDBColumn
           DataBinding.FieldName = 'ProductNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
           Width = 47
         end
         object grid_ProductListDBTableView1PktSupplierCode: TcxGridDBColumn
           Caption = 'Prefix'
           DataBinding.FieldName = 'PktSupplierCode'
-          PropertiesClassName = 'TcxLabelProperties'
           Width = 37
         end
         object grid_ProductListDBTableView1ProductDisplayName1: TcxGridDBColumn
           Caption = 'Produkt'
           DataBinding.FieldName = 'ProductDisplayName'
-          PropertiesClassName = 'TcxLabelProperties'
           Width = 102
         end
         object grid_ProductListDBTableView1PaketNr1: TcxGridDBColumn
           DataBinding.FieldName = 'PaketNr'
-          PropertiesClassName = 'TcxLabelProperties'
           Width = 57
         end
         object grid_ProductListDBTableView1MaxLength: TcxGridDBColumn
           DataBinding.FieldName = 'MaxLength'
-          PropertiesClassName = 'TcxLabelProperties'
           Width = 74
         end
         object grid_ProductListDBTableView1Reference: TcxGridDBColumn
           DataBinding.FieldName = 'Reference'
-          PropertiesClassName = 'TcxLabelProperties'
           Width = 74
         end
       end
@@ -319,9 +355,9 @@ object Position: TPosition
     end
     object btnStorePosition: TButton
       Left = 1
-      Top = 10
+      Top = 0
       Width = 241
-      Height = 65
+      Height = 64
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -334,14 +370,13 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
-      TabStop = False
       OnClick = btnStorePositionClick
     end
     object btDelete: TButton
-      Left = 398
-      Top = 10
-      Width = 126
-      Height = 65
+      Left = 408
+      Top = 0
+      Width = 127
+      Height = 64
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -354,14 +389,13 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 2
-      TabStop = False
       OnClick = btDeleteClick
     end
     object btChangeStyle: TButton
       Left = 271
-      Top = 10
+      Top = 0
       Width = 107
-      Height = 65
+      Height = 64
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -374,8 +408,23 @@ object Position: TPosition
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 3
-      TabStop = False
       OnClick = btChangeStyleClick
+    end
+    object lbPkgCount: TcxLabel
+      Left = 1
+      Top = 65
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Paket Count : '
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = 27
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
     end
   end
   object Mem_MatchaProduct: TFDMemTable
@@ -384,16 +433,14 @@ object Position: TPosition
     IndexDefs = <
       item
         Name = 'Index_PosID'
-        Fields = 'PositionID'
+        Fields = 'PositionID;ProductNo;MaxLength;Reference'
       end>
     Indexes = <
       item
         Active = True
-        Selected = True
         Name = 'Index_PosID'
-        Fields = 'PositionID'
+        Fields = 'PositionID;ProductNo;MaxLength;Reference'
       end>
-    IndexName = 'Index_PosID'
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -401,8 +448,8 @@ object Position: TPosition
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 744
-    Top = 142
+    Left = 752
+    Top = 166
     object Mem_MatchaProductVald: TIntegerField
       FieldName = 'Vald'
     end
@@ -432,11 +479,14 @@ object Position: TPosition
     object Mem_MatchaProductMaxLength: TIntegerField
       FieldName = 'MaxLength'
     end
+    object Mem_MatchaProductStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+    end
   end
   object ds_MatchaProduct: TDataSource
     DataSet = Mem_MatchaProduct
     Left = 760
-    Top = 214
+    Top = 222
   end
   object Mem_PackProdList: TFDMemTable
     FieldDefs = <>
@@ -457,7 +507,7 @@ object Position: TPosition
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 144
+    Left = 120
     Top = 198
     object Mem_PackProdListVald: TIntegerField
       FieldName = 'Vald'
@@ -482,6 +532,9 @@ object Position: TPosition
     object Mem_PackProdListReference: TStringField
       FieldName = 'Reference'
     end
+    object Mem_PackProdListScanned: TIntegerField
+      FieldName = 'Scanned'
+    end
   end
   object DS_ProductNo: TDataSource
     DataSet = Mem_PackProdList
@@ -493,7 +546,7 @@ object Position: TPosition
     SQL.Strings = (
       
         'Update dbo.PackageNumber Set PositionID = :PosID , StoredDate = ' +
-        ':CurrentDate'
+        ':CurrentDate '
       'where SupplierCode = :Prefix AND PackageNo = :PkgNr')
     Left = 120
     Top = 134
@@ -528,16 +581,9 @@ object Position: TPosition
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evUnidirectional]
     SQL.Strings = (
-      'SELECT 0 as Vald, PositionName, PositionID FROM dbo.Position'
-      'WHERE PIPNo = :PIPNo')
+      'SELECT 0 as Vald, PositionName, PositionID FROM dbo.Position')
     Left = 480
     Top = 134
-    ParamData = <
-      item
-        Name = 'PIPNO'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
     object FDQ_PositionVald: TIntegerField
       FieldName = 'Vald'
       Origin = 'Vald'
@@ -566,10 +612,13 @@ object Position: TPosition
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 376
-    Top = 198
+    Left = 384
+    Top = 182
     object Mem_StorePositionPositionID: TIntegerField
       FieldName = 'PositionID'
+    end
+    object Mem_StorePositionPosStatus: TIntegerField
+      FieldName = 'PosStatus'
     end
     object Mem_StorePositionPrefix: TStringField
       FieldName = 'Prefix'
@@ -577,11 +626,127 @@ object Position: TPosition
     object Mem_StorePositionPakageNr: TIntegerField
       FieldName = 'PakageNr'
     end
+    object Mem_StorePositionScanned: TIntegerField
+      FieldName = 'Scanned'
+    end
   end
   object DS_StorePosition: TDataSource
     DataSet = Mem_StorePosition
     Left = 376
     Top = 254
+  end
+  object FDQ_ProdRefLength1: TFDQuery
+    Indexes = <
+      item
+        Name = 'ProdLenRef'
+        Fields = 'ProductNo;MaxLength;REFERENCE'
+      end>
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
+        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
+        'te,'
+      ''
+      'pn.REFERENCE,'
+      ' '
+      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
+      
+        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
+        'uctLengthNo'
+      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PackageNumber pn'
+      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      ''
+      'WHERE '
+      'pt.ProductNo = :ProductNo'
+      'and pn.[Status] = 1'
+      
+        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
+        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
+      'order by PosStatus, StoredDate')
+    Left = 233
+    Top = 110
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_ProdRefLength1PosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object FDQ_ProdRefLength1PositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object FDQ_ProdRefLength1ProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+    object FDQ_ProdRefLength1ProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_ProdRefLength1PositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object FDQ_ProdRefLength1StoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLength1NoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLength1NoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
+    object FDQ_ProdRefLength1REFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object FDQ_ProdRefLength1MaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+    end
   end
   object ds_MatchPosition: TDataSource
     DataSet = FDQ_MatchPosition
@@ -755,7 +920,7 @@ object Position: TPosition
       'WHERE '
       'p.ProductNo = :ProductNo')
     Left = 32
-    Top = 106
+    Top = 130
     ParamData = <
       item
         Name = 'PRODUCTNO'
@@ -810,8 +975,8 @@ object Position: TPosition
     end
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 883
-    Top = 184
+    Left = 659
+    Top = 40
     PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
@@ -1879,7 +2044,7 @@ object Position: TPosition
     Grid = cxGrid_MatchPosition
     PopupMenus = <>
     Left = 771
-    Top = 275
+    Top = 299
   end
   object cxGridPopupMenu2: TcxGridPopupMenu
     Grid = grid_ProductList
@@ -1912,90 +2077,196 @@ object Position: TPosition
       end>
     StorageName = 'cxPropertiesStore1'
     StorageType = stStream
-    Left = 611
-    Top = 347
+    Left = 563
+    Top = 43
   end
-  object fdq_prodlength: TFDStoredProc
+  object FDQ_ProdLength: TFDQuery
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_fdq_prodlength'
-    Left = 232
-    Top = 384
+    SQL.Strings = (
+      
+        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
+        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
+        'te,'
+      ' '
+      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
+      
+        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
+        'uctLengthNo'
+      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PackageNumber pn'
+      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      ''
+      'WHERE '
+      'pt.ProductNo = :ProductNo'
+      'and pn.[Status] = 1'
+      
+        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
+        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus, pn.PackageTypeNo '
+      'order by PosStatus, StoredDate')
+    Left = 368
+    Top = 112
     ParamData = <
       item
-        Position = 1
-        Name = '@RETURN_VALUE'
-        DataType = ftInteger
-        ParamType = ptResult
-        Value = 0
-      end
-      item
-        Position = 2
-        Name = '@PIPNo'
+        Name = 'PRODUCTNO'
         DataType = ftInteger
         ParamType = ptInput
-      end
-      item
-        Position = 3
-        Name = '@ProductNo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 4
-        Name = '@LanguageCode'
-        DataType = ftInteger
-        ParamType = ptInput
+        Value = Null
       end>
-    object fdq_prodlengthPosStatus: TIntegerField
+    object FDQ_ProdLengthPosStatus: TIntegerField
       FieldName = 'PosStatus'
-      Origin = 'PosStatus'
+      Origin = 'NoOfPkgsByPosition'
       ReadOnly = True
     end
-    object fdq_prodlengthPositionName: TStringField
+    object FDQ_ProdLengthPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
-      ReadOnly = True
       Size = 50
     end
-    object fdq_prodlengthProductNo: TIntegerField
+    object FDQ_ProdLengthProductNo: TIntegerField
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
-      ReadOnly = True
-    end
-    object fdq_prodlengthProductDisplayName: TStringField
-      FieldName = 'ProductDisplayName'
-      Origin = 'ProductDisplayName'
-      ReadOnly = True
-      Size = 150
-    end
-    object fdq_prodlengthPositionID: TIntegerField
-      FieldName = 'PositionID'
-      Origin = 'PositionID'
-      ReadOnly = True
       Required = True
     end
-    object fdq_prodlengthStoredDate: TSQLTimeStampField
+    object FDQ_ProdLengthProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_ProdLengthPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object FDQ_ProdLengthStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
       ReadOnly = True
     end
-    object fdq_prodlengthREFERENCE: TStringField
-      FieldName = 'REFERENCE'
-      Origin = 'REFERENCE'
-      ReadOnly = True
-      Size = 30
-    end
-    object fdq_prodlengthMaxLength: TFloatField
-      FieldName = 'MaxLength'
-      Origin = 'MaxLength'
-      ReadOnly = True
-    end
-    object fdq_prodlengthNoOfPkgsByProduct: TIntegerField
+    object FDQ_ProdLengthNoOfPkgsByProduct: TIntegerField
       FieldName = 'NoOfPkgsByProduct'
       Origin = 'NoOfPkgsByProduct'
       ReadOnly = True
     end
-    object fdq_prodlengthNoOfPkgsByPosition: TIntegerField
+    object FDQ_ProdLengthNoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
+    object FDQ_ProdLengthMaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+    end
+  end
+  object FDQ_MatchProductNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
+        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
+        'te,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PackageNumber pn'
+      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      ''
+      'WHERE '
+      'pt.ProductNo = :ProductNo'
+      'and pn.[Status] = 1'
+      
+        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
+        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus'
+      'order by PosStatus, StoredDate')
+    Left = 299
+    Top = 235
+    ParamData = <
+      item
+        Name = 'PRODUCTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object FDQ_MatchProductNoPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object FDQ_MatchProductNoPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object FDQ_MatchProductNoProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+    object FDQ_MatchProductNoProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object FDQ_MatchProductNoPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object FDQ_MatchProductNoStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object FDQ_MatchProductNoNoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object FDQ_MatchProductNoNoOfPkgsByPosition: TIntegerField
       FieldName = 'NoOfPkgsByPosition'
       Origin = 'NoOfPkgsByPosition'
       ReadOnly = True
@@ -2004,8 +2275,8 @@ object Position: TPosition
   object FDQ_ProdRefLength: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_fdq_prodlength'
-    Left = 232
-    Top = 440
+    Left = 200
+    Top = 168
     ParamData = <
       item
         Position = 1
@@ -2060,7 +2331,7 @@ object Position: TPosition
       ReadOnly = True
       Required = True
     end
-    object FDQ_ProdRefLengthStoredDate: TSQLTimeStampField
+    object SQLTimeStampField1: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
       ReadOnly = True
@@ -2076,7 +2347,7 @@ object Position: TPosition
       Origin = 'MaxLength'
       ReadOnly = True
     end
-    object FDQ_ProdRefLengthNoOfPkgsByProduct: TIntegerField
+    object IntegerField4: TIntegerField
       FieldName = 'NoOfPkgsByProduct'
       Origin = 'NoOfPkgsByProduct'
       ReadOnly = True
@@ -2087,97 +2358,195 @@ object Position: TPosition
       ReadOnly = True
     end
   end
-  object FDQ_MatchProductNo: TFDStoredProc
+  object FDQ_MatchaRef: TFDQuery
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_fdq_prodlength'
-    Left = 232
-    Top = 336
+    SQL.Strings = (
+      
+        'Select distinct Po.PosStatus, po.PositionName, p.ProductNo, p.Pr' +
+        'oductDisplayName,  po.PositionID, Max(pn.StoredDate) as StoredDa' +
+        'te,'
+      ''
+      'pn.REFERENCE,'
+      ' '
+      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
+      
+        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
+        'uctLengthNo'
+      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 1'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PackageNumber pn'
+      'inner  join dbo.Position Po on Po.PositionID = pn.PositionID'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      'Left Join dbo.ProductDesc pde ON pde.ProductNo = pt.ProductNo'
+      #9#9#9'AND pde.LanguageID = :LanguageCode'
+      ''
+      'WHERE '
+      'pn.REFERENCE = :Reference'
+      'and po.PIPNo = :PIPNo'
+      'and pn.[Status] = 1'
+      
+        'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
+        '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
+      'order by PosStatus, StoredDate')
+    Left = 747
+    Top = 59
     ParamData = <
       item
-        Position = 1
-        Name = '@RETURN_VALUE'
-        DataType = ftInteger
-        ParamType = ptResult
-        Value = 0
-      end
-      item
-        Position = 2
-        Name = '@PIPNo'
+        Name = 'LANGUAGECODE'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end
       item
-        Position = 3
-        Name = '@ProductNo'
-        DataType = ftInteger
+        Name = 'REFERENCE'
+        DataType = ftString
         ParamType = ptInput
+        Value = Null
       end
       item
-        Position = 4
-        Name = '@LanguageCode'
+        Name = 'PIPNO'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
-    object FDQ_MatchProductNoPosStatus: TIntegerField
+    object FDQ_MatchaRefPosStatus: TIntegerField
       FieldName = 'PosStatus'
       Origin = 'PosStatus'
-      ReadOnly = True
     end
-    object FDQ_MatchProductNoPositionName: TStringField
+    object FDQ_MatchaRefPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
-      ReadOnly = True
       Size = 50
     end
-    object FDQ_MatchProductNoProductNo: TIntegerField
-      FieldName = 'ProductNo'
-      Origin = 'ProductNo'
-      ReadOnly = True
-    end
-    object FDQ_MatchProductNoProductDisplayName: TStringField
+    object FDQ_MatchaRefProductDisplayName: TStringField
       FieldName = 'ProductDisplayName'
       Origin = 'ProductDisplayName'
-      ReadOnly = True
       Size = 150
     end
-    object FDQ_MatchProductNoPositionID: TIntegerField
-      FieldName = 'PositionID'
-      Origin = 'PositionID'
-      ReadOnly = True
+    object FDQ_MatchaRefProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
       Required = True
     end
-    object FDQ_MatchProductNoStoredDate: TSQLTimeStampField
+    object FDQ_MatchaRefPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object FDQ_MatchaRefStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
       ReadOnly = True
     end
-    object FDQ_MatchProductNoREFERENCE: TStringField
+    object FDQ_MatchaRefREFERENCE: TStringField
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
-      ReadOnly = True
       Size = 30
     end
-    object FDQ_MatchProductNoMaxLength: TFloatField
+    object FDQ_MatchaRefMaxLength: TFloatField
       FieldName = 'MaxLength'
       Origin = 'MaxLength'
       ReadOnly = True
     end
-    object FDQ_MatchProductNoNoOfPkgsByProduct: TIntegerField
+    object FDQ_MatchaRefNoOfPkgsByProduct: TIntegerField
       FieldName = 'NoOfPkgsByProduct'
       Origin = 'NoOfPkgsByProduct'
       ReadOnly = True
     end
-    object FDQ_MatchProductNoNoOfPkgsByPosition: TIntegerField
+    object FDQ_MatchaRefNoOfPkgsByPosition: TIntegerField
       FieldName = 'NoOfPkgsByPosition'
       Origin = 'NoOfPkgsByPosition'
       ReadOnly = True
     end
   end
+  object DS_MatchaRef: TDataSource
+    DataSet = Mem_MatchaRef
+    Left = 675
+    Top = 107
+  end
+  object Mem_MatchaRef: TFDMemTable
+    FieldDefs = <>
+    CachedUpdates = True
+    IndexDefs = <>
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'Index_PosID'
+        Fields = 'PositionID;ProductNo;MaxLength;Reference'
+      end>
+    IndexName = 'Index_PosID'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    FormatOptions.AssignedValues = [fvMaxBcdPrecision, fvMaxBcdScale]
+    FormatOptions.MaxBcdPrecision = 2147483647
+    FormatOptions.MaxBcdScale = 2147483647
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    StoreDefs = True
+    Left = 755
+    Top = 115
+    object Mem_MatchaRefVald: TIntegerField
+      FieldName = 'Vald'
+    end
+    object Mem_MatchaRefPosStatus: TIntegerField
+      FieldName = 'Fullt'
+    end
+    object Mem_MatchaRefPositionName: TStringField
+      FieldName = 'PositionName'
+      Size = 50
+    end
+    object Mem_MatchaRefProductDisplayName: TStringField
+      FieldName = 'ProductName'
+      Size = 150
+    end
+    object Mem_MatchaRefNoOfPkgs: TIntegerField
+      FieldName = 'NoOfPkgs'
+    end
+    object Mem_MatchaRefProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Required = True
+    end
+    object Mem_MatchaRefPositionID: TIntegerField
+      FieldName = 'PositionID'
+    end
+    object Mem_MatchaRefREFERENCE: TStringField
+      FieldName = 'Reference'
+      Size = 30
+    end
+    object Mem_MatchaRefMaxLength: TIntegerField
+      FieldName = 'MaxLength'
+    end
+  end
   object sp_insPkgInvStat: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_insPkgInvStat'
-    Left = 392
-    Top = 408
+    Left = 304
+    Top = 168
     ParamData = <
       item
         Position = 1

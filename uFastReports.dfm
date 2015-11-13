@@ -184,7 +184,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -203,7 +203,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -222,7 +222,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -237,7 +237,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -274,7 +274,7 @@ object dmFR: TdmFR
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -290,7 +290,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -306,7 +306,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -587,7 +587,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -603,7 +603,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -619,7 +619,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -635,7 +635,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -651,7 +651,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -667,7 +667,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -685,7 +685,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -701,7 +701,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -762,7 +762,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -778,7 +778,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -794,7 +794,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -810,7 +810,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -828,7 +828,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -844,7 +844,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -862,7 +862,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -878,7 +878,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -896,7 +896,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1044,7 +1044,7 @@ object dmFR: TdmFR
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1060,7 +1060,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1152,7 +1152,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1174,7 +1174,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1190,7 +1190,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1209,7 +1209,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1259,7 +1259,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1282,7 +1282,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1298,7 +1298,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1314,7 +1314,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1330,7 +1330,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1351,7 +1351,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
@@ -1368,7 +1368,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
@@ -1385,7 +1385,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
@@ -1402,7 +1402,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           HAlign = haRight
@@ -1419,7 +1419,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1435,7 +1435,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1464,7 +1464,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1483,7 +1483,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1499,7 +1499,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1515,7 +1515,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1531,7 +1531,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1547,7 +1547,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1566,7 +1566,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1585,7 +1585,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1604,7 +1604,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1623,7 +1623,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1669,7 +1669,7 @@ object dmFR: TdmFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -9
+          Font.Height = -7
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           Memo.UTF8W = (
@@ -1811,7 +1811,7 @@ object dmFR: TdmFR
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1832,7 +1832,7 @@ object dmFR: TdmFR
           DisplayFormat.Kind = fkDateTime
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -9
           Font.Name = 'Arial'
           Font.Style = []
           Memo.UTF8W = (
@@ -1890,6 +1890,7 @@ object dmFR: TdmFR
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
@@ -1986,11 +1987,60 @@ object dmFR: TdmFR
       620065006C0073005F0055006E00690063006F00640065000D000A0073007400
       46006F006E00740073005F0055006E00690063006F00640065000D000A007300
       74004D0075006C00740069004C0069006E00650073005F0055006E0069006300
-      6F00640065000D000A007300740053007400720069006E00670073005F005500
-      6E00690063006F00640065000D000A00730074004F0074006800650072005300
-      7400720069006E00670073005F0055006E00690063006F00640065000D000A00
-      7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
-      690063006F00640065000D000A00730074004300680061007200530065007400
-      73005F0055006E00690063006F00640065000D000A00}
+      6F00640065000D000A006600720078005200650070006F007200740031002E00
+      530063007200690070007400540065007800740001002200700072006F006300
+      6500640075007200650020006600720078004400420044006100740061007300
+      65007400320049004E0056005F0054004500580054004F006E00420065006600
+      6F00720065005000720069006E0074002800530065006E006400650072003A00
+      2000540066007200780043006F006D0070006F006E0065006E00740029003B00
+      22002C0062006500670069006E002C002C0065006E0064003B002C002C002200
+      700072006F006300650064007500720065002000440065007400610069006C00
+      440061007400610031004F006E004200650066006F0072006500500072006900
+      6E0074002800530065006E006400650072003A00200054006600720078004300
+      6F006D0070006F006E0065006E00740029003B0022002C006200650067006900
+      6E002C0022002000200020002000200020002000200020002000200020002000
+      2000200020002000200020002000200020002000200020002000200020002000
+      2000200020002000200020002000200020002000200020002000200020002200
+      2C0065006E0064003B002C002C002200700072006F0063006500640075007200
+      65002000500061006700650031004F006E004200650066006F00720065005000
+      720069006E0074002800530065006E006400650072003A002000540066007200
+      780043006F006D0070006F006E0065006E00740029003B0022002C0062006500
+      670069006E002C00220020002000200020002000200022002C0065006E006400
+      3B002C002C002200700072006F00630065006400750072006500200052006500
+      70006F0072007400530075006D006D0061007200790031004F006E0042006500
+      66006F00720065005000720069006E0074002800530065006E00640065007200
+      3A002000540066007200780043006F006D0070006F006E0065006E0074002900
+      3B0022002C0062006500670069006E002C002200200069006600200065006E00
+      670069006E0065002E0066007200650065007300700061006300650020003E00
+      20007200650070006F0072007400730075006D006D0061007200790031002E00
+      68006500690067006800740020007400680065006E0022002C00220020006200
+      6500670069006E0022002C0022002000200045006E00670069006E0065002E00
+      430075007200590020003A003D00200045006E00670069006E0065002E005000
+      61006700650048006500690067006800740020002D007200650070006F007200
+      7400730075006D006D0061007200790031002E00680065006900670068007400
+      20002D00700061006700650066006F006F0074006500720031002E0048006500
+      690067006800740020002D00200031003B0022002C002200200065006E006400
+      3B002000200022002C0065006E0064003B002C002C0062006500670069006E00
+      2C002200200020002000200020002000200020002000200022002C0022002000
+      200020002000200022002C0065006E0064002E000100010001000D000A007300
+      740053007400720069006E00670073005F0055006E00690063006F0064006500
+      0D000A00730074004F00740068006500720053007400720069006E0067007300
+      5F0055006E00690063006F00640065000D000A00660072007800440042004400
+      61007400610073006500740031002E0055007300650072004E0061006D006500
+      010049006E0076006F006900630065000100010001000D000A00660072007800
+      5000440046004500780070006F007200740032002E0041007500740068006F00
+      7200010046006100730074005200650070006F00720074000100010001000D00
+      0A006600720078005000440046004500780070006F007200740032002E005300
+      750062006A00650063007400010046006100730074005200650070006F007200
+      7400200050004400460020006500780070006F00720074000100010001000D00
+      0A006600720078005200650070006F007200740031002E0049006E0069004600
+      69006C00650001005C0053006F006600740077006100720065005C0046006100
+      7300740020005200650070006F007200740073000100010001000D000A006600
+      720078005200650070006F007200740031002E00530063007200690070007400
+      4C0061006E00670075006100670065000100500061007300630061006C005300
+      630072006900700074000100010001000D000A007300740043006F006C006C00
+      65006300740069006F006E0073005F0055006E00690063006F00640065000D00
+      0A0073007400430068006100720053006500740073005F0055006E0069006300
+      6F00640065000D000A00}
   end
 end

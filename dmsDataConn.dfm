@@ -1838,6 +1838,7 @@ object dmsConnector: TdmsConnector
     FetchOptions.RowsetSize = 500
     ResourceOptions.AssignedValues = [rvDirectExecute]
     UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]
+    Connected = True
     LoginPrompt = False
     Left = 464
     Top = 24

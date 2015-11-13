@@ -575,6 +575,7 @@ type
     sp_InsertPkgsScanned: TFDStoredProc;
     cdsArrivingLoadsOriginalLO: TIntegerField;
     cdsArrivingLoadsOriginalLoadNo: TIntegerField;
+    cdsArrivingPackagesScanned: TIntegerField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;

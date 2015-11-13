@@ -65,7 +65,7 @@ type
 
 implementation
 
-uses  dmsDataConn, dmc_ArrivingLoads;
+uses  dmsDataConn, dmc_ArrivingLoads, udmLanguage;
 
 {$R *.dfm}
 

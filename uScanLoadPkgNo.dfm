@@ -3,38 +3,50 @@ object fScanLoadPkgNo: TfScanLoadPkgNo
   Top = 335
   ActiveControl = ePktNr
   Caption = 'L'#228's paketnummer med streckkodsl'#228'sare'
-  ClientHeight = 161
-  ClientWidth = 358
+  ClientHeight = 198
+  ClientWidth = 441
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Label1: TLabel
-    Left = 8
-    Top = 96
-    Width = 393
-    Height = 13
+    Left = 10
+    Top = 118
+    Width = 484
+    Height = 16
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     AutoSize = False
   end
   object ePktNr: TEdit
-    Left = 103
-    Top = 48
-    Width = 193
-    Height = 21
+    Left = 127
+    Top = 59
+    Width = 237
+    Height = 24
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     TabOrder = 0
     OnKeyPress = ePktNrKeyPress
   end
   object bbOK: TBitBtn
-    Left = 126
-    Top = 121
-    Width = 97
-    Height = 33
+    Left = 155
+    Top = 149
+    Width = 119
+    Height = 41
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Klar'
     Glyph.Data = {
       DE010000424DDE01000000000000760000002800000024000000120000000100
@@ -58,10 +70,14 @@ object fScanLoadPkgNo: TfScanLoadPkgNo
     TabOrder = 1
   end
   object cbEgenLevKod: TCheckBox
-    Left = 56
-    Top = 16
-    Width = 305
-    Height = 17
+    Left = 69
+    Top = 20
+    Width = 375
+    Height = 21
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Scanna endast in paket med leverant'#246'rskod '
     TabOrder = 2
   end
@@ -70,6 +86,7 @@ object fScanLoadPkgNo: TfScanLoadPkgNo
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1

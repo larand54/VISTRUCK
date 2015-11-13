@@ -25,8 +25,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, System.Generics.Collections,
   FireDAC.Comp.Client, FireDAC.Comp.DataSet, dmc_ArrivingLoads, cxContainer,
-  cxTL, cxGridCustomPopupMenu, cxGridPopupMenu, dmsVidaSystem,
-  VidaUser, cxPropertiesStore, dxmdaset, UnitStylesOKCANCL, cxLabel, cxTextEdit ;
+  cxTL, UnitStylesOKCANCL, cxGridCustomPopupMenu, cxGridPopupMenu, dmsVidaSystem,
+  VidaUser, cxPropertiesStore, dxmdaset, cxLabel;
 
 type
   TPosition = class(TForm)
@@ -77,6 +77,15 @@ type
     Mem_StorePositionPrefix: TStringField;
     Mem_StorePositionPakageNr: TIntegerField;
     DS_StorePosition: TDataSource;
+    FDQ_ProdRefLength1: TFDQuery;
+    FDQ_ProdRefLength1PosStatus: TIntegerField;
+    FDQ_ProdRefLength1PositionName: TStringField;
+    FDQ_ProdRefLength1ProductNo: TIntegerField;
+    FDQ_ProdRefLength1ProductDisplayName: TStringField;
+    FDQ_ProdRefLength1PositionID: TIntegerField;
+    FDQ_ProdRefLength1StoredDate: TSQLTimeStampField;
+    FDQ_ProdRefLength1NoOfPkgsByProduct: TIntegerField;
+    FDQ_ProdRefLength1NoOfPkgsByPosition: TIntegerField;
     ds_MatchPosition: TDataSource;
     FDQ_MatchPosition: TFDQuery;
     FDQ_MatchPositionPositionName: TStringField;
@@ -225,49 +234,83 @@ type
     Mem_MatchaProductMaxLength: TIntegerField;
     cxGrid_MatchPositionDBTableView1Reference: TcxGridDBColumn;
     cxGrid_MatchPositionDBTableView1MaxLength: TcxGridDBColumn;
-    FDQ_ProductNoREFERENCE: TStringField;
-    FDQ_ProductNoMaxLength: TFloatField;
-    Mem_PackProdListMaxLength: TIntegerField;
-    Mem_PackProdListReference: TStringField;
-    grid_ProductListDBTableView1MaxLength: TcxGridDBColumn;
-    grid_ProductListDBTableView1Reference: TcxGridDBColumn;
-    TopPanelMatchProduct: TPanel;
-    cxTextEdit1: TcxTextEdit;
-    cxLabel1: TcxLabel;
-    fdq_prodlength: TFDStoredProc;
-    fdq_prodlengthPosStatus: TIntegerField;
-    fdq_prodlengthPositionName: TStringField;
-    fdq_prodlengthProductNo: TIntegerField;
-    fdq_prodlengthProductDisplayName: TStringField;
-    fdq_prodlengthPositionID: TIntegerField;
-    fdq_prodlengthStoredDate: TSQLTimeStampField;
-    fdq_prodlengthREFERENCE: TStringField;
-    fdq_prodlengthMaxLength: TFloatField;
-    fdq_prodlengthNoOfPkgsByProduct: TIntegerField;
-    fdq_prodlengthNoOfPkgsByPosition: TIntegerField;
-    FDQ_ProdRefLength: TFDStoredProc;
-    FDQ_ProdRefLengthPosStatus: TIntegerField;
-    FDQ_ProdRefLengthPositionName: TStringField;
-    FDQ_ProdRefLengthProductNo: TIntegerField;
-    FDQ_ProdRefLengthProductDisplayName: TStringField;
-    FDQ_ProdRefLengthPositionID: TIntegerField;
-    FDQ_ProdRefLengthStoredDate: TSQLTimeStampField;
-    FDQ_ProdRefLengthREFERENCE: TStringField;
-    FDQ_ProdRefLengthMaxLength: TFloatField;
-    FDQ_ProdRefLengthNoOfPkgsByProduct: TIntegerField;
-    FDQ_ProdRefLengthNoOfPkgsByPosition: TIntegerField;
-    FDQ_MatchProductNo: TFDStoredProc;
+    FDQ_ProdLength: TFDQuery;
+    FDQ_MatchProductNo: TFDQuery;
+    FDQ_ProdRefLength1REFERENCE: TStringField;
+    FDQ_ProdRefLength1MaxLength: TFloatField;
+    FDQ_ProdLengthPosStatus: TIntegerField;
+    FDQ_ProdLengthPositionName: TStringField;
+    FDQ_ProdLengthProductNo: TIntegerField;
+    FDQ_ProdLengthProductDisplayName: TStringField;
+    FDQ_ProdLengthPositionID: TIntegerField;
+    FDQ_ProdLengthStoredDate: TSQLTimeStampField;
+    FDQ_ProdLengthMaxLength: TFloatField;
+    FDQ_ProdLengthNoOfPkgsByProduct: TIntegerField;
+    FDQ_ProdLengthNoOfPkgsByPosition: TIntegerField;
     FDQ_MatchProductNoPosStatus: TIntegerField;
     FDQ_MatchProductNoPositionName: TStringField;
     FDQ_MatchProductNoProductNo: TIntegerField;
     FDQ_MatchProductNoProductDisplayName: TStringField;
     FDQ_MatchProductNoPositionID: TIntegerField;
     FDQ_MatchProductNoStoredDate: TSQLTimeStampField;
-    FDQ_MatchProductNoREFERENCE: TStringField;
-    FDQ_MatchProductNoMaxLength: TFloatField;
     FDQ_MatchProductNoNoOfPkgsByProduct: TIntegerField;
     FDQ_MatchProductNoNoOfPkgsByPosition: TIntegerField;
+    FDQ_ProductNoREFERENCE: TStringField;
+    FDQ_ProductNoMaxLength: TFloatField;
+    Mem_PackProdListMaxLength: TIntegerField;
+    Mem_PackProdListReference: TStringField;
+    grid_ProductListDBTableView1MaxLength: TcxGridDBColumn;
+    grid_ProductListDBTableView1Reference: TcxGridDBColumn;
+    FDQ_ProdRefLength: TFDStoredProc;
+    FDQ_ProdRefLengthPosStatus: TIntegerField;
+    FDQ_ProdRefLengthPositionName: TStringField;
+    FDQ_ProdRefLengthProductNo: TIntegerField;
+    FDQ_ProdRefLengthProductDisplayName: TStringField;
+    FDQ_ProdRefLengthPositionID: TIntegerField;
+    SQLTimeStampField1: TSQLTimeStampField;
+    FDQ_ProdRefLengthREFERENCE: TStringField;
+    FDQ_ProdRefLengthMaxLength: TFloatField;
+    IntegerField4: TIntegerField;
+    FDQ_ProdRefLengthNoOfPkgsByPosition: TIntegerField;
+    TabSheet_RefMatch: TTabSheet;
+    grid_Matcha_RefDBTableView1: TcxGridDBTableView;
+    grid_Matcha_RefLevel1: TcxGridLevel;
+    grid_Matcha_Ref: TcxGrid;
+    FDQ_MatchaRef: TFDQuery;
+    FDQ_MatchaRefPosStatus: TIntegerField;
+    FDQ_MatchaRefPositionName: TStringField;
+    FDQ_MatchaRefProductNo: TIntegerField;
+    FDQ_MatchaRefPositionID: TIntegerField;
+    FDQ_MatchaRefStoredDate: TSQLTimeStampField;
+    FDQ_MatchaRefREFERENCE: TStringField;
+    FDQ_MatchaRefMaxLength: TFloatField;
+    FDQ_MatchaRefNoOfPkgsByProduct: TIntegerField;
+    DS_MatchaRef: TDataSource;
+    Mem_MatchaRef: TFDMemTable;
+    Mem_MatchaRefPosStatus: TIntegerField;
+    Mem_MatchaRefPositionName: TStringField;
+    Mem_MatchaRefProductNo: TIntegerField;
+    Mem_MatchaRefProductDisplayName: TStringField;
+    Mem_MatchaRefREFERENCE: TStringField;
+    grid_Matcha_RefDBTableView1PositionName: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1ProductDisplayName: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1REFERENCE: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1MaxLength: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1NoOfPkgsByPosition: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1Vald: TcxGridDBColumn;
+    grid_Matcha_RefDBTableView1Fullt: TcxGridDBColumn;
+    lbPkgCount: TcxLabel;
+    Mem_StorePositionPosStatus: TIntegerField;
+    Mem_MatchaRefPositionID: TIntegerField;
+    Mem_MatchaRefVald: TIntegerField;
+    FDQ_MatchaRefProductDisplayName: TStringField;
+    FDQ_MatchaRefNoOfPkgsByPosition: TIntegerField;
+    Mem_MatchaRefNoOfPkgs: TIntegerField;
+    Mem_MatchaRefMaxLength: TIntegerField;
     sp_insPkgInvStat: TFDStoredProc;
+    Mem_MatchaProductStoredDate: TSQLTimeStampField;
+    Mem_PackProdListScanned: TIntegerField;
+    Mem_StorePositionScanned: TIntegerField;
     procedure btnStorePositionClick(Sender: TObject);
     procedure cxGrid_MatchPositionDBTableView1CellClick(
       Sender: TcxCustomGridTableView;
@@ -284,29 +327,32 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
+    procedure grid_Matcha_RefDBTableView1CellClick(
+      Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
   private
 
     ProductNoList : TStringList;
     //PositionAllNameList: TStringList;
     //PositionAllIDList : TList<Integer>;
 
-    Procedure CloseForm ;
     function GetPkgPrefix(ProductNo, PackageNo: Integer;
       Prefix: String): Boolean;
-    procedure SavetoMemPosition(PositionID: Integer; Prefix: String;
-      PkgNr: Integer);
+    procedure SavetoMemPosition(PositionID, PosStatus: Integer; Prefix: String;
+      PkgNr, Scanned: Integer);
     procedure DeleteMatchaProdNo(PackProductNo, MatchaProdNo: Integer);
     procedure CheckLastPkg;
     function IsSameProduct(PackProductNo: Integer): Boolean;
-
+    function IsSameRef(PackRef: String): Boolean;
 
 
     { Private declarations }
   public
-    procedure ShowPaketNrList(PaketNr: Integer; pkgSupplierCode: String);
-    procedure ShowMatchPosition(ProductNo: Integer);
+    procedure ShowPaketNrList(PaketNr, Scanned: Integer; pkgSupplierCode: String);
     procedure ShowPosition;
     procedure MatchaPosition(ProductNo: Integer; MaxLength : Integer; Reference : String);
+    procedure ShowMatchaRef(Reference: String);
     { Public declarations }
   end;
 
@@ -317,20 +363,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitLoadArrivals;
-
-Procedure TPosition.CloseForm ;
-begin
- frmLoadArrivals.mePackageNo.SetFocus ;
-  if (Mem_PackProdList.Active) and (Mem_PackProdList.RecordCount = 0) then
-  Begin
-
-   Close ;
-  End;
-
-end;
-
-procedure TPosition.ShowPaketNrList(PaketNr : Integer; pkgSupplierCode : String);
+procedure TPosition.ShowPaketNrList(PaketNr, Scanned : Integer; pkgSupplierCode : String);
 var
   //PaketNrList, ProductNrList, ProductNamnList : TStringList;
   Item : TListItem;
@@ -367,14 +400,62 @@ begin
       FieldByName('ProductNo').AsInteger := ProductNo;
       FieldByName('MaxLength').AsInteger := MaxLength;
       FieldByName('Reference').AsString := Reference;
+      FieldByName('Scanned').AsInteger := Scanned;
       Post;
     end;
+
+   lbPkgCount.Caption := 'Paket Count : '+ inttostr(Mem_PackProdList.RecordCount);
 
    ShowPosition;
    //ShowMatchPosition(ProductNo);//17247
    MatchaPosition(ProductNo, MaxLength, Reference);
 
+   ShowMatchaRef(Reference);
+
   end;
+end;
+
+procedure TPosition.ShowMatchaRef(Reference: String);
+var
+ RecordCount, Count : Integer;
+begin
+    if (not Mem_MatchaRef.Active) OR (not Mem_MatchaRef.Locate('Reference', Reference,[])) then
+    begin
+      grid_Matcha_Ref.Visible := True;
+      FDQ_MatchaRef.Close;
+      FDQ_MatchaRef.ParamByName('Reference').AsString := Reference;
+      FDQ_MatchaRef.ParamByName('PIPNo').AsInteger := dmArrivingLoads.PIPNo ;
+      FDQ_MatchaRef.ParamByName('LanguageCode').AsInteger  := ThisUser.LanguageID ;
+      FDQ_MatchaRef.Open;
+      RecordCount :=  FDQ_MatchaRef.recordcount;
+      if RecordCount > 0 then
+       begin
+        Count := 1;
+        FDQ_MatchaRef.First;
+        while not FDQ_MatchaRef.Eof do
+        begin
+          with Mem_MatchaRef do
+          begin
+            Open;
+            Append;
+            FieldByName('Vald').AsInteger := 0;
+            FieldByName('Fullt').AsInteger := FDQ_MatchaRefPosStatus.AsInteger;
+            FieldByName('PositionName').AsString := FDQ_MatchaRefPositionName.AsString;
+            FieldByName('ProductName').AsString := FDQ_MatchaRefProductDisplayName.AsString;
+            FieldByName('NoOfPkgs').AsInteger := FDQ_MatchaRefNoOfPkgsByPosition.AsInteger;
+            FieldByName('ProductNo').AsInteger := FDQ_MatchaRefProductNo.AsInteger;
+            FieldByName('PositionID').AsInteger := FDQ_MatchaRefPositionID.AsInteger;
+            FieldByName('Reference').AsString := FDQ_MatchaRefREFERENCE.AsString;
+            FieldByName('MaxLength').AsInteger := FDQ_MatchaRefMaxLength.AsInteger;
+            Post;
+            Inc(Count);
+          end;
+          FDQ_MatchaRef.Next;
+        end;
+     end;
+    end;
+
+
 end;
 
 procedure TPosition.ShowPosition;
@@ -389,9 +470,6 @@ var
    if ( not FDQ_Position.Active) then
    begin
    //FDQ_Position.Active := True;
-    if FDQ_Position.Active then
-     FDQ_Position.Close ;
-    FDQ_Position.ParamByName('PIPNo').AsInteger :=  dmArrivingLoads.PIPNo ;
     FDQ_Position.Open;
     FDQ_Position.First;
     while not FDQ_Position.Eof do
@@ -400,9 +478,9 @@ var
       begin
         Open;
         Append;
-        FieldByName('Vald').AsInteger         := FDQ_PositionVald.AsInteger;
-        FieldByName('PositionID').AsInteger   := FDQ_PositionPositionID.AsInteger;
-        FieldByName('PositionName').AsString  := FDQ_PositionPositionName.AsString;
+        FieldByName('Vald').AsInteger := FDQ_PositionVald.AsInteger;
+        FieldByName('PositionID').AsInteger := FDQ_PositionPositionID.AsInteger;
+        FieldByName('PositionName').AsString := FDQ_PositionPositionName.AsString;
         Post;
       end;
       FDQ_Position.Next;
@@ -442,11 +520,9 @@ begin
     begin
       cxGrid_MatchPosition.Visible := True;
       FDQ_ProdRefLength.Close;
-
-      FDQ_ProdRefLength.ParamByName('@ProductNo').AsInteger     := ProductNo;
-      FDQ_ProdRefLength.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;
-      FDQ_ProdRefLength.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;
-
+      FDQ_ProdRefLength.ParamByName('@ProductNo').AsInteger := ProductNo;
+      FDQ_ProdRefLength.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;//10220;
+      FDQ_ProdRefLength.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;//1;
       FDQ_ProdRefLength.Open;
       Records :=  FDQ_ProdRefLength.recordcount;
       if Records > 0 then
@@ -459,7 +535,10 @@ begin
           begin
             Open;
             Append;
-               FieldByName('Vald').AsInteger := 0;
+            //if (Records = Count) AND (FDQ_ProdRefLengthPosStatus.AsInteger = 1) then
+            //   FieldByName('Vald').AsInteger := 1
+            //else
+            FieldByName('Vald').AsInteger := 0;
 
             FieldByName('Fullt').AsInteger := FDQ_ProdRefLengthPosStatus.AsInteger;
             FieldByName('PositionNamn').AsString := FDQ_ProdRefLengthPositionName.AsString;
@@ -469,6 +548,7 @@ begin
             FieldByName('PositionID').AsInteger := FDQ_ProdRefLengthPositionID.AsInteger;
             FieldByName('Reference').AsString := FDQ_ProdRefLengthREFERENCE.AsString;
             FieldByName('MaxLength').AsInteger := FDQ_ProdRefLengthMaxLength.AsInteger;
+            FieldByName('StoredDate').AsSQLTimeStamp := SQLTimeStampField1.AsSQLTimeStamp;
             Post;
             Inc(Count);
           end;
@@ -477,133 +557,7 @@ begin
      end;
     end;
 
-
-      Mem_MatchaProduct.Filter := 'Vald = 1';
-      Mem_MatchaProduct.Filtered := True;
-      Try
-       //while not Mem_MatchaProduct.Eof do
-       if Mem_MatchaProduct.RecordCount = 1 then
-        begin
-         PrevPositionID := Mem_MatchaProductPositionID.AsInteger;
-         PrevReference := Mem_MatchaProductReference.AsString;
-         PrevMaxLength := Mem_MatchaProductMaxLength.AsInteger;
-         //Mem_MatchaProduct.Next;
-        end;
-      Finally
-       Mem_MatchaProduct.Filtered := False;
-      End;
-
-      Count := 1;
-      ValdFlag := False;
-      Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(ProductNo);
-      Mem_MatchaProduct.Filtered := True;
-      Try
-      MatchaCount := Mem_MatchaProduct.RecordCount;
-      if not Mem_MatchaProduct.Active then
-       Mem_MatchaProduct.Active := True ;
-      Mem_MatchaProduct.First;
-      while not Mem_MatchaProduct.Eof do
-      begin
-       if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-        AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger)
-         AND (Reference = Mem_MatchaProductReference.AsString) then
-        begin
-         if (Mem_MatchaProductVald.AsInteger = 0) AND (Count = Records)
-          AND (Mem_MatchaProductFullt.AsInteger = 1) then
-          begin
-           Mem_MatchaProduct.Edit;
-           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-           Mem_MatchaProduct.Post;
-           ValdFlag := True;
-          end;
-        end
-       else if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-        AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger) then
-        begin
-         if (Mem_MatchaProductVald.AsInteger  = 0) AND (Count = Records)
-          AND (Mem_MatchaProductFullt.AsInteger = 1) then
-          begin
-           Mem_MatchaProduct.Edit;
-           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-           Mem_MatchaProduct.Post;
-           ValdFlag := True;
-          end;
-        end
-        else if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-         AND (Count = Records) AND (Mem_MatchaProductFullt.AsInteger = 1) then
-        begin
-          if (Mem_MatchaProductVald.AsInteger  = 0) AND ( not ValdFlag) then
-          begin
-           Mem_MatchaProduct.Edit;
-           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-           Mem_MatchaProduct.Post;
-           ValdFlag := True;
-          end;
-        end;
-
-       Inc(Count);
-       Mem_MatchaProduct.Next;
-      end;
-
-      Finally
-        Mem_MatchaProduct.Filtered := False;
-      End;
-
-     end;
-
- if (Mem_MatchaProduct.Active) and (Mem_MatchaProduct.RecordCount = 0) then
-  PageControl_Position.ActivePage := TabSheet_All ;
-end;
-
 (*
-
-
-  procedure TPosition.MatchaPosition(ProductNo: Integer; MaxLength : Integer; Reference : String);
-  var
-     MatchaCount, ProdRecord, PrevPositionID, PrevMaxLength, PhyInvPtNo, Records, Count : Integer;
-     PrevReference : String;
-     ValdFlag : Boolean;
-  begin
-    begin
-      if (not Mem_MatchaProduct.Active) OR (not Mem_MatchaProduct.Locate('ProductNo', ProductNo,[])) then
-      begin
-        cxGrid_MatchPosition.Visible := True;
-        FDQ_ProdRefLength.Close;
-        FDQ_ProdRefLength.ParamByName('ProductNo').AsInteger := ProductNo;
-        FDQ_ProdRefLength.Open;
-        Records :=  FDQ_ProdRefLength.recordcount;
-        if Records > 0 then
-         begin
-          Count := 1;
-          FDQ_ProdRefLength.First;
-          while not FDQ_ProdRefLength.Eof do
-          begin
-            with Mem_MatchaProduct do
-            begin
-              Open;
-              Append;
-              //if (Records = Count) AND (FDQ_ProdRefLengthPosStatus.AsInteger = 1) then
-              //   FieldByName('Vald').AsInteger := 1
-              //else
-                 FieldByName('Vald').AsInteger := 0;
-
-              FieldByName('Fullt').AsInteger := FDQ_ProdRefLengthPosStatus.AsInteger;
-              FieldByName('PositionNamn').AsString := FDQ_ProdRefLengthPositionName.AsString;
-              FieldByName('ProductNamn').AsString := FDQ_ProdRefLengthProductDisplayName.AsString;
-              FieldByName('NoOfPkgs').AsInteger := FDQ_ProdRefLengthNoOfPkgsByPosition.AsInteger;
-              FieldByName('ProductNo').AsInteger := FDQ_ProdRefLengthProductNo.AsInteger;
-              FieldByName('PositionID').AsInteger := FDQ_ProdRefLengthPositionID.AsInteger;
-              FieldByName('Reference').AsString := FDQ_ProdRefLengthREFERENCE.AsString;
-              FieldByName('MaxLength').AsInteger := FDQ_ProdRefLengthMaxLength.AsInteger;
-              Post;
-              Inc(Count);
-            end;
-            FDQ_ProdRefLength.Next;
-          end;
-       end;
-      end;
-
-
         Mem_MatchaProduct.Filter := 'Vald = 1';
         Mem_MatchaProduct.Filtered := True;
         Try
@@ -618,174 +572,83 @@ end;
         Finally
          Mem_MatchaProduct.Filtered := False;
         End;
-
-        Count := 1;
-        ValdFlag := False;
-        MatchaCount := Mem_MatchaProduct.RecordCount;
-        if not Mem_MatchaProduct.Active then
-         Mem_MatchaProduct.Active := True ;
-        Mem_MatchaProduct.First;
-        while not Mem_MatchaProduct.Eof do
-        begin
-         if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-          AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger)
-           AND (Reference = Mem_MatchaProductReference.AsString) then
-          begin
-           if (Mem_MatchaProductVald.AsInteger = 0) then
-            begin
-             Mem_MatchaProduct.Edit;
-             Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-             Mem_MatchaProduct.Post;
-             ValdFlag := True;
-            end;
-          end
-         else if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-          AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger) then
-          begin
-           if (Mem_MatchaProductVald.AsInteger  = 0) then
-            begin
-             Mem_MatchaProduct.Edit;
-             Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-             Mem_MatchaProduct.Post;
-             ValdFlag := True;
-            end;
-          end
-          else if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
-           AND (Count = MatchaCount) AND (Mem_MatchaProductFullt.AsInteger = 1) then
-          begin
-            if (Mem_MatchaProductVald.AsInteger  = 0) AND ( not ValdFlag) then
-            begin
-             Mem_MatchaProduct.Edit;
-             Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-             Mem_MatchaProduct.Post;
-             ValdFlag := True;
-            end;
-          end;
-
-         Inc(Count);
-         Mem_MatchaProduct.Next;
-        end;
-
-       end;
-
-  end;
 *)
 
-procedure TPosition.ShowMatchPosition(ProductNo : Integer);
-var
-   Match_PositionList : TStringList;
-   PositionID, PhyInvPtNo, Records, Count : Integer;
+      if not Mem_MatchaProduct.Active then
+       Mem_MatchaProduct.Active := True ;
 
-begin
-  if ( not Mem_MatchaProduct.Active) OR ( not Mem_MatchaProduct.Locate('ProductNo', ProductNo, [])) then
-  begin
-    cxGrid_MatchPosition.Visible := True;
-    FDQ_ProdRefLength.Close;
-    FDQ_ProdRefLength.ParamByName('ProductNo').AsInteger := ProductNo;
-    FDQ_ProdRefLength.Open;
-    Records :=  FDQ_ProdRefLength.recordcount;
-    if Records > 0 then
-     begin
       Count := 1;
-      FDQ_ProdRefLength.First;
-      while not FDQ_ProdRefLength.Eof do
-      begin
-        with Mem_MatchaProduct do
-        begin
-          Open;
-          Append;
-          if (Records = Count) AND (FDQ_ProdRefLengthPosStatus.AsInteger = 1) then
-             FieldByName('Vald').AsInteger := 1
-          else
-             FieldByName('Vald').AsInteger := 0;
+      ValdFlag := False;
+      Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(ProductNo);
+      Mem_MatchaProduct.Filtered := True;
+      Mem_MatchaProduct.IndexFieldNames := 'StoredDate:D';
 
-          FieldByName('Fullt').AsInteger := FDQ_ProdRefLengthPosStatus.AsInteger;
-          FieldByName('PositionNamn').AsString := FDQ_ProdRefLengthPositionName.AsString;
-          FieldByName('ProductNamn').AsString := FDQ_ProdRefLengthProductDisplayName.AsString;
-          FieldByName('NoOfPkgs').AsInteger := FDQ_ProdRefLengthNoOfPkgsByPosition.AsInteger;
-          FieldByName('ProductNo').AsInteger := FDQ_ProdRefLengthProductNo.AsInteger;
-          FieldByName('PositionID').AsInteger := FDQ_ProdRefLengthPositionID.AsInteger;
-          FieldByName('Reference').AsString := FDQ_ProdRefLengthREFERENCE.AsString;
-          FieldByName('MaxLength').AsInteger := FDQ_ProdRefLengthMaxLength.AsInteger;
-          Post;
-          Inc(Count);
-        end;
-        FDQ_ProdRefLength.Next;
-      end;
-     end
-    else
-    begin
-     //cxGrid_MatchPositionDBTableView1Reference.Visible := False;
-     FDQ_ProdLength.Close;
-     FDQ_ProdLength.ParamByName('@ProductNo').AsInteger     := ProductNo;
-     FDQ_ProdLength.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;
-     FDQ_ProdLength.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;
-     FDQ_ProdLength.Open;
-     Records :=  FDQ_ProdLength.recordcount;
-     if Records > 0 then
-     begin
-      Count := 1;
-      FDQ_ProdLength.First;
-      while not FDQ_ProdLength.Eof do
-      begin
-        with Mem_MatchaProduct do
+      Mem_MatchaProduct.First;
+      Try
+      MatchaCount := Mem_MatchaProduct.RecordCount;
+      while not Mem_MatchaProduct.Eof do
+       begin
+       if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
+        AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger)
+         AND (Reference = Mem_MatchaProductReference.AsString) then
         begin
-          Open;
-          Append;
-          if (Records = Count) AND (FDQ_ProdLengthPosStatus.AsInteger = 1) then
-             FieldByName('Vald').AsInteger := 1
-          else
-             FieldByName('Vald').AsInteger := 0;
-
-          FieldByName('Fullt').AsInteger := FDQ_ProdLengthPosStatus.AsInteger;
-          FieldByName('PositionNamn').AsString := FDQ_ProdLengthPositionName.AsString;
-          FieldByName('ProductNamn').AsString := FDQ_ProdLengthProductDisplayName.AsString;
-          FieldByName('NoOfPkgs').AsInteger := FDQ_ProdLengthNoOfPkgsByPosition.AsInteger;
-          FieldByName('ProductNo').AsInteger := FDQ_ProdLengthProductNo.AsInteger;
-          FieldByName('PositionID').AsInteger := FDQ_ProdLengthPositionID.AsInteger;
-          FieldByName('MaxLength').AsInteger := FDQ_ProdLengthMaxLength.AsInteger;
-          Post;
-          Inc(Count);
+         if (Mem_MatchaProductVald.AsInteger = 1) AND ( not ValdFlag) then
+         begin
+           ValdFlag := True;
+         end;
         end;
-        FDQ_ProdLength.Next;
-      end;
-     end
-     else
-     begin
-      FDQ_MatchProductNo.Close;
-      FDQ_MatchProductNo.ParamByName('@ProductNo').AsInteger     := ProductNo;
-      FDQ_MatchProductNo.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;
-      FDQ_MatchProductNo.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;
-      FDQ_MatchProductNo.Open;
-      Records :=  FDQ_MatchProductNo.recordcount;
-      Count := 1;
-      FDQ_MatchProductNo.First;
-      while not FDQ_MatchProductNo.Eof do
-      begin
-        with Mem_MatchaProduct do
+
+       if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
+        AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger)
+         AND (Reference = Mem_MatchaProductReference.AsString) then
         begin
-          Open;
-          Append;
-          if (Records = Count) AND (FDQ_MatchProductNoPosStatus.AsInteger = 1) then
-             FieldByName('Vald').AsInteger := 1
-          else
-             FieldByName('Vald').AsInteger := 0;
-
-          FieldByName('Fullt').AsInteger := FDQ_MatchProductNoPosStatus.AsInteger;
-          FieldByName('PositionNamn').AsString := FDQ_MatchProductNoPositionName.AsString;
-          FieldByName('ProductNamn').AsString := FDQ_MatchProductNoProductDisplayName.AsString;
-          FieldByName('NoOfPkgs').AsInteger := FDQ_MatchProductNoNoOfPkgsByPosition.AsInteger;
-          FieldByName('ProductNo').AsInteger := FDQ_MatchProductNoProductNo.AsInteger;
-          FieldByName('PositionID').AsInteger := FDQ_MatchProductNoPositionID.AsInteger;
-          Post;
-          Inc(Count);
+         if (Mem_MatchaProductVald.AsInteger = 0) AND ( not ValdFlag) //AND (Count = Records)
+          AND (Mem_MatchaProductFullt.AsInteger = 1) then
+          begin
+           Mem_MatchaProduct.Edit;
+           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+           Mem_MatchaProduct.Post;
+           ValdFlag := True;
+          end;
+        end
+       else if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
+        AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger) then
+        begin
+         if (Mem_MatchaProductVald.AsInteger  = 0) AND ( not ValdFlag) //AND (Count = Records)
+          AND (Mem_MatchaProductFullt.AsInteger = 1) then
+          begin
+           Mem_MatchaProduct.Edit;
+           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+           Mem_MatchaProduct.Post;
+           ValdFlag := True;
+          end;
+        end
+        else if (ProductNo = Mem_MatchaProductProductNo.AsInteger) AND (Count = Records)
+         AND (Mem_MatchaProductFullt.AsInteger = 1) then
+        begin
+          if (Mem_MatchaProductVald.AsInteger  = 0) AND ( not ValdFlag) then
+          begin
+           Mem_MatchaProduct.Edit;
+           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+           Mem_MatchaProduct.Post;
+           ValdFlag := True;
+          end;
         end;
-        FDQ_MatchProductNo.Next;
-      end;
+
+       Inc(Count);
+       Mem_MatchaProduct.Next;
+       end;
+      Finally
+         Mem_MatchaProduct.Filtered := False;
+      End;
+
      end;
-    end;
-  end;
+
+  if (Mem_MatchaProduct.Active) and (Mem_MatchaProduct.RecordCount = 0) then
+  PageControl_Position.ActivePage := TabSheet_All ;
+
 end;
+
 
 procedure TPosition.CheckLastPkg;
 begin
@@ -809,6 +672,27 @@ begin
   Mem_PackProdList.filtered := False;
   Mem_PackProdList.Filter := 'ProductNo = '+inttostr(PackProductNo);
   Mem_PackProdList.Filtered := True;
+    Try
+      Mem_PackProdList.First;
+      while not Mem_PackProdList.Eof do
+      begin
+       if (Mem_PackProdList.RecordCount > 1) then
+        Result := True;
+
+       Mem_PackProdList.Next;
+      end;
+    Finally
+      Mem_PackProdList.filter := 'Vald = 1';
+      Mem_PackProdList.filtered := True ;
+    End;
+end;
+
+function TPosition.IsSameRef(PackRef: String): Boolean;
+begin
+  Result := False;
+  Mem_PackProdList.filtered := False;
+  Mem_PackProdList.filter := 'Reference = '+''''+PackRef+'''';
+  Mem_PackProdList.filtered := True;
     Try
       Mem_PackProdList.First;
       while not Mem_PackProdList.Eof do
@@ -848,19 +732,20 @@ begin
             TcxGridTableViewStyleSheet(Items.Objects[ItemIndex]);
           cxGrid_MatchPositionDBTableView1.Styles.StyleSheet :=
             TcxGridTableViewStyleSheet(Items.Objects[ItemIndex]);
+          grid_Matcha_RefDBTableView1.Styles.StyleSheet :=
+            TcxGridTableViewStyleSheet(Items.Objects[ItemIndex]);
         end;
     end;
 
   finally
     FreeAndNil(OKRightDlg);
-    CloseForm ;
   end;
 end;
 
 procedure TPosition.btDeleteClick(Sender: TObject);
 var
  RecordCount, MatchaProductNo, PackProductNo, PackageNo: Integer;
- Prefix: String;
+ Prefix, PackRef, MatchaRef: String;
 begin
    Mem_MatchaProduct.filtered := False;
    Mem_PackProdList.filtered := False;
@@ -874,6 +759,7 @@ begin
       PackageNo := Mem_PackProdListPaketNr.AsInteger;
       Prefix := Mem_PackProdListPktSupplierCode.AsString;
       PackProductNo := Mem_PackProdListProductNo.AsInteger;
+      PackRef := Mem_PackProdListReference.AsString;
 
       if not IsSameProduct(PackProductNo) then
       begin
@@ -893,8 +779,29 @@ begin
            end;
          End;
       end;
+
+      if not IsSameRef(PackRef) then
+      begin
+        Mem_MatchaRef.Open;
+        Mem_MatchaRef.RecordCount;
+        Mem_MatchaRef.First;
+        while not Mem_MatchaRef.eof do
+         Begin
+          MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+          if PackRef = MatchaRef then
+           begin
+            Mem_MatchaRef.Delete;
+           end
+           else
+           begin
+             Mem_MatchaRef.Next;
+           end;
+         End;
+      end;
+
       Mem_PackProdList.Delete;
      End;
+
     Mem_AllPosition.filter := 'Vald = 1';
     Mem_AllPosition.filtered := True ;
     Try
@@ -914,17 +821,16 @@ begin
    Finally
       Mem_PackProdList.filtered := False;
       CheckLastPkg;
-
-      CloseForm ;
+      lbPkgCount.Caption := 'Paket Count : '+ inttostr(Mem_PackProdList.RecordCount);
    End;
 end;
 
 procedure TPosition.btnStorePositionClick(Sender: TObject);
 var
    CurrentTime : TDateTime;
-   AllPositionID, MatchaProductNo, PackageNo, PositionID, PackProductNo : Integer;
-   Prefix : String;
-   LoadNo, Count, RecordCount, PkgCount : Integer;
+   AllPositionID, MatchaProductNo, PackageNo, PositionID, PosStatus, PackProductNo : Integer;
+   Prefix, PackRef, MatchaRef : String;
+   LoadNo, Count, RecordCount, PkgCount, Scanned : Integer;
    MatchaFlag: Boolean;
 begin
   CurrentTime := Now;
@@ -937,13 +843,16 @@ begin
    Mem_MatchaProduct.filtered := True ;
    Mem_AllPosition.filter := 'Vald = 1';
    Mem_AllPosition.filtered := True ;
+   Mem_MatchaRef.filter := 'Vald = 1';
+   Mem_MatchaRef.filtered := True ;
    Try
     if not (Mem_PackProdList.RecordCount > 0) then
     begin
       ShowMessage('Please select a Package from Package List!');
       exit;
     end
-    else if (not (Mem_MatchaProduct.RecordCount > 0)) AND (not (Mem_AllPosition.RecordCount > 0)) then
+    else if (not (Mem_MatchaProduct.RecordCount > 0)) AND (not (Mem_AllPosition.RecordCount > 0))
+                 AND (not (Mem_MatchaRef.RecordCount > 0)) then
     begin
       ShowMessage('Please select a Position!');
       exit;
@@ -952,6 +861,7 @@ begin
      Mem_PackProdList.filtered := False ;
      Mem_MatchaProduct.filtered := False ;
      Mem_AllPosition.filtered := False ;
+     Mem_MatchaRef.Filtered := False;
    End;
 
    Mem_PackProdList.filter := 'Vald = 1';
@@ -963,10 +873,12 @@ begin
    while not (Count = PkgCount) do
      Begin
       Inc(Count);
-      MatchaFlag    := False;
+      MatchaFlag := False;
       PackProductNo := Mem_PackProdListProductNo.AsInteger;
-      PackageNo     := Mem_PackProdListPaketNr.AsInteger;
-      Prefix        := Mem_PackProdListPktSupplierCode.AsString;
+      PackageNo := Mem_PackProdListPaketNr.AsInteger;
+      Prefix := Mem_PackProdListPktSupplierCode.AsString;
+      PackRef := Mem_PackProdListReference.AsString;
+      Scanned := Mem_PackProdListScanned.AsInteger;
 
        Mem_AllPosition.filter := 'Vald =1';
        Mem_AllPosition.filtered := True;
@@ -976,22 +888,23 @@ begin
         if (Mem_AllPosition.RecordCount > 0) then
         begin
           AllPositionID := Mem_AllPositionPositionID.AsInteger;
-          SavetoMemPosition(AllPositionID, Prefix, PackageNo);
+          SavetoMemPosition(AllPositionID, 1, Prefix, PackageNo, Scanned);
           MatchaFlag := True;
           //Mem_PackProdList.Delete;
         end;
         if (Mem_MatchaProduct.RecordCount > 0) then
         begin
-          Mem_MatchaProduct.Filter := 'Vald = 1' + ' AND '+ 'ProductNo = '  + inttostr(PackProductNo);
+          Mem_MatchaProduct.Filter := 'Vald = 1' + ' AND '+ 'ProductNo = '+inttostr(PackProductNo);
           Mem_MatchaProduct.Filtered := True;
            Try
             if (Mem_MatchaProduct.RecordCount > 0) then
             begin
               Mem_MatchaProduct.First;
               MatchaProductNo := Mem_MatchaProductProductNo.AsInteger;
-              PositionID      := Mem_MatchaProductPositionID.AsInteger;
+              PositionID := Mem_MatchaProductPositionID.AsInteger;
+              PosStatus := Mem_MatchaProductFullt.AsInteger;
 
-               SavetoMemPosition(PositionID, Prefix, PackageNo);
+               SavetoMemPosition(PositionID, PosStatus, Prefix, PackageNo, Scanned);
                MatchaFlag := True;
 
               if not IsSameProduct(PackProductNo) then
@@ -1042,7 +955,71 @@ begin
            End;
         end;
 
-        if ( not Mem_AllPosition.RecordCount > 0) AND ( not Mem_MatchaProduct.RecordCount > 0) then
+        if ((Mem_MatchaRef.RecordCount > 0) ) then
+        begin
+          Mem_MatchaRef.Filter := 'Vald = 1';
+          Mem_MatchaRef.Filtered := True;
+           Try
+            if (Mem_MatchaRef.RecordCount > 0) then
+            begin
+              Mem_MatchaRef.First;
+              MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+              PositionID := Mem_MatchaRefPositionID.AsInteger;
+              PosStatus := Mem_MatchaRefPosStatus.AsInteger;
+
+               SavetoMemPosition(PositionID, PosStatus, Prefix, PackageNo, Scanned);
+               MatchaFlag := True;
+
+              if not IsSameRef(PackRef) then
+               begin
+                Mem_MatchaRef.Filtered := False;
+                Mem_MatchaRef.Filter := 'Reference = '+''''+PackRef+'''';
+                Mem_MatchaRef.Filtered := True;
+                 Try
+                  Mem_MatchaRef.RecordCount;
+                  Mem_MatchaRef.First;
+                  while not Mem_MatchaRef.eof do
+                   Begin
+                     Mem_MatchaRef.Delete;
+                   End;
+                 Finally
+                  Mem_MatchaRef.Filtered := False;
+                 End;
+
+               end
+              else
+                Mem_MatchaRef.Next;
+
+            end
+            else
+            begin
+             if not IsSameRef(PackRef) then
+               begin
+                Mem_MatchaRef.Filtered := False;
+                Mem_MatchaRef.Filter := 'Reference = '+''''+PackRef+'''';
+                Mem_MatchaRef.Filtered := True;
+                 Try
+                  Mem_MatchaRef.RecordCount;
+                  Mem_MatchaRef.First;
+                  while not Mem_MatchaRef.eof do
+                   Begin
+                     Mem_MatchaRef.Delete;
+                   End;
+                 Finally
+                  Mem_MatchaRef.Filtered := False;
+                 End;
+               end
+              else
+               Mem_PackProdList.Next;
+
+            end;
+           Finally
+             Mem_MatchaRef.Filtered := False;
+           End;
+        end;
+
+        if ( not Mem_AllPosition.RecordCount > 0) AND ( not Mem_MatchaProduct.RecordCount > 0)
+            AND ( not Mem_MatchaRef.RecordCount > 0) then
          begin
            ShowMessage('Please select a Position!');
            Exit;
@@ -1051,6 +1028,7 @@ begin
        Finally
         Mem_AllPosition.filtered := False;
        end;
+
       if MatchaFlag then
        begin
             Mem_PackProdList.Delete;
@@ -1070,7 +1048,7 @@ begin
           Prefix := Mem_StorePositionPrefix.AsString;
 
           FDQ_UpdatePosStatus.ParamByName('PositionID').AsInteger := Mem_StorePositionPositionID.AsInteger;
-          FDQ_UpdatePosStatus.ParamByName('PosStatus').AsInteger := 1;
+          FDQ_UpdatePosStatus.ParamByName('PosStatus').AsInteger := Mem_StorePositionPosStatus.AsInteger;//1;
           FDQ_UpdatePosStatus.ExecSQL;
 
           FDQ_StorePosID.Close;
@@ -1089,7 +1067,7 @@ begin
       //ShowMessage('Position: '+inttostr(Mem_StorePositionPositionID.AsInteger) +' and '+Prefix+' and '+inttostr(Packageno));
 
      LoadNo := dmArrivingLoads.SearchPackageNo(Packageno, dmArrivingLoads.CustomerNo, dmArrivingLoads.SHIPTOINVPOINTNO, Prefix) ;
-     dmArrivingLoads.AddPkgTo_PackageARConfirmed(Packageno, LoadNo, 1, Prefix) ;
+     dmArrivingLoads.AddPkgTo_PackageARConfirmed(Packageno, LoadNo, Mem_StorePositionScanned.AsInteger, Prefix) ;
 
      Mem_StorePosition.Delete;
      //DS_StorePosition.DataSet.Delete;
@@ -1118,8 +1096,7 @@ begin
    Finally
       Mem_PackProdList.filtered := False;
       CheckLastPkg;
-
-      CloseForm ;
+      lbPkgCount.Caption := 'Paket Count : '+ inttostr(Mem_PackProdList.RecordCount);
    End;
 
 end;
@@ -1147,42 +1124,207 @@ begin
       end;
 end;
 
+procedure TPosition.grid_Matcha_RefDBTableView1CellClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+var
+  PositionID, PrevPosID, ValdMatchaProd, SelectedMatchProdNo, Packageno, SelectedPositionAllID, PackProductNo, MatchaProductNo : Integer;
+  SelectedProdLen, MatchaRefProdNo : Integer;
+  Prefix, SelectedRef, MatchaRef, PackRef, MatchaProdRef : String;
+begin
+    //if (Mem_MatchaProduct.Locate('Vald', 1, [])) then
+    //ProductNo := ACellViewInfo.GridRecord.Values[cxGrid_MatchPositionDBTableView1(Sender).GetColumnByFieldName('ProductNo').Index];
+   PositionID := Mem_MatchaRefPositionID.AsInteger;
+   SelectedMatchProdNo := Mem_MatchaRefProductNo.AsInteger;
+   SelectedProdLen := Mem_MatchaRefMaxLength.AsInteger;
+   SelectedRef := Mem_MatchaRefREFERENCE.AsString;
+
+      Mem_PackProdList.filter := 'Vald = 1';
+      Mem_PackProdList.filtered := True ;
+      Try
+        Mem_PackProdList.first ;
+        //if Mem_PackProdList.RecordCount = 1 then
+        //Begin
+           PackProductNo := Mem_PackProdListProductNo.AsInteger;
+           // Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
+           Mem_MatchaRef.Filter := 'Vald = 1';
+           Mem_MatchaRef.Filtered := True;
+            Try
+            Mem_MatchaRef.RecordCount;
+            Mem_MatchaRef.First;
+             while not Mem_MatchaRef.Eof do
+               begin
+                  with Mem_MatchaRef do
+                    begin
+                     Edit;
+                     FieldByName('Vald').AsInteger := 0;
+                     Post;
+                     Next;
+                    end;
+               end;
+            Finally
+              Mem_MatchaRef.Filtered := False;
+            End;
+
+      Finally
+       Mem_PackProdList.filtered := False ;
+      End;
+
+
+
+    if Mem_MatchaRef.FindKey([PositionID,SelectedMatchProdNo,SelectedProdLen,SelectedRef]) then
+      begin
+        Mem_MatchaRef.Edit;
+        Mem_MatchaRef.FieldByName('Vald').AsInteger := 1;
+        Mem_MatchaRef.Post;
+      end;
+
+
+   Mem_AllPosition.filter := 'Vald = 1';
+   Mem_AllPosition.filtered := True;
+   Try
+    if (Mem_AllPosition.RecordCount > 0) then
+    begin
+     Mem_AllPosition.First;
+
+     Mem_PackProdList.filter := 'Vald = 1';
+     Mem_PackProdList.filtered := True ;
+     Try
+      Mem_PackProdList.RecordCount;
+      Mem_PackProdList.first ;
+      while not Mem_PackProdList.eof do
+      Begin
+        PackProductNo := Mem_PackProdListProductNo.AsInteger;
+        Packageno  := Mem_PackProdListPaketnr.AsInteger;
+        Prefix := Mem_PackProdListPktSupplierCode.AsString;
+        PackRef := Mem_PackProdListReference.AsString;
+
+        Mem_MatchaRef.filter := 'Vald = 1';
+        Mem_MatchaRef.filtered := True;
+        Try
+          Mem_MatchaRef.RecordCount;
+          Mem_MatchaRef.first ;
+           while not Mem_MatchaRef.eof do
+            Begin
+             MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+             MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
+
+             if (PackRef = MatchaRef) AND (PackProductNo = MatchaRefProdNo) AND (Mem_MatchaRefVald.AsInteger = 1) then
+              begin
+               with Mem_AllPosition do
+               begin
+                 Open;
+                 Edit;
+                 FieldByName('Vald').AsInteger := 0;
+                 Post;
+               end;
+              end;
+
+             Mem_MatchaRef.Next;
+            End;
+
+        Finally
+         Mem_MatchaRef.filtered := False;
+        End;
+
+        Mem_PackProdList.next ;
+       End;
+      Finally
+       Mem_PackProdList.filtered := False ;
+      End;
+    end;
+   Finally
+     Mem_AllPosition.filtered := False;
+   End;
+
+
+      Mem_MatchaProduct.filter := 'Vald = 1';
+      Mem_MatchaProduct.filtered := True;
+      Try
+       if (Mem_MatchaProduct.RecordCount > 0) then
+       begin
+        Mem_MatchaProduct.First;
+        while not Mem_MatchaProduct.eof do
+        begin
+         MatchaProductNo := Mem_MatchaProductProductNo.AsInteger;
+         MatchaProdRef := Mem_MatchaProductReference.AsString;
+
+         Mem_MatchaRef.filter := 'Vald = 1';
+         Mem_MatchaRef.filtered := True;
+         Try
+           Mem_MatchaRef.RecordCount;
+           Mem_MatchaRef.first ;
+            while not Mem_MatchaRef.eof do
+             Begin
+              MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+              MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
+
+              if (MatchaProdRef = MatchaRef) AND (MatchaProductNo = MatchaRefProdNo)
+                AND (Mem_MatchaRefVald.AsInteger = 1) then
+               begin
+                with Mem_MatchaProduct do
+                begin
+                  Edit;
+                  FieldByName('Vald').AsInteger := 0;
+                  Post;
+                end;
+               end;
+
+              Mem_MatchaRef.Next;
+             End;
+         Finally
+          Mem_MatchaRef.filtered := False;
+         End;
+
+         Mem_MatchaProduct.Next;
+        end;
+
+       end;
+      Finally
+        Mem_MatchaProduct.filtered := False;
+      End;
+
+
+    //ACellViewInfo.GridView.Items[]
+    AHandled := True;
+end;
+
 procedure TPosition.grid_ProductListDBTableView1CellClick(
   Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
   AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
-  (*
-   if Mem_PackProdListVald.AsInteger = 1 then
-     begin
-      with Mem_PackProdList do
-      begin
-        Edit;
-        FieldByName('Vald').AsInteger := 0;
-        Post;
-      end
-     end
-    else
-     begin
-      with Mem_PackProdList do
-       begin
-        Edit;
-        FieldByName('Vald').AsInteger := 1;
-        Post;
-       end;
-     end;
- *)
-
+ if Mem_PackProdListVald.AsInteger = 1 then
+  begin
+   with Mem_PackProdList do
+   begin
+     Edit;
+     FieldByName('Vald').AsInteger := 0;
+     Post;
+   end
+  end
+ else
+  begin
+   with Mem_PackProdList do
+    begin
+     Edit;
+     FieldByName('Vald').AsInteger := 1;
+     Post;
+    end;
+  end;
+  AHandled := True;
 end;
 
-procedure TPosition.SavetoMemPosition(PositionID: Integer; Prefix: String; PkgNr: Integer);
+procedure TPosition.SavetoMemPosition(PositionID, PosStatus: Integer; Prefix: String; PkgNr, Scanned: Integer);
 begin
    with Mem_StorePosition do
     begin
       Open;
       Append;
       FieldByName('PositionID').AsInteger := PositionID;
+      FieldByName('PosStatus').AsInteger := PosStatus;
       FieldByName('Prefix').AsString := Prefix;
       FieldByName('PakageNr').AsInteger := PkgNr;
+      FieldByName('Scanned').AsInteger := Scanned;
       Post;
     end;
 end;
@@ -1283,7 +1425,7 @@ begin
      Mem_PackProdList.filtered := False ;
     End;
  //ShowMessage(SelectedPositionAllName +' and '+Sinttostr(electedPositionAllID));
-
+   AHandled := True;
 
 end;
 
@@ -1292,8 +1434,8 @@ procedure TPosition.cxGrid_MatchPositionDBTableView1CellClick(
   AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 var
   PositionID, PrevPosID, ValdMatchaProd, SelectedMatchProdNo, Packageno, SelectedPositionAllID, PackProductNo, MatchaProductNo : Integer;
-  SelectedProdLen : Integer;
-  Prefix, SelectedRef : String;
+  SelectedProdLen, MatchaRefProdNo : Integer;
+  Prefix, SelectedRef, MatchaRef : String;
 begin
     //if (Mem_MatchaProduct.Locate('Vald', 1, [])) then
     //ProductNo := ACellViewInfo.GridRecord.Values[cxGrid_MatchPositionDBTableView1(Sender).GetColumnByFieldName('ProductNo').Index];
@@ -1302,101 +1444,95 @@ begin
    SelectedProdLen := Mem_MatchaProductMaxLength.AsInteger;
    SelectedRef := Mem_MatchaProductReference.AsString;
 
-   if Mem_MatchaProductVald.AsInteger = 1 then
-   begin
-    with Mem_MatchaProduct do
-     begin
-      Edit;
-      FieldByName('Vald').AsInteger := 1;
-      Post;
-     end
-   end;
 
-
-   Mem_PackProdList.filter := 'Vald = 1';
-   Mem_PackProdList.filtered := True ;
-    Try
-    Mem_PackProdList.first ;
-    //if Mem_PackProdList.RecordCount = 1 then
-     //Begin
-       PackProductNo := Mem_PackProdListProductNo.AsInteger;
-
-      // Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
-      Mem_MatchaProduct.Filter := 'Vald = 1';
-      Mem_MatchaProduct.Filtered := True;
-       Try
-       Mem_MatchaProduct.RecordCount;
-       Mem_MatchaProduct.First;
-        while not Mem_MatchaProduct.Eof do
+     if Mem_MatchaProductVald.AsInteger = 1 then
+        begin
+         with Mem_MatchaProduct do
           begin
-             with Mem_MatchaProduct do
+           Edit;
+           FieldByName('Vald').AsInteger := 1;
+           Post;
+          end
+        end;
+
+      Mem_PackProdList.filter := 'Vald = 1';
+      Mem_PackProdList.filtered := True ;
+      Try
+        Mem_PackProdList.first ;
+        //if Mem_PackProdList.RecordCount = 1 then
+        //Begin
+           PackProductNo := Mem_PackProdListProductNo.AsInteger;
+           // Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
+           Mem_MatchaProduct.Filter := 'Vald = 1';
+           Mem_MatchaProduct.Filtered := True;
+            Try
+            Mem_MatchaProduct.RecordCount;
+            Mem_MatchaProduct.First;
+             while not Mem_MatchaProduct.Eof do
                begin
-                   ValdMatchaProd := Mem_MatchaProductProductNo.AsInteger;
-                   Edit;
-                   if (SelectedMatchProdNo = ValdMatchaProd) then
-                   begin
-                     PrevPosID := Mem_MatchaProductPositionID.AsInteger;
-                     FieldByName('Vald').AsInteger := 0;
-                     Post;
-                   end;
-                   Mem_MatchaProduct.Next;
+                  with Mem_MatchaProduct do
+                    begin
+                        ValdMatchaProd := Mem_MatchaProductProductNo.AsInteger;
+                        Edit;
+                       // if (SelectedMatchProdNo = ValdMatchaProd) then
+                        begin
+                          PrevPosID := Mem_MatchaProductPositionID.AsInteger;
+                          FieldByName('Vald').AsInteger := 0;
+                          Post;
+                        end;
+                        Mem_MatchaProduct.Next;
+                    end;
                end;
-          end;
-       Finally
-         Mem_MatchaProduct.Filtered := False;
-       End;
+            Finally
+              Mem_MatchaProduct.Filtered := False;
+            End;
 
-     if Mem_PackProdList.RecordCount = 1 then
-      Begin
-       if Mem_MatchaProduct.FindKey([PositionID]) AND (SelectedMatchProdNo = PackProductNo) then
-        begin
-         Mem_MatchaProduct.Edit;
-         Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-         Mem_MatchaProduct.Post;
-        end
-       else
-        begin
-         ShowMessage('Wrong selection! Choose appropriate choice.');
-          if Mem_MatchaProduct.FindKey([PrevPosID]) then
-          begin
-            Mem_MatchaProduct.Edit;
-            Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-            Mem_MatchaProduct.Post;
-          end;
+                    (*
+            if Mem_PackProdList.RecordCount = 1 then
+                       Begin
+                        if Mem_MatchaProduct.FindKey([PositionID]) AND (SelectedMatchProdNo = PackProductNo) then
+                         begin
+                          Mem_MatchaProduct.Edit;
+                          Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+                          Mem_MatchaProduct.Post;
+                         end
+                        else
+                         begin
+                          ShowMessage('Wrong selection! Choose appropriate choice.');
+                           if Mem_MatchaProduct.FindKey([PrevPosID]) then
+                           begin
+                             Mem_MatchaProduct.Edit;
+                             Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+                             Mem_MatchaProduct.Post;
+                           end;
 
-         exit;
-        end;
-      End
-     else
-      begin
-       if Mem_MatchaProduct.FindKey([PositionID]) then
-        begin
-         Mem_MatchaProduct.Edit;
-         Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-         Mem_MatchaProduct.Post;
-        end;
-      end;
+                          exit;
+                         end;
+                       End
+                      else
+                       begin
+                        if Mem_MatchaProduct.FindKey([PositionID]) then
+                         begin
+                          Mem_MatchaProduct.Edit;
+                          Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
+                          Mem_MatchaProduct.Post;
+                         end;
+                       end;
+          *)
 
-     //End
-          (*
-       else
-            begin
-             ShowMessage('Please select only 1 Package in the PackageNr list!');
-             Exit;
-            end;
-     *)
-    Finally
-      Mem_PackProdList.filtered := False ;
-    End;
+      Finally
+       Mem_PackProdList.filtered := False ;
+      End;
 
-      (*
-     if Mem_MatchaProduct.FindKey([PositionID]) then
+
+     Mem_MatchaProduct.IndexName := 'Index_PosID';
+     if Mem_MatchaProduct.FindKey([PositionID,SelectedMatchProdNo,SelectedProdLen,SelectedRef]) then
         begin
           Mem_MatchaProduct.Edit;
           Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
           Mem_MatchaProduct.Post;
         end;
-   *)
+
 
    Mem_AllPosition.filter := 'Vald = 1';
    Mem_AllPosition.filtered := True;
@@ -1453,7 +1589,36 @@ begin
      Mem_AllPosition.filtered := False;
    End;
 
+
+      Mem_MatchaRef.filter := 'Vald = 1';
+       Mem_MatchaRef.filtered := True;
+       Try
+         Mem_MatchaRef.RecordCount;
+         Mem_MatchaRef.first ;
+          while not Mem_MatchaRef.eof do
+           Begin
+            MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+            MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
+
+            if (MatchaRef = SelectedRef) AND (MatchaRefProdNo = SelectedMatchProdNo)
+              AND (Mem_MatchaRefVald.AsInteger = 1) then
+             begin
+              with Mem_MatchaRef do
+              begin
+                Edit;
+                FieldByName('Vald').AsInteger := 0;
+                Post;
+              end;
+             end;
+
+            Mem_MatchaRef.Next;
+           End;
+       Finally
+        Mem_MatchaRef.filtered := False;
+       End;
+
     //ACellViewInfo.GridView.Items[]
+    AHandled := True;
 end;
 
 procedure TPosition.DeleteMatchaProdNo(PackProductNo, MatchaProdNo: Integer);
@@ -1493,6 +1658,7 @@ begin
    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  grid_ProductList.Name, grid_ProductListDBTableView1) ;
    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  cxGrid_MatchPosition.Name, cxGrid_MatchPositionDBTableView1) ;
    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  cxGrid_AllPosition.Name, cxGrid_AllPositionDBTableView1) ;
+   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name +  '/' +  grid_Matcha_Ref.Name, grid_Matcha_RefDBTableView1) ;
 
    dmsSystem.StoreStyles(ThisUser.UserID, Self.Name, cxPropertiesStore1);
   end;
@@ -1505,6 +1671,7 @@ begin
   if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + grid_ProductList.Name, grid_ProductListDBTableView1) = False then ;
   if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + cxGrid_MatchPosition.Name, cxGrid_MatchPositionDBTableView1) = False then ;
   if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + cxGrid_AllPosition.Name, cxGrid_AllPositionDBTableView1) = False then ;
+  if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name  + '/' + grid_Matcha_Ref.Name, grid_Matcha_RefDBTableView1) = False then ;
 
   if dmsSystem.LoadStyles(ThisUser.UserID, Self.Name, cxPropertiesStore1) = False then ;
 

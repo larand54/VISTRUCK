@@ -4,73 +4,101 @@ object fSelectLIP: TfSelectLIP
   ActiveControl = lcPIP
   BorderStyle = bsDialog
   Caption = 'V'#228'lj lager'
-  ClientHeight = 222
-  ClientWidth = 449
+  ClientHeight = 273
+  ClientWidth = 553
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object cxLabel1: TcxLabel
-    Left = 16
-    Top = 32
+    Left = 20
+    Top = 39
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Lagerst'#228'lle:'
   end
   object cxLabel2: TcxLabel
-    Left = 16
-    Top = 64
+    Left = 20
+    Top = 79
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Lagergrupp:'
   end
   object Panel1: TPanel
     Left = 0
-    Top = 181
-    Width = 449
-    Height = 41
+    Top = 223
+    Width = 553
+    Height = 50
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
     TabOrder = 4
     object BitBtn1: TBitBtn
-      Left = 120
-      Top = 8
-      Width = 75
-      Height = 25
+      Left = 148
+      Top = 10
+      Width = 92
+      Height = 31
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Kind = bkOK
       NumGlyphs = 2
       TabOrder = 0
       OnClick = BitBtn1Click
     end
     object BitBtn2: TBitBtn
-      Left = 200
-      Top = 8
-      Width = 75
-      Height = 25
+      Left = 246
+      Top = 10
+      Width = 92
+      Height = 31
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Kind = bkCancel
       NumGlyphs = 2
       TabOrder = 1
     end
   end
   object lcPIP: TcxDBLookupComboBox
-    Left = 88
-    Top = 24
+    Left = 108
+    Top = 30
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     DataBinding.DataField = 'PIP'
     DataBinding.DataSource = dsProps
     Properties.ListColumns = <>
     Properties.ListOptions.ShowHeader = False
     TabOrder = 0
-    Width = 345
+    Width = 425
   end
   object lcLIP: TcxDBLookupComboBox
-    Left = 88
-    Top = 56
+    Left = 108
+    Top = 69
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     DataBinding.DataField = 'LIP'
     DataBinding.DataSource = dsProps
     Properties.ListColumns = <>
     Properties.ListOptions.ShowHeader = False
     TabOrder = 1
-    Width = 345
+    Width = 425
   end
   object mtProps: TkbmMemTable
     DesignActivation = True
@@ -135,6 +163,7 @@ object fSelectLIP: TfSelectLIP
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
@@ -251,14 +280,11 @@ object fSelectLIP: TfSelectLIP
       740069004C0069006E00650073005F0055006E00690063006F00640065000D00
       0A007300740053007400720069006E00670073005F0055006E00690063006F00
       640065000D000A00730074004F00740068006500720053007400720069006E00
-      670073005F0055006E00690063006F00640065000D000A006D00740050007200
-      6F00700073002E00560065007200730069006F006E00010037002E0036003300
-      2E003000300020005300740061006E0064006100720064002000450064006900
-      740069006F006E000100010001000D000A007300740043006F006C006C006500
-      6300740069006F006E0073005F0055006E00690063006F00640065000D000A00
-      73007400430068006100720053006500740073005F0055006E00690063006F00
-      640065000D000A0054006600530065006C006500630074004C00490050000100
-      440045004600410055004C0054005F0043004800410052005300450054000100
-      010001000D000A00}
+      670073005F0055006E00690063006F00640065000D000A007300740043006F00
+      6C006C0065006300740069006F006E0073005F0055006E00690063006F006400
+      65000D000A0073007400430068006100720053006500740073005F0055006E00
+      690063006F00640065000D000A0054006600530065006C006500630074004C00
+      490050000100440045004600410055004C0054005F0043004800410052005300
+      450054000100010001000D000A00}
   end
 end

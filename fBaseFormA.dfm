@@ -2,14 +2,14 @@ object frmBaseFormA: TfrmBaseFormA
   Left = 269
   Top = 151
   Caption = 'DBForm'
-  ClientHeight = 329
-  ClientWidth = 752
+  ClientHeight = 419
+  ClientWidth = 937
   Color = clBtnFace
-  Constraints.MinHeight = 367
-  Constraints.MinWidth = 768
+  Constraints.MinHeight = 452
+  Constraints.MinWidth = 945
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
@@ -17,20 +17,28 @@ object frmBaseFormA: TfrmBaseFormA
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Panel5: TPanel
     Left = 0
     Top = 0
-    Width = 752
-    Height = 41
+    Width = 937
+    Height = 50
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     TabOrder = 0
     object cxButton1: TcxButton
-      Left = 8
-      Top = 5
-      Width = 97
-      Height = 32
+      Left = 10
+      Top = 6
+      Width = 119
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = acAddRecord
       OptionsImage.Glyph.Data = {
         C2040000424DC204000000000000420000002800000018000000180000000100
@@ -75,10 +83,14 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 0
     end
     object cxButton2: TcxButton
-      Left = 320
-      Top = 5
-      Width = 97
-      Height = 32
+      Left = 394
+      Top = 6
+      Width = 119
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = acDeleteRecord
       OptionsImage.Glyph.Data = {
         C2040000424DC204000000000000420000002800000018000000180000000100
@@ -123,10 +135,14 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 3
     end
     object cxButton3: TcxButton
-      Left = 112
-      Top = 5
-      Width = 97
-      Height = 32
+      Left = 138
+      Top = 6
+      Width = 119
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = acSave
       OptionsImage.Glyph.Data = {
         C2040000424DC204000000000000420000002800000018000000180000000100
@@ -171,10 +187,14 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 1
     end
     object cxButton4: TcxButton
-      Left = 216
-      Top = 5
-      Width = 97
-      Height = 32
+      Left = 266
+      Top = 6
+      Width = 119
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = acCancelChanges
       OptionsImage.Glyph.Data = {
         C2040000424DC204000000000000420000002800000018000000180000000100
@@ -219,10 +239,14 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 2
     end
     object cxButton6: TcxButton
-      Left = 424
-      Top = 5
-      Width = 97
-      Height = 32
+      Left = 522
+      Top = 6
+      Width = 119
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = acPrintTable
       OptionsImage.Glyph.Data = {
         C2040000424DC204000000000000420000002800000018000000180000000100
@@ -267,21 +291,29 @@ object frmBaseFormA: TfrmBaseFormA
       TabOrder = 4
     end
     object Panel2: TPanel
-      Left = 642
+      Left = 802
       Top = 1
-      Width = 109
-      Height = 39
+      Width = 134
+      Height = 48
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 5
       DesignSize = (
-        109
-        39)
+        134
+        48)
       object cxButton5: TcxButton
-        Left = 6
-        Top = 5
-        Width = 97
-        Height = 32
+        Left = 7
+        Top = 6
+        Width = 120
+        Height = 40
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Action = atExit
         Anchors = []
         OptionsImage.Glyph.Data = {
@@ -330,17 +362,25 @@ object frmBaseFormA: TfrmBaseFormA
   end
   object Panel1: TPanel
     Left = 0
-    Top = 288
-    Width = 752
-    Height = 41
+    Top = 368
+    Width = 937
+    Height = 51
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
     TabOrder = 1
   end
   object cxGrid1: TcxGrid
     Left = 0
-    Top = 41
-    Width = 752
-    Height = 247
+    Top = 50
+    Width = 937
+    Height = 318
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     TabOrder = 2
     object cxGrid1DBTableView1: TcxGridDBTableView
@@ -1625,6 +1665,7 @@ object frmBaseFormA: TfrmBaseFormA
     Top = 88
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 1
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1637,6 +1678,7 @@ object frmBaseFormA: TfrmBaseFormA
       PrinterPage.PageSize.Y = 279400
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -1672,6 +1714,7 @@ object frmBaseFormA: TfrmBaseFormA
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1

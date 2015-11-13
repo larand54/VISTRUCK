@@ -7,7 +7,7 @@ uses
   VidaType, DB, kbmMemTable, Dialogs, SqlTimSt,
   ImgList, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.Client, FireDAC.Comp.DataSet ;
+  FireDAC.Comp.Client, FireDAC.Comp.DataSet, siComp ;
 
 
 type
@@ -139,6 +139,7 @@ type
     sq_InsTempPkgs: TFDQuery;
     sq_DelTempPkgs: TFDQuery;
     sp_NewPkgNo_Price_NoPP: TFDStoredProc;
+    siLang_dmsProduct: TsiLang;
     procedure mtPackagesAfterPost(DataSet: TDataSet);
     procedure mtPackagesAfterInsert(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
@@ -220,7 +221,7 @@ uses
   VidaUser,
   VidaUtils,
   recerror ,
-  dmsVidaSystem ;//, dmc_ImportWoodx;
+  dmsVidaSystem , udmLanguage;//, dmc_ImportWoodx;
 
 { TDataModule1 }
 

@@ -3,12 +3,12 @@ object fLoadOrderSearch: TfLoadOrderSearch
   Top = 106
   ActiveControl = EditSearchLO
   Caption = 'S'#246'k lastorder'
-  ClientHeight = 498
-  ClientWidth = 1127
+  ClientHeight = 613
+  ClientWidth = 1387
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -15
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
@@ -16,113 +16,165 @@ object fLoadOrderSearch: TfLoadOrderSearch
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1127
-    Height = 69
+    Width = 1387
+    Height = 85
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
     object Label1: TLabel
-      Left = 148
-      Top = 22
-      Width = 29
-      Height = 13
+      Left = 182
+      Top = 27
+      Width = 36
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Lastnr'
     end
     object Label2: TLabel
-      Left = 310
-      Top = 22
-      Width = 105
-      Height = 13
+      Left = 382
+      Top = 27
+      Width = 133
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Address/kundreferens'
     end
     object Label3: TLabel
-      Left = 17
-      Top = 22
-      Width = 14
-      Height = 13
+      Left = 21
+      Top = 27
+      Width = 17
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'LO'
     end
     object Label4: TLabel
-      Left = 626
-      Top = 50
-      Width = 42
-      Height = 13
+      Left = 770
+      Top = 62
+      Width = 51
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Slutkund'
     end
     object Label5: TLabel
-      Left = 597
-      Top = 22
-      Width = 71
-      Height = 13
+      Left = 735
+      Top = 27
+      Width = 92
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Avropsreferens'
     end
     object Label6: TLabel
-      Left = 335
-      Top = 50
-      Width = 80
-      Height = 13
+      Left = 412
+      Top = 62
+      Width = 101
+      Height = 16
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Produktm'#228'rkning'
     end
     object editSearch: TEdit
-      Left = 183
-      Top = 14
-      Width = 89
-      Height = 21
+      Left = 225
+      Top = 17
+      Width = 110
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 1
       OnEnter = editSearchEnter
       OnExit = editSearchExit
       OnKeyUp = editSearchKeyUp
     end
     object EditSearchCSDRef: TEdit
-      Left = 421
-      Top = 14
-      Width = 138
-      Height = 21
+      Left = 518
+      Top = 17
+      Width = 170
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 2
       OnEnter = EditSearchCSDRefEnter
       OnExit = EditSearchCSDRefExit
       OnKeyUp = EditSearchCSDRefKeyUp
     end
     object EditSearchLO: TEdit
-      Left = 37
-      Top = 14
-      Width = 81
-      Height = 21
+      Left = 46
+      Top = 17
+      Width = 99
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 0
       OnEnter = EditSearchLOEnter
       OnExit = EditSearchLOExit
       OnKeyUp = EditSearchLOKeyUp
     end
     object EditSlutkund: TEdit
-      Left = 674
-      Top = 42
-      Width = 193
-      Height = 21
+      Left = 830
+      Top = 52
+      Width = 237
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 5
       OnEnter = EditSlutkundEnter
       OnExit = EditSlutkundExit
       OnKeyUp = EditSlutkundKeyUp
     end
     object EditAvropsRef: TEdit
-      Left = 674
-      Top = 14
-      Width = 193
-      Height = 21
+      Left = 830
+      Top = 17
+      Width = 237
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 3
       OnEnter = EditAvropsRefEnter
       OnExit = EditAvropsRefExit
       OnKeyUp = EditAvropsRefKeyUp
     end
     object EditProduktMarkning: TEdit
-      Left = 421
-      Top = 42
-      Width = 138
-      Height = 21
+      Left = 518
+      Top = 52
+      Width = 170
+      Height = 24
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       TabOrder = 4
       OnEnter = EditProduktMarkningEnter
       OnExit = EditProduktMarkningExit
@@ -131,36 +183,52 @@ object fLoadOrderSearch: TfLoadOrderSearch
   end
   object Panel2: TPanel
     Left = 0
-    Top = 448
-    Width = 1127
-    Height = 50
+    Top = 551
+    Width = 1387
+    Height = 62
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     object Button2: TButton
-      Left = 541
-      Top = 6
-      Width = 103
-      Height = 39
+      Left = 666
+      Top = 7
+      Width = 127
+      Height = 48
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Cancel = True
       Caption = '&Cancel'
       ModalResult = 2
       TabOrder = 1
     end
     object Button1: TButton
-      Left = 432
-      Top = 6
-      Width = 103
-      Height = 39
+      Left = 532
+      Top = 7
+      Width = 126
+      Height = 48
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Action = atOK
       TabOrder = 0
     end
   end
   object grdLoadOrderSearch: TcxGrid
     Left = 0
-    Top = 69
-    Width = 1127
-    Height = 379
+    Top = 85
+    Width = 1387
+    Height = 466
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alClient
     TabOrder = 2
     object grdLoadOrderSearchDBTableView1: TcxGridDBTableView

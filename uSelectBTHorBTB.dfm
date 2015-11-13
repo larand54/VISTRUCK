@@ -2,20 +2,24 @@ object fSelectBTHorBTB: TfSelectBTHorBTB
   Left = 229
   Top = 107
   Caption = 'V'#228'lj leverant'#246'r'
-  ClientHeight = 218
-  ClientWidth = 500
+  ClientHeight = 268
+  ClientWidth = 615
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object cgSelectSupplier: TcxRadioGroup
-    Left = 16
-    Top = 24
+    Left = 20
+    Top = 30
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'V'#228'lj leverant'#246'r'
     ParentFont = False
     Properties.Items = <
@@ -29,26 +33,34 @@ object fSelectBTHorBTB: TfSelectBTHorBTB
       end>
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -16
+    Style.Font.Height = -20
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
     TabOrder = 0
-    Height = 137
-    Width = 465
+    Height = 168
+    Width = 572
   end
   object Panel1: TPanel
     Left = 0
-    Top = 165
-    Width = 500
-    Height = 53
+    Top = 203
+    Width = 615
+    Height = 65
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alBottom
     TabOrder = 1
     object BitBtn1: TBitBtn
-      Left = 192
-      Top = 8
-      Width = 105
-      Height = 33
+      Left = 236
+      Top = 10
+      Width = 130
+      Height = 40
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Kind = bkOK
       NumGlyphs = 2
       TabOrder = 0
@@ -59,6 +71,7 @@ object fSelectBTHorBTB: TfSelectBTHorBTB
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1

@@ -36,7 +36,8 @@ uses
   System.Actions, VidaType, dximctrl, Vcl.ComCtrls, FMX.ListView,
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
   Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, cxListView, System.Generics.Collections,
-  UnitPosition, UnitStylesOKCANCL, UnitExceptionPkgNrList, cxPropertiesStore;
+  UnitPosition, UnitStylesOKCANCL, UnitExceptionPkgNrList, cxPropertiesStore,
+  Vcl.Touch.Keyboard;
 
 const AppFormName = 'VisTruck.Ankomstreg' ;
 
@@ -498,6 +499,11 @@ type
     acScannedErrors: TAction;
     grdLoadsDBTableView1OriginalLO: TcxGridDBColumn;
     grdLoadsDBTableView1OriginalLoadNo: TcxGridDBColumn;
+    acNumPad: TAction;
+    cxButton3: TcxButton;
+    tkNumPad: TTouchKeyboard;
+    grdPkgsDBTableView1Scanned: TcxGridDBColumn;
+    cxStyleBlue: TcxStyle;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -581,6 +587,7 @@ type
     procedure acSetPktStorlekExecute(Sender: TObject);
     procedure lcVerkPropertiesCloseUp(Sender: TObject);
     procedure acScannedErrorsExecute(Sender: TObject);
+    procedure acNumPadExecute(Sender: TObject);
 
 
   private
@@ -641,7 +648,6 @@ type
     procedure PrintDirectFS_USA(Sender: TObject);
     function  AreMarkedLoadsSameTRADINGType : Boolean ;
     function  SelectAvropsNrAttSkapaSalesLoadMot(const POLONo : Integer) : Integer ;
-    procedure ShowPaketNrList(PaketNr: Integer; pkgSupplierCode : String);
     procedure ShowPosition;
     procedure ShowMatchPosition(ProductNo : Integer; IsProductNoExist: Boolean);
     //procedure CreateProductNoList(ProductNoList1: TStringList);
@@ -1127,7 +1133,7 @@ Begin
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan SP on SP.shippingplanno = LSP.shippingplanno');
-        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo') ;
+        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
       //  cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on sp.SupplierShipPlanObjectNo = ld.Defsspno');
 
         if (LONo = -1) and (LoadNo = -1) then
@@ -1381,6 +1387,7 @@ Begin
  //       cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
         cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on SP.shippingplanno = LSP.shippingplanno');
         cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo') ;
+        cdsArrivingLoads.SQL.Add('and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
         if (LONo = -1) and (LoadNo = -1) then
         Begin
           if bcConfirmed.ItemIndex = 2 then
@@ -5308,6 +5315,20 @@ begin
 end;
 
 
+procedure TfrmLoadArrivals.acNumPadExecute(Sender: TObject);
+begin
+     if  not tkNumPad.Visible then
+      begin
+       tkNumPad.Visible := True;
+       mePackageNo.SetFocus;
+      end
+     else
+      begin
+       tkNumPad.Visible := False;
+       mePackageNo.SetFocus;
+      end;
+end;
+
 procedure TfrmLoadArrivals.cds_PropsAfterInsert(DataSet: TDataSet);
 begin
   cds_PropsForm.AsString        := Self.Name ;
@@ -5400,30 +5421,22 @@ end;
 procedure TfrmLoadArrivals.grdPkgsDBTableView1StylesGetContentStyle(
   Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+
 Var
-  PackageNo : Integer ;
+  PackageNo, Scanned : Integer ;
   Used  : Integer ;
 begin
- if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageNo').Index] <> null then
- PackageNo  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageNo').Index]
- else
- PackageNo  := 0 ;
 
-{
-   if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] <> null then
-   Used:= ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Used').Index] ;
-}
+  if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index] <> null then
+     Scanned  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index]
+  else
+     Scanned  := 0 ;
 
- if PackageNo > 1 then
-  AStyle := cxStyleAvraknad  ;
-{
+   if Scanned = 0 then
+      AStyle := cxStyleAvraknad
    else
-   Begin
-    if (dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger <> dmArrivingLoads.cdsArrivingLoadsSupplierNO.AsInteger)
-    AND (Price = 0) then
-    AStyle := cxStyleLoadAR ;
-   End ;
-}
+      Astyle := cxStyleBlue ;
+
 end;
 
 procedure TfrmLoadArrivals.grdPkgsDBTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems4GetText(
@@ -6468,7 +6481,7 @@ begin
         frmPosition := TPosition.Create(Nil) ;
       End;
      frmPosition.Show;
-     frmPosition.ShowPaketNrList(NewPkgNo, pkgSupplierCode);
+     frmPosition.ShowPaketNrList(NewPkgNo, Scanned, pkgSupplierCode);
     End
    else
    if Action = eaREJECT then
@@ -6519,46 +6532,6 @@ begin
 
 end;
 
-procedure TfrmLoadArrivals.ShowPaketNrList(PaketNr : Integer; pkgSupplierCode : String);
-var
-  //PaketNrList, ProductNrList, ProductNamnList : TStringList;
-  Item : TListItem;
-  I: Integer;
-  ProductName, PositionName, Match_ProductName : String;
-  ProductNo : Integer;
-begin
-
-    (*
-    ProductNoList := TStringList.Create;
-
-      FDQ_ProductNo.Close;
-      FDQ_ProductNo.ParamByName('PaketNr').AsInteger := PaketNr;
-      FDQ_ProductNo.ParamByName('SupplierCode').AsString := pkgSupplierCode;
-      FDQ_ProductNo.Open;
-      FDQ_ProductNo.First;
-      ProductName := FDQ_ProductNoProductDisplayName.AsString;
-      ProductNo := FDQ_ProductNoProductNo.AsInteger;
-      //FDQ_ProductNo.Close;
-      PakagePanel.Visible := True;
-      grid_ProductList.Visible := True;
-
-
-        with Mem_PackProdList do
-        begin
-          Open;
-          Append;
-          FieldByName('Vald').AsInteger := 1;
-          FieldByName('PaketNr').AsInteger := PaketNr;
-          FieldByName('PktSupplierCode').AsString := pkgSupplierCode;
-          FieldByName('ProductDisplayName').AsString := ProductName;
-          FieldByName('ProductNo').AsInteger := ProductNo;
-          Post;
-        end;
-
-       ShowPosition;
-       ShowMatchPosition(ProductNo, True);//17247
-  *)
-end;
 
 procedure TfrmLoadArrivals.ShowPosition;
 var
