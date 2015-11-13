@@ -2,11 +2,6 @@ program VISTRUCK;
 
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -54,8 +49,6 @@ uses
   dmc_UserProps in 'dmc_UserProps.pas' {dm_UserProps: TDataModule},
   uWait in 'uWait.pas' {fWait},
   UPortArrivals in 'UPortArrivals.pas' {frmPortArrivals},
-  UnitAboutBox in '..\..\CommonUnits\UnitAboutBox.pas' {AboutBox},
-  VidaUser in '..\..\CommonUnits\VidaUser.pas',
   uChangeLogins in 'uChangeLogins.pas' {OKHelpBottomDlg},
   uShowMemo in 'uShowMemo.pas' {fShowMemo},
   uLOLengths in 'uLOLengths.pas' {fLOLengths},
@@ -112,7 +105,17 @@ uses
   uAddPkgToRun in 'Visab\uAddPkgToRun.pas' {fAddPkgToRun},
   uSelectLOfromAO in 'Visab\uSelectLOfromAO.pas' {fSelectLOfromAO},
   dmsSinglePkg in 'Visab\dmsSinglePkg.pas' {dm_SinglePkg: TDataModule},
-  uSelectSortingOrderNo in 'Visab\uSelectSortingOrderNo.pas' {fSelectSortingOrderNo};
+  uSelectSortingOrderNo in 'Visab\uSelectSortingOrderNo.pas' {fSelectSortingOrderNo},
+  UnitAboutBox in '..\CommonUnits\UnitAboutBox.pas' {AboutBox},
+  VidaUser in '..\CommonUnits\VidaUser.pas',
+  frxClass in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxClass.pas',
+  frxDBSet in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxDBSet.pas',
+  frxExportPDF in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\ExportPack\frxExportPDF.pas' {frxPDFExportDialog},
+  fs_iinterpreter in 'C:\Program Files (x86)\FastReports\FastReport 5\FastScript\fs_iinterpreter.pas',
+  frxVariables in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxVariables.pas',
+  frxXML in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxXML.pas',
+  frxCollections in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxCollections.pas',
+  frxXMLSerializer in 'C:\Program Files (x86)\FastReports\FastReport 5\Source\frxXMLSerializer.pas';
 
 {$R *.res}
 begin

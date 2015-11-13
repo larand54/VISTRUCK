@@ -45,6 +45,7 @@ object dmFR: TdmFR
     Background = False
     HTMLTags = True
     Quality = 95
+    Transparency = False
     Author = 'FastReport'
     Subject = 'FastReport PDF export'
     ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
@@ -54,7 +55,7 @@ object dmFR: TdmFR
     FitWindow = False
     CenterWindow = False
     PrintScaling = False
-    CheckboxAsShape = False
+    PdfA = False
     Left = 232
     Top = 80
   end
@@ -63,7 +64,7 @@ object dmFR: TdmFR
     Top = 32
   end
   object frxReport1: TfrxReport
-    Version = '4.15.13'
+    Version = '5.3.1'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -124,7 +125,6 @@ object dmFR: TdmFR
     Style = <
       item
         Name = 'Arial9'
-        Color = clNone
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -133,7 +133,6 @@ object dmFR: TdmFR
       end
       item
         Name = 'Arial7Bold'
-        Color = clNone
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -9
@@ -155,6 +154,7 @@ object dmFR: TdmFR
       TitleBeforeHeader = False
       OnBeforePrint = 'Page1OnBeforePrint'
       object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
         Height = 136.063080000000000000
         Top = 117.165430000000000000
         Width = 718.110700000000000000
@@ -164,7 +164,6 @@ object dmFR: TdmFR
           Top = 83.149660000000000000
           Width = 396.850650000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           StretchMode = smActualHeight
           GapX = 2.000000000000000000
           GapY = 1.000000000000000000
@@ -181,7 +180,6 @@ object dmFR: TdmFR
           Top = 3.779529999999994000
           Width = 79.370130000000000000
           Height = 26.456710000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -197,7 +195,6 @@ object dmFR: TdmFR
           Left = 438.425480000000000000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CustomerName'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -216,7 +213,6 @@ object dmFR: TdmFR
           Top = 18.897650000000010000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'AddressLine1'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -234,7 +230,6 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Width = 34.015770000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -252,7 +247,6 @@ object dmFR: TdmFR
           Width = 158.740260000000000000
           Height = 18.897650000000000000
           GroupIndex = 1
-          ShowHint = False
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -270,7 +264,6 @@ object dmFR: TdmFR
           Width = 60.472480000000000000
           Height = 18.897650000000000000
           GroupIndex = 1
-          ShowHint = False
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -287,7 +280,6 @@ object dmFR: TdmFR
           Top = 41.574830000000010000
           Width = 60.472480000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -303,7 +295,6 @@ object dmFR: TdmFR
           Top = 60.472479999999810000
           Width = 60.472480000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -319,7 +310,6 @@ object dmFR: TdmFR
           Top = 37.795300000000010000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -334,7 +324,6 @@ object dmFR: TdmFR
           Top = 56.692950000000010000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -349,7 +338,6 @@ object dmFR: TdmFR
           Top = 75.590600000000010000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -364,7 +352,6 @@ object dmFR: TdmFR
           Top = 60.472480000000000000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -380,7 +367,6 @@ object dmFR: TdmFR
           Top = 94.488250000000010000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -395,7 +381,6 @@ object dmFR: TdmFR
           Top = 117.165430000000000000
           Width = 264.567100000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -410,7 +395,6 @@ object dmFR: TdmFR
           Left = 86.929190000000000000
           Width = 207.874150000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -424,7 +408,7 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Top = 136.063080000000000000
           Width = 684.094930000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
           Frame.Width = 3.000000000000000000
         end
@@ -433,7 +417,6 @@ object dmFR: TdmFR
           Top = 41.574830000000010000
           Width = 336.378170000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'LevVillkor'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -442,6 +425,7 @@ object dmFR: TdmFR
         end
       end
       object PageHeader1: TfrxPageHeader
+        FillType = ftBrush
         Height = 75.590600000000000000
         Top = 18.897650000000000000
         Width = 718.110700000000000000
@@ -451,7 +435,6 @@ object dmFR: TdmFR
           Top = 3.779529999999990000
           Width = 75.590600000000000000
           Height = 22.677180000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -467,7 +450,6 @@ object dmFR: TdmFR
           Top = 3.779530000000001000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -482,7 +464,6 @@ object dmFR: TdmFR
           Top = 3.779529999999990000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -497,7 +478,6 @@ object dmFR: TdmFR
           Top = 26.456710000000000000
           Width = 136.063080000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DisplayFormat.FormatStr = 'yyyy-mm-dd'
           DisplayFormat.Kind = fkDateTime
           Font.Charset = DEFAULT_CHARSET
@@ -514,7 +494,6 @@ object dmFR: TdmFR
           Top = 26.456710000000000000
           Width = 113.385900000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -529,7 +508,6 @@ object dmFR: TdmFR
           Top = 49.133889999999990000
           Width = 37.795300000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -544,7 +522,6 @@ object dmFR: TdmFR
           Top = 49.133889999999990000
           Width = 139.842610000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
@@ -558,12 +535,13 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Top = 71.811070000000000000
           Width = 684.094930000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
           Frame.Width = 3.000000000000000000
         end
       end
       object MasterData1: TfrxMasterData
+        FillType = ftBrush
         Height = 11.338590000000000000
         Top = 313.700990000000000000
         Width = 718.110700000000000000
@@ -572,6 +550,7 @@ object dmFR: TdmFR
         RowCount = 0
       end
       object GroupHeader1: TfrxGroupHeader
+        FillType = ftBrush
         Height = 83.149660000000000000
         Top = 347.716760000000000000
         Width = 718.110700000000000000
@@ -581,7 +560,6 @@ object dmFR: TdmFR
           Top = 7.559059999999875000
           Width = 188.976500000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'OurReference'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -600,7 +578,6 @@ object dmFR: TdmFR
           Top = 26.456709999999870000
           Width = 188.976500000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -616,7 +593,6 @@ object dmFR: TdmFR
           Top = 45.354359999999870000
           Width = 188.976500000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -632,7 +608,6 @@ object dmFR: TdmFR
           Top = 64.252009999999920000
           Width = 188.976500000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -648,7 +623,6 @@ object dmFR: TdmFR
           Top = 7.559059999999875000
           Width = 147.401670000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -664,7 +638,6 @@ object dmFR: TdmFR
           Top = 26.456709999999870000
           Width = 147.401670000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -680,7 +653,6 @@ object dmFR: TdmFR
           Top = 45.354359999999870000
           Width = 147.401670000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -698,7 +670,6 @@ object dmFR: TdmFR
           Top = 11.338590000000010000
           Width = 45.354360000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -714,7 +685,6 @@ object dmFR: TdmFR
           Top = 30.236240000000010000
           Width = 41.574830000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -729,7 +699,6 @@ object dmFR: TdmFR
           Top = 52.913419999999920000
           Width = 60.472480000000000000
           Height = 11.338590000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -744,7 +713,6 @@ object dmFR: TdmFR
           Top = 71.811069999999970000
           Width = 56.692950000000000000
           Height = 11.338590000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -759,7 +727,6 @@ object dmFR: TdmFR
           Top = 11.338590000000120000
           Width = 56.692950000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -775,7 +742,6 @@ object dmFR: TdmFR
           Top = 30.236240000000120000
           Width = 56.692950000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -791,7 +757,6 @@ object dmFR: TdmFR
           Top = 49.133890000000120000
           Width = 45.354360000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -807,7 +772,6 @@ object dmFR: TdmFR
           Top = 11.338590000000120000
           Width = 45.354360000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -823,7 +787,6 @@ object dmFR: TdmFR
           Top = 7.559059999999875000
           Width = 120.944960000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -841,7 +804,6 @@ object dmFR: TdmFR
           Top = 30.236240000000120000
           Width = 45.354360000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -857,7 +819,6 @@ object dmFR: TdmFR
           Top = 26.456709999999870000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -875,7 +836,6 @@ object dmFR: TdmFR
           Top = 49.133890000000120000
           Width = 45.354360000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -891,7 +851,6 @@ object dmFR: TdmFR
           Top = 45.354359999999870000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -906,6 +865,7 @@ object dmFR: TdmFR
         end
       end
       object PageFooter1: TfrxPageFooter
+        FillType = ftBrush
         Height = 109.606370000000000000
         Top = 971.339210000000000000
         Width = 718.110700000000000000
@@ -914,7 +874,6 @@ object dmFR: TdmFR
           Top = 79.370129999999750000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -930,7 +889,6 @@ object dmFR: TdmFR
           Top = 7.559060000000000000
           Width = 105.826840000000000000
           Height = 22.677180000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -944,7 +902,7 @@ object dmFR: TdmFR
           Left = 113.385900000000000000
           Top = 22.677179999999640000
           Width = 585.827150000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
         end
         object InvoiceAdress: TfrxMemoView
@@ -952,7 +910,6 @@ object dmFR: TdmFR
           Top = 41.574829999999510000
           Width = 143.622140000000000000
           Height = 37.795300000000000000
-          ShowHint = False
           DataField = 'Adress'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -970,7 +927,6 @@ object dmFR: TdmFR
           Top = 41.574830000000000000
           Width = 117.165430000000000000
           Height = 37.795300000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -987,7 +943,6 @@ object dmFR: TdmFR
           Top = 41.574829999999510000
           Width = 143.622140000000000000
           Height = 37.795300000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1004,7 +959,6 @@ object dmFR: TdmFR
           Top = 41.574830000000000000
           Width = 98.267780000000000000
           Height = 37.795300000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1018,6 +972,7 @@ object dmFR: TdmFR
         end
       end
       object DetailData1: TfrxDetailData
+        FillType = ftBrush
         Height = 102.047310000000000000
         Top = 582.047620000000000000
         Width = 718.110700000000000000
@@ -1032,7 +987,6 @@ object dmFR: TdmFR
           Top = 49.133890000000000000
           Width = 680.315400000000000000
           Height = 49.133890000000000000
-          ShowHint = False
           Page = frxReport1.Page2
         end
         object frxDBDataset2ProductDescription: TfrxMemoView
@@ -1040,7 +994,6 @@ object dmFR: TdmFR
           Top = 7.559060000000045000
           Width = 253.228510000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           StretchMode = smActualHeight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -1057,7 +1010,6 @@ object dmFR: TdmFR
           Top = 26.456710000000160000
           Width = 253.228510000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -9
@@ -1073,7 +1025,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 49.133890000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'NoOfPkgs'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1092,7 +1043,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1110,7 +1060,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1128,7 +1077,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 102.047310000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1146,7 +1094,6 @@ object dmFR: TdmFR
           Top = 7.559060000000045000
           Width = 64.252010000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'KR_REF'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1162,6 +1109,7 @@ object dmFR: TdmFR
         end
       end
       object GroupHeader2: TfrxGroupHeader
+        FillType = ftBrush
         Height = 49.133890000000000000
         Top = 453.543600000000000000
         Width = 718.110700000000000000
@@ -1171,7 +1119,6 @@ object dmFR: TdmFR
           Top = 22.677180000000250000
           Width = 60.472480000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1187,7 +1134,6 @@ object dmFR: TdmFR
           Top = 7.559059999999931000
           Width = 68.031540000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1203,7 +1149,6 @@ object dmFR: TdmFR
           Top = 3.779530000000136000
           Width = 238.110390000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Reference'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1222,7 +1167,6 @@ object dmFR: TdmFR
           Top = 22.677180000000250000
           Width = 600.945270000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           StretchMode = smActualHeight
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1243,11 +1187,12 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Top = 3.779530000000136000
           Width = 684.094930000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
         end
       end
       object GroupFooter1: TfrxGroupFooter
+        FillType = ftBrush
         Height = 30.236240000000000000
         Top = 706.772110000000000000
         Width = 718.110700000000000000
@@ -1256,7 +1201,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1271,7 +1215,7 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Top = 3.779530000000022000
           Width = 676.535870000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
         end
         object Memo23: TfrxMemoView
@@ -1279,7 +1223,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1295,7 +1238,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1311,7 +1253,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 98.267780000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1327,7 +1268,6 @@ object dmFR: TdmFR
           Top = 7.559060000000045000
           Width = 60.472480000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1340,6 +1280,7 @@ object dmFR: TdmFR
         end
       end
       object Header1: TfrxHeader
+        FillType = ftBrush
         Height = 34.015770000000000000
         Top = 525.354670000000000000
         Width = 718.110700000000000000
@@ -1348,7 +1289,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 49.133890000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1365,7 +1305,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1382,7 +1321,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1399,7 +1337,6 @@ object dmFR: TdmFR
           Top = 3.779530000000000000
           Width = 102.047310000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1416,7 +1353,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 64.252010000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1432,7 +1368,6 @@ object dmFR: TdmFR
           Top = 3.779530000000022000
           Width = 64.252010000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1445,10 +1380,12 @@ object dmFR: TdmFR
         end
       end
       object Footer1: TfrxFooter
+        FillType = ftBrush
         Top = 759.685530000000000000
         Width = 718.110700000000000000
       end
       object ReportSummary1: TfrxReportSummary
+        FillType = ftBrush
         Height = 128.504020000000000000
         Top = 820.158010000000000000
         Width = 718.110700000000000000
@@ -1459,7 +1396,6 @@ object dmFR: TdmFR
           Top = 18.897650000000090000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
           Font.Charset = DEFAULT_CHARSET
@@ -1477,7 +1413,6 @@ object dmFR: TdmFR
           Top = 37.795300000000090000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Total_Product_Value_No_Freight'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1496,7 +1431,6 @@ object dmFR: TdmFR
           Top = 18.897649999999980000
           Width = 60.472480000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1512,7 +1446,6 @@ object dmFR: TdmFR
           Top = 37.795299999999980000
           Width = 68.031540000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1528,7 +1461,6 @@ object dmFR: TdmFR
           Top = 56.692949999999970000
           Width = 83.149660000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1544,7 +1476,6 @@ object dmFR: TdmFR
           Top = 71.811069999999950000
           Width = 83.149660000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1560,7 +1491,6 @@ object dmFR: TdmFR
           Top = 15.118119999999960000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1579,7 +1509,6 @@ object dmFR: TdmFR
           Top = 34.015770000000070000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1598,7 +1527,6 @@ object dmFR: TdmFR
           Top = 52.913419999999950000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1617,7 +1545,6 @@ object dmFR: TdmFR
           Top = 52.913420000000070000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Discount'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1636,7 +1563,6 @@ object dmFR: TdmFR
           Top = 18.897650000000090000
           Width = 192.756030000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -1651,7 +1577,6 @@ object dmFR: TdmFR
           Top = 34.015770000000070000
           Width = 192.756030000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -1666,7 +1591,6 @@ object dmFR: TdmFR
           Top = 49.133889999999930000
           Width = 60.472480000000000000
           Height = 15.118120000000000000
-          ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -7
@@ -1681,14 +1605,14 @@ object dmFR: TdmFR
           Left = 22.677180000000000000
           Top = 11.338589999999980000
           Width = 676.535870000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
         end
         object Line6: TfrxLineView
           Left = 22.677180000000000000
           Top = 3.779530000000000000
           Width = 676.535870000000000000
-          ShowHint = False
+          Color = clBlack
           Frame.Typ = [ftTop]
         end
         object Memo46: TfrxMemoView
@@ -1696,7 +1620,6 @@ object dmFR: TdmFR
           Top = 15.118119999999960000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1714,7 +1637,6 @@ object dmFR: TdmFR
           Top = 30.236239999999940000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1732,7 +1654,6 @@ object dmFR: TdmFR
           Top = 45.354360000000020000
           Width = 41.574830000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'CURRENCY'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1750,7 +1671,6 @@ object dmFR: TdmFR
           Top = 15.118119999999960000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Tot_Inv_Inc_Freight_Extras'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1768,7 +1688,6 @@ object dmFR: TdmFR
           Top = 30.236240000000040000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'VAT_Value'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1786,7 +1705,6 @@ object dmFR: TdmFR
           Top = 45.354360000000020000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Inv_Value_To_Be_Paid_2'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1804,7 +1722,6 @@ object dmFR: TdmFR
           Top = 109.606370000000000000
           Width = 676.535870000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           StretchMode = smActualHeight
           DataField = 'PAYMENT_TEXT'
           DataSet = frxDBDataset1
@@ -1824,7 +1741,6 @@ object dmFR: TdmFR
           Top = 71.811069999999950000
           Width = 272.126160000000000000
           Height = 18.897650000000000000
-          ShowHint = False
           DataField = 'Forfallodag'
           DataSet = frxDBDataset1
           DataSetName = 'Invoice'
@@ -1855,7 +1771,6 @@ object dmFR: TdmFR
         Top = 41.574830000000000000
         Width = 400.630180000000000000
         Height = 18.897650000000000000
-        ShowHint = False
         DataField = 'CustomerName'
         DataSet = frxDBDataset1
         DataSetName = 'Invoice'
@@ -1873,7 +1788,6 @@ object dmFR: TdmFR
         Top = 7.559060000000000000
         Width = 94.488250000000000000
         Height = 18.897650000000000000
-        ShowHint = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13

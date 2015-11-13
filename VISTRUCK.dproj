@@ -258,10 +258,6 @@
         <DCCReference Include="UPortArrivals.pas">
             <Form>frmPortArrivals</Form>
         </DCCReference>
-        <DCCReference Include="..\..\CommonUnits\UnitAboutBox.pas">
-            <Form>AboutBox</Form>
-        </DCCReference>
-        <DCCReference Include="..\..\CommonUnits\VidaUser.pas"/>
         <DCCReference Include="uChangeLogins.pas">
             <Form>OKHelpBottomDlg</Form>
         </DCCReference>
@@ -468,6 +464,22 @@
             <Form>fSelectSortingOrderNo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\CommonUnits\UnitAboutBox.pas">
+            <Form>AboutBox</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\CommonUnits\VidaUser.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxClass.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxDBSet.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\ExportPack\frxExportPDF.pas">
+            <Form>frxPDFExportDialog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\FastScript\fs_iinterpreter.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxVariables.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxXML.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxCollections.pas"/>
+        <DCCReference Include="C:\Program Files (x86)\FastReports\FastReport 5\Source\frxXMLSerializer.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">

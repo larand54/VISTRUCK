@@ -1,10 +1,10 @@
+//PROFILE-NO
 unit VidaUser;
 
 interface
 
 uses
   Graphics,
-  dmcVidaSystem,
   VidaType,
   dmsDataConn ;
 
@@ -40,9 +40,11 @@ type
     function getCanModify(DataCategory: TDataCategory) : Boolean;
     function getUserID: Integer;
     function getUserCompanyNo: Integer;
+    function getLanguageID : Integer ;
   protected
     procedure LoadAccessRightsFromDB;
     function getCanView(DataCategory: TDataCategory) : Boolean;
+    function GetAccesValid(DataCategory: TDataCategory) : Boolean;
 //    procedure LoadUserPreferences;
     procedure setUserName(const Value: String);
     procedure setUserPswd(const Value: String);
@@ -50,8 +52,10 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
     function Logon : Boolean;
     property CanView [DataCategory: TDataCategory] : Boolean read getCanView;
+    property AccesValid [DataCategory: TDataCategory] : Boolean read getAccesValid ;
     property CanModify [DataCategory: TDataCategory] : Boolean read getCanModify;
     property clBackPreliminaryLO : TColor read FclBackPreliminaryLO write
              FclBackPreliminaryLO;
@@ -73,6 +77,8 @@ type
     property UserName : String  read FUserName write setUserName;
     property UserPswd : String  read FUserPswd write setUserPswd;
     property LoadEntryHSplit : Integer read FLoadEntryHSplit write FLoadEntryHSplit;
+    property LanguageID  : Integer read getLanguageID ;
+
   end;
 
 function ThisUser : TUser;
@@ -84,6 +90,7 @@ uses
   Dialogs,
   Forms,
   SysUtils,
+//  VidaSecureStore,
   VidaUtils, dmsVidaSystem;
 
 
@@ -93,6 +100,7 @@ var
 
 function ThisUser : TUser;
 begin
+
   if TheOneAndOnlyUser = nil then
   begin
     CreatingAsSingleton := true;
@@ -103,6 +111,7 @@ begin
     end;
   end;
   Result := TheOneAndOnlyUser
+
 end;
 
 
@@ -111,11 +120,13 @@ constructor TUser.Create;
 var
   DataCategory: TDataCategory;
 begin
+
   inherited;
   // Get user access rights & company number
   for DataCategory := Low(TDataCategory) to High(TDataCategory) do
     FUserSpec.AccessRights[DataCategory] := arNONE;
   FNeedsRefresh := TRUE;
+
 end;
 
 
@@ -132,50 +143,70 @@ begin
   Result := FUserSpec.AccessRights[DataCategory] = arMODIFY
 end;
 
-
 function TUser.getCanView(DataCategory: TDataCategory) : Boolean;
 begin
   if FNeedsRefresh then
     LoadAccessRightsFromDB;
   Result := FUserSpec.AccessRights[DataCategory] in [arREAD, arMODIFY] ;
   if Result = False then
-   ShowMessage('Behörighet saknas') ;
+   ShowMessage('No access.') ;
 end;
 
+function TUser.GetAccesValid(DataCategory: TDataCategory) : Boolean;
+begin
+  if FNeedsRefresh then
+    LoadAccessRightsFromDB;
+  Result := FUserSpec.AccessRights[DataCategory] in [arREAD, arMODIFY] ;
+//  if Result = False then ShowMessage('Behörighet saknas') ;
+end;
 
 function TUser.getUserID: Integer;
 begin
   Result := FUserSpec.UserID;
 end;
 
+function TUser.getLanguageID: Integer;
+begin
+  Result := FUserSpec.LanguageID ;
+end;
+
 function TUser.getUserCompanyNo: Integer;
 begin
-  Result := FUserSpec.CompanyNo;
+ Result := FUserSpec.CompanyNo;
 end;
 
 procedure TUser.LoadAccessRightsFromDB;
 begin
-  FUserSpec := dmcSystem.AccessRights(UserName, UserPswd);
+//   ShowMessage('UserName = ' + UserName) ;
+//   ShowMessage('UserPswd = ' + UserPswd) ;
+  FUserSpec     := dmsSystem.AccessRights(UserName, UserPswd);
   FNeedsRefresh := FALSE;
 end;
 
 function TUser.Logon : Boolean;
-var
-  iPosDelim : integer;
-  pUserName,
-  pUserPswd : String ;
 begin
-  Result := FALSE;
-//  Result := dmsConnector.LogOnToDatabase('alvesql01', 'vis_vida_test','','');
-  Result := dmsConnector.LogOnToDatabase('carmak-m30', 'vis_vwab','sa','sa');
+ Result := FALSE ;
+ Result := True ;
 
+ Result :=  dmsConnector.LogOnToDatabase(FHostName, FDatabase, 'Lars', 'woods2011') ;
+
+
+  //Result :=  dmsConnector.LogOnToDatabase(FHostName, FDatabase,'','') ;
+
+// Result := dmsConnector.LogOnToDatabase(FHostName, FDatabase,'sa','woods2011')  ;
+
+// ShowMessage('Inloggad på ' + dmsConnector.SQLConnection.Params.Values['Database']) ;
   if Result then
   Begin
-   dmsConnector.GetUserNameLoggedIn(FUserName, FUserPswd) ;
-//   ShowMessage('FUserName = '+FUserName) ;
-//   ShowMessage('FUserPswd = '+FUserPswd) ;
+//   dmsConnector.GetUserNameLoggedIn(FUserName, FUserPswd) ;
+   dmsConnector.GetUserNameLoggedIn(FUserName, FUserPswd, ThisUser.DBUserName) ;
+//   ShowMessage('FUserName = ' + FUserName) ;
+//   ShowMessage('FUserPswd = ' + FUserPswd) ;
 //          FUserName    := GetUserName 'larmak';
 //          FUserPswd    := 'lasse';
+//   FUserName  := 'shathi2' ;
+//   FUserPswd  := 'sharon' ;
+
    Result := Check_UserLogOn(FUserName, FUserPswd) ;
    if Result then
     LoadAccessRightsFromDB;
@@ -185,7 +216,6 @@ end;
 function TUser.Check_UserLogOn(UserName, Password: String): Boolean;
 begin
   Result := False;
-
   with dmsSystem.qryExec do
   begin
    SQL.Clear ;
@@ -193,12 +223,11 @@ begin
         + ' LEFT OUTER JOIN Client ON client.ClientNo = users.CompanyNo '
         + ' WHERE UserName = ''' + UserName + ''' AND '
         + ' Password = ''' + Password + '''');
-   Open ;     
+   Open ;
 
     if Not Eof then
     begin
       Result := True;
-
     end;
    Close ;
   end; //with
@@ -231,7 +260,6 @@ begin
   FUserPswd := Value;
   FNeedsRefresh := true
 end;
-
 
 
 end.
