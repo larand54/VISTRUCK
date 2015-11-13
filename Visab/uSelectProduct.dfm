@@ -1,0 +1,323 @@
+object fSelectProduct: TfSelectProduct
+  Left = 197
+  Top = 107
+  Caption = 'V'#228'lj product'
+  ClientHeight = 790
+  ClientWidth = 1162
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -14
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 120
+  TextHeight = 16
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1162
+    Height = 70
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Align = alTop
+    TabOrder = 0
+    object tcProductSelection: TcxTabControl
+      Left = 1
+      Top = 21
+      Width = 1160
+      Height = 48
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alBottom
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -28
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      Properties.CustomButtons.Buttons = <>
+      Properties.TabIndex = 0
+      Properties.Tabs.Strings = (
+        'Produkter p'#229' k'#246'rorder'
+        'Produkter i lager'
+        'Alla produkter')
+      OnChange = tcProductSelectionChange
+      ClientRectBottom = 47
+      ClientRectLeft = 1
+      ClientRectRight = 1159
+      ClientRectTop = 40
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 708
+    Width = 1162
+    Height = 82
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Align = alBottom
+    TabOrder = 1
+    object BitBtn1: TBitBtn
+      Left = 423
+      Top = 20
+      Width = 120
+      Height = 50
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Kind = bkOK
+      NumGlyphs = 2
+      TabOrder = 0
+    end
+    object BitBtn2: TBitBtn
+      Left = 581
+      Top = 20
+      Width = 119
+      Height = 50
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Kind = bkCancel
+      NumGlyphs = 2
+      TabOrder = 1
+    end
+  end
+  object grdProducts: TcxGrid
+    Left = 0
+    Top = 70
+    Width = 1162
+    Height = 638
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Align = alClient
+    TabOrder = 2
+    object grdProductsDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      Navigator.Buttons.First.Visible = True
+      Navigator.Buttons.PriorPage.Visible = True
+      Navigator.Buttons.Prior.Visible = True
+      Navigator.Buttons.Next.Visible = True
+      Navigator.Buttons.NextPage.Visible = True
+      Navigator.Buttons.Last.Visible = True
+      Navigator.Buttons.Insert.Visible = True
+      Navigator.Buttons.Append.Visible = False
+      Navigator.Buttons.Delete.Visible = True
+      Navigator.Buttons.Edit.Visible = True
+      Navigator.Buttons.Post.Visible = True
+      Navigator.Buttons.Cancel.Visible = True
+      Navigator.Buttons.Refresh.Visible = True
+      Navigator.Buttons.SaveBookmark.Visible = True
+      Navigator.Buttons.GotoBookmark.Visible = True
+      Navigator.Buttons.Filter.Visible = True
+      DataController.DataSource = ds_ProdInLager
+      DataController.KeyFieldNames = 'ProductNo'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsBehavior.ImmediateEditor = False
+      OptionsView.ColumnAutoWidth = True
+      OptionsView.GroupByBox = False
+      OptionsView.Indicator = True
+      object grdProductsDBTableView1ProductDisplayName: TcxGridDBColumn
+        DataBinding.FieldName = 'ProductDisplayName'
+        PropertiesClassName = 'TcxLabelProperties'
+        SortIndex = 0
+        SortOrder = soAscending
+      end
+      object grdProductsDBTableView1ProductNo: TcxGridDBColumn
+        DataBinding.FieldName = 'ProductNo'
+        PropertiesClassName = 'TcxLabelProperties'
+        Visible = False
+      end
+    end
+    object grdProductsLevel1: TcxGridLevel
+      GridView = grdProductsDBTableView1
+    end
+  end
+  object cds_ProdInLager: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select Distinct pr.ProductDisplayName, pr.ProductNo FROM '
+      'dbo.PackageNumber pn'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = pn.LogicalInventoryPointNo'
+      
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      
+        'Inner Join dbo.PackageType pt on pt.PackageTypeNo = pn.PackageTy' +
+        'peNo'
+      'Inner Join dbo.Product pr on pr.ProductNo = pt.ProductNo'
+      'WHERE PIP.PhysicalInventoryPointNo = 10048'
+      'AND pn.Status = 1'
+      'Order By pr.ProductDisplayName')
+    Left = 264
+    Top = 136
+    object cds_ProdInLagerProductDisplayName: TStringField
+      DisplayLabel = 'Produkt'
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 100
+    end
+    object cds_ProdInLagerProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+  end
+  object ds_ProdInLager: TDataSource
+    DataSet = cds_ProdInLager
+    Left = 264
+    Top = 208
+  end
+  object siLangLinked_fSelectProduct: TsiLangLinked
+    Version = '7.2'
+    StringsTypes.Strings = (
+      'TIB_STRINGLIST'
+      'TSTRINGLIST')
+    UseDefaultLanguage = True
+    NumOfLanguages = 3
+    LangDispatcher = dmLanguage.siLangDispatcher1
+    LangDelim = 1
+    LangNames.Strings = (
+      'Origin'
+      'Swedish'
+      'English')
+    Language = 'Origin'
+    CommonContainer = dmLanguage.siLang1
+    ExcludedProperties.Strings = (
+      'Category'
+      'SecondaryShortCuts'
+      'HelpKeyword'
+      'InitialDir'
+      'HelpKeyword'
+      'ActivePage'
+      'ImeName'
+      'DefaultExt'
+      'FileName'
+      'FieldName'
+      'PickList'
+      'DisplayFormat'
+      'EditMask'
+      'KeyList'
+      'LookupDisplayFields'
+      'DropDownSpecRow'
+      'TableName'
+      'DatabaseName'
+      'IndexName'
+      'MasterFields'
+      'SQL'
+      'DeleteSQL'
+      'UpdateSQL'
+      'ModifySQL'
+      'KeyFields'
+      'LookupKeyFields'
+      'LookupResultField'
+      'DataField'
+      'KeyField'
+      'ListField')
+    Left = 464
+    Top = 320
+    TranslationData = {
+      73007400430061007000740069006F006E0073005F0055006E00690063006F00
+      640065000D000A0054006600530065006C00650063007400500072006F006400
+      75006300740001005600E4006C006A002000700072006F006400750063007400
+      01000100010001005600E4006C006A002000700072006F006400750063007400
+      0D000A00420069007400420074006E00310001004F004B000100010001000100
+      4F004B000D000A00420069007400420074006E0032000100430061006E006300
+      65006C000100010001000100430061006E00630065006C000D000A0067007200
+      6400500072006F0064007500630074007300440042005400610062006C006500
+      56006900650077003100500072006F0064007500630074004400690073007000
+      6C00610079004E0061006D0065000100500072006F00640075006B0074000100
+      010001000100500072006F00640075006B0074000D000A006700720064005000
+      72006F0064007500630074007300440042005400610062006C00650056006900
+      650077003100500072006F0064007500630074004E006F000100500072006F00
+      64007500630074004E006F000100010001000100500072006F00640075006300
+      74004E006F000D000A0073007400480069006E00740073005F0055006E006900
+      63006F00640065000D000A007300740044006900730070006C00610079004C00
+      6100620065006C0073005F0055006E00690063006F00640065000D000A006300
+      640073005F00500072006F00640049006E004C00610067006500720050007200
+      6F00640075006300740044006900730070006C00610079004E0061006D006500
+      0100500072006F00640075006B0074000100010001000100500072006F006400
+      75006B0074000D000A006300640073005F00500072006F00640049006E004C00
+      6100670065007200500072006F0064007500630074004E006F00010050007200
+      6F0064007500630074004E006F000100010001000100500072006F0064007500
+      630074004E006F000D000A007300740046006F006E00740073005F0055006E00
+      690063006F00640065000D000A0054006600530065006C006500630074005000
+      72006F00640075006300740001004D0053002000530061006E00730020005300
+      650072006900660001000100010001004D0053002000530061006E0073002000
+      530065007200690066000D000A0074006300500072006F006400750063007400
+      530065006C0065006300740069006F006E0001004D0053002000530061006E00
+      730020005300650072006900660001000100010001004D005300200053006100
+      6E0073002000530065007200690066000D000A00730074004D0075006C007400
+      69004C0069006E00650073005F0055006E00690063006F00640065000D000A00
+      74006300500072006F006400750063007400530065006C006500630074006900
+      6F006E002E00500072006F0070006500720074006900650073002E0054006100
+      6200730001002200500072006F00640075006B0074006500720020007000E500
+      20006B00F60072006F00720064006500720022002C002200500072006F006400
+      75006B007400650072002000690020006C00610067006500720022002C002200
+      41006C006C0061002000700072006F00640075006B0074006500720022000100
+      0100010001002200500072006F00640075006B0074006500720020007000E500
+      20006B00F60072006F00720064006500720022002C002200500072006F006400
+      75006B007400650072002000690020006C00610067006500720022002C002200
+      41006C006C0061002000700072006F00640075006B0074006500720022000D00
+      0A0074006300500072006F006400750063007400530065006C00650063007400
+      69006F006E002E00540061006200730001002200500072006F00640075006B00
+      74006500720020007000E50020006B00F60072006F0072006400650072002200
+      2C002200500072006F00640075006B007400650072002000690020006C006100
+      67006500720022002C00220041006C006C0061002000700072006F0064007500
+      6B00740065007200220001000100010001002200500072006F00640075006B00
+      74006500720020007000E50020006B00F60072006F0072006400650072002200
+      2C002200500072006F00640075006B007400650072002000690020006C006100
+      67006500720022002C00220041006C006C0061002000700072006F0064007500
+      6B0074006500720022000D000A007300740053007400720069006E0067007300
+      5F0055006E00690063006F00640065000D000A00730074004F00740068006500
+      720053007400720069006E00670073005F0055006E00690063006F0064006500
+      0D000A00670072006400500072006F0064007500630074007300440042005400
+      610062006C00650056006900650077003100500072006F006400750063007400
+      44006900730070006C00610079004E0061006D0065002E00500072006F007000
+      65007200740069006500730043006C006100730073004E0061006D0065000100
+      5400630078004C006100620065006C00500072006F0070006500720074006900
+      650073000100010001000D000A00670072006400500072006F00640075006300
+      74007300440042005400610062006C0065005600690065007700310050007200
+      6F0064007500630074004E006F002E00500072006F0070006500720074006900
+      6500730043006C006100730073004E0061006D00650001005400630078004C00
+      6100620065006C00500072006F00700065007200740069006500730001000100
+      01000D000A006300640073005F00500072006F00640049006E004C0061006700
+      650072002E0043006F006E006E0065006300740069006F006E004E0061006D00
+      650001005600490053000100010001000D000A006300640073005F0050007200
+      6F00640049006E004C006100670065007200500072006F006400750063007400
+      44006900730070006C00610079004E0061006D0065002E004F00720069006700
+      69006E000100500072006F00640075006300740044006900730070006C006100
+      79004E0061006D0065000100010001000D000A006300640073005F0050007200
+      6F00640049006E004C006100670065007200500072006F006400750063007400
+      4E006F002E004F0072006900670069006E000100500072006F00640075006300
+      74004E006F000100010001000D000A007300740043006F006C006C0065006300
+      740069006F006E0073005F0055006E00690063006F00640065000D000A007300
+      7400430068006100720053006500740073005F0055006E00690063006F006400
+      65000D000A0054006600530065006C00650063007400500072006F0064007500
+      630074000100440045004600410055004C0054005F0043004800410052005300
+      450054000100010001000100440045004600410055004C0054005F0043004800
+      410052005300450054000D000A0074006300500072006F006400750063007400
+      530065006C0065006300740069006F006E000100440045004600410055004C00
+      54005F0043004800410052005300450054000100010001000100440045004600
+      410055004C0054005F0043004800410052005300450054000D000A00}
+  end
+end
