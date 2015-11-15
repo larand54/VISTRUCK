@@ -30,7 +30,8 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
   dxSkinsdxBarPainter, cxSpinEdit, cxBarEditItem, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions ;
+  dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
+  Vcl.Touch.Keyboard ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -355,6 +356,16 @@ type
     cbShowOriginalLO: TcxDBCheckBox;
     siLangLinked_fLoadEntrySSP: TsiLangLinked;
     grdLORowsDBBandedTableView1Internnotering: TcxGridDBBandedColumn;
+    btTextPad: TcxButton;
+    btTextPadFS: TcxButton;
+    btNumPad: TcxButton;
+    ActionList2: TActionList;
+    acTextPad: TAction;
+    acTextPadFS: TAction;
+    acNumPad: TAction;
+    TouchKeyboard1: TTouchKeyboard;
+    TouchKeyboard2: TTouchKeyboard;
+    TouchKeyboard3: TTouchKeyboard;
 
 
     procedure lbRemovePackageClick(Sender: TObject);
@@ -464,6 +475,9 @@ type
     procedure ppmenuLO_LinesPopup(Sender: TObject);
     procedure bePkgFontCurChange(Sender: TObject);
     procedure pmPkgsPopup(Sender: TObject);
+    procedure acTextPadExecute(Sender: TObject);
+    procedure acTextPadFSExecute(Sender: TObject);
+    procedure acNumPadExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -4281,6 +4295,34 @@ begin
  End ;
 end;
 
+procedure TfLoadEntrySSP.acTextPadExecute(Sender: TObject);
+begin
+  if not TouchKeyboard1.visible then
+    begin
+     TouchKeyboard1.visible := True;
+     teLoadID.setfocus;
+    end
+  else
+   begin
+    TouchKeyboard1.visible := False;
+    teLoadID.setfocus;
+   end;
+end;
+
+procedure TfLoadEntrySSP.acTextPadFSExecute(Sender: TObject);
+begin
+   if not TouchKeyboard2.visible then
+    begin
+     TouchKeyboard2.visible := True;
+     teFS.setfocus;
+    end
+   else
+   begin
+    TouchKeyboard2.visible := False;
+    teFS.setfocus;
+   end;
+end;
+
 procedure TfLoadEntrySSP.acStreckKodsinlasningUpdate(Sender: TObject);
 begin
  With dmLoadEntrySSP do
@@ -5588,6 +5630,20 @@ begin
  End
   else
    ShowMessage('Emailadress saknas för klienten!') ;
+end;
+
+procedure TfLoadEntrySSP.acNumPadExecute(Sender: TObject);
+begin
+   if not TouchKeyboard3.visible then
+    begin
+     TouchKeyboard3.visible := True;
+    end
+   else
+   begin
+    TouchKeyboard3.visible := False;
+   end;
+   mePackageNo.Enabled := True;
+   mePackageNo.SetFocus;
 end;
 
 procedure TfLoadEntrySSP.acSetStatusPrelandSaveExecute(Sender: TObject);
