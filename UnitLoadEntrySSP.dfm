@@ -126,7 +126,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Width = 145
         end
         object teLoadID: TcxDBTextEdit
-          Left = 312
+          Left = 302
           Top = 2
           DataBinding.DataField = 'LoadID'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
@@ -136,7 +136,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Width = 121
         end
         object teFS: TcxDBTextEdit
-          Left = 312
+          Left = 302
           Top = 26
           DataBinding.DataField = 'FS'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
@@ -247,7 +247,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Style.IsFontAssigned = True
         end
         object cxLabel7: TcxLabel
-          Left = 248
+          Left = 238
           Top = 8
           Caption = 'Last ID:'
           ParentFont = False
@@ -259,7 +259,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Style.IsFontAssigned = True
         end
         object cxLabel8: TcxLabel
-          Left = 248
+          Left = 238
           Top = 30
           Caption = 'FS:'
           ParentFont = False
@@ -644,16 +644,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object grdLOLevel1: TcxGridLevel
           GridView = grdLODBTableView1
         end
-      end
-      object TouchKeyboard1: TTouchKeyboard
-        Left = 416
-        Top = 60
-        Width = 550
-        Height = 180
-        GradientEnd = clSilver
-        GradientStart = clGray
-        Layout = 'Standard'
-        Visible = False
       end
     end
     object tsLoadNote: TcxTabSheet
@@ -1259,26 +1249,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object grdLORowsLevel1: TcxGridLevel
         GridView = grdLORowsDBBandedTableView1
       end
-    end
-    object TouchKeyboard2: TTouchKeyboard
-      Left = 420
-      Top = 23
-      Width = 550
-      Height = 180
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'Standard'
-      Visible = False
-    end
-    object TouchKeyboard3: TTouchKeyboard
-      Left = 976
-      Top = -26
-      Width = 250
-      Height = 180
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'NumPad'
-      Visible = False
     end
   end
   object PanelPackages: TPanel
@@ -1897,6 +1867,26 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object grdPkgsLevel1: TcxGridLevel
         GridView = grdPkgsDBBandedTableView1
       end
+    end
+    object TouchKeyboard2: TTouchKeyboard
+      Left = 986
+      Top = 62
+      Width = 250
+      Height = 250
+      GradientEnd = clSilver
+      GradientStart = clGray
+      Layout = 'NumPad'
+      Visible = False
+    end
+    object TouchKeyboard1: TTouchKeyboard
+      Left = 288
+      Top = 61
+      Width = 650
+      Height = 250
+      GradientEnd = clSilver
+      GradientStart = clGray
+      Layout = 'Standard'
+      Visible = False
     end
   end
   object dxBarManager1: TdxBarManager

@@ -4,8 +4,8 @@ object Position: TPosition
   AlphaBlend = True
   AlphaBlendValue = 200
   Caption = 'Position'
-  ClientHeight = 398
-  ClientWidth = 836
+  ClientHeight = 529
+  ClientWidth = 1019
   Color = clBtnFace
   TransparentColorValue = clWindowText
   Font.Charset = DEFAULT_CHARSET
@@ -21,11 +21,11 @@ object Position: TPosition
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl_Position: TPageControl
-    Left = 423
+    Left = 536
     Top = 0
-    Width = 413
-    Height = 398
-    ActivePage = TabSheet_Match
+    Width = 483
+    Height = 529
+    ActivePage = TabSheet_RefMatch
     Align = alRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -37,17 +37,17 @@ object Position: TPosition
     Visible = False
     object TabSheet_All: TTabSheet
       Caption = 'Alla Position'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 451
+      ExplicitHeight = 439
       object cxGrid_AllPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 407
-        Height = 370
+        Width = 475
+        Height = 498
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 451
+        ExplicitHeight = 439
         object cxGrid_AllPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = cxGrid_AllPositionDBTableView1CellClick
@@ -61,6 +61,7 @@ object Position: TPosition
           OptionsBehavior.ImmediateEditor = False
           OptionsCustomize.GroupRowSizing = True
           OptionsData.Appending = True
+          OptionsSelection.CellSelect = False
           OptionsSelection.HideFocusRectOnExit = False
           OptionsSelection.InvertSelect = False
           OptionsView.CellAutoHeight = True
@@ -96,14 +97,18 @@ object Position: TPosition
       Font.Style = [fsBold]
       ImageIndex = 1
       ParentFont = False
+      ExplicitWidth = 451
+      ExplicitHeight = 439
       object cxGrid_MatchPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 405
-        Height = 367
+        Width = 475
+        Height = 498
         Align = alClient
         TabOrder = 0
         Visible = False
+        ExplicitWidth = 451
+        ExplicitHeight = 439
         object cxGrid_MatchPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = cxGrid_MatchPositionDBTableView1CellClick
@@ -118,6 +123,7 @@ object Position: TPosition
           OptionsCustomize.ColumnHiding = True
           OptionsCustomize.GroupRowSizing = True
           OptionsData.Appending = True
+          OptionsSelection.CellSelect = False
           OptionsSelection.MultiSelect = True
           OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
@@ -169,18 +175,18 @@ object Position: TPosition
     object TabSheet_RefMatch: TTabSheet
       Caption = 'Matcha Referens'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 451
+      ExplicitHeight = 439
       object grid_Matcha_Ref: TcxGrid
         Left = 0
         Top = 0
-        Width = 407
-        Height = 370
+        Width = 475
+        Height = 498
         Align = alClient
         TabOrder = 0
         Visible = False
+        ExplicitWidth = 451
+        ExplicitHeight = 439
         object grid_Matcha_RefDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = grid_Matcha_RefDBTableView1CellClick
@@ -194,6 +200,7 @@ object Position: TPosition
           OptionsBehavior.ImmediateEditor = False
           OptionsCustomize.GroupRowSizing = True
           OptionsData.Appending = True
+          OptionsSelection.CellSelect = False
           OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
@@ -245,8 +252,8 @@ object Position: TPosition
   object PakagePanel: TPanel
     Left = 0
     Top = 0
-    Width = 417
-    Height = 398
+    Width = 530
+    Height = 529
     Align = alLeft
     Caption = 'PakagePanel'
     TabOrder = 1
@@ -254,8 +261,8 @@ object Position: TPosition
     object grid_ProductList: TcxGrid
       Left = 1
       Top = 80
-      Width = 415
-      Height = 317
+      Width = 528
+      Height = 448
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -267,6 +274,7 @@ object Position: TPosition
       Visible = False
       LookAndFeel.Kind = lfOffice11
       LookAndFeel.SkinName = 'Office2010Blue'
+      ExplicitWidth = 495
       object grid_ProductListDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.Buttons.Append.Visible = True
@@ -292,33 +300,33 @@ object Position: TPosition
           Properties.ImmediatePost = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
-          Width = 22
+          Width = 37
         end
         object grid_ProductListDBTableView1ProductNo: TcxGridDBColumn
           DataBinding.FieldName = 'ProductNo'
-          Width = 47
+          Width = 62
         end
         object grid_ProductListDBTableView1PktSupplierCode: TcxGridDBColumn
           Caption = 'Prefix'
           DataBinding.FieldName = 'PktSupplierCode'
-          Width = 37
+          Width = 47
         end
         object grid_ProductListDBTableView1ProductDisplayName1: TcxGridDBColumn
           Caption = 'Produkt'
           DataBinding.FieldName = 'ProductDisplayName'
-          Width = 102
+          Width = 146
         end
         object grid_ProductListDBTableView1PaketNr1: TcxGridDBColumn
           DataBinding.FieldName = 'PaketNr'
-          Width = 57
+          Width = 71
         end
         object grid_ProductListDBTableView1MaxLength: TcxGridDBColumn
           DataBinding.FieldName = 'MaxLength'
-          Width = 74
+          Width = 86
         end
         object grid_ProductListDBTableView1Reference: TcxGridDBColumn
           DataBinding.FieldName = 'Reference'
-          Width = 74
+          Width = 77
         end
       end
       object grid_ProductListLevel1: TcxGridLevel
@@ -341,7 +349,7 @@ object Position: TPosition
       OnClick = btnStorePositionClick
     end
     object btDelete: TButton
-      Left = 312
+      Left = 352
       Top = 0
       Width = 97
       Height = 49
@@ -356,7 +364,7 @@ object Position: TPosition
       OnClick = btDeleteClick
     end
     object btChangeStyle: TButton
-      Left = 207
+      Left = 231
       Top = 0
       Width = 82
       Height = 49
@@ -538,8 +546,8 @@ object Position: TPosition
     FetchOptions.AssignedValues = [evUnidirectional]
     SQL.Strings = (
       'SELECT 0 as Vald, PositionName, PositionID FROM dbo.Position')
-    Left = 480
-    Top = 134
+    Left = 520
+    Top = 110
     object FDQ_PositionVald: TIntegerField
       FieldName = 'Vald'
       Origin = 'Vald'
@@ -645,8 +653,8 @@ object Position: TPosition
         '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
       'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
       'order by PosStatus, StoredDate')
-    Left = 233
-    Top = 110
+    Left = 193
+    Top = 238
     ParamData = <
       item
         Name = 'PRODUCTNO'
@@ -798,8 +806,8 @@ object Position: TPosition
         'oint PIP '
       'WHERE PIP.PhyInvPointNameNo = :PhyInvPointNameNo'
       'AND PIP.OwnerNo = :OWNERNo')
-    Left = 481
-    Top = 62
+    Left = 433
+    Top = 110
     ParamData = <
       item
         Name = 'PHYINVPOINTNAMENO'
@@ -2365,6 +2373,61 @@ object Position: TPosition
         'group by po.PositionName, p.ProductNo, p.ProductDisplayName,  po' +
         '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
       'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
+      ''
+      'UNION'
+      
+        #9'Select distinct Po.PosStatus, po.PositionName, pde.ProductNo, p' +
+        'de.ProductDisplayName,  po.PositionID, Max(pn.StoredDate) as Sto' +
+        'redDate,'
+      ''
+      'pn.REFERENCE,'
+      ' '
+      '(Select Max(PL.ActualLengthMM) FROM dbo.PackageTypeDetail PTD'#9#9
+      
+        'INNER JOIN dbo.ProductLength PL on PL.ProductLengthNo = PTD.Prod' +
+        'uctLengthNo'
+      'WHERE PTD.PackageTypeNo = pn.PackageTypeNo) as MaxLength,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and  pn2.PositionID =  po.PositionID'
+      'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
+      ''
+      '(Select COUNT(pn2.PackageNo) FROM dbo.PackageNumber pn2'
+      
+        'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
+        'etypeno'
+      'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
+      ''
+      'from dbo.PkgInvStat pk'
+      
+        'inner join dbo.PackageNumber pn on pn.PackageNo = pk.packageno a' +
+        'nd pn.SupplierCode = pk.Prefix'
+      
+        'inner  join dbo.Position Po on Po.PositionID = pn.PositionID and' +
+        ' Po.PIPNo = pk.PIPNo'
+      
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      'Left Join dbo.ProductDesc pde ON pde.ProductNo = pt.ProductNo'
+      #9#9#9'AND pde.LanguageID = :LanguageCode '
+      ''
+      'WHERE '
+      'pn.REFERENCE = :Reference'#9
+      'and pk.InvStatus = 1'
+      'and pn.[Status] = 0'
+      'and pk.PIPNo = :PIPNo'
+      
+        'group by po.PositionName, pde.ProductNo, pde.ProductDisplayName,' +
+        '  po.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
+      'Po.PosStatus, pn.REFERENCE, pn.PackageTypeNo '
+      ''
       'order by PosStatus, StoredDate')
     Left = 747
     Top = 59

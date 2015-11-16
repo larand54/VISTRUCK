@@ -363,9 +363,8 @@ type
     acTextPad: TAction;
     acTextPadFS: TAction;
     acNumPad: TAction;
-    TouchKeyboard1: TTouchKeyboard;
     TouchKeyboard2: TTouchKeyboard;
-    TouchKeyboard3: TTouchKeyboard;
+    TouchKeyboard1: TTouchKeyboard;
 
 
     procedure lbRemovePackageClick(Sender: TObject);
@@ -4311,14 +4310,14 @@ end;
 
 procedure TfLoadEntrySSP.acTextPadFSExecute(Sender: TObject);
 begin
-   if not TouchKeyboard2.visible then
+   if not TouchKeyboard1.visible then
     begin
-     TouchKeyboard2.visible := True;
+     TouchKeyboard1.visible := True;
      teFS.setfocus;
     end
    else
    begin
-    TouchKeyboard2.visible := False;
+    TouchKeyboard1.visible := False;
     teFS.setfocus;
    end;
 end;
@@ -5634,13 +5633,13 @@ end;
 
 procedure TfLoadEntrySSP.acNumPadExecute(Sender: TObject);
 begin
-   if not TouchKeyboard3.visible then
+   if not TouchKeyboard2.visible then
     begin
-     TouchKeyboard3.visible := True;
+     TouchKeyboard2.visible := True;
     end
    else
    begin
-    TouchKeyboard3.visible := False;
+    TouchKeyboard2.visible := False;
    end;
    mePackageNo.Enabled := True;
    mePackageNo.SetFocus;

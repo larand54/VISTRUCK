@@ -1333,8 +1333,8 @@ procedure TPosition.cxGrid_AllPositionDBTableView1CellClick(Sender: TcxCustomGri
   ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
   AShift: TShiftState; var AHandled: Boolean);
 var
-   Packageno, SelectedPositionAllID, PackProductNo, MatchaProductNo : Integer;
-   Prefix : String;
+   Packageno, SelectedPositionAllID, PackProductNo, MatchaProductNo, MatchaRefProdNo : Integer;
+   Prefix, MatchaRef, PackProdRef : String;
 begin
    SelectedPositionAllID := Mem_AllPositionPositionID.AsInteger;
 
@@ -1420,6 +1420,55 @@ begin
         End;
 
       Mem_PackProdList.next ;
+     End;
+    Finally
+     Mem_PackProdList.filtered := False ;
+    End;
+
+
+    Mem_PackProdList.filter := 'Vald = 1';
+    Mem_PackProdList.filtered := True ;
+    Try
+    Mem_PackProdList.RecordCount;
+    Mem_PackProdList.first ;
+     while not Mem_PackProdList.eof do
+     Begin
+        PackProductNo := Mem_PackProdListProductNo.AsInteger;
+        Packageno  := Mem_PackProdListPaketnr.AsInteger;
+        Prefix := Mem_PackProdListPktSupplierCode.AsString;
+        PackProdRef := Mem_PackProdListReference.AsString;
+
+     if not Mem_MatchaRef.Active then
+      Mem_MatchaRef.Active := True;
+
+
+      Mem_MatchaRef.filter := 'Vald = 1';
+       Mem_MatchaRef.filtered := True;
+       Try
+         Mem_MatchaRef.RecordCount;
+         Mem_MatchaRef.first ;
+          while not Mem_MatchaRef.eof do
+           Begin
+            MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+            MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
+
+            if (MatchaRef = PackProdRef) AND (MatchaRefProdNo = PackProductNo)
+              AND (Mem_MatchaRefVald.AsInteger = 1) then
+             begin
+              with Mem_MatchaRef do
+              begin
+                Edit;
+                FieldByName('Vald').AsInteger := 0;
+                Post;
+              end;
+             end;
+
+            Mem_MatchaRef.Next;
+           End;
+       Finally
+        Mem_MatchaRef.filtered := False;
+       End;
+       Mem_PackProdList.next ;
      End;
     Finally
      Mem_PackProdList.filtered := False ;
@@ -1588,6 +1637,9 @@ begin
    Finally
      Mem_AllPosition.filtered := False;
    End;
+
+   if not Mem_MatchaRef.Active then
+    Mem_MatchaRef.Active := True;
 
 
       Mem_MatchaRef.filter := 'Vald = 1';

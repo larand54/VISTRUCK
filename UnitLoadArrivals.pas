@@ -5428,14 +5428,15 @@ Var
 begin
 
   if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index] <> null then
-     Scanned  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index]
-  else
-     Scanned  := 0 ;
+     Scanned  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index];
+  //else
+    // Scanned  := 0 ;
 
    if Scanned = 0 then
       AStyle := cxStyleAvraknad
-   else
-      Astyle := cxStyleBlue ;
+   else if Scanned = 1 then
+      Astyle := cxStyleBlue
+
 
 end;
 
