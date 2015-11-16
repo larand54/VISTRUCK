@@ -2393,6 +2393,7 @@ object Position: TPosition
         'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
         'etypeno'
       'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 0'
       'and  pn2.PositionID =  po.PositionID'
       'and pt2.ProductNo = pt.ProductNo ) as NoOfPkgsByProduct,'
       ''
@@ -2401,6 +2402,7 @@ object Position: TPosition
         'inner join dbo.Packagetype pt2 on pt2.packagetypeno = pn2.packag' +
         'etypeno'
       'where pn2.LogicalInventoryPointNo = pn.LogicalInventoryPointNo'
+      'and pn2.[Status] = 0'
       'and  pn2.PositionID =  po.PositionID) as NoOfPkgsByPosition'
       ''
       'from dbo.PkgInvStat pk'
