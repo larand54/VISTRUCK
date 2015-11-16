@@ -431,6 +431,13 @@ type
     cdsSawmillLoadOrdersProducedPKT: TIntegerField;
     cdsSawmillLoadOrdersOrder_AM3: TFloatField;
     cdsSawmillLoadOrdersInternnotering: TStringField;
+    cdsLoadsForLOPosition: TStringField;
+    cdsLoadsForLO_forVWPosition: TStringField;
+    cdsLoadsForLOShortNote: TStringField;
+    cdsLoadsForLO_forVWShortNote: TStringField;
+    updLoadsForLO: TFDUpdateSQL;
+    updLoadsForLO_forVW: TFDUpdateSQL;
+    cdsSawmillLoadOrdersLoadedAM3: TFloatField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;
@@ -458,6 +465,12 @@ type
     procedure cdsSawmillLoadOrdersBeforeScroll(DataSet: TDataSet);
     procedure cds_PropsOrderTypeNoChange(Sender: TField);
     procedure cdsSawmillLoadOrdersUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
+    procedure cdsLoadsForLOUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
+    procedure cdsLoadsForLO_forVWUpdateRecord(ASender: TDataSet;
       ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
       AOptions: TFDUpdateRowOptions);
 
@@ -2269,6 +2282,28 @@ begin
   End ;
 
  dm_Booking.cdsAvropInfo.Active:= False ;
+end;
+
+procedure TdmcOrder.cdsLoadsForLOUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
+begin
+ updLoadsForLO.ConnectionName := cdsLoadsForLO.ConnectionName ;
+ updLoadsForLO.DataSet        := cdsLoadsForLO ;
+ updLoadsForLO.Apply(ARequest, AAction, AOptions) ;
+
+ AAction := eaApplied;
+end;
+
+procedure TdmcOrder.cdsLoadsForLO_forVWUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
+begin
+ updLoadsForLO_forVW.ConnectionName := cdsLoadsForLO_forVW.ConnectionName ;
+ updLoadsForLO_forVW.DataSet        := cdsLoadsForLO_forVW ;
+ updLoadsForLO_forVW.Apply(ARequest, AAction, AOptions) ;
+
+ AAction := eaApplied;
 end;
 
 procedure TdmcOrder.cds_PPNoAfterInsert(DataSet: TDataSet);

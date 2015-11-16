@@ -504,6 +504,9 @@ type
     tkNumPad: TTouchKeyboard;
     grdPkgsDBTableView1Scanned: TcxGridDBColumn;
     cxStyleBlue: TcxStyle;
+    SetFontSize: TdxBarSpinEdit;
+    cxGridTableViewStyleSheetForPkgs: TcxGridTableViewStyleSheet;
+    cxStylePkgsContent: TcxStyle;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -588,6 +591,7 @@ type
     procedure lcVerkPropertiesCloseUp(Sender: TObject);
     procedure acScannedErrorsExecute(Sender: TObject);
     procedure acNumPadExecute(Sender: TObject);
+    procedure SetFontSizeChange(Sender: TObject);
 
 
   private
@@ -1140,8 +1144,7 @@ Begin
           if bcConfirmed.ItemIndex = 2 then
           Begin
             cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
-            cdsArrivingLoads.SQL.Add
-              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
+            cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
           End;
 
 
@@ -3007,6 +3010,13 @@ Begin
  End ; //with
  End ;
 End ;
+
+procedure TfrmLoadArrivals.SetFontSizeChange(Sender: TObject);
+begin
+ cxStylePkgsContent.Font.Size := SetFontSize.IntCurValue ;
+ cxStyle_Focus.Font.Size    := SetFontSize.IntCurValue ;
+// cxStyleGreen2.Font.Size  := dxBarSpinEditContent.IntCurValue ;
+end;
 
 procedure TfrmLoadArrivals.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
