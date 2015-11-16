@@ -384,6 +384,9 @@ type
     cds_ObjecType: TFDQuery;
     cds_ObjecTypeMaxObjectType: TIntegerField;
     cdsLORowsInternnotering: TStringField;
+    sp_SetPosition: TFDStoredProc;
+    cds_LoadPackagesPositionName: TStringField;
+    cds_LoadHeadShortNote: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -431,6 +434,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
    function  OriginalFilter(const Add_AND : Boolean) : String ;
    procedure LoadUserProps (const Form : String) ;
    procedure SaveUserProps ;//(const Form : String) ;
@@ -1696,6 +1700,22 @@ Begin
  End ;
 // cds_Props.Active:= False ;
 End ;
+
+procedure TdmLoadEntrySSP.SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
+Begin
+  Try
+  sp_SetPosition.ParamByName('@PackageNo').AsInteger    :=  PackageNo ;
+  sp_SetPosition.ParamByName('@Prefix').AsString        :=  SupplierCode ;
+  sp_SetPosition.ParamByName('@PositionID').AsInteger   :=  PositionID ;
+  sp_SetPosition.ExecProc ;
+  except
+   On E: Exception do
+   Begin
+    dmsSystem.FDoLog(E.Message) ;
+  // Raise ;
+   End ;
+  End;
+End;
 
 
 end.

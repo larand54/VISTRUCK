@@ -25,7 +25,7 @@ object dmcOrder: TdmcOrder
   end
   object ds_ELOLengths: TDataSource
     DataSet = cds_ELOLengths
-    Left = 472
+    Left = 1040
     Top = 72
   end
   object ds_ELOLayout: TDataSource
@@ -495,6 +495,13 @@ object dmcOrder: TdmcOrder
       'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
       'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedNM3,'
       ''
+      '(Select SUM(pt.Totalm3Actual) FROM dbo.Loaddetail LD'
+      
+        'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
+        'peNo'
+      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedAM3,'
+      ''
       '(Select SUM(SOR.NoOfUnits)'
       'FROM dbo.SortingOrderRow SOR'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,'
@@ -720,6 +727,13 @@ object dmcOrder: TdmcOrder
         'peNo'
       'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
       'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedNM3,'
+      ''
+      '(Select SUM(pt.Totalm3Actual) FROM dbo.Loaddetail LD'
+      
+        'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
+        'peNo'
+      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedAM3,'
       ''
       '(Select SUM(SOR.NoOfUnits)'
       'FROM dbo.SortingOrderRow SOR'
@@ -1346,6 +1360,13 @@ object dmcOrder: TdmcOrder
       ReadOnly = True
       Size = 100
     end
+    object cdsSawmillLoadOrdersLoadedAM3: TFloatField
+      DisplayLabel = 'Lev.AM3'
+      FieldName = 'LoadedAM3'
+      Origin = 'LoadedAM3'
+      ReadOnly = True
+      DisplayFormat = '#,###,###.0'
+    end
   end
   object cdsBooking: TFDQuery
     AfterInsert = cdsBookingAfterInsert
@@ -1606,7 +1627,7 @@ object dmcOrder: TdmcOrder
         'ctLengthNo'
       'WHERE'
       'LL.SupplierShipPlanObjectNo = :SupplierShipPlanObjectNo')
-    Left = 472
+    Left = 1040
     Top = 24
     ParamData = <
       item
@@ -2180,7 +2201,7 @@ object dmcOrder: TdmcOrder
       'and LengthFormat = :LengthFormat'
       'and VolumeFormat = :VolumeFormat'
       'and ArtikelKod = :ArtikelKod')
-    Left = 472
+    Left = 1040
     Top = 136
     ParamData = <
       item
@@ -2550,9 +2571,11 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO: TFDStoredProc
+    OnUpdateRecord = cdsLoadsForLOUpdateRecord
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
-    StoredProcName = 'vida_LoadsForLO_VII'
+    UpdateObject = updLoadsForLO
+    StoredProcName = 'dbo.vida_LoadsForLO_XI'
     Left = 320
     Top = 24
     ParamData = <
@@ -2561,6 +2584,7 @@ object dmcOrder: TdmcOrder
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -2682,6 +2706,18 @@ object dmcOrder: TdmcOrder
     object cdsLoadsForLOPackageEntryOption: TIntegerField
       FieldName = 'PackageEntryOption'
       Origin = 'PackageEntryOption'
+    end
+    object cdsLoadsForLOPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      ReadOnly = True
+      Size = 50
+    end
+    object cdsLoadsForLOShortNote: TStringField
+      DisplayLabel = 'Internnotering'
+      FieldName = 'ShortNote'
+      Origin = 'ShortNote'
+      Size = 150
     end
   end
   object sp_Populate_One_PkgTypeLengths: TFDStoredProc
@@ -3351,8 +3387,10 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO_forVW: TFDStoredProc
+    OnUpdateRecord = cdsLoadsForLO_forVWUpdateRecord
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'vida_LoadsForLO_X'
+    UpdateObject = updLoadsForLO_forVW
+    StoredProcName = 'dbo.vida_LoadsForLO_X2'
     Left = 320
     Top = 144
     ParamData = <
@@ -3479,6 +3517,18 @@ object dmcOrder: TdmcOrder
     object cdsLoadsForLO_forVWPackageEntryOption: TIntegerField
       FieldName = 'PackageEntryOption'
       Origin = 'PackageEntryOption'
+    end
+    object cdsLoadsForLO_forVWPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      ReadOnly = True
+      Size = 50
+    end
+    object cdsLoadsForLO_forVWShortNote: TStringField
+      DisplayLabel = 'Internnotering'
+      FieldName = 'ShortNote'
+      Origin = 'ShortNote'
+      Size = 150
     end
   end
   object sq_Dest: TFDQuery
@@ -3704,5 +3754,89 @@ object dmcOrder: TdmcOrder
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object updLoadsForLO: TFDUpdateSQL
+    InsertSQL.Strings = (
+      'INSERT INTO Loads'
+      '(LoadNo, SupplierNo, LoadedDate, SenderLoadStatus, '
+      '  LoadID, PackageEntryOption, FS, LoadAR, '
+      '  ShippingPlanNo, ShortNote)'
+      
+        'VALUES (:NEW_LoadNo, :NEW_SupplierNo, :NEW_LoadedDate, :NEW_Send' +
+        'erLoadStatus, '
+      '  :NEW_LoadID, :NEW_PackageEntryOption, :NEW_FS, :NEW_LoadAR, '
+      '  :NEW_ShippingPlanNo, :NEW_ShortNote)')
+    ModifySQL.Strings = (
+      'UPDATE Loads'
+      
+        'SET LoadNo = :NEW_LoadNo, SupplierNo = :NEW_SupplierNo, LoadedDa' +
+        'te = :NEW_LoadedDate, '
+      
+        '  SenderLoadStatus = :NEW_SenderLoadStatus, LoadID = :NEW_LoadID' +
+        ', '
+      '  PackageEntryOption = :NEW_PackageEntryOption, FS = :NEW_FS, '
+      '  LoadAR = :NEW_LoadAR, ShippingPlanNo = :NEW_ShippingPlanNo, '
+      '  ShortNote = :NEW_ShortNote'
+      'WHERE LoadNo = :OLD_LoadNo')
+    DeleteSQL.Strings = (
+      'DELETE FROM Loads'
+      'WHERE LoadNo = :OLD_LoadNo')
+    FetchRowSQL.Strings = (
+      
+        'SELECT LoadNo, SupplierNo, LoadedDate, SenderLoadStatus, LoadID,' +
+        ' MsgToShipper, '
+      '  InternalNote, PackageEntryOption, LocalShippingCompanyNo, '
+      
+        '  LocalLoadingLocation, LocalDestinationNo, CreatedUser, Modifie' +
+        'dUser, '
+      '  DateCreated, FS, OriginalSupplierNo, CustomerNo, Notering, '
+      '  LoadOK, LoadAR, ShippingPlanNo, PIPNo, LIPNo, ShowOriginalLO, '
+      '  ShortNote'
+      'FROM Loads'
+      'WHERE LoadNo = :LoadNo')
+    Left = 456
+    Top = 24
+  end
+  object updLoadsForLO_forVW: TFDUpdateSQL
+    InsertSQL.Strings = (
+      'INSERT INTO Loads'
+      '(LoadNo, SupplierNo, LoadedDate, SenderLoadStatus, '
+      '  LoadID, PackageEntryOption, FS, LoadAR, '
+      '  ShippingPlanNo, ShortNote)'
+      
+        'VALUES (:NEW_LoadNo, :NEW_SupplierNo, :NEW_LoadedDate, :NEW_Send' +
+        'erLoadStatus, '
+      '  :NEW_LoadID, :NEW_PackageEntryOption, :NEW_FS, :NEW_LoadAR, '
+      '  :NEW_ShippingPlanNo, :NEW_ShortNote)')
+    ModifySQL.Strings = (
+      'UPDATE Loads'
+      
+        'SET LoadNo = :NEW_LoadNo, SupplierNo = :NEW_SupplierNo, LoadedDa' +
+        'te = :NEW_LoadedDate, '
+      
+        '  SenderLoadStatus = :NEW_SenderLoadStatus, LoadID = :NEW_LoadID' +
+        ', '
+      '  PackageEntryOption = :NEW_PackageEntryOption, FS = :NEW_FS, '
+      '  LoadAR = :NEW_LoadAR, ShippingPlanNo = :NEW_ShippingPlanNo, '
+      '  ShortNote = :NEW_ShortNote'
+      'WHERE LoadNo = :OLD_LoadNo')
+    DeleteSQL.Strings = (
+      'DELETE FROM Loads'
+      'WHERE LoadNo = :OLD_LoadNo')
+    FetchRowSQL.Strings = (
+      
+        'SELECT LoadNo, SupplierNo, LoadedDate, SenderLoadStatus, LoadID,' +
+        ' MsgToShipper, '
+      '  InternalNote, PackageEntryOption, LocalShippingCompanyNo, '
+      
+        '  LocalLoadingLocation, LocalDestinationNo, CreatedUser, Modifie' +
+        'dUser, '
+      '  DateCreated, FS, OriginalSupplierNo, CustomerNo, Notering, '
+      '  LoadOK, LoadAR, ShippingPlanNo, PIPNo, LIPNo, ShowOriginalLO, '
+      '  ShortNote'
+      'FROM Loads'
+      'WHERE LoadNo = :LoadNo')
+    Left = 456
+    Top = 144
   end
 end

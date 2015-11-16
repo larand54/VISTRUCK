@@ -123,7 +123,7 @@ object dmArrivingLoads: TdmArrivingLoads
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 744
+    Left = 728
     Top = 200
     object mtLoadPackagesLoadNo: TIntegerField
       FieldName = 'LoadNo'
@@ -217,7 +217,7 @@ object dmArrivingLoads: TdmArrivingLoads
   end
   object ds_LoadPackages: TDataSource
     DataSet = mtLoadPackages
-    Left = 744
+    Left = 728
     Top = 248
   end
   object mtLoadShippingPlan: TkbmMemTable
@@ -491,7 +491,7 @@ object dmArrivingLoads: TdmArrivingLoads
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 744
+    Left = 728
     Top = 152
     object mtNewPackagesPACKAGETYPENO: TIntegerField
       FieldName = 'PACKAGETYPENO'
@@ -527,12 +527,12 @@ object dmArrivingLoads: TdmArrivingLoads
   end
   object dsrcPortArrivingPackages: TDataSource
     DataSet = cdsPortArrivingPackages
-    Left = 744
+    Left = 728
     Top = 80
   end
   object ds_PksByInventoryPlace: TDataSource
     DataSet = cds_PksByInventoryPlace
-    Left = 728
+    Left = 744
     Top = 528
   end
   object cdsArrivingLoads: TFDQuery
@@ -934,7 +934,6 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cdsArrivingPackages: TFDQuery
-    Active = True
     Indexes = <
       item
         Active = True
@@ -4364,7 +4363,7 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       ' '
       '')
-    Left = 728
+    Left = 744
     Top = 480
     ParamData = <
       item
@@ -4682,7 +4681,7 @@ object dmArrivingLoads: TdmArrivingLoads
       'LSP.LoadNo = :LoadNo'
       'and LSP.ShippingPlanNo = :ShippingPlanNo'
       'AND OL.Reference = :Reference')
-    Left = 744
+    Left = 728
     Top = 24
     ParamData = <
       item

@@ -364,7 +364,18 @@ type
     acTextPadFS: TAction;
     acNumPad: TAction;
     TouchKeyboard2: TTouchKeyboard;
+<<<<<<< HEAD
     TouchKeyboard1: TTouchKeyboard;
+=======
+    TouchKeyboard3: TTouchKeyboard;
+    cxButton4: TcxButton;
+    acSetPositionInAllPkgs: TAction;
+    acSetPositionInSelectedPkgs: TAction;
+    dxBarButton1: TdxBarButton;
+    grdPkgsDBBandedTableView1PositionName: TcxGridDBBandedColumn;
+    PanelNote: TPanel;
+    cxDBTextEdit1: TcxDBTextEdit;
+>>>>>>> origin/master
 
 
     procedure lbRemovePackageClick(Sender: TObject);
@@ -477,11 +488,16 @@ type
     procedure acTextPadExecute(Sender: TObject);
     procedure acTextPadFSExecute(Sender: TObject);
     procedure acNumPadExecute(Sender: TObject);
+    procedure acSetPositionInAllPkgsExecute(Sender: TObject);
+    procedure acSetPositionInSelectedPkgsExecute(Sender: TObject);
+    procedure acSetPositionInAllPkgsUpdate(Sender: TObject);
+    procedure acSetPositionInSelectedPkgsUpdate(Sender: TObject);
 
   private
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     function  GetPositionID : Integer ;
      function  DiffOK : Boolean ;
      Procedure GetLO_Records ;
      procedure EnterLoadWeight(Sender: TObject);
@@ -624,7 +640,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   UnitCRExportOneReport, uSendMapiMail, dmc_UserProps, VidaUtils ,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
-  uEnterLoadWeight, uSelectLORowInLoad;
+  uEnterLoadWeight, uSelectLORowInLoad, uLagerPos;
 
 {$R *.dfm}
 
@@ -3355,6 +3371,102 @@ begin
  acSetDefaultMatchOnAllPkgs.Enabled:=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
 end;
 
+procedure TfLoadEntrySSP.acSetPositionInAllPkgsExecute(Sender: TObject);
+Var Save_Cursor   : TCursor ;
+    PositionID    : Integer ;
+Begin
+ With dmLoadEntrySSP do
+ Begin
+  PositionID    := GetPositionID ;
+  if PositionID > 0 then
+  Begin
+  Save_Cursor   := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  mtLoadPackages.Active := True ;
+  grdPkgsDBBandedTableView1.Controller.SelectAll ;
+  GetMarkedPkgs ;
+
+  cds_LoadPackages.DisableControls ;
+  try
+  ds_LoadPackages2.OnDataChange:= NIL ;
+
+  mtLoadPackages.First ;
+  While not mtLoadPackages.Eof do
+  Begin
+   if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([cds_LoadHeadLoadNo.AsInteger, mtLoadPackagesLoadDetailNo.AsInteger]),[]) then
+   Begin
+    SetPositionOnSelectedPkgs (dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
+      dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, PositionID) ;
+
+   End ;
+   mtLoadPackages.Next ;
+  End ;
+
+  cds_LoadPackages.Refresh ;
+
+  Finally
+   ds_LoadPackages2.OnDataChange:= ds_LoadPackages2DataChange ;
+   mtLoadPackages.Active:= False ;
+   cds_LoadPackages.EnableControls ;
+   Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  End ;
+  End;
+ End ;//with
+end;
+
+procedure TfLoadEntrySSP.acSetPositionInAllPkgsUpdate(Sender: TObject);
+begin
+ acSetPositionInAllPkgs.Enabled:=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
+end;
+
+procedure TfLoadEntrySSP.acSetPositionInSelectedPkgsExecute(Sender: TObject);
+Var Save_Cursor   : TCursor ;
+    PositionID    : Integer ;
+Begin
+ With dmLoadEntrySSP do
+ Begin
+  PositionID    := GetPositionID ;
+  if PositionID > 0 then
+  Begin
+  Save_Cursor   := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  mtLoadPackages.Active := True ;
+
+  GetMarkedPkgs ;
+
+  cds_LoadPackages.DisableControls ;
+  try
+  ds_LoadPackages2.OnDataChange:= NIL ;
+
+  mtLoadPackages.First ;
+  While not mtLoadPackages.Eof do
+  Begin
+   if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([cds_LoadHeadLoadNo.AsInteger, mtLoadPackagesLoadDetailNo.AsInteger]),[]) then
+   Begin
+    SetPositionOnSelectedPkgs (dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
+      dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, PositionID) ;
+
+   End ;
+   mtLoadPackages.Next ;
+  End ;
+
+  cds_LoadPackages.Refresh ;
+
+  Finally
+   ds_LoadPackages2.OnDataChange:= ds_LoadPackages2DataChange ;
+   mtLoadPackages.Active:= False ;
+   cds_LoadPackages.EnableControls ;
+   Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  End ;
+  End;
+ End ;//with
+end;
+
+procedure TfLoadEntrySSP.acSetPositionInSelectedPkgsUpdate(Sender: TObject);
+begin
+ acSetPositionInSelectedPkgs.Enabled:=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
+end;
+
 procedure TfLoadEntrySSP.acPkgInfoUpdate(Sender: TObject);
 begin
  acPkgInfo.Enabled:=  dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0 ;
@@ -3767,12 +3879,12 @@ begin
       cds_LoadPackages.Edit ;
       cds_LoadPackagesDefsspno.AsInteger                := mtLoadPackagesSupplierShipPlanObjectNo.AsInteger ;
       cds_LoadPackagesDefaultCustShipObjectNo.AsInteger := -1 ;
-      cds_LoadPackagesOverrideRL.AsInteger              := 0 ; 
+      cds_LoadPackagesOverrideRL.AsInteger              := 0 ;
       cds_LoadPackagesChanged.AsInteger                 := 1 ;
       cds_LoadPackagesOverrideMatch.AsInteger           := 1 ;
       cds_LoadPackagesPackageOK.AsInteger               := BAD_PKG ;
       cds_LoadPackagesProblemPackageLog.AsString        := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_60' (* 'Manuell koppling' *) ) ;
-//Validera varje paket som har manuell koppling      
+//Validera varje paket som har manuell koppling
       ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
       dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
       dmLoadEntrySSP.cds_LoadPackagesProductLengthNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesNoOfLengths.AsInteger) ;
@@ -6175,4 +6287,35 @@ begin
   mePackageNo.SetFocus ;
 end;
 
+function TfLoadEntrySSP.GetPositionID : Integer ;
+var
+  fLagerPos: TfLagerPos;
+  PIPNo : Integer ;
+begin
+ With dmcOrder, dmsSystem do
+ Begin
+  PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_PropsVerkNo.AsInteger, cds_PropsLoadingLocationNo.AsInteger) ;
+  fLagerPos :=  TfLagerPos.Create(nil);
+  Try
+  if sp_LagerPos.Active then
+   sp_LagerPos.Active :=  False ;
+   sp_LagerPos.ParamByName('@PIPNo').AsInteger  := PIPNo ;
+   sp_LagerPos.Active := True ;
+    if fLagerPos.ShowModal = mrOK then
+    Begin
+     Result :=  sp_LagerPos.FieldByName('PositionID').AsInteger ;
+    End
+    else
+    Result :=  -1 ;
+
+  Finally
+    FreeAndNil(fLagerPos) ;
+    sp_LagerPos.Active  := False ;
+  End;
+ End;
+end;
+
+
 end.
+
+

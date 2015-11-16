@@ -385,6 +385,13 @@
       ProviderFlags = [pfInUpdate]
       OnChange = cds_LoadHeadShowOriginalLOChange
     end
+    object cds_LoadHeadShortNote: TStringField
+      DisplayLabel = 'Internnotering'
+      FieldName = 'ShortNote'
+      Origin = 'ShortNote'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
   end
   object cds_LSP: TFDQuery
     AfterInsert = cds_LSPAfterInsert
@@ -1522,7 +1529,8 @@
       '          LD.OldPackageTypeNo,'
       '          0 AS InvNr,'
       '          ps.PackageSizeName AS Paketstorlek,'
-      '          cw.CertShortName AS Certfiering'
+      '          cw.CertShortName AS Certfiering,'
+      '          PkgPos.PositionName'
       ''
       ''
       'FROM dbo.LoadDetail LD'
@@ -1554,6 +1562,9 @@
       
         ' Left Outer Join dbo.CertificationWood cw on cw.CertNo = pn.Cert' +
         'No'
+      
+        ' Left Outer Join dbo.Position PkgPos on PkgPos.PositionID = PN.P' +
+        'ositionID'
       ''
       'WHERE      LD.LoadNo = :LoadNo'
       ''
@@ -1803,6 +1814,13 @@
       Origin = 'Certfiering'
       ProviderFlags = []
       Size = 5
+    end
+    object cds_LoadPackagesPositionName: TStringField
+      DisplayLabel = 'Position'
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      ProviderFlags = []
+      Size = 50
     end
   end
   object cds_LO_LookUp: TFDQuery
@@ -3547,5 +3565,38 @@
       Origin = 'MaxObjectType'
       ReadOnly = True
     end
+  end
+  object sp_SetPosition: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_SetPosition'
+    Left = 728
+    Top = 528
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prefix'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@PositionID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end
