@@ -370,8 +370,8 @@ type
     grdPkgsDBBandedTableView1PositionName: TcxGridDBBandedColumn;
     PanelNote: TPanel;
     cxDBTextEdit1: TcxDBTextEdit;
->>>>>>> origin/master
-
+    TouchKeyboard1: TTouchKeyboard;
+    TouchKeyboard2: TTouchKeyboard;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
