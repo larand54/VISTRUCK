@@ -363,11 +363,6 @@ type
     acTextPad: TAction;
     acTextPadFS: TAction;
     acNumPad: TAction;
-    TouchKeyboard2: TTouchKeyboard;
-<<<<<<< HEAD
-    TouchKeyboard1: TTouchKeyboard;
-=======
-    TouchKeyboard3: TTouchKeyboard;
     cxButton4: TcxButton;
     acSetPositionInAllPkgs: TAction;
     acSetPositionInSelectedPkgs: TAction;

@@ -165,11 +165,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Width = 179
         end
         object teLoadID: TcxDBTextEdit
-<<<<<<< HEAD
-          Left = 302
-=======
           Left = 384
->>>>>>> origin/master
           Top = 2
           Margins.Left = 4
           Margins.Top = 4
@@ -183,17 +179,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Width = 149
         end
         object teFS: TcxDBTextEdit
-<<<<<<< HEAD
-          Left = 302
-          Top = 26
-=======
           Left = 384
           Top = 32
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
->>>>>>> origin/master
           DataBinding.DataField = 'FS'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           ParentFont = False
@@ -331,17 +322,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Style.IsFontAssigned = True
         end
         object cxLabel7: TcxLabel
-<<<<<<< HEAD
-          Left = 238
-          Top = 8
-=======
           Left = 305
           Top = 10
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
->>>>>>> origin/master
           Caption = 'Last ID:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
@@ -352,17 +338,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Style.IsFontAssigned = True
         end
         object cxLabel8: TcxLabel
-<<<<<<< HEAD
-          Left = 238
-          Top = 30
-=======
           Left = 305
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
->>>>>>> origin/master
           Caption = 'FS:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
@@ -797,23 +778,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           GridView = grdLODBTableView1
         end
       end
-<<<<<<< HEAD
-=======
-      object TouchKeyboard1: TTouchKeyboard
-        Left = 512
-        Top = 74
-        Width = 677
-        Height = 221
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        GradientEnd = clSilver
-        GradientStart = clGray
-        Layout = 'Standard'
-        Visible = False
-      end
->>>>>>> origin/master
     end
     object tsLoadNote: TcxTabSheet
       Margins.Left = 4
@@ -1479,37 +1443,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         GridView = grdLORowsDBBandedTableView1
       end
     end
-<<<<<<< HEAD
-=======
-    object TouchKeyboard2: TTouchKeyboard
-      Left = 517
-      Top = 28
-      Width = 677
-      Height = 222
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'Standard'
-      Visible = False
-    end
-    object TouchKeyboard3: TTouchKeyboard
-      Left = 1201
-      Top = -32
-      Width = 308
-      Height = 222
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'NumPad'
-      Visible = False
-    end
->>>>>>> origin/master
   end
   object PanelPackages: TPanel
     Left = 0

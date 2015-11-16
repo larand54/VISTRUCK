@@ -1207,17 +1207,10 @@ object frmLoadArrivals: TfrmLoadArrivals
     Visible = False
   end
   object tkNumPad: TTouchKeyboard
-<<<<<<< HEAD
-    Left = 1144
-    Top = 634
-    Width = 258
-    Height = 250
-=======
     Left = 1152
     Top = 281
     Width = 318
     Height = 229
->>>>>>> origin/master
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
