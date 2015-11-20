@@ -438,6 +438,7 @@ type
     updLoadsForLO: TFDUpdateSQL;
     updLoadsForLO_forVW: TFDUpdateSQL;
     cdsSawmillLoadOrdersLoadedAM3: TFloatField;
+    cdsSawmillLoadOrdersProduktnotering: TStringField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;

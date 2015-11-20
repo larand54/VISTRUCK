@@ -215,7 +215,6 @@ object dmsContact: TdmsContact
     end
   end
   object cds_Users: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -2381,7 +2380,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.TypeOfRun')
-    Left = 911
+    Left = 919
     Top = 432
     object cds_TypeOfRunTypeOfRunNo: TIntegerField
       FieldName = 'TypeOfRunNo'

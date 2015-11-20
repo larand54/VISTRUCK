@@ -684,6 +684,7 @@ begin
     Finally
       Mem_PackProdList.filter := 'Vald = 1';
       Mem_PackProdList.filtered := True ;
+      Mem_PackProdList.First;
     End;
 end;
 
@@ -705,6 +706,7 @@ begin
     Finally
       Mem_PackProdList.filter := 'Vald = 1';
       Mem_PackProdList.filtered := True ;
+      Mem_PackProdList.First;
     End;
 end;
 
@@ -753,7 +755,7 @@ begin
    Mem_PackProdList.filtered := True ;
    Try
    Mem_PackProdList.RecordCount;
-   //Mem_PackProdList.First;
+   Mem_PackProdList.First;
     while not Mem_PackProdList.eof do
      Begin
       PackageNo := Mem_PackProdListPaketNr.AsInteger;
@@ -837,8 +839,15 @@ begin
   Count := 0;
   PkgCount := 0;
   RecordCount := 0;
+
+ // if Mem_PackProdList.State in  [dsEdit, dsInsert] then
+  // Mem_PackProdList.post ;
+
    Mem_PackProdList.filter := 'Vald = 1';
    Mem_PackProdList.filtered := True ;
+
+   PkgCount := Mem_PackProdList.RecordCount;
+
    Mem_MatchaProduct.filter := 'Vald = 1';
    Mem_MatchaProduct.filtered := True ;
    Mem_AllPosition.filter := 'Vald = 1';
@@ -868,9 +877,9 @@ begin
    Mem_PackProdList.filtered := True ;
    Try
    PkgCount := Mem_PackProdList.RecordCount;
-   //Mem_PackProdList.First;
-   //while not Mem_PackProdList.eof do
-   while not (Count = PkgCount) do
+   Mem_PackProdList.First;
+//   while not (Count = PkgCount) do
+   while not Mem_PackProdList.eof do
      Begin
       Inc(Count);
       MatchaFlag := False;
@@ -922,11 +931,9 @@ begin
                  Finally
                   Mem_MatchaProduct.Filtered := False;
                  End;
-
-               end
-              else
-                Mem_PackProdList.Next;
-
+               end;
+             // else
+             //   Mem_MatchaProduct.Next;
             end
             else
             begin
@@ -945,10 +952,9 @@ begin
                  Finally
                   Mem_MatchaProduct.Filtered := False;
                  End;
-               end
-              else
-               Mem_PackProdList.Next;
-
+               end;
+             // else
+             //  Mem_MatchaProduct.Next;
             end;
            Finally
              Mem_MatchaProduct.Filtered := False;
@@ -985,11 +991,9 @@ begin
                  Finally
                   Mem_MatchaRef.Filtered := False;
                  End;
-
-               end
-              else
-                Mem_MatchaRef.Next;
-
+               end;
+             // else
+             //   Mem_MatchaRef.Next;
             end
             else
             begin
@@ -1008,10 +1012,9 @@ begin
                  Finally
                   Mem_MatchaRef.Filtered := False;
                  End;
-               end
-              else
-               Mem_PackProdList.Next;
-
+               end;
+             // else
+             //  Mem_MatchaRef.Next;
             end;
            Finally
              Mem_MatchaRef.Filtered := False;
@@ -1031,7 +1034,7 @@ begin
 
       if MatchaFlag then
        begin
-            Mem_PackProdList.Delete;
+        Mem_PackProdList.Delete;
        end
       else
        begin
@@ -1039,6 +1042,9 @@ begin
        end;
      End;
 
+
+
+    Packageno := 0;
     Mem_StorePosition.Open;
     Mem_StorePosition.RecordCount;
     Mem_StorePosition.first ;
@@ -1070,7 +1076,7 @@ begin
      dmArrivingLoads.AddPkgTo_PackageARConfirmed(Packageno, LoadNo, Mem_StorePositionScanned.AsInteger, Prefix) ;
 
      Mem_StorePosition.Delete;
-     //DS_StorePosition.DataSet.Delete;
+
 
      End;
 

@@ -386,6 +386,7 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
+    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -528,7 +529,8 @@ object dmcOrder: TdmcOrder
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
       ''
       'SP.ActualM3Net AS Order_AM3,'
-      'SP.InternRowNote AS Internnotering'
+      'SP.InternRowNote AS Internnotering,'
+      'SP.InternalNote AS Produktnotering'
       'FROM   dbo.Client_LoadingLocation     CLL'
       
         'INNER JOIN dbo.SupplierShippingPlan       SP    ON  SP.LoadingLo' +
@@ -761,7 +763,8 @@ object dmcOrder: TdmcOrder
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
       ''
       'SP.ActualM3Net AS Order_AM3,'
-      'SP.InternRowNote AS Internnotering'
+      'SP.InternRowNote AS Internnotering,'
+      'SP.InternalNote AS Produktnotering'
       ''
       'FROM   dbo.Client_LoadingLocation     CLL'
       
@@ -1366,6 +1369,12 @@ object dmcOrder: TdmcOrder
       Origin = 'LoadedAM3'
       ReadOnly = True
       DisplayFormat = '#,###,###.0'
+    end
+    object cdsSawmillLoadOrdersProduktnotering: TStringField
+      FieldName = 'Produktnotering'
+      Origin = 'Produktnotering'
+      ProviderFlags = []
+      ReadOnly = True
     end
   end
   object cdsBooking: TFDQuery
@@ -2619,6 +2628,7 @@ object dmcOrder: TdmcOrder
       DisplayLabel = 'Lastnr'
       FieldName = 'LoadNo'
       Origin = 'LoadNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsLoadsForLOLoadID: TStringField

@@ -6287,9 +6287,10 @@ var
   fLagerPos: TfLagerPos;
   PIPNo : Integer ;
 begin
- With dmcOrder, dmsSystem do
+ With dmLoadEntrySSP, dmsSystem do
  Begin
-  PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_PropsVerkNo.AsInteger, cds_PropsLoadingLocationNo.AsInteger) ;
+//  PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_PropsVerkNo.AsInteger, cds_PropsLoadingLocationNo.AsInteger) ;
+  PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_LoadHeadSupplierNo.AsInteger, cdsLORowsLoadingLocationNo.AsInteger) ;
   fLagerPos :=  TfLagerPos.Create(nil);
   Try
   if sp_LagerPos.Active then
