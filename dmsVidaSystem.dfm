@@ -436,7 +436,6 @@ object dmsSystem: TdmsSystem
       end>
   end
   object cds_Grade_SV: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -461,7 +460,6 @@ object dmsSystem: TdmsSystem
     end
   end
   object cds_Surfacing_SV: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -533,7 +531,6 @@ object dmsSystem: TdmsSystem
     Top = 184
   end
   object cds_Species_SV: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -4356,6 +4353,7 @@ object dmsSystem: TdmsSystem
       end>
   end
   object sp_LagerPos: TFDStoredProc
+    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Position'
     Left = 1136
@@ -5169,7 +5167,6 @@ object dmsSystem: TdmsSystem
     Top = 904
   end
   object cds_ProdCatg: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

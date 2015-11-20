@@ -60,6 +60,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsBehavior.PullFocusing = True
+      OptionsCustomize.DataRowSizing = True
       OptionsData.Deleting = False
       OptionsData.Editing = False
       OptionsData.Inserting = False
@@ -69,9 +70,9 @@ object frmLoadArrivals: TfrmLoadArrivals
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True
       Styles.Content = cxStyle_Focus
-      Styles.ContentEven = cxStyle_Focus
-      Styles.ContentOdd = cxStyle_Focus
-      Styles.Selection = cxStyle_Focus
+      Styles.ContentEven = cxStyle10
+      Styles.ContentOdd = cxStyle10
+      Styles.Selection = cxStyle42
       Styles.OnGetContentStyle = grdLoadsDBTableView1StylesGetContentStyle
       object grdLoadsDBTableView1LO: TcxGridDBColumn
         DataBinding.FieldName = 'LO'

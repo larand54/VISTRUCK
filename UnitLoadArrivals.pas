@@ -3014,7 +3014,7 @@ End ;
 procedure TfrmLoadArrivals.SetFontSizeChange(Sender: TObject);
 begin
  cxStylePkgsContent.Font.Size := SetFontSize.IntCurValue ;
- cxStyle_Focus.Font.Size    := SetFontSize.IntCurValue ;
+ cxStyle10.Font.Size    := SetFontSize.IntCurValue ;
 // cxStyleGreen2.Font.Size  := dxBarSpinEditContent.IntCurValue ;
 end;
 
@@ -5409,10 +5409,15 @@ begin
 //  if ANode.Values[iObjectTypeColumn] <> null then
 //  Begin
   // Set the color for this row, based on LO status
-   if PackagesConfirmed > 0 then
-    AStyle :=   cxStyleAvraknad ; //Gul
-   if NoOfPackages = PackagesConfirmed then
-    AStyle := cxStyleGreen ;
+
+
+
+       if PackagesConfirmed > 0 then
+         AStyle :=   cxStyleAvraknad ; //Gul
+        if NoOfPackages = PackagesConfirmed then
+         AStyle := cxStyleGreen ;
+
+
 
 //   if AColor <> clOlive then
 //   AColor :=
@@ -5437,15 +5442,17 @@ Var
   Used  : Integer ;
 begin
 
-  if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index] <> null then
-     Scanned  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index];
-  //else
-    // Scanned  := 0 ;
 
-   if Scanned = 0 then
-      AStyle := cxStyleAvraknad
-   else if Scanned = 1 then
-      Astyle := cxStyleBlue
+    if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index] <> null then
+       Scanned  := ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Scanned').Index];
+    //else
+      // Scanned  := 0 ;
+
+     if Scanned = 0 then
+        AStyle := cxStyleAvraknad
+     else if Scanned = 1 then
+        Astyle := cxStyleBlue
+
 
 
 end;
@@ -6312,12 +6319,14 @@ Begin
   with sp_LagerPos do
   begin
 //    DisableControls;
+    PIPNo  := dmsContact.GetPIPNoOfCityNoByOwnerNo(cds_PropsVerkNo.AsInteger, cds_PropsBookingTypeNo.AsInteger) ;
+    sp_LagerPos.ParamByName('@PIPNo').AsInteger  := PIPNo ;
     Active  := True ;
     Try
     First;
     while not Eof do
     begin
-      TcxComboBoxProperties(grdPkgsDBTableView1Info2.Properties).Items.Add(FieldByName('LagerPositionText').AsString);
+      TcxComboBoxProperties(grdPkgsDBTableView1Info2.Properties).Items.Add(FieldByName('PositionName').AsString);
       Next;
     end;
     Finally
