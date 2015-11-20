@@ -83,3 +83,5 @@ __history/
 *.sil
 *.dic
 fMain.pas
+UnitLoadArrivals.dfm
+dmsDataConn.dfm
