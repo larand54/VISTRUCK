@@ -68,6 +68,8 @@ uses
   Const
     CM_MOVEIT = WM_USER + 1;
 
+    UM_AFTERDETAILCHANGEINQ = WM_USER + 10000;
+
 type
   TeFdate32 = (modD, creaD, accD);
 
@@ -547,6 +549,9 @@ type
     procedure Timer3Timer(Sender: TObject);
     procedure teReferensKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure grdFSDBTableView1DblClick(Sender: TObject);
+    procedure grdFSDBTableView1InitEdit(Sender: TcxCustomGridTableView;
+      AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit);
 
   private
     { Private declarations }
@@ -555,6 +560,9 @@ type
     SearchOneLO : Boolean ;
     SupplierShipPlanObjectNo : Integer ;
     OrderTypeChanged   : Boolean ;
+    procedure CancelChangesExecute ;
+    procedure SaveChangesExecute ;
+    procedure UmAfterDetailChangeINQ(var Message: TMessage); message UM_AFTERDETAILCHANGEINQ;
     function  GetPositionID : Integer ;
     procedure PreviewCMR(Sender: TObject) ;
     procedure PrintDirectCMR(Sender: TObject);
@@ -564,7 +572,7 @@ type
     procedure ClearLOTab ;
     procedure AddLoadNoTab(const LONo, LoadNo : String) ;
 //    procedure OpenUtlastningsSpec(Sender: TObject);
-    procedure OpenNormalLoad(Sender: TObject;const LONo, LoadNo : Integer);
+    function  OpenNormalLoad(const LONo, LoadNo : Integer) : Boolean ;
     procedure BuildVIDAWOODGetOne_LO_SQL(Sender: TObject);
 //    procedure CleanFromNotWantedFiles ;
 //    procedure AddLONosToFileName ;
@@ -584,7 +592,7 @@ type
     function  DataSaved : Boolean ;
     procedure ProtectTheData;
     procedure BuildLOSQL(Sender: TObject;const LONo : Integer);
-    procedure CheckIfChangesUnSaved(Sender:TObject) ;
+    procedure CheckIfChangesUnSaved ;
     procedure RefreshLoadOrders(Sender: TObject);
     procedure GotoMyBookmark(Sender: TObject) ;
     procedure SetMyBookmark(Sender: TObject) ;
@@ -643,6 +651,25 @@ uses
   //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
   uLagerPos;
+
+procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
+Begin
+ if OpenNormalLoad(grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
+ grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) then
+ begin
+  // grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger) ;
+   SetPanelToShowAndHide ;
+
+   if assigned(fLoadEntrySSP) then
+   begin
+    if fLoadEntrySSP.mePackageNo.Enabled then
+     fLoadEntrySSP.mePackageNo.SetFocus
+      else
+       fLoadEntrySSP.grdLORows.SetFocus ;
+   end;
+ end;
+End;
+
 
 procedure TfrmVisTruckLoadOrder.CMMoveIt(var Msg: TMessage);
 var AGoForward: Boolean;
@@ -732,7 +759,7 @@ end;
 procedure TfrmVisTruckLoadOrder.atRefreshExecute(Sender: TObject);
 begin
  SetMyBookMark(Sender) ;
- CheckIfChangesUnSaved(Sender) ;
+ CheckIfChangesUnSaved ;
 // if cbShowAll.Checked then
 //  Begin
    BuildLOSQL(Sender, -1) ;
@@ -891,7 +918,7 @@ begin
 
 {  if clFTP.Active then
   clFTP.Close() ;  }
-  CheckIfChangesUnSaved(Sender) ;
+  CheckIfChangesUnSaved ;
   SaveUserPreferences;
 
   CloseDataSet;
@@ -1219,7 +1246,7 @@ Begin
 End ;
 
 begin
-CheckIfChangesUnSaved(Sender) ;
+CheckIfChangesUnSaved ;
 
 // icStatusChange(Sender) ;
  With dmcOrder do
@@ -1607,7 +1634,7 @@ CheckIfChangesUnSaved(Sender) ;
  End ;
 end;
 
-procedure TfrmVisTruckLoadOrder.CheckIfChangesUnSaved(Sender:TObject) ;
+procedure TfrmVisTruckLoadOrder.CheckIfChangesUnSaved ;
 Begin
  if dmcOrder.cdsBooking.State = dsEdit then
   dmcOrder.cdsBooking.Post ;
@@ -1617,9 +1644,9 @@ Begin
  if (dmcOrder.cdsSawmillLoadOrders.ChangeCount > 0) OR (dmcOrder.cdsBooking.ChangeCount > 0) then
  if MessageDlg(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_1' (* 'Vill du spara ändringar?' *) ),
     mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-   acSaveChangesExecute(Sender)
+   SaveChangesExecute
     else
-     acCancelChangesExecute(Sender) ;
+     CancelChangesExecute ;
 End ;
 
 procedure TfrmVisTruckLoadOrder.SetMyBookmark(Sender: TObject) ;
@@ -1689,7 +1716,7 @@ begin
     Exit ;
 
  dmcOrder.cdsSawmillLoadOrders.Active:= False ;
- CheckIfChangesUnSaved(Sender) ;
+ CheckIfChangesUnSaved ;
  RefreshLoadOrders(Sender);
  if (dmcOrder.cdsSawmillLoadOrders.Active) and (dmcOrder.cdsSawmillLoadOrders.RecordCount = 0) then
   Begin
@@ -1735,7 +1762,7 @@ begin
 
 // cbOrderType.Properties.OnChange:= nil ;
  Try
- CheckIfChangesUnSaved(Sender) ;
+ CheckIfChangesUnSaved ;
 // icStatusChange(Sender) ;
  With dmcOrder do
  Begin
@@ -2212,7 +2239,7 @@ begin
  Ref            := teRef.Text ;
 // cbOrderType.Properties.OnChange:= nil ;
  Try
- CheckIfChangesUnSaved(Sender) ;
+ CheckIfChangesUnSaved ;
 // icStatusChange(Sender) ;
  With dmcOrder do
  Begin
@@ -3045,10 +3072,13 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acSaveChangesExecute(Sender: TObject);
 begin
+  SaveChangesExecute ;
+end;
+
+procedure TfrmVisTruckLoadOrder.SaveChangesExecute ;
+begin
  With dmcOrder do
  Begin
-//  acSkapaPaketKoderExecute(Sender) ;
-
   if dm_Booking.cdsVoyage.State = dsEdit then
    dm_Booking.cdsVoyage.Post ;
 
@@ -3078,6 +3108,12 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.acCancelChangesExecute(Sender: TObject);
+begin
+  CancelChangesExecute ;
+end;
+
+
+procedure TfrmVisTruckLoadOrder.CancelChangesExecute ;
 begin
  if dmcOrder.cdsSawmillLoadOrders.ChangeCount > 0 then
      dmcOrder.cdsSawmillLoadOrders.CancelUpdates ;
@@ -3185,19 +3221,20 @@ begin
 //  if grdFSDBTableView1.DataController.DataSource.DataSet.FieldByName('PackageEntryOption').AsInteger = 1 then
 //   OpenUtlastningsSpec(Sender)
 //    else
- OpenNormalLoad(Sender,
- grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
- grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) ;
-// grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger) ;
- SetPanelToShowAndHide ;
+ if OpenNormalLoad(grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
+ grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) then
+ Begin
+  // grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger) ;
+   SetPanelToShowAndHide ;
 
- if assigned(fLoadEntrySSP) then
- begin
-  if fLoadEntrySSP.mePackageNo.Enabled then
-   fLoadEntrySSP.mePackageNo.SetFocus
-    else
-     fLoadEntrySSP.grdLORows.SetFocus ;
- end;
+   if assigned(fLoadEntrySSP) then
+   begin
+    if fLoadEntrySSP.mePackageNo.Enabled then
+     fLoadEntrySSP.mePackageNo.SetFocus
+      else
+       fLoadEntrySSP.grdLORows.SetFocus ;
+   end;
+ End;
 end;
 
 (*procedure TfrmLoadOrder.AddLoadNoToList(const LoadNo, LONo : Integer);
@@ -3284,7 +3321,7 @@ begin
         BuildGetOne_LO_SQL (Sender) ;
 
      dmcOrder.cdsSawmillLoadOrders.Active:= False ;
-     CheckIfChangesUnSaved(Sender) ;
+     CheckIfChangesUnSaved ;
      RefreshLoadOrders(Sender);
      SearchOneLO:= True ;
      ShowLoadsForLO(cdsSawmillLoadOrdersLONumber.AsInteger);
@@ -4199,6 +4236,19 @@ begin
  pmPrint.Popup(300,200);
 end;
 
+procedure TfrmVisTruckLoadOrder.grdFSDBTableView1DblClick(Sender: TObject);
+begin
+
+  PostMessage (Handle, UM_AFTERDETAILCHANGEINQ, 0, 0);
+end;
+
+procedure TfrmVisTruckLoadOrder.grdFSDBTableView1InitEdit(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit);
+begin
+ AEdit.OnDblClick:= grdFSDBTableView1DblClick ;
+end;
+
 procedure TfrmVisTruckLoadOrder.grdFSDBTableView1StylesGetContentStyle(
   Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
@@ -4552,7 +4602,7 @@ end;
   *)
 
 
-procedure TfrmVisTruckLoadOrder.OpenNormalLoad(Sender: TObject;const LONo, LoadNo : Integer);
+function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer) : Boolean ;
 Var LSupplierNo     : Integer ;
     ReservedByUser  : String ;
 begin
@@ -4564,8 +4614,11 @@ begin
  if Length(ReservedByUser) > 0 then
  begin
   ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_21' (* 'Cannot open, Load is locked by user ' *) ) + ReservedByUser) ;
+  Result  := False ;
   Exit ;
- end;
+ end
+  else
+   Result  := True ;
 
   CreateLoadForm ;
 
@@ -4582,7 +4635,7 @@ begin
     if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then
     if LoadNo < 1 then
     Exit ;
-    CheckIfChangesUnSaved(Sender) ;
+    CheckIfChangesUnSaved ;
     fLoadEntrySSP.CreateWithExistingLoad(
 
         //dmcOrder.SupplierNo,
@@ -4595,8 +4648,6 @@ begin
         grdLODBTableView1.DataController.DataSet.FieldByName('SPCustomerNo').AsInteger
         ) ;
         fLoadEntrySSP.Show ;
-
-
 
         Application.ProcessMessages ;
 
@@ -4681,12 +4732,13 @@ begin
   LONoLoadNo := tcLO.Tabs.Strings[tcLO.TabIndex] ;
   LONo       := StrToInt(Copy(LONoLoadNo, 1, POS('/', LONoLoadNo)-1 )) ;
   LoadNo     := StrToInt(Copy(LONoLoadNo, POS('/', LONoLoadNo)+1, Length(LONoLoadNo) )) ;
-  OpenNormalLoad(Sender, LONo, LoadNo) ;
-
-  if fLoadEntrySSP.mePackageNo.Enabled then
-   fLoadEntrySSP.mePackageNo.SetFocus
-    else
-     fLoadEntrySSP.grdLORows.SetFocus ;
+  if OpenNormalLoad(LONo, LoadNo) then
+  begin
+    if fLoadEntrySSP.mePackageNo.Enabled then
+     fLoadEntrySSP.mePackageNo.SetFocus
+      else
+       fLoadEntrySSP.grdLORows.SetFocus ;
+  end;
 
  End
    else

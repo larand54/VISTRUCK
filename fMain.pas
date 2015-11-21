@@ -206,6 +206,7 @@ type
     procedure acDeRegisterPackagesExecute(Sender: TObject);
 
   private
+    OriginalUserID  : Integer ;
     a : String ;
     function  SelectSortingOrderNo : Integer ;
     procedure AvregistreraPaket ;
@@ -468,6 +469,7 @@ begin
      else
       if dmsConnector.FDConnection1.Connected then
       Begin
+       OriginalUserID := ThisUser.UserID ;
        lCaption  := Forms.Application.Title + '/' + dmsConnector.GetCompanyName (ThisUser.CompanyNo) + '/' + ThisUser.UserName + ' ver ' + GetVersion
        + ' - ' + dmsConnector.FDConnection1.Params.Values['Server']
        + '/' + dmsConnector.FDConnection1.Params.Values['Database'] + ' ' ;
@@ -575,23 +577,36 @@ end;
 procedure TfrmMain.acBytAnvandareExecute(Sender: TObject);
 var OKHelpBottomDlg: TOKHelpBottomDlg;
 begin
- if (Trim(dmsConnector.Get_AD_Name) = 'VIDA\johlis')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\larmak')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\admin')
- or (Trim(dmsConnector.Get_AD_Name) = 'Lars')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\krikuh')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\jenjoh')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\marhug')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\annjon')
- or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\kritom')
- or (Trim(dmsConnector.Get_AD_Name) = 'sa')
- then
+{
+   if (Trim(dmsConnector.Get_AD_Name) = 'VIDA\johlis')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\larmak')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\admin')
+   or (Trim(dmsConnector.Get_AD_Name) = 'Lars')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\krikuh')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\jenjoh')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\marhug')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\annjon')
+   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\kritom')
+   or (Trim(dmsConnector.Get_AD_Name) = 'sa')
+   then
+   Begin
+   if FormOpen then
+   Begin
+    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_9' (* 'Stäng alla formulär först!' *) ));
+    Exit ;
+   End ;
+}
+
+
+ if dmsConnector.CanChangeUser(OriginalUserID) then
  Begin
  if FormOpen then
  Begin
-  ShowMessage(siLangLinked1.GetTextOrDefault('IDS_9' (* 'Stäng alla formulär först!' *) ));
+  ShowMessage('Close all forms first.');
   Exit ;
  End ;
+
+
  OKHelpBottomDlg:= TOKHelpBottomDlg.Create(nil);
  try
  if OKHelpBottomDlg.ShowModal = mrOK then

@@ -605,6 +605,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
             PropertiesClassName = 'TcxLabelProperties'
           end
           object grdLODBTableView1Produktnotering: TcxGridDBColumn
+            Caption = 'Internnotering'
             DataBinding.FieldName = 'Produktnotering'
           end
         end
@@ -1224,8 +1225,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         TabOrder = 0
         ExplicitHeight = 831
         object grdFSDBTableView1: TcxGridDBTableView
-          OnDblClick = acOpenLoadExecute
+          OnDblClick = grdFSDBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
+          OnInitEdit = grdFSDBTableView1InitEdit
           DataController.DataSource = dmcOrder.dsrcLoadsForLO
           DataController.KeyFieldNames = 'LoadNo'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1276,7 +1278,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           DataController.Summary.Options = [soMultipleSelectedRecords]
           OptionsData.Deleting = False
           OptionsData.Inserting = False
-          OptionsSelection.MultiSelect = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.Footer = True
           OptionsView.GroupByBox = False

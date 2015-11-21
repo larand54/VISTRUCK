@@ -63,6 +63,7 @@ type
     Org_AD_Name : String ;
     Org_DB_Name : String ;
 //    DeleteTdmVidaInvoice  : Boolean ;
+    function  CanChangeUser(const OriginalUserID : Integer)  : Boolean ;
     procedure DeleteSecondNo(const TableName: String; const PrimaryKeyValue: Integer) ;
     function  GetSOPkgNo(Var Prefix : String3;const ProducerNo, RegPointNo, SeriesType : Integer): Integer ;
     function  GetHostName(const UserID : Integer)  : String ;
@@ -106,6 +107,25 @@ uses
 
 
 {$R *.dfm}
+
+
+function TdmsConnector.CanChangeUser(const OriginalUserID : Integer)  : Boolean ;
+Var AD_Name : String ;
+Begin
+  Result  := False ;
+  sp_GetUserStartHost.ParamByName('@UserID').AsInteger  :=  OriginalUserID ;
+  sp_GetUserStartHost.ParamByName('@AppDir').AsString   :=  'Main' ;
+  sp_GetUserStartHost.Active  :=  True ;
+  Try
+  if not sp_GetUserStartHost.Eof then
+  Begin
+   if sp_GetUserStartHostCanChangeUser.AsInteger = 1 then
+    Result := True ;
+  End;
+  Finally
+    sp_GetUserStartHost.Active  := False ;
+  End;
+End;
 
 procedure TdmsConnector.DeleteSecondNo(const TableName: String; const PrimaryKeyValue: Integer) ;
 Begin
