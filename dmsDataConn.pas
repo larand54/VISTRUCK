@@ -108,7 +108,6 @@ uses
 
 {$R *.dfm}
 
-
 function TdmsConnector.CanChangeUser(const OriginalUserID : Integer)  : Boolean ;
 Var AD_Name : String ;
 Begin

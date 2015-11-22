@@ -312,6 +312,18 @@ type
     Mem_PackProdListScanned: TIntegerField;
     Mem_StorePositionScanned: TIntegerField;
     Mem_StorePositionDateCreated: TDateTimeField;
+    Mem_PackProdListDateCreated: TDateTimeField;
+    sp_MatchRef: TFDStoredProc;
+    sp_MatchRefPosStatus: TIntegerField;
+    sp_MatchRefPositionName: TStringField;
+    sp_MatchRefProductNo: TIntegerField;
+    sp_MatchRefProductDisplayName: TStringField;
+    sp_MatchRefPositionID: TIntegerField;
+    sp_MatchRefStoredDate: TSQLTimeStampField;
+    sp_MatchRefREFERENCE: TStringField;
+    sp_MatchRefMaxLength: TFloatField;
+    sp_MatchRefNoOfPkgsByProduct: TIntegerField;
+    sp_MatchRefNoOfPkgsByPosition: TIntegerField;
     procedure btnStorePositionClick(Sender: TObject);
     procedure cxGrid_MatchPositionDBTableView1CellClick(
       Sender: TcxCustomGridTableView;
@@ -364,6 +376,8 @@ implementation
 
 {$R *.dfm}
 
+uses dmsDataConn;
+
 procedure TPosition.ShowPaketNrList(PaketNr, Scanned : Integer; pkgSupplierCode : String);
 var
   //PaketNrList, ProductNrList, ProductNamnList : TStringList;
@@ -373,6 +387,8 @@ var
   ProductNo, MaxLength : Integer;
 begin
 
+  Mem_PackProdList.disablecontrols ;
+  Try
   ProductNoList := TStringList.Create;
 
   FDQ_ProductNo.Close;
@@ -388,8 +404,10 @@ begin
   PakagePanel.Visible := True;
   grid_ProductList.Visible := True;
 
+  Mem_PackProdList.IndexName := 'Mem_packlistindex01';
   if (not Mem_PackProdList.Active) OR (not Mem_PackProdList.FindKey([PaketNr,pkgSupplierCode])) then
   begin
+    Mem_PackProdList.IndexName := 'DateCreated';
     with Mem_PackProdList do
     begin
       Open;
@@ -402,6 +420,7 @@ begin
       FieldByName('MaxLength').AsInteger := MaxLength;
       FieldByName('Reference').AsString := Reference;
       FieldByName('Scanned').AsInteger := Scanned;
+      FieldByName('DateCreated').AsDateTime := Now;
       Post;
     end;
 
@@ -414,47 +433,55 @@ begin
    ShowMatchaRef(Reference);
 
   end;
+  Finally
+    Mem_PackProdList.Enablecontrols ;
+  End;
 end;
 
 procedure TPosition.ShowMatchaRef(Reference: String);
 var
  RecordCount, Count : Integer;
 begin
+   Mem_MatchaRef.DisableControls;
+   Try
     if (not Mem_MatchaRef.Active) OR (not Mem_MatchaRef.Locate('Reference', Reference,[])) then
     begin
       grid_Matcha_Ref.Visible := True;
-      FDQ_MatchaRef.Close;
-      FDQ_MatchaRef.ParamByName('Reference').AsString := Reference;
-      FDQ_MatchaRef.ParamByName('PIPNo').AsInteger := dmArrivingLoads.PIPNo ;
-      FDQ_MatchaRef.ParamByName('LanguageCode').AsInteger  := ThisUser.LanguageID ;
-      FDQ_MatchaRef.Open;
-      RecordCount :=  FDQ_MatchaRef.recordcount;
+      sp_MatchRef.Close;
+      sp_MatchRef.ParamByName('@Reference').AsString      := Reference;
+      sp_MatchRef.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;
+      sp_MatchRef.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;
+      sp_MatchRef.Open;
+      RecordCount :=  sp_MatchRef.recordcount;
       if RecordCount > 0 then
        begin
         Count := 1;
-        FDQ_MatchaRef.First;
-        while not FDQ_MatchaRef.Eof do
+        sp_MatchRef.First;
+        while not sp_MatchRef.Eof do
         begin
           with Mem_MatchaRef do
           begin
             Open;
             Append;
-            FieldByName('Vald').AsInteger := 0;
-            FieldByName('Fullt').AsInteger := FDQ_MatchaRefPosStatus.AsInteger;
-            FieldByName('PositionName').AsString := FDQ_MatchaRefPositionName.AsString;
-            FieldByName('ProductName').AsString := FDQ_MatchaRefProductDisplayName.AsString;
-            FieldByName('NoOfPkgs').AsInteger := FDQ_MatchaRefNoOfPkgsByPosition.AsInteger;
-            FieldByName('ProductNo').AsInteger := FDQ_MatchaRefProductNo.AsInteger;
-            FieldByName('PositionID').AsInteger := FDQ_MatchaRefPositionID.AsInteger;
-            FieldByName('Reference').AsString := FDQ_MatchaRefREFERENCE.AsString;
-            FieldByName('MaxLength').AsInteger := FDQ_MatchaRefMaxLength.AsInteger;
+            FieldByName('Vald').AsInteger           := 0;
+            FieldByName('Fullt').AsInteger          := sp_MatchRefPosStatus.AsInteger;
+            FieldByName('PositionName').AsString    := sp_MatchRefPositionName.AsString;
+            FieldByName('ProductName').AsString     := sp_MatchRefProductDisplayName.AsString;
+            FieldByName('NoOfPkgs').AsInteger       := sp_MatchRefNoOfPkgsByPosition.AsInteger;
+            FieldByName('ProductNo').AsInteger      := sp_MatchRefProductNo.AsInteger;
+            FieldByName('PositionID').AsInteger     := sp_MatchRefPositionID.AsInteger;
+            FieldByName('Reference').AsString       := sp_MatchRefREFERENCE.AsString;
+            FieldByName('MaxLength').AsInteger      := sp_MatchRefMaxLength.AsInteger;
             Post;
             Inc(Count);
           end;
-          FDQ_MatchaRef.Next;
+          sp_MatchRef.Next;
         end;
      end;
     end;
+   Finally
+     Mem_MatchaRef.EnableControls;
+   End;
 
 
 end;
@@ -465,6 +492,8 @@ var
 
    I : Integer;
  begin
+  Mem_AllPosition.DisableControls ;
+  Try
    PageControl_Position.Visible := True;
    PageControl_Position.ActivePage := TabSheet_Match;
 
@@ -508,6 +537,9 @@ var
         listboxAll.Items.EndUpdate;
   *)
 
+  Finally
+    Mem_AllPosition.EnableControls ;
+  End;
 end;
 
 procedure TPosition.MatchaPosition(ProductNo: Integer; MaxLength : Integer; Reference : String);
@@ -516,6 +548,8 @@ var
    PrevReference : String;
    ValdFlag : Boolean;
 begin
+ Mem_MatchaProduct.DisableControls ;
+ Try
   begin
     if (not Mem_MatchaProduct.Active) OR (not Mem_MatchaProduct.Locate('ProductNo', ProductNo,[])) then
     begin
@@ -555,25 +589,7 @@ begin
           end;
           FDQ_ProdRefLength.Next;
         end;
-     end;
-    end;
-
-(*
-        Mem_MatchaProduct.Filter := 'Vald = 1';
-        Mem_MatchaProduct.Filtered := True;
-        Try
-         //while not Mem_MatchaProduct.Eof do
-         if Mem_MatchaProduct.RecordCount = 1 then
-          begin
-           PrevPositionID := Mem_MatchaProductPositionID.AsInteger;
-           PrevReference := Mem_MatchaProductReference.AsString;
-           PrevMaxLength := Mem_MatchaProductMaxLength.AsInteger;
-           //Mem_MatchaProduct.Next;
-          end;
-        Finally
-         Mem_MatchaProduct.Filtered := False;
-        End;
-*)
+      end;
 
       if not Mem_MatchaProduct.Active then
        Mem_MatchaProduct.Active := True ;
@@ -595,7 +611,7 @@ begin
          AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger)
           AND (Reference = Mem_MatchaProductReference.AsString) then
          begin
-          if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) then
+          if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) AND (not ValdFlag) then
           begin
              Mem_MatchaProduct.Edit;
              Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
@@ -614,7 +630,7 @@ begin
           if (ProductNo = Mem_MatchaProductProductNo.AsInteger)
            AND (MaxLength = Mem_MatchaProductMaxLength.AsInteger) then
            begin
-            if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) then
+            if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) AND (not ValdFlag) then
             begin
                Mem_MatchaProduct.Edit;
                Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
@@ -633,7 +649,7 @@ begin
           begin
           if (ProductNo = Mem_MatchaProductProductNo.AsInteger) then
            begin
-            if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) then
+            if (Mem_MatchaProductVald.AsInteger = 0) AND (Mem_MatchaProductFullt.AsInteger = 1) AND (not ValdFlag) then
             begin
                Mem_MatchaProduct.Edit;
                Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
@@ -714,10 +730,14 @@ begin
 
  *)
      end;
+  end;
 
   if (Mem_MatchaProduct.Active) and (Mem_MatchaProduct.RecordCount = 0) then
   PageControl_Position.ActivePage := TabSheet_All ;
 
+ Finally
+   Mem_MatchaProduct.EnableControls ;
+ End;
 end;
 
 
@@ -738,7 +758,9 @@ begin
 end;
 
 function TPosition.IsSameProduct(PackProductNo: Integer): Boolean;
+Var MyDate  : TDatetime ;
 begin
+  MyDate  := Mem_PackProdListDateCreated.AsDateTime ;
   Result := False;
   Mem_PackProdList.filtered := False;
   Mem_PackProdList.Filter := 'ProductNo = '+inttostr(PackProductNo);
@@ -753,14 +775,16 @@ begin
        Mem_PackProdList.Next;
       end;
     Finally
-      Mem_PackProdList.filter := 'Vald = 1';
-      Mem_PackProdList.filtered := True ;
-      Mem_PackProdList.First;
+      //Mem_PackProdList.filter := 'Vald = 1';
+      Mem_PackProdList.filtered := False ;
+      Mem_PackProdList.findkey([Mydate]) ;
     End;
 end;
 
 function TPosition.IsSameRef(PackRef: String): Boolean;
+Var MyDate  : TDatetime ;
 begin
+  MyDate  := Mem_PackProdListDateCreated.AsDateTime ;
   Result := False;
   Mem_PackProdList.filtered := False;
   Mem_PackProdList.filter := 'Reference = '+''''+PackRef+'''';
@@ -775,9 +799,9 @@ begin
        Mem_PackProdList.Next;
       end;
     Finally
-      Mem_PackProdList.filter := 'Vald = 1';
-      Mem_PackProdList.filtered := True ;
-      Mem_PackProdList.First;
+      //Mem_PackProdList.filter := 'Vald = 1';
+      Mem_PackProdList.filtered := False ;
+      Mem_PackProdList.findkey([Mydate]) ;
     End;
 end;
 
@@ -836,6 +860,8 @@ begin
 
       if not IsSameProduct(PackProductNo) then
       begin
+        Mem_MatchaProduct.DisableControls;
+        Try
         Mem_MatchaProduct.Open;
         Mem_MatchaProduct.RecordCount;
         Mem_MatchaProduct.First;
@@ -851,10 +877,15 @@ begin
              Mem_MatchaProduct.Next;
            end;
          End;
+        Finally
+          Mem_MatchaProduct.EnableControls;
+        End;
       end;
 
       if not IsSameRef(PackRef) then
       begin
+        Mem_MatchaRef.DisableControls;
+        Try
         Mem_MatchaRef.Open;
         Mem_MatchaRef.RecordCount;
         Mem_MatchaRef.First;
@@ -870,9 +901,16 @@ begin
              Mem_MatchaRef.Next;
            end;
          End;
+        Finally
+          Mem_MatchaRef.EnableControls;
+        End;
       end;
 
       Mem_PackProdList.Delete;
+
+     Mem_PackProdList.filter := 'Vald = 1';
+     Mem_PackProdList.filtered := True ;
+
      End;
 
     Mem_AllPosition.filter := 'Vald = 1';
@@ -948,6 +986,7 @@ begin
    Mem_PackProdList.filtered := True ;
    Try
    PkgCount := Mem_PackProdList.RecordCount;
+   Mem_PackProdList.IndexName := 'DateCreated' ;
    Mem_PackProdList.First;
 //   while not (Count = PkgCount) do
    while not Mem_PackProdList.eof do
@@ -989,6 +1028,7 @@ begin
 
               if not IsSameProduct(PackProductNo) then
                begin
+                Mem_MatchaRef.DisableControls;
                 Mem_MatchaProduct.Filtered := False;
                 Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
                 Mem_MatchaProduct.Filtered := True;
@@ -1001,6 +1041,7 @@ begin
                    End;
                  Finally
                   Mem_MatchaProduct.Filtered := False;
+                  Mem_MatchaRef.EnableControls;
                  End;
                end;
              // else
@@ -1010,6 +1051,7 @@ begin
             begin
              if not IsSameProduct(PackProductNo) then
                begin
+                Mem_MatchaRef.DisableControls;
                 Mem_MatchaProduct.Filtered := False;
                 Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
                 Mem_MatchaProduct.Filtered := True;
@@ -1022,6 +1064,7 @@ begin
                    End;
                  Finally
                   Mem_MatchaProduct.Filtered := False;
+                  Mem_MatchaRef.EnableControls;
                  End;
                end;
              // else
@@ -1049,6 +1092,7 @@ begin
 
               if not IsSameRef(PackRef) then
                begin
+                Mem_MatchaRef.DisableControls;
                 Mem_MatchaRef.Filtered := False;
                 Mem_MatchaRef.Filter := 'Reference = '+''''+PackRef+'''';
                 Mem_MatchaRef.Filtered := True;
@@ -1061,6 +1105,7 @@ begin
                    End;
                  Finally
                   Mem_MatchaRef.Filtered := False;
+                  Mem_MatchaRef.EnableControls;
                  End;
                end;
              // else
@@ -1070,6 +1115,7 @@ begin
             begin
              if not IsSameRef(PackRef) then
                begin
+                Mem_MatchaRef.DisableControls;
                 Mem_MatchaRef.Filtered := False;
                 Mem_MatchaRef.Filter := 'Reference = '+''''+PackRef+'''';
                 Mem_MatchaRef.Filtered := True;
@@ -1089,6 +1135,7 @@ begin
             end;
            Finally
              Mem_MatchaRef.Filtered := False;
+             Mem_MatchaRef.EnableControls;
            End;
         end;
 
@@ -1112,7 +1159,6 @@ begin
         Mem_PackProdList.Next;
        end;
      End;
-
 
 
     Packageno := 0;
@@ -1225,6 +1271,7 @@ begin
         //Begin
            PackProductNo := Mem_PackProdListProductNo.AsInteger;
            // Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
+           Mem_MatchaRef.DisableControls;
            Mem_MatchaRef.Filter := 'Vald = 1';
            Mem_MatchaRef.Filtered := True;
             Try
@@ -1242,6 +1289,7 @@ begin
                end;
             Finally
               Mem_MatchaRef.Filtered := False;
+              Mem_MatchaRef.EnableControls;
             End;
 
       Finally
@@ -1257,7 +1305,7 @@ begin
         Mem_MatchaRef.Post;
       end;
 
-
+   Mem_AllPosition.DisableControls;
    Mem_AllPosition.filter := 'Vald = 1';
    Mem_AllPosition.filtered := True;
    Try
@@ -1313,64 +1361,66 @@ begin
     end;
    Finally
      Mem_AllPosition.filtered := False;
+     Mem_AllPosition.EnableControls;
    End;
 
+    Mem_MatchaProduct.DisableControls;
+    Mem_MatchaProduct.filter := 'Vald = 1';
+    Mem_MatchaProduct.filtered := True;
+    Try
+     if (Mem_MatchaProduct.RecordCount > 0) then
+     begin
+      Mem_MatchaProduct.First;
+      while not Mem_MatchaProduct.eof do
+      begin
+       MatchaProductNo := Mem_MatchaProductProductNo.AsInteger;
+       MatchaProdRef := Mem_MatchaProductReference.AsString;
 
-      Mem_MatchaProduct.filter := 'Vald = 1';
-      Mem_MatchaProduct.filtered := True;
-      Try
-       if (Mem_MatchaProduct.RecordCount > 0) then
-       begin
-        Mem_MatchaProduct.First;
-        while not Mem_MatchaProduct.eof do
-        begin
-         MatchaProductNo := Mem_MatchaProductProductNo.AsInteger;
-         MatchaProdRef := Mem_MatchaProductReference.AsString;
+       Mem_MatchaRef.filter := 'Vald = 1';
+       Mem_MatchaRef.filtered := True;
+       Try
+         Mem_MatchaRef.RecordCount;
+         Mem_MatchaRef.first ;
+          while not Mem_MatchaRef.eof do
+           Begin
+            MatchaRef := Mem_MatchaRefREFERENCE.AsString;
+            MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
 
-         Mem_MatchaRef.filter := 'Vald = 1';
-         Mem_MatchaRef.filtered := True;
-         Try
-           Mem_MatchaRef.RecordCount;
-           Mem_MatchaRef.first ;
-            while not Mem_MatchaRef.eof do
-             Begin
-              MatchaRef := Mem_MatchaRefREFERENCE.AsString;
-              MatchaRefProdNo := Mem_MatchaRefProductNo.AsInteger;
+            if (MatchaProdRef = MatchaRef) AND (MatchaProductNo = MatchaRefProdNo)
+              AND (Mem_MatchaRefVald.AsInteger = 1) then
+             begin
+              with Mem_MatchaProduct do
+              begin
+                Edit;
+                FieldByName('Vald').AsInteger := 0;
+                Post;
+              end;
+             end;
 
-              if (MatchaProdRef = MatchaRef) AND (MatchaProductNo = MatchaRefProdNo)
-                AND (Mem_MatchaRefVald.AsInteger = 1) then
-               begin
-                with Mem_MatchaProduct do
-                begin
-                  Edit;
-                  FieldByName('Vald').AsInteger := 0;
-                  Post;
-                end;
-               end;
+            Mem_MatchaRef.Next;
+           End;
+       Finally
+        Mem_MatchaRef.filtered := False;
+       End;
 
-              Mem_MatchaRef.Next;
-             End;
-         Finally
-          Mem_MatchaRef.filtered := False;
-         End;
+       Mem_MatchaProduct.Next;
+      end;
 
-         Mem_MatchaProduct.Next;
-        end;
+     end;
+    Finally
+      Mem_MatchaProduct.filtered := False;
+      Mem_MatchaProduct.EnableControls;
+    End;
 
-       end;
-      Finally
-        Mem_MatchaProduct.filtered := False;
-      End;
-
-
-    //ACellViewInfo.GridView.Items[]
-    AHandled := True;
+   AHandled := True;
 end;
 
 procedure TPosition.grid_ProductListDBTableView1CellClick(
   Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
   AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
 begin
+ Mem_PackProdList.DisableControls;
+ Try
  if Mem_PackProdListVald.AsInteger = 1 then
   begin
    with Mem_PackProdList do
@@ -1389,11 +1439,17 @@ begin
      Post;
     end;
   end;
+ Finally
+   Mem_PackProdList.EnableControls;
+ End;
+
   AHandled := True;
 end;
 
 procedure TPosition.SavetoMemPosition(PositionID, PosStatus: Integer; Prefix: String; PkgNr, Scanned: Integer; DateCreated : TDateTime);
 begin
+  Mem_StorePosition.DisableControls;
+  Try
    with Mem_StorePosition do
     begin
       Open;
@@ -1406,6 +1462,10 @@ begin
       FieldByName('DateCreated').AsDateTime := DateCreated;
       Post;
     end;
+  Finally
+    Mem_StorePosition.EnableControls;
+  End;
+
 end;
 
 procedure TPosition.cxGrid_AllPositionDBTableView1CellClick(Sender: TcxCustomGridTableView;
@@ -1427,6 +1487,7 @@ begin
      end
    end;
 
+   Mem_AllPosition.DisableControls;
    Mem_AllPosition.filter := 'Vald = 1';
    Mem_AllPosition.filtered := True ;
    Try
@@ -1447,6 +1508,7 @@ begin
       end;
    Finally
      Mem_AllPosition.filtered := False ;
+     Mem_AllPosition.EnableControls;
    End;
 
    if Mem_AllPosition.FindKey([SelectedPositionAllID]) then
@@ -1471,6 +1533,7 @@ begin
         if Mem_MatchaProduct.Active = False then
          Mem_MatchaProduct.Active := True;
 
+        Mem_MatchaProduct.DisableControls;
         Mem_MatchaProduct.filter := 'Vald = 1';
         Mem_MatchaProduct.filtered := True;
         Try
@@ -1496,6 +1559,7 @@ begin
 
         Finally
          Mem_MatchaProduct.filtered := False;
+         Mem_MatchaProduct.EnableControls;
         End;
 
       Mem_PackProdList.next ;
@@ -1520,7 +1584,7 @@ begin
      if not Mem_MatchaRef.Active then
       Mem_MatchaRef.Active := True;
 
-
+      Mem_MatchaRef.DisableControls;
       Mem_MatchaRef.filter := 'Vald = 1';
        Mem_MatchaRef.filtered := True;
        Try
@@ -1546,6 +1610,7 @@ begin
            End;
        Finally
         Mem_MatchaRef.filtered := False;
+        Mem_MatchaRef.EnableControls;
        End;
        Mem_PackProdList.next ;
      End;
@@ -1591,6 +1656,7 @@ begin
         //Begin
            PackProductNo := Mem_PackProdListProductNo.AsInteger;
            // Mem_MatchaProduct.Filter := 'ProductNo = '+inttostr(PackProductNo);
+           Mem_MatchaProduct.DisableControls;
            Mem_MatchaProduct.Filter := 'Vald = 1';
            Mem_MatchaProduct.Filtered := True;
             Try
@@ -1613,40 +1679,8 @@ begin
                end;
             Finally
               Mem_MatchaProduct.Filtered := False;
+              Mem_MatchaProduct.EnableControls;
             End;
-
-                    (*
-            if Mem_PackProdList.RecordCount = 1 then
-                       Begin
-                        if Mem_MatchaProduct.FindKey([PositionID]) AND (SelectedMatchProdNo = PackProductNo) then
-                         begin
-                          Mem_MatchaProduct.Edit;
-                          Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-                          Mem_MatchaProduct.Post;
-                         end
-                        else
-                         begin
-                          ShowMessage('Wrong selection! Choose appropriate choice.');
-                           if Mem_MatchaProduct.FindKey([PrevPosID]) then
-                           begin
-                             Mem_MatchaProduct.Edit;
-                             Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-                             Mem_MatchaProduct.Post;
-                           end;
-
-                          exit;
-                         end;
-                       End
-                      else
-                       begin
-                        if Mem_MatchaProduct.FindKey([PositionID]) then
-                         begin
-                          Mem_MatchaProduct.Edit;
-                          Mem_MatchaProduct.FieldByName('Vald').AsInteger := 1;
-                          Mem_MatchaProduct.Post;
-                         end;
-                       end;
-          *)
 
       Finally
        Mem_PackProdList.filtered := False ;
@@ -1661,7 +1695,7 @@ begin
           Mem_MatchaProduct.Post;
         end;
 
-
+   Mem_AllPosition.DisableControls;
    Mem_AllPosition.filter := 'Vald = 1';
    Mem_AllPosition.filtered := True;
    Try
@@ -1715,12 +1749,13 @@ begin
     end;
    Finally
      Mem_AllPosition.filtered := False;
+     Mem_AllPosition.EnableControls;
    End;
 
    if not Mem_MatchaRef.Active then
     Mem_MatchaRef.Active := True;
 
-
+      Mem_MatchaRef.DisableControls;
       Mem_MatchaRef.filter := 'Vald = 1';
        Mem_MatchaRef.filtered := True;
        Try
@@ -1746,6 +1781,7 @@ begin
            End;
        Finally
         Mem_MatchaRef.filtered := False;
+        Mem_MatchaRef.EnableControls;
        End;
 
     //ACellViewInfo.GridView.Items[]
@@ -1754,6 +1790,7 @@ end;
 
 procedure TPosition.DeleteMatchaProdNo(PackProductNo, MatchaProdNo: Integer);
 begin
+  Mem_MatchaProduct.DisableControls;
   Mem_MatchaProduct.filter := 'Vald = 0';
   Mem_MatchaProduct.filtered := True;
     Try
@@ -1771,6 +1808,7 @@ begin
       end;
     Finally
       Mem_MatchaProduct.Filtered := False;
+      Mem_MatchaProduct.EnableControls;
     End;
 end;
 

@@ -25,7 +25,7 @@ object Position: TPosition
     Top = 0
     Width = 483
     Height = 529
-    ActivePage = TabSheet_Match
+    ActivePage = TabSheet_RefMatch
     Align = alRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -399,8 +399,8 @@ object Position: TPosition
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 752
-    Top = 166
+    Left = 896
+    Top = 214
     object Mem_MatchaProductVald: TIntegerField
       FieldName = 'Vald'
     end
@@ -446,11 +446,14 @@ object Position: TPosition
     Indexes = <
       item
         Active = True
-        Selected = True
         Name = 'Mem_packlistindex01'
         Fields = 'PaketNr;PktSupplierCode'
+      end
+      item
+        Active = True
+        Name = 'DateCreated'
+        Fields = 'DateCreated:D'
       end>
-    IndexName = 'Mem_packlistindex01'
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     ResourceOptions.AssignedValues = [rvSilentMode]
@@ -485,6 +488,9 @@ object Position: TPosition
     end
     object Mem_PackProdListScanned: TIntegerField
       FieldName = 'Scanned'
+    end
+    object Mem_PackProdListDateCreated: TDateTimeField
+      FieldName = 'DateCreated'
     end
   end
   object DS_ProductNo: TDataSource
@@ -562,7 +568,7 @@ object Position: TPosition
         Active = True
         Selected = True
         Name = 'DateCreated'
-        Fields = 'DateCreated'
+        Fields = 'DateCreated:D'
       end>
     IndexName = 'DateCreated'
     FetchOptions.AssignedValues = [evMode]
@@ -571,8 +577,8 @@ object Position: TPosition
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 384
-    Top = 182
+    Left = 424
+    Top = 342
     object Mem_StorePositionPositionID: TIntegerField
       FieldName = 'PositionID'
     end
@@ -2527,7 +2533,7 @@ object Position: TPosition
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
-    Left = 755
+    Left = 899
     Top = 115
     object Mem_MatchaRefVald: TIntegerField
       FieldName = 'Vald'
@@ -2598,5 +2604,92 @@ object Position: TPosition
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object sp_MatchRef: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_MatchRef'
+    Left = 748
+    Top = 123
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@Reference'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 3
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_MatchRefPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+      ReadOnly = True
+    end
+    object sp_MatchRefPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      ReadOnly = True
+      Size = 50
+    end
+    object sp_MatchRefProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      ReadOnly = True
+    end
+    object sp_MatchRefProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      ReadOnly = True
+      Size = 150
+    end
+    object sp_MatchRefPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      ReadOnly = True
+      Required = True
+    end
+    object sp_MatchRefStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+      ReadOnly = True
+    end
+    object sp_MatchRefREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      ReadOnly = True
+      Size = 30
+    end
+    object sp_MatchRefMaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+    end
+    object sp_MatchRefNoOfPkgsByProduct: TIntegerField
+      FieldName = 'NoOfPkgsByProduct'
+      Origin = 'NoOfPkgsByProduct'
+      ReadOnly = True
+    end
+    object sp_MatchRefNoOfPkgsByPosition: TIntegerField
+      FieldName = 'NoOfPkgsByPosition'
+      Origin = 'NoOfPkgsByPosition'
+      ReadOnly = True
+    end
   end
 end
