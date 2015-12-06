@@ -4,13 +4,13 @@ object Position: TPosition
   AlphaBlend = True
   AlphaBlendValue = 200
   Caption = 'Position'
-  ClientHeight = 529
-  ClientWidth = 1019
+  ClientHeight = 692
+  ClientWidth = 1333
   Color = clBtnFace
   TransparentColorValue = clWindowText
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsStayOnTop
@@ -18,30 +18,42 @@ object Position: TPosition
   Visible = True
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 17
   object PageControl_Position: TPageControl
-    Left = 536
+    Left = 701
     Top = 0
-    Width = 483
-    Height = 529
+    Width = 632
+    Height = 692
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     ActivePage = TabSheet_RefMatch
     Align = alRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -17
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
     Visible = False
     object TabSheet_All: TTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Alla Position'
       object cxGrid_AllPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 475
-        Height = 498
+        Width = 624
+        Height = 656
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
         object cxGrid_AllPositionDBTableView1: TcxGridDBTableView
@@ -85,10 +97,14 @@ object Position: TPosition
       end
     end
     object TabSheet_Match: TTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Matcha Product'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -13
+      Font.Height = -17
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ImageIndex = 1
@@ -96,8 +112,12 @@ object Position: TPosition
       object cxGrid_MatchPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 475
-        Height = 498
+        Width = 624
+        Height = 656
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
         Visible = False
@@ -165,13 +185,21 @@ object Position: TPosition
       end
     end
     object TabSheet_RefMatch: TTabSheet
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Matcha Referens'
       ImageIndex = 2
       object grid_Matcha_Ref: TcxGrid
         Left = 0
         Top = 0
-        Width = 475
-        Height = 498
+        Width = 624
+        Height = 656
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
         Visible = False
@@ -240,21 +268,29 @@ object Position: TPosition
   object PakagePanel: TPanel
     Left = 0
     Top = 0
-    Width = 530
-    Height = 529
+    Width = 693
+    Height = 692
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Align = alLeft
     Caption = 'PakagePanel'
     TabOrder = 1
     Visible = False
     object grid_ProductList: TcxGrid
       Left = 1
-      Top = 81
-      Width = 528
-      Height = 447
+      Top = 107
+      Width = 691
+      Height = 584
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Align = alBottom
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -13
+      Font.Height = -17
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -323,12 +359,16 @@ object Position: TPosition
     object btnStorePosition: TButton
       Left = 1
       Top = 0
-      Width = 184
-      Height = 49
+      Width = 241
+      Height = 64
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Store Position'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -22
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -336,14 +376,18 @@ object Position: TPosition
       OnClick = btnStorePositionClick
     end
     object btDelete: TButton
-      Left = 352
+      Left = 460
       Top = 0
-      Width = 97
-      Height = 49
+      Width = 127
+      Height = 64
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Remove'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -22
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -351,14 +395,18 @@ object Position: TPosition
       OnClick = btDeleteClick
     end
     object btChangeStyle: TButton
-      Left = 231
+      Left = 302
       Top = 0
-      Width = 82
-      Height = 49
+      Width = 107
+      Height = 64
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Styles'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -22
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -367,12 +415,16 @@ object Position: TPosition
     end
     object lbPkgCount: TcxLabel
       Left = 1
-      Top = 50
+      Top = 65
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
       Caption = 'Paket Count : '
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = 20
+      Style.Font.Height = 27
       Style.Font.Name = 'Tahoma'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
@@ -945,7 +997,7 @@ object Position: TPosition
   object cxStyleRepository1: TcxStyleRepository
     Left = 659
     Top = 40
-    PixelsPerInch = 96
+    PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
       Color = clWhite
@@ -2045,7 +2097,7 @@ object Position: TPosition
       end>
     StorageName = 'cxPropertiesStore1'
     StorageType = stStream
-    Left = 563
+    Left = 539
     Top = 43
   end
   object FDQ_ProdLength: TFDQuery

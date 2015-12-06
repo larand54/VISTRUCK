@@ -606,9 +606,12 @@ type
     PIPNo : Integer ;
     CustomerNo, SHIPTOINVPOINTNO  : Integer ;
     LoadConfirmedOK : Boolean ;
+    procedure AddPkgNrExcepionList(const PkgNr: String;const PackageNo : integer;
+    const Prefix : String;
+    MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode : Integer;const Desc, AppFormName : String) ;
     procedure InsertPkgsScanned(const ScannedString : String;const PackageNo  : Integer;
     const Prefix, AppName : String;const
-    MottagareNo, LevereraTillNo, LeverantorNo : Integer) ;
+    MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode : Integer;const Desc : String);
 
     function  SearchPackageNo(const PackageNo, CustomerNo, SHIPTOINVPOINTNO  : Integer;const Prefix  : String) : Integer ;//LoadNo
     procedure CngArtNoByPkgSize (const PackageNo, Package_Size : Integer; Prefix : string) ;
@@ -684,13 +687,22 @@ begin
 end;
 
 procedure TdmArrivingLoads.RefreshArrivingPackages ;
+Var
+ NewPkgNo : Integer ;
+ Prefix   : String ;
 begin
+ NewPkgNo :=  cdsArrivingPackagesPACKAGE_NO.AsInteger ;
+ Prefix   :=  cdsArrivingPackagesSUPPLIERCODE.AsString ;
+
  cdsArrivingPackages.Active:= False ;
  cdsArrivingPackages.Close ;
  cdsArrivingPackages.ParamByName('LoadNo').AsInteger          := cdsArrivingLoadsLOADNO.AsInteger ;
  cdsArrivingPackages.ParamByName('ShippingPlanNo').AsInteger  := cdsArrivingLoadsLO.AsInteger ;
  cdsArrivingPackages.Open ;
  cdsArrivingPackages.Active:= True ;
+
+ if cdsArrivingPackages.FindKey([NewPkgNo, Prefix]) then ;
+
 end;
 
 function TdmArrivingLoads.UndoConfirmLoad : Boolean ;
@@ -2668,7 +2680,7 @@ End ;
 
 procedure TdmArrivingLoads.InsertPkgsScanned(const ScannedString : String;const PackageNo  : Integer;
 const Prefix, AppName : String;const
-MottagareNo, LevereraTillNo, LeverantorNo : Integer) ;
+MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode : Integer;const Desc : String);
 Begin
  sp_InsertPkgsScanned.ParamByName('@ScannedString').AsString    :=  ScannedString ;
  sp_InsertPkgsScanned.ParamByName('@PackageNo').AsInteger       :=  PackageNo ;
@@ -2678,6 +2690,9 @@ Begin
  sp_InsertPkgsScanned.ParamByName('@LevereraTillNo').AsInteger  :=  LevereraTillNo ;
  sp_InsertPkgsScanned.ParamByName('@LeverantorNo').AsInteger    :=  LeverantorNo ;
  sp_InsertPkgsScanned.ParamByName('@Application').AsString      :=  AppName ;
+ sp_InsertPkgsScanned.ParamByName('@ScanStatus').AsInteger      :=  ErrorCode ;
+ sp_InsertPkgsScanned.ParamByName('@Description').AsString      :=  Desc ;
+
  Try
  sp_InsertPkgsScanned.ExecProc ;
  Except
@@ -2689,7 +2704,17 @@ Begin
  End ;
 End ;
 
-
-
+procedure TdmArrivingLoads.AddPkgNrExcepionList(const PkgNr: String;const PackageNo : integer;
+    const Prefix : String;
+    MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode : Integer;const Desc, AppFormName : String) ;
+Var pDesc : String ;
+begin
+ with dmArrivingLoads do
+ Begin
+  pDesc := Copy(Desc, 1, 100) ;
+  InsertPkgsScanned(PkgNr, PackageNo, Prefix, AppFormName,
+  MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode, pDesc) ;
+ End ;
+end ;
 
 end.

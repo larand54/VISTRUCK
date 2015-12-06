@@ -74,9 +74,9 @@ type
     cxButton5: TcxButton;
     acChangeFormSize: TAction;
     frxPDFExport1: TfrxPDFExport;
-    procedure AddPkgNrExcepionList(const PkgNr: String;const PackageNo : integer;
-    const Prefix : String;
-    MottagareNo, LevereraTillNo, LeverantorNo : Integer);
+    cxGrid1DBTableView1ScanStatus: TcxGridDBColumn;
+    cxGrid1DBTableView1ErrorBeskrivning: TcxGridDBColumn;
+
     procedure acCloseExecute(Sender: TObject);
     procedure acRefreshExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -87,11 +87,13 @@ type
     procedure acChangeFormSizeExecute(Sender: TObject);
   private
     { Private declarations }
-    procedure ChangeFormSizeExecute ;
-    procedure Refresh_GetScannedPkgs ;
+
   public
     { Public declarations }
+    LevereraTillNo  : Integer ;
     CurrentAppName  : String ;
+    procedure ChangeFormSizeExecute ;
+    procedure Refresh_GetScannedPkgs ;
   end;
 
 var
@@ -106,16 +108,20 @@ uses dmc_ArrivingLoads, dmsDataConn, UnitPkgInfo, dmsVidaSystem, uSendMapiMail,
 
 procedure TPkgNrExceptionList.acChangeFormSizeExecute(Sender: TObject);
 begin
-  if PkgNrExceptionList.Width = 1141 then
-    PkgNrExceptionList.Width  := 540
-     else
-      PkgNrExceptionList.Width  := 1141 ;
+{
+    if PkgNrExceptionList.Width = 1141 then
+      PkgNrExceptionList.Width  := 540
+       else
+        PkgNrExceptionList.Width  := 1141 ;
+}
 end;
 
 procedure TPkgNrExceptionList.ChangeFormSizeExecute ;
 begin
-  if PkgNrExceptionList.Width > 1000 then
-    PkgNrExceptionList.Width  := 540 ;
+{
+    if PkgNrExceptionList.Width > 1000 then
+      PkgNrExceptionList.Width  := 540 ;
+}
 end;
 
 procedure TPkgNrExceptionList.acCloseExecute(Sender: TObject);
@@ -199,21 +205,7 @@ begin
   Refresh_GetScannedPkgs ;
 end;
 
-procedure TPkgNrExceptionList.AddPkgNrExcepionList(const PkgNr: String;const PackageNo : integer;
-    const Prefix : String;
-    MottagareNo, LevereraTillNo, LeverantorNo : Integer);
-begin
 
- with dmArrivingLoads do
- Begin
-  InsertPkgsScanned(PkgNr, PackageNo, Prefix, CurrentAppName,
-  MottagareNo, LevereraTillNo, LeverantorNo) ;
- End;
-
- Refresh_GetScannedPkgs ;
- ChangeFormSizeExecute ;
-
-end;
 
 procedure TPkgNrExceptionList.FormShow(Sender: TObject);
 begin
@@ -230,7 +222,9 @@ begin
   DateTimeToSQLTimeStamp(cxDateEditStart.Date) ;
   sp_GetScannedPkgs.ParamByName('@EndDateTime').AsSQLTimeStamp    :=
   DateTimeToSQLTimeStamp(cxDateEditEnd.Date) ;
+  sp_GetScannedPkgs.ParamByName('@LevereraTillNo').AsInteger      := LevereraTillNo ;
   sp_GetScannedPkgs.Active  := True ;
+  sp_GetScannedPkgs.Last ;
 end;
 
 end.

@@ -386,7 +386,6 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
-    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -3804,7 +3803,7 @@ object dmcOrder: TdmcOrder
       '  ShortNote'
       'FROM Loads'
       'WHERE LoadNo = :LoadNo')
-    Left = 456
+    Left = 472
     Top = 24
   end
   object updLoadsForLO_forVW: TFDUpdateSQL
@@ -3846,7 +3845,7 @@ object dmcOrder: TdmcOrder
       '  ShortNote'
       'FROM Loads'
       'WHERE LoadNo = :LoadNo')
-    Left = 456
+    Left = 472
     Top = 144
   end
 end

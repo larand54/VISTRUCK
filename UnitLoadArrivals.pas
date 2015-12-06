@@ -794,49 +794,51 @@ begin
 end;
 
 procedure TfrmLoadArrivals.FormKeyPress(Sender: TObject; var Key: Char);
-Var NuTid           : TTime ;
-    ManualKeyBoard  : Integer ;
+//Var NuTid           : TTime ;
+//    ManualKeyBoard  : Integer ;
 begin
+(*
 
-  if (Key = #13) and (Length(mePackageNo.Text) > 0) then
-  Begin
-   Try
-    GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
+    if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+    Begin
+     Try
+      GetpackageNoEntered(Sender, mePackageNo.Text, ManualKeyBoard) ;
 
-    mePackageNo.Text:= '' ;
-   Except
-    mePackageNo.Text:= '' ;
-   End ;
-  End
-  else
-   Begin
-     NuTid  := Time ;
-       if Length(mePackageNo.Text) < 2 then
-      LastTime  := NuTid ;
-
-     if Length(mePackageNo.Text) > 1 then
-      SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
-
-     if SecondsBetweenKeyPressed > 0.01 then
+      mePackageNo.Text:= '' ;
+     Except
+      mePackageNo.Text:= '' ;
+     End ;
+    End
+    else
      Begin
-      ManualKeyBoard            := 1 ;
-      cxLabelEntryMetod.Caption := 'Manual' ;
-     End
-       else
-        Begin
-          ManualKeyBoard            := 0 ;
-          cxLabelEntryMetod.Caption := 'Scanned' ;
-        End;
+       NuTid  := Time ;
+         if Length(mePackageNo.Text) < 2 then
+        LastTime  := NuTid ;
+
+       if Length(mePackageNo.Text) > 1 then
+        SecondsBetweenKeyPressed  := (NuTid - LastTime) * 1000 ;
+
+       if SecondsBetweenKeyPressed > 0.01 then
+       Begin
+        ManualKeyBoard            := 1 ;
+        cxLabelEntryMetod.Caption := 'Manual' ;
+       End
+         else
+          Begin
+            ManualKeyBoard            := 0 ;
+            cxLabelEntryMetod.Caption := 'Scanned' ;
+          End;
 
 
-     LastTime         := NuTid ;
-     Timer3.Enabled   := True ;
-     mePackageNo.Text := '' ;
-//    if (acStart.Caption = 'Stoppa inläsning med skanner F10') then
-     if key in ['S','0','1','2','3','4','5','6','7','8','9'] then
-      mePackageNo.Text  := mePackageNo.Text + Key ;
-   End ;
+       LastTime         := NuTid ;
+       Timer3.Enabled   := True ;
+       mePackageNo.Text := '' ;
+  //    if (acStart.Caption = 'Stoppa inläsning med skanner F10') then
+       if key in ['S','0','1','2','3','4','5','6','7','8','9'] then
+        mePackageNo.Text  := mePackageNo.Text + Key ;
+     End ;
 
+*)
 
 end;
 
@@ -6402,14 +6404,6 @@ begin
       MessageBeep(MB_ICONEXCLAMATION);
       Result := eaReserved ; //eaREJECT;
     end;
-
-
-
-
-  {  if dmLoadEntrySSP.cds_LoadPackages.FindKey([PkgNo, PkgSupplierCode]) then
-    Begin
-      Result:= eaDuplicate ;
-    End ;  }
 end;
 
 procedure TfrmLoadArrivals.GetpackageNoEntered(Sender: TObject;const PackageNo : String;const Scanned : Integer) ;
@@ -6429,10 +6423,12 @@ var
   PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
   ErrorText         : String ;
   LoadNo            : Integer ;
+  ErrorCode         : Integer ;
 begin
  With dmArrivingLoads do
  Begin
-  NewPkgNo := 0 ;
+  NewPkgNo  := 0 ;
+  ErrorCode := 0 ;
 
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -6448,14 +6444,26 @@ begin
    //  NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
      Except
       on E: EConvertError do
+      Begin
          ShowMessage(E.ClassName + E.Message);
+         ErrorText  := E.ClassName + E.Message ;
+         ErrorCode  := 1 ;
+      End;
      End ;
 
      if NewPkgNo < 1 then
-       Action :=  eaREJECT ;
+      Begin
+       Action     :=  eaREJECT ;
+       ErrorText  := 'PkgNo = ' + inttostr(NewPkgNo) ;
+       ErrorCode  := 1 ;
+      End;
 
      if Length(PkgSupplierCode) < 1 then
-       Action :=  eaREJECT ;
+     Begin
+       Action     :=  eaREJECT ;
+       ErrorText  := 'Prefix = ' + PkgSupplierCode ;
+       ErrorCode  := 1 ;
+     End;
 
 
  //    PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
@@ -6463,13 +6471,33 @@ begin
 
 
      //if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
-     if Action =  eaAccept then
-     Begin
+       if Action =  eaAccept then
+       Begin
+         if Assigned(frmPosition) then
+         Begin
+         frmPosition.Mem_PackProdList.IndexName := 'Mem_packlistindex01';
+         Try
+         if frmPosition.Mem_PackProdList.FindKey([NewPkgNo, PkgSupplierCode]) then
+          Begin
+            Action      := eaDuplicate ;
+            Errortext   :=  'Paketnr redan scannad ' ;
+            ErrorCode   :=  1 ;
+          End ;
+         Finally
+            Mem_PackProdList.IndexName := 'DateCreated';
+         End;
+       End;
+
+
        LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, cds_PropsVerkNo.AsInteger, dmArrivingLoads.SHIPTOINVPOINTNO, PkgSupplierCode) ;
        if LoadNo > 0 then
         Action := eaAccept
          else
-          Action :=  eaREJECT ;
+          Begin
+            Action      :=  eaREJECT ;
+            ErrorText   := 'Reject. LoadNo = ' + inttostr(LoadNo) ;
+            ErrorCode   := 1 ;
+          End;
      End;
 
     End
@@ -6478,16 +6506,42 @@ begin
        NewPkgNo:= StrToIntDef(PackageNo,0) ;
        if NewPkgNo = 0 then
        Begin
-        Errortext := 'Koden kunde inte översättas till ett Paketnr' ;
+        Errortext   := 'Koden kunde inte översättas till ett Paketnr' ;
+        ErrorCode   := 1 ;
         Exit ;
        End ;
 
+
+
         Action := IdentifyPackageSupplier(NewPkgNo, PkgSupplierCode);
+
+       if Action =  eaAccept then
+       Begin
+         if Assigned(frmPosition) then
+         Begin
+         frmPosition.Mem_PackProdList.IndexName := 'Mem_packlistindex01';
+         Try
+         if frmPosition.Mem_PackProdList.FindKey([NewPkgNo, PkgSupplierCode]) then
+          Begin
+            Action      := eaDuplicate ;
+            Errortext   :=  'Paketnr redan scannad ' ;
+            ErrorCode   :=  1 ;
+          End ;
+         Finally
+            Mem_PackProdList.IndexName := 'DateCreated';
+         End;
+       End;
+
+       End;
         LoadNo := dmArrivingLoads.SearchPackageNo(NewPkgNo, cds_PropsVerkNo.AsInteger, dmArrivingLoads.SHIPTOINVPOINTNO, PkgSupplierCode) ;
         if LoadNo > 0 then
-          Action := eaAccept
-           else
-            Action :=  eaREJECT ;
+         Action := eaAccept
+          else
+           Begin
+            Action      :=  eaREJECT ;
+            ErrorText   := 'Reject. LoadNo = ' + inttostr(LoadNo) ;
+            ErrorCode   := 1 ;
+           End;
       End ;
    End ; //if StrToInt(Trim(PackageNo)) > 0 then
 
@@ -6508,48 +6562,60 @@ begin
     Begin
      Errortext  :=  'Could not find a matching packageno [' + inttostr(NewPkgNo) + '] in arriving loads.' ;
      Error      :=  True ;
+     ErrorCode  :=  1 ;
     End
     else
      if Action = eaReserved then
       Begin
        Errortext  := 'Packageno [' + inttostr(NewPkgNo) + '] is reserved by other user.' ;
        Error      := True ;
+       ErrorCode  := 1 ;
       End
       else
        if Action = eaDuplicate then
         Begin
          Errortext  := ' är redan inmatat'  ;
          Error      := True ;
+         ErrorCode  := 1 ;
         End ;
     End // if NewPkgNo > 0 then
      else
       Begin
        Errortext := 'PaketID saknas.' ;
        Error      := True ;
+       ErrorCode  := 1 ;
       End ;
-
-     if Error then
-       begin
-        //ShowMessage(ErrorText) ;
-
-        if not Assigned(PkgNrExceptionList) then
-        Begin
-          PkgNrExceptionList := TPkgNrExceptionList.Create(Nil) ;
-        End;
-        PkgNrExceptionList.CurrentAppName := AppFormName ;
-        PkgNrExceptionList.Show;
-        PkgNrExceptionList.AddPkgNrExcepionList(PackageNo, NewPkgNo, PkgSupplierCode,
-        cds_PropsVerkNo.AsInteger, cds_PropsBookingTypeNo.AsInteger,
-        cds_PropsClientNo.AsInteger) ;
-       end;
 
   //    ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext) ;
 
   finally
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  end;
- End ;//With
+    //ShowMessage(ErrorText) ;
 
+   if ErrorCode = 1 then
+   Begin
+    if not Assigned(PkgNrExceptionList) then
+    Begin
+      PkgNrExceptionList := TPkgNrExceptionList.Create(Nil) ;
+    End;
+    PkgNrExceptionList.LevereraTillNo := cds_PropsBookingTypeNo.AsInteger ;
+    PkgNrExceptionList.CurrentAppName := AppFormName ;
+    PkgNrExceptionList.Show;
+    dmArrivingLoads.AddPkgNrExcepionList(PackageNo, NewPkgNo, PkgSupplierCode,
+    cds_PropsVerkNo.AsInteger, cds_PropsBookingTypeNo.AsInteger,
+    cds_PropsClientNo.AsInteger, ErrorCode, ErrorText, AppFormName) ;
+    PkgNrExceptionList.Refresh_GetScannedPkgs ;
+    PkgNrExceptionList.ChangeFormSizeExecute ;
+   End
+   else
+    dmArrivingLoads.AddPkgNrExcepionList(PackageNo, NewPkgNo, PkgSupplierCode,
+    cds_PropsVerkNo.AsInteger, cds_PropsBookingTypeNo.AsInteger,
+    cds_PropsClientNo.AsInteger, ErrorCode, ErrorText, AppFormName) ;
+
+  end;
+
+
+  Screen.Cursor := Save_Cursor;  { Always restore to normal }
+ End ;//With
 end;
 
 

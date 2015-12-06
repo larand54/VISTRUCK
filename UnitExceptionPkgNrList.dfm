@@ -3,8 +3,8 @@ object PkgNrExceptionList: TPkgNrExceptionList
   Top = 0
   ActiveControl = cxDateEditStart
   Caption = 'Exception PkgNr List'
-  ClientHeight = 465
-  ClientWidth = 1011
+  ClientHeight = 579
+  ClientWidth = 887
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object PkgNrExceptionList: TPkgNrExceptionList
   object ExceptionPanel: TPanel
     Left = 0
     Top = 0
-    Width = 1011
-    Height = 465
+    Width = 887
+    Height = 579
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -29,19 +29,19 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Align = alClient
     Caption = 'ExceptionPanel'
     TabOrder = 0
-    ExplicitWidth = 1134
-    ExplicitHeight = 635
+    ExplicitWidth = 1011
+    ExplicitHeight = 465
     object Panel1: TPanel
       Left = 1
-      Top = 406
-      Width = 1009
+      Top = 520
+      Width = 885
       Height = 58
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 576
-      ExplicitWidth = 1132
+      ExplicitTop = 406
+      ExplicitWidth = 1009
       object cxButton5: TcxButton
-        Left = 168
+        Left = 344
         Top = 6
         Width = 161
         Height = 47
@@ -52,56 +52,80 @@ object PkgNrExceptionList: TPkgNrExceptionList
     object cxGrid1: TcxGrid
       Left = 1
       Top = 81
-      Width = 1009
-      Height = 325
+      Width = 885
+      Height = 439
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 1132
-      ExplicitHeight = 495
+      ExplicitWidth = 1009
+      ExplicitHeight = 325
       object cxGrid1DBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = ds_GetScannedPkgs
         DataController.KeyFieldNames = 'DateCreated'
         DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <
+          item
+            Format = '####'
+            Kind = skCount
+            FieldName = 'ScannedString'
+            Column = cxGrid1DBTableView1ScannedString
+          end>
         DataController.Summary.SummaryGroups = <>
+        OptionsData.Deleting = False
+        OptionsData.Editing = False
+        OptionsData.Inserting = False
+        OptionsView.ColumnAutoWidth = True
+        OptionsView.Footer = True
+        OptionsView.GroupByBox = False
+        OptionsView.Indicator = True
         object cxGrid1DBTableView1ScannedString: TcxGridDBColumn
           DataBinding.FieldName = 'ScannedString'
-          Width = 213
+          Width = 170
         end
         object cxGrid1DBTableView1PackageNo: TcxGridDBColumn
           DataBinding.FieldName = 'PackageNo'
+          Width = 69
         end
         object cxGrid1DBTableView1Prefix: TcxGridDBColumn
           DataBinding.FieldName = 'Prefix'
-          Width = 70
+          Width = 40
         end
         object cxGrid1DBTableView1DateCreated: TcxGridDBColumn
           Caption = 'Registrerad'
           DataBinding.FieldName = 'DateCreated'
-          Width = 133
+          PropertiesClassName = 'TcxLabelProperties'
+          SortIndex = 0
+          SortOrder = soDescending
+          Width = 94
         end
         object cxGrid1DBTableView1UserName: TcxGridDBColumn
           Caption = 'Registrerad av'
           DataBinding.FieldName = 'UserName'
-          Width = 123
+          Width = 93
         end
         object cxGrid1DBTableView1Mottagare: TcxGridDBColumn
           DataBinding.FieldName = 'Mottagare'
-          Width = 159
+          Width = 109
         end
         object cxGrid1DBTableView1Levereratill: TcxGridDBColumn
           DataBinding.FieldName = 'Leverera till'
-          Width = 120
+          Width = 83
         end
         object cxGrid1DBTableView1ClientName: TcxGridDBColumn
           Caption = 'Leverant'#246'r'
           DataBinding.FieldName = 'ClientName'
-          Width = 122
+          Width = 59
         end
         object cxGrid1DBTableView1Applikation: TcxGridDBColumn
           DataBinding.FieldName = 'Applikation'
-          Width = 100
+          Width = 108
+        end
+        object cxGrid1DBTableView1ScanStatus: TcxGridDBColumn
+          DataBinding.FieldName = 'ScanStatus'
+          Width = 147
+        end
+        object cxGrid1DBTableView1ErrorBeskrivning: TcxGridDBColumn
+          DataBinding.FieldName = 'ErrorBeskrivning'
         end
       end
       object cxGrid1Level1: TcxGridLevel
@@ -111,11 +135,11 @@ object PkgNrExceptionList: TPkgNrExceptionList
     object Panel2: TPanel
       Left = 1
       Top = 1
-      Width = 1009
+      Width = 885
       Height = 80
       Align = alTop
       TabOrder = 2
-      ExplicitWidth = 1132
+      ExplicitWidth = 1009
       object cxDateEditStart: TcxDateEdit
         Left = 112
         Top = 8
@@ -207,7 +231,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
   end
   object sp_GetScannedPkgs: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_GetScannedPkgs'
+    StoredProcName = 'dbo.vis_GetScannedPkgs_v2'
     Left = 312
     Top = 168
     ParamData = <
@@ -220,32 +244,34 @@ object PkgNrExceptionList: TPkgNrExceptionList
       end
       item
         Position = 2
-        Name = '@UserID'
+        Name = '@LevereraTillNo'
         DataType = ftInteger
         ParamType = ptInput
-        Value = 258
       end
       item
         Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
         Name = '@AppName'
         DataType = ftString
         ParamType = ptInput
         Size = 50
-        Value = #39'VisTruck.Ankomstreg'#39
-      end
-      item
-        Position = 4
-        Name = '@StartDateTime'
-        DataType = ftTimeStamp
-        ParamType = ptInput
-        Value = 42262d
       end
       item
         Position = 5
+        Name = '@StartDateTime'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end
+      item
+        Position = 6
         Name = '@EndDateTime'
         DataType = ftTimeStamp
         ParamType = ptInput
-        Value = 42265d
       end>
   end
   object ds_GetScannedPkgs: TDataSource
@@ -260,6 +286,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Top = 248
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -271,6 +298,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

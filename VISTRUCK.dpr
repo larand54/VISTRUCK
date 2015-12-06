@@ -2,6 +2,11 @@ program VISTRUCK;
 
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
 (*
 
       madExcept,

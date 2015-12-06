@@ -33,7 +33,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitHeight = 1317
     object cxSplitter1: TcxSplitter
       Left = 0
       Top = 412
@@ -101,6 +100,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           OnDblClick = grdLODBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
           OnEditKeyDown = grdLODBTableView1EditKeyDown
+          OnFocusedRecordChanged = grdLODBTableView1FocusedRecordChanged
           DataController.DataSource = dmcOrder.dsrcSawmillLoadOrders
           DataController.KeyFieldNames = 'SupplierShipPlanObjectNo'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1210,7 +1210,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Align = alClient
       Constraints.MinWidth = 492
       TabOrder = 4
-      ExplicitHeight = 897
       object grdFS: TcxGrid
         Left = 1
         Top = 65
@@ -1223,7 +1222,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Align = alClient
         PopupMenu = pmLoadGrid
         TabOrder = 0
-        ExplicitHeight = 831
+        OnExit = grdFSExit
         object grdFSDBTableView1: TcxGridDBTableView
           OnDblClick = grdFSDBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
@@ -1608,7 +1607,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 1350
           Top = 1
           Width = 161
-          Height = 35
+          Height = 34
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -1786,6 +1785,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           DataBinding.DataField = 'Panic_Note'
           DataBinding.DataSource = dmcOrder.dsrcBooking
           ParentFont = False
+          Style.Color = clSkyBlue
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clBlack
           Style.Font.Height = -15

@@ -5927,7 +5927,7 @@ object dmArrivingLoads: TdmArrivingLoads
   end
   object sp_InsertPkgsScanned: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_InsertPkgsScanned'
+    StoredProcName = 'dbo.vis_InsertPkgsScanned_v2'
     Left = 328
     Top = 776
     ParamData = <
@@ -5987,6 +5987,19 @@ object dmArrivingLoads: TdmArrivingLoads
         DataType = ftString
         ParamType = ptInput
         Size = 50
+      end
+      item
+        Position = 10
+        Name = '@ScanStatus'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 11
+        Name = '@Description'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 100
       end>
   end
 end

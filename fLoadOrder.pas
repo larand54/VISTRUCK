@@ -552,6 +552,11 @@ type
     procedure grdFSDBTableView1DblClick(Sender: TObject);
     procedure grdFSDBTableView1InitEdit(Sender: TcxCustomGridTableView;
       AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit);
+    procedure grdFSExit(Sender: TObject);
+    procedure grdLODBTableView1FocusedRecordChanged(
+      Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
 
   private
     { Private declarations }
@@ -4085,6 +4090,19 @@ begin
  End ;
 end;
 
+procedure TfrmVisTruckLoadOrder.grdLODBTableView1FocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+ With dmcOrder do
+ Begin
+  if dmcOrder.cdsBookingPanic_Note.AsString > '' then
+  ePanic_Note.Style.Color := clSkyBlue
+  else
+  ePanic_Note.Style.Color := clWhite ;
+ End;
+end;
+
 procedure TfrmVisTruckLoadOrder.acPrintMarkedLOsUpdate(Sender: TObject);
 begin
  acPrintMarkedLOs.Enabled:= grdLODBTableView1.Controller.SelectedRecordCount > 0 ;
@@ -4274,6 +4292,18 @@ begin
 
   if PackageEntryOption > 0 then
   AStyle := cxStyle1Red ;  
+end;
+
+procedure TfrmVisTruckLoadOrder.grdFSExit(Sender: TObject);
+begin
+ With dmcOrder do
+ Begin
+  if cdsLoadsForLO.State in [dsEdit] then
+   cdsLoadsForLO.Post ;
+
+  if cdsLoadsForLO_forVW.State in [dsEdit] then
+   cdsLoadsForLO_forVW.Post ;
+ End;
 end;
 
 procedure TfrmVisTruckLoadOrder.acPrintFSMisMatchExecute(Sender: TObject);

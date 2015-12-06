@@ -8284,7 +8284,7 @@ object dmInventory: TdmInventory
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
-    StoredProcName = 'dbo.Vis_Lager_v4'
+    StoredProcName = 'dbo.Vis_Lager_v6'
     Left = 216
     Top = 536
     ParamData = <
