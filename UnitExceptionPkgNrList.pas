@@ -32,7 +32,7 @@ uses
   cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon, frxClass,
-  frxDBSet, frxExportPDF ;
+  frxDBSet, frxExportPDF, siComp, siLngLnk ;
 
 type
   TPkgNrExceptionList = class(TForm)
@@ -76,6 +76,7 @@ type
     frxPDFExport1: TfrxPDFExport;
     cxGrid1DBTableView1ScanStatus: TcxGridDBColumn;
     cxGrid1DBTableView1ErrorBeskrivning: TcxGridDBColumn;
+    siLangLinked_frmLoadArrivals: TsiLangLinked;
 
     procedure acCloseExecute(Sender: TObject);
     procedure acRefreshExecute(Sender: TObject);

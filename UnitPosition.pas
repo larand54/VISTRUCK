@@ -26,7 +26,7 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, System.Generics.Collections,
   FireDAC.Comp.Client, FireDAC.Comp.DataSet, dmc_ArrivingLoads, cxContainer,
   cxTL, UnitStylesOKCANCL, cxGridCustomPopupMenu, cxGridPopupMenu, dmsVidaSystem,
-  VidaUser, cxPropertiesStore, dxmdaset, cxLabel;
+  VidaUser, cxPropertiesStore, dxmdaset, cxLabel, siComp, siLngLnk;
 
 type
   TPosition = class(TForm)
@@ -324,6 +324,7 @@ type
     sp_MatchRefMaxLength: TFloatField;
     sp_MatchRefNoOfPkgsByProduct: TIntegerField;
     sp_MatchRefNoOfPkgsByPosition: TIntegerField;
+    siLangLinked_frmLoadArrivals: TsiLangLinked;
     procedure btnStorePositionClick(Sender: TObject);
     procedure cxGrid_MatchPositionDBTableView1CellClick(
       Sender: TcxCustomGridTableView;

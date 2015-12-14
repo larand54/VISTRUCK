@@ -41,7 +41,7 @@ uses
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   dxBarBuiltInMenu, System.Actions, siComp, siLngLnk ;
 
-const cFirstLengthFieldNumber = 39 ;
+const cFirstLengthFieldNumber = 40 ;
 cFirstLengthFieldNumberPaketnr = 37 ;
       cFirstLengthFieldNumberPkgDtl = 39 ;
 type
@@ -1694,6 +1694,7 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel          := 'Träslag' ;
  dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel        := 'Utförande' ;
  dmInventory.sp_invpiv.FieldByName('LPName').DisplayLabel           := 'LP' ;
+ dmInventory.sp_invpiv.FieldByName('AreaName').DisplayLabel         := 'Area' ;
  dmInventory.sp_invpiv.FieldByName('PositionName').DisplayLabel     := 'Position' ;
  dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel    := 'Varugrupp' ;
 
@@ -1810,6 +1811,10 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  aColumn.Position.BandIndex := 3 ;
 
  aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+ aColumn.Visible  := True ;
+ aColumn.Position.BandIndex := 3 ;
+
+ aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AreaName');
  aColumn.Visible  := True ;
  aColumn.Position.BandIndex := 3 ;
 

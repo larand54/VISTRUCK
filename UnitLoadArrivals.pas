@@ -5267,6 +5267,7 @@ begin
   Begin
     PkgNrExceptionList := TPkgNrExceptionList.Create(Nil) ;
   End;
+
   PkgNrExceptionList.CurrentAppName := AppFormName ;
   PkgNrExceptionList.Show;
 end;
