@@ -27,9 +27,9 @@ object fLager: TfLager
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 159
+    Top = 193
     Width = 1578
-    Height = 698
+    Height = 664
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -43,7 +43,9 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 698
+    ExplicitTop = 159
+    ExplicitHeight = 698
+    ClientRectBottom = 664
     ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
@@ -53,11 +55,12 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
+      ExplicitHeight = 698
       object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 1578
-        Height = 698
+        Height = 664
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -65,11 +68,12 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitHeight = 698
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
           Width = 1578
-          Height = 333
+          Height = 299
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -80,6 +84,7 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
+          ExplicitHeight = 333
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -118,23 +123,18 @@ object fLager: TfLager
               end
               item
                 Caption = 'PRODUKT'
-                Options.HoldOwnColumnsOnly = True
                 Width = 300
               end
               item
                 Caption = 'NM3 PER L'#196'NGD'
-                Options.HoldOwnColumnsOnly = True
                 Width = 501
               end
               item
                 Caption = 'LAGER'
-                Options.HoldOwnColumnsOnly = True
-                Options.Moving = False
                 Width = 95
               end
               item
                 Caption = 'KVANTITET'
-                Options.HoldOwnColumnsOnly = True
                 Width = 247
               end>
             object grdDBBandedPerSortimentColumn1: TcxGridDBBandedColumn
@@ -205,7 +205,7 @@ object fLager: TfLager
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 341
+          Top = 307
           Width = 1578
           Height = 357
           Margins.Left = 4
@@ -215,6 +215,7 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitTop = 341
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -474,7 +475,7 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 333
+          Top = 299
           Width = 1578
           Height = 8
           Margins.Left = 4
@@ -486,6 +487,7 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
+          ExplicitTop = 333
         end
       end
     end
@@ -506,7 +508,7 @@ object fLager: TfLager
     Left = 0
     Top = 23
     Width = 1578
-    Height = 136
+    Height = 170
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -515,7 +517,7 @@ object fLager: TfLager
     TabOrder = 6
     DesignSize = (
       1578
-      136)
+      170)
     object cxLabel1: TcxLabel
       Left = 12
       Top = 39
@@ -947,6 +949,30 @@ object fLager: TfLager
       ParentFont = False
       WordWrap = True
     end
+    object cxButton12: TcxButton
+      Left = 20
+      Top = 134
+      Width = 161
+      Height = 33
+      Action = acSortimentVy
+      TabOrder = 27
+    end
+    object cxButton13: TcxButton
+      Left = 187
+      Top = 134
+      Width = 161
+      Height = 33
+      Action = acPositionsVy
+      TabOrder = 28
+    end
+    object cxButton14: TcxButton
+      Left = 354
+      Top = 134
+      Width = 161
+      Height = 33
+      Action = acPackageNoVy
+      TabOrder = 29
+    end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -978,8 +1004,8 @@ object fLager: TfLager
     LookAndFeel.Kind = lfFlat
     PopupMenuLinks = <>
     UseSystemFont = True
-    Left = 384
-    Top = 225
+    Left = 312
+    Top = 177
     DockControlHeights = (
       0
       0
@@ -1261,6 +1287,17 @@ object fLager: TfLager
       Caption = 'S'#228'tt std layout'
       OnExecute = acSetStdGridLayoutExecute
     end
+    object acSortimentVy: TAction
+      Caption = 'Sortimentsvy'
+      OnExecute = acSortimentVyExecute
+    end
+    object acPackageNoVy: TAction
+      Caption = 'Paketnrvy'
+    end
+    object acPositionsVy: TAction
+      Caption = 'Positionsvy'
+      OnExecute = acPositionsVyExecute
+    end
   end
   object pmFormShortcuts: TPopupMenu
     AutoPopup = False
@@ -1277,12 +1314,12 @@ object fLager: TfLager
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 521
-    Top = 233
+    Left = 553
+    Top = 257
   end
   object SaveDialog1: TSaveDialog
-    Left = 601
-    Top = 233
+    Left = 553
+    Top = 201
   end
   object dxComponentPrinter1: TdxComponentPrinter
     CurrentLink = dxComponentPrinter1Link1
@@ -1291,6 +1328,7 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1311,12 +1349,14 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.Header = 6350
@@ -1335,6 +1375,7 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
