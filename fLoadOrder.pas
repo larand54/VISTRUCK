@@ -63,7 +63,7 @@ uses
   dxPScxGridLayoutViewLnk, dxSkinsdxRibbonPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
-  siLngLnk, System.Actions ;
+  siLngLnk, System.Actions;
 
   Const
     CM_MOVEIT = WM_USER + 1;

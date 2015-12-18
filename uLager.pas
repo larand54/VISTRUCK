@@ -1479,7 +1479,7 @@ end;
 procedure TfLager.SetHeadersCaptionSortimentVy ;
 Begin
  Case cds_PropsLengthVolUnitNo.AsInteger of
-  0 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'ANTAL STYCK PER LÄNGD' ;
+  0 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_16' (* 'ANTAL STYCK PER LÄNGD' *) );
   1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
@@ -1490,7 +1490,7 @@ End ;
 procedure TfLager.SetHeadersCaptionPaketnrVy ;
 Begin
  Case cds_PropsLengthVolUnitNo.AsInteger of
-  0 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= 'ANTAL STYCK PER LÄNGD' ;
+  0 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_16' (* 'ANTAL STYCK PER LÄNGD' *) );
   1 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerPaketNr.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
@@ -1867,7 +1867,7 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  grdDBBandedPerSortiment.Bands[1].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_12' (* 'PRODUKT' *) );
  grdDBBandedPerSortiment.Bands[2].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) );
  grdDBBandedPerSortiment.Bands[3].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_14' (* 'LAGER' *) );
- grdDBBandedPerSortiment.Bands[4].Caption := 'KVANTITET';
+ grdDBBandedPerSortiment.Bands[4].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_15' (* 'KVANTITET' *) );
 
  FormatLengthColumns ;
 

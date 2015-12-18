@@ -7,15 +7,6 @@ uses
   madListHardware,
   madListProcesses,
   madListModules,
-(*
-
-      madExcept,
-      madLinkDisAsm,
-      madListHardware,
-      madListProcesses,
-      madListModules,
-*)
-
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -73,7 +64,6 @@ uses
   uSelectBTHorBTB in 'uSelectBTHorBTB.pas' {fSelectBTHorBTB},
   fBaseFormA in 'fBaseFormA.pas' {frmBaseFormA},
   uBaseListForm in 'uBaseListForm.pas' {fBaseListForm},
-  uFastReports in 'uFastReports.pas' {dmFR: TDataModule},
   uPickVPPkgs in 'uPickVPPkgs.pas' {fPickVPPkgs},
   uEntryPriceField in 'uEntryPriceField.pas' {fEntryPriceField},
   uLager in 'uLager.pas' {fLager},
@@ -137,5 +127,6 @@ begin
   Application.CreateForm(TdmInventory, dmInventory);
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
+  //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.
