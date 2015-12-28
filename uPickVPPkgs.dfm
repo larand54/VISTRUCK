@@ -274,7 +274,7 @@ object fPickVPPkgs: TfPickVPPkgs
   object ds_SelectedPkgNo: TDataSource
     DataSet = dmsSystem.mtSelectedPkgNo
     OnDataChange = ds_SelectedPkgNoDataChange
-    Left = 440
+    Left = 528
     Top = 192
   end
   object dxBarManager1: TdxBarManager
@@ -291,8 +291,8 @@ object fPickVPPkgs: TfPickVPPkgs
       True)
     PopupMenuLinks = <>
     UseSystemFont = True
-    Left = 312
-    Top = 184
+    Left = 232
+    Top = 248
     DockControlHeights = (
       0
       0
@@ -311,12 +311,12 @@ object fPickVPPkgs: TfPickVPPkgs
         ItemName = 'dxBarButton1'
       end>
     UseOwnFont = False
-    Left = 272
+    Left = 240
     Top = 184
   end
   object ActionList1: TActionList
-    Left = 352
-    Top = 184
+    Left = 224
+    Top = 320
     object acPkgInfo: TAction
       Caption = 'Paket information'
       OnExecute = acPkgInfoExecute
@@ -537,8 +537,8 @@ object fPickVPPkgs: TfPickVPPkgs
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 512
-    Top = 328
+    Left = 528
+    Top = 256
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066005000690063006B005600500050006B0067007300

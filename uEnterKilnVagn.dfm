@@ -45,7 +45,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
       TabOrder = 0
       OnKeyDown = mePackageNoKeyDown
-      Width = 275
+      Width = 325
     end
     object cxLabel1: TcxLabel
       Left = 115

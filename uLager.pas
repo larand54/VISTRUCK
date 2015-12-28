@@ -340,6 +340,12 @@ type
     acSetStdGridLayout: TAction;
     cxButton11: TcxButton;
     siLangLinked_fLager: TsiLangLinked;
+    cxButton12: TcxButton;
+    cxButton13: TcxButton;
+    cxButton14: TcxButton;
+    acSortimentVy: TAction;
+    acPackageNoVy: TAction;
+    acPositionsVy: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -389,15 +395,20 @@ type
             AViewInfo: TcxGridColumnHeaderViewInfo; var ADone: Boolean);
     procedure acSetStdGridLayoutExecute(Sender: TObject);
     procedure cbInklEjFaktPropertiesChange(Sender: TObject);
+    procedure acSortimentVyExecute(Sender: TObject);
+    procedure acPositionsVyExecute(Sender: TObject);
 
   private
     { Private declarations }
+    SortimentVy  : Integer ;
     GoToPkgCell_Allowed   : Boolean ;
     RightButton,
     ClickedF10            : Boolean ;
 //    CurrentNoOfPkgs,
     SelectedProductNo     : Integer ;
     SelectedLength        : String ;
+    procedure LoadGridLayoutSortimentsVy_POS ;
+    procedure SetSTDLayoutSortiment_POS(Sender: TObject);
     procedure ChangeInventorySource(Sender: TObject) ;
     procedure SetSTDLayoutPaketnr(Sender: TObject);
     procedure SetSTDLayoutSortiment(Sender: TObject);
@@ -634,7 +645,14 @@ end;
 
 procedure TfLager.LoadGridLayoutSortimentsVy ;
 Begin
+ SortimentVy  := 1 ;
  if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) = False then ;
+End ;
+
+procedure TfLager.LoadGridLayoutSortimentsVy_POS ;
+Begin
+ SortimentVy  := 2 ;
+ if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + 'POS' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) = False then ;
 End ;
 
 procedure TfLager.LoadGridLayoutPaketNrVy ;
@@ -1013,7 +1031,13 @@ begin
   End ;
 
   if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
-   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) ;
+  Begin
+   if SortimentVy = 1 then
+    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment)
+     else
+      dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'POS' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) ;
+  End;
+
 
   if grdDBBandedPerPaketNr.DataController.DataSet.RecordCount > 0 then
    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerPaketNr.Name, grdDBBandedPerPaketNr) ;
@@ -1133,12 +1157,21 @@ Var x : Integer ;
 begin
    Case grdBoT.ActiveLevel.Index of
     0 : Begin
-          SetSTDLayoutSortiment(Sender) ;
+          if SortimentVy = 1 then
+           SetSTDLayoutSortiment(Sender)
+            else
+             SetSTDLayoutSortiment_POS(Sender) ;
         End ;
     1 : Begin
           SetSTDLayoutPaketnr(Sender) ;
         End ;
    End ; //Case
+end;
+
+procedure TfLager.acSortimentVyExecute(Sender: TObject);
+begin
+ SortimentVy  := 1 ;
+ if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) = False then ;
 end;
 
 procedure TfLager.SetSTDLayoutPaketnr(Sender: TObject);
@@ -1203,6 +1236,40 @@ begin
 
  // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
    dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) ;
+
+//  if grdDBBandedPerPaketNr.DataController.DataSet.RecordCount > 0 then
+   //dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerPaketNr.Name, grdDBBandedPerPaketNr) ;
+
+ End ;//With...
+end;
+
+procedure TfLager.SetSTDLayoutSortiment_POS(Sender: TObject);
+Var x : Integer ;
+begin
+ With dmInventory do
+ Begin
+
+  if dmsSystem.LoadGridLayout(258, Self.Name + 'POS' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) = False then ;
+
+  For x := grdDBBandedPerSortiment.ColumnCount -1  downto cFirstLengthFieldNumber do
+    grdDBBandedPerSortiment.Columns[x].Free ;
+
+  if cds_Props.State in [dsBrowse] then
+  cds_Props.Edit ;
+
+  cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
+
+  cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
+
+  cds_Props.Post ;
+  if cds_Props.ChangeCount > 0 then
+  Begin
+   cds_Props.ApplyUpdates(0) ;
+   cds_Props.CommitUpdates ;
+  End ;
+
+ // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
+   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'POS' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) ;
 
 //  if grdDBBandedPerPaketNr.DataController.DataSet.RecordCount > 0 then
    //dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerPaketNr.Name, grdDBBandedPerPaketNr) ;
@@ -1474,6 +1541,12 @@ begin
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
+end;
+
+procedure TfLager.acPositionsVyExecute(Sender: TObject);
+begin
+ SortimentVy  := 2 ;
+ if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + 'POS' + grdDBBandedPerSortiment.Name, grdDBBandedPerSortiment) = False then ;
 end;
 
 procedure TfLager.SetHeadersCaptionSortimentVy ;
@@ -1834,7 +1907,10 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
   End ;
 
 
- LoadGridLayoutSortimentsVy ;
+ if SortimentVy = 1 then  
+  LoadGridLayoutSortimentsVy 
+   else
+    LoadGridLayoutSortimentsVy_POS ;
 
 
  grdDBBandedPerSortiment.BeginUpdate ;
