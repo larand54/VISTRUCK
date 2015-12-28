@@ -111,7 +111,10 @@ uses
   dmsSinglePkg in 'Visab\dmsSinglePkg.pas' {dm_SinglePkg: TDataModule},
   uSelectSortingOrderNo in 'Visab\uSelectSortingOrderNo.pas' {fSelectSortingOrderNo},
   UnitAboutBox in '..\CommonUnits\UnitAboutBox.pas' {AboutBox},
-  VidaUser in '..\CommonUnits\VidaUser.pas';
+  VidaUser in '..\CommonUnits\VidaUser.pas',
+  udmFR in '..\CommonSources\FastReport\udmFR.pas' {dmFR: TDataModule},
+  uReport in '..\CommonSources\FastReport\uReport.pas',
+  uReportController in '..\CommonSources\FastReport\uReportController.pas';
 
 {$R *.res}
 begin
@@ -127,6 +130,7 @@ begin
   Application.CreateForm(TdmInventory, dmInventory);
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
+  Application.CreateForm(TdmFR, dmFR);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

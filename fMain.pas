@@ -40,7 +40,7 @@ uses
   dxSkinsdxBarPainter, dxBarApplicationMenu, dxScreenTip, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxRibbonCustomizationForm, siComp, siLngLnk,
-  System.Actions ;
+  System.Actions, udmFR, uReportController ;
 
 
 
@@ -183,6 +183,7 @@ type
     cxButton2: TcxButton;
     dxBarLargeButton31: TdxBarLargeButton;
     acDeRegisterPackages: TAction;
+    cxbtnChangeReporter: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -204,6 +205,7 @@ type
     procedure acTorkhanterarenExecute(Sender: TObject);
     procedure acChangeLanguageExecute(Sender: TObject);
     procedure acDeRegisterPackagesExecute(Sender: TObject);
+    procedure cxbtnChangeReporterClick(Sender: TObject);
 
   private
     OriginalUserID  : Integer ;
@@ -501,7 +503,9 @@ begin
    dmLanguage.siLangDispatcher1.ActiveLanguage := LanguageNo ;
    dmLanguage.siLangDispatcher1.LoadAllFromFile(dmLanguage.siLangDispatcher1.FileName);
   End;
-
+  dmFR.SetUpConnection(dmsConnector.FDConnection1);
+  uReportController.useFR := true;
+  cxbtnChangeReporter.Caption := 'Change to CrystalReports';
   Caption  := lCaption ;
 end;
 
@@ -542,6 +546,19 @@ begin
 
  if Assigned(frmPortArrivals) then
   FreeAndNil(frmPortArrivals) ;
+end;
+
+procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);
+begin
+  if cxbtnChangeReporter.Caption = 'Change to FastReport' then begin
+    cxbtnChangeReporter.Caption := 'Change to CrystalReports';
+    uReportController.useFR := true;
+  end
+  else
+  begin
+    cxbtnChangeReporter.Caption := 'Change to FastReport';
+    uReportController.useFR := false;
+  end;
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

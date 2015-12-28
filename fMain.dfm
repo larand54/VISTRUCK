@@ -67,6 +67,19 @@ object frmMain: TfrmMain
         Action = acChangeLanguage
         TabOrder = 1
       end
+      object cxbtnChangeReporter: TcxButton
+        Left = 59
+        Top = 220
+        Width = 198
+        Height = 61
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Caption = 'Change to FastReport'
+        TabOrder = 2
+        OnClick = cxbtnChangeReporterClick
+      end
     end
   end
   object dxRibbon1: TdxRibbon

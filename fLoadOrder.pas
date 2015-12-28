@@ -23,7 +23,7 @@ uses
   DBCtrls,
   StdCtrls,
   Menus,
-  dxBar, dxBarExtItems, 
+  dxBar, dxBarExtItems,
   Buttons,
 
 
@@ -63,7 +63,7 @@ uses
   dxPScxGridLayoutViewLnk, dxSkinsdxRibbonPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
-  siLngLnk, System.Actions;
+  siLngLnk, System.Actions, udmFR, uReportController, uReport;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -443,6 +443,16 @@ type
     grdFSDBTableView1ShortNote: TcxGridDBColumn;
     grdLODBTableView1LoadedAM3: TcxGridDBColumn;
     grdLODBTableView1Produktnotering: TcxGridDBColumn;
+    acPrintTO: TAction;
+    acPrintTO_Manually: TAction;
+    dxbbtnPrintTO_Manually: TdxBarButton;
+    dxbbtnPrintTO: TdxBarButton;
+    acPrintLO_Your_Mill_Manually: TAction;
+    acPrintLO_All_Mills_Manually: TAction;
+    LO_YourMill_Manually: TdxBarButton;
+    LO_All_Mills_Manually: TdxBarButton;
+    dxBarButton33: TdxBarButton;
+    dxBarButton34: TdxBarButton;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -557,6 +567,11 @@ type
       Sender: TcxCustomGridTableView; APrevFocusedRecord,
       AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure acPrintTOExecute(Sender: TObject);
+    procedure acPrintTO_ManuallyExecute(Sender: TObject);
+    procedure acPrintLO_Your_Mill_ManuallyExecute(Sender: TObject);
+    procedure acPrintLO_All_Mills_ManuallyExecute(Sender: TObject);
+    procedure PrintLO_Manually(aSupplierNo: integer);
 
   private
     { Private declarations }
@@ -1030,35 +1045,102 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.bPrintLODittVerkClick(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport: TFormCRViewReport;
+  RepNo: Integer;
+  Save_Cursor: TCursor;
+  Params: TCMParams;
+  RC: TCMReportController;
+  Lang: integer;
+
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+  if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+    .AsInteger < 1 then
+    Exit;
+  if uReportController.useFR then
+  begin
+    Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode').AsInteger;
+    Params := nil;
+    RC := nil;
+    Try
+      Save_Cursor := Screen.Cursor;
+      Screen.Cursor := crSQLWait; { Show hourglass cursor }
+      if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+        (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+        // ('Lastorder_inkop_NOTE_ver2.RPT')
+        if Lang = cSwedish then
+          RepNo := 21 // LASTORDER_INKOP_NOTE_ver3_SV.fr3 (21)
+        else
+          RepNo := 38 // LASTORDER_NOTE_ver3_ENG.fr3 (38)
+      else
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+        if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+      begin
+        if Lang = cSwedish then
+          RepNo := 20 // LASTORDER_NOTE_ver3_SV.fr3 (20)
+        else
+          RepNo := 506; // LASTORDER_NOTE_ver3_ENG.fr3 (506)
 
- if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-  FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
- else
- Begin
-  if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-   FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
-   else
-   FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT') ;
- End ;
+      end
+      else
+        if Lang = cSwedish then
+        RepNo := 578 // LASTORDER_VERK_NOTE_ver3_SV.fr3 (22)
+      else
+        RepNo := 529; // LASTORDER_VERK_NOTE_ver3_ENG.fr3 (510)
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+
+      Params := TCMParams.Create();
+      Params.Add('@Language', Lang);
+      Params.Add('@SHIPPINGPLANNO',
+        grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+        .AsInteger);
+      Params.Add('@Supplierno',
+        grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
+        .AsInteger);
+
+      RC := TCMReportController.Create;
+      RC.RunReport(RepNo, Params, frPreview, 0);
+    finally
+      Screen.Cursor := Save_Cursor;
+      FreeAndNil(RC);
+      FreeAndNil(Params);
+    end;
+
+  end
+  else
+  begin
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+
+      if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+        (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+        FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
+      else
+      Begin
+        if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+          FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
+        else
+          FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
+      End;
+
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+          .AsInteger);
+        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue
+          (grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
+          .AsInteger);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfrmVisTruckLoadOrder.bAllaLasterPerLOClick(Sender: TObject);
@@ -1605,7 +1687,7 @@ CheckIfChangesUnSaved ;
 
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
 
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;  
+  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
 
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
@@ -1692,7 +1774,7 @@ begin
  FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM.RPT')
  else
   FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM_PO.RPT') ;
-  
+
  if FormCRViewReport.ReportFound then
  Begin
   FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmcOrder.SupplierNo) ;
@@ -1700,7 +1782,7 @@ begin
 
   FormCRViewReport.CRViewer91.ViewReport ;
   FormCRViewReport.ShowModal ;
- End ; 
+ End ;
  Finally
     FreeAndNil(FormCRViewReport)  ;
  End ;
@@ -1954,7 +2036,7 @@ begin
 
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
 
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;  
+  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
 
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
   cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
@@ -3353,6 +3435,18 @@ begin
  GenerateSamlingFS_MedPktNr(Sender) ;
 end;
 
+procedure TfrmVisTruckLoadOrder.acPrintLO_All_Mills_ManuallyExecute(
+  Sender: TObject);
+begin
+  PrintLO_Manually(-1);
+end;
+
+procedure TfrmVisTruckLoadOrder.acPrintLO_Your_Mill_ManuallyExecute(Sender: TObject);
+begin
+  PrintLO_Manually(grdLODBTableView1.DataController
+    .DataSet.FieldByName('Supplier').AsInteger);
+end;
+
 procedure TfrmVisTruckLoadOrder.GenerateSamlingFS_MedPktNr(Sender: TObject);
  Var i, RecIDX : Integer ;
  RecID :Variant ;
@@ -3892,6 +3986,65 @@ begin
  End ;
 end;
 
+procedure TfrmVisTruckLoadOrder.PrintLO_Manually(aSupplierNo: integer);
+Var
+  FormCRViewReport: TFormCRViewReport;
+  RepNo: Integer;
+  Save_Cursor: TCursor;
+  Params: TCMParams;
+  RC: TCMReportController;
+  Lang: integer;
+
+begin
+  if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+    .AsInteger < 1 then
+    Exit;
+  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+    .AsInteger;
+  Params := nil;
+  RC := nil;
+  Try
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait; { Show hourglass cursor }
+    if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+      (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+      // ('Lastorder_inkop_NOTE_ver2.RPT')
+      if Lang = cSwedish then
+        RepNo := 511 // LASTORDER_INKOP_NOTE_ver3_SV.fr3 (21)
+      else
+        RepNo := 511 // LASTORDER_NOTE_ver3_ENG.fr3 (38)
+    else
+
+      if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+    begin
+      if Lang = cSwedish then
+        RepNo := 511 // LASTORDER_NOTE_ver3_SV.fr3 (20)
+      else
+        RepNo := 511; // LASTORDER_NOTE_ver3_ENG.fr3 (506)
+
+    end
+    else
+      if Lang = cSwedish then
+      RepNo := 511 // LASTORDER_VERK_NOTE_ver3_SV.fr3 (22)
+    else
+      RepNo := 511; // LASTORDER_VERK_NOTE_ver3_ENG.fr3 (510)
+
+    Params := TCMParams.Create();
+    Params.Add('@Language', Lang);
+    Params.Add('@SHIPPINGPLANNO',
+      grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+      .AsInteger);
+    Params.Add('@Supplierno', aSupplierNo);
+
+    RC := TCMReportController.Create;
+    RC.RunReport(RepNo, Params, frPreview, 0);
+  finally
+    Screen.Cursor := Save_Cursor;
+    FreeAndNil(RC);
+    FreeAndNil(Params);
+  end;
+end;
+
 procedure TfrmVisTruckLoadOrder.acPrintMarkedLOsExecute(Sender: TObject);
 begin
  GetMarkedRows(Sender) ;
@@ -4254,6 +4407,80 @@ begin
  pmPrint.Popup(300,200);
 end;
 
+procedure TfrmVisTruckLoadOrder.acPrintTOExecute(Sender: TObject);
+var
+  RepNo: Integer;
+  Save_Cursor: TCursor;
+  Params: TCMParams;
+  RC: TCMReportController;
+  Lang: integer;
+begin
+  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode').AsInteger;
+  Params := nil;
+  RC := nil;
+  Try
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait; { Show hourglass cursor }
+    params := TCMParams.Create();
+    params.Add('@Language',Lang);;
+    params.Add('@SHIPPINGPLANNO',grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
+
+    if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger = c_Sales then begin
+      if Lang = cSwedish then
+        RepNo := 22 // TRP_ORDER_NOTE_SV.fr3 (22)
+      else
+        RepNo := 510; //TRP_ORDER_NOTE_ENG.fr3 (510)
+    end
+    else
+      RepNo := 23; // trp_order_inkop_NOTE.fr3 (23)
+
+    RC := TCMReportController.create;
+    RC.RunReport(RepNo, Params, frPreview,0);
+  Finally
+    Screen.Cursor := Save_Cursor;
+    FreeAndNil(RC);
+    FreeAndNil(params);
+  End;
+end;
+
+
+
+procedure TfrmVisTruckLoadOrder.acPrintTO_ManuallyExecute(Sender: TObject);
+var
+  RepNo: Integer;
+  Save_Cursor: TCursor;
+  Params: TCMParams;
+  RC: TCMReportController;
+  Lang: integer;
+begin
+  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode').AsInteger;
+  Params := nil;
+  RC := nil;
+  Try
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait; { Show hourglass cursor }
+    params := TCMParams.Create();
+    params.Add('@Language',Lang);;
+    params.Add('@SHIPPINGPLANNO',grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
+
+    if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger = c_Sales then begin
+      if Lang = cSwedish then
+        RepNo := 513// TRP_ORDER_NOTE_SV.fr3 (??)
+      else
+        RepNo := 513; //TRP_ORDER_NOTE_ENG.fr3 (513)
+    end
+    else
+      RepNo := 513; // trp_order_inkop_NOTE.fr3 (??)
+
+    RC := TCMReportController.create;
+    RC.RunReport(RepNo, Params, frPreview,0);
+  Finally
+    Screen.Cursor := Save_Cursor;
+    FreeAndNil(RC);
+    FreeAndNil(params);
+  End;
+end;
+
 procedure TfrmVisTruckLoadOrder.grdFSDBTableView1DblClick(Sender: TObject);
 begin
 
@@ -4291,7 +4518,7 @@ begin
   AStyle := cxStyle1clYellow ;
 
   if PackageEntryOption > 0 then
-  AStyle := cxStyle1Red ;  
+  AStyle := cxStyle1Red ;
 end;
 
 procedure TfrmVisTruckLoadOrder.grdFSExit(Sender: TObject);
@@ -5151,4 +5378,3 @@ begin
 end;
 
 End.
-
