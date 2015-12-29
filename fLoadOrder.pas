@@ -406,7 +406,6 @@ type
     cxButton8: TcxButton;
     LOallaverk1: TMenuItem;
     Lastorderertverk1: TMenuItem;
-    Hyvelorder1: TMenuItem;
     Specificationallalaster1: TMenuItem;
     Mailafljesedel1: TMenuItem;
     teREF: TcxTextEdit;
@@ -453,6 +452,10 @@ type
     LO_All_Mills_Manually: TdxBarButton;
     dxBarButton33: TdxBarButton;
     dxBarButton34: TdxBarButton;
+    LOallaverkManuell1: TMenuItem;
+    LOertverkManuell1: TMenuItem;
+    O1: TMenuItem;
+    OManuell1: TMenuItem;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -4483,7 +4486,6 @@ end;
 
 procedure TfrmVisTruckLoadOrder.grdFSDBTableView1DblClick(Sender: TObject);
 begin
-
   PostMessage (Handle, UM_AFTERDETAILCHANGEINQ, 0, 0);
 end;
 
