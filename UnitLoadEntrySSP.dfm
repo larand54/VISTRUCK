@@ -66,8 +66,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.Kind = lfUltraFlat
     LookAndFeel.SkinName = ''
-    ClientRectBottom = 266
-    ClientRectRight = 1522
+    ClientRectBottom = 262
+    ClientRectLeft = 4
+    ClientRectRight = 1518
     ClientRectTop = 27
     object tsLoadData: TcxTabSheet
       Margins.Left = 4
@@ -75,14 +76,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Leveranshuvud'
-      ExplicitLeft = 5
-      ExplicitTop = 30
-      ExplicitWidth = 1513
-      ExplicitHeight = 231
       object Splitter1: TSplitter
         Left = 0
-        Top = 179
-        Width = 1522
+        Top = 175
+        Width = 1514
         Height = 6
         Cursor = crVSplit
         Margins.Left = 4
@@ -98,7 +95,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object pLoadHead: TPanel
         Left = 0
         Top = 0
-        Width = 1522
+        Width = 1514
         Height = 91
         Margins.Left = 4
         Margins.Top = 4
@@ -107,7 +104,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 1513
         object detLoaded: TcxDBDateEdit
           Left = 98
           Top = 32
@@ -537,8 +533,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object grdAddress: TcxGrid
         Left = 0
-        Top = 185
-        Width = 1522
+        Top = 181
+        Width = 1514
         Height = 54
         Margins.Left = 4
         Margins.Top = 4
@@ -546,8 +542,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Bottom = 4
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 177
-        ExplicitWidth = 1513
         object grdAddressDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           DataController.DataSource = dmsContact.dsrcAddressAndReference
@@ -586,16 +580,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object grdLO: TcxGrid
         Left = 0
         Top = 91
-        Width = 1522
-        Height = 88
+        Width = 1514
+        Height = 84
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 2
-        ExplicitWidth = 1513
-        ExplicitHeight = 80
         object grdLODBTableView1: TcxGridDBTableView
           PopupMenu = pmLONumber
           Navigator.Buttons.CustomButtons = <>
@@ -784,9 +776,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Notering'
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object meInternalNote: TcxDBMemo
         Left = 0
         Top = 0
@@ -798,10 +787,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         DataBinding.DataField = 'InternalNote'
         DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
         TabOrder = 0
-        ExplicitWidth = 1513
-        ExplicitHeight = 231
-        Height = 239
-        Width = 1522
+        Height = 235
+        Width = 1514
       end
     end
   end
@@ -832,7 +819,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 1405
-        Height = 48
+        Height = 49
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -856,7 +843,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 10
         Top = 10
         Width = 1
-        Height = 21
+        Height = 24
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -880,7 +867,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 78
-        Height = 48
+        Height = 49
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -1446,7 +1433,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alClient
-    TabOrder = 5
+    TabOrder = 4
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -2180,7 +2167,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False
@@ -2395,8 +2382,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
       OnClick = bbTally_Ver2Click
     end
     object lbStartBarCodeReading: TdxBarLargeButton
-      Action = acStreckKodsinlasning
+      Caption = 'Skriv ut'
       Category = 0
+      Hint = 'Skriv ut'
+      Visible = ivAlways
+      ButtonStyle = bsDropDown
+      DropDownMenu = pmReport
+      LargeImageIndex = 4
+      OnClick = acStreckKodsinlasningExecute
     end
     object dxBarLargeButton1: TdxBarLargeButton
       Action = acImportPackages
@@ -5231,5 +5224,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Caption = 'NumPad'
       OnExecute = acNumPadExecute
     end
+  end
+  object pmReport: TdxBarPopupMenu
+    BarManager = dxBarManager1
+    ItemLinks = <>
+    UseOwnFont = False
+    Left = 984
+    Top = 514
   end
 end

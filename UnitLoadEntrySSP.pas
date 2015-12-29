@@ -372,6 +372,7 @@ type
     cxDBTextEdit1: TcxDBTextEdit;
     TouchKeyboard1: TTouchKeyboard;
     TouchKeyboard2: TTouchKeyboard;
+    pmReport: TdxBarPopupMenu;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
