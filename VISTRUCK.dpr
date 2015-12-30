@@ -114,7 +114,8 @@ uses
   VidaUser in '..\CommonUnits\VidaUser.pas',
   udmFR in '..\CommonSources\FastReport\udmFR.pas' {dmFR: TDataModule},
   uReport in '..\CommonSources\FastReport\uReport.pas',
-  uReportController in '..\CommonSources\FastReport\uReportController.pas';
+  uReportController in '..\CommonSources\FastReport\uReportController.pas',
+  uFastReports in 'uFastReports.pas';
 
 {$R *.res}
 begin

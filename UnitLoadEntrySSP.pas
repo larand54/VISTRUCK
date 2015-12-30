@@ -31,7 +31,7 @@ uses
   dxSkinsdxBarPainter, cxSpinEdit, cxBarEditItem, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
-  Vcl.Touch.Keyboard ;
+  Vcl.Touch.Keyboard, uReportController ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -57,7 +57,6 @@ type
     images1616: TImageList;
     siPrint: TdxBarSubItem;
     lbFS: TdxBarLargeButton;
-    lbHyvelOrder: TdxBarLargeButton;
     lbLastOrderAllaVerk: TdxBarLargeButton;
     lbLastOrderErtVerk: TdxBarLargeButton;
     lbSpecAllaLasterLO: TdxBarLargeButton;
@@ -228,7 +227,6 @@ type
     acKopplaPaketMotLOManuellt: TAction;
     acDeleteLoad: TAction;
     acPrintFS: TAction;
-    acPrintHyvelOrder: TAction;
     acLOAllaVerk: TAction;
     acPrintLOErtVerk: TAction;
     acPrintSpecAllaLasterLO: TAction;
@@ -373,6 +371,20 @@ type
     TouchKeyboard1: TTouchKeyboard;
     TouchKeyboard2: TTouchKeyboard;
     pmReport: TdxBarPopupMenu;
+    dxBarButton5: TdxBarButton;
+    dxBarButton6: TdxBarButton;
+    dxBarButton7: TdxBarButton;
+    dxBarButton8: TdxBarButton;
+    acPrintTO: TAction;
+    acPrintTo_Manuell: TAction;
+    dxBarButton9: TdxBarButton;
+    dxBarButton10: TdxBarButton;
+    dxBarButton11: TdxBarButton;
+    dxBarButton12: TdxBarButton;
+    acTreatmentCerticate: TAction;
+    acMailTreatmentCertificate: TAction;
+    dxBarButton13: TdxBarButton;
+    dxBarButton14: TdxBarButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -421,7 +433,6 @@ type
     procedure acPrintSpecAllaLasterLOUpdate(Sender: TObject);
     procedure acPrintLOErtVerkUpdate(Sender: TObject);
     procedure acLOAllaVerkUpdate(Sender: TObject);
-    procedure acPrintHyvelOrderUpdate(Sender: TObject);
     procedure acPkgEntryExecute(Sender: TObject);
     procedure acPkgEntryUpdate(Sender: TObject);
     procedure acStreckKodsinlasningExecute(Sender: TObject);
@@ -488,6 +499,10 @@ type
     procedure acSetPositionInSelectedPkgsExecute(Sender: TObject);
     procedure acSetPositionInAllPkgsUpdate(Sender: TObject);
     procedure acSetPositionInSelectedPkgsUpdate(Sender: TObject);
+    procedure acPrintTOExecute(Sender: TObject);
+    procedure acPrintTo_ManuellExecute(Sender: TObject);
+    procedure acTreatmentCerticateExecute(Sender: TObject);
+    procedure acMailTreatmentCertificateExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -636,7 +651,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   UnitCRExportOneReport, uSendMapiMail, dmc_UserProps, VidaUtils ,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
-  uEnterLoadWeight, uSelectLORowInLoad, uLagerPos;
+  uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports;
 
 {$R *.dfm}
 
@@ -1040,7 +1055,7 @@ begin
 
    cds_LoadHead.UpdateOptions.ReadOnly      := False ;
    cds_LSP.UpdateOptions.ReadOnly           := False ;
-   cds_LoadPackages.UpdateOptions.ReadOnly  := False ;   
+   cds_LoadPackages.UpdateOptions.ReadOnly  := False ;
 
    cds_LoadPackages.Active                  := True ;
 
@@ -1797,7 +1812,7 @@ begin
         end;
 
 
-    if (ValidPackage = ALL_OK) or 
+    if (ValidPackage = ALL_OK) or
     ((cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup)
     and (cds_LoadPackagesOverrideRL.AsInteger = 1)) then
     Begin
@@ -2652,7 +2667,7 @@ begin
        End ;
       End ;
      mtSelectedPkgNo.Next ;
-     cdsLORows.Locate('SupplierShipPlanObjectNo', SupplierShipPlanObjectNo, []) ; 
+     cdsLORows.Locate('SupplierShipPlanObjectNo', SupplierShipPlanObjectNo, []) ;
     End ; //While
     if cds_LoadPackages.State in [dsEdit, dsInsert] then
      cds_LoadPackages.Post ;
@@ -2770,7 +2785,7 @@ begin
    if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode) then
    Action := eaAccept
    else
-   Action :=  eaABANDON ;   
+   Action :=  eaABANDON ;
 
   End
    else //Length < 11
@@ -2798,7 +2813,7 @@ begin
           ) = ThisUser.UserName+'/'+'TfLoadEntrySSP' { NO_USER_HAS_THIS_PACKAGE_RESERVED }then begin
           Action := eaACCEPT ;
           end
-          else                                 
+          else
            Action := eaReserved ;
 
     if Action = eaACCEPT then
@@ -2930,7 +2945,7 @@ begin
      mtPkgNos.Next ;
     End ; //While
    if cds_LoadPackages.State in [dsEdit, dsInsert] then
-   cds_LoadPackages.Post ; 
+   cds_LoadPackages.Post ;
 
   Finally
    cds_LoadPackages.EnableControls ;
@@ -3060,7 +3075,7 @@ begin
  ValidateAllPkgs ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfLoadEntrySSP.ValidateAllPkgs ;
@@ -3584,7 +3599,7 @@ begin
      InsertSelectedPkgNos(Sender) ;
     End ;
 
-   SaveLoad ;    
+   SaveLoad ;
   Finally
    FreeAndNil(fPickPkgNo) ;//.Free ;
   End ;
@@ -3769,6 +3784,42 @@ begin
  Finally
   FreeAndNil(FormCRViewReport)  ;
  End ;
+end;
+
+procedure TfLoadEntrySSP.acPrintTOExecute(Sender: TObject);
+var
+  fr: TFastReports;
+  ReportType: integer;
+  TONo: integer;
+begin
+  // Check language
+  if dmsContact.Client_Language
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+    ReportType := cTrporder
+  else
+    ReportType := cTrporder_eng;
+  // Get trp order no
+  TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+  fr := TFastReports.create;
+  fr.TrpO(TONo,ReportType,'','','');
+end;
+
+procedure TfLoadEntrySSP.acPrintTo_ManuellExecute(Sender: TObject);
+var
+  fr: TFastReports;
+  ReportType: integer;
+  TONo: integer;
+begin
+  // Check language
+  if dmsContact.Client_Language
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+    ReportType := cTrporder_manuell
+  else
+    ReportType := cTrporder_manuell_eng;
+  // Get trp order no
+  TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+  fr := TFastReports.create;
+  fr.TrpO(TONo,ReportType,'','','');
 end;
 
 procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange(
@@ -3964,104 +4015,150 @@ begin
  End ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 End ;
 
 procedure TfLoadEntrySSP.PrintDirectFS(Sender: TObject);
 var FormCRPrintOneReport  : TFormCRPrintOneReport;
-    A : array of variant;
+  A: array of variant;
+  fr: TFastReports;
+  ReportType: Integer;
 begin
- if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then exit ;
- FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
- Try
-//CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+  Edit1.SetFocus;
+  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
+    Exit;
+  if uReportController.useFR then
+    try
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        ReportType := cFoljesedelIntern
+      else
+        ReportType := cFoljesedel;
 
- SetLength(A, 1);
- A[0]:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
- if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
- FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger, False, False, A, 'TALLY_INTERNAL_VER3_NOTE.RPT')
- else
- Begin
-  Try
-  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-  FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger, False, False, A, 'TALLY_VER3_NOTE.RPT') ;
- End ;
+      fr := TFastReports.createForPrint(false);
+      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+        ReportType,
+        '', '', '');
+    finally
+      FreeAndNil(fr);
+    end
+  else
+  begin
+    FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
+    Try
+      // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
 
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
+      SetLength(A, 1);
+      A[0] := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger,
+          False, False, A, 'TALLY_INTERNAL_VER3_NOTE.RPT')
+      else
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRPrintOneReport)  ;
- End ;
+        Try
+          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
+            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+          dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+        except
+          On E: Exception do
+          Begin
+            dmsSystem.FDoLog(E.Message);
+            // ShowMessage(E.Message);
+            Raise;
+          End;
+        end;
+        FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger,
+          False, False, A, 'TALLY_VER3_NOTE.RPT');
+      End;
+
+      Try
+        dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
+          dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+        dmsSystem.sq_DelPkgType.ExecSQL;
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    Finally
+      FreeAndNil(FormCRPrintOneReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.PreviewFS(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport: TFormCRViewReport ;
+  fr: TFastReports;
+  ReportType: integer;
 begin
+  Edit1.SetFocus;
+  if uReportController.useFR then
+    try
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        ReportType := cFoljesedelIntern
+      else
+        ReportType := cFoljesedel;
 
- Edit1.SetFocus ;
-
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
- if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
-  FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+      fr := TFastReports.Create;
+      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger, ReportType,
+        '', '', '');
+    finally
+      FreeAndNil(fr);
+    end
   else
-  Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
+  begin
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+      else
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-   FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT') ;
-  End ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
+        Try
+          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
+            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+          dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+        except
+          On E: Exception do
+          Begin
+            dmsSystem.FDoLog(E.Message);
+            // ShowMessage(E.Message);
+            Raise;
+          End;
+        end;
+        FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT');
+      End;
+      if FormCRViewReport.ReportFound then
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+      Try
+        dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
+          dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+        dmsSystem.sq_DelPkgType.ExecSQL;
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acPrintHyvelOrderExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport: TFormCRViewReport ;
 begin
  Edit1.SetFocus ;
 
@@ -4085,51 +4182,106 @@ end;
 
 procedure TfLoadEntrySSP.acLOAllaVerkExecute(Sender: TObject);
 Var FormCRViewReport : TFormCRViewReport ;
+  fr: TFastReports;
+  ReportType: Integer;
+  LONo,
+    Supplier: Integer;
 begin
- Edit1.SetFocus ;
+  Edit1.SetFocus;
+  if uReportController.useFR then
+  begin
+    // Check language
+    if dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+      ReportType := cLastorder
+    else
+      ReportType := cLastorder_eng;
+    // Get trp order no
+    LONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+    Supplier := -1;
+    try
+      fr := TFastReports.Create;
+      fr.LO(LONo, Supplier, ReportType, '', '', '');
+    finally
+      FreeAndNil(fr);
+    end;
+  end
+  else
+  begin
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-  FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
+        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acPrintLOErtVerkExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport: TFormCRViewReport ;
+  fr: TFastReports;
+  ReportType: Integer;
+  LONo,
+  Supplier: Integer;
 begin
- Edit1.SetFocus ;
+  Edit1.SetFocus;
+  if uReportController.useFR then
+  begin
+    // Check language
+    if dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+      ReportType := cLastorder
+    else
+      ReportType := cLastorder_eng;
+    // Get trp order no
+    LONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+    Supplier := dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger;
+    try
+      fr := TFastReports.Create;
+      fr.LO(LONo, Supplier, ReportType, '', '', '');
+    finally
+      FreeAndNil(fr);
+    end;
+  end
+  else
+  begin
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
 
- FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger);
+      FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
+        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue
+          (dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger);
 
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acPrintSpecAllaLasterLOExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport : TFormCRViewReport ;
 begin
  Edit1.SetFocus ;
 
@@ -4171,11 +4323,6 @@ end;
 procedure TfLoadEntrySSP.acLOAllaVerkUpdate(Sender: TObject);
 begin
  acLOAllaVerk.Enabled:= DataSaved ;
-end;
-
-procedure TfLoadEntrySSP.acPrintHyvelOrderUpdate(Sender: TObject);
-begin
- acPrintHyvelOrder.Enabled:= DataSaved ;
 end;
 
 procedure TfLoadEntrySSP.acPkgEntryExecute(Sender: TObject);
@@ -4333,7 +4480,7 @@ begin
  End ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfLoadEntrySSP.acPktNrSerieUpdate(Sender: TObject);
@@ -4428,6 +4575,22 @@ begin
     TouchKeyboard1.visible := False;
     teFS.setfocus;
    end;
+end;
+
+procedure TfLoadEntrySSP.acTreatmentCerticateExecute(Sender: TObject);
+var
+  fr: TFastReports;
+  ReportType: integer;
+  LONo: integer;
+begin
+  // Get trp order no
+  LONo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+  try
+    fr := TFastReports.create;
+    fr.TreatmentCert(LONo,'','','');
+  finally
+    FreeAndNil(fr);
+  end;
 end;
 
 procedure TfLoadEntrySSP.acStreckKodsinlasningUpdate(Sender: TObject);
@@ -4801,7 +4964,7 @@ Begin
   Add('OR SSP.ShippingPlanStatus = 6)') ;
 
 //  Add('SSP.ShippingPlanStatus = 1') ;
-  if LO_ETT = -1 then  
+  if LO_ETT = -1 then
   Add('AND SSP.ShippingPlanNo > 1') ;
 
   Add('AND CSH.ShippingPlanStatus = 1') ;
@@ -5295,11 +5458,11 @@ begin
      if (cds_LSP.Active) then
       UpdateInternLO ;
   acValidateAllPkgsExecute(Sender) ;
-  acSaveLoadExecute(Sender) ;   
+  acSaveLoadExecute(Sender) ;
  End ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfLoadEntrySSP.UpdateInternLO ;
@@ -5481,7 +5644,7 @@ begin
   cdsLORows.Filtered  := True ;
 
   acSaveLoadExecute(Sender) ;
- End ;//with 
+ End ;//with
 end;
 
 procedure TfLoadEntrySSP.acOpenLOFormUpdate(Sender: TObject);
@@ -5578,47 +5741,62 @@ begin
 end;
 
 procedure TfLoadEntrySSP.acPrintFSMisMatchExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport : TFormCRViewReport ;
+  fr: TFastReports;
 begin
- Edit1.SetFocus ;
+  if uReportController.useFR then
+    try
+      fr := TFastReports.Create;
+      fr.Tally_Pkg_Not_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger, 0,
+        '', '', '');
+    finally
+      FreeAndNil(fr);
+    end
+  else
+  begin
+    Edit1.SetFocus;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-// if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
-//  FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_MM.RPT')
-//  else
-//  Begin
-//Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-//Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ExecSQL(False) ;
-   FormCRViewReport.CreateCo('TALLY_VER2_NOTE_MM.RPT') ;
-//  End ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-{  Try
-  dmcSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-  dmcSystem.sq_DelPkgType.ExecSQL(False) ;
-     except
-      On E: Exception do
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      // if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
+      // FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_MM.RPT')
+      // else
+      // Begin
+      // Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
+      // Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ExecSQL(False) ;
+      FormCRViewReport.CreateCo('TALLY_VER2_NOTE_MM.RPT');
+      // End ;
+      if FormCRViewReport.ReportFound then
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end; }
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+      { Try
+        dmcSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
+        dmcSystem.sq_DelPkgType.ExecSQL(False) ;
+        except
+        On E: Exception do
+        Begin
+        dmsSystem.FDoLog(E.Message) ;
+        //      ShowMessage(E.Message);
+        Raise ;
+        End ;
+        end; }
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acDeleteNotCompletePkgsExecute(Sender: TObject);
-Var  Save_Cursor:TCursor;
+Var
+  Save_Cursor: TCursor;
 Begin
- With dmLoadEntrySSP do
+  With dmLoadEntrySSP do
  Begin
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -5667,83 +5845,147 @@ Var FormCRExportOneReport   : TFormCRExportOneReport ;
     MailToAddress           : String ;
     ReportType              : Integer ;
     ExcelDir                : String ;
+    fr                      : TFastReports;
 begin
- ExcelDir            := dmsSystem.Get_Dir('ExcelDir') ;
- if (dmLoadEntrySSP.cds_LSPAvrop_CustomerNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LSPAvrop_CustomerNo.IsNull = False) then
- MailToAddress:= dmsContact.GetEmailAddress(dmLoadEntrySSP.cds_LSPAvrop_CustomerNo.AsInteger)
- else
- MailToAddress:= dmsContact.GetEmailAddress(dmLoadEntrySSP.cds_LSPCustomerNo.AsInteger) ;
- if Length(MailToAddress) = 0 then
- Begin
-  MailToAddress:= 'ange@adress.nu' ;
-  ShowMessage('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)') ;
- End ;
- if Length(MailToAddress) > 0 then
- Begin
- FormCRExportOneReport:= TFormCRExportOneReport.Create(Nil);
- Try
-  SetLength(A, 1);
-  A[0]:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-
-
-  if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
-  ReportType := cFoljesedelIntern
+  if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger)
   else
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmLoadEntrySSP.cds_LSPCustomerNo.AsInteger);
+  if Length(MailToAddress) = 0 then
   Begin
-
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
+    MailToAddress := 'ange@adress.nu';
+    ShowMessage
+      ('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)');
+  End;
+  if Length(MailToAddress) > 0 then
+  begin
+    if uReportController.useFR then
+    begin
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        ReportType := cFoljesedelIntern
+      else if dmsContact.Client_Language
+              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+        ReportType := cFoljesedel
+      else
+        ReportType := cFoljesedel_eng;
+      try
+        fr := TFastReports.Create;
+        fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,ReportType,MailToAddress,'','');
+      finally
+        FreeAndNil(fr);
+      end;
+    end
+    else
+    begin
+      ExcelDir := dmsSystem.Get_Dir('ExcelDir');
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
+        FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
+        Try
+          SetLength(A, 1);
+          A[0] := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
 
+          if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+            ReportType := cFoljesedelIntern
+          else
+          Begin
 
-   if dmsContact.Client_Language(dmLoadEntrySSP.cds_LSPAvrop_CustomerNo.AsInteger) = cSwedish then
-    ReportType := cFoljesedel
-     else
-      ReportType := cFoljesedel_eng ;
-  End ;
+            Try
+              dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
+                dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+              dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+            except
+              On E: Exception do
+              Begin
+                dmsSystem.FDoLog(E.Message);
+                // ShowMessage(E.Message);
+                Raise;
+              End;
+            end;
 
-  FormCRExportOneReport.CreateCo(1, ReportType, A, ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString) ;
- if FormCRExportOneReport.ReportFound = False then Exit ;
- Finally
-  FreeAndNil(FormCRExportOneReport) ;//.Free ;
- End ;
- SetLength(Attach, 1);
- Attach[0]        := ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString+'.pdf' ;
- dm_SendMapiMail  := Tdm_SendMapiMail.Create(nil);
- Try
-  dm_SendMapiMail.SendMail('Följesedel. FSnr: '+dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
-  siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_83' (* 'Följesedel bifogad. ' *) )
-  +LF+''
-  +siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_84' (* 'Load tally attached. ' *) )
-  +LF+''
-  +LF+''
-  +LF+'MVH/Best Regards, '
-  +LF+''
-  +dmsContact.GetFirstAndLastName(ThisUser.UserID),
-  dmsSystem.Get_Dir('MyEmailAddress'),
-  MailToAddress,
-  Attach) ;
- Finally
-  FreeAndNil(dm_SendMapiMail) ;
- End ;
- End
+            if dmsContact.Client_Language
+              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+              ReportType := cFoljesedel
+            else
+              ReportType := cFoljesedel_eng;
+          End;
+
+          FormCRExportOneReport.CreateCo(1, ReportType, A,
+            ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString);
+          if FormCRExportOneReport.ReportFound = False then
+            Exit;
+        Finally
+          FreeAndNil(FormCRExportOneReport); // .Free ;
+        End;
+        SetLength(Attach, 1);
+        Attach[0] := ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString
+          + '.pdf';
+        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
+        Try
+          dm_SendMapiMail.SendMail('Följesedel. FSnr: ' +
+            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
+            siLangLinked_fLoadEntrySSP.GetTextOrDefault
+            ('IDS_83' (* 'Följesedel bifogad. ' *) )
+            + LF + ''
+            + siLangLinked_fLoadEntrySSP.GetTextOrDefault
+            ('IDS_84' (* 'Load tally attached. ' *) )
+            + LF + ''
+            + LF + ''
+            + LF + 'MVH/Best Regards, '
+            + LF + ''
+            + dmsContact.GetFirstAndLastName(ThisUser.UserID),
+            dmsSystem.Get_Dir('MyEmailAddress'),
+            MailToAddress,
+            Attach);
+        Finally
+          FreeAndNil(dm_SendMapiMail);
+        End;
+      End
+    end;
+  end
   else
-   ShowMessage('Emailadress saknas för klienten!') ;
+    ShowMessage('Emailadress saknas för klienten!');
+end;
+
+procedure TfLoadEntrySSP.acMailTreatmentCertificateExecute(Sender: TObject);
+var
+  fr: TFastReports;
+  ReportType: integer;
+  LONo: integer;
+  MailToAddress: string;
+begin
+  // Get trp order no
+  LONo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+  // Get maildresses
+  if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger)
+  else
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmLoadEntrySSP.cds_LSPCustomerNo.AsInteger);
+  if Length(MailToAddress) = 0 then
+  Begin
+    MailToAddress := 'ange@adress.nu';
+    ShowMessage
+      ('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)');
+  End;
+  if Length(MailToAddress) > 0 then
+  try
+    fr := TFastReports.create;
+    fr.TreatmentCert(LONo,MailToAddress,'','');
+  finally
+    FreeAndNil(fr);
+  end;
 end;
 
 procedure TfLoadEntrySSP.acNumPadExecute(Sender: TObject);
 begin
-   if not TouchKeyboard2.visible then
-    begin
-     TouchKeyboard2.visible := True;
+  if not TouchKeyboard2.Visible then
+  begin
+    TouchKeyboard2.visible := True;
     end
    else
    begin
@@ -5825,7 +6067,7 @@ begin
  End ; //with
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 
@@ -6057,7 +6299,7 @@ Begin
 end;
 
 procedure TfLoadEntrySSP.acShowLoadHeaderExecute(Sender: TObject);
-begin 
+begin
  if dxPageControl1.Visible then
  Begin
   dxPageControl1.Visible  := False ;
@@ -6110,54 +6352,90 @@ end;
 procedure TfLoadEntrySSP.PrintDirectCMR(Sender: TObject);
 var FormCRPrintOneReport  : TFormCRPrintOneReport;
     A : array of variant;
+  aLO: integer;
+  fr: TFastReports;
 begin
- if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then exit ;
- FormCRPrintOneReport:= TFormCRPrintOneReport.Create(Nil);
- Try
-//CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+  if uReportController.useFR then
+  begin
+    aLO := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    try
+      fr := TFastReports.createForPrint(false);
+      fr.CMR(aLO);
+    finally
+      FreeAndNil(fr);
+    end;
+  end
+  else
+  begin
+    if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
+      Exit;
+    FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
+    Try
+      // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
 
- SetLength(A, 1);
- A[0]:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
- FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger, False, False, A, 'CMR.RPT') ;
-  Try
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRPrintOneReport)  ;
- End ;
+      SetLength(A, 1);
+      A[0] := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+      FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger, False,
+        False, A, 'CMR.RPT');
+      Try
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    Finally
+      FreeAndNil(FormCRPrintOneReport);
+    End;
+  end;
 end;
 
-procedure TfLoadEntrySSP.PreviewCMR(Sender: TObject) ;
-Var FormCRViewReport : TFormCRViewReport ;
+procedure TfLoadEntrySSP.PreviewCMR(Sender: TObject);
+Var
+  FormCRViewReport: TFormCRViewReport;
+  aLO: Integer;
+  fr: TFastReports;
 begin
- Edit1.SetFocus ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-  FormCRViewReport.CreateCo('CMR.RPT') ;
+  Edit1.SetFocus ;
+ if uReportController.useFR then
+  begin
+    aLO := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    try
+    fr := TFastReports.create;
+    fr.CMR(aLO);
+    finally
+      FreeAndNil(fr);
+    end;
+  end
+  else
+  begin
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      FormCRViewReport.CreateCo('CMR.RPT');
+
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acPrintCMRExecute(Sender: TObject);
-var fEnterLoadWeight: TfEnterLoadWeight;
+var
+  fEnterLoadWeight: TfEnterLoadWeight;
 begin
- //Set KG
- fEnterLoadWeight := TfEnterLoadWeight.Create(nil) ;
+  // Set KG
+  fEnterLoadWeight := TfEnterLoadWeight.Create(nil) ;
  Try
   dmsSystem.GenerateLoadWeight(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
   dmsSystem.Open_cds_LoadWeigth(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
@@ -6170,7 +6448,7 @@ begin
  End ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 
@@ -6205,7 +6483,7 @@ begin
  PrintDirectCMR(Sender) ;
 
  if mePackageNo.Enabled then
-  mePackageNo.SetFocus ; 
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfLoadEntrySSP.EnterLoadWeight(Sender: TObject);
@@ -6314,5 +6592,3 @@ end;
 
 
 end.
-
-

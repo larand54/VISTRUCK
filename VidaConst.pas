@@ -75,6 +75,7 @@ const
   cLastorderInkop   = 8 ;
   cTrporderInkop    = 9 ;
   cFoljesedelInkop  = 10 ;
+  cLastorder_eng    = 11;
 
   cFoljesedelUSA    = 12 ;
   cTrpBrev          = 13 ;
@@ -82,6 +83,13 @@ const
 
   cFoljesedelIntern = 17 ;
   cFoljesedel_eng   = 18 ;
+  cFoljesedel_no_matching_pkg = 19;
+  cTrpOrder_eng               = 20;
+  cTrpOrder_manuell           = 21;
+  cTrpOrder_manuell_eng       = 22;
+  cLastorder_manuell_eng      = 23;
+  cLastorder_manuell          = 24;
+
 
 
   const_Med_Moms = 0 ;
