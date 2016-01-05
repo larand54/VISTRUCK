@@ -236,7 +236,6 @@ object dmsSystem: TdmsSystem
     Top = 496
   end
   object mtReportTypes: TkbmMemTable
-    Active = True
     DesignActivation = True
     AttachedAutoRefresh = True
     AttachMaxCount = 1
@@ -4353,7 +4352,6 @@ object dmsSystem: TdmsSystem
       end>
   end
   object sp_LagerPos: TFDStoredProc
-    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Position'
     Left = 1136
