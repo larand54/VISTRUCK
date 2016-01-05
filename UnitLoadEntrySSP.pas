@@ -3791,17 +3791,19 @@ var
   fr: TFastReports;
   ReportType: integer;
   TONo: integer;
+  Language: integer;
 begin
   // Check language
-  if dmsContact.Client_Language
-    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+  Language :=  dmsContact.Client_Language
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  if Language = cSwedish then
     ReportType := cTrporder
   else
     ReportType := cTrporder_eng;
   // Get trp order no
   TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
   fr := TFastReports.create;
-  fr.TrpO(TONo,ReportType,'','','');
+  fr.TrpO(TONo,ReportType,Language,'','','');
 end;
 
 procedure TfLoadEntrySSP.acPrintTo_ManuellExecute(Sender: TObject);
@@ -3809,17 +3811,19 @@ var
   fr: TFastReports;
   ReportType: integer;
   TONo: integer;
+  Language: integer;
 begin
   // Check language
-  if dmsContact.Client_Language
-    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+  Language :=  dmsContact.Client_Language
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  if Language = cSwedish then
     ReportType := cTrporder_manuell
   else
     ReportType := cTrporder_manuell_eng;
   // Get trp order no
   TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
   fr := TFastReports.create;
-  fr.TrpO(TONo,ReportType,'','','');
+  fr.TrpO(TONo,ReportType,language,'','','');
 end;
 
 procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange(
@@ -4023,20 +4027,27 @@ var FormCRPrintOneReport  : TFormCRPrintOneReport;
   A: array of variant;
   fr: TFastReports;
   ReportType: Integer;
+  language: integer;
 begin
   Edit1.SetFocus;
   if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
     Exit;
   if uReportController.useFR then
     try
+  // Check language
+    Language := dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    if Language = cSwedish then
       if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
         ReportType := cFoljesedelIntern
       else
-        ReportType := cFoljesedel;
+        ReportType := cFoljesedel
+    else
+      ReportType := cFoljesedel_eng;
 
       fr := TFastReports.createForPrint(false);
       fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
-        ReportType,
+        ReportType, Language,
         '', '', '');
     finally
       FreeAndNil(fr);
@@ -4093,21 +4104,32 @@ Var
   FormCRViewReport: TFormCRViewReport ;
   fr: TFastReports;
   ReportType: integer;
+  language: integer;
 begin
   Edit1.SetFocus;
   if uReportController.useFR then
+  begin
+  // Check language
+  language := dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     try
-      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-        ReportType := cFoljesedelIntern
+      if language = cSwedish then
+        if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+          ReportType := cFoljesedelIntern
+        else
+          ReportType := cFoljesedel
       else
-        ReportType := cFoljesedel;
-
+        if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+          ReportType := cFoljesedelIntern // No english version yet!
+        else
+          ReportType := cFoljesedel_eng;
       fr := TFastReports.Create;
-      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger, ReportType,
-        '', '', '');
+      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+        ReportType, Language, '', '', '');
     finally
       FreeAndNil(fr);
     end
+  end
   else
   begin
     FormCRViewReport := TFormCRViewReport.Create(Nil);
@@ -4184,6 +4206,7 @@ procedure TfLoadEntrySSP.acLOAllaVerkExecute(Sender: TObject);
 Var FormCRViewReport : TFormCRViewReport ;
   fr: TFastReports;
   ReportType: Integer;
+  language: integer;
   LONo,
     Supplier: Integer;
 begin
@@ -4191,8 +4214,9 @@ begin
   if uReportController.useFR then
   begin
     // Check language
-    if dmsContact.Client_Language
-      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+    Language := dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    if language = cSwedish then
       ReportType := cLastorder
     else
       ReportType := cLastorder_eng;
@@ -4201,7 +4225,7 @@ begin
     Supplier := -1;
     try
       fr := TFastReports.Create;
-      fr.LO(LONo, Supplier, ReportType, '', '', '');
+      fr.LO(LONo, Supplier, ReportType, language, '', '', '');
     finally
       FreeAndNil(fr);
     end;
@@ -4232,6 +4256,7 @@ Var
   FormCRViewReport: TFormCRViewReport ;
   fr: TFastReports;
   ReportType: Integer;
+  language: integer;
   LONo,
   Supplier: Integer;
 begin
@@ -4239,8 +4264,9 @@ begin
   if uReportController.useFR then
   begin
     // Check language
-    if dmsContact.Client_Language
-      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+    Language := dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    if language = cSwedish then
       ReportType := cLastorder
     else
       ReportType := cLastorder_eng;
@@ -4249,7 +4275,7 @@ begin
     Supplier := dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger;
     try
       fr := TFastReports.Create;
-      fr.LO(LONo, Supplier, ReportType, '', '', '');
+      fr.LO(LONo, Supplier, ReportType, Language, '', '', '');
     finally
       FreeAndNil(fr);
     end;
@@ -5744,15 +5770,26 @@ procedure TfLoadEntrySSP.acPrintFSMisMatchExecute(Sender: TObject);
 Var
   FormCRViewReport : TFormCRViewReport ;
   fr: TFastReports;
+  ReportType: integer;
+  Language: integer;
 begin
   if uReportController.useFR then
+  begin
+    // Check language
+    Language := dmsContact.Client_Language
+      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    if language = cSwedish then
+      ReportType := cFoljesedel_no_matching_pkg_sv
+    else
+      ReportType := cFoljesedel_no_matching_pkg_eng;
     try
       fr := TFastReports.Create;
-      fr.Tally_Pkg_Not_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger, 0,
-        '', '', '');
+      fr.Tally_Pkg_Not_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+        ReportType, language, '', '', '');
     finally
       FreeAndNil(fr);
     end
+  end
   else
   begin
     Edit1.SetFocus;
@@ -5844,9 +5881,11 @@ Var FormCRExportOneReport   : TFormCRExportOneReport ;
     Attach                  : array of String ;
     MailToAddress           : String ;
     ReportType              : Integer ;
+    Language                : Integer;
     ExcelDir                : String ;
     fr                      : TFastReports;
 begin
+{TSI:IGNORE ON}
   if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
     MailToAddress := dmsContact.GetEmailAddress
@@ -5864,16 +5903,18 @@ begin
   begin
     if uReportController.useFR then
     begin
+      language := dmsContact.Client_Language
+              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
       if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
         ReportType := cFoljesedelIntern
-      else if dmsContact.Client_Language
-              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+      else if language = cSwedish then
         ReportType := cFoljesedel
       else
         ReportType := cFoljesedel_eng;
       try
         fr := TFastReports.Create;
-        fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,ReportType,MailToAddress,'','');
+        fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+          ReportType, Language, MailToAddress, '','');
       finally
         FreeAndNil(fr);
       end;
@@ -5926,11 +5967,9 @@ begin
         Try
           dm_SendMapiMail.SendMail('Följesedel. FSnr: ' +
             dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
-            siLangLinked_fLoadEntrySSP.GetTextOrDefault
-            ('IDS_83' (* 'Följesedel bifogad. ' *) )
+            'Följesedel bifogad. '
             + LF + ''
-            + siLangLinked_fLoadEntrySSP.GetTextOrDefault
-            ('IDS_84' (* 'Load tally attached. ' *) )
+            + 'Load tally attached. '
             + LF + ''
             + LF + ''
             + LF + 'MVH/Best Regards, '
@@ -5946,6 +5985,7 @@ begin
     end;
   end
   else
+{TSI:IGNORE OFF}
     ShowMessage('Emailadress saknas för klienten!');
 end;
 
@@ -5956,7 +5996,7 @@ var
   LONo: integer;
   MailToAddress: string;
 begin
-  // Get trp order no
+  // Get load order no
   LONo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   // Get maildresses
   if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
