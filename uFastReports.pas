@@ -1,7 +1,8 @@
 unit uFastReports;
 
 interface
-
+uses
+  uReport;
 
 type
   TFastReports = class
@@ -18,6 +19,9 @@ type
     procedure TreatmentCert(const aLo: integer; aMailTo: string; aMailMsg, aMailTitle: string);
     procedure TrpO(const aLo, aReportType, aLanguage: integer; aMailTo: string; aMailMsg, aMailTitle: string);
     procedure LO(const aLo, aSupplier, aReportType, aLanguage: integer; aMailTo: string; aMailMsg, aMailTitle: string);
+    procedure ReportPreview(const aRepname: string; const aParams: TCMParams);
+    procedure ReportPrint(const aRepname: string; const aParams: TCMParams; aPromptUser: boolean);
+    function ReportFile(const aRepname, aFilename: string; const aParams: TCMParams): string;
     constructor createForPrint(aPrintDialog: boolean);
     constructor create;
   end;
@@ -30,7 +34,6 @@ uses
   VCL.Forms,
   uSendMapiMail,
   uReportController,
-  uReport,
   vidaConst,
   VidaUser,
   dmsVidaSystem,
@@ -39,27 +42,18 @@ uses
 
 procedure TFastReports.CMR(const aLo: integer);
 var
-  media: TCMMediaType;
   params: TCMParams;
-  RC: TCMReportController;
   ReportName: string;
-  save_Cursor: TCursor;
 begin
-  save_Cursor := screen.Cursor;
-  if FPrint then
-    media := frPrint
-  else
-    media := frPreview;
   ReportName := 'CMR.fr3';
   try
-    RC := TCMReportController.Create;
     params := TCMParams.Create();
     params.Add('@LoadNo', aLo);
-    RC.RunReport(ReportName, params, media, 0);
+  if FPrint then
+    ReportPrint(ReportName, Params, false)
+  else
+    ReportPreview(ReportName, Params);
   finally
-    FreeAndNil(RC);
-    FreeAndNil(params);
-    Screen.Cursor := save_Cursor;
   end;
 end;
 
@@ -147,6 +141,10 @@ begin
       ReportName := 'LASTORDER_NOTE_MANUELL_SV.fr3';
     cLastorder_manuell_eng:
       ReportName := 'LASTORDER_NOTE_MANUELL_ENG.fr3';
+    cLastOrder_verk_sv:
+      Reportname := 'LASTORDER_VERK_NOTE_ver3_SV.fr3';
+    cLastOrder_verk_eng:
+      Reportname := 'LASTORDER_VERK_NOTE_ver3_ENG.fr3';
   else
     ReportName := 'Report could not be selected! ReportType: ' +
       intToStr(aReportType);
@@ -185,6 +183,69 @@ begin
  Finally
   FreeAndNil(dm_SendMapiMail) ;
  End ;
+end;
+
+function TFastReports.ReportFile(const aRepname, aFilename: string;
+  const aParams: TCMParams): string;
+var
+  RC: TCMReportController;
+  save_Cursor: TCursor;
+  ExcelDir: string;
+begin
+  result := '';
+  try
+    ExcelDir := dmsSystem.Get_Dir('ExcelDir');
+    save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait;
+    RC := TCMReportController.Create(ExcelDir, aFilename);
+    RC.RunReport(aRepName, aParams, frFile, 0);
+  finally
+    result := RC.getExportFile;
+    FreeAndNil(RC);
+    aParams.free;
+    Screen.Cursor := save_Cursor;
+  end;
+end;
+
+procedure TFastReports.ReportPreview(const aRepname: string; const aParams: TCMParams);
+var
+  RC: TCMReportController;
+  save_Cursor: TCursor;
+begin
+  try
+    save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait;
+    RC := TCMReportController.Create;
+    RC.RunReport(aRepName, aParams, frPreview, 0);
+  finally
+    FreeAndNil(RC);
+    aparams.Free;
+    Screen.Cursor := save_Cursor;
+  end;
+
+end;
+
+procedure TFastReports.ReportPrint(const aRepname: string; const aParams: TCMParams;
+  aPromptUser: boolean);
+var
+  RC: TCMReportController;
+  save_Cursor: TCursor;
+  Prompt: integer;
+begin
+  if aPromptUser then
+    Prompt := 1
+  else
+    Prompt := 0;
+  try
+    save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait;
+    RC := TCMReportController.Create;
+    RC.RunReport(aRepName, aParams, frPrint, Prompt);
+  finally
+    FreeAndNil(RC);
+    aparams.free;
+    Screen.Cursor := save_Cursor;
+  end;
 end;
 
 procedure TFastReports.TrpO(const aLo, aReportType, aLanguage: integer;

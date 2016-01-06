@@ -90,6 +90,9 @@ const
   cLastorder_manuell_eng      = 23;
   cLastorder_manuell          = 24;
   cFoljesedel_no_matching_pkg_eng = 25;
+  cLastorder_verk_sv = 26;
+  cLastorder_verk_eng = 27;
+  cLastOrderInkop_eng = 28;
 
 
 

@@ -303,7 +303,7 @@ begin
         Params.Add('User_Name=Lars');
         Params.Add('Password=woods2011');
         Params.Add('DriverID=MSSQL');
-        Params.Add('ApplicationName=VIS_LAGER');
+        Params.Add('ApplicationName=VISTRUCK');
       end;
   end
   else begin
