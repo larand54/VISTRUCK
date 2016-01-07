@@ -22,6 +22,7 @@ type
     procedure ReportPreview(const aRepname: string; const aParams: TCMParams);
     procedure ReportPrint(const aRepname: string; const aParams: TCMParams; aPromptUser: boolean);
     function ReportFile(const aRepname, aFilename: string; const aParams: TCMParams): string;
+    procedure SpecMarkedLoadings(const aLoNo, aSupplier, aUserID, aLang: integer);
     constructor createForPrint(aPrintDialog: boolean);
     constructor create;
   end;
@@ -57,13 +58,25 @@ begin
   end;
 end;
 
-procedure TFastReports.Tally_Pkg_Matched(const aLo, aReportType, aLanguage: integer;
+procedure TFastReports.Tally_Pkg_Matched(const aLo, aReportType,
+  aLanguage: integer;
   aMailTo: string; aMailMsg, aMailTitle: string);
 begin
   Try
     dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger := aLo;
     dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
-    Tally(aLo, aReportType, aLanguage, aMailTo, aMailmsg, aMailTitle);
+    Tally(aLo, aReportType, aLanguage, aMailTo, aMailMsg, aMailTitle);
+    Try
+      dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger := aLo;
+      dmsSystem.sq_DelPkgType.ExecSQL;
+    except
+      On E: Exception do
+      Begin
+        dmsSystem.FDoLog(E.Message);
+        // ShowMessage(E.Message);
+        Raise;
+      End;
+    end;
   except
     On E: Exception do
     Begin
@@ -133,18 +146,26 @@ begin
         + dmsContact.GetFirstAndLastName(ThisUser.UserID);
   end;
   case aReportType of
+    cLastorderInkop:
+      if aLanguage = cSwedish then
+        Reportname := 'LASTORDER_INKOP_NOTE_SV.fr3'
+      else
+        Reportname := 'LASTORDER_INKOP_NOTE_ENG.fr3';
     cLastorder:
-      ReportName := 'LASTORDER_NOTE_ver3_SV.fr3';
-    cLastorder_eng:
-      ReportName := 'LASTORDER_NOTE_ver3_ENG.fr3';
+      if aLanguage = cSwedish then
+        ReportName := 'LASTORDER_NOTE_ver3_SV.fr3'
+      else
+        ReportName := 'LASTORDER_NOTE_ver3_ENG.fr3';
     cLastorder_manuell:
-      ReportName := 'LASTORDER_NOTE_MANUELL_SV.fr3';
-    cLastorder_manuell_eng:
-      ReportName := 'LASTORDER_NOTE_MANUELL_ENG.fr3';
-    cLastOrder_verk_sv:
-      Reportname := 'LASTORDER_VERK_NOTE_ver3_SV.fr3';
-    cLastOrder_verk_eng:
-      Reportname := 'LASTORDER_VERK_NOTE_ver3_ENG.fr3';
+      if aLanguage = cSwedish then
+        ReportName := 'LASTORDER_NOTE_MANUELL_SV.fr3'
+      else
+        ReportName := 'LASTORDER_NOTE_MANUELL_ENG.fr3';
+    cLastOrder_verk:
+      if aLanguage = cSwedish then
+        Reportname := 'LASTORDER_VERK_NOTE_ver3_SV.fr3'
+      else
+        Reportname := 'LASTORDER_VERK_NOTE_ver3_ENG.fr3';
   else
     ReportName := 'Report could not be selected! ReportType: ' +
       intToStr(aReportType);
@@ -248,6 +269,22 @@ begin
   end;
 end;
 
+procedure TFastReports.SpecMarkedLoadings(const aLoNo, aSupplier, aUserID,
+  aLang: integer);
+var
+  params: TCMParams;
+begin
+  params := TCMParams.Create();
+  params.Add('@ShippingPlanNo', aLoNo);
+  params.Add('@UserID', aUserID);
+  params.Add('@Supplier', aSupplier);
+  params.Add('@Language', aLang);
+  if aLang = cSwedish then
+    ReportPreview('SPEC_ALLA_LASTER_VERK_ver3_SV.fr3', params)
+  else
+    ReportPreview('SPEC_ALLA_LASTER_VERK_ver3_ENG.fr3', params)
+end;
+
 procedure TFastReports.TrpO(const aLo, aReportType, aLanguage: integer;
    aMailTo: string; aMailMsg, aMailTitle: string);
 const
@@ -290,13 +327,15 @@ begin
   end;
   case aReportType of
     cTrporder:
-      ReportName := 'TRP_ORDER_NOTE_SV.fr3';
-    cTrporder_eng:
-      ReportName := 'TRP_ORDER_NOTE_ENG.fr3';
+      if aLanguage = cSwedish then
+        ReportName := 'TRP_ORDER_NOTE_SV.fr3'
+      else
+        ReportName := 'TRP_ORDER_NOTE_ENG.fr3';
     cTrporder_manuell:
-      ReportName := 'TRP_ORDER_NOTE_MANUELL_SV.fr3';
-    cTrporder_manuell_eng:
-      ReportName := 'TRP_ORDER_NOTE_MANUELL_ENG.fr3';
+      if aLanguage = cSwedish then
+        ReportName := 'TRP_ORDER_NOTE_MANUELL_SV.fr3'
+      else
+        ReportName := 'TRP_ORDER_NOTE_MANUELL_ENG.fr3';
   else
     ReportName := 'Report could not be selected! ReportType: ' +
       intToStr(aReportType);
@@ -359,15 +398,17 @@ begin
   end;
   case aReportType of
     cFoljesedel:
-      ReportName := 'TALLY_NOTE_VER3_SV.fr3';
+      if aLanguage = cSwedish then
+        ReportName := 'TALLY_NOTE_VER3_SV.fr3'
+      else
+        Reportname := 'TALLY_NOTE_VER3_ENG.fr3';
     cFoljesedelIntern:
       ReportName := 'TALLY_INTERNAL_VER3_NOTE.fr3';
-    cFoljesedel_eng:
-      ReportName := 'TALLY_NOTE_VER3_ENG.fr3';
-    cFoljesedel_no_matching_pkg_sv:
-      ReportName := 'TALLY_NOTE_MM_ver3_SV.fr3';
-    cFoljesedel_no_matching_pkg_eng:
-      ReportName := 'TALLY_NOTE_MM_ver3_ENG.fr3';
+    cFoljesedel_no_matching_pkg:
+      if aLanguage = cSwedish then
+        ReportName := 'TALLY_NOTE_MM_ver3_SV.fr3'
+      else
+        ReportName := 'TALLY_NOTE_MM_ver3_ENG.fr3';
   else
     ReportName := 'Report could not be selected! ReportType: ' +
       intToStr(aReportType);

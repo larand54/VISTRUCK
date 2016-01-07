@@ -3796,10 +3796,7 @@ begin
   // Check language
   Language :=  dmsContact.Client_Language
     (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-  if Language = cSwedish then
-    ReportType := cTrporder
-  else
-    ReportType := cTrporder_eng;
+  ReportType := cTrporder;
   // Get trp order no
   TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
   fr := TFastReports.create;
@@ -3816,10 +3813,8 @@ begin
   // Check language
   Language :=  dmsContact.Client_Language
     (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-  if Language = cSwedish then
-    ReportType := cTrporder_manuell
-  else
-    ReportType := cTrporder_manuell_eng;
+
+  ReportType := cTrporder_manuell;
   // Get trp order no
   TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
   fr := TFastReports.create;
@@ -4028,6 +4023,7 @@ var FormCRPrintOneReport  : TFormCRPrintOneReport;
   fr: TFastReports;
   ReportType: Integer;
   language: integer;
+  LoadNo: integer;
 begin
   Edit1.SetFocus;
   if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
@@ -4037,18 +4033,13 @@ begin
   // Check language
     Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-    if Language = cSwedish then
       if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
         ReportType := cFoljesedelIntern
       else
-        ReportType := cFoljesedel
-    else
-      ReportType := cFoljesedel_eng;
+        ReportType := cFoljesedel;
 
       fr := TFastReports.createForPrint(false);
-      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
-        ReportType, Language,
-        '', '', '');
+      fr.Tally_Pkg_Matched(LoadNo, ReportType, Language, '', '', '');
     finally
       FreeAndNil(fr);
     end
@@ -4059,15 +4050,14 @@ begin
       // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
 
       SetLength(A, 1);
-      A[0] := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+      A[0] := LoadNo;
       if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
         FormCRPrintOneReport.CreateCo(dmcOrder.cds_PropsCopyPcs.AsInteger,
           False, False, A, 'TALLY_INTERNAL_VER3_NOTE.RPT')
       else
       Begin
         Try
-          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
-            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger := LoadNo;
           dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
         except
           On E: Exception do
@@ -4103,28 +4093,36 @@ procedure TfLoadEntrySSP.PreviewFS(Sender: TObject);
 Var
   FormCRViewReport: TFormCRViewReport ;
   fr: TFastReports;
-  ReportType: integer;
-  language: integer;
+  ReportType: Integer;
+  Language: Integer;
+  LoadNo: Integer;
 begin
   Edit1.SetFocus;
+  LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+  Try
+    dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
+      := LoadNo;
+    dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+  except
+    On E: Exception do
+    Begin
+      dmsSystem.FDoLog(E.Message);
+      // ShowMessage(E.Message);
+      Raise;
+    End;
+  end;
   if uReportController.useFR then
   begin
-  // Check language
-  language := dmsContact.Client_Language
+    // Check language
+    Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     try
-      if language = cSwedish then
-        if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-          ReportType := cFoljesedelIntern
-        else
-          ReportType := cFoljesedel
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        ReportType := cFoljesedelIntern
       else
-        if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-          ReportType := cFoljesedelIntern // No english version yet!
-        else
-          ReportType := cFoljesedel_eng;
+        ReportType := cFoljesedel;
       fr := TFastReports.Create;
-      fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+      fr.Tally_Pkg_Matched(LoadNo,
         ReportType, Language, '', '', '');
     finally
       FreeAndNil(fr);
@@ -4138,42 +4136,30 @@ begin
         FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
       else
       Begin
-        Try
-          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
-            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
-          dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
-        except
-          On E: Exception do
-          Begin
-            dmsSystem.FDoLog(E.Message);
-            // ShowMessage(E.Message);
-            Raise;
-          End;
-        end;
         FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT');
       End;
       if FormCRViewReport.ReportFound then
       Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-          (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.report.ParameterFields.Item[1]
+          .AddCurrentValue(LoadNo);
+        FormCRViewReport.CRViewer91.ReportSource :=
+          FormCRViewReport.report;
         FormCRViewReport.CRViewer91.ViewReport;
         FormCRViewReport.ShowModal;
       End;
-      Try
-        dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
-          dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
-        dmsSystem.sq_DelPkgType.ExecSQL;
-      except
-        On E: Exception do
-        Begin
-          dmsSystem.FDoLog(E.Message);
-          // ShowMessage(E.Message);
-          Raise;
-        End;
-      end;
     Finally
       FreeAndNil(FormCRViewReport);
+    End;
+  end;
+  Try
+    dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger := LoadNo;
+    dmsSystem.sq_DelPkgType.ExecSQL;
+  except
+    On E: Exception do
+    Begin
+      dmsSystem.FDoLog(E.Message);
+      // ShowMessage(E.Message);
+      Raise;
     End;
   end;
 end;
@@ -4216,10 +4202,7 @@ begin
     // Check language
     Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-    if language = cSwedish then
-      ReportType := cLastorder
-    else
-      ReportType := cLastorder_eng;
+    ReportType := cLastorder;
     // Get trp order no
     LONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
     Supplier := -1;
@@ -4266,10 +4249,7 @@ begin
     // Check language
     Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-    if language = cSwedish then
-      ReportType := cLastorder
-    else
-      ReportType := cLastorder_eng;
+    ReportType := cLastorder;
     // Get trp order no
     LONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
     Supplier := dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger;
@@ -5772,19 +5752,17 @@ Var
   fr: TFastReports;
   ReportType: integer;
   Language: integer;
+  LoadNo: integer;
 begin
+  LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   if uReportController.useFR then
   begin
-    // Check language
     Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-    if language = cSwedish then
-      ReportType := cFoljesedel_no_matching_pkg_sv
-    else
-      ReportType := cFoljesedel_no_matching_pkg_eng;
+      ReportType := cFoljesedel_no_matching_pkg;
     try
       fr := TFastReports.Create;
-      fr.Tally_Pkg_Not_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+      fr.Tally_Pkg_Not_Matched(LoadNo,
         ReportType, language, '', '', '');
     finally
       FreeAndNil(fr);
@@ -5796,33 +5774,14 @@ begin
 
     FormCRViewReport := TFormCRViewReport.Create(Nil);
     Try
-      // if dmLoadEntrySSP.cds_LSPObjectType.AsInteger <> 2 then
-      // FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_MM.RPT')
-      // else
-      // Begin
-      // Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-      // Dont use   dmcSystem.sq_PkgType_InvoiceByLO.ExecSQL(False) ;
       FormCRViewReport.CreateCo('TALLY_VER2_NOTE_MM.RPT');
-      // End ;
       if FormCRViewReport.ReportFound then
       Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-          (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoadNo);
         FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
         FormCRViewReport.CRViewer91.ViewReport;
         FormCRViewReport.ShowModal;
       End;
-      { Try
-        dmcSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
-        dmcSystem.sq_DelPkgType.ExecSQL(False) ;
-        except
-        On E: Exception do
-        Begin
-        dmsSystem.FDoLog(E.Message) ;
-        //      ShowMessage(E.Message);
-        Raise ;
-        End ;
-        end; }
     Finally
       FreeAndNil(FormCRViewReport);
     End;
@@ -5882,6 +5841,7 @@ Var FormCRExportOneReport   : TFormCRExportOneReport ;
     MailToAddress           : String ;
     ReportType              : Integer ;
     Language                : Integer;
+    LoadNo: integer;
     ExcelDir                : String ;
     fr                      : TFastReports;
 begin
@@ -5901,19 +5861,18 @@ begin
   End;
   if Length(MailToAddress) > 0 then
   begin
+    LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    language := dmsContact.Client_Language
+              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     if uReportController.useFR then
     begin
-      language := dmsContact.Client_Language
-              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
       if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
         ReportType := cFoljesedelIntern
-      else if language = cSwedish then
-        ReportType := cFoljesedel
       else
-        ReportType := cFoljesedel_eng;
+        ReportType := cFoljesedel;
       try
         fr := TFastReports.Create;
-        fr.Tally_Pkg_Matched(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
+        fr.Tally_Pkg_Matched(LoadNo,
           ReportType, Language, MailToAddress, '','');
       finally
         FreeAndNil(fr);
@@ -5926,7 +5885,7 @@ begin
         FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
         Try
           SetLength(A, 1);
-          A[0] := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+          A[0] := LoadNo;
 
           if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
             ReportType := cFoljesedelIntern
@@ -5934,8 +5893,7 @@ begin
           Begin
 
             Try
-              dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
-                dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+              dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger := LoadNo;
               dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
             except
               On E: Exception do
@@ -5946,8 +5904,7 @@ begin
               End;
             end;
 
-            if dmsContact.Client_Language
-              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger) = cSwedish then
+            if Language = cSwedish then
               ReportType := cFoljesedel
             else
               ReportType := cFoljesedel_eng;

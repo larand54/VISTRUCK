@@ -455,6 +455,8 @@ type
     LOertverkManuell1: TMenuItem;
     O1: TMenuItem;
     OManuell1: TMenuItem;
+    acPrintLO_Your_Mill: TAction;
+    acPrintLO_All_Mills: TAction;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -551,8 +553,6 @@ type
     procedure SpinEditRubrikFontSortimentsVyCurChange(Sender: TObject);
     procedure SpinEditContentFontSortimentsVyCurChange(Sender: TObject);
     procedure acSaveVyerExecute(Sender: TObject);
-    procedure LOallaverk1Click(Sender: TObject);
-    procedure Lastorderertverk1Click(Sender: TObject);
     procedure Hyvelorder1Click(Sender: TObject);
     procedure Specificationallalaster1Click(Sender: TObject);
     procedure acPrintCMRExecute(Sender: TObject);
@@ -574,6 +574,8 @@ type
     procedure acPrintLO_Your_Mill_ManuallyExecute(Sender: TObject);
     procedure acPrintLO_All_Mills_ManuallyExecute(Sender: TObject);
     procedure PrintLO_Manually(aSupplierNo: integer);
+    procedure acPrintLO_Your_MillExecute(Sender: TObject);
+    procedure acPrintLO_All_MillsExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -1242,20 +1244,11 @@ var
   ReportType: integer;
 begin
   if (not aLastOrderVerk) and aLastOrderInkop then
-    if aLang = cSwedish then
-      ReportType := cLastorderInkop
-    else
-      ReportType := cLastorderInkop_eng
+    ReportType := cLastorderInkop
   else if aLastOrderVerk then
-    if aLang = cSwedish then
-      ReportType := cLastorder_Verk_sv
-    else
-      ReportType := cLastorder_Verk_eng
+    ReportType := cLastorder_Verk
   else
-    if aLang = cSwedish then
-    ReportType := cLastorder
-  else
-    ReportType := cLastorder_eng;
+    ReportType := cLastorder;
   Try
     FR := TFastReports.Create;
     FR.LO(aLOno, aSupplier, ReportType, aLang, '', '', '');
@@ -3454,10 +3447,20 @@ begin
  GenerateSamlingFS_MedPktNr(Sender) ;
 end;
 
+procedure TfrmVisTruckLoadOrder.acPrintLO_All_MillsExecute(Sender: TObject);
+begin
+ bPrintLOAllVerkClick(Sender) ;
+end;
+
 procedure TfrmVisTruckLoadOrder.acPrintLO_All_Mills_ManuallyExecute(
   Sender: TObject);
 begin
   PrintLO_Manually(-1);
+end;
+
+procedure TfrmVisTruckLoadOrder.acPrintLO_Your_MillExecute(Sender: TObject);
+begin
+  bPrintLODittVerkClick(Sender) ;
 end;
 
 procedure TfrmVisTruckLoadOrder.acPrintLO_Your_Mill_ManuallyExecute(Sender: TObject);
@@ -3707,30 +3710,52 @@ begin
  SPEC_ALLA_LASTER_VERK_MARKERADE(Sender) ;
 end;
 
-procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_VERK_MARKERADE(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_VERK_MARKERADE
+  (Sender: TObject);
+Var
+  FormCRViewReport: TFormCRViewReport;
+  ReportType: integer;
+  LONo: integer;
+  Supplier: integer;
+  Lang: integer;
+  FR: TFastReports;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode').AsInteger;
+  Supplier := grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger;
+  LoNo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger;
+  if LoNo < 1 then
+    Exit;
+  if uReportController.useFR then
+  begin
+    try
+      FR := TFastReports.create;
+      FR.SpecMarkedLoadings(LoNo, Supplier, ThisUser.UserID, Lang);
+    finally
+      FreeAndNil(FR);
+    end;
+  end
+  else
+  begin
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT');
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
- FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT') ;
-
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoNo);
+        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(Supplier);
+        FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
-//Per LO
+// Per LO
 procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_MARKERADE(Sender: TObject);
 Var FormCRViewReport : TFormCRViewReport ;
 begin
@@ -4007,60 +4032,25 @@ end;
 
 procedure TfrmVisTruckLoadOrder.PrintLO_Manually(aSupplierNo: integer);
 Var
-  FormCRViewReport: TFormCRViewReport;
-  RepNo: Integer;
-  Save_Cursor: TCursor;
-  Params: TCMParams;
-  RC: TCMReportController;
   Lang: integer;
+  FR: TFastReports;
+  LoNo: integer;
+  ReportType: integer;
+  Supplier: integer;
 
 begin
-  if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-    .AsInteger < 1 then
+  LoNo := grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger;
+  Supplier := aSupplierNo;
+  if LoNo < 1 then
     Exit;
   Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
     .AsInteger;
-  Params := nil;
-  RC := nil;
   Try
-    Save_Cursor := Screen.Cursor;
-    Screen.Cursor := crSQLWait; { Show hourglass cursor }
-    if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
-      (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-      // ('Lastorder_inkop_NOTE_ver2.RPT')
-      if Lang = cSwedish then
-        RepNo := 511 // LASTORDER_INKOP_NOTE_ver3_SV.fr3 (21)
-      else
-        RepNo := 511 // LASTORDER_NOTE_ver3_ENG.fr3 (38)
-    else
-
-      if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-    begin
-      if Lang = cSwedish then
-        RepNo := 511 // LASTORDER_NOTE_ver3_SV.fr3 (20)
-      else
-        RepNo := 511; // LASTORDER_NOTE_ver3_ENG.fr3 (506)
-
-    end
-    else
-      if Lang = cSwedish then
-      RepNo := 511 // LASTORDER_VERK_NOTE_ver3_SV.fr3 (22)
-    else
-      RepNo := 511; // LASTORDER_VERK_NOTE_ver3_ENG.fr3 (510)
-
-    Params := TCMParams.Create();
-    Params.Add('@Language', Lang);
-    Params.Add('@SHIPPINGPLANNO',
-      grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-      .AsInteger);
-    Params.Add('@Supplierno', aSupplierNo);
-
-    RC := TCMReportController.Create;
-    RC.RunReport(RepNo, Params, frPreview, 0);
+    ReportType := cLastorder_manuell;
+    FR := TFastReports.create;
+    FR.LO(LoNo, Supplier, ReportType, Lang, '', '', '');
   finally
-    Screen.Cursor := Save_Cursor;
-    FreeAndNil(RC);
-    FreeAndNil(Params);
+    FreeAndNil(FR);
   end;
 end;
 
@@ -4687,80 +4677,127 @@ end;
 procedure TfrmVisTruckLoadOrder.acEmailaFSExecute(Sender: TObject);
 const
   LF = #10;
-Var FormCRExportOneReport   : TFormCRExportOneReport ;
-    A                       : array of variant ;
-    dm_SendMapiMail         : Tdm_SendMapiMail;
-    Attach                  : array of String ;
-    MailToAddress           : String ;
-    ReportType              : Integer ;
+Var
+  FormCRExportOneReport: TFormCRExportOneReport;
+  A: array of Variant;
+  dm_SendMapiMail: Tdm_SendMapiMail;
+  Attach: array of String;
+  MailToAddress: String;
+  ReportType: integer;
+  LoadNo: integer;
+  Lang: integer;
+  FR: TFastReports;
 begin
- if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
- MailToAddress:= dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
- else
- MailToAddress:= dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger) ;
- if Length(MailToAddress) = 0 then
- Begin
-  MailToAddress:= 'ange@adress.nu' ;
-  ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_16' (* 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' *) )) ;
- End ;
- if Length(MailToAddress) > 0 then
- Begin
- FormCRExportOneReport:= TFormCRExportOneReport.Create(Nil);
- Try
-  SetLength(A, 1);
-  A[0]:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;//dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
-
-  if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-  ReportType := cFoljesedelIntern
+  if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
+    (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
   else
+    MailToAddress := dmsContact.GetEmailAddress
+      (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+  if Length(MailToAddress) = 0 then
   Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;// dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
+    MailToAddress := 'ange@adress.nu';
+    ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
+      ('IDS_16' (* 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' *) )
+      );
+  End;
+  if Length(MailToAddress) > 0 then
+  Begin
+    LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+      .AsInteger;
+    if LoadNo < 1
+    then
+      Exit;
+    Lang := dmsContact.Client_Language
+      (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+    if uReportController.useFR then
+    begin
+      if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
+        .AsInteger <> 2 then
+        ReportType := cFoljesedelIntern
+      else
+        ReportType := cFoljesedel;
+      try
+        FR := TFastReports.Create;
+        FR.Tally(LoadNo, ReportType, Lang, MailToAddress, '', '');
+      finally
+        FreeAndNil(FR);
+      end;
+    end
+    else
+    begin
+      FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
+      Try
+        SetLength(A, 1);
+        A[0] := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+          .AsInteger; // dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
 
-   if dmsContact.Client_Language(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger) = cSwedish then
-    ReportType := cFoljesedel
-     else
-      ReportType := cFoljesedel_eng ;
-  End ;
+        if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
+          .AsInteger <> 2 then
+          ReportType := cFoljesedelIntern
+        else
+        Begin
+          Try
+            dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
+              := grdFSDBTableView1.DataController.DataSet.FieldByName
+              ('LoadNo').AsInteger;
+            // dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
+            dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+          except
+            On E: Exception do
+            Begin
+              dmsSystem.FDoLog(E.Message);
+              // ShowMessage(E.Message);
+              Raise;
+            End;
+          end;
 
-  FormCRExportOneReport.CreateCo(1, ReportType, A, ExcelDir + 'FS ' +
-  grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString) ;//dmcOrder.cdsLoadsForLOLoadNo.AsString) ;
+          if Lang = cSwedish
+          then
+            ReportType := cFoljesedel
+          else
+            ReportType := cFoljesedel_eng;
+        End;
 
- if FormCRExportOneReport.ReportFound = False then Exit ;
- Finally
-  FreeAndNil(FormCRExportOneReport) ;//.Free ;
- End ;
- SetLength(Attach, 1);
- Attach[0]        := ExcelDir + 'FS ' + grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString + '.pdf' ;
- dm_SendMapiMail  := Tdm_SendMapiMail.Create(nil);
- Try
-  dm_SendMapiMail.SendMail('Följesedel. FSnr: ' + grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString,
-  siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_18' (* 'Följesedel bifogad. ' *) )
-  +LF+''
-  +siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_19' (* 'Load tally attached. ' *) )
-  +LF+''
-  +LF+''
-  +LF+'MVH/Best Regards, '
-  +LF+''
-  +dmsContact.GetFirstAndLastName(ThisUser.UserID),
-  dmsSystem.Get_Dir('MyEmailAddress'),
-  MailToAddress,
-  Attach) ;
- Finally
-  FreeAndNil(dm_SendMapiMail) ;
- End ;
- End
+        FormCRExportOneReport.CreateCo(1, ReportType, A, ExcelDir + 'FS ' +
+          grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+          .AsString); // dmcOrder.cdsLoadsForLOLoadNo.AsString) ;
+
+        if FormCRExportOneReport.ReportFound = False then
+          Exit;
+      Finally
+        FreeAndNil(FormCRExportOneReport); // .Free ;
+      End;
+      SetLength(Attach, 1);
+      Attach[0] := ExcelDir + 'FS ' + grdFSDBTableView1.DataController.
+        DataSet.FieldByName('LoadNo').AsString + '.pdf';
+      dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
+      Try
+        dm_SendMapiMail.SendMail('Följesedel. FSnr: ' +
+          grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+          .AsString,
+          siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
+          ('IDS_18' (* 'Följesedel bifogad. ' *) )
+          + LF + ''
+          + siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
+          ('IDS_19' (* 'Load tally attached. ' *) )
+          + LF + ''
+          + LF + ''
+          + LF + 'MVH/Best Regards, '
+          + LF + ''
+          + dmsContact.GetFirstAndLastName(ThisUser.UserID),
+          dmsSystem.Get_Dir('MyEmailAddress'),
+          MailToAddress,
+          Attach);
+      Finally
+        FreeAndNil(dm_SendMapiMail);
+      End;
+    End
+  end
   else
-   ShowMessage('Emailaddress is missing') ;
+    ShowMessage('Emailaddress is missing');
+
 end;
 
 procedure TfrmVisTruckLoadOrder.grdLODBTableView1DblClick(Sender: TObject);
@@ -5085,61 +5122,93 @@ Begin
 End ;
 
 procedure TfrmVisTruckLoadOrder.acPrintFSExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var FormCRViewReport : TFormCRViewReport;
+  LoadNo: integer;
+  Lang: integer;
+  ReportType: integer;
+  FR: TFastReports;
 begin
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
-
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-
- if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-  FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+  LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+    .AsInteger;
+  if LoadNo < 1
+  then
+    Exit;
+  Lang := dmsContact.Client_Language
+    (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+  if uReportController.useFR then
+  begin
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
+      .AsInteger <> 2 then
+      ReportType := cFoljesedelIntern
+    else
+      ReportType := cFoljesedel;
+    try
+      FR := TFastReports.Create;
+      FR.Tally(LoadNo, ReportType, Lang, '', '', '');
+    finally
+      FreeAndNil(FR);
+    end;
+  end
   else
-  Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
+  begin
+    Try
+      dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
+        := LoadNo;
+      dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+    except
       On E: Exception do
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-   if dmsContact.Client_Language(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger) = cSwedish then
-   FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT')
-   else
-   FormCRViewReport.CreateCo('TALLY_eng_VER3_NOTE.RPT') ;
+        dmsSystem.FDoLog(E.Message);
+        // ShowMessage(E.Message);
+        Raise;
+      End;
+    end;
 
-  End ;
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
+      if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
+        .AsInteger <> 2 then
+        FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+      else
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+        if Lang = cSwedish
+        then
+          FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT')
+        else
+          FormCRViewReport.CreateCo('TALLY_eng_VER3_NOTE.RPT');
+
+      End;
+
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (LoadNo);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+      Try
+        dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger := LoadNo;
+        dmsSystem.sq_DelPkgType.ExecSQL;
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    End;
+  end;
 end;
 
-procedure TfrmVisTruckLoadOrder.RemoveTab(const LONo, LoadNo : Integer) ;
-Var i           : Integer ;
+procedure TfrmVisTruckLoadOrder.RemoveTab(const LONo, LoadNo: integer);
+Var
+  i: integer ;
     LONoLoadNo  : String ;
 Begin
  tcLO.OnChange  := nil ;
@@ -5258,16 +5327,6 @@ begin
  SaveUserPreferences ;
 end;
 
-procedure TfrmVisTruckLoadOrder.LOallaverk1Click(Sender: TObject);
-begin
- bPrintLOAllVerkClick(Sender) ;
-end;
-
-procedure TfrmVisTruckLoadOrder.Lastorderertverk1Click(Sender: TObject);
-begin
- bPrintLODittVerkClick(Sender) ;
-end;
-
 procedure TfrmVisTruckLoadOrder.Hyvelorder1Click(Sender: TObject);
 begin
  bPrintHyvelOrderClick(Sender) ;
@@ -5322,51 +5381,89 @@ End ;
 
 procedure TfrmVisTruckLoadOrder.PrintDirectCMR(Sender: TObject);
 var FormCRPrintOneReport  : TFormCRPrintOneReport;
-    A : array of variant;
-begin
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
- FormCRPrintOneReport:= TFormCRPrintOneReport.Create(Nil);
- Try
-//CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+  A: array of Variant;
+  LoadNo: integer;
+  FR: TFastReports;
 
- SetLength(A, 1);
- A[0]:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
- FormCRPrintOneReport.CreateCo(1, False, False, A, 'CMR.RPT') ;
-  Try
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRPrintOneReport)  ;
- End ;
+begin
+  // Edit1.SetFocus ;
+  LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+    .AsInteger;
+  if LoadNo < 1 then
+    Exit;
+  if uReportController.useFR then
+  begin
+    try
+      FR := TFastReports.createForPrint(False);
+      FR.CMR(LoadNo);
+    finally
+      FreeAndNil(FR);
+    end;
+  end
+  else
+  begin
+    FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
+    Try
+      // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+
+      SetLength(A, 1);
+      A[0] := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+        .AsInteger;
+      FormCRPrintOneReport.CreateCo(1, False, False, A, 'CMR.RPT');
+      Try
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    Finally
+      FreeAndNil(FormCRPrintOneReport);
+    End;
+  end;
 end;
 
-procedure TfrmVisTruckLoadOrder.PreviewCMR(Sender: TObject) ;
-Var FormCRViewReport : TFormCRViewReport ;
+procedure TfrmVisTruckLoadOrder.PreviewCMR(Sender: TObject);
+Var
+  FormCRViewReport: TFormCRViewReport ;
+  LoadNo: integer;
+  FR: TFastReports;
+
 begin
 // Edit1.SetFocus ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-  FormCRViewReport.CreateCo('CMR.RPT') ;
+  LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+    .AsInteger;
+  if uReportController.useFR then
+  begin
+    try
+      FR := TFastReports.Create;
+      FR.CMR(LoadNo);
+    finally
+      FreeAndNil(FR);
+    end;
+  end
+  else
+  begin
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+      FormCRViewReport.CreateCo('CMR.RPT');
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoadNo);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
+    End;
+  end;
 end;
 
-function TfrmVisTruckLoadOrder.GetPositionID : Integer ;
+function TfrmVisTruckLoadOrder.GetPositionID: integer;
 var
   fLagerPos: TfLagerPos;
   PIPNo : Integer ;

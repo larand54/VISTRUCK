@@ -6003,6 +6003,16 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Caption = 'LO alla verk Manuell'
       OnExecute = acPrintLO_All_Mills_ManuallyExecute
     end
+    object acPrintLO_Your_Mill: TAction
+      Category = 'Print'
+      Caption = 'LO ert verk'
+      OnExecute = acPrintLO_Your_MillExecute
+    end
+    object acPrintLO_All_Mills: TAction
+      Category = 'Print'
+      Caption = 'LO alla verk'
+      OnExecute = acPrintLO_All_MillsExecute
+    end
   end
   object pmPrint: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -7477,12 +7487,10 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Action = acPrintCMR
     end
     object LOallaverk1: TMenuItem
-      Caption = 'LO alla verk'
-      OnClick = LOallaverk1Click
+      Action = acPrintLO_All_Mills
     end
     object Lastorderertverk1: TMenuItem
-      Caption = 'LO ert verk'
-      OnClick = Lastorderertverk1Click
+      Action = acPrintLO_Your_Mill
     end
     object LOallaverkManuell1: TMenuItem
       Action = acPrintLO_All_Mills_Manually
