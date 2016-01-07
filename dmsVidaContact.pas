@@ -386,7 +386,7 @@ var
 
 implementation
 
-uses dmsDataConn, VidaConst, VidaUser, dmsVidaSystem;
+uses Vcl.Controls, Vcl.Forms, dmsDataConn, VidaConst, VidaUser, dmsVidaSystem;
 
 {$R *.dfm}
 
@@ -473,15 +473,19 @@ Begin
 End ;
 
 function  TdmsContact.Client_Language (const ClientNo : Integer ) : Integer ;
+var
+  save_Cursor: TCursor;
 Begin
- Result:= -1 ;
- sq_GetLanguageID.Close ;
- sq_GetLanguageID.ParamByName('ClientNo').AsInteger:= ClientNo ;
- sq_GetLanguageID.Open ;
- if not sq_GetLanguageID.Eof then
-  Result:= sq_GetLanguageIDLanguageCode.AsInteger ;
- sq_GetLanguageID.Close ;
-End ;
+  save_Cursor := screen.cursor;
+  Result := -1;
+  sq_GetLanguageID.Close;
+  sq_GetLanguageID.ParamByName('ClientNo').AsInteger := ClientNo;
+  sq_GetLanguageID.Open;
+  if not sq_GetLanguageID.Eof then
+    Result := sq_GetLanguageIDLanguageCode.AsInteger;
+  sq_GetLanguageID.Close;
+  screen.Cursor := save_cursor;
+End;
 
 function TdmsContact.ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
 Begin
@@ -681,20 +685,24 @@ Begin
 End ;
 
 
-function TdmsContact.GetEmailAddress (const ClientNo : Integer) : String ;
+function TdmsContact.GetEmailAddress(const ClientNo: Integer): String;
+var
+  save_Cursor: TCursor;
 Begin
- Result:= '' ;
- sqGetEmailAdr.Close ;
- sqGetEmailAdr.ParamByName('ClientNo').AsInteger:= ClientNo ;
- sqGetEmailAdr.Open ;
- sqGetEmailAdr.First ;
- While not sqGetEmailAdr.Eof do
- Begin
-  Result:= Trim(sqGetEmailAdrEmailAddress.AsString)+';'+Result ;
-  sqGetEmailAdr.Next ;
- End ;
- sqGetEmailAdr.Close ;
-End ;
+  save_Cursor := screen.cursor;
+  Result := '';
+  sqGetEmailAdr.Close;
+  sqGetEmailAdr.ParamByName('ClientNo').AsInteger := ClientNo;
+  sqGetEmailAdr.Open;
+  sqGetEmailAdr.First;
+  While not sqGetEmailAdr.Eof do
+  Begin
+    Result := Trim(sqGetEmailAdrEmailAddress.AsString) + ';' + Result;
+    sqGetEmailAdr.Next;
+  End;
+  sqGetEmailAdr.Close;
+  screen.cursor := save_Cursor;
+End;
 
 function TdmsContact.GetEmailAddressForSpeditorByLO (const LONo : Integer) : String ;
 Begin
@@ -730,7 +738,7 @@ Begin
   Result:= sq_GetPIPByClientNoPIPNO.AsInteger
    else
     Result:= -1 ;
- sq_GetPIPByClientNo.Close ;   
+ sq_GetPIPByClientNo.Close ;
 End ;
 
 function TdmsContact.GetSRByCompanyNo(const ClientNo : Integer) : Integer ;

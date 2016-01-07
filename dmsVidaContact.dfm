@@ -120,6 +120,8 @@ object dmsContact: TdmsContact
   end
   object sq_GetLanguageID: TFDQuery
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
     SQL.Strings = (
       'SELECT distinct'
       'LanguageCode'
