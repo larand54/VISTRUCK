@@ -277,7 +277,7 @@ begin
   params := TCMParams.Create();
   params.Add('@ShippingPlanNo', aLoNo);
   params.Add('@UserID', aUserID);
-  params.Add('@Supplier', aSupplier);
+  params.Add('@SupplierNo', aSupplier);
   params.Add('@Language', aLang);
   if aLang = cSwedish then
     ReportPreview('SPEC_ALLA_LASTER_VERK_ver3_SV.fr3', params)

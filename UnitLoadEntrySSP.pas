@@ -385,6 +385,8 @@ type
     acMailTreatmentCertificate: TAction;
     dxBarButton13: TdxBarButton;
     dxBarButton14: TdxBarButton;
+    acMailTO_Manuell: TAction;
+    dxBarButton15: TdxBarButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -3805,20 +3807,49 @@ end;
 
 procedure TfLoadEntrySSP.acPrintTo_ManuellExecute(Sender: TObject);
 var
-  fr: TFastReports;
   ReportType: integer;
   TONo: integer;
-  Language: integer;
+  Lang: integer;
+  FR: TFastReports;
+  MailToAddress: string;
 begin
-  // Check language
-  Language :=  dmsContact.Client_Language
-    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  if TAction(Sender) = acMailTO_Manuell then
+  begin
+    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
+      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress
+        (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
+    else
+      MailToAddress := dmsContact.GetEmailAddress
+        (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+    if Length(MailToAddress) = 0 then
+    Begin
+      MailToAddress := 'ange@adress.nu';
+      ShowMessage('Emailadress saknas för klienten, ange adressen '
+        + 'direkt i mailet(outlook)');
+    End;
+  end
+  else
+    MailToAddress := '';
 
-  ReportType := cTrporder_manuell;
-  // Get trp order no
   TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
-  fr := TFastReports.create;
-  fr.TrpO(TONo,ReportType,language,'','','');
+  if TONo < 1
+  then
+    Exit;
+
+
+  // Check language
+  Lang :=  dmsContact.Client_Language
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  if uReportController.useFR then
+  begin
+    Try
+      FR := TFastReports.Create;
+      FR.TrpO(ToNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+    Finally
+      FreeAndNil(FR);
+    End;
+  end;
 end;
 
 procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange(

@@ -1433,7 +1433,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alClient
-    TabOrder = 4
+    TabOrder = 3
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -2541,6 +2541,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object dxBarButton14: TdxBarButton
       Action = acTreatmentCerticate
+      Category = 0
+    end
+    object dxBarButton15: TdxBarButton
+      Action = acMailTO_Manuell
       Category = 0
     end
     object lbValidatePkg: TdxBarLargeButton
@@ -4004,6 +4008,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Caption = 'Maila Behandlingscertifikat'
       OnExecute = acMailTreatmentCertificateExecute
     end
+    object acMailTO_Manuell: TAction
+      Category = 'Print'
+      Caption = 'Maila TO Manuell'
+      OnExecute = acPrintTo_ManuellExecute
+    end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
@@ -5293,6 +5302,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
       item
         Visible = True
         ItemName = 'dxBarButton9'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton15'
       end
       item
         Visible = True

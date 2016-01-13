@@ -457,6 +457,8 @@ type
     OManuell1: TMenuItem;
     acPrintLO_Your_Mill: TAction;
     acPrintLO_All_Mills: TAction;
+    acMailTO_Manually: TAction;
+    acMailTOManually1: TMenuItem;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -576,6 +578,7 @@ type
     procedure PrintLO_Manually(aSupplierNo: integer);
     procedure acPrintLO_Your_MillExecute(Sender: TObject);
     procedure acPrintLO_All_MillsExecute(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -4456,38 +4459,46 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acPrintTO_ManuallyExecute(Sender: TObject);
 var
-  RepNo: Integer;
-  Save_Cursor: TCursor;
-  Params: TCMParams;
-  RC: TCMReportController;
   Lang: integer;
+  FR: TFastReports;
+  MailToAddress: string;
+  LoNo: integer;
 begin
-  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode').AsInteger;
-  Params := nil;
-  RC := nil;
-  Try
-    Save_Cursor := Screen.Cursor;
-    Screen.Cursor := crSQLWait; { Show hourglass cursor }
-    params := TCMParams.Create();
-    params.Add('@Language',Lang);;
-    params.Add('@SHIPPINGPLANNO',grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
-
-    if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger = c_Sales then begin
-      if Lang = cSwedish then
-        RepNo := 513// TRP_ORDER_NOTE_SV.fr3 (??)
-      else
-        RepNo := 513; //TRP_ORDER_NOTE_ENG.fr3 (513)
-    end
+  if TAction(Sender) = acMailTO_Manually then
+  begin
+    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
+      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress
+        (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
     else
-      RepNo := 513; // trp_order_inkop_NOTE.fr3 (??)
+      MailToAddress := dmsContact.GetEmailAddress
+        (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+    if Length(MailToAddress) = 0 then
+    Begin
+      MailToAddress := 'ange@adress.nu';
+      ShowMessage('Emailadress saknas för klienten, ange adressen '
+        + 'direkt i mailet(outlook)');
+    End;
+  end
+  else
+    MailToAddress := '';
 
-    RC := TCMReportController.create;
-    RC.RunReport(RepNo, Params, frPreview,0);
-  Finally
-    Screen.Cursor := Save_Cursor;
-    FreeAndNil(RC);
-    FreeAndNil(params);
-  End;
+  LONo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger;
+  if LoNo < 1
+  then
+    Exit;
+
+  Lang := dmsContact.Client_Language
+    (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+  if uReportController.useFR then
+  begin
+    Try
+      FR := TFastReports.Create;
+      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+    Finally
+      FreeAndNil(FR);
+    End;
+  end;
 end;
 
 procedure TfrmVisTruckLoadOrder.grdFSDBTableView1DblClick(Sender: TObject);
@@ -4851,6 +4862,11 @@ Begin
  fLoadEntrySSP.BorderStyle  := bsNone ;
 
 End ;
+procedure TfrmVisTruckLoadOrder.cxButton3Click(Sender: TObject);
+begin
+
+end;
+
 (*
 procedure TfrmVisTruckLoadOrder.OpenNormalLoad(Sender: TObject);
 Var LSupplierNo : Integer ;
