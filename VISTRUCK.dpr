@@ -115,7 +115,7 @@ uses
   udmFR in '..\CommonSources\FastReport\udmFR.pas' {dmFR: TDataModule},
   uReport in '..\CommonSources\FastReport\uReport.pas',
   uReportController in '..\CommonSources\FastReport\uReportController.pas',
-  uFastReports in 'uFastReports.pas';
+  uFastReports in '..\CommonSources\FastReport\uFastReports.pas';
 
 {$R *.res}
 begin

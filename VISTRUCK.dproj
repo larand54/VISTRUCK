@@ -448,7 +448,7 @@
         </DCCReference>
         <DCCReference Include="..\CommonSources\FastReport\uReport.pas"/>
         <DCCReference Include="..\CommonSources\FastReport\uReportController.pas"/>
-        <DCCReference Include="uFastReports.pas"/>
+        <DCCReference Include="..\CommonSources\FastReport\uFastReports.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
