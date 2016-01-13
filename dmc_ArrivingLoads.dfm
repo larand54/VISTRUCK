@@ -5670,6 +5670,26 @@ object dmArrivingLoads: TdmArrivingLoads
       'WHERE cl2.Confirmed_LoadNo = LSP.LoadNo'
       'AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)'
       ''
+      'UNION'
+      ''
+      'SELECT DISTINCT   100 as LoadNo, pk.PackageNo, pk.Prefix'
+      'FROM dbo.PkgInvStat pk '
+      'WHERE'
+      'pk.PackageNo = :PkgNo'
+      'AND pk.PIPNo = :PIPNo'
+      'AND pk.InvStatus = 1'
+      ''
+      'UNION'
+      ''
+      'SELECT DISTINCT   100 as LoadNo, pk.PackageNo, pk.SupplierCode'
+      'FROM dbo.PackageNumber pk '
+      
+        'inner join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = pk.LogicalInventoryPointNo'
+      'WHERE'
+      'pk.PackageNo = :PkgNo'
+      'and pk.[Status] = 1'
+      'AND LIP.PhysicalInventoryPointNo = :PIPNo'
       '')
     Left = 168
     Top = 192
@@ -5688,6 +5708,12 @@ object dmArrivingLoads: TdmArrivingLoads
         Name = 'USERID'
         DataType = ftString
         ParamType = ptInput
+      end
+      item
+        Name = 'PIPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
       end>
     object cdsAllPackageNosLoadNo: TIntegerField
       FieldName = 'LoadNo'

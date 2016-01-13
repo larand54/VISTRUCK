@@ -2589,6 +2589,7 @@ End;
 function TdmArrivingLoads.PkgNoToSuppCodeAR(const PkgNo, CustomerNo : Integer): string3;
 var
   SuppCode : string3;
+  PIPNumber : Integer;
 begin
 //  cdsAllPackageNos.Active:= False ;
 //  getPkgsByInvOwner(PkgNo, InventoryOwner, PIPNo);
@@ -2601,6 +2602,8 @@ begin
    cdsAllPackageNos.ParamByName('PkgNo').AsInteger := PkgNo;
    cdsAllPackageNos.ParamByName('CustomerNo').AsInteger := CustomerNo;
    cdsAllPackageNos.ParamByName('UserID').AsInteger := ThisUser.UserID;
+   cdsAllPackageNos.ParamByName('PIPNo').AsInteger := PIPNo;
+   //PIPNumber := PIPNo;
    cdsAllPackageNos.Open;
   //cdsAllPackageNos.Filter   :=  'PackageNo = ' + IntToStr(PkgNo) ;
   //cdsAllPackageNos.Filtered :=  True ;

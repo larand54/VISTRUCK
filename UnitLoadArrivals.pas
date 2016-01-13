@@ -507,6 +507,7 @@ type
     SetFontSize: TdxBarSpinEdit;
     cxGridTableViewStyleSheetForPkgs: TcxGridTableViewStyleSheet;
     cxStylePkgsContent: TcxStyle;
+    sp_insPkgInvStatByLoad: TFDStoredProc;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -5536,7 +5537,11 @@ begin
 //       TformConfirmanyNormalLoad
 //göra det här när alla laster är OK, med andra ord flyta till efter loopen!
        NewLoadNo  := ex_AR_SALES_Loads(mtSelectedLoadsLoadNo.AsInteger, cdsArrivingLoadsLipNo.AsInteger) ;
-
+ //Inserting LoadNo to PkgInvStat
+       sp_insPkgInvStatByLoad.Close;
+       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
+       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
+       sp_insPkgInvStatByLoad.Open;
 
        if NewLoadNo > 0 then
        Begin
@@ -5673,6 +5678,13 @@ begin
 //       formConfirmManyIntLoads.ConfirmThisLoad (ChangeToIMPProduct, ObjectType) ;
 //       TformConfirmanyNormalLoad
 //göra det här när alla laster är OK, med nadra ord flyta till efter loopen!
+
+        //Inserting LoadNo to PkgInvStat table
+       sp_insPkgInvStatByLoad.Close;
+       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
+       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
+       sp_insPkgInvStatByLoad.Open;
+
 
 
         if (mtSelectedLoadsImpOrt.AsInteger = 1) or (mtSelectedLoadsOBJECTTYPE.AsInteger = 1) then
@@ -5824,6 +5836,13 @@ begin
 //       formConfirmanyNormalLoad.ConfirmThisLoad(0 {0 = Not Trading}, -1, -1) ;
 //       TformConfirmanyNormalLoad
         NewLoadNo  := ex_AR_SALES_Loads(mtSelectedLoadsLoadNo.AsInteger, LIPNo) ;
+
+//Inserting LoadNo to PkgInvStat Table
+       sp_insPkgInvStatByLoad.Close;
+       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
+       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
+       sp_insPkgInvStatByLoad.Open;
+
 //göra det här när alla laster är OK, med nadra ord flyta till efter loopen!
        if NewLoadNo > 0 then
        Begin

@@ -2,11 +2,15 @@ program VISTRUCK;
 
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
+(*
+
+      madExcept,
+        madLinkDisAsm,
+        madListHardware,
+        madListProcesses,
+        madListModules,
+
+*)
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
