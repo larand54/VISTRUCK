@@ -2499,10 +2499,10 @@ Begin
    if FDQ_GetLoadNo.RecordCount > 0 then
     Result := FDQ_GetLoadNoLoadNo.AsInteger
    else
-   Result  := -1 ;
+   Result  := 100 ;
 
    if not cdsArrivingLoads.FindKey([Result]) then
-    Result  := -1 ;
+    Result  := 100 ;
 
    Finally
     FDQ_GetLoadNo.Close ;
