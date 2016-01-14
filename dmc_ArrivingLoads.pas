@@ -2616,7 +2616,7 @@ begin
            SuppCode := '';
         end;
 
-    1 : begin
+    1..10 : begin
            // There is only one package number with the specified package number in
            // inventories owned by the specified owner, so this must be the one
            // the user wants.
