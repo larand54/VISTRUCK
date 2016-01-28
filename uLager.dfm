@@ -27,9 +27,9 @@ object fLager: TfLager
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 193
+    Top = 169
     Width = 1578
-    Height = 664
+    Height = 688
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -43,9 +43,9 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ExplicitTop = 159
-    ExplicitHeight = 698
-    ClientRectBottom = 664
+    ExplicitTop = 192
+    ExplicitHeight = 665
+    ClientRectBottom = 688
     ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
@@ -55,12 +55,12 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
-      ExplicitHeight = 698
+      ExplicitHeight = 665
       object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 1578
-        Height = 664
+        Height = 688
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -68,12 +68,12 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitHeight = 698
+        ExplicitHeight = 665
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
           Width = 1578
-          Height = 299
+          Height = 323
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -84,12 +84,12 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitHeight = 333
+          ExplicitHeight = 300
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dmInventory.ds_invpiv
-            DataController.KeyFieldNames = 'ProductNo;LIPNo;LP;Package_Size;CertNo;InventorySource'
+            DataController.KeyFieldNames = 'ProductNo;LIPNo;LP;Package_Size;InventorySource'
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
@@ -190,6 +190,40 @@ object fLager: TfLager
                 Options.HoldOwnColumnsOnly = True
               end>
           end
+          object grdBoTDBBandedPerPosition: TcxGridDBBandedTableView
+            OnDblClick = grdBoTDBBandedPerPositionDblClick
+            Navigator.Buttons.CustomButtons = <>
+            DataController.DataSource = dmInventory.ds_Vis_LagerPOS_v1
+            DataController.KeyFieldNames = 'Paketnr;Prefix;Package_Size;CertNo;PositionName;REFERENCE'
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsData.Deleting = False
+            OptionsData.Editing = False
+            OptionsData.Inserting = False
+            OptionsSelection.MultiSelect = True
+            OptionsSelection.UnselectFocusedRecordOnExit = False
+            OptionsView.ColumnAutoWidth = True
+            OptionsView.GroupByBox = False
+            OptionsView.HeaderHeight = 75
+            Bands = <
+              item
+                Caption = 'PAKET ID'
+                Options.HoldOwnColumnsOnly = True
+              end
+              item
+                Caption = 'PRODUKT'
+              end
+              item
+                Caption = 'NM3 PER L'#196'NGD'
+              end
+              item
+                Caption = 'LAGER'
+              end
+              item
+                Caption = 'KVANTITET'
+              end>
+          end
           object grdBoTLevel1: TcxGridLevel
             Caption = 'Sortiment vy'
             GridView = grdDBBandedPerSortiment
@@ -202,10 +236,14 @@ object fLager: TfLager
             Options.DetailTabsPosition = dtpTop
             Styles.Tab = cxStyleBrist
           end
+          object grdBoTLevel3: TcxGridLevel
+            Caption = 'Positions vy'
+            GridView = grdBoTDBBandedPerPosition
+          end
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 307
+          Top = 331
           Width = 1578
           Height = 357
           Margins.Left = 4
@@ -215,7 +253,7 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitTop = 341
+          ExplicitTop = 308
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -424,7 +462,7 @@ object fLager: TfLager
             object grdPkgNosDBBandedTableView1: TcxGridDBBandedTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dmInventory.ds_invpivPkgDtl
-              DataController.KeyFieldNames = 'PackageNo;SupplierCode'
+              DataController.KeyFieldNames = 'Paketnr;Prefix'
               DataController.Summary.DefaultGroupSummaryItems = <>
               DataController.Summary.FooterSummaryItems = <>
               DataController.Summary.SummaryGroups = <>
@@ -475,7 +513,7 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 299
+          Top = 323
           Width = 1578
           Height = 8
           Margins.Left = 4
@@ -487,7 +525,7 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitTop = 333
+          ExplicitTop = 300
         end
       end
     end
@@ -496,7 +534,7 @@ object fLager: TfLager
     Left = 0
     Top = 0
     Width = 1578
-    Height = 26
+    Height = 22
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -506,9 +544,9 @@ object fLager: TfLager
   end
   object Panel3: TPanel
     Left = 0
-    Top = 26
+    Top = 22
     Width = 1578
-    Height = 170
+    Height = 147
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -517,7 +555,7 @@ object fLager: TfLager
     TabOrder = 6
     DesignSize = (
       1578
-      170)
+      147)
     object cxLabel1: TcxLabel
       Left = 12
       Top = 39
@@ -632,7 +670,7 @@ object fLager: TfLager
     end
     object cbHideZeroColumns: TcxCheckBox
       Left = 1023
-      Top = 114
+      Top = 116
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -849,8 +887,8 @@ object fLager: TfLager
       WordWrap = True
     end
     object cxButton7: TcxButton
-      Left = 1023
-      Top = 115
+      Left = 1223
+      Top = 67
       Width = 99
       Height = 28
       Margins.Left = 4
@@ -949,35 +987,11 @@ object fLager: TfLager
       ParentFont = False
       WordWrap = True
     end
-    object cxButton12: TcxButton
-      Left = 20
-      Top = 134
-      Width = 161
-      Height = 33
-      Action = acSortimentVy
-      TabOrder = 27
-  end
-    object cxButton13: TcxButton
-      Left = 187
-      Top = 134
-      Width = 161
-      Height = 33
-      Action = acPositionsVy
-      TabOrder = 28
-    end
-    object cxButton14: TcxButton
-      Left = 354
-      Top = 134
-      Width = 161
-      Height = 33
-      Action = acPackageNoVy
-      TabOrder = 29
-    end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1289,14 +1303,12 @@ object fLager: TfLager
     end
     object acSortimentVy: TAction
       Caption = 'Sortimentsvy'
-      OnExecute = acSortimentVyExecute
-  end
+    end
     object acPackageNoVy: TAction
       Caption = 'Paketnrvy'
     end
     object acPositionsVy: TAction
       Caption = 'Positionsvy'
-      OnExecute = acPositionsVyExecute
     end
   end
   object pmFormShortcuts: TPopupMenu

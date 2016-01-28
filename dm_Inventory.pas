@@ -1251,6 +1251,8 @@ type
     sp_PkgExistInLIP: TFDStoredProc;
     mtSelectedPkgNoMaxlangd: TFloatField;
     sp_invpivPkgDtl: TFDStoredProc;
+    sp_Vis_LagerPOS_v1: TFDStoredProc;
+    ds_Vis_LagerPOS_v1: TDataSource;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1294,6 +1296,7 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
+    procedure Refresh_sp_Vis_LagerPOS_v1(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
     function  PkgExistInInventoryKILN(const PackageNo, LIPNo : Integer;const Prefix : String3) : Boolean ;
     function  GetProductNoByPackageNoproductno(const PackageNo : Integer;const Prefix : String) : Integer ;
     function  VagnarBeforeKiln_Larger_Then_MaxVagnarBefore(const KilnChargeNo : Integer) : Boolean ;
@@ -2519,6 +2522,68 @@ Begin
    Result:= False ;
  Finally
   sp_PkgExistInLIP.Active  := False ;
+ End ;
+End ;
+
+procedure TdmInventory.Refresh_sp_Vis_LagerPOS_v1(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
+Begin
+
+   if sp_Vis_LagerPOS_v1.Active then
+   Begin
+    sp_Vis_LagerPOS_v1.Fields.Clear ;
+    sp_Vis_LagerPOS_v1.EmptyDataSet ;
+    sp_Vis_LagerPOS_v1.Active := False ;
+    sp_Vis_LagerPOS_v1.Disconnect(True);
+   End ;
+
+
+ if sp_invpivPkgDtl.Active then
+ Begin
+  sp_invpivPkgDtl.Fields.Clear ;
+  sp_invpivPkgDtl.EmptyDataSet ;
+  sp_invpivPkgDtl.Active := False ;
+  sp_invpivPkgDtl.Disconnect(True);
+ End ;
+
+
+ sp_Vis_LagerPOS_v1.ParamByName('@LIPNo').AsString           := LIPNos ;
+ sp_Vis_LagerPOS_v1.ParamByName('@PivotUnit').AsInteger      := PivotUnit ;
+ sp_Vis_LagerPOS_v1.ParamByName('@LanguageCode').AsInteger   := ThisUser.LanguageID ;
+ sp_Vis_LagerPOS_v1.ParamByName('@OwnerNo').AsInteger        := OwnerNo ;
+ if AT > 0 then
+ sp_Vis_LagerPOS_v1.ParamByName('@AT').AsFloat               := AT
+ else
+ sp_Vis_LagerPOS_v1.ParamByName('@AT').AsFloat               := 0 ;
+ if AB > 0 then
+ sp_Vis_LagerPOS_v1.ParamByName('@AB').AsFloat               := AB
+ else
+ sp_Vis_LagerPOS_v1.ParamByName('@AB').AsFloat               := 0 ;
+
+ if Length(Trim(Ref)) > 0 then
+ sp_Vis_LagerPOS_v1.ParamByName('@Ref').AsString             := Trim(Ref)
+ else
+ sp_Vis_LagerPOS_v1.ParamByName('@Ref').AsString             := '' ;
+
+ if Length(Trim(BL)) > 0 then
+ sp_Vis_LagerPOS_v1.ParamByName('@BL').AsString              := Trim(BL)
+ else
+ sp_Vis_LagerPOS_v1.ParamByName('@BL').AsString             := '' ;
+
+ if Length(Trim(Info2)) > 0 then
+ sp_Vis_LagerPOS_v1.ParamByName('@Info2').AsString           := Trim(Info2)
+ else
+ sp_Vis_LagerPOS_v1.ParamByName('@Info2').AsString             := '' ;
+
+
+ Try
+ sp_Vis_LagerPOS_v1.Active := True ;
+ Except
+//  On E: Exception do
+//  Begin
+//   dmsSystem.FDoLog(E.Message + ' sp_Vis_LagerPOS_v1.Active ') ;
+//   ShowMessage(E.Message+' :sp_MergeBookings.Exec') ;
+//   Raise ;
+//  End ;
  End ;
 End ;
 

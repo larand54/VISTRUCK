@@ -2,15 +2,11 @@ program VISTRUCK;
 
 
 uses
-(*
-
-      madExcept,
-        madLinkDisAsm,
-        madListHardware,
-        madListProcesses,
-        madListModules,
-
-*)
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -119,7 +115,8 @@ uses
   udmFR in '..\CommonSources\FastReport\udmFR.pas' {dmFR: TDataModule},
   uReport in '..\CommonSources\FastReport\uReport.pas',
   uReportController in '..\CommonSources\FastReport\uReportController.pas',
-  uFastReports in 'uFastReports.pas';
+  uFastReports in 'uFastReports.pas',
+  uFRConstants in '..\CommonSources\FastReport\uFRConstants.pas';
 
 {$R *.res}
 begin

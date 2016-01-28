@@ -8284,7 +8284,7 @@ object dmInventory: TdmInventory
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
-    StoredProcName = 'dbo.Vis_Lager_v7'
+    StoredProcName = 'dbo.Vis_Lager_v8'
     Left = 216
     Top = 536
     ParamData = <
@@ -8293,7 +8293,6 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
-        Value = 0
       end
       item
         Position = 2
@@ -8365,7 +8364,7 @@ object dmInventory: TdmInventory
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = upd_invpivPkgDtl
-    StoredProcName = 'dbo.Vis_LagerDTL_v3'
+    StoredProcName = 'dbo.Vis_LagerDTL_v4'
     Left = 216
     Top = 424
     ParamData = <
@@ -8374,6 +8373,7 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -9978,5 +9978,84 @@ object dmInventory: TdmInventory
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object sp_Vis_LagerPOS_v1: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.Vis_LagerPOS_v1'
+    Left = 256
+    Top = 120
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@LIPNo'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 100
+      end
+      item
+        Position = 3
+        Name = '@OwnerNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@PivotUnit'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@LanguageCode'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@AT'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@AB'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@Ref'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 9
+        Name = '@BL'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 10
+        Name = '@Info2'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end>
+  end
+  object ds_Vis_LagerPOS_v1: TDataSource
+    DataSet = sp_Vis_LagerPOS_v1
+    Left = 256
+    Top = 168
   end
 end

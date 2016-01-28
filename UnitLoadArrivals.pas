@@ -608,8 +608,8 @@ type
 
     LastTime  : TTime ;
     SecondsBetweenKeyPressed  : Double ;
-    Function  IsRegionToRegionLoadValid(LoadNo, ShippingPlanNo,
-  ObjectType: Integer; Sender: TObject): Boolean;
+    procedure Run_insPkgInvStatByLoad(const LoadNo  : Integer) ;
+    Function  IsRegionToRegionLoadValid(LoadNo, ShippingPlanNo, ObjectType: Integer; Sender: TObject): Boolean;
     procedure ConfirmManyLoadsRegionToRegion(Sender: TObject) ;
     function  AreMarkedLoadsSameObjectTypeRegionToRegion: Boolean;
     procedure SelectedPkgsOfPkgNosTable ;
@@ -5538,10 +5538,9 @@ begin
 //göra det här när alla laster är OK, med andra ord flyta till efter loopen!
        NewLoadNo  := ex_AR_SALES_Loads(mtSelectedLoadsLoadNo.AsInteger, cdsArrivingLoadsLipNo.AsInteger) ;
  //Inserting LoadNo to PkgInvStat
-       sp_insPkgInvStatByLoad.Close;
-       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
-       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
-       sp_insPkgInvStatByLoad.Open;
+       Run_insPkgInvStatByLoad(mtSelectedLoadsLoadNo.AsInteger) ;
+
+
 
        if NewLoadNo > 0 then
        Begin
@@ -5680,12 +5679,7 @@ begin
 //göra det här när alla laster är OK, med nadra ord flyta till efter loopen!
 
         //Inserting LoadNo to PkgInvStat table
-       sp_insPkgInvStatByLoad.Close;
-       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
-       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
-       sp_insPkgInvStatByLoad.Open;
-
-
+       Run_insPkgInvStatByLoad(mtSelectedLoadsLoadNo.AsInteger) ;
 
         if (mtSelectedLoadsImpOrt.AsInteger = 1) or (mtSelectedLoadsOBJECTTYPE.AsInteger = 1) then
         Begin
@@ -5838,10 +5832,7 @@ begin
         NewLoadNo  := ex_AR_SALES_Loads(mtSelectedLoadsLoadNo.AsInteger, LIPNo) ;
 
 //Inserting LoadNo to PkgInvStat Table
-       sp_insPkgInvStatByLoad.Close;
-       sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger := mtSelectedLoadsLoadNo.AsInteger;
-       sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
-       sp_insPkgInvStatByLoad.Open;
+       Run_insPkgInvStatByLoad(mtSelectedLoadsLoadNo.AsInteger) ;
 
 //göra det här när alla laster är OK, med nadra ord flyta till efter loopen!
        if NewLoadNo > 0 then
@@ -7017,6 +7008,22 @@ begin
     End;
   End; // With
 End;
+
+procedure TfrmLoadArrivals.Run_insPkgInvStatByLoad(const LoadNo  : Integer) ;
+Begin
+  Try
+   sp_insPkgInvStatByLoad.ParamByName('@LoadNo').AsInteger      := LoadNo ;
+   sp_insPkgInvStatByLoad.ParamByName('@CreatedUser').AsInteger := ThisUser.UserID;
+   sp_insPkgInvStatByLoad.ExecProc ;
+   Except
+     On E: Exception do
+     Begin
+      ShowMessage(E.Message+' :sp_insPkgInvStatByLoad.ExecProc') ;
+      Raise ;
+     End ;
+   End ;
+End;
+
 
 
 end.
