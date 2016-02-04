@@ -43,8 +43,6 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ExplicitTop = 192
-    ExplicitHeight = 665
     ClientRectBottom = 688
     ClientRectRight = 1578
     ClientRectTop = 0
@@ -55,7 +53,6 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
-      ExplicitHeight = 665
       object Panel4: TPanel
         Left = 0
         Top = 0
@@ -68,7 +65,6 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitHeight = 665
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
@@ -84,7 +80,6 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitHeight = 300
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -194,10 +189,12 @@ object fLager: TfLager
             OnDblClick = grdBoTDBBandedPerPositionDblClick
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dmInventory.ds_Vis_LagerPOS_v1
-            DataController.KeyFieldNames = 'Paketnr;Prefix;Package_Size;CertNo;PositionName;REFERENCE'
+            DataController.KeyFieldNames = 'ProductNo;Package_Size;PositionName;REFERENCE'
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
+            DataController.Summary.Options = [soMultipleSelectedRecords]
+            OptionsBehavior.PullFocusing = True
             OptionsData.Deleting = False
             OptionsData.Editing = False
             OptionsData.Inserting = False
@@ -206,6 +203,12 @@ object fLager: TfLager
             OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
             OptionsView.HeaderHeight = 75
+            Styles.Content = cxStyleContent
+            Styles.ContentEven = cxStyleContent
+            Styles.ContentOdd = cxStyleContentOdd
+            Styles.Footer = cxStyleContent
+            Styles.Header = cxStyleHeaderSortimentsVy
+            Styles.BandHeader = cxStyleHeaderSortimentsVy
             Bands = <
               item
                 Caption = 'PAKET ID'
@@ -253,7 +256,6 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitTop = 308
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -525,7 +527,6 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitTop = 300
         end
       end
     end

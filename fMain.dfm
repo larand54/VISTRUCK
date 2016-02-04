@@ -21,9 +21,9 @@ object frmMain: TfrmMain
   TextHeight = 16
   object Panel1: TPanel
     Left = 0
-    Top = 154
+    Top = 134
     Width = 1393
-    Height = 824
+    Height = 844
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -35,7 +35,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 1393
-      Height = 824
+      Height = 844
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -86,7 +86,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1393
-    Height = 154
+    Height = 134
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -3098,7 +3098,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (

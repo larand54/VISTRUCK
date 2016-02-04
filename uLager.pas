@@ -44,7 +44,7 @@ uses
 const cFirstLengthFieldNumber         = 27 ;
       cFirstLengthFieldNumberPaketnr  = 37 ;
       cFirstLengthFieldNumberPkgDtl   = 39 ;
-      cFirstLengthFieldNumberPosition = 40 ;
+      cFirstLengthFieldNumberPosition = 28 ;
 type
   TfLager = class(TForm)
     dxBarManager1: TdxBarManager;
@@ -657,7 +657,7 @@ End ;
 procedure TfLager.LoadGridLayoutPositionVy ;
 Begin
  SortimentVy  := 2 ;
- if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + 'v2/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) = False then ;
+ if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + 'v3/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) = False then ;
 End ;
 
 procedure TfLager.LoadGridLayoutPaketNrVy ;
@@ -1045,7 +1045,7 @@ begin
         End ;
 
     2 : Begin
-          dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'v2/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) ;
+          dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'v3/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) ;
         End ;
    End ; //Case
 
@@ -1071,7 +1071,7 @@ begin
     mtPkgNos.First ;
     while not mtPkgNos.Eof do
     Begin
-     if sp_invpivPkgDtl.Locate('PackageNo;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+     if sp_invpivPkgDtl.Locate('Paketnr;Prefix',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
      Begin
  {     sp_invpivPkgDtl.Edit ;
       sp_invpivPkgDtl.FieldByName('CertNo').AsInteger         := CertNo ;
@@ -1105,7 +1105,7 @@ begin
     mtPkgNos.First ;
     while not mtPkgNos.Eof do
     Begin
-     if sp_invpivPkgDtl.Locate('PackageNo;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+     if sp_invpivPkgDtl.Locate('Paketnr;Prefix',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
      Begin
  {     sp_invpivPkgDtl.Edit ;
       sp_invpivPkgDtl.FieldByName('CertNo').AsInteger         := CertNo ;
@@ -1140,7 +1140,7 @@ begin
     mtPkgNos.First ;
     while not mtPkgNos.Eof do
     Begin
-     if sp_invpivPkgDtl.Locate('PackageNo;SupplierCode',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+     if sp_invpivPkgDtl.Locate('Paketnr;Prefix',  VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
      Begin
 {      sp_invpivPkgDtl.Edit ;
       sp_invpivPkgDtl.FieldByName('Package_Size').AsInteger     := Package_Size ;
@@ -1251,7 +1251,7 @@ begin
  With dmInventory do
  Begin
 
-  if dmsSystem.LoadGridLayout(258, Self.Name + 'v2/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) = False then ;
+  if dmsSystem.LoadGridLayout(258, Self.Name + 'v3/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) = False then ;
 
   For x := grdBoTDBBandedPerPosition.ColumnCount -1  downto cFirstLengthFieldNumber do
     grdBoTDBBandedPerPosition.Columns[x].Free ;
@@ -1271,7 +1271,7 @@ begin
   End ;
 
  // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
-   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'v2/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) ;
+   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + 'v3/' + grdBoTDBBandedPerPosition.Name, grdBoTDBBandedPerPosition) ;
 
 //  if grdDBBandedPerPaketNr.DataController.DataSet.RecordCount > 0 then
    //dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdDBBandedPerPaketNr.Name, grdDBBandedPerPaketNr) ;
@@ -2160,8 +2160,7 @@ begin
   AFocusedItem    := AView.Controller.FocusedItem;
   AFocusedRow     := AView.Controller.FocusedRecord;
   if Assigned(AFocusedItem) and Assigned(AFocusedRow) then
-  SelectedLength  := System.Copy(AFocusedItem.Caption, 2, System.Length(AFocusedItem.Caption)-1) ;//+ '/Recno: ' + IntToStr(AFocusedRow.Index);
-
+  SelectedLength  := System.Copy(AFocusedItem.Caption, 2, System.Length(AFocusedItem.Caption)-1) ;
 
   LabelPkgDtlProduct.Caption  := grdDBBandedPerSortiment.DataController.DataSet.FieldByName('ProductDisplayName').AsString
   + '  -  ' +
@@ -3341,11 +3340,11 @@ begin
    Begin
     RecIDx  := grdPkgNosDBBandedTableView1.Controller.SelectedRecords[i].RecordIndex ;
     RecID   := grdPkgNosDBBandedTableView1.DataController.GetRecordId(RecIdx) ;
-    ADataSet.Locate('PackageNo', RecID,[]) ;
+    ADataSet.Locate('Paketnr', RecID,[]) ;
 
     mtPkgNos.Insert ;
-    mtPkgNosPackageNo.AsInteger := ADataSet.FieldByName('PackageNo').AsInteger ;
-    mtPkgNosSupp_Code.AsString  := ADataSet.FieldByName('SupplierCode').AsString ;
+    mtPkgNosPackageNo.AsInteger := ADataSet.FieldByName('Paketnr').AsInteger ;
+    mtPkgNosSupp_Code.AsString  := ADataSet.FieldByName('Prefix').AsString ;
     mtPkgNosOwnerNo.AsInteger   := cds_PropsOwnerNo.AsInteger ;//ADataSet.FieldByName('OwnerNo').AsInteger ;
     mtPkgNosPIPNo.AsInteger     := ADataSet.FieldByName('PIPNo').AsInteger ;
     mtPkgNosLIPNo.AsInteger     := ADataSet.FieldByName('LIPNo').AsInteger ;
@@ -3425,12 +3424,12 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('nooflengths').Visible             := False ;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('AT').Visible                      := False ;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('AB').Visible                      := False ;
- dmInventory.sp_Vis_LagerPOS_v1.FieldByName('Species').DisplayLabel          := 'Träslag' ;
- dmInventory.sp_Vis_LagerPOS_v1.FieldByName('Surfacing').DisplayLabel        := 'Utförande' ;
+// dmInventory.sp_Vis_LagerPOS_v1.FieldByName('Species').DisplayLabel          := 'Träslag' ;
+// dmInventory.sp_Vis_LagerPOS_v1.FieldByName('Surfacing').DisplayLabel        := 'Utförande' ;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('LPName').DisplayLabel           := 'LP' ;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('AreaName').DisplayLabel         := 'Area' ;
 // dmInventory.sp_Vis_LagerPOS_v1.FieldByName('PositionName').DisplayLabel     := 'Position' ;
- dmInventory.sp_Vis_LagerPOS_v1.FieldByName('VarugruppNamn').DisplayLabel    := 'Varugrupp' ;
+// dmInventory.sp_Vis_LagerPOS_v1.FieldByName('VarugruppNamn').DisplayLabel    := 'Varugrupp' ;
 
  aColumn:= grdBoTDBBandedPerPosition.GetColumnByFieldName('productNo');
  aColumn.Visible  := False ;
@@ -3449,8 +3448,8 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
  aColumn.Visible  := False ;
 // aColumn:= grdBoTDBBandedPerPosition.GetColumnByFieldName('Pris');
 // aColumn.Visible  := False ;
- aColumn:= grdBoTDBBandedPerPosition.GetColumnByFieldName('ProductValue');
- aColumn.Visible  := False ;
+// aColumn:= grdBoTDBBandedPerPosition.GetColumnByFieldName('ProductValue');
+// aColumn.Visible  := False ;
 
   {
    aColumn:= grdBoTDBBandedPerPosition.GetColumnByFieldName('Reference');

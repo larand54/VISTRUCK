@@ -1826,10 +1826,12 @@ object dmsConnector: TdmsConnector
     Params.Strings = (
       'Server=visprodsql.vida.se'
       'Database=Vis_Vida'
-      'OSAuthent=Yes'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
       'ApplicationName=VIS_TRUCK'
+      'User_Name=Lars'
+      'Password=woods2011'
       'DriverID=MSSQL')
     FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
     FetchOptions.Mode = fmAll
