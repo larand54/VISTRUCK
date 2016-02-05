@@ -43,7 +43,7 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 684
+    ClientRectBottom = 688
     ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
@@ -189,10 +189,12 @@ object fLager: TfLager
             OnDblClick = grdBoTDBBandedPerPositionDblClick
             Navigator.Buttons.CustomButtons = <>
             DataController.DataSource = dmInventory.ds_Vis_LagerPOS_v1
-            DataController.KeyFieldNames = 'Paketnr;Prefix;Package_Size;CertNo;PositionName;REFERENCE'
+            DataController.KeyFieldNames = 'ProductNo;Package_Size;PositionName;REFERENCE'
             DataController.Summary.DefaultGroupSummaryItems = <>
             DataController.Summary.FooterSummaryItems = <>
             DataController.Summary.SummaryGroups = <>
+            DataController.Summary.Options = [soMultipleSelectedRecords]
+            OptionsBehavior.PullFocusing = True
             OptionsData.Deleting = False
             OptionsData.Editing = False
             OptionsData.Inserting = False
@@ -201,6 +203,12 @@ object fLager: TfLager
             OptionsView.ColumnAutoWidth = True
             OptionsView.GroupByBox = False
             OptionsView.HeaderHeight = 75
+            Styles.Content = cxStyleContent
+            Styles.ContentEven = cxStyleContent
+            Styles.ContentOdd = cxStyleContentOdd
+            Styles.Footer = cxStyleContent
+            Styles.Header = cxStyleHeaderSortimentsVy
+            Styles.BandHeader = cxStyleHeaderSortimentsVy
             Bands = <
               item
                 Caption = 'PAKET ID'

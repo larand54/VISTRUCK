@@ -9981,7 +9981,7 @@ object dmInventory: TdmInventory
   end
   object sp_Vis_LagerPOS_v1: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.Vis_LagerPOS_v1'
+    StoredProcName = 'dbo.Vis_LagerPOS_v2'
     Left = 256
     Top = 120
     ParamData = <
@@ -9990,7 +9990,6 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
-        Value = 0
       end
       item
         Position = 2
