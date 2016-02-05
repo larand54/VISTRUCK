@@ -27,9 +27,9 @@ object fLager: TfLager
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 169
+    Top = 173
     Width = 1578
-    Height = 688
+    Height = 684
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -43,9 +43,7 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ExplicitTop = 192
-    ExplicitHeight = 665
-    ClientRectBottom = 688
+    ClientRectBottom = 684
     ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
@@ -55,12 +53,11 @@ object fLager: TfLager
       Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
-      ExplicitHeight = 665
       object Panel4: TPanel
         Left = 0
         Top = 0
         Width = 1578
-        Height = 688
+        Height = 684
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -68,12 +65,11 @@ object fLager: TfLager
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitHeight = 665
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
           Width = 1578
-          Height = 323
+          Height = 319
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -84,7 +80,6 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitHeight = 300
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -243,7 +238,7 @@ object fLager: TfLager
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 331
+          Top = 327
           Width = 1578
           Height = 357
           Margins.Left = 4
@@ -253,7 +248,6 @@ object fLager: TfLager
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitTop = 308
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
@@ -303,8 +297,8 @@ object fLager: TfLager
               ParentFont = False
             end
             object cxButton3: TcxButton
-              Left = 233
-              Top = 7
+              Left = 231
+              Top = 6
               Width = 107
               Height = 61
               Margins.Left = 4
@@ -339,7 +333,7 @@ object fLager: TfLager
               ParentFont = False
             end
             object cxButton8: TcxButton
-              Left = 460
+              Left = 457
               Top = 7
               Width = 107
               Height = 61
@@ -371,7 +365,7 @@ object fLager: TfLager
               AnchorX = 789
             end
             object cxButton6: TcxButton
-              Left = 658
+              Left = 694
               Top = 7
               Width = 151
               Height = 74
@@ -390,7 +384,7 @@ object fLager: TfLager
               WordWrap = True
             end
             object cxButton9: TcxButton
-              Left = 816
+              Left = 852
               Top = 7
               Width = 150
               Height = 74
@@ -409,7 +403,7 @@ object fLager: TfLager
               WordWrap = True
             end
             object cxButton10: TcxButton
-              Left = 974
+              Left = 1009
               Top = 7
               Width = 140
               Height = 74
@@ -429,7 +423,7 @@ object fLager: TfLager
               WordWrap = True
             end
             object cxButton5: TcxButton
-              Left = 1122
+              Left = 1157
               Top = 7
               Width = 107
               Height = 74
@@ -439,6 +433,24 @@ object fLager: TfLager
               Margins.Bottom = 4
               Action = acClosePkgDtlVy
               TabOrder = 5
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -18
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object cxButton12: TcxButton
+              Left = 568
+              Top = 7
+              Width = 107
+              Height = 61
+              Margins.Left = 4
+              Margins.Top = 4
+              Margins.Right = 4
+              Margins.Bottom = 4
+              Action = acPrintPKGLabels
+              TabOrder = 10
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -18
@@ -513,7 +525,7 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 323
+          Top = 319
           Width = 1578
           Height = 8
           Margins.Left = 4
@@ -525,7 +537,6 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitTop = 300
         end
       end
     end
@@ -534,7 +545,7 @@ object fLager: TfLager
     Left = 0
     Top = 0
     Width = 1578
-    Height = 22
+    Height = 26
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -544,7 +555,7 @@ object fLager: TfLager
   end
   object Panel3: TPanel
     Left = 0
-    Top = 22
+    Top = 26
     Width = 1578
     Height = 147
     Margins.Left = 4
@@ -991,7 +1002,7 @@ object fLager: TfLager
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -15
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1310,6 +1321,11 @@ object fLager: TfLager
     object acPositionsVy: TAction
       Caption = 'Positionsvy'
     end
+    object acPrintPKGLabels: TAction
+      Category = 'Paket'
+      Caption = 'Paketlappar'
+      OnExecute = acPrintPKGLabelsExecute
+    end
   end
   object pmFormShortcuts: TPopupMenu
     AutoPopup = False
@@ -1340,7 +1356,6 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1362,14 +1377,12 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1389,7 +1402,6 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

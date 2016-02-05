@@ -346,6 +346,8 @@ type
     acPositionsVy: TAction;
     grdBoTLevel3: TcxGridLevel;
     grdBoTDBBandedPerPosition: TcxGridDBBandedTableView;
+    cxButton12: TcxButton;
+    acPrintPKGLabels: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -396,6 +398,7 @@ type
     procedure acSetStdGridLayoutExecute(Sender: TObject);
     procedure cbInklEjFaktPropertiesChange(Sender: TObject);
     procedure grdBoTDBBandedPerPositionDblClick(Sender: TObject);
+    procedure acPrintPKGLabelsExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -453,6 +456,8 @@ type
     procedure ClearProductFilter ;
     procedure DoEnter ; override ;
     procedure DoExit ; override ;
+    procedure PrintPackageLabel(const aPrefix: string;
+                 const aPkgNo, aLanguage, aDimFmt, aLengthFmt, aNoOfCopies: integer);
 
   public
     { Public declarations }
@@ -482,7 +487,8 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
 //  UnitPickProduct, dm_SortOrder, fSortOrder, fMain, uSortingOrderWizard,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
-  VidaUtils , UchgPkgVard, uLagerPos; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
+  ufrmPkgLabelSetup; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -3214,6 +3220,29 @@ begin
 // SpinEditContentFontSortimentsVy.Value        := SpinEditContentFontSortimentsVy.IntCurValue ;
 end;
 
+procedure TfLager.PrintPackageLabel(const aPrefix: string; const aPkgNo,
+  aLanguage, aDimFmt, aLengthFmt, aNoOfCopies: integer);
+
+var
+  RC: TCMReportController;
+  Params: TCMParams;
+begin
+  try
+    Params := TCMParams.Create();
+    Params.Add('@LanguageCode', aLanguage);
+    Params.Add('@Prefix', aPrefix);
+    Params.Add('@PackageNo', aPkgNo);
+    Params.Add('@FormatDim', aDimFmt);
+    Params.Add('@FormatLength', aLengthFmt);
+    RC := TCMReportController.create;
+    RC.RunReport(522,Params,frPrint,1,aNoOfCopies);
+  finally
+    if assigned(Params) then Params.Free;
+    if assigned(RC) then RC.Free;
+  end;
+
+end;
+
 procedure TfLager.grdBoTActiveTabChanged(Sender: TcxCustomGrid;
   ALevel: TcxGridLevel);
 begin
@@ -3300,6 +3329,47 @@ begin
   dxComponentPrinter1Link2.PrinterPage.ApplyToPrintDevice ;
 
   dxComponentPrinter1.Preview(True, dxComponentPrinter1Link2) ;
+end;
+
+procedure TfLager.acPrintPKGLabelsExecute(Sender: TObject);
+var
+  pkgNo,
+  lang,
+  dimFmt,
+  lengthFmt,
+  noOfCopies     : integer;
+  prefix         : string;
+  i, RecIDX      : Integer ;
+  RecID          : Variant ;
+  ADATASET       : TDATASET;
+  Save_Cursor    : TCursor;
+begin
+  // Get PackageLabelSettings
+  if not TfrmPkgLabelSetup.Execute(lang, noOfCopies, dimFmt, lengthFmt) = mrOK then exit;
+
+  // For each selected row
+  Save_Cursor    := Screen.Cursor;
+  Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+  grdPkgNosDBBandedTableView1.BeginUpdate ;
+  grdPkgNosDBBandedTableView1.DataController.BeginLocate ;
+  Try
+    ADataSet := grdPkgNosDBBandedTableView1.DataController.DataSource.DataSet ;
+    For I    := 0 to grdPkgNosDBBandedTableView1.Controller.SelectedRecordCount - 1 do
+    Begin
+      RecIDx  := grdPkgNosDBBandedTableView1.Controller.SelectedRecords[i].RecordIndex ;
+      RecID   := grdPkgNosDBBandedTableView1.DataController.GetRecordId(RecIdx) ;
+      ADataSet.Locate('Paketnr', RecID,[]) ;
+      prefix := ADataSet.FieldByName('Prefix').AsString ;
+      pkgNo := ADataSet.FieldByName('Paketnr').AsInteger ;
+        //   Print package label
+      PrintPackageLabel(prefix, pkgNo, lang, dimFmt, LengthFmt, noOfCopies );
+     End ;
+
+ Finally
+   grdPkgNosDBBandedTableView1.DataController.EndLocate ;
+   grdPkgNosDBBandedTableView1.EndUpdate ;
+   Screen.Cursor := Save_Cursor;  { Always restore to normal }
+ end;
 end;
 
 procedure TfLager.acChangePkgExecute(Sender: TObject);

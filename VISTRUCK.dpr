@@ -7,7 +7,6 @@ uses
   madListHardware,
   madListProcesses,
   madListModules,
-
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -117,7 +116,8 @@ uses
   uReport in '..\CommonSources\FastReport\uReport.pas',
   uReportController in '..\CommonSources\FastReport\uReportController.pas',
   uFastReports in 'uFastReports.pas',
-  uFRConstants in '..\CommonSources\FastReport\uFRConstants.pas';
+  uFRConstants in '..\CommonSources\FastReport\uFRConstants.pas',
+  ufrmPkgLabelSetup in 'ufrmPkgLabelSetup.pas' {frmPkgLabelSetup};
 
 {$R *.res}
 begin
