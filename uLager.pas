@@ -457,7 +457,8 @@ type
     procedure DoEnter ; override ;
     procedure DoExit ; override ;
     procedure PrintPackageLabel(const aPrefix: string;
-                 const aPkgNo, aLanguage, aDimFmt, aLengthFmt, aNoOfCopies: integer);
+      const aPkgNo, aLanguage, aDimFmt, aLengthFmt, aNoOfCopies, aRepNo: integer;
+      const aPrintDlg: boolean);
 
   public
     { Public declarations }
@@ -3220,12 +3221,16 @@ begin
 end;
 
 procedure TfLager.PrintPackageLabel(const aPrefix: string; const aPkgNo,
-  aLanguage, aDimFmt, aLengthFmt, aNoOfCopies: integer);
+  aLanguage, aDimFmt, aLengthFmt, aNoOfCopies, aRepNo: integer;
+   const aPrintDlg: boolean);
 
 var
   RC: TCMReportController;
   Params: TCMParams;
+  PrinterSetup: integer;
 begin
+  if aPrintDlg then PrinterSetup := 0
+  else PrinterSetup := 1;
   try
     Params := TCMParams.Create();
     Params.Add('@LanguageCode', aLanguage);
@@ -3234,7 +3239,7 @@ begin
     Params.Add('@FormatDim', aDimFmt);
     Params.Add('@FormatLength', aLengthFmt);
     RC := TCMReportController.create;
-    RC.RunReport(522,Params,frPrint,1,aNoOfCopies);
+    RC.RunReport(aRepno,Params,frPrint,PrinterSetup,aNoOfCopies);
   finally
     if assigned(Params) then Params.Free;
     if assigned(RC) then RC.Free;
@@ -3342,9 +3347,11 @@ var
   RecID          : Variant ;
   ADATASET       : TDATASET;
   Save_Cursor    : TCursor;
+  PrintDlg       : boolean;   // True = Display printer-setup dialog
+  RepNo          : integer;
 begin
   // Get PackageLabelSettings
-  if not TfrmPkgLabelSetup.Execute(lang, noOfCopies, dimFmt, lengthFmt) = mrOK then exit;
+  if not TfrmPkgLabelSetup.Execute(lang, noOfCopies, dimFmt, lengthFmt, RepNo) = mrOK then exit;
 
   // For each selected row
   Save_Cursor    := Screen.Cursor;
@@ -3361,7 +3368,8 @@ begin
       prefix := ADataSet.FieldByName('Prefix').AsString ;
       pkgNo := ADataSet.FieldByName('Paketnr').AsInteger ;
         //   Print package label
-      PrintPackageLabel(prefix, pkgNo, lang, dimFmt, LengthFmt, noOfCopies );
+      PrintDlg := true;
+      PrintPackageLabel(prefix, pkgNo, lang, dimFmt, LengthFmt, noOfCopies, RepNo, PrintDlg );
      End ;
 
  Finally
