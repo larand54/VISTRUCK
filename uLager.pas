@@ -3360,6 +3360,7 @@ begin
   grdPkgNosDBBandedTableView1.DataController.BeginLocate ;
   Try
     ADataSet := grdPkgNosDBBandedTableView1.DataController.DataSource.DataSet ;
+    PrintDlg := true;  // First time in loop
     For I    := 0 to grdPkgNosDBBandedTableView1.Controller.SelectedRecordCount - 1 do
     Begin
       RecIDx  := grdPkgNosDBBandedTableView1.Controller.SelectedRecords[i].RecordIndex ;
@@ -3368,8 +3369,8 @@ begin
       prefix := ADataSet.FieldByName('Prefix').AsString ;
       pkgNo := ADataSet.FieldByName('Paketnr').AsInteger ;
         //   Print package label
-      PrintDlg := true;
       PrintPackageLabel(prefix, pkgNo, lang, dimFmt, LengthFmt, noOfCopies, RepNo, PrintDlg );
+      PrintDlg := false;  // No more setup-dialog in this loop
      End ;
 
  Finally
