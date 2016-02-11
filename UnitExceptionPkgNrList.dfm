@@ -559,29 +559,6 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Left = 136
     Top = 320
   end
-  object frxPDFExport1: TfrxPDFExport
-    UseFileCache = True
-    ShowProgress = True
-    OverwritePrompt = False
-    DataOnly = False
-    PrintOptimized = False
-    Outline = False
-    Background = False
-    HTMLTags = True
-    Quality = 95
-    Author = 'FastReport'
-    Subject = 'FastReport PDF export'
-    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
-    HideToolbar = False
-    HideMenubar = False
-    HideWindowUI = False
-    FitWindow = False
-    CenterWindow = False
-    PrintScaling = False
-    CheckboxAsShape = False
-    Left = 264
-    Top = 320
-  end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
     Version = '7.2'
     StringsTypes.Strings = (
