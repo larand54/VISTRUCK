@@ -115,9 +115,9 @@ uses
   udmFR in '..\CommonSources\FastReport\udmFR.pas' {dmFR: TDataModule},
   uReport in '..\CommonSources\FastReport\uReport.pas',
   uReportController in '..\CommonSources\FastReport\uReportController.pas',
-  uFastReports in 'uFastReports.pas',
   uFRConstants in '..\CommonSources\FastReport\uFRConstants.pas',
-  ufrmPkgLabelSetup in 'ufrmPkgLabelSetup.pas' {frmPkgLabelSetup};
+  ufrmPkgLabelSetup in 'ufrmPkgLabelSetup.pas' {frmPkgLabelSetup},
+  uFastReports in '..\CommonSources\FastReport\uFastReports.pas';
 
 {$R *.res}
 begin
