@@ -4057,7 +4057,8 @@ var FormCRPrintOneReport  : TFormCRPrintOneReport;
   LoadNo: integer;
 begin
   Edit1.SetFocus;
-  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
+  LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+  if LoadNo < 1 then
     Exit;
   if uReportController.useFR then
     try
