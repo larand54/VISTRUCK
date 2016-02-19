@@ -45,16 +45,22 @@ uses udmFR;
 class function TfrmPkgLabelSetup.Execute(var aLanguage, aNoOfCopies, adimFmt,
   aLenFmt, aReportNo: integer): TModalResult;
 begin
-  if not assigned (frmPkglabelSetup) then
-    frmPkgLabelSetup := TfrmPkgLabelSetup.Create(nil);
-  frmPkgLabelSetup.ShowModal;
-  result := frmPkgLabelSetup.ModalResult;
-  aLanguage := frmPkglabelSetup.rgbLanguage.ItemIndex+1;
-  aDimFmt := frmPkglabelSetup.rgbDimension.ItemIndex+1;
-  aLenFmt := frmPkglabelSetup.rgbLength.ItemIndex+1;
-  aNoOfCopies := strToInt(frmPkglabelSetup.edNoOfCopies.Text);
-  aReportNo := dmFR.reportByName(frmPkglabelSetup.cboReportName.Text);
-  if assigned(frmPkgLabelSetup) then freeAndNil(frmPkgLabelSetup);
+  try
+    dmFR.SaveCursor;
+    if not assigned(frmPkgLabelSetup) then
+      frmPkgLabelSetup := TfrmPkgLabelSetup.Create(nil);
+    frmPkgLabelSetup.ShowModal;
+    result := frmPkgLabelSetup.ModalResult;
+    aLanguage := frmPkgLabelSetup.rgbLanguage.ItemIndex + 1;
+    adimFmt := frmPkgLabelSetup.rgbDimension.ItemIndex + 1;
+    aLenFmt := frmPkgLabelSetup.rgbLength.ItemIndex + 1;
+    aNoOfCopies := strToInt(frmPkgLabelSetup.edNoOfCopies.Text);
+    aReportNo := dmFR.reportByName(frmPkgLabelSetup.cboReportName.Text);
+    if assigned(frmPkgLabelSetup) then
+      freeAndNil(frmPkgLabelSetup);
+  finally
+    dmFR.RestoreCursor;
+  end;
 end;
 
 procedure TfrmPkgLabelSetup.FormCreate(Sender: TObject);
@@ -66,7 +72,7 @@ function TfrmPkgLabelSetup.GetReportNames: TStringList;
 var
   items: TStringList;
 begin
-  result := dmFR.GetReportNamesByDocTyp(dmFR.getDocType('PaketLapp'))
+  result := dmFR.GetReportNamesByDocTyp(dmFR.getDocType('PaketLapp'));
 end;
 
 procedure TfrmPkgLabelSetup.InitComboReportname;

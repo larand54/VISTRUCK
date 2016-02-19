@@ -4055,7 +4055,9 @@ var FormCRPrintOneReport  : TFormCRPrintOneReport;
   ReportType: Integer;
   language: integer;
   LoadNo: integer;
+  NoOfCopies: integer;
 begin
+  NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
   Edit1.SetFocus;
   LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   if LoadNo < 1 then
@@ -4065,13 +4067,17 @@ begin
   // Check language
     Language := dmsContact.Client_Language
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-        ReportType := cFoljesedelIntern
-      else
-        ReportType := cFoljesedel;
-
       fr := TFastReports.createForPrint(false);
-      fr.Tally_Pkg_Matched(LoadNo, ReportType, Language, '', '', '');
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+      begin
+        ReportType := cFoljesedelIntern;
+        fr.Tally(LoadNo, ReportType, Language, '', '', '',NoOfCopies);
+      end
+      else
+      begin
+        ReportType := cFoljesedel;
+        fr.Tally_Pkg_Matched(LoadNo, ReportType, Language, '', '', '',NoOfCopies);
+      end;
     finally
       FreeAndNil(fr);
     end
@@ -4128,7 +4134,9 @@ Var
   ReportType: Integer;
   Language: Integer;
   LoadNo: Integer;
+  NoOfCopies: integer;
 begin
+  NoOfCopies := 0;
   Edit1.SetFocus;
   LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   Try
@@ -4155,7 +4163,7 @@ begin
         ReportType := cFoljesedel;
       fr := TFastReports.Create;
       fr.Tally_Pkg_Matched(LoadNo,
-        ReportType, Language, '', '', '');
+        ReportType, Language, '', '', '', NoOfCopies);
     finally
       FreeAndNil(fr);
     end
@@ -5785,7 +5793,9 @@ Var
   ReportType: integer;
   Language: integer;
   LoadNo: integer;
+  NoOfCopies: integer;
 begin
+  NoOfCopies := 0;
   LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   if uReportController.useFR then
   begin
@@ -5795,7 +5805,7 @@ begin
     try
       fr := TFastReports.Create;
       fr.Tally_Pkg_Not_Matched(LoadNo,
-        ReportType, language, '', '', '');
+        ReportType, language, '', '', '', NoOfCopies);
     finally
       FreeAndNil(fr);
     end
@@ -5876,8 +5886,10 @@ Var FormCRExportOneReport   : TFormCRExportOneReport ;
     LoadNo: integer;
     ExcelDir                : String ;
     fr                      : TFastReports;
+    NoOfCopies: integer;
 begin
 {TSI:IGNORE ON}
+  NoOfCopies := 0;
   if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
     MailToAddress := dmsContact.GetEmailAddress
@@ -5905,7 +5917,7 @@ begin
       try
         fr := TFastReports.Create;
         fr.Tally_Pkg_Matched(LoadNo,
-          ReportType, Language, MailToAddress, '','');
+          ReportType, Language, MailToAddress, '','', NoOfCopies);
       finally
         FreeAndNil(fr);
       end;
@@ -6383,13 +6395,15 @@ var FormCRPrintOneReport  : TFormCRPrintOneReport;
     A : array of variant;
   aLO: integer;
   fr: TFastReports;
+  NoOfCopies: integer;
 begin
+  NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
   if uReportController.useFR then
   begin
     aLO := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
     try
       fr := TFastReports.createForPrint(false);
-      fr.CMR(aLO);
+      fr.CMR(aLO, NoOfCopies);
     finally
       FreeAndNil(fr);
     end;

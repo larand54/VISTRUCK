@@ -2384,7 +2384,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       ButtonStyle = bsDropDown
       DropDownMenu = pmReport
       LargeImageIndex = 4
-      OnClick = acStreckKodsinlasningExecute
     end
     object dxBarLargeButton1: TdxBarLargeButton
       Action = acImportPackages

@@ -680,7 +680,8 @@ uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils,
 //  fConfirmManyNormalLoad,
   UnitCRPrintOneReport, dmsVidaSystem, //dmc_Filter,
   uTradingLinkMult, dmc_UserProps,
-  uWait, uLagerPos, udmLanguage, URegionToRegionSelectLIPNo;
+  uWait, uLagerPos, udmLanguage, URegionToRegionSelectLIPNo, uFastReports,
+  udmFR, uReportController;
 
 {$R *.dfm}
 
@@ -1971,7 +1972,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
       cdsArrivingLoads.SQL.Add('where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,') ;
       cdsArrivingLoads.SQL.Add('L.LoadAR,');
-            
+
       cdsArrivingLoads.SQL.Add('ST_AdrCtry.CountryCode,');
 
       cdsArrivingLoads.SQL.Add('LSP.ShippingPlanNo			AS	LO,');
@@ -2865,7 +2866,7 @@ Begin
  // END REGION To REGION AR query
 
 
-    // if thisuser.UserID = 8 then  
+    // if thisuser.UserID = 8 then
     cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
   End;
 End; *)
@@ -3388,56 +3389,95 @@ begin
 end;
 
 procedure TfrmLoadArrivals.acFSExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var
+  FormCRViewReport: TFormCRViewReport;
+  ReportType: Integer;
+  LoadNo: Integer;
+  Lang: Integer;
+  FR: TFastReports;
+  CustomerNo: integer;
+  NoOfCopies: integer;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+  NoOfCopies := 0;
+  CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
+  if CustomerNo < 1 then
+    CustomerNo := dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger;
+  Lang := dmsContact.Client_Language(CustomerNo);
+  LoadNo := dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
+  if LoadNo < 1 then
+    Exit;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+  if uReportController.useFR then
+  begin
+    try
+      FR := TFastReports.Create;
+      if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+      begin
+        ReportType := cFoljesedelIntern;
+        FR.Tally(LoadNo, ReportType, Lang, '', '', '', NoOfCopies);
+      end
+      else begin
+        ReportType := cFoljesedel;
+        FR.Tally_Pkg_Matched(LoadNo, ReportType, Lang, '', '', '', NoOfCopies)
+      end;
+    finally
+      FreeAndNil(FR);
+    end;
+  end
+  else
+  begin
+    if dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger < 1 then
+      Exit;
 
- if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
- FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
- else
- Begin
-  Try
-  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+
+      if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+        FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+      else
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-  FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT') ;
- End ;
+        Try
+          dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger :=
+            dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
+          dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+        except
+          On E: Exception do
+          Begin
+            dmsSystem.FDoLog(E.Message);
+            // ShowMessage(E.Message);
+            Raise;
+          End;
+        end;
+        FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT');
+      End;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
+      if FormCRViewReport.ReportFound then
       Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
-    mePackageNo.SetFocus ;
- End ;
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+          (dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger);
+        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+
+        FormCRViewReport.CRViewer91.ViewReport;
+        FormCRViewReport.ShowModal;
+      End;
+      Try
+        dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
+          dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
+        dmsSystem.sq_DelPkgType.ExecSQL;
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+    Finally
+      FreeAndNil(FormCRViewReport);
+      mePackageNo.SetFocus;
+    End;
+  end;
 end;
-
 
 procedure TfrmLoadArrivals.acFS_DKExecute(Sender: TObject);
 Var FormCRViewReport : TFormCRViewReport ;

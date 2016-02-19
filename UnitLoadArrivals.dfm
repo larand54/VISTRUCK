@@ -327,9 +327,9 @@ object frmLoadArrivals: TfrmLoadArrivals
       end
       object Panel7: TPanel
         Left = 1
-        Top = 49
+        Top = 50
         Width = 861
-        Height = 95
+        Height = 94
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -576,7 +576,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Left = 1
         Top = 1
         Width = 76
-        Height = 48
+        Height = 49
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -1224,7 +1224,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (

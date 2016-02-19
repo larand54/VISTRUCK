@@ -912,6 +912,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
+          OnClick = cxButton3Click
         end
         object cxButton4: TcxButton
           Left = 823
