@@ -1546,7 +1546,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         ParentFont = False
       end
       object cbKopplaEjMotDublett: TcxCheckBox
-        Left = 1147
+        Left = 1127
         Top = 14
         Margins.Left = 4
         Margins.Top = 4
@@ -1602,6 +1602,15 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
+      end
+      object cxBtnChgTreatmentInfo: TcxButton
+        Left = 1308
+        Top = 6
+        Width = 111
+        Height = 38
+        Caption = #196'ndra IMP info p'#229' markerade'
+        TabOrder = 8
+        WordWrap = True
       end
     end
     object grdPkgs: TcxGrid

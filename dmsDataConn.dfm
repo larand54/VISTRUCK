@@ -1824,7 +1824,7 @@ object dmsConnector: TdmsConnector
   object FDConnection1: TFDConnection
     ConnectionName = 'VIS'
     Params.Strings = (
-      'Server=visprodsql.vida.se'
+      'Server=alvesql01'
       'Database=Vis_Vida'
       'OSAuthent=Yes'
       'MetaDefCatalog=vis_vida'

@@ -1,6 +1,7 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
   Height = 967
+  HorizontalOffset = 23
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
@@ -8779,8 +8780,8 @@ object dmInventory: TdmInventory
   object sp_CngCert: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CngCert'
-    Left = 1032
-    Top = 80
+    Left = 1017
+    Top = 88
     ParamData = <
       item
         Position = 1
@@ -10056,5 +10057,101 @@ object dmInventory: TdmInventory
     DataSet = sp_Vis_LagerPOS_v1
     Left = 256
     Top = 168
+  end
+  object sp_CngTreatmInfo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_CngTreatmInfo]'
+    Left = 1016
+    Top = 152
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = -6
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@REFERENCE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 6
+        Name = '@Info1'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 7
+        Name = '@Info2'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end>
+  end
+  object sp_GetCurrentTreatmInfo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_GetTreatmInfo]'
+    Left = 1024
+    Top = 216
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end>
+    object sp_GetCurrentTreatmInfoREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object sp_GetCurrentTreatmInfoINFO1: TStringField
+      FieldName = 'INFO1'
+      Origin = 'INFO1'
+      Size = 30
+    end
+    object sp_GetCurrentTreatmInfoINFO2: TStringField
+      FieldName = 'INFO2'
+      Origin = 'INFO2'
+      Size = 30
+    end
   end
 end

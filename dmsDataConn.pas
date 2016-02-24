@@ -177,6 +177,13 @@ begin
 // showmessage('Dir = ' + Dir) ;
 
   Result  := '' ;
+{$IFDEF DEBUG}
+  if copy(GetEnvironmentVariable('COMPUTERNAME'),0,6) = 'CARMAK' then
+  begin
+    result := 'alvesql03:vis_vida';
+    exit;
+  end;
+{$ENDIF}
 
   sp_GetUserStartHost.ParamByName('@UserID').AsInteger  :=  UserID ;
   sp_GetUserStartHost.ParamByName('@AppDir').AsString   :=  'VisTruck' ;

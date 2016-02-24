@@ -1253,6 +1253,11 @@ type
     sp_invpivPkgDtl: TFDStoredProc;
     sp_Vis_LagerPOS_v1: TFDStoredProc;
     ds_Vis_LagerPOS_v1: TDataSource;
+    sp_CngTreatmInfo: TFDStoredProc;
+    sp_GetCurrentTreatmInfo: TFDStoredProc;
+    sp_GetCurrentTreatmInfoREFERENCE: TStringField;
+    sp_GetCurrentTreatmInfoINFO1: TStringField;
+    sp_GetCurrentTreatmInfoINFO2: TStringField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1338,7 +1343,10 @@ type
     procedure GetVolPerLG(const ProductNo, PIPNo, LIPGroupNo, NoOfLengths : Integer;const ALMM : Double) ;
     function  GetSDBalance(const ProductNo, PIPNo, LIPGroupNo : Integer;const ALMM : Double) : Double ;
     procedure Refresh_cds_VolResDtl(const UserID : Integer) ;
-
+    procedure CngTreatmInfo(const aPackageNo: integer; aReference, aInfo1,
+                                  aInfo2, aPrefix: string);
+    procedure GetCurrentTreatmInfo (const aPackageNo: integer; const aPrefix: string;
+                                    var aReference, aInfo1, aInfo2: string);
   end;
 
 var
@@ -1567,6 +1575,27 @@ Begin
 
 
 End ;
+
+procedure TdmInventory.GetCurrentTreatmInfo(const aPackageNo: integer;
+  const aPrefix: string; var aReference, aInfo1, aInfo2: string);
+begin
+  sp_GetCurrentTreatmInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
+  sp_GetCurrentTreatmInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
+  Try
+    sp_GetCurrentTreatmInfo.Close;
+    sp_GetCurrentTreatmInfo.Open;
+    aReference := sp_GetCurrentTreatmInfo.FieldByName('REFERENCE').AsString;
+    aInfo1 := sp_GetCurrentTreatmInfo.FieldByName('INFO1').AsString;
+    aInfo2 := sp_GetCurrentTreatmInfo.FieldByName('INFO2').AsString;
+    sp_GetCurrentTreatmInfo.Close;
+  Except
+    On E: Exception do
+    Begin
+      ShowMessage(E.Message+' :sp_GetCurrentTreatmInfo.ExecProc');
+      Raise;
+    End;
+  End;
+end;
 
 procedure TdmInventory.Filter_cds_BookingDtl ;
 Begin
@@ -2246,6 +2275,26 @@ Begin
    End ;
  End ;
 End ;
+
+procedure TdmInventory.CngTreatmInfo(const aPackageNo: integer; aReference,
+  aInfo1, aInfo2, aPrefix: string);
+begin
+  sp_CngTreatmInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
+  sp_CngTreatmInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
+  sp_CngTreatmInfo.ParamByName('@UserID').AsInteger        := ThisUser.UserID;
+  sp_CngTreatmInfo.ParamByName('@REFERENCE').AsString     := aReference;
+  sp_CngTreatmInfo.ParamByName('@INFO1').AsString         := aInfo1;
+  sp_CngTreatmInfo.ParamByName('@INFO2').AsString         := aInfo2;
+  Try
+    sp_CngTreatmInfo.ExecProc;
+  Except
+    On E: Exception do
+    Begin
+      ShowMessage(E.Message+' :sp_CngTreatmInfo.ExecProc');
+      Raise;
+    End;
+  End;
+end;
 
 function TdmInventory.GetProductNoByPackageNoproductno(const PackageNo : Integer;const Prefix : String) : Integer ;
 Begin

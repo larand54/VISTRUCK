@@ -348,6 +348,8 @@ type
     grdBoTDBBandedPerPosition: TcxGridDBBandedTableView;
     cxButton12: TcxButton;
     acPrintPKGLabels: TAction;
+    acSetRef_and_Info: TAction;
+    cxbtnIMPinfo: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -399,6 +401,7 @@ type
     procedure cbInklEjFaktPropertiesChange(Sender: TObject);
     procedure grdBoTDBBandedPerPositionDblClick(Sender: TObject);
     procedure acPrintPKGLabelsExecute(Sender: TObject);
+    procedure acSetRef_and_InfoExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -489,7 +492,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup, uDlgTreatmentInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -654,6 +657,7 @@ begin
   Screen.Cursor         := Save_Cursor ;
  End ;
 end;
+
 
 procedure TfLager.LoadGridLayoutSortimentsVy ;
 Begin
@@ -835,7 +839,7 @@ end;
 procedure TfLager.ExportPkgTables(Sender: TObject);
 const
   LF = #10;
-Var 
+Var
     dm_SendMapiMail         : Tdm_SendMapiMail;
     Attach                  : Array of String ;
     MailToAddress           : String ;
@@ -1165,6 +1169,49 @@ begin
     End;
   End;
  End;
+end;
+
+procedure TfLager.acSetRef_and_InfoExecute(Sender: TObject);
+Var
+  REFERENCE,
+  cur_REFERENCE,
+  INFO1,
+  cur_INFO1,
+  INFO2,
+  cur_INFO2   : String ;
+  PkgNo: integer;
+  SupplierCode: String;
+begin
+  With dmInventory do
+  Begin
+    mtPkgNos.Active := True;
+    sp_invpivPkgDtl.DisableControls;
+    if TdlgTreatmentInfo.Execute(REFERENCE, INFO1, INFO2) = mrOK then
+      Try
+        SelectedPkgsOfPkgNosTable;
+        mtPkgNos.First;
+        while not mtPkgNos.Eof do
+        Begin
+          if sp_invpivPkgDtl.Locate('Paketnr;Prefix',
+            VarArrayOf([mtPkgNosPackageNo.AsInteger, mtPkgNosSupp_Code.AsString]), []) then
+          Begin
+            PkgNo := mtPkgNosPackageNo.AsInteger;
+            SupplierCode := mtPkgNosSupp_Code.AsString;
+            dmInventory.GetCurrentTreatmInfo(PkgNo, SupplierCode,
+                cur_REFERENCE, cur_INFO1, cur_INFO2);
+            if REFERENCE = '' then REFERENCE := cur_REFERENCE;
+            if     INFO1 = '' then INFO1     := cur_INFO1;
+            if     INFO2 = '' then INFO2     := cur_INFO2;
+            dmInventory.CngTreatmInfo(PkgNo, REFERENCE, INFO1, INFO2, SupplierCode);
+          End;
+          mtPkgNos.Next;
+        End;
+        sp_invpivPkgDtl.Refresh;
+      Finally
+        sp_invpivPkgDtl.EnableControls;
+        mtPkgNos.Active := False;
+      End;
+  End;
 end;
 
 procedure TfLager.acSetStdGridLayoutExecute(Sender: TObject);
@@ -2156,6 +2203,7 @@ Begin
 
 End ;
 
+
 procedure TfLager.grdDBBandedPerSortimentDblClick(Sender: TObject);
 var
  AFocusedRow  : TcxCustomGridRecord;
@@ -2354,7 +2402,7 @@ begin
    End ;
   End ;
 
-  
+
   Try
    if dmInventory.sp_invpivPkgDtl.RecordCount > 0 then
    Begin
@@ -3871,5 +3919,3 @@ Begin
 End ;
 
 End.
-
-

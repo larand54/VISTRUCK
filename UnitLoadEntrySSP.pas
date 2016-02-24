@@ -387,6 +387,7 @@ type
     dxBarButton14: TdxBarButton;
     acMailTO_Manuell: TAction;
     dxBarButton15: TdxBarButton;
+    cxBtnChgTreatmentInfo: TcxButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
