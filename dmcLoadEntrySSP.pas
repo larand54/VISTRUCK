@@ -387,6 +387,9 @@ type
     sp_SetPosition: TFDStoredProc;
     cds_LoadPackagesPositionName: TStringField;
     cds_LoadHeadShortNote: TStringField;
+    cds_LoadPackagesREFERENCE: TStringField;
+    cds_LoadPackagesINFO1: TStringField;
+    cds_LoadPackagesINFO2: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);

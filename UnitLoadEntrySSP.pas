@@ -388,6 +388,10 @@ type
     acMailTO_Manuell: TAction;
     dxBarButton15: TdxBarButton;
     cxBtnChgTreatmentInfo: TcxButton;
+    acChgRef_and_Info: TAction;
+    grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -506,6 +510,7 @@ type
     procedure acPrintTo_ManuellExecute(Sender: TObject);
     procedure acTreatmentCerticateExecute(Sender: TObject);
     procedure acMailTreatmentCertificateExecute(Sender: TObject);
+    procedure acChgRef_and_InfoExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -654,7 +659,8 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   UnitCRExportOneReport, uSendMapiMail, dmc_UserProps, VidaUtils ,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
-  uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports;
+  uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports, dm_Inventory,
+  uDlgReferensAndInfo;
 
 {$R *.dfm}
 
@@ -5701,6 +5707,56 @@ begin
   acOpenLOForm.Enabled:= (cds_LSP.Active) and (cds_LSP.RecordCount > 0) and (cds_LSPOBJECTTYPE.AsInteger = 0)
   and (cds_LSPShippingPlanNo.AsInteger > 1) and (DataSaved) ;
  End ;
+end;
+
+procedure TfLoadEntrySSP.acChgRef_and_InfoExecute(Sender: TObject);
+Var
+  REFERENCE,
+  cur_REFERENCE,
+  INFO1,
+  cur_INFO1,
+  INFO2,
+  cur_INFO2   : String ;
+  PkgNo: integer;
+  SupplierCode: String;
+  Save_Cursor   : TCursor ;
+  PositionID    : Integer ;
+Begin
+  With dmLoadEntrySSP do
+  Begin
+    if TdlgChgRef_and_Info.Execute(REFERENCE, INFO1, INFO2) = mrOK then
+    Try
+	    mtLoadPackages.Active := True ;
+	    GetMarkedPkgs ;
+	    cds_LoadPackages.DisableControls ;
+      try
+        ds_LoadPackages2.OnDataChange:= NIL ;
+        if mtLoadPackages.Eof then exit;
+		    mtLoadPackages.First ;
+		    While not mtLoadPackages.Eof do
+		    Begin
+		      if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([cds_LoadHeadLoadNo.AsInteger, mtLoadPackagesLoadDetailNo.AsInteger]),[]) then
+		      Begin
+			      PkgNo := cds_LoadPackagesPACKAGENO.AsInteger;
+			      SupplierCode := cds_LoadPackagesSupplierCode.AsString;
+            dmInventory.GetCurrentTreatmInfo(PkgNo, SupplierCode,
+                cur_REFERENCE, cur_INFO1, cur_INFO2);
+            if REFERENCE = '' then REFERENCE := cur_REFERENCE;
+            if     INFO1 = '' then INFO1     := cur_INFO1;
+            if     INFO2 = '' then INFO2     := cur_INFO2;
+            dmInventory.CngRefAndInfo(PkgNo, REFERENCE, INFO1, INFO2, SupplierCode);
+		      end ;
+		      mtLoadPackages.Next;
+        End;
+		    cds_LoadPackages.Refresh;
+      Finally
+        ds_LoadPackages2.OnDataChange:= ds_LoadPackages2DataChange ;
+      End;
+    finally
+      mtLoadPackages.Active:= False ;
+		  cds_LoadPackages.EnableControls ;
+	  end;
+  End;
 end;
 
 procedure TfLoadEntrySSP.acCloseExecute(Sender: TObject);

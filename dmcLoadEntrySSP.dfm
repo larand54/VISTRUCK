@@ -1482,6 +1482,9 @@
       '           LD.CreatedUser,'
       '           LD.ModifiedUser,'
       '           LD.DateCreated,'
+      '           PN.REFERENCE,'
+      '           PN.BL_NO AS INFO1,'
+      '           PN.INFO2,'
       ''
       '           PT.Totalm3Actual           AS  M3_NET,'
       '           PT.TotalNoOfPieces         AS  PCS,'
@@ -1821,6 +1824,21 @@
       Origin = 'PositionName'
       ProviderFlags = []
       Size = 50
+    end
+    object cds_LoadPackagesREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object cds_LoadPackagesINFO1: TStringField
+      FieldName = 'INFO1'
+      Origin = 'INFO1'
+      Size = 30
+    end
+    object cds_LoadPackagesINFO2: TStringField
+      FieldName = 'INFO2'
+      Origin = 'INFO2'
+      Size = 30
     end
   end
   object cds_LO_LookUp: TFDQuery

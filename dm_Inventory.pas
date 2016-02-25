@@ -1253,11 +1253,11 @@ type
     sp_invpivPkgDtl: TFDStoredProc;
     sp_Vis_LagerPOS_v1: TFDStoredProc;
     ds_Vis_LagerPOS_v1: TDataSource;
-    sp_CngTreatmInfo: TFDStoredProc;
-    sp_GetCurrentTreatmInfo: TFDStoredProc;
-    sp_GetCurrentTreatmInfoREFERENCE: TStringField;
-    sp_GetCurrentTreatmInfoINFO1: TStringField;
-    sp_GetCurrentTreatmInfoINFO2: TStringField;
+    sp_CngRefAndInfo: TFDStoredProc;
+    sp_GetCurrentRefAndInfo: TFDStoredProc;
+    sp_GetCurrentRefAndInfoREFERENCE: TStringField;
+    sp_GetCurrentRefAndInfoINFO1: TStringField;
+    sp_GetCurrentRefAndInfoINFO2: TStringField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1343,7 +1343,7 @@ type
     procedure GetVolPerLG(const ProductNo, PIPNo, LIPGroupNo, NoOfLengths : Integer;const ALMM : Double) ;
     function  GetSDBalance(const ProductNo, PIPNo, LIPGroupNo : Integer;const ALMM : Double) : Double ;
     procedure Refresh_cds_VolResDtl(const UserID : Integer) ;
-    procedure CngTreatmInfo(const aPackageNo: integer; aReference, aInfo1,
+    procedure CngRefAndInfo(const aPackageNo: integer; aReference, aInfo1,
                                   aInfo2, aPrefix: string);
     procedure GetCurrentTreatmInfo (const aPackageNo: integer; const aPrefix: string;
                                     var aReference, aInfo1, aInfo2: string);
@@ -1579,15 +1579,15 @@ End ;
 procedure TdmInventory.GetCurrentTreatmInfo(const aPackageNo: integer;
   const aPrefix: string; var aReference, aInfo1, aInfo2: string);
 begin
-  sp_GetCurrentTreatmInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
-  sp_GetCurrentTreatmInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
+  sp_GetCurrentRefAndInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
+  sp_GetCurrentRefAndInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
   Try
-    sp_GetCurrentTreatmInfo.Close;
-    sp_GetCurrentTreatmInfo.Open;
-    aReference := sp_GetCurrentTreatmInfo.FieldByName('REFERENCE').AsString;
-    aInfo1 := sp_GetCurrentTreatmInfo.FieldByName('INFO1').AsString;
-    aInfo2 := sp_GetCurrentTreatmInfo.FieldByName('INFO2').AsString;
-    sp_GetCurrentTreatmInfo.Close;
+    sp_GetCurrentRefAndInfo.Close;
+    sp_GetCurrentRefAndInfo.Open;
+    aReference := sp_GetCurrentRefAndInfo.FieldByName('REFERENCE').AsString;
+    aInfo1 := sp_GetCurrentRefAndInfo.FieldByName('INFO1').AsString;
+    aInfo2 := sp_GetCurrentRefAndInfo.FieldByName('INFO2').AsString;
+    sp_GetCurrentRefAndInfo.Close;
   Except
     On E: Exception do
     Begin
@@ -2276,21 +2276,21 @@ Begin
  End ;
 End ;
 
-procedure TdmInventory.CngTreatmInfo(const aPackageNo: integer; aReference,
+procedure TdmInventory.CngRefAndInfo(const aPackageNo: integer; aReference,
   aInfo1, aInfo2, aPrefix: string);
 begin
-  sp_CngTreatmInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
-  sp_CngTreatmInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
-  sp_CngTreatmInfo.ParamByName('@UserID').AsInteger        := ThisUser.UserID;
-  sp_CngTreatmInfo.ParamByName('@REFERENCE').AsString     := aReference;
-  sp_CngTreatmInfo.ParamByName('@INFO1').AsString         := aInfo1;
-  sp_CngTreatmInfo.ParamByName('@INFO2').AsString         := aInfo2;
+  sp_CngRefAndInfo.ParamByName('@PackageNo').AsInteger     := aPackageNo;
+  sp_CngRefAndInfo.ParamByName('@SupplierCode').AsString   := aPrefix;
+  sp_CngRefAndInfo.ParamByName('@UserID').AsInteger        := ThisUser.UserID;
+  sp_CngRefAndInfo.ParamByName('@REFERENCE').AsString     := aReference;
+  sp_CngRefAndInfo.ParamByName('@INFO1').AsString         := aInfo1;
+  sp_CngRefAndInfo.ParamByName('@INFO2').AsString         := aInfo2;
   Try
-    sp_CngTreatmInfo.ExecProc;
+    sp_CngRefAndInfo.ExecProc;
   Except
     On E: Exception do
     Begin
-      ShowMessage(E.Message+' :sp_CngTreatmInfo.ExecProc');
+      ShowMessage(E.Message+' :sp_CngRefAndInfo.ExecProc');
       Raise;
     End;
   End;

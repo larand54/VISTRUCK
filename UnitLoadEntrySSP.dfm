@@ -1527,8 +1527,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         ParentFont = False
       end
       object cxButton3: TcxButton
-        Left = 660
-        Top = 4
+        Left = 659
+        Top = 3
         Width = 267
         Height = 38
         Margins.Left = 4
@@ -1608,7 +1608,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Top = 6
         Width = 111
         Height = 38
-        Caption = #196'ndra IMP info p'#229' markerade'
+        Action = acChgRef_and_Info
         TabOrder = 8
         WordWrap = True
       end
@@ -2089,6 +2089,24 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Width = 77
           Position.BandIndex = 0
           Position.ColIndex = 38
+          Position.RowIndex = 0
+        end
+        object grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'REFERENCE'
+          Position.BandIndex = 0
+          Position.ColIndex = 41
+          Position.RowIndex = 0
+        end
+        object grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'INFO1'
+          Position.BandIndex = 0
+          Position.ColIndex = 42
+          Position.RowIndex = 0
+        end
+        object grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'INFO2'
+          Position.BandIndex = 0
+          Position.ColIndex = 43
           Position.RowIndex = 0
         end
         object grdPkgsDBBandedTableView1Certfiering: TcxGridDBBandedColumn
@@ -4020,6 +4038,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Category = 'Print'
       Caption = 'Maila TO Manuell'
       OnExecute = acPrintTo_ManuellExecute
+    end
+    object acChgRef_and_Info: TAction
+      Caption = #196'ndra Ref o Info f'#246'r markerade'
+      OnExecute = acChgRef_and_InfoExecute
     end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController

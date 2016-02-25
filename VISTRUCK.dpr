@@ -118,7 +118,7 @@ uses
   uFRConstants in '..\CommonSources\FastReport\uFRConstants.pas',
   ufrmPkgLabelSetup in 'ufrmPkgLabelSetup.pas' {frmPkgLabelSetup},
   uFastReports in '..\CommonSources\FastReport\uFastReports.pas',
-  uDlgTreatmentInfo in 'uDlgTreatmentInfo.pas' {dlgTreatmentInfo};
+  uDlgReferensAndInfo in 'uDlgReferensAndInfo.pas' {dlgChgRef_and_Info};
 
 {$R *.res}
 begin

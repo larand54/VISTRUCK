@@ -492,7 +492,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup, uDlgTreatmentInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup,  uDlgReferensAndInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -1184,12 +1184,13 @@ Var
 begin
   With dmInventory do
   Begin
-    mtPkgNos.Active := True;
-    sp_invpivPkgDtl.DisableControls;
-    if TdlgTreatmentInfo.Execute(REFERENCE, INFO1, INFO2) = mrOK then
+    if TdlgChgRef_and_Info.Execute(REFERENCE, INFO1, INFO2) = mrOK then
       Try
+        mtPkgNos.Active := True;
+        sp_invpivPkgDtl.DisableControls;
         SelectedPkgsOfPkgNosTable;
         mtPkgNos.First;
+        if mtPkgNos.Eof then exit;
         while not mtPkgNos.Eof do
         Begin
           if sp_invpivPkgDtl.Locate('Paketnr;Prefix',
@@ -1202,7 +1203,7 @@ begin
             if REFERENCE = '' then REFERENCE := cur_REFERENCE;
             if     INFO1 = '' then INFO1     := cur_INFO1;
             if     INFO2 = '' then INFO2     := cur_INFO2;
-            dmInventory.CngTreatmInfo(PkgNo, REFERENCE, INFO1, INFO2, SupplierCode);
+            dmInventory.CngRefAndInfo(PkgNo, REFERENCE, INFO1, INFO2, SupplierCode);
           End;
           mtPkgNos.Next;
         End;

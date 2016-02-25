@@ -1,7 +1,6 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
   Height = 967
-  HorizontalOffset = 23
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
@@ -10058,9 +10057,9 @@ object dmInventory: TdmInventory
     Left = 256
     Top = 168
   end
-  object sp_CngTreatmInfo: TFDStoredProc
+  object sp_CngRefAndInfo: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = '[dbo].[vis_CngTreatmInfo]'
+    StoredProcName = '[dbo].[vis_CngRefAndInfo]'
     Left = 1016
     Top = 152
     ParamData = <
@@ -10112,9 +10111,10 @@ object dmInventory: TdmInventory
         Size = 30
       end>
   end
-  object sp_GetCurrentTreatmInfo: TFDStoredProc
+  object sp_GetCurrentRefAndInfo: TFDStoredProc
+    Active = True
     Connection = dmsConnector.FDConnection1
-    StoredProcName = '[dbo].[vis_GetTreatmInfo]'
+    StoredProcName = '[dbo].[vis_GetRefAndInfo]'
     Left = 1024
     Top = 216
     ParamData = <
@@ -10138,17 +10138,17 @@ object dmInventory: TdmInventory
         ParamType = ptInput
         Size = 3
       end>
-    object sp_GetCurrentTreatmInfoREFERENCE: TStringField
+    object sp_GetCurrentRefAndInfoREFERENCE: TStringField
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
       Size = 30
     end
-    object sp_GetCurrentTreatmInfoINFO1: TStringField
+    object sp_GetCurrentRefAndInfoINFO1: TStringField
       FieldName = 'INFO1'
       Origin = 'INFO1'
       Size = 30
     end
-    object sp_GetCurrentTreatmInfoINFO2: TStringField
+    object sp_GetCurrentRefAndInfoINFO2: TStringField
       FieldName = 'INFO2'
       Origin = 'INFO2'
       Size = 30
