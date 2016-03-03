@@ -620,7 +620,7 @@ object fLager: TfLager
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object bUpdate: TcxButton
-      Left = 872
+      Left = 1025
       Top = 8
       Width = 94
       Height = 100
@@ -658,7 +658,7 @@ object fLager: TfLager
       WordWrap = True
     end
     object bClose: TcxButton
-      Left = 1092
+      Left = 1245
       Top = 8
       Width = 96
       Height = 100
@@ -925,7 +925,7 @@ object fLager: TfLager
       WordWrap = True
     end
     object cxButton7: TcxButton
-      Left = 1223
+      Left = 1376
       Top = 67
       Width = 99
       Height = 28
@@ -1007,7 +1007,7 @@ object fLager: TfLager
       Width = 88
     end
     object cxButton11: TcxButton
-      Left = 974
+      Left = 1127
       Top = 8
       Width = 110
       Height = 100
@@ -1025,6 +1025,28 @@ object fLager: TfLager
       ParentFont = False
       WordWrap = True
     end
+    object cxButton13: TcxButton
+      Left = 867
+      Top = 77
+      Width = 99
+      Height = 50
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'EXCEL vyer'
+      DropDownMenu = pmEXCELvyer
+      Kind = cxbkDropDown
+      TabOrder = 27
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      WordWrap = True
+      OnClick = acPrintPkgTableExecute
+    end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -1038,8 +1060,10 @@ object fLager: TfLager
       'PaketTabellMeny'
       'GrdPeriod'
       'SortimentsVy'
-      'pmPrint')
+      'pmPrint'
+      'EXCELVy')
     Categories.ItemsVisibles = (
+      2
       2
       2
       2
@@ -1047,6 +1071,7 @@ object fLager: TfLager
       2
       2)
     Categories.Visibles = (
+      True
       True
       True
       True
@@ -1157,6 +1182,30 @@ object fLager: TfLager
       Category = 0
       Visible = ivAlways
       ItemLinks = <>
+    end
+    object dxBarButton9: TdxBarButton
+      Action = acEXCELView_PackageList
+      Category = 6
+    end
+    object dxBarButton5: TdxBarButton
+      Action = acEXCELView_Ref
+      Category = 6
+    end
+    object dxBarButton6: TdxBarButton
+      Action = acEXCELView_Ref_Dim
+      Category = 6
+    end
+    object dxBarButton7: TdxBarButton
+      Action = acEXCELView_Ref_Dim_Len
+      Category = 6
+    end
+    object dxBarButton8: TdxBarButton
+      Action = acEXCELView_DeckList
+      Category = 6
+    end
+    object dxBarButton10: TdxBarButton
+      Action = acEXCELView_Empty_Hands
+      Category = 6
     end
     object dxBarButton2: TdxBarButton
       Action = acSetCertification
@@ -1357,6 +1406,30 @@ object fLager: TfLager
       Caption = #196'ndra Ref o Info f'#246'r  markerade'
       OnExecute = acSetRef_and_InfoExecute
     end
+    object acEXCELView_Ref: TAction
+      Category = 'Reports'
+      Caption = 'Referens'
+    end
+    object acEXCELView_Ref_Dim: TAction
+      Category = 'Reports'
+      Caption = 'Ref o Dimension'
+    end
+    object acEXCELView_Ref_Dim_Len: TAction
+      Category = 'Reports'
+      Caption = 'Ref, Dim o L'#228'ngd(Maxl'#228'ngd)'
+    end
+    object acEXCELView_DeckList: TAction
+      Category = 'Reports'
+      Caption = 'D'#228'cklista'
+    end
+    object acEXCELView_PackageList: TAction
+      Category = 'Reports'
+      Caption = 'Paketlista'
+    end
+    object acEXCELView_Empty_Hands: TAction
+      Category = 'Reports'
+      Caption = 'Tomma R'#228'ckor'
+    end
   end
   object pmFormShortcuts: TPopupMenu
     AutoPopup = False
@@ -1387,7 +1460,6 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1409,14 +1481,12 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1436,7 +1506,6 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -7957,5 +8026,36 @@ object fLager: TfLager
       4C0054005F004300480041005200530045005400010044004500460041005500
       4C0054005F004300480041005200530045005400010044004500460041005500
       4C0054005F00430048004100520053004500540001000D000A00}
+  end
+  object pmEXCELvyer: TdxBarPopupMenu
+    BarManager = dxBarManager1
+    ItemLinks = <
+      item
+        Visible = True
+        ItemName = 'dxBarButton5'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton6'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton7'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton8'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton9'
+      end
+      item
+        Visible = True
+        ItemName = 'dxBarButton10'
+      end>
+    UseOwnFont = False
+    Left = 616
+    Top = 253
   end
 end
