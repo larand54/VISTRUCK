@@ -6,7 +6,8 @@ uses
   Forms,  SysUtils, Classes, FMTBcd, kbmMemTable, Dialogs, Controls, VidaType, SqlTimSt,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, DateUtils, DB ;
+  FireDAC.Comp.Client, DateUtils, DB, FireDAC.UI.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.MSSQL ;
 
 type
   TdmInventory = class(TDataModule)
@@ -1258,6 +1259,34 @@ type
     sp_GetCurrentRefAndInfoREFERENCE: TStringField;
     sp_GetCurrentRefAndInfoINFO1: TStringField;
     sp_GetCurrentRefAndInfoINFO2: TStringField;
+    cdsStorageViews: TFDQuery;
+    ds_StorageViews: TDataSource;
+    FDConnection1: TFDConnection;
+    cdsStorageViewsKund: TStringField;
+    cdsStorageViewsProductNo: TIntegerField;
+    cdsStorageViewsPRODUKT: TStringField;
+    cdsStorageViewsAT: TFloatField;
+    cdsStorageViewsAB: TFloatField;
+    cdsStorageViewsNT: TFloatField;
+    cdsStorageViewsNB: TFloatField;
+    cdsStorageViewsNomDim: TStringField;
+    cdsStorageViewsAktDim: TStringField;
+    cdsStorageViewsAM3: TFloatField;
+    cdsStorageViewsNM3: TFloatField;
+    cdsStorageViewsStyck: TIntegerField;
+    cdsStorageViewsPrisOK: TStringField;
+    cdsStorageViewsTS: TStringField;
+    cdsStorageViewsPC: TStringField;
+    cdsStorageViewsKV: TStringField;
+    cdsStorageViewsUT: TStringField;
+    cdsStorageViewsOwnerNo: TIntegerField;
+    cdsStorageViewsMEDELPRIS: TFloatField;
+    cdsStorageViewsNETTO: TFloatField;
+    cdsStorageViewsVarugruppNamn: TStringField;
+    cdsStorageViewsLO: TIntegerField;
+    cdsStorageViewsUtlastad: TSQLTimeStampField;
+    cdsStorageViewsSupplier: TStringField;
+    cdsStorageViewsLängd: TFloatField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);

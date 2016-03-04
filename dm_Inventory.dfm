@@ -1,4 +1,4 @@
-object dmInventory: TdmInventory
+﻿object dmInventory: TdmInventory
   OldCreateOrder = False
   Height = 967
   Width = 1269
@@ -10112,7 +10112,6 @@ object dmInventory: TdmInventory
       end>
   end
   object sp_GetCurrentRefAndInfo: TFDStoredProc
-    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = '[dbo].[vis_GetRefAndInfo]'
     Left = 1024
@@ -10153,5 +10152,234 @@ object dmInventory: TdmInventory
       Origin = 'INFO2'
       Size = 30
     end
+  end
+  object cdsStorageViews: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'Select distinct Kund.ClientName AS Kund, '
+      'pd.ProductNo,'
+      'pd.ProductDisplayName AS PRODUKT,'
+      'pg.ActualThicknessMM AS AT,'
+      'pg.ActualWidthMM AS AB,'
+      'pg.NominalThicknessMM AS NT,'
+      'pg.NominalWidthMM AS NB,'
+      
+        'CAST(pg.NominalThicknessMM AS VARCHAR(10)) + '#39' x '#39' + CAST(pg.Nom' +
+        'inalWidthMM AS VARCHAR(10)) AS NomDim,'
+      
+        'CAST(pg.ActualThicknessMM AS VARCHAR(10)) + '#39' x '#39' + CAST(pg.Actu' +
+        'alWidthMM AS VARCHAR(10)) AS AktDim,'
+      'SUM(pp.AM3) AS AM3,'
+      'SUM(pp.NM3) AS NM3,'
+      'SUM(pp.NoOfPcs) AS Styck,'
+      'pp.PriceExist AS PrisOK,'
+      'SPE.SpeciesName AS TS,'
+      'imp.ProductCategoryName AS PC,'
+      'Gr.GradeName AS KV,'
+      'SUR.SurfacingName AS UT,'
+      'pp.VerkNo AS OwnerNo,'
+      'CASE'
+      'WHEN SUM(pp.NM3) > 0 THEN'
+      'SUM(pp.[V'#228'rde]) / SUM(pp.NM3)'
+      'ELSE'
+      '0'
+      'END AS MEDELPRIS,'
+      'SUM(pp.[V'#228'rde]) AS NETTO,'
+      'vg.VarugruppNamn,'
+      'pp.LO,'
+      'pp.Utlastad AS Utlastad,'
+      'pp.Supplier, pp.L'#228'ngd'
+      'FROM dbo.ST_Deliveries pp'
+      'Inner Join dbo.Client Kund ON Kund.ClientNo = pp.customerNo'
+      'Inner Join dbo.Client Verk ON Verk.ClientNo = pp.VerkNo'
+      'Inner Join dbo.Product pd ON pd.ProductNo = PP.ProductNo'
+      
+        'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = PD.Varugrup' +
+        'pNo'
+      
+        'Inner Join dbo.ProductGroup pg ON pg.ProductGroupNo = pd.Product' +
+        'GroupNo'
+      
+        'Inner Join dbo.ProductCategory'#9'imp'#9'ON imp.ProductCategoryNo = pg' +
+        '.ProductCategoryNo'
+      #9#9#9#9'AND imp.LanguageCode = 1'
+      'Inner Join dbo.Species'#9'SPE'#9'ON SPE.SpeciesNo = pg.SpeciesNo'
+      #9#9#9#9'AND SPE.LanguageCode = 1'
+      'Inner Join dbo.Surfacing'#9'SUR'#9'ON SUR.SurfacingNo = pg.SurfacingNo'
+      #9#9#9#9'AND SUR.LanguageCode = 1'
+      'Inner Join dbo.Grade   '#9'Gr'#9'ON Gr.GradeNo = pd.GradeNo'
+      #9#9#9#9'AND Gr.LanguageCode = 1'
+      
+        'Left outer join dbo.VaruGrupp vg on vg.VarugruppNo = pd.Varugrup' +
+        'pNo'
+      'Where Verk.PktNrLevKod = 21'
+      'AND pp.Utlastad >= '#39'2011-12-01'#39
+      'AND pp.Utlastad <= '#39'2011-12-11'#39
+      ''
+      
+        'Group by Kund.ClientName, pd.ProductNo, pd.ProductDisplayName, p' +
+        'g.ActualThicknessMM,'
+      
+        'pg.ActualWidthMM, SPE.SpeciesName, imp.ProductCategoryName, pp.V' +
+        'erkNo,'
+      
+        'Gr.GradeName, SUR.SurfacingName, va.VarugruppNamn, pp.CustomerNo' +
+        ', pg.NominalThicknessMM,'
+      
+        'pg.NominalWidthMM, pp.PriceExist, vg.VarugruppNamn, pp.LO, pp.Ut' +
+        'lastad, pp.Supplier, pp.L'#228'ngd'
+      '')
+    Left = 664
+    Top = 184
+    object cdsStorageViewsKund: TStringField
+      FieldName = 'Kund'
+      Origin = 'Kund'
+      Size = 80
+    end
+    object cdsStorageViewsProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+      Required = True
+    end
+    object cdsStorageViewsPRODUKT: TStringField
+      FieldName = 'PRODUKT'
+      Origin = 'PRODUKT'
+      Size = 150
+    end
+    object cdsStorageViewsAT: TFloatField
+      FieldName = 'AT'
+      Origin = 'AT'
+    end
+    object cdsStorageViewsAB: TFloatField
+      FieldName = 'AB'
+      Origin = 'AB'
+    end
+    object cdsStorageViewsNT: TFloatField
+      FieldName = 'NT'
+      Origin = 'NT'
+    end
+    object cdsStorageViewsNB: TFloatField
+      FieldName = 'NB'
+      Origin = 'NB'
+    end
+    object cdsStorageViewsNomDim: TStringField
+      FieldName = 'NomDim'
+      Origin = 'NomDim'
+      ReadOnly = True
+      Size = 23
+    end
+    object cdsStorageViewsAktDim: TStringField
+      FieldName = 'AktDim'
+      Origin = 'AktDim'
+      ReadOnly = True
+      Size = 23
+    end
+    object cdsStorageViewsAM3: TFloatField
+      FieldName = 'AM3'
+      Origin = 'AM3'
+      ReadOnly = True
+    end
+    object cdsStorageViewsNM3: TFloatField
+      FieldName = 'NM3'
+      Origin = 'NM3'
+      ReadOnly = True
+    end
+    object cdsStorageViewsStyck: TIntegerField
+      FieldName = 'Styck'
+      Origin = 'Styck'
+      ReadOnly = True
+    end
+    object cdsStorageViewsPrisOK: TStringField
+      FieldName = 'PrisOK'
+      Origin = 'PrisOK'
+      Size = 6
+    end
+    object cdsStorageViewsTS: TStringField
+      FieldName = 'TS'
+      Origin = 'TS'
+      Required = True
+      Size = 30
+    end
+    object cdsStorageViewsPC: TStringField
+      FieldName = 'PC'
+      Origin = 'PC'
+      Required = True
+      Size = 40
+    end
+    object cdsStorageViewsKV: TStringField
+      FieldName = 'KV'
+      Origin = 'KV'
+      Required = True
+      FixedChar = True
+      Size = 30
+    end
+    object cdsStorageViewsUT: TStringField
+      FieldName = 'UT'
+      Origin = 'UT'
+      Required = True
+      Size = 30
+    end
+    object cdsStorageViewsOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+      Origin = 'OwnerNo'
+    end
+    object cdsStorageViewsMEDELPRIS: TFloatField
+      FieldName = 'MEDELPRIS'
+      Origin = 'MEDELPRIS'
+      ReadOnly = True
+    end
+    object cdsStorageViewsNETTO: TFloatField
+      FieldName = 'NETTO'
+      Origin = 'NETTO'
+      ReadOnly = True
+    end
+    object cdsStorageViewsVarugruppNamn: TStringField
+      FieldName = 'VarugruppNamn'
+      Origin = 'VarugruppNamn'
+      Size = 35
+    end
+    object cdsStorageViewsLO: TIntegerField
+      FieldName = 'LO'
+      Origin = 'LO'
+    end
+    object cdsStorageViewsUtlastad: TSQLTimeStampField
+      FieldName = 'Utlastad'
+      Origin = 'Utlastad'
+    end
+    object cdsStorageViewsSupplier: TStringField
+      FieldName = 'Supplier'
+      Origin = 'Supplier'
+      Size = 80
+    end
+    object cdsStorageViewsLängd: TFloatField
+      FieldName = 'L'#228'ngd'
+      Origin = '[L'#228'ngd]'
+    end
+  end
+  object ds_StorageViews: TDataSource
+    DataSet = cdsStorageViews
+    Left = 664
+    Top = 248
+  end
+  object FDConnection1: TFDConnection
+    ConnectionName = 'VIS'
+    Params.Strings = (
+      'Server=vis.vida.se'
+      'Database=Vis_Vida'
+      'OSAuthent=No'
+      'MetaDefCatalog=vis_vida'
+      'MetaDefSchema=dbo'
+      'User_Name=lars'
+      'Password=woods2011'
+      'DriverID=MSSQL')
+    FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
+    FetchOptions.Mode = fmAll
+    FetchOptions.RowsetSize = 500
+    ResourceOptions.AssignedValues = [rvDirectExecute]
+    UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]
+    Connected = True
+    LoginPrompt = False
+    Left = 696
+    Top = 312
   end
 end

@@ -458,6 +458,11 @@
             <Form>dlgChgRef_and_Info</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uEXCELView.pas">
+            <Form>fDeliveryReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uStorageView.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">

@@ -1027,7 +1027,7 @@ object fLager: TfLager
     end
     object cxButton13: TcxButton
       Left = 867
-      Top = 77
+      Top = 78
       Width = 99
       Height = 50
       Margins.Left = 4
