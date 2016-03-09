@@ -39,6 +39,9 @@ begin
 {$ELSE}
   path := dmsSystem.GetLangPath();
 {$ENDIF}
+  if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
+    path := ExtractFilePath(ParamStr(0));
+  end;
   path := getFileWithPath(ParamStr(0),'sib', path);
   assert(path <> '','Path to languagefiles not defined in database');
   siLangDispatcher1.FileName := Path;
