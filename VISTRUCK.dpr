@@ -119,8 +119,8 @@ uses
   ufrmPkgLabelSetup in 'ufrmPkgLabelSetup.pas' {frmPkgLabelSetup},
   uFastReports in '..\CommonSources\FastReport\uFastReports.pas',
   uDlgReferensAndInfo in 'uDlgReferensAndInfo.pas' {dlgChgRef_and_Info},
-  uEXCELView in 'uEXCELView.pas' {fDeliveryReport},
-  uStorageView in 'uStorageView.pas';
+  uSQLView in 'uSQLView.pas',
+  uEXCELView in 'uEXCELView.pas' {fEXCELView};
 
 {$R *.res}
 begin
@@ -137,7 +137,6 @@ begin
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
-  Application.CreateForm(TfDeliveryReport, fDeliveryReport);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

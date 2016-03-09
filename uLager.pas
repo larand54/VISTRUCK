@@ -364,6 +364,7 @@ type
     acEXCELView_DeckList: TAction;
     acEXCELView_PackageList: TAction;
     acEXCELView_Empty_Hands: TAction;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -416,6 +417,7 @@ type
     procedure grdBoTDBBandedPerPositionDblClick(Sender: TObject);
     procedure acPrintPKGLabelsExecute(Sender: TObject);
     procedure acSetRef_and_InfoExecute(Sender: TObject);
+    procedure cxButton13Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -506,7 +508,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup,  uDlgReferensAndInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup,  uDlgReferensAndInfo, uEXCELView; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -672,6 +674,13 @@ begin
  End ;
 end;
 
+
+procedure TfLager.cxButton13Click(Sender: TObject);
+begin
+  if not assigned(uEXCELView.fEXCELView) then
+    fEXCELView := TfEXCELView.Create(self);
+  fEXCELView.Show;
+end;
 
 procedure TfLager.LoadGridLayoutSortimentsVy ;
 Begin

@@ -1,4 +1,4 @@
-﻿object dmInventory: TdmInventory
+object dmInventory: TdmInventory
   OldCreateOrder = False
   Height = 967
   Width = 1269
@@ -13,6 +13,7 @@
     Top = 112
   end
   object sq_Specie: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select  s.speciescode, S.SpeciesNo,'
       'CASE WHEN s.speciescode is null then'
@@ -21,11 +22,16 @@
       'S.speciescode+'#39' - '#39'+S.speciesName'
       'END AS speciesName'
       'From dbo.Species S'
-      'where S.LanguageCode = 1'
+      'where S.LanguageCode = :Languagecode'
       'AND S.SpeciesNo > 0'
       'Order by S.speciescode')
     Left = 432
     Top = 16
+    ParamData = <
+      item
+        Name = 'LANGUAGECODE'
+        ParamType = ptInput
+      end>
     object sq_Speciespeciescode: TStringField
       FieldName = 'speciescode'
       Origin = 'speciescode'
@@ -45,6 +51,7 @@
     end
   end
   object sq_grade: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select '
       'CASE WHEN g.gradecode is null then'
@@ -78,20 +85,49 @@
     end
   end
   object sq_Surfacing: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
-      'Select  s.Surfacingcode, S.SurfacingNo,'
+      'Select distinct  s.Surfacingcode, S.SurfacingNo,'
       'CASE WHEN s.Surfacingcode is null then'
       'S.SurfacingName'
       'ELSE'
       'S.Surfacingcode+'#39' - '#39'+S.SurfacingName'
-      'END AS SurfacingName'
+      'END AS SurfacingName, S.SurfacingName'
       ''
-      'From dbo.Surfacing S'
-      'where S.LanguageCode = 1'
+      'From dbo.Client Verk'
+      
+        'Inner Join dbo.PhysicalInventoryPoint pip ON pip.OwnerNo = Verk.' +
+        'ClientNo'
+      
+        'Inner Join dbo.LogicalInventoryPoint Lip ON pip.PhysicalInventor' +
+        'yPointNo = lip.PhysicalInventoryPointNo'
+      
+        'INNER JOIN dbo.PackageNumber pn ON pn.LogicalInventoryPointNo = ' +
+        'lip.LogicalInventoryPointNo'
+      
+        'Inner Join dbo.PackageType pt ON pt.PackageTypeNo = pn.PackageTy' +
+        'peNo'
+      'Inner Join dbo.Product pd ON pd.ProductNo = pt.ProductNo'
+      
+        'Inner Join dbo.ProductGroup pg ON pg.ProductGroupNo = pd.Product' +
+        'GroupNo'
+      'Inner join dbo.Surfacing S on S.SurfacingNo = pg.SurfacingNo'
+      'where pn.Status = 1'
+      'AND S.LanguageCode = :LanguageCode'
       'AND S.SurfacingNo > 0'
+      'and Verk.PktNrLevKod = :PktNrLevKod'
       'Order by S.Surfacingcode, S.SurfacingName')
     Left = 504
     Top = 16
+    ParamData = <
+      item
+        Name = 'LANGUAGECODE'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PKTNRLEVKOD'
+        ParamType = ptInput
+      end>
     object sq_SurfacingSurfacingcode: TStringField
       FieldName = 'Surfacingcode'
       Origin = 'SurfacingName'
@@ -111,6 +147,7 @@
     end
   end
   object cds_PC: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select  s.ImpCode, S.ProductCategoryNo,'
       'CASE WHEN s.ImpCode is null then'
@@ -143,6 +180,7 @@
     end
   end
   object cds_LengthGroup: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'SELECT distinct PG.GroupNo, GroupName, Count(PLG.ProductLengthNo' +
@@ -175,6 +213,7 @@
     end
   end
   object sq_AT: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Distinct ActualThicknessMM AS AT FROM dbo.ProductGroup'
       'Order By ActualThicknessMM')
@@ -186,6 +225,7 @@
     end
   end
   object sq_AB: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select Distinct ActualWidthMM AS AB FROM dbo.ProductGroup'
       'Order By ActualWidthMM')
@@ -197,6 +237,7 @@
     end
   end
   object sq_AL: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT Distinct'
       'PL.ActualLengthMM AS AL'
@@ -213,6 +254,7 @@
     end
   end
   object sq_GroupLengths: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT distinct pl.ActualLengthMM'
       'FROM dbo.ProductLengthGroup PLG'
@@ -237,6 +279,7 @@
     end
   end
   object cds_ProductLengthInGroup: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT ActualLengthMM AS ALMM,'
       'NominalLengthMM AS NLMM,'
@@ -282,6 +325,7 @@
     AfterInsert = cds_BookingHdrAfterInsert
     BeforePost = cds_BookingHdrBeforePost
     OnCalcFields = cds_BookingHdrCalcFields
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT Distinct'
       'RBH.*,'
@@ -570,6 +614,7 @@
   object cds_BookingDtl: TFDQuery
     OnCalcFields = cds_BookingDtlCalcFields
     OnPostError = cds_BookingDtlPostError
+    Connection = dmsConnector.FDConnection1
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     UpdateOptions.AssignedValues = [uvLockMode]
     SQL.Strings = (
@@ -832,6 +877,7 @@
   object cds_BookingMaster: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     AfterScroll = cds_BookingMasterAfterScroll
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT RBM.*,'
       'usd.UserName'
@@ -918,6 +964,7 @@
   end
   object cds_VolResDtl: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT *'
       'FROM dbo.VolResDtl vrd'
@@ -1058,6 +1105,7 @@
     Top = 296
   end
   object sp_PeriodBooking: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_PeriodBooking_II'
     Left = 808
     Top = 360
@@ -1101,6 +1149,7 @@
       end>
   end
   object sp_GetCurrentSD: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_GetCurrentSD'
     Left = 808
     Top = 416
@@ -1145,6 +1194,7 @@
       end>
   end
   object sp_GetVolPerLG: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_GetVolPerLG_II'
     Left = 808
     Top = 472
@@ -1283,6 +1333,7 @@
   end
   object cds_OtherBookings: TFDQuery
     OnUpdateRecord = cds_OtherBookingsUpdateRecord
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT p.productDisplayName AS Produkt,'
       'cx.YearWeek,'
@@ -1537,6 +1588,7 @@
   end
   object cds_Scheduler: TFDQuery
     BeforePost = cds_SchedulerBeforePost
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT ST.*, usd.UserName'
       'FROM dbo.cxSchedulerTable ST'
@@ -1730,7 +1782,7 @@
     Top = 520
   end
   object sq_PopulateTabs: TFDQuery
-    ConnectionName = 'VIS_VIDA'
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select st.ID, st.YearWeek from dbo.RawMtrlBookedMaster rmm'
       
@@ -1757,6 +1809,7 @@
     end
   end
   object upd_OtherBookings: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.rawmtrlbookeddtl'
@@ -1866,6 +1919,7 @@
     Top = 360
   end
   object upd_cxSchedulerTable: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.cxschedulertable'
@@ -1962,6 +2016,7 @@
     end
   end
   object cds_BookHdrLink: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * from dbo.RawMtrlBookedLink rml'
       'WHERE rml.BookingNo =:BookingNo')
@@ -1985,6 +2040,7 @@
     end
   end
   object sp_MergeBookings: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_MergeBookings'
     Left = 912
     Top = 648
@@ -2029,6 +2085,7 @@
   end
   object cds_Products: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT pd.ProductNo,'
@@ -2049,6 +2106,7 @@
     end
   end
   object cds_fAT: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select * FROM dbo.fAT'
       'WHERE UserID = :UserID')
@@ -2157,6 +2215,7 @@
   object cds_DeleteBookingGroup: TFDQuery
     AfterInsert = cds_BookingHdrAfterInsert
     AfterScroll = cds_BookingMasterAfterScroll
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'DELETE dbo.RawMtrlBookedMaster'
       'WHERE BookingNo = :BookingNo'
@@ -2209,6 +2268,7 @@
         Fields = 'SupplierShipPlanObjectNo'
       end>
     IndexName = 'indexSupplierShipPlanObjectNo'
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
@@ -3055,6 +3115,7 @@
   end
   object cds_PIP: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -3084,6 +3145,7 @@
   end
   object cds_LIP: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -3117,6 +3179,7 @@
   object cds_LOBuffertParams: TFDQuery
     AfterInsert = cds_LOBuffertParamsAfterInsert
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.LOBuffertParams'
@@ -3218,6 +3281,7 @@
   end
   object cds_producer: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT Distinct C.ClientNo, C.ClientName, C.SearchName'
@@ -3250,6 +3314,7 @@
   end
   object cds_LOBuffert: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select LOB.*, PT.Totalm3Nominal AS NM3,'
@@ -3417,6 +3482,7 @@
     Top = 304
   end
   object sp_LOBUffertStep1: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_LOBUffertStep1'
     Left = 48
     Top = 360
@@ -3444,6 +3510,7 @@
         Fields = 'ShowInGrid'
       end>
     IndexName = 'Index_ShowInGrid'
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
@@ -4198,6 +4265,7 @@
       end>
   end
   object upd_SawMillLoadOrders: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO dbo.suppliershippingplan'
@@ -4295,6 +4363,7 @@
         Fields = 'OrderNo'
       end>
     IndexName = 'LOLevelOneIndexOrderNo'
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.InternalOrderHead'
     UpdateOptions.KeyFields = 'OrderNo'
@@ -4565,6 +4634,7 @@
     Top = 760
   end
   object sp_LOLevelTwo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_LOLevelTwo'
     Left = 536
@@ -4942,6 +5012,7 @@
     Top = 760
   end
   object sp_LOLevelThree: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.suppliershippingplan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     StoredProcName = 'dbo.vis_LOLevelThree'
@@ -5809,6 +5880,7 @@
     Top = 696
   end
   object upd_LOLevelOne: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO VIS_VIDA.dbo.internalorderhead'
@@ -5955,6 +6027,7 @@
     Top = 664
   end
   object upd_LOLevelThree: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
     ConnectionName = 'VIS_VIDA'
     InsertSQL.Strings = (
       'INSERT INTO VIS_VIDA.dbo.suppliershippingplan'
@@ -6153,6 +6226,7 @@
     Top = 664
   end
   object sp_InqLevelOne: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.InternalOrderHead'
     UpdateOptions.KeyFields = 'OrderNo'
     StoredProcName = 'dbo.vis_InqLevelOne'
@@ -6299,6 +6373,7 @@
     Top = 568
   end
   object sp_InqLevelTwo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     UpdateObject = upd_InqLevelTwo
@@ -6669,6 +6744,7 @@
         Fields = 'ShowInGrid'
       end>
     IndexName = 'Index_ShowInGrid'
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     StoredProcName = 'dbo.vis_InqLevelThree'
@@ -7250,6 +7326,7 @@
     Top = 464
   end
   object sp_UtlastLevelOne: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateOptions.UpdateTableName = 'dbo.InternalOrderHead'
     UpdateOptions.KeyFields = 'OrderNo'
@@ -7524,6 +7601,7 @@
     Top = 392
   end
   object sp_UtlastLevelTwo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vis_UtlastLevelTwo'
     Left = 536
@@ -7900,6 +7978,7 @@
     Top = 392
   end
   object sp_UtlastLevelThree: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.suppliershippingplan'
     UpdateOptions.KeyFields = 'SupplierShipPlanObjectNo'
     StoredProcName = 'dbo.vis_UtlastLevelThree'
@@ -10153,233 +10232,475 @@
       Size = 30
     end
   end
-  object cdsStorageViews: TFDQuery
-    Connection = FDConnection1
+  object cds_EXCELView: TFDQuery
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
-      'Select distinct Kund.ClientName AS Kund, '
-      'pd.ProductNo,'
-      'pd.ProductDisplayName AS PRODUKT,'
-      'pg.ActualThicknessMM AS AT,'
-      'pg.ActualWidthMM AS AB,'
-      'pg.NominalThicknessMM AS NT,'
-      'pg.NominalWidthMM AS NB,'
+      'declare @LanguageCode int = 1'
+      'select cy.CityName AS City, '
+      'LIP.LogicalInventoryName, '
+      'Count(str(PackageNo)+suppliercode) AS Paket, '
+      ''
+      'sum(pt.TotalNoOfPieces) AS pcs, '
+      'sum(pt.Totalm3Actual) AS AM3, '
+      'sum(pt.Totalm3Nominal) AS NM3,'
+      ''
       
-        'CAST(pg.NominalThicknessMM AS VARCHAR(10)) + '#39' x '#39' + CAST(pg.Nom' +
-        'inalWidthMM AS VARCHAR(10)) AS NomDim,'
-      
-        'CAST(pg.ActualThicknessMM AS VARCHAR(10)) + '#39' x '#39' + CAST(pg.Actu' +
-        'alWidthMM AS VARCHAR(10)) AS AktDim,'
-      'SUM(pp.AM3) AS AM3,'
-      'SUM(pp.NM3) AS NM3,'
-      'SUM(pp.NoOfPcs) AS Styck,'
-      'pp.PriceExist AS PrisOK,'
+        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
+        'idthMM as varchar(6)) AS dim,'
+      ''
       'SPE.SpeciesName AS TS,'
       'imp.ProductCategoryName AS PC,'
       'Gr.GradeName AS KV,'
       'SUR.SurfacingName AS UT,'
-      'pp.VerkNo AS OwnerNo,'
-      'CASE'
-      'WHEN SUM(pp.NM3) > 0 THEN'
-      'SUM(pp.[V'#228'rde]) / SUM(pp.NM3)'
-      'ELSE'
-      '0'
-      'END AS MEDELPRIS,'
-      'SUM(pp.[V'#228'rde]) AS NETTO,'
-      'vg.VarugruppNamn,'
-      'pp.LO,'
-      'pp.Utlastad AS Utlastad,'
-      'pp.Supplier, pp.L'#228'ngd'
-      'FROM dbo.ST_Deliveries pp'
-      'Inner Join dbo.Client Kund ON Kund.ClientNo = pp.customerNo'
-      'Inner Join dbo.Client Verk ON Verk.ClientNo = pp.VerkNo'
-      'Inner Join dbo.Product pd ON pd.ProductNo = PP.ProductNo'
-      
-        'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = PD.Varugrup' +
-        'pNo'
-      
-        'Inner Join dbo.ProductGroup pg ON pg.ProductGroupNo = pd.Product' +
-        'GroupNo'
-      
-        'Inner Join dbo.ProductCategory'#9'imp'#9'ON imp.ProductCategoryNo = pg' +
-        '.ProductCategoryNo'
-      #9#9#9#9'AND imp.LanguageCode = 1'
-      'Inner Join dbo.Species'#9'SPE'#9'ON SPE.SpeciesNo = pg.SpeciesNo'
-      #9#9#9#9'AND SPE.LanguageCode = 1'
-      'Inner Join dbo.Surfacing'#9'SUR'#9'ON SUR.SurfacingNo = pg.SurfacingNo'
-      #9#9#9#9'AND SUR.LanguageCode = 1'
-      'Inner Join dbo.Grade   '#9'Gr'#9'ON Gr.GradeNo = pd.GradeNo'
-      #9#9#9#9'AND Gr.LanguageCode = 1'
-      
-        'Left outer join dbo.VaruGrupp vg on vg.VarugruppNo = pd.Varugrup' +
-        'pNo'
-      'Where Verk.PktNrLevKod = 21'
-      'AND pp.Utlastad >= '#39'2011-12-01'#39
-      'AND pp.Utlastad <= '#39'2011-12-11'#39
+      'lip.LogicalInventoryPointNo AS LIPNo, '
+      'pip.PhysicalInventoryPointNo AS PIPNo,'
+      'va.VarugruppNamn,'
+      'pn.REFERENCE, '
+      'pn.BL_NO AS Info1,  '
+      'pn.Info2,'
+      'ar.AreaName,'
+      'Posi.PositionName'
+      ''
+      ''
+      ''
+      'from dbo.PackageNumber pn'
+      'Left outer join dbo.Position posi '
+      'inner join dbo.Area ar on ar.AreaID = posi.AreaID'
+      'on posi.PositionID = pn.PositionID '
       ''
       
-        'Group by Kund.ClientName, pd.ProductNo, pd.ProductDisplayName, p' +
-        'g.ActualThicknessMM,'
+        'Left Outer Join dbo.CertificationWood cw on cw.CertNo = IsNull(p' +
+        'n.CertNo,3)'
       
-        'pg.ActualWidthMM, SPE.SpeciesName, imp.ProductCategoryName, pp.V' +
-        'erkNo,'
+        'Left join [dbo].[PackageSize] ps on ps.PackageSizeNo = pn.Packag' +
+        'e_Size'
+      'and ps.LanguageCode = 1'
       
-        'Gr.GradeName, SUR.SurfacingName, va.VarugruppNamn, pp.CustomerNo' +
-        ', pg.NominalThicknessMM,'
+        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
       
-        'pg.NominalWidthMM, pp.PriceExist, vg.VarugruppNamn, pp.LO, pp.Ut' +
-        'lastad, pp.Supplier, pp.L'#228'ngd'
-      '')
+        'Inner Join dbo.LengthSpec LS ON LS.LengthSpecNo = pt.LengthSpecN' +
+        'o'
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      'Left join dbo.ProductDesc pde on pde.ProductNo = pt.ProductNo'
+      'AND pde.LanguageID = @LanguageCode'
+      
+        'inner join dbo.ProductGroup pg on pg.ProductGroupNo = p.ProductG' +
+        'roupNo'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = pn.LogicalInventoryPointNo'
+      
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      'Inner Join dbo.City cy on cy.CityNo = PIP.PhyInvPointNameNo'
+      ''
+      
+        'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.Varugrupp' +
+        'No'
+      'AND va.LanguageCode = @LanguageCode'
+      
+        'Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg' +
+        '.ProductCategoryNo'
+      'AND imp.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo'
+      'AND SPE.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo'
+      'AND SUR.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo'
+      'AND Gr.LanguageCode = @LanguageCode'
+      ''
+      'WHERE '
+      'PIP.OwnerNo = 741'
+      'and pn.[Status] = 1'
+      ''
+      'Group by cy.CityName, LIP.LogicalInventoryName, '
+      ''
+      
+        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
+        'idthMM as varchar(6)),'
+      ''
+      'SPE.SpeciesName,'
+      'imp.ProductCategoryName,'
+      'Gr.GradeName,'
+      'SUR.SurfacingName,'
+      'lip.LogicalInventoryPointNo, '
+      'pip.PhysicalInventoryPointNo,'
+      'va.VarugruppNamn,'
+      'pn.REFERENCE, '
+      'pn.BL_NO,  '
+      'pn.Info2,'
+      'ar.AreaName,'
+      'Posi.PositionName')
     Left = 664
     Top = 184
-    object cdsStorageViewsKund: TStringField
-      FieldName = 'Kund'
-      Origin = 'Kund'
-      Size = 80
+    object cds_EXCELViewLogicalInventoryName: TStringField
+      FieldName = 'LogicalInventoryName'
+      Origin = 'LogicalInventoryName'
+      Size = 50
     end
-    object cdsStorageViewsProductNo: TIntegerField
-      FieldName = 'ProductNo'
-      Origin = 'ProductNo'
-      Required = True
-    end
-    object cdsStorageViewsPRODUKT: TStringField
-      FieldName = 'PRODUKT'
-      Origin = 'PRODUKT'
-      Size = 150
-    end
-    object cdsStorageViewsAT: TFloatField
-      FieldName = 'AT'
-      Origin = 'AT'
-    end
-    object cdsStorageViewsAB: TFloatField
-      FieldName = 'AB'
-      Origin = 'AB'
-    end
-    object cdsStorageViewsNT: TFloatField
-      FieldName = 'NT'
-      Origin = 'NT'
-    end
-    object cdsStorageViewsNB: TFloatField
-      FieldName = 'NB'
-      Origin = 'NB'
-    end
-    object cdsStorageViewsNomDim: TStringField
-      FieldName = 'NomDim'
-      Origin = 'NomDim'
+    object cds_EXCELViewpcs: TIntegerField
+      FieldName = 'pcs'
+      Origin = 'pcs'
       ReadOnly = True
-      Size = 23
     end
-    object cdsStorageViewsAktDim: TStringField
-      FieldName = 'AktDim'
-      Origin = 'AktDim'
-      ReadOnly = True
-      Size = 23
-    end
-    object cdsStorageViewsAM3: TFloatField
+    object cds_EXCELViewAM3: TFloatField
       FieldName = 'AM3'
       Origin = 'AM3'
       ReadOnly = True
     end
-    object cdsStorageViewsNM3: TFloatField
+    object cds_EXCELViewNM3: TFloatField
       FieldName = 'NM3'
       Origin = 'NM3'
       ReadOnly = True
     end
-    object cdsStorageViewsStyck: TIntegerField
-      FieldName = 'Styck'
-      Origin = 'Styck'
+    object cds_EXCELViewdim: TStringField
+      FieldName = 'dim'
+      Origin = 'dim'
       ReadOnly = True
+      Size = 13
     end
-    object cdsStorageViewsPrisOK: TStringField
-      FieldName = 'PrisOK'
-      Origin = 'PrisOK'
-      Size = 6
-    end
-    object cdsStorageViewsTS: TStringField
+    object cds_EXCELViewTS: TStringField
       FieldName = 'TS'
       Origin = 'TS'
       Required = True
       Size = 30
     end
-    object cdsStorageViewsPC: TStringField
+    object cds_EXCELViewPC: TStringField
       FieldName = 'PC'
       Origin = 'PC'
       Required = True
       Size = 40
     end
-    object cdsStorageViewsKV: TStringField
+    object cds_EXCELViewKV: TStringField
       FieldName = 'KV'
       Origin = 'KV'
       Required = True
       FixedChar = True
       Size = 30
     end
-    object cdsStorageViewsUT: TStringField
+    object cds_EXCELViewUT: TStringField
       FieldName = 'UT'
       Origin = 'UT'
       Required = True
       Size = 30
     end
-    object cdsStorageViewsOwnerNo: TIntegerField
-      FieldName = 'OwnerNo'
-      Origin = 'OwnerNo'
+    object cds_EXCELViewLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+      Required = True
     end
-    object cdsStorageViewsMEDELPRIS: TFloatField
-      FieldName = 'MEDELPRIS'
-      Origin = 'MEDELPRIS'
-      ReadOnly = True
+    object cds_EXCELViewPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+      Required = True
     end
-    object cdsStorageViewsNETTO: TFloatField
-      FieldName = 'NETTO'
-      Origin = 'NETTO'
-      ReadOnly = True
-    end
-    object cdsStorageViewsVarugruppNamn: TStringField
+    object cds_EXCELViewVarugruppNamn: TStringField
       FieldName = 'VarugruppNamn'
       Origin = 'VarugruppNamn'
       Size = 35
     end
-    object cdsStorageViewsLO: TIntegerField
-      FieldName = 'LO'
-      Origin = 'LO'
+    object cds_EXCELViewREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
     end
-    object cdsStorageViewsUtlastad: TSQLTimeStampField
-      FieldName = 'Utlastad'
-      Origin = 'Utlastad'
+    object cds_EXCELViewInfo1: TStringField
+      FieldName = 'Info1'
+      Origin = 'Info1'
+      Size = 30
     end
-    object cdsStorageViewsSupplier: TStringField
-      FieldName = 'Supplier'
-      Origin = 'Supplier'
-      Size = 80
+    object cds_EXCELViewInfo2: TStringField
+      FieldName = 'Info2'
+      Origin = 'Info2'
+      Size = 30
     end
-    object cdsStorageViewsLängd: TFloatField
-      FieldName = 'L'#228'ngd'
-      Origin = '[L'#228'ngd]'
+    object cds_EXCELViewAreaName: TStringField
+      FieldName = 'AreaName'
+      Origin = 'AreaName'
+      Size = 50
+    end
+    object cds_EXCELViewPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object cds_EXCELViewCity: TStringField
+      FieldName = 'City'
+      Origin = 'City'
+      Size = 50
+    end
+    object cds_EXCELViewPaket: TIntegerField
+      FieldName = 'Paket'
+      Origin = 'Paket'
+      ReadOnly = True
     end
   end
-  object ds_StorageViews: TDataSource
-    DataSet = cdsStorageViews
+  object ds_EXCELView: TDataSource
+    DataSet = cds_EXCELView
     Left = 664
-    Top = 248
+    Top = 232
   end
-  object FDConnection1: TFDConnection
-    ConnectionName = 'VIS'
-    Params.Strings = (
-      'Server=vis.vida.se'
-      'Database=Vis_Vida'
-      'OSAuthent=No'
-      'MetaDefCatalog=vis_vida'
-      'MetaDefSchema=dbo'
-      'User_Name=lars'
-      'Password=woods2011'
-      'DriverID=MSSQL')
-    FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
-    FetchOptions.Mode = fmAll
-    FetchOptions.RowsetSize = 500
-    ResourceOptions.AssignedValues = [rvDirectExecute]
-    UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]
-    Connected = True
-    LoginPrompt = False
-    Left = 696
-    Top = 312
+  object sq_NB: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select Distinct NominalWidthMM AS NB FROM dbo.ProductGroup'
+      'Order By NominalWidthMM')
+    Left = 261
+    Top = 280
+  end
+  object sq_NT: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select Distinct NominalThicknessMM AS NT FROM dbo.ProductGroup'
+      'Order By NominalThicknessMM')
+    Left = 261
+    Top = 232
+  end
+  object sq_Varugrupp: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select  s.VarugruppNamn, S.VarugruppNo,'
+      'S.VarugruppNo AS VarugruppID'
+      'From dbo.Varugrupp S'
+      'WHERE LanguageCode = :LanguageCode'
+      'Order by S.Varugruppnamn'
+      '')
+    Left = 264
+    Top = 328
+    ParamData = <
+      item
+        Name = 'LANGUAGECODE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object sq_VarugruppVarugruppNamn: TStringField
+      FieldName = 'VarugruppNamn'
+      Origin = 'VarugruppNamn'
+      Size = 35
+    end
+    object sq_VarugruppVarugruppNo: TIntegerField
+      FieldName = 'VarugruppNo'
+      Origin = 'VarugruppNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sq_VarugruppVarugruppID: TIntegerField
+      FieldName = 'VarugruppID'
+      Origin = 'VarugruppID'
+      Required = True
+    end
+  end
+  object ds_Props: TDataSource
+    DataSet = cds_Props
+    Left = 431
+    Top = 264
+  end
+  object cds_Props: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.userprops'
+      'WHERE UserID = :UserID'
+      'AND Name = :Name'
+      '')
+    Left = 431
+    Top = 208
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'NAME'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object cds_PropsUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_PropsForm: TStringField
+      FieldName = 'Form'
+      Origin = 'Form'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object cds_PropsVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+      Origin = 'VerkNo'
+    end
+    object cds_PropsOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+      Origin = 'OwnerNo'
+    end
+    object cds_PropsPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object cds_PropsLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+    end
+    object cds_PropsInputOption: TIntegerField
+      FieldName = 'InputOption'
+      Origin = 'InputOption'
+    end
+    object cds_PropsRegPointNo: TIntegerField
+      FieldName = 'RegPointNo'
+      Origin = 'RegPointNo'
+    end
+    object cds_PropsRegDate: TSQLTimeStampField
+      FieldName = 'RegDate'
+      Origin = 'RegDate'
+    end
+    object cds_PropsCopyPcs: TIntegerField
+      FieldName = 'CopyPcs'
+      Origin = 'CopyPcs'
+    end
+    object cds_PropsRunNo: TIntegerField
+      FieldName = 'RunNo'
+      Origin = 'RunNo'
+    end
+    object cds_PropsProducerNo: TIntegerField
+      FieldName = 'ProducerNo'
+      Origin = 'ProducerNo'
+    end
+    object cds_PropsAutoColWidth: TIntegerField
+      FieldName = 'AutoColWidth'
+      Origin = 'AutoColWidth'
+    end
+    object cds_PropsSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      Size = 3
+    end
+    object cds_PropsLengthOption: TIntegerField
+      FieldName = 'LengthOption'
+      Origin = 'LengthOption'
+    end
+    object cds_PropsLengthGroupNo: TIntegerField
+      FieldName = 'LengthGroupNo'
+      Origin = 'LengthGroupNo'
+    end
+    object cds_PropsNewItemRow: TIntegerField
+      FieldName = 'NewItemRow'
+      Origin = 'NewItemRow'
+    end
+    object cds_PropsSalesRegionNo: TIntegerField
+      FieldName = 'SalesRegionNo'
+      Origin = 'SalesRegionNo'
+    end
+    object cds_PropsMarketRegionNo: TIntegerField
+      FieldName = 'MarketRegionNo'
+      Origin = 'MarketRegionNo'
+    end
+    object cds_PropsOrderTypeNo: TIntegerField
+      FieldName = 'OrderTypeNo'
+      Origin = 'OrderTypeNo'
+    end
+    object cds_PropsStatus: TIntegerField
+      FieldName = 'Status'
+      Origin = 'Status'
+    end
+    object cds_PropsFilterOrderDate: TIntegerField
+      FieldName = 'FilterOrderDate'
+      Origin = 'FilterOrderDate'
+    end
+    object cds_PropsStartPeriod: TSQLTimeStampField
+      FieldName = 'StartPeriod'
+      Origin = 'StartPeriod'
+    end
+    object cds_PropsEndPeriod: TSQLTimeStampField
+      FieldName = 'EndPeriod'
+      Origin = 'EndPeriod'
+    end
+    object cds_PropsClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+    end
+    object cds_PropsSalesPersonNo: TIntegerField
+      FieldName = 'SalesPersonNo'
+      Origin = 'SalesPersonNo'
+    end
+    object cds_PropsVerkSupplierNo: TIntegerField
+      FieldName = 'VerkSupplierNo'
+      Origin = 'VerkSupplierNo'
+    end
+    object cds_PropsVerkKundNo: TIntegerField
+      FieldName = 'VerkKundNo'
+      Origin = 'VerkKundNo'
+    end
+    object cds_PropsLOObjectType: TIntegerField
+      FieldName = 'LOObjectType'
+      Origin = 'LOObjectType'
+    end
+    object cds_PropsBarCodeNo: TIntegerField
+      FieldName = 'BarCodeNo'
+      Origin = 'BarCodeNo'
+    end
+    object cds_PropsGradeStampNo: TIntegerField
+      FieldName = 'GradeStampNo'
+      Origin = 'GradeStampNo'
+    end
+    object cds_PropsVolumeUnitNo: TIntegerField
+      FieldName = 'VolumeUnitNo'
+      Origin = 'VolumeUnitNo'
+    end
+    object cds_PropsLengthFormatNo: TIntegerField
+      FieldName = 'LengthFormatNo'
+      Origin = 'LengthFormatNo'
+    end
+    object cds_PropsLengthVolUnitNo: TIntegerField
+      FieldName = 'LengthVolUnitNo'
+      Origin = 'LengthVolUnitNo'
+    end
+    object cds_PropsGroupByBox: TIntegerField
+      FieldName = 'GroupByBox'
+      Origin = 'GroupByBox'
+    end
+    object cds_PropsGroupSummary: TIntegerField
+      FieldName = 'GroupSummary'
+      Origin = 'GroupSummary'
+    end
+    object cds_PropsAgentNo: TIntegerField
+      FieldName = 'AgentNo'
+      Origin = 'AgentNo'
+    end
+    object cds_PropsLoadingLocationNo: TIntegerField
+      FieldName = 'LoadingLocationNo'
+      Origin = 'LoadingLocationNo'
+    end
+    object cds_PropsShipperNo: TIntegerField
+      FieldName = 'ShipperNo'
+      Origin = 'ShipperNo'
+    end
+    object cds_PropsBookingTypeNo: TIntegerField
+      FieldName = 'BookingTypeNo'
+      Origin = 'BookingTypeNo'
+    end
+    object cds_PropsCustomerNo: TIntegerField
+      FieldName = 'CustomerNo'
+      Origin = 'CustomerNo'
+    end
+    object cds_PropsShowProduct: TIntegerField
+      FieldName = 'ShowProduct'
+      Origin = 'ShowProduct'
+    end
+    object cds_PropsName: TStringField
+      FieldName = 'Name'
+      Origin = 'Name'
+      Size = 50
+    end
+    object cds_PropsFilter1: TStringField
+      FieldName = 'Filter1'
+      Origin = 'Filter1'
+      Size = 50
+    end
   end
 end

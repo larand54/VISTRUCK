@@ -1035,7 +1035,6 @@ object fLager: TfLager
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'EXCEL vyer'
-      DropDownMenu = pmEXCELvyer
       Kind = cxbkDropDown
       TabOrder = 27
       Font.Charset = DEFAULT_CHARSET
@@ -1045,7 +1044,16 @@ object fLager: TfLager
       Font.Style = [fsBold]
       ParentFont = False
       WordWrap = True
-      OnClick = acPrintPkgTableExecute
+      OnClick = cxButton13Click
+    end
+    object Button1: TButton
+      Left = 888
+      Top = 32
+      Width = 75
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 28
+      OnClick = cxButton13Click
     end
   end
   object dxBarManager1: TdxBarManager
@@ -1183,30 +1191,6 @@ object fLager: TfLager
       Visible = ivAlways
       ItemLinks = <>
     end
-    object dxBarButton9: TdxBarButton
-      Action = acEXCELView_PackageList
-      Category = 6
-    end
-    object dxBarButton5: TdxBarButton
-      Action = acEXCELView_Ref
-      Category = 6
-    end
-    object dxBarButton6: TdxBarButton
-      Action = acEXCELView_Ref_Dim
-      Category = 6
-    end
-    object dxBarButton7: TdxBarButton
-      Action = acEXCELView_Ref_Dim_Len
-      Category = 6
-    end
-    object dxBarButton8: TdxBarButton
-      Action = acEXCELView_DeckList
-      Category = 6
-    end
-    object dxBarButton10: TdxBarButton
-      Action = acEXCELView_Empty_Hands
-      Category = 6
-    end
     object dxBarButton2: TdxBarButton
       Action = acSetCertification
       Category = 1
@@ -1306,6 +1290,30 @@ object fLager: TfLager
       Category = 5
       Hint = 'New Item'
       Visible = ivAlways
+    end
+    object dxBarButton9: TdxBarButton
+      Action = acEXCELView_PackageList
+      Category = 6
+    end
+    object dxBarButton5: TdxBarButton
+      Action = acEXCELView_Ref
+      Category = 6
+    end
+    object dxBarButton6: TdxBarButton
+      Action = acEXCELView_Ref_Dim
+      Category = 6
+    end
+    object dxBarButton7: TdxBarButton
+      Action = acEXCELView_Ref_Dim_Len
+      Category = 6
+    end
+    object dxBarButton8: TdxBarButton
+      Action = acEXCELView_DeckList
+      Category = 6
+    end
+    object dxBarButton10: TdxBarButton
+      Action = acEXCELView_Empty_Hands
+      Category = 6
     end
   end
   object ActionList1: TActionList
@@ -1460,6 +1468,7 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1481,12 +1490,14 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1506,6 +1517,7 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
