@@ -6326,7 +6326,7 @@ begin
  With dmLoadEntrySSP do
  Begin
    if Key <> VK_RETURN then Exit;
-   if cdsLORows.RecordCount > 1 then
+   if cdsLORows.RecordCount > 0 then
    Begin
      if Length(mePackageNo.Text) > 0 then
       GetpackageNoEntered(Sender, mePackageNo.Text) ;
