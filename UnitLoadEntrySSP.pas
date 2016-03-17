@@ -511,6 +511,7 @@ type
     procedure acTreatmentCerticateExecute(Sender: TObject);
     procedure acMailTreatmentCertificateExecute(Sender: TObject);
     procedure acChgRef_and_InfoExecute(Sender: TObject);
+    procedure cbShowOriginalLOPropertiesChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -1146,6 +1147,21 @@ begin
  cxStyleAqua.Font.Size    := bePkgFont.EditValue ;
  cxStyleContentOdd.Font.Size    := bePkgFont.EditValue ;
  cxStyleContent.Font.Size    := bePkgFont.EditValue ;
+end;
+
+procedure TfLoadEntrySSP.cbShowOriginalLOPropertiesChange(Sender: TObject);
+begin
+ with dmLoadEntrySSP do
+ Begin
+   if cds_LoadHeadShowOriginalLO.AsInteger = 0 then
+   Begin
+    if cds_LoadHead.State in [dsEdit, dsInsert] then
+    Begin
+      if cdsLORows.RecordCount = 0 then
+       cds_LoadHeadShowOriginalLO.AsInteger := 1 ;
+    End;
+   End;
+ End;
 end;
 
 destructor TfLoadEntrySSP.Destroy;
@@ -6307,12 +6323,20 @@ end;
 procedure TfLoadEntrySSP.mePackageNoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
- if Key <> VK_RETURN then Exit;
- if Length(mePackageNo.Text) > 0 then
-  GetpackageNoEntered(Sender, mePackageNo.Text) ;
- Timer1.Enabled   := True ;
- mePackageNo.Text := '' ;
- SaveLoad ;
+ With dmLoadEntrySSP do
+ Begin
+   if Key <> VK_RETURN then Exit;
+   if cdsLORows.RecordCount > 1 then
+   Begin
+     if Length(mePackageNo.Text) > 0 then
+      GetpackageNoEntered(Sender, mePackageNo.Text) ;
+     Timer1.Enabled   := True ;
+     mePackageNo.Text := '' ;
+     SaveLoad ;
+   End
+    else
+     ShowMessage('Inga LO rader synliga att koppla paket mot, kontrollera att "Visa 0-LO rader" är i bockad.') ;
+ End;
 end;
 
 procedure TfLoadEntrySSP.Timer1Timer(Sender: TObject);
