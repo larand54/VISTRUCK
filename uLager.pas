@@ -364,7 +364,6 @@ type
     acEXCELView_DeckList: TAction;
     acEXCELView_PackageList: TAction;
     acEXCELView_Empty_Hands: TAction;
-    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
