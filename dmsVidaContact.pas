@@ -328,6 +328,8 @@ type
     cds_TypeOfRunTypeOfRunName: TStringField;
     cds_TypeOfRunAffectOutturn: TIntegerField;
     cds_TypeOfRunDefault: TIntegerField;
+    sq_GetSRNo: TFDQuery;
+    sq_GetSRNoSalesRegionNo: TIntegerField;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;
@@ -348,6 +350,7 @@ type
 //    function  WhoBelongsToLoadingLocation(const LoadingLocationNo : Integer) : Integer ;
 
   public
+    function  GetSalesRegionNo (const CompanyNo : Integer) : Integer ;
     Function  Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
     function  ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
     function  Get_PktNrLevKod(const ClientNo : Integer) : String ;
@@ -889,6 +892,21 @@ Begin
   sq_GetPIPNoOfCityNoByOwnerNo.Close ;
  End;
 End ;
+
+function TdmsContact.GetSalesRegionNo (const CompanyNo : Integer) : Integer ;
+Begin
+ sq_GetSRNo.ParamByName('ClientNo').AsInteger:= CompanyNo ;
+ Try
+ sq_GetSRNo.Open ;
+ if not sq_GetSRNo.Eof then
+  Result:= sq_GetSRNoSalesRegionNo.AsInteger
+   else
+    Result:= -1 ;
+ Finally
+  sq_GetSRNo.Close ;
+ End ;
+End ;
+
 
 
 end.

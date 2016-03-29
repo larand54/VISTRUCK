@@ -185,8 +185,8 @@ object frmMain: TfrmMain
   end
   object ActionList1: TActionList
     Images = imglOutbar_large
-    Left = 288
-    Top = 182
+    Left = 336
+    Top = 190
     object atDataCountry: TAction
       Category = 'DATA'
       Caption = 'Country'
@@ -412,8 +412,8 @@ object frmMain: TfrmMain
   object imglOutbar_large: TImageList
     Height = 24
     Width = 24
-    Left = 288
-    Top = 240
+    Left = 336
+    Top = 248
     Bitmap = {
       494C010122002500040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000D800000001002000000000000044
@@ -3699,8 +3699,8 @@ object frmMain: TfrmMain
     Top = 280
   end
   object dxBarScreenTipRepository1: TdxBarScreenTipRepository
-    Left = 288
-    Top = 296
+    Left = 336
+    Top = 304
   end
   object dxBarApplicationMenu1: TdxBarApplicationMenu
     BarManager = dxBarManager1

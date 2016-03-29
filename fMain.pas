@@ -210,6 +210,7 @@ type
   private
     OriginalUserID  : Integer ;
     a : String ;
+    Procedure InitOnStartOfProgram;
     function  SelectSortingOrderNo : Integer ;
     procedure AvregistreraPaket ;
     procedure ChangeUserSettingsOnStartUp ;
@@ -261,7 +262,7 @@ uses
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
-  uSelectSortingOrderNo;
+  uSelectSortingOrderNo, dmsVidaContact;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -273,6 +274,35 @@ uses
 
 
 {$R *.DFM}
+
+Procedure TfrmMain.InitOnStartOfProgram;
+Begin
+ if Assigned(dm_UserProps) then
+  FreeAndNil(dm_UserProps) ;
+ dm_UserProps := Tdm_UserProps.Create(Application);
+ With dmsContact do
+ Begin
+{
+    if sp_Customers.Active then
+     sp_Customers.Active  := False ;
+    sp_Customers.ParamByName('@SalesRegionNo').AsInteger  := GetSalesRegionNo(ThisUser.CompanyNo) ;
+    sp_Customers.Active := True ;
+}
+
+  cds_Verk.Active := False ;
+  cds_Verk.ParamByName('SalesRegionNo').AsInteger :=  GetSalesRegionNo(ThisUser.CompanyNo) ;
+  cds_Verk.Active := True ;
+
+
+{
+    if cds_Shippers.Active then
+     cds_Shippers.Active  := False ;
+    cds_Shippers.ParamByName('@SalesRegionNo').AsInteger  := GetSalesRegionNo(ThisUser.CompanyNo) ;
+    cds_Shippers.Active := True ;
+}
+ End;
+End;
+
 
 function TfrmMain.FormOpen : Boolean ;
 Begin
@@ -396,7 +426,7 @@ Begin
   Close
   else
   Begin
-
+    InitOnStartOfProgram ;
     Timer1.Enabled := True;
     dmsConnector.LoginChanged := True;
     // dxNavBar1.DefaultStyles.Background.BackColor:= clGreen ;
@@ -477,6 +507,7 @@ begin
        + '/' + dmsConnector.FDConnection1.Params.Values['Database'] + ' ' ;
 
        dmsSystem.vis_Del_OLD_Load_Res ;
+       InitOnStartOfProgram;
       End
       else
       Begin
@@ -645,7 +676,7 @@ begin
        if ((dmsConnector.Get_AD_Name <> OKHelpBottomDlg.EFD_Name.Text) and (Length(OKHelpBottomDlg.EFD_Name.Text) > 0) )
        or ((OKHelpBottomDlg.eDatabas.Text <> dmsConnector.Org_DB_Name) and (Length(OKHelpBottomDlg.eDatabas.Text) > 0)) then
        Begin
-
+        InitOnStartOfProgram;
         Timer1.Enabled:= True ;
         dmsConnector.LoginChanged:= True ;
 //        dxNavBar1.DefaultStyles.Background.BackColor:= clGreen ;
@@ -657,7 +688,7 @@ begin
        End
        else
        Begin
-
+        InitOnStartOfProgram;
         dmsConnector.LoginChanged:= False ;
         Timer1.Enabled:= False ;
 //        dxNavBar1.DefaultStyles.Background.BackColor:= clWhite ;

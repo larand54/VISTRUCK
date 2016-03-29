@@ -285,6 +285,10 @@ object frmLoadArrivals: TfrmLoadArrivals
         DataBinding.FieldName = 'OriginalLoadNo'
         PropertiesClassName = 'TcxLabelProperties'
       end
+      object grdLoadsDBTableView1OriginalInvoiceNo: TcxGridDBColumn
+        DataBinding.FieldName = 'OriginalInvoiceNo'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
     end
     object grdLoadsLevel1: TcxGridLevel
       GridView = grdLoadsDBTableView1
@@ -327,9 +331,9 @@ object frmLoadArrivals: TfrmLoadArrivals
       end
       object Panel7: TPanel
         Left = 1
-        Top = 50
+        Top = 49
         Width = 861
-        Height = 94
+        Height = 95
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -468,7 +472,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
         end
         object lcLaststlle: TcxDBLookupComboBox
-          Left = 369
+          Left = 367
           Top = 43
           Margins.Left = 4
           Margins.Top = 4
@@ -488,7 +492,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ListOptions.ShowHeader = False
           Style.TextStyle = [fsBold]
           TabOrder = 7
-          Width = 153
+          Width = 152
         end
         object lcSlutKund: TcxDBLookupComboBox
           Left = 644
@@ -576,7 +580,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Left = 1
         Top = 1
         Width = 76
-        Height = 49
+        Height = 48
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -1224,7 +1228,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (

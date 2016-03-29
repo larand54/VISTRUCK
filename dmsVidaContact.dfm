@@ -1,7 +1,7 @@
 object dmsContact: TdmsContact
   OldCreateOrder = False
   Height = 778
-  Width = 1015
+  Width = 1112
   object dsrcShippers: TDataSource
     DataSet = cds_Shippers
     Left = 32
@@ -9,47 +9,47 @@ object dmsContact: TdmsContact
   end
   object dsrcOwners: TDataSource
     DataSet = cdsOwners
-    Left = 200
+    Left = 240
     Top = 224
   end
   object dsrcProducers: TDataSource
     DataSet = cdsProducers
-    Left = 264
+    Left = 336
     Top = 224
   end
   object dsrcCities: TDataSource
     DataSet = cdsCities
-    Left = 744
+    Left = 816
     Top = 344
   end
   object dsrcAddressAndReference: TDataSource
     DataSet = cdsAddressAndReference
-    Left = 848
+    Left = 944
     Top = 344
   end
   object dsCity: TDataSource
     DataSet = cdsCity
-    Left = 680
+    Left = 752
     Top = 344
   end
   object ds_LocalShipper: TDataSource
     DataSet = cds_LocalShipper
-    Left = 120
+    Left = 136
     Top = 224
   end
   object ds_Verk: TDataSource
     DataSet = cds_Verk
-    Left = 616
+    Left = 688
     Top = 344
   end
   object ds_ProductionUnit: TDataSource
     DataSet = cds_ProductionUnit
-    Left = 432
+    Left = 552
     Top = 224
   end
   object ds_RegPoints: TDataSource
     DataSet = cds_RegPoints
-    Left = 344
+    Left = 440
     Top = 224
   end
   object ds_PkgNoSerie: TDataSource
@@ -58,22 +58,22 @@ object dmsContact: TdmsContact
   end
   object ds_Users: TDataSource
     DataSet = cds_Users
-    Left = 368
+    Left = 408
     Top = 72
   end
   object ds_SalesGrp: TDataSource
     DataSet = cds_SalesGrp
-    Left = 560
+    Left = 600
     Top = 72
   end
   object ds_SR: TDataSource
     DataSet = cds_SR
-    Left = 648
+    Left = 688
     Top = 72
   end
   object ds_Market: TDataSource
     DataSet = cds_Market
-    Left = 720
+    Left = 760
     Top = 72
   end
   object dsCurrency: TDataSource
@@ -88,7 +88,7 @@ object dmsContact: TdmsContact
   end
   object ds_volunit: TDataSource
     DataSet = cds_volunit
-    Left = 792
+    Left = 832
     Top = 72
   end
   object sp_ClientCode: TFDStoredProc
@@ -175,7 +175,7 @@ object dmsContact: TdmsContact
       'where'
       'UserID = :UserID'
       '')
-    Left = 272
+    Left = 312
     Top = 16
     ParamData = <
       item
@@ -201,7 +201,7 @@ object dmsContact: TdmsContact
       'WHERE  R.ClientNo = :ClientNo'
       'AND  R.RoleType = 6'
       'AND ((C.IntVerk is null) or (C.IntVerk <> 1))')
-    Left = 272
+    Left = 312
     Top = 72
     ParamData = <
       item
@@ -224,7 +224,7 @@ object dmsContact: TdmsContact
       'Select UserID,'
       'INITIALS+'#39' '#39'+RTrim(LastName) +'#39', '#39'+RTRIM(FirstName) AS Namn'
       'FROM dbo.Users')
-    Left = 368
+    Left = 408
     Top = 16
     object cds_UsersUserID: TIntegerField
       FieldName = 'UserID'
@@ -253,7 +253,7 @@ object dmsContact: TdmsContact
       'WHERE PhyInvPointNameNo = :LoadingLocationNo'
       'AND (CR.RoleType = 6 OR CR.RoleType = 9)'
       'AND CL.ClientNo <> 741')
-    Left = 440
+    Left = 496
     Top = 16
     ParamData = <
       item
@@ -279,7 +279,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.SalesmanGroup')
-    Left = 560
+    Left = 600
     Top = 16
     object cds_SalesGrpSalesGroupNo: TIntegerField
       FieldName = 'SalesGroupNo'
@@ -304,7 +304,7 @@ object dmsContact: TdmsContact
       'WHERE  C.ClientNo = R.ClientNo'
       'AND  R.RoleType = 7'
       'Order by C.clientName')
-    Left = 648
+    Left = 688
     Top = 16
     object cds_SRClientName: TStringField
       FieldName = 'ClientName'
@@ -326,7 +326,7 @@ object dmsContact: TdmsContact
       'Select Distinct * '
       'FROM   dbo.MarketRegion'
       'Order by MarketRegionName')
-    Left = 720
+    Left = 760
     Top = 16
     object cds_MarketMarketRegionNo: TIntegerField
       FieldName = 'MarketRegionNo'
@@ -363,7 +363,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.UnitName')
-    Left = 792
+    Left = 832
     Top = 16
     object cds_volunitVolumeUnit_No: TIntegerField
       FieldName = 'VolumeUnit_No'
@@ -400,7 +400,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.PackUnit')
-    Left = 864
+    Left = 904
     Top = 16
     object cdsPriceUnitTemplateUnitNo: TIntegerField
       FieldName = 'TemplateUnitNo'
@@ -445,7 +445,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Local_Shippers'
-    Left = 120
+    Left = 136
     Top = 176
     ParamData = <
       item
@@ -471,7 +471,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Owners'
-    Left = 200
+    Left = 240
     Top = 176
     ParamData = <
       item
@@ -486,7 +486,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Producers'
-    Left = 264
+    Left = 336
     Top = 176
     ParamData = <
       item
@@ -518,7 +518,7 @@ object dmsContact: TdmsContact
         'Created,'
       'SequenceNo'
       'FROM dbo.RegistrationPoint')
-    Left = 344
+    Left = 440
     Top = 176
     object cds_RegPointsRegPointNo: TIntegerField
       FieldName = 'RegPointNo'
@@ -562,7 +562,7 @@ object dmsContact: TdmsContact
     SQL.Strings = (
       'Select *'
       'FROM dbo.ProductionUnit')
-    Left = 432
+    Left = 552
     Top = 176
     object cds_ProductionUnitProductionUnitNo: TIntegerField
       FieldName = 'ProductionUnitNo'
@@ -735,15 +735,21 @@ object dmsContact: TdmsContact
         'C.PaketNoPos, C.PaketNoLength, C.SupplierCodePos, C.SupplierCode' +
         'Length'
       ''
-      'FROM   dbo.Client        C,'
-      '       dbo.ClientRole    R'
+      'FROM   dbo.Client        C'
+      '       inner join dbo.ClientRole    R on R.ClientNo = C.ClientNo'
       ''
-      'WHERE  C.ClientNo = R.ClientNo'
-      '  AND  R.RoleType = 9'
-      'AND (C.IntVerk = 1 OR C.ClientNo = 741 or C.ClientNo = 3682)'
+      'WHERE  R.RoleType = 9'
+      '-- AND (C.IntVerk = 1 OR C.ClientNo = 741 or C.ClientNo = 3682)'
+      'AND C.OwnedBySalesRegionNo = :SalesRegionNo'
       'Order by C.clientName')
-    Left = 616
+    Left = 688
     Top = 296
+    ParamData = <
+      item
+        Name = 'SALESREGIONNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
     object cds_VerkClientNo: TIntegerField
       FieldName = 'ClientNo'
       Origin = 'ClientNo'
@@ -762,7 +768,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'select * from dbo.city')
-    Left = 680
+    Left = 752
     Top = 296
   end
   object cdsCities: TFDStoredProc
@@ -770,7 +776,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Cities'
-    Left = 744
+    Left = 816
     Top = 296
     ParamData = <
       item
@@ -796,7 +802,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_AddressAndReference_CSD'
-    Left = 848
+    Left = 944
     Top = 296
     ParamData = <
       item
@@ -980,7 +986,7 @@ object dmsContact: TdmsContact
       ''
       'WHERE  Bk.shippingplanno = :LONumber'
       ' AND cr.RoleType = 6')
-    Left = 208
+    Left = 192
     Top = 432
     ParamData = <
       item
@@ -1003,7 +1009,7 @@ object dmsContact: TdmsContact
       'SELECT distinct pf.PkgPrefix'
       'FROM dbo.PkgPrefix pf '
       'WHERE ProductionUnitCode = :ProductionUnitCode')
-    Left = 208
+    Left = 192
     Top = 488
     ParamData = <
       item
@@ -1026,7 +1032,7 @@ object dmsContact: TdmsContact
       'FROM   dbo.ClientRole    R'
       'WHERE  R.ClientNo = :ClientNo'
       'AND  R.RoleType = 9')
-    Left = 208
+    Left = 192
     Top = 552
     ParamData = <
       item
@@ -1207,7 +1213,7 @@ object dmsContact: TdmsContact
       'where'
       'UserID = :UserID')
     Left = 416
-    Top = 432
+    Top = 416
     ParamData = <
       item
         Name = 'USERID'
@@ -1276,7 +1282,7 @@ object dmsContact: TdmsContact
       'select C.ClientCode from dbo.client C'
       'Where C.ClientNo = :ClientNo')
     Left = 696
-    Top = 432
+    Top = 416
     ParamData = <
       item
         Name = 'CLIENTNO'
@@ -1295,7 +1301,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vida_Customers'
-    Left = 592
+    Left = 712
     Top = 176
     ParamData = <
       item
@@ -1321,7 +1327,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_AllAgents'
-    Left = 520
+    Left = 640
     Top = 176
     ParamData = <
       item
@@ -1358,7 +1364,7 @@ object dmsContact: TdmsContact
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'select CountryNo, CountryName from dbo.country')
-    Left = 544
+    Left = 616
     Top = 296
     object cds_CountryCountryNo: TIntegerField
       FieldName = 'CountryNo'
@@ -1375,7 +1381,7 @@ object dmsContact: TdmsContact
   end
   object dsPriceUnit: TDataSource
     DataSet = cdsPriceUnit
-    Left = 864
+    Left = 904
     Top = 72
   end
   object sq_GetMaxLIPNoOfPIPNo: TFDQuery
@@ -1388,7 +1394,7 @@ object dmsContact: TdmsContact
       'WHERE LIP.PhysicalInventoryPointNo = :PIPNo'
       'AND LIP.SequenceNo = 1')
     Left = 416
-    Top = 488
+    Top = 472
     ParamData = <
       item
         Name = 'PIPNO'
@@ -1403,7 +1409,7 @@ object dmsContact: TdmsContact
   end
   object ds_Customers: TDataSource
     DataSet = sp_Customers
-    Left = 592
+    Left = 712
     Top = 224
   end
   object sp_actAgents: TFDStoredProc
@@ -1411,7 +1417,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_ActAgents'
-    Left = 688
+    Left = 816
     Top = 176
     ParamData = <
       item
@@ -1441,7 +1447,7 @@ object dmsContact: TdmsContact
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_ActShippers'
-    Left = 792
+    Left = 920
     Top = 176
     ParamData = <
       item
@@ -1469,7 +1475,7 @@ object dmsContact: TdmsContact
   end
   object ds_Country: TDataSource
     DataSet = cds_Country
-    Left = 544
+    Left = 616
     Top = 344
   end
   object cds_AdrSearch: TFDQuery
@@ -1483,7 +1489,7 @@ object dmsContact: TdmsContact
       'From '
       'dbo.Address FDr '
       'WHERE AddressNo = 0')
-    Left = 408
+    Left = 456
     Top = 296
     object cds_AdrSearchAddressNo: TIntegerField
       DisplayLabel = 'FDrNr'
@@ -1625,7 +1631,7 @@ object dmsContact: TdmsContact
   end
   object ds_AdrSearch: TDataSource
     DataSet = cds_AdrSearch
-    Left = 408
+    Left = 456
     Top = 344
   end
   object FD_City: TFDQuery
@@ -1635,7 +1641,7 @@ object dmsContact: TdmsContact
     SQL.Strings = (
       'Select * FROM dbo.City'
       'Order By CityName')
-    Left = 472
+    Left = 544
     Top = 296
     object FD_CityCityNo: TIntegerField
       FieldName = 'CityNo'
@@ -1679,12 +1685,12 @@ object dmsContact: TdmsContact
   end
   object ds_City: TDataSource
     DataSet = FD_City
-    Left = 472
+    Left = 544
     Top = 344
   end
   object ds_CompDelAdr: TDataSource
     DataSet = cds_Comp_DelAdr
-    Left = 304
+    Left = 352
     Top = 344
   end
   object cds_Comp_DelAdr: TFDQuery
@@ -1706,7 +1712,7 @@ object dmsContact: TdmsContact
       'WHERE ClientNo = :ClientNo'
       'AND ca.AddressType = 2'
       '')
-    Left = 304
+    Left = 352
     Top = 296
     ParamData = <
       item
@@ -1886,7 +1892,7 @@ object dmsContact: TdmsContact
       'Select * From DBO.Address'
       'Where AddressName =:AddressName'
       'AND AddressNo <> :AddressNo')
-    Left = 224
+    Left = 248
     Top = 296
     ParamData = <
       item
@@ -2399,6 +2405,25 @@ object dmsContact: TdmsContact
     object cds_TypeOfRunDefault: TIntegerField
       FieldName = 'Default'
       Origin = '[Default]'
+    end
+  end
+  object sq_GetSRNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select OwnedBySalesRegionNo AS SalesRegionNo from dbo.client'
+      'WHERE  ClientNo = :ClientNo'
+      '')
+    Left = 984
+    Top = 528
+    ParamData = <
+      item
+        Name = 'CLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GetSRNoSalesRegionNo: TIntegerField
+      FieldName = 'SalesRegionNo'
+      Origin = 'SalesRegionNo'
     end
   end
 end
