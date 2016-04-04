@@ -175,7 +175,7 @@ object frmMain: TfrmMain
     TabStop = False
     object dxRibbon1Tab2: TdxRibbonTab
       Active = True
-      Caption = 'Lastorder'
+      Caption = 'Meny'
       Groups = <
         item
           ToolbarName = 'dxBarManager1Bar4'
