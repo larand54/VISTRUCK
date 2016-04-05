@@ -120,7 +120,11 @@ uses
   uFastReports in '..\CommonSources\FastReport\uFastReports.pas',
   uDlgReferensAndInfo in 'uDlgReferensAndInfo.pas' {dlgChgRef_and_Info},
   uSQLView in 'uSQLView.pas',
-  uEXCELView in 'uEXCELView.pas' {fEXCELView};
+  uPositionView in 'uPositionView.pas' {fPositionView},
+  uISQLHelper in 'uISQLHelper.pas',
+  uISQLViewField in 'uISQLViewField.pas',
+  uISQLView in 'uISQLView.pas',
+  uISQLBuild in 'uISQLBuild.pas';
 
 {$R *.res}
 begin

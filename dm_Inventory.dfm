@@ -1,6 +1,6 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
-  Height = 967
+  Height = 1053
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup

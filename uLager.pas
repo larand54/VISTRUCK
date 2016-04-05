@@ -350,7 +350,6 @@ type
     acPrintPKGLabels: TAction;
     acSetRef_and_Info: TAction;
     cxbtnIMPinfo: TcxButton;
-    cxButton13: TcxButton;
     acEXCELView_Ref: TAction;
     pmEXCELvyer: TdxBarPopupMenu;
     dxBarButton5: TdxBarButton;
@@ -416,7 +415,6 @@ type
     procedure grdBoTDBBandedPerPositionDblClick(Sender: TObject);
     procedure acPrintPKGLabelsExecute(Sender: TObject);
     procedure acSetRef_and_InfoExecute(Sender: TObject);
-    procedure cxButton13Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -673,13 +671,6 @@ begin
  End ;
 end;
 
-
-procedure TfLager.cxButton13Click(Sender: TObject);
-begin
-  if not assigned(uEXCELView.fEXCELView) then
-    fEXCELView := TfEXCELView.Create(self);
-  fEXCELView.Show;
-end;
 
 procedure TfLager.LoadGridLayoutSortimentsVy ;
 Begin

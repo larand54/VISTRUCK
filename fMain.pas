@@ -184,6 +184,8 @@ type
     dxBarLargeButton31: TdxBarLargeButton;
     acDeRegisterPackages: TAction;
     cxbtnChangeReporter: TcxButton;
+    dxBarLargeButton32: TdxBarLargeButton;
+    acPositionView: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -206,6 +208,7 @@ type
     procedure acChangeLanguageExecute(Sender: TObject);
     procedure acDeRegisterPackagesExecute(Sender: TObject);
     procedure cxbtnChangeReporterClick(Sender: TObject);
+    procedure acPositionViewExecute(Sender: TObject);
 
   private
     OriginalUserID  : Integer ;
@@ -261,7 +264,7 @@ uses
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
-  uSelectSortingOrderNo;
+  uSelectSortingOrderNo, uPositionView;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -944,6 +947,13 @@ begin
  Finally
   FreeAndNil(fSetStdPkgSizeIntervall) ;
  End ;
+end;
+
+procedure TfrmMain.acPositionViewExecute(Sender: TObject);
+begin
+  if not assigned(uPositionView.fPositionView) then
+    fPositionView := TfPositionView.Create(self);
+  fPositionView.Show;
 end;
 
 procedure TfrmMain.acAndraPaketExecute(Sender: TObject);

@@ -811,7 +811,7 @@
       
         '  Left Outer Join dbo.PackageSize ps on ps.PackageSizeNo = SSP.P' +
         'ackage_Size'
-      '  and ps.LanguageCode = 1'
+      '  and ps.LanguageCode = 2'
       ''
       #9'LEFT OUTER JOIN dbo.CustomerShippingPlanDetails CSD'
       ''
@@ -845,7 +845,7 @@
         'GradeNo'
       
         '                                                AND G.LanguageCo' +
-        'de = 1'
+        'de = 2'
       ''
       
         #9'INNER JOIN dbo.ProductLength PL               ON PL.ProductLeng' +
@@ -861,7 +861,7 @@
         #9'INNER JOIN dbo.PackUnit '#9#9'PU'#9'              ON PU.TemplateUnitNo' +
         ' '#9'= SSP.PriceUnitNo'
       #9'INNER JOIN dbo.Species sp on sp.SpeciesNo = PG.SpeciesNo'
-      #9'and sp.LanguageCode = 1'
+      #9'and sp.LanguageCode = 2'
       
         '  LEFT OUTER JOIN dbo.PriceTemplateHeader PrLi  ON PrLi.Template' +
         'No = SSP.PriceListNo'
@@ -1263,6 +1263,7 @@
         Name = 'SHIPPINGPLANNO'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end
       item
         Name = 'SUPPLIERNO'

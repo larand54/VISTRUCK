@@ -3,18 +3,19 @@ unit uSQLView;
 interface
 uses
   Classes, SysUtils, System.Generics.Collections,
-  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBBandedTableView;
+  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBBandedTableView,
+  uISQLHelper, uISQLViewField, uISQLView, uISQLBuild;
 type
 
-  TSQLHelper = class(TObject)
+  TSQLHelper = class(TInterfacedObject, ISQLHelper)
     private
     public
-      class function GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
-      class function replaceCommas(S : String): string;
-      class function TaBortExtension(S : String) : String ;
+      function GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
+      function ReplaceCommasWithDecimal(S : String): string;
+      function TaBortExtension(S : String) : String ;
   end;
 
-  TSQLViewField = class(TObject)
+  TSQLViewField = class(TInterfacedObject, ISQLViewField)
     Private
       FGridField : String;
       FFieldSQL : String;
@@ -28,7 +29,7 @@ type
       property FieldName: string read FGridField;
   end;
 
-  TSQLView = class(TObject)
+  TSQLView = class(TInterfacedObject, ISQLView)
     private
       Fgridview : TcxGridDBBandedTableView;
       FObjectList : TList<TSQLViewField>;
@@ -40,6 +41,7 @@ type
       procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
       Constructor create(aGridView: TcxGridDBBandedTableView; aSQLFile: string);
+      Destructor destroy;
       property ObjectList: TList<TSQLViewField> read FObjectList;
       property gridView: TcxGridDBBandedTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
@@ -47,20 +49,25 @@ type
       property SQL: TStringList read FSQL;
   end;
 
-  TSQLBuild = class (TObject)
+  TSQLBuild = class (TInterfacedObject, ISQLBuild)
     private
       FSQL: TStringList;
       FSQLView: TSQLView;
       FSQLReady: boolean;
     public
       constructor Create(aSQLView: TSQLView);
+      destructor destroy;
       property SQL: TStringList read FSQL;
       property SQLReady: boolean read FSQLReady;
   end;
 
+var
+  SQLHelper: TSQLHelper;
 implementation
 
-class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
+
+
+Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
     APCheckStates : ^TcxCheckStates;
     AddORToSQL    : Boolean ;
@@ -87,7 +94,7 @@ Begin
         if dType = 0 then
          Result:= Result + ' ' + Kolumn+' = ' + QuotedStr(Properties.Items[x].ShortDescription)
           else
-           Result:= Result + ' ' + Kolumn+' = ' + ReplaceCommas(Properties.Items[x].ShortDescription) ;
+           Result:= Result + ' ' + Kolumn+' = ' + ReplaceCommasWithDecimal(Properties.Items[x].ShortDescription) ;
 
         AddORToSQL:= True ;
        End ;//if..
@@ -101,15 +108,15 @@ Begin
   end;
 End ;
 
-class function TSQLHelper.TaBortExtension(S : String) : String ;
+function TSQLHelper.TaBortExtension(S : String) : String ;
 begin
-  { Convert commas to period }
+  { Remove extension including period e.g. (file.pdf -> file) }
   if Pos('.', S) > 0 then
    Delete(S, Pos('.', S), -1*(Pos('.', S)-(Length(S)+1) )) ;
  Result:= S ;
 end;
 
-class function TSQLHelper.ReplaceCommas(S : String) : String ;
+function TSQLHelper.ReplaceCommasWithDecimal(S : String) : String ;
 begin
   { Convert period to commas}
   while Pos(',', S) > 0 do
@@ -127,6 +134,13 @@ begin
     gridView.DataController.KeyFieldNames := KeyFields;
   finally
   end;
+end;
+
+destructor TSQLView.destroy;
+begin
+  if assigned(FObjectList) then FreeAndNil(FObjectList);
+  if assigned(FSQL) then FreeAndNil(FSQL);
+
 end;
 
 function TSQLView.getStatus(aGridField: string): boolean;
@@ -164,6 +178,8 @@ begin
     SetKeyFields(FieldVisible, GridField);     // Lägger upp fältet i KeyFieldList om det är invalt i gridden
     ObjectList.Add(TSQLViewField.Create(GridField, FieldSQL, FieldGroup, FieldVisible));
   end;
+  buffer.Free;
+  StrTemp.Free;
 end;
 
 procedure TSQLView.SetKeyFields(aStatus: boolean; aGridField: string);
@@ -270,5 +286,13 @@ begin
     SQL.Add(TempSQLStr2);
   end;
 end;
+
+destructor TSQLBuild.destroy;
+begin
+  if assigned(FSQL) then FSQL.Free;
+end;
+
+initialization
+  SQLHelper := TSQLHelper.Create;
 
 end.

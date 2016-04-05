@@ -80,6 +80,7 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
+          ExplicitLeft = -1
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -1025,26 +1026,6 @@ object fLager: TfLager
       ParentFont = False
       WordWrap = True
     end
-    object cxButton13: TcxButton
-      Left = 867
-      Top = 78
-      Width = 99
-      Height = 50
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Caption = 'EXCEL vyer'
-      TabOrder = 27
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -20
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
-      WordWrap = True
-      OnClick = cxButton13Click
-    end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -1458,6 +1439,7 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1479,12 +1461,14 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1504,6 +1488,7 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

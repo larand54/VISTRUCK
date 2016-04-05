@@ -459,10 +459,14 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uSQLView.pas"/>
-        <DCCReference Include="uEXCELView.pas">
-            <Form>fEXCELView</Form>
+        <DCCReference Include="uPositionView.pas">
+            <Form>fPositionView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uISQLHelper.pas"/>
+        <DCCReference Include="uISQLViewField.pas"/>
+        <DCCReference Include="uISQLView.pas"/>
+        <DCCReference Include="uISQLBuild.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
