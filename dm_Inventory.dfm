@@ -10232,7 +10232,7 @@ object dmInventory: TdmInventory
       Size = 30
     end
   end
-  object cds_EXCELView: TFDQuery
+  object cds_PositionView: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'declare @LanguageCode int = 1'
@@ -10335,110 +10335,110 @@ object dmInventory: TdmInventory
       'Posi.PositionName')
     Left = 664
     Top = 184
-    object cds_EXCELViewLogicalInventoryName: TStringField
+    object cds_PositionViewLogicalInventoryName: TStringField
       FieldName = 'LogicalInventoryName'
       Origin = 'LogicalInventoryName'
       Size = 50
     end
-    object cds_EXCELViewpcs: TIntegerField
+    object cds_PositionViewpcs: TIntegerField
       FieldName = 'pcs'
       Origin = 'pcs'
       ReadOnly = True
     end
-    object cds_EXCELViewAM3: TFloatField
+    object cds_PositionViewAM3: TFloatField
       FieldName = 'AM3'
       Origin = 'AM3'
       ReadOnly = True
     end
-    object cds_EXCELViewNM3: TFloatField
+    object cds_PositionViewNM3: TFloatField
       FieldName = 'NM3'
       Origin = 'NM3'
       ReadOnly = True
     end
-    object cds_EXCELViewdim: TStringField
+    object cds_PositionViewdim: TStringField
       FieldName = 'dim'
       Origin = 'dim'
       ReadOnly = True
       Size = 13
     end
-    object cds_EXCELViewTS: TStringField
+    object cds_PositionViewTS: TStringField
       FieldName = 'TS'
       Origin = 'TS'
       Required = True
       Size = 30
     end
-    object cds_EXCELViewPC: TStringField
+    object cds_PositionViewPC: TStringField
       FieldName = 'PC'
       Origin = 'PC'
       Required = True
       Size = 40
     end
-    object cds_EXCELViewKV: TStringField
+    object cds_PositionViewKV: TStringField
       FieldName = 'KV'
       Origin = 'KV'
       Required = True
       FixedChar = True
       Size = 30
     end
-    object cds_EXCELViewUT: TStringField
+    object cds_PositionViewUT: TStringField
       FieldName = 'UT'
       Origin = 'UT'
       Required = True
       Size = 30
     end
-    object cds_EXCELViewLIPNo: TIntegerField
+    object cds_PositionViewLIPNo: TIntegerField
       FieldName = 'LIPNo'
       Origin = 'LIPNo'
       Required = True
     end
-    object cds_EXCELViewPIPNo: TIntegerField
+    object cds_PositionViewPIPNo: TIntegerField
       FieldName = 'PIPNo'
       Origin = 'PIPNo'
       Required = True
     end
-    object cds_EXCELViewVarugruppNamn: TStringField
+    object cds_PositionViewVarugruppNamn: TStringField
       FieldName = 'VarugruppNamn'
       Origin = 'VarugruppNamn'
       Size = 35
     end
-    object cds_EXCELViewREFERENCE: TStringField
+    object cds_PositionViewREFERENCE: TStringField
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
       Size = 30
     end
-    object cds_EXCELViewInfo1: TStringField
+    object cds_PositionViewInfo1: TStringField
       FieldName = 'Info1'
       Origin = 'Info1'
       Size = 30
     end
-    object cds_EXCELViewInfo2: TStringField
+    object cds_PositionViewInfo2: TStringField
       FieldName = 'Info2'
       Origin = 'Info2'
       Size = 30
     end
-    object cds_EXCELViewAreaName: TStringField
+    object cds_PositionViewAreaName: TStringField
       FieldName = 'AreaName'
       Origin = 'AreaName'
       Size = 50
     end
-    object cds_EXCELViewPositionName: TStringField
+    object cds_PositionViewPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
       Size = 50
     end
-    object cds_EXCELViewCity: TStringField
+    object cds_PositionViewCity: TStringField
       FieldName = 'City'
       Origin = 'City'
       Size = 50
     end
-    object cds_EXCELViewPaket: TIntegerField
+    object cds_PositionViewPaket: TIntegerField
       FieldName = 'Paket'
       Origin = 'Paket'
       ReadOnly = True
     end
   end
-  object ds_EXCELView: TDataSource
-    DataSet = cds_EXCELView
+  object ds_PositionView: TDataSource
+    DataSet = cds_PositionView
     Left = 664
     Top = 232
   end

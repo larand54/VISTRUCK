@@ -1298,14 +1298,14 @@ begin
    Exit ;
   End;
 
-  dmInventory.cds_EXCELView.Active  := False ;
+  dmInventory.cds_PositionView.Active  := False ;
   SQLView := TSQLView.Create(grdProdPaketNrDBBandedTableView1,'SQL_SetUp.txt');
   SQLBuild := TSQLBuild.Create(SQLView);
   if SQLBuild.SQLReady then
   begin
     grdProdPaketNrDBBandedTableView1.DataController.KeyFieldNames := SQLView.KeyFields ;
-    dmInventory.cds_Excelview.SQL := SQLBuild.SQL;
-    dmInventory.cds_EXCELView.Active  := True ;
+    dmInventory.cds_PositionView.SQL := SQLBuild.SQL;
+    dmInventory.cds_PositionView.Active  := True ;
   end
   else
   begin
@@ -1574,7 +1574,7 @@ begin
  Begin
   dmsSystem.LoadGridLayout_Special( ThisUser.UserID, fPositionView.Name + '1',
   cbProdPaketNr.Properties.Items.Strings[cbProdPaketNr.ItemIndex]
-  + '/' + fPositionView.Name + '1', grdProdPaketNrDBBandedTableView1,'fEXCELView') ;
+  + '/' + fPositionView.Name + '1', grdProdPaketNrDBBandedTableView1,'fPositionView') ;
  End;
 end;
 
@@ -1585,7 +1585,7 @@ begin
  Begin
   dmsSystem.LoadGridLayout_Special( ThisUser.UserID, fPositionView.Name + '2',
   cbProdSUM.Properties.Items.Strings[cbProdSUM.ItemIndex]
-  + '/' + fPositionView.Name + '2', grdProdSUMDBBandedTableView1,'fEXCELView') ;
+  + '/' + fPositionView.Name + '2', grdProdSUMDBBandedTableView1,'fPositionView') ;
  End;
 end;
 

@@ -1263,28 +1263,34 @@ object fLager: TfLager
       Visible = ivAlways
     end
     object dxBarButton9: TdxBarButton
-      Action = acEXCELView_PackageList
+      Caption = 'Paketlista'
       Category = 6
+      Visible = ivAlways
     end
     object dxBarButton5: TdxBarButton
-      Action = acEXCELView_Ref
+      Caption = 'Referens'
       Category = 6
+      Visible = ivAlways
     end
     object dxBarButton6: TdxBarButton
-      Action = acEXCELView_Ref_Dim
+      Caption = 'Ref o Dimension'
       Category = 6
+      Visible = ivAlways
     end
     object dxBarButton7: TdxBarButton
-      Action = acEXCELView_Ref_Dim_Len
+      Caption = 'Ref, Dim o L'#228'ngd(Maxl'#228'ngd)'
       Category = 6
+      Visible = ivAlways
     end
     object dxBarButton8: TdxBarButton
-      Action = acEXCELView_DeckList
+      Caption = 'D'#228'cklista'
       Category = 6
+      Visible = ivAlways
     end
     object dxBarButton10: TdxBarButton
-      Action = acEXCELView_Empty_Hands
+      Caption = 'Tomma R'#228'ckor'
       Category = 6
+      Visible = ivAlways
     end
   end
   object ActionList1: TActionList
@@ -1384,30 +1390,6 @@ object fLager: TfLager
     object acSetRef_and_Info: TAction
       Caption = #196'ndra Ref o Info f'#246'r  markerade'
       OnExecute = acSetRef_and_InfoExecute
-    end
-    object acEXCELView_Ref: TAction
-      Category = 'Reports'
-      Caption = 'Referens'
-    end
-    object acEXCELView_Ref_Dim: TAction
-      Category = 'Reports'
-      Caption = 'Ref o Dimension'
-    end
-    object acEXCELView_Ref_Dim_Len: TAction
-      Category = 'Reports'
-      Caption = 'Ref, Dim o L'#228'ngd(Maxl'#228'ngd)'
-    end
-    object acEXCELView_DeckList: TAction
-      Category = 'Reports'
-      Caption = 'D'#228'cklista'
-    end
-    object acEXCELView_PackageList: TAction
-      Category = 'Reports'
-      Caption = 'Paketlista'
-    end
-    object acEXCELView_Empty_Hands: TAction
-      Category = 'Reports'
-      Caption = 'Tomma R'#228'ckor'
     end
   end
   object pmFormShortcuts: TPopupMenu

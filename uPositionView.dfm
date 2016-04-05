@@ -185,7 +185,7 @@ object fPositionView: TfPositionView
         ExplicitHeight = 824
         object grdProdPaketNrDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmInventory.ds_EXCELView
+          DataController.DataSource = dmInventory.ds_PositionView
           DataController.KeyFieldNames = 'ProductNo;OwnerNo;LO'
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <

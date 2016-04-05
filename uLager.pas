@@ -350,7 +350,6 @@ type
     acPrintPKGLabels: TAction;
     acSetRef_and_Info: TAction;
     cxbtnIMPinfo: TcxButton;
-    acEXCELView_Ref: TAction;
     pmEXCELvyer: TdxBarPopupMenu;
     dxBarButton5: TdxBarButton;
     dxBarButton6: TdxBarButton;
@@ -358,11 +357,6 @@ type
     dxBarButton8: TdxBarButton;
     dxBarButton9: TdxBarButton;
     dxBarButton10: TdxBarButton;
-    acEXCELView_Ref_Dim: TAction;
-    acEXCELView_Ref_Dim_Len: TAction;
-    acEXCELView_DeckList: TAction;
-    acEXCELView_PackageList: TAction;
-    acEXCELView_Empty_Hands: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -505,7 +499,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup,  uDlgReferensAndInfo, uEXCELView; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup,  uDlgReferensAndInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
