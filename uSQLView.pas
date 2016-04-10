@@ -34,7 +34,7 @@ type
       Fgridview : TcxGridDBBandedTableView;
       FObjectList : TList<TSQLViewField>;
       FKeyFields: String;
-      FSQLFile: string;
+      FSQLFile: string;           //D:\git\delphi\VISTRUCK\EXE\SQL_SetUp.txt
       FSQL: TStringList;
       procedure InitiateFieldObjects;
       function getStatus(aGridField: string): boolean;

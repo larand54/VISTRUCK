@@ -2,7 +2,7 @@
     <PropertyGroup>
         <ProjectGuid>{7288FAAA-814C-4BEC-9B99-417D281AC6DA}</ProjectGuid>
         <ProjectVersion>15.4</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <MainSource>VISTRUCK_Test.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
@@ -63,7 +63,7 @@
         <SanitizedProjectName>VISTRUCK_Test</SanitizedProjectName>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_UnitSearchPath>$(DUnitX);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
@@ -124,6 +124,14 @@
         <DCCReference Include="..\uISQLHelper.pas"/>
         <DCCReference Include="..\uISQLView.pas"/>
         <DCCReference Include="..\uISQLViewField.pas"/>
+        <DCCReference Include="..\udmFilterSQL.pas">
+            <Form>dmFilterSQL</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="TestdmFilterSQL.pas"/>
+        <DCCReference Include="..\uICMObserver.pas"/>
+        <DCCReference Include="..\uICMSubject.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

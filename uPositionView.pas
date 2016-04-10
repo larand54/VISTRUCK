@@ -53,7 +53,9 @@ uses
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions, siComp, siLngLnk,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
-  FireDAC.Phys.MSSQL ;
+  FireDAC.Phys.MSSQL
+  , uICMObserver,
+  udmFilterSQL ;
 
 
 type
@@ -73,7 +75,7 @@ type
     destructor destroy;
   end;
 
-  TfPositionView = class(TForm)
+  TfPositionView = class(TForm, ICMObserver)
     dxBarManager1: TdxBarManager;
     lbExit: TdxBarLargeButton;
     lbRefresh: TdxBarLargeButton;
@@ -174,9 +176,6 @@ type
     ccbSU2: TcxCheckComboBox;
     ccbIMP: TcxCheckComboBox;
     cbOwner: TcxCheckComboBox;
-    eAT: TcxTextEdit;
-    eAB: TcxTextEdit;
-    eAL: TcxTextEdit;
     acSaveGridLayout: TAction;
     acLoadGridLayout: TAction;
     dxBarButton40: TdxBarButton;
@@ -198,8 +197,6 @@ type
     ccbNB: TcxCheckComboBox;
     cxLabel35: TcxLabel;
     cxLabel36: TcxLabel;
-    eNT: TcxTextEdit;
-    eNB: TcxTextEdit;
     ccSkiftLag: TcxCheckComboBox;
     cxButton1: TcxButton;
     cbPaReg: TcxCheckBox;
@@ -398,6 +395,7 @@ type
     cds_StorageGroupsCITYNAME: TStringField;
     cds_StorageGroupsLogicalInventoryName: TStringField;
     cds_StorageGroupsInvCode: TStringField;
+    rgpReportSelection: TRadioGroup;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -412,15 +410,10 @@ type
       var AText: String);
     procedure ccbATPropertiesClickCheck(Sender: TObject;
       ItemIndex: Integer; var AllowToggle: Boolean);
-    procedure eATExit(Sender: TObject);
-    procedure eABExit(Sender: TObject);
-    procedure eALExit(Sender: TObject);
     procedure acExportToExcelExecute(Sender: TObject);
     procedure cbOwnerPropertiesCloseUp(Sender: TObject);
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
-    procedure eNTExit(Sender: TObject);
-    procedure eNBExit(Sender: TObject);
     procedure sq_UserProfileAfterInsert(DataSet: TDataSet);
     procedure cbProdPaketNrPropertiesChange(Sender: TObject);
     procedure acSaveProdPaketNrMallExecute(Sender: TObject);
@@ -441,6 +434,7 @@ type
     procedure cbStorageGroupPropertiesCloseUp(Sender: TObject);
     procedure cbStorageAreaPropertiesCloseUp(Sender: TObject);
     procedure acRefreshProdSUMExecute(Sender: TObject);
+    procedure cbStoragePosPropertiesCloseUp(Sender: TObject);
 
   private
     { Private declarations }
@@ -451,14 +445,16 @@ type
     procedure LoadCheckBoxWithStoragePos;
     procedure LoadCheckBoxWithStorageGroup;
     procedure LoadCheckBox(const aFieldName, aCheckItemFld, aCheckItem: string; const aDataSet: TFDQuery; const aCombo: TcxCheckComboBox);
-//    function prepareDataSetForCombo(aTargetCbo, aSourceCbo: TcxCheckComboBox;InitialSQL, finalSQL: TStrings): TFDQuery;
+    procedure UpdateFilterCombos(const aCombo: TcxCheckComboBox; aList: TCMSL);
+    //    function prepareDataSetForCombo(aTargetCbo, aSourceCbo: TcxCheckComboBox;InitialSQL, finalSQL: TStrings): TFDQuery;
     procedure Open_UserProfile ;
     procedure SaveUserProfile ;
     procedure PopulateCheckBoxMallarProdSUM ;
     procedure OpenProdSUMMall ;
     procedure OpenProdPaketNrMall ;
     procedure PopulateCheckBoxMallar ;
-
+    function getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMSL ): integer overload;
+    function getCheckedCount(const aCombo: TcxCheckComboBox): integer overload;
     procedure SetCheckComboBoxes_Where_PktNrLevKod_Required (const PktNrLevKod : String) ;
 //    procedure CheckAllItems ;
 
@@ -471,6 +467,8 @@ type
 
     Function  ComboBoxFilterChecked(const Kolumn : String;combo : TcxCheckComboBox) : Boolean ;
     Function  GetComboFilterText(const Kolumn : String;combo : TcxCheckComboBox) : String ;
+    function  GetReportIndex: integer;
+    function  GetReportTemplate(const aIndex: integer): string;
     procedure ClearProductFilter ;
 
     procedure OpenStandardMall(Sender: TObject);
@@ -478,6 +476,7 @@ type
     { Public declarations }
 //    Function  GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
     Procedure CreateCo(Sender: TObject;CompanyNo: Integer);
+    procedure Update(aSubject: IInterface);
   end;
 
 var
@@ -537,10 +536,6 @@ End;
 
 procedure TfPositionView.ClearProductFilter ;
 Begin
-
- eAT.Text := '' ;
- eAB.Text := '' ;
- eAL.Text := '' ;
 
  ccbAB.Clear ;
  ccbAT.Clear ;
@@ -665,6 +660,46 @@ End ;
 procedure TfPositionView.sq_UserProfileAfterInsert(DataSet: TDataSet);
 begin
  sq_UserProfileUserID.AsInteger := ThisUser.UserID ;
+end;
+
+procedure TfPositionView.Update(aSubject: IInterface);
+begin
+
+  UpdateFilterCombos(ccbAT, TdmFilterSQL(aSubject).ATL);
+  UpdateFilterCombos(ccbAB, TdmFilterSQL(aSubject).AWL);
+  UpdateFilterCombos(ccbNT, TdmFilterSQL(aSubject).NTL);
+  UpdateFilterCombos(ccbNB, TdmFilterSQL(aSubject).NWL);
+  UpdateFilterCombos(ccbAL, TdmFilterSQL(aSubject).LengthDescL);
+  UpdateFilterCombos(ccbTS2, TdmFilterSQL(aSubject).SpeciesL);
+  UpdateFilterCombos(ccbKV2, TdmFilterSQL(aSubject).GradeL);
+  UpdateFilterCombos(ccbSU2, TdmFilterSQL(aSubject).SUL);
+  UpdateFilterCombos(ccbIMP, TdmFilterSQL(aSubject).IMPL);
+  UpdateFilterCombos(ccVarugrupp, TdmFilterSQL(aSubject).VaruGruppL);
+end;
+
+procedure TfPositionView.UpdateFilterCombos(const aCombo: TcxCheckComboBox;
+  aList: TCMSL);
+Var i : Integer ;
+  s1,s2: string;
+//  SortedKeys: TList<String>;
+begin
+  aCombo.Properties.Items.Clear;
+//  SortedKeys := TList<string>.create(aList.Keys);
+//  SortedKeys.Sort;
+  for s1 in aList.Keys do
+  Begin
+    try
+      s2 := aList.Items[s1];
+      aCombo.Properties.Items.AddCheckItem(s1,s2);
+    except
+      on E: Exception do
+      begin
+        ShowMessage('FilterData error! Please contact support! Code: ' +
+          intToStr(i) + sLineBreak + 'Send the bugreport!');
+        raise;
+      end;
+    end;
+  End;
 end;
 
 procedure TfPositionView.LoadCheckBox(const aFieldName, aCheckItemFld, aCheckItem: string;
@@ -825,7 +860,7 @@ end;
 
 procedure TfPositionView.LoadCheckBoxWithStoragePos;
 Var
-  Count, x: integer;
+  Count, x, iValue: integer;
   s: string;
 begin
   cds_StoragePos.Active := False;
@@ -859,7 +894,6 @@ begin
           .AsString, cds_StoragePos.FieldByName('PositionID').AsString);
         cds_StoragePos.Next;
       End;
-
     Finally
       cds_StoragePos.Active := False;
     end;
@@ -953,17 +987,6 @@ begin
 *)
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
 
-   eAT.Visible    := True ;
-   eAB.Visible    := True ;
-   eNT.Visible    := True ;
-   eNB.Visible    := True ;
-   eAL.Visible    := True ;
-
-   ccbAT.Visible  := False ;
-   ccbAB.Visible  := False ;
-   ccbNT.Visible  := False ;
-   ccbNB.Visible  := False ;
-   ccbAL.Visible  := False ;
 
   PopulateCheckBoxMallar ;
 
@@ -977,10 +1000,13 @@ procedure TfPositionView.FormClose(Sender: TObject;
 begin
   Action:= caFree ;
   fPositionView := nil;
+  dmFilterSQL.Detach(self);
 end;
 
 procedure TfPositionView.FormCreate(Sender: TObject);
 begin
+  dmFilterSQL := TdmFilterSQL.Create(self);
+  dmFilterSQL.Attach(self);
   createCo(nil,ThisUser.CompanyNo);
 end;
 
@@ -990,6 +1016,33 @@ begin
   begin
    Key := #0;
    Perform(Wm_NextDlgCtl,0,0);
+  end;
+end;
+
+function TfPositionView.getCheckedCount(
+  const aCombo: TcxCheckComboBox): integer;
+var
+  aList: TCMSL;
+begin
+  aList := nil;
+  result := getCheckedCount(aCombo, aList);
+  aList.Free;
+end;
+
+function TfPositionView.getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMSL ): integer;
+var  i, count: integer;
+begin
+  if not assigned(aChkList) then
+    aChkList := TCMSL.Create
+  else
+    aChkList.Clear;
+  result := 0;
+  for i := 0 to aCombo.Properties.Items.Count - 1 do
+  begin
+    if aCombo.States[i] = cbsChecked then begin
+      result := result + 1;
+      aChkList.Add(aCombo.Properties.Items[i].ShortDescription, aCombo.Properties.Items[i].Description);
+    end;
   end;
 end;
 
@@ -1214,6 +1267,25 @@ Begin
   end;
 End ;
 
+function TfPositionView.GetReportIndex: integer;
+begin
+  result := rgpReportSelection.ItemIndex;
+end;
+
+function TfPositionView.GetReportTemplate(const aIndex: integer): string;
+begin
+  case aIndex of
+    0: result := 'AreaRef.txt';
+    1: result := 'AreaDimRef.txt';
+    2: result := 'AreaDimRefLength.txt';
+    3: result := 'DeckList.txt';
+    4: result := 'PkgList.txt';
+    5: result := 'Empty.Recktxt';
+  else
+    result :='';
+  end;
+end;
+
 Function TfPositionView.ComboBoxFilterChecked(const Kolumn : String;combo : TcxCheckComboBox) : Boolean ;
 Var
     APCheckStates : ^TcxCheckStates;
@@ -1314,10 +1386,25 @@ begin
 end;
 
 procedure TfPositionView.acRefreshProdSUMExecute(Sender: TObject);
+var
+  reportIndex: integer;
+  reportTemplate: string;
+  SQLView: TSQLView;
 begin
   // Check that at least one region and or mill is selected
+  if GetCheckedCount(cbOwner) <= 0 then begin
+    showMessage('Please select at least one mill!');
+    exit;
+  end;
   // Deactivate datasource
-
+  // Select report
+  reportIndex := GetReportindex;
+  reportTemplate := getReportTemplate(reportIndex);
+//  if reportTemplate <> '' then reportTemplate := GetCurrentDir + '\' + reportTemplate;
+  if reportTemplate <> '' then 
+  begin
+    SQLView := TSQLView.create(grdProdSUMDBBandedTableView1, reportTemplate);
+  end;
 end;
 
 procedure TfPositionView.ccbATPropertiesClickCheck(Sender: TObject;
@@ -1326,59 +1413,6 @@ begin
  TcxCheckComboBox(Sender).DroppedDown := False;
 end;
 
-procedure TfPositionView.eATExit(Sender: TObject);
-Var x     : Integer ;
-    Found : Boolean ;
-Begin
- ccbAT.Clear ; // .ClearSelection ;
- Found := False ;
-  For x := 0 to ccbAT.Properties.Items.Count - 1 do
-  Begin
-   if (ccbAT.Properties.Items.Items[x].Description = eAT.Text) and (Length(eAT.Text) > 0) then
-    Begin
-     ccbAT.SetItemState(x, cbsChecked) ;
-     Found:= True ;
-    End ;
-  End ;
- if Found = False then
-  eAT.Text := '' ;
-end;
-
-procedure TfPositionView.eABExit(Sender: TObject);
-Var x     : Integer ;
-    Found : Boolean ;
-Begin
- ccbAB.Clear ;
- Found := False ;
-  For x := 0 to ccbAB.Properties.Items.Count - 1 do
-  Begin
-   if (ccbAB.Properties.Items.Items[x].Description = eAB.Text) and (Length(eAB.Text) > 0) then
-   Begin
-    ccbAB.SetItemState(x, cbsChecked) ;
-    Found:= True ;
-   End ;
-  End ;
- if Found = False then
-  eAB.Text := '' ;
-end;
-
-procedure TfPositionView.eALExit(Sender: TObject);
-Var x     : Integer ;
-    Found : Boolean ;
-Begin
- ccbAL.Clear ;
- Found := False ;
-  For x := 0 to ccbAL.Properties.Items.Count - 1 do
-  Begin
-   if (ccbAL.Properties.Items.Items[x].Description = eAL.Text) and (Length(eAL.Text) > 0) then
-   Begin
-    ccbAL.SetItemState(x, cbsChecked) ;
-     Found:= True ;
-   End ;
-  End ;
- if Found = False then
-  eAL.Text := '' ;
-end;
 
 procedure TfPositionView.acSaveProdPaketNrMallExecute(Sender: TObject);
 begin
@@ -1567,6 +1601,31 @@ begin
   LoadCheckBoxWithStoragePos;
 end;
 
+procedure TfPositionView.cbStoragePosPropertiesCloseUp(Sender: TObject);
+var
+  T: TList<integer>;
+  iValue, count, x: integer;
+begin
+  if cbStoragePos.Properties.Items.Count > 0 then
+    try
+      T := TList<integer>.create;
+      Count := cbStoragePos.Properties.Items.Count;
+      for x := 0 to Count - 1 do
+      begin
+        if cbStoragePos.States[x] = cbsChecked then
+        begin
+          iValue := strToInt(cbStoragePos.Properties.Items[x].ShortDescription);
+          T.add(iValue);
+        end;
+      end;
+
+      dmFilterSQL.UpdateFilterData(T);
+    finally
+      if assigned(T) then
+        T.Free;
+    end;
+end;
+
 procedure TfPositionView.OpenProdPaketNrMall ;
 begin
 //Open Mall
@@ -1599,41 +1658,7 @@ begin
  ClearProductFilter ;
 end;
 
-procedure TfPositionView.eNTExit(Sender: TObject);
-Var x     : Integer ;
-    Found : Boolean ;
-Begin
- ccbNT.Clear ; // .ClearSelection ;
- Found := False ;
-  For x := 0 to ccbNT.Properties.Items.Count - 1 do
-  Begin
-   if (ccbNT.Properties.Items.Items[x].Description = eNT.Text) and (Length(eNT.Text) > 0) then
-    Begin
-     ccbNT.SetItemState(x, cbsChecked) ;
-     Found:= True ;
-    End ;
-  End ;
- if Found = False then
-  eNT.Text := '' ;
-end;
 
-procedure TfPositionView.eNBExit(Sender: TObject);
-Var x     : Integer ;
-    Found : Boolean ;
-Begin
- ccbNB.Clear ; // .ClearSelection ;
- Found := False ;
-  For x := 0 to ccbNB.Properties.Items.Count - 1 do
-  Begin
-   if (ccbNB.Properties.Items.Items[x].Description = eNB.Text) and (Length(eNB.Text) > 0) then
-    Begin
-     ccbNB.SetItemState(x, cbsChecked) ;
-     Found:= True ;
-    End ;
-  End ;
- if Found = False then
-  eNB.Text := '' ;
-end;
 
 
 procedure TfPositionView.SaveUserProfile ;

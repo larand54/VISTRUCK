@@ -17,7 +17,11 @@ uses
   uISQLBuild in '..\uISQLBuild.pas',
   uISQLHelper in '..\uISQLHelper.pas',
   uISQLView in '..\uISQLView.pas',
-  uISQLViewField in '..\uISQLViewField.pas';
+  uISQLViewField in '..\uISQLViewField.pas',
+  udmFilterSQL in '..\udmFilterSQL.pas' {dmFilterSQL: TDataModule},
+  TestdmFilterSQL in 'TestdmFilterSQL.pas',
+  uICMObserver in '..\uICMObserver.pas',
+  uICMSubject in '..\uICMSubject.pas';
 
 var
   runner : ITestRunner;

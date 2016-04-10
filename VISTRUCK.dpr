@@ -124,7 +124,16 @@ uses
   uISQLHelper in 'uISQLHelper.pas',
   uISQLViewField in 'uISQLViewField.pas',
   uISQLView in 'uISQLView.pas',
-  uISQLBuild in 'uISQLBuild.pas';
+  uISQLBuild in 'uISQLBuild.pas',
+  udmFilterSQL in 'udmFilterSQL.pas' {dmFilterSQL: TDataModule},
+  uDBLogg in '..\CommonSources\DelphiLogg\uDBLogg.pas',
+  uIDBConnector in '..\CommonSources\DelphiLogg\uIDBConnector.pas',
+  uIDBLogg in '..\CommonSources\DelphiLogg\uIDBLogg.pas',
+  uILogger in '..\CommonSources\DelphiLogg\uILogger.pas',
+  uLogger in '..\CommonSources\DelphiLogg\uLogger.pas',
+  uIMsgObserver in '..\CommonSources\DelphiLogg\uIMsgObserver.pas',
+  uICMObserver in 'uICMObserver.pas',
+  uICMSubject in 'uICMSubject.pas';
 
 {$R *.res}
 begin
