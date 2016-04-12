@@ -10260,7 +10260,7 @@ object dmInventory: TdmInventory
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
-      ''
+      ',PN.StoredDate'
       ''
       ''
       'from dbo.PackageNumber pn'
@@ -10332,13 +10332,24 @@ object dmInventory: TdmInventory
       'pn.BL_NO,  '
       'pn.Info2,'
       'ar.AreaName,'
-      'Posi.PositionName')
+      'Posi.PositionName,'
+      'PN.StoredDate')
     Left = 664
     Top = 184
+    object cds_PositionViewCity: TStringField
+      FieldName = 'City'
+      Origin = 'City'
+      Size = 50
+    end
     object cds_PositionViewLogicalInventoryName: TStringField
       FieldName = 'LogicalInventoryName'
       Origin = 'LogicalInventoryName'
       Size = 50
+    end
+    object cds_PositionViewPaket: TIntegerField
+      FieldName = 'Paket'
+      Origin = 'Paket'
+      ReadOnly = True
     end
     object cds_PositionViewpcs: TIntegerField
       FieldName = 'pcs'
@@ -10426,15 +10437,9 @@ object dmInventory: TdmInventory
       Origin = 'PositionName'
       Size = 50
     end
-    object cds_PositionViewCity: TStringField
-      FieldName = 'City'
-      Origin = 'City'
-      Size = 50
-    end
-    object cds_PositionViewPaket: TIntegerField
-      FieldName = 'Paket'
-      Origin = 'Paket'
-      ReadOnly = True
+    object cds_PositionViewStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
     end
   end
   object ds_PositionView: TDataSource

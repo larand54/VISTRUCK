@@ -245,8 +245,8 @@ type
     acCollapseAllProdPaketNr: TAction;
     acNewProdSUMMall: TAction;
     acSaveProdSUMMall: TAction;
-    grdProdSUMLevel1: TcxGridLevel;
-    grdProdSUM: TcxGrid;
+    grdPositionLevel1: TcxGridLevel;
+    grdPosition: TcxGrid;
     acRefreshProdSUM: TAction;
     acDeleteProdSUMMall: TAction;
     cxGridPopupMenu1: TcxGridPopupMenu;
@@ -254,33 +254,7 @@ type
     acCollapseAllProdSum: TAction;
     acExpandAllProdSUM: TAction;
     grdProdPaketNrDBBandedTableView1: TcxGridDBBandedTableView;
-    grdProdSUMDBBandedTableView1: TcxGridDBBandedTableView;
-    grdProdSUMDBBandedTableView1Operation: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1PRODUKT: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1Paketnr: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1Prefix: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AT: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AB: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1NT: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1NB: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1NomDim: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AktDim: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1STYCK: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AM3: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1NM3: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AM1: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1MFBM: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AM2: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1TS: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1PC: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1KV: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1UT: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1OwnerNo: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1AvgLength: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1ShiftTeamName: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1RegPointName: TcxGridDBBandedColumn;
-    grdProdSUMDBBandedTableView1MP_SkiftLag: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1: TcxGridDBBandedTableView;
     cxGridPopupMenu2: TcxGridPopupMenu;
     cxLabel37: TcxLabel;
     ccLand: TcxCheckComboBox;
@@ -396,6 +370,31 @@ type
     cds_StorageGroupsLogicalInventoryName: TStringField;
     cds_StorageGroupsInvCode: TStringField;
     rgpReportSelection: TRadioGroup;
+    grdPositionDBBandedTableView2: TcxGridDBBandedTableView;
+    grdPositionDBBandedTableView3: TcxGridDBBandedTableView;
+    grdPositionDBBandedTableView4: TcxGridDBBandedTableView;
+    grdPositionDBBandedTableView5: TcxGridDBBandedTableView;
+    grdPositionDBBandedTableView6: TcxGridDBBandedTableView;
+    grdPositionDBBandedTableView1City: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Paket: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -462,7 +461,7 @@ type
 
 
     procedure SetCheckComboBoxes ;
-
+    function CreateWhereList(const aDecimalType: byte): TStringList;
     Function  CheckIfAnyCheckedItemsInComboFilter(combo : TcxCheckComboBox) : Boolean ;
 
     Function  ComboBoxFilterChecked(const Kolumn : String;combo : TcxCheckComboBox) : Boolean ;
@@ -946,7 +945,8 @@ begin
       While not cds_Verk.Eof do
       Begin
         cbOwner.Properties.Items.AddCheckItem(cds_Verk.FieldByName('ClientName')
-          .AsString, cds_Verk.FieldByName('PktNrLevKod').AsString);
+    //      .AsString, cds_Verk.FieldByName('PktNrLevKod').AsString);
+          .AsString, cds_Verk.FieldByName('ClientNo').AsString);
         cbOwner.Properties.Items[cbOwner.Properties.Items.Count-1].Tag := cds_Verk.FieldByName('ClientNo').AsInteger;
         cds_Verk.Next;
       End;
@@ -993,6 +993,18 @@ begin
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
+end;
+
+
+
+
+function TfPositionView.CreateWhereList(const aDecimalType: byte): TStringList;
+var
+  WhereList: TWhereString;
+begin
+  WhereList := TWhereString.Create;
+  WhereList.add(aDecimalType,cbOwner,'PIP.OwnerNo');
+  result := WhereList.getWhereStatement;
 end;
 
 procedure TfPositionView.FormClose(Sender: TObject;
@@ -1125,7 +1137,7 @@ end;
 
 procedure TfPositionView.acCollapseAllProdSumExecute(Sender: TObject);
 begin
- grdProdSUMDBBandedTableView1.ViewData.Collapse(True);
+ grdPositionDBBandedTableView1.ViewData.Collapse(True);
 end;
 
 procedure TfPositionView.acDeleteProdPaketNrMallExecute(Sender: TObject);
@@ -1187,7 +1199,7 @@ end;
 
 procedure TfPositionView.acExpandAllProdSUMExecute(Sender: TObject);
 begin
- grdProdSUMDBBandedTableView1.ViewData.Expand(True);
+ grdPositionDBBandedTableView1.ViewData.Expand(True);
 end;
 
 procedure TfPositionView.acExportExecute(Sender: TObject);
@@ -1362,6 +1374,7 @@ procedure TfPositionView.acRefreshProdPaketNrExecute(Sender: TObject);
 var
   SQLView: TSQLView;
   SQLBUILD: TSQLBuild;
+  WhereList: TStringList;
 begin
  //Refresh ProdPaketNr
   if not SelectedOwnersOK then
@@ -1371,7 +1384,8 @@ begin
   End;
 
   dmInventory.cds_PositionView.Active  := False ;
-  SQLView := TSQLView.Create(grdProdPaketNrDBBandedTableView1,'SQL_SetUp.txt');
+  WhereList := CreateWhereList(0);
+  SQLView := TSQLView.Create(grdProdPaketNrDBBandedTableView1,'SQL_SetUp.txt', WhereList);
   SQLBuild := TSQLBuild.Create(SQLView);
   if SQLBuild.SQLReady then
   begin
@@ -1390,6 +1404,8 @@ var
   reportIndex: integer;
   reportTemplate: string;
   SQLView: TSQLView;
+  SQLBuild: TSQLBuild;
+  WhereList: TStringList;
 begin
   // Check that at least one region and or mill is selected
   if GetCheckedCount(cbOwner) <= 0 then begin
@@ -1397,13 +1413,25 @@ begin
     exit;
   end;
   // Deactivate datasource
+  dmInventory.cds_PositionView.Active := false;
   // Select report
   reportIndex := GetReportindex;
   reportTemplate := getReportTemplate(reportIndex);
 //  if reportTemplate <> '' then reportTemplate := GetCurrentDir + '\' + reportTemplate;
-  if reportTemplate <> '' then 
+  if reportTemplate <> '' then
   begin
-    SQLView := TSQLView.create(grdProdSUMDBBandedTableView1, reportTemplate);
+    try
+      WhereList := CreateWhereList(0);
+      SQLView := TSQLView.create(grdPositionDBBandedTableView1, reportTemplate, WhereList);
+      SQLBUILD := TSQLBuild.create(SQLView);
+      dmInventory.cds_PositionView.SQL := SQLView.SQL;
+      dmInventory.cds_PositionView.Active := True;
+    finally
+      if assigned(SQLBUILD) then
+        SQLBUILD.Free;
+      if assigned(SQLView) then
+        SQLView.Free;
+    end;
   end;
 end;
 
@@ -1448,7 +1476,7 @@ begin
   fPositionView.Name + '2'
 //  sq_UserProfileForm.AsString
 
-  ,grdProdSUMDBBandedTableView1,'fDeliveryReport') ;
+  ,grdPositionDBBandedTableView1,'fDeliveryReport') ;
 
  End;
 end;
@@ -1644,7 +1672,7 @@ begin
  Begin
   dmsSystem.LoadGridLayout_Special( ThisUser.UserID, fPositionView.Name + '2',
   cbProdSUM.Properties.Items.Strings[cbProdSUM.ItemIndex]
-  + '/' + fPositionView.Name + '2', grdProdSUMDBBandedTableView1,'fPositionView') ;
+  + '/' + fPositionView.Name + '2', grdPositionDBBandedTableView1,'fPositionView') ;
  End;
 end;
 

@@ -463,7 +463,6 @@
             <Form>fPositionView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="uISQLHelper.pas"/>
         <DCCReference Include="uISQLViewField.pas"/>
         <DCCReference Include="uISQLView.pas"/>
         <DCCReference Include="uISQLBuild.pas"/>

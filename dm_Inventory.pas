@@ -1313,7 +1313,9 @@ type
     sq_SurfacingSurfacingcode: TStringField;
     sq_SurfacingSurfacingNo: TIntegerField;
     sq_SurfacingSurfacingName: TStringField;
+    cds_PositionViewCity: TStringField;
     cds_PositionViewLogicalInventoryName: TStringField;
+    cds_PositionViewPaket: TIntegerField;
     cds_PositionViewpcs: TIntegerField;
     cds_PositionViewAM3: TFloatField;
     cds_PositionViewNM3: TFloatField;
@@ -1330,8 +1332,7 @@ type
     cds_PositionViewInfo2: TStringField;
     cds_PositionViewAreaName: TStringField;
     cds_PositionViewPositionName: TStringField;
-    cds_PositionViewCity: TStringField;
-    cds_PositionViewPaket: TIntegerField;
+    cds_PositionViewStoredDate: TSQLTimeStampField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);

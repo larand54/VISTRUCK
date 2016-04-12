@@ -7,12 +7,21 @@ uses
   uISQLHelper, uISQLViewField, uISQLView, uISQLBuild;
 type
 
-  TSQLHelper = class(TInterfacedObject, ISQLHelper)
+  TWhereString = class(TInterfacedObject)
+    private
+      FWhereStringList: TStringList;
+      function getCheckedValues(const aDecimalType: byte; const aCombo: TcxCheckComboBox): TStringList;
+    public
+      procedure add(const aDecimalType: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
+      function getWhereStatement: TStringList;
+  end;
+
+  TSQLHelper = class
     private
     public
-      function GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
-      function ReplaceCommasWithDecimal(S : String): string;
-      function TaBortExtension(S : String) : String ;
+      class function GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
+      class function ReplaceCommasWithDecimal(S : String): string;
+      class function TaBortExtension(S : String) : String ;
   end;
 
   TSQLViewField = class(TInterfacedObject, ISQLViewField)
@@ -36,17 +45,20 @@ type
       FKeyFields: String;
       FSQLFile: string;           //D:\git\delphi\VISTRUCK\EXE\SQL_SetUp.txt
       FSQL: TStringList;
+      FWhereList: TStringList;
       procedure InitiateFieldObjects;
       function getStatus(aGridField: string): boolean;
       procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
-      Constructor create(aGridView: TcxGridDBBandedTableView; aSQLFile: string);
+      Constructor create(const aGridView: TcxGridDBBandedTableView; const aSQLFile: string;
+       const aWhereList: TStringList);
       Destructor destroy;
       property ObjectList: TList<TSQLViewField> read FObjectList;
       property gridView: TcxGridDBBandedTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
       property SQLFile: string read FSQLFile;
       property SQL: TStringList read FSQL;
+      property WhereList: TStringList read FWhereList;
   end;
 
   TSQLBuild = class (TInterfacedObject, ISQLBuild)
@@ -61,13 +73,11 @@ type
       property SQLReady: boolean read FSQLReady;
   end;
 
-var
-  SQLHelper: TSQLHelper;
 implementation
 
 
 
-Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
+class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
     APCheckStates : ^TcxCheckStates;
     AddORToSQL    : Boolean ;
@@ -108,7 +118,7 @@ Begin
   end;
 End ;
 
-function TSQLHelper.TaBortExtension(S : String) : String ;
+class function TSQLHelper.TaBortExtension(S : String) : String ;
 begin
   { Remove extension including period e.g. (file.pdf -> file) }
   if Pos('.', S) > 0 then
@@ -116,7 +126,7 @@ begin
  Result:= S ;
 end;
 
-function TSQLHelper.ReplaceCommasWithDecimal(S : String) : String ;
+class function TSQLHelper.ReplaceCommasWithDecimal(S : String) : String ;
 begin
   { Convert period to commas}
   while Pos(',', S) > 0 do
@@ -124,11 +134,13 @@ begin
  Result:= S ;
 end;
 
-constructor TSQLView.create(aGridView: TcxGridDBBandedTableView;
-  aSQLFile: string);
+constructor TSQLView.create(const aGridView: TcxGridDBBandedTableView;
+              const aSQLFile: string; const aWhereList: TStringList);
 begin
   Fgridview := aGridView;
   FSQLFile := aSQLFile;
+  FSQL := TStringList.Create;
+  FWhereList := aWhereList;
   try
     InitiateFieldObjects;
     gridView.DataController.KeyFieldNames := KeyFields;
@@ -212,13 +224,15 @@ var
   TempSQLStr1, TempSQLStr2: string;
 begin
   FSQLView := aSQLView;
-  SQL.Clear;
-  SQL.Add('Select distinct');
+  FSQLView.SQL.Clear;
+  FSQLView.SQL.Add('DECLARE @LanguageCode int = 1');
+  FSQLView.SQL.Add('Select distinct');
 
   for j := 0 to FSQLView.FObjectList.Count - 1 do
   begin
     if FSQLView.ObjectList[j].Visible = True then
     begin
+      if j > 0 then FSQLView.SQL.Text := FSQLView.SQL.Text + ',';
       FSQLView.SQL.Add(FSQLView.ObjectList[j].fieldSQL);
     end;
   end;
@@ -252,39 +266,30 @@ begin
   FSQLView.SQL.Add('AND Gr.LanguageCode = @LanguageCode');
 
   FSQLView.SQL.Add('WHERE');
-  FSQLView.SQL.Add('PIP.OwnerNo = 741 ');
-  FSQLView.SQL.Add('and pn.[Status] = 1');
-
+  for j := 0 to FSQLView.WhereList.Count-1 do
+    FSQLView.SQL.Add(FSQLView.WhereList[j]);
   FSQLView.SQL.Add('Group by');
   for j := 0 to FSQLView.ObjectList.Count - 1 do
   begin
     if FSQLView.ObjectList[j].Visible = True then
     begin
-      TempIndex := Pos('Group by', SQL.Text);
+      TempIndex := Pos('Group by', FSQLView.SQL.Text);
       IndexNo := Pos(FSQLView.ObjectList[j].group,
-        (Copy(SQL.Text, TempIndex, Length(SQL.Text))));
-      if IndexNo = 0 then
+        (Copy(FSQLView.SQL.Text, TempIndex, Length(FSQLView.SQL.Text))));
+      if (IndexNo = 0) and (FSQLView.ObjectList[j].group <> '') then
       begin
-        // showmessage(Delivery_Class(ObjectList[j]).group);
         FSQLView.SQL.Add(FSQLView.ObjectList[j].group);
-        // if j <> ObjectList.Count - 1 then
         FSQLView.SQL.Add(',');
       end
     end;
   end;
-  // SQL.Add('vg.VarugruppNamn');
 
-  (* if SQL.Text[SQL.Text.length] = ',' then
-    SQL.Text := copy(SQL.Text,0,SQL.Text.Length - 1);
-  *)
-  SQLLength := Length(SQL.Text) - 2;
-  if SQL.Text[SQLLength] = ',' then
-  begin
-    TempSQLStr1 := SQL.Text;
-    SQL.Clear;
-    TempSQLStr2 := Copy(TempSQLStr1, 1, SQLLength - 1);
-    SQL.Add(TempSQLStr2);
-  end;
+ // Remove last comma
+  FSQLView.SQL.SaveToFile('SQL1.txt');
+  if FSQLView.SQL.Text[FSQLView.SQL.Text.length - 2] = ',' then
+    FSQLView.SQL.Text := copy(FSQLView.SQL.Text,0,FSQLView.SQL.Text.Length - 3);
+  FSQLView.SQL.SaveToFile('SQL2.txt');
+
 end;
 
 destructor TSQLBuild.destroy;
@@ -292,7 +297,61 @@ begin
   if assigned(FSQL) then FSQL.Free;
 end;
 
+{ TWhereString }
+
+procedure TWhereString.add(const aDecimalType: byte; const aCombo: TcxCheckComboBox;
+  const aFieldName: string);
+var
+  values: TStringList;
+  value: string;
+  temp: string;
+begin
+  values := TStringList.Create;
+  Values := getCheckedValues(aDecimalType, aCombo);
+  if Values.Count > 0 then
+  begin
+    if not assigned(FWhereStringList) then
+    begin
+      FWhereStringList := TStringList.Create;
+//      temp := 'WHERE (';
+    end
+    else
+      temp := 'AND (';
+
+    temp := temp + aFieldName + ' IN (';
+    for value in Values do
+    begin
+      temp := temp + value + ',';
+    end;
+    temp := copy(temp,1,temp.Length-1);
+    temp := temp + ')';
+    FWhereStringList.Add(temp);
+  end;
+end;
+
+function TWhereString.getCheckedValues( const aDecimalType: byte;
+  const aCombo: TcxCheckComboBox): TStringList;
+var
+  i: integer;
+begin
+  result := TStringList.Create;
+  for i := 0 to aCombo.Properties.Items.Count -1 do
+  begin
+    if aCombo.GetItemState(i) = cbsChecked then
+      if aDecimalType = 0 then
+        result.Add(aCombo.Properties.Items[i].ShortDescription)
+      else
+        result.Add(TSQLHelper.ReplaceCommasWithDecimal(aCombo.Properties.Items[i].ShortDescription));
+  end;
+  if result.Count = 0 then
+    FreeAndNil( result);
+end;
+
+function TWhereString.getWhereStatement: TStringList;
+begin
+  result := FWhereStringList;
+end;
+
 initialization
-  SQLHelper := TSQLHelper.Create;
 
 end.

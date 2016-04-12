@@ -102,7 +102,7 @@ begin
   Expected := ' AND ( TestItem1 = '+QuotedStr('nr001')+
               ' OR  TestItem1 = '+QuotedStr('nr002')+
               ' OR  TestItem1 = '+QuotedStr('nr003')+' ) ';
-  Actual := SQLHelper.GetSQLofComboFilter(0, 'TestItem1', FCombo);
+  Actual := TSQLHelper.GetSQLofComboFilter(0, 'TestItem1', FCombo);
   Assert.AreEqual(Expected, Actual);
 end;
 
@@ -154,7 +154,7 @@ procedure TTestSQLView.TestReplaceCommasWithDecimal(astring, aExpected: string);
 var
   Actual: string;
 begin
-  Actual := SQLHelper.ReplaceCommasWithDecimal(aString);
+  Actual := TSQLHelper.ReplaceCommasWithDecimal(aString);
   Assert.AreEqual(aExpected, Actual);
 end;
 
@@ -162,7 +162,7 @@ procedure TTestSQLView.TestTaBortExtension(aFileName, aExpected : string);
 var
   Actual: string;
 begin
-  Actual := SQLHelper.TaBortExtension(aFilename);
+  Actual := TSQLHelper.TaBortExtension(aFilename);
   Assert.AreEqual(aExpected, Actual);
 end;
 

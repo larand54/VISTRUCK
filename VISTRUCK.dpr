@@ -121,7 +121,6 @@ uses
   uDlgReferensAndInfo in 'uDlgReferensAndInfo.pas' {dlgChgRef_and_Info},
   uSQLView in 'uSQLView.pas',
   uPositionView in 'uPositionView.pas' {fPositionView},
-  uISQLHelper in 'uISQLHelper.pas',
   uISQLViewField in 'uISQLViewField.pas',
   uISQLView in 'uISQLView.pas',
   uISQLBuild in 'uISQLBuild.pas',
