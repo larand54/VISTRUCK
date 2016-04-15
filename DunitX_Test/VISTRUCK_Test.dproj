@@ -132,6 +132,93 @@
         <DCCReference Include="TestdmFilterSQL.pas"/>
         <DCCReference Include="..\uICMObserver.pas"/>
         <DCCReference Include="..\uICMSubject.pas"/>
+        <DCCReference Include="TestPositionView.pas"/>
+        <DCCReference Include="..\uPositionView.pas">
+            <Form>fPositionView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\VidaType.pas"/>
+        <DCCReference Include="..\dm_Inventory.pas">
+            <Form>dmInventory</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\VidaConst.pas"/>
+        <DCCReference Include="..\VidaUser.pas"/>
+        <DCCReference Include="..\dmsDataConn.pas">
+            <Form>dmsConnector</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\dmsVidaContact.pas">
+            <Form>dmsContact</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\dmsVidaSystem.pas">
+            <Form>dmsSystem</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\VidaUtils.pas"/>
+        <DCCReference Include="..\dlgPickPkg_II.pas">
+            <Form>frmPackagePicker_II</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\uLagerPos.pas">
+            <Form>fLagerPos</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\uShowMemo.pas">
+            <Form>fShowMemo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\uSendMapiMail.pas">
+            <Form>dm_SendMapiMail</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\udmLanguage.pas">
+            <Form>dmLanguage</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\dmc_ArrivingLoads.pas">
+            <Form>dmArrivingLoads</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\uPackageSize.pas">
+            <Form>fPackageSize</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\Visab\uEnterLengthData.pas">
+            <Form>fEnterLengthData</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\dmsVidaProduct.pas">
+            <Form>dmsProduct</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\uCert.pas">
+            <Form>fCert</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\dmcVidaSystem.pas">
+            <Form>dmcSystem</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\dmc_UserProps.pas">
+            <Form>dm_UserProps</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\uEntryField.pas">
+            <Form>fEntryField</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

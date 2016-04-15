@@ -19,6 +19,59 @@ type
     sqFilterData: TFDQuery;
     mtFilterData: TFDMemTable;
     dscFilteredData: TDataSource;
+    ds_PositionView: TDataSource;
+    cds_PositionView_Invoiced: TFDQuery;
+    cds_PositionView_InvoicedCity: TStringField;
+    cds_PositionView_InvoicedLogicalInventoryName: TStringField;
+    cds_PositionView_InvoicedPaket: TIntegerField;
+    cds_PositionView_Invoicedpcs: TIntegerField;
+    cds_PositionView_InvoicedAM3: TFloatField;
+    cds_PositionView_InvoicedNM3: TFloatField;
+    cds_PositionView_Invoiceddim: TStringField;
+    cds_PositionView_InvoicedTS: TStringField;
+    cds_PositionView_InvoicedPC: TStringField;
+    cds_PositionView_InvoicedKV: TStringField;
+    cds_PositionView_InvoicedUT: TStringField;
+    cds_PositionView_InvoicedLIPNo: TIntegerField;
+    cds_PositionView_InvoicedPIPNo: TIntegerField;
+    cds_PositionView_InvoicedVarugruppNamn: TStringField;
+    cds_PositionView_InvoicedREFERENCE: TStringField;
+    cds_PositionView_InvoicedInfo1: TStringField;
+    cds_PositionView_InvoicedInfo2: TStringField;
+    cds_PositionView_InvoicedAreaName: TStringField;
+    cds_PositionView_InvoicedPositionName: TStringField;
+    cds_PositionView_InvoicedStoredDate: TSQLTimeStampField;
+    cds_PositionView_InvoicedAT: TFloatField;
+    cds_PositionView_InvoicedAB: TFloatField;
+    cds_PositionView_InvoicedNT: TFloatField;
+    cds_PositionView_InvoicedNB: TFloatField;
+    cds_PositionView_InvoicedAL: TFloatField;
+    cds_PositionView_not_Invoiced: TFDQuery;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    IntegerField1: TIntegerField;
+    IntegerField2: TIntegerField;
+    FloatField1: TFloatField;
+    FloatField2: TFloatField;
+    StringField3: TStringField;
+    StringField4: TStringField;
+    StringField5: TStringField;
+    StringField6: TStringField;
+    StringField7: TStringField;
+    IntegerField3: TIntegerField;
+    IntegerField4: TIntegerField;
+    StringField8: TStringField;
+    StringField9: TStringField;
+    StringField10: TStringField;
+    StringField11: TStringField;
+    StringField12: TStringField;
+    StringField13: TStringField;
+    SQLTimeStampField1: TSQLTimeStampField;
+    FloatField3: TFloatField;
+    FloatField4: TFloatField;
+    FloatField5: TFloatField;
+    FloatField6: TFloatField;
+    FloatField7: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
 
   private
@@ -40,10 +93,10 @@ type
     FObserver: TList<ICMObserver>;
     procedure AddFilterData(const aList: TCMSL; aS1, aS2: string);
     procedure Clear;
-    procedure UpdateSQLFilterData(aStorePosList: TList<integer>);
   public
     { Public declarations }
     destructor Destroy;
+    procedure UpdateSQLFilterData(aStorePosList: TList<integer>);
     procedure SetupDBConnection(aCon: TFDConnection);
     procedure UpdateFilterData(aStorePosList: TList<integer>);
     {procedures from interface ISubject in ObserverPattern}
@@ -173,11 +226,11 @@ begin
   UpdateSQLFilterData(aStorePosList);
   if pos('WHERE PN.PositionID = -1', sqFilterData.SQL.Text) > 0 then
   begin
-    ShowMessage('No Storage positions found!' + sLineBreak +
+    ShowMessage('No Storage positions selected!' + sLineBreak +
       'in TdmFilterSQL.UpdateFilterData');
-    notify;
+(*    notify;
     exit;
-  end;
+*)  end;
   sqFilterData.Active := true;
   sqFilterData.First;
   if not sqFilterData.Eof then
@@ -213,21 +266,18 @@ var
   i: integer;
   s: string;
 begin
-  strSQL := copy(sqFilterData.SQL.Text, 1,
-    pos('WHERE', sqFilterData.SQL.Text) - 1);
-  if aStorePosList.Count <= 0 then
+  if aStorePosList.Count > 0 then
   begin
-    // sqFilterdata.SQL.Text := strSQL + 'WHERE PN.PositionID IN (-1)';
-    sqFilterData.SQL.Text := strSQL + 'WHERE PN.PositionID = -1'; //nothing fetched
-    exit;
+    strSQL := copy(sqFilterData.SQL.Text, 1,
+      pos('WHERE', sqFilterData.SQL.Text) - 1);
+    s := 'WHERE PN.PositionID IN (';
+    for i in aStorePosList do
+    begin
+      s := s + intToStr(i) + ',';
+    end;
+    s := copy(s, 1, s.Length - 1) + ')';
+    sqFilterData.SQL.Text := strSQL + s;
   end;
-  s := 'WHERE PN.PositionID IN (';
-  for i in aStorePosList do
-  begin
-    s := s + intToStr(i) + ',';
-  end;
-  s := copy(s, 1, s.Length - 1) + ')';
-  sqFilterData.SQL.Text := strSQL + s;
 end;
 
 end.

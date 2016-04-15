@@ -58,8 +58,9 @@ var
   Actual,
   Expected: string;
 begin
+  SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.PositionID IN (1,2)';
-  Expected := 'SELECT * FROM XXX '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.PositionID = -1'+#13#10;
   T := TList<integer>.create;
   SF.UpdateSQLFilterData(T);
   Actual := SF.sqFilterData.SQL.Text ;
@@ -120,7 +121,7 @@ begin
   Expected := '';
   T := TList<integer>.create;
   T.Add(145);T.Add(146);
-  SF.UpdateFilterData(T);
+  SF.UpdateSQLFilterData(T);
   Actual := '';
   Assert.AreEqual(Expected, Actual);
 end;

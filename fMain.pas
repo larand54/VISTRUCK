@@ -953,6 +953,7 @@ procedure TfrmMain.acPositionViewExecute(Sender: TObject);
 begin
   if not assigned(uPositionView.fPositionView) then
     fPositionView := TfPositionView.Create(self);
+  fPositionView.Parent := panelBase;
   fPositionView.Show;
 end;
 

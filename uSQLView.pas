@@ -12,7 +12,8 @@ type
       FWhereStringList: TStringList;
       function getCheckedValues(const aDecimalType: byte; const aCombo: TcxCheckComboBox): TStringList;
     public
-      procedure add(const aDecimalType: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
+      procedure add(const s:string);
+      procedure addFromCombo(const aDecimalType: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
       function getWhereStatement: TStringList;
   end;
 
@@ -44,21 +45,22 @@ type
       FObjectList : TList<TSQLViewField>;
       FKeyFields: String;
       FSQLFile: string;           //D:\git\delphi\VISTRUCK\EXE\SQL_SetUp.txt
-      FSQL: TStringList;
-      FWhereList: TStringList;
+      FSQL: TStrings;
+      FBaseSQL: TStrings;
+      FWhereList: TStrings;
       procedure InitiateFieldObjects;
       function getStatus(aGridField: string): boolean;
       procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
       Constructor create(const aGridView: TcxGridDBBandedTableView; const aSQLFile: string;
-       const aWhereList: TStringList);
+       const aWhereList: TStrings; const aBaseSQL: TStrings);
       Destructor destroy;
       property ObjectList: TList<TSQLViewField> read FObjectList;
       property gridView: TcxGridDBBandedTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
       property SQLFile: string read FSQLFile;
-      property SQL: TStringList read FSQL;
-      property WhereList: TStringList read FWhereList;
+      property SQL: TStrings read FSQL;
+      property WhereList: TStrings read FWhereList;
   end;
 
   TSQLBuild = class (TInterfacedObject, ISQLBuild)
@@ -135,10 +137,11 @@ begin
 end;
 
 constructor TSQLView.create(const aGridView: TcxGridDBBandedTableView;
-              const aSQLFile: string; const aWhereList: TStringList);
+              const aSQLFile: string; const aWhereList: TStrings; const aBaseSQL: TStrings);
 begin
   Fgridview := aGridView;
   FSQLFile := aSQLFile;
+  FBaseSQL := aBaseSQL;
   FSQL := TStringList.Create;
   FWhereList := aWhereList;
   try
@@ -236,36 +239,9 @@ begin
       FSQLView.SQL.Add(FSQLView.ObjectList[j].fieldSQL);
     end;
   end;
-  FSQLView.SQL.Add('from dbo.PackageNumber pn');
-  FSQLView.SQL.Add('Left outer join dbo.Position posi');
-  FSQLView.SQL.Add('inner join dbo.Area ar on ar.AreaID = posi.AreaID');
-  FSQLView.SQL.Add('on posi.PositionID = pn.PositionID');
-
-  FSQLView.SQL.Add('Left Outer Join dbo.CertificationWood cw on cw.CertNo = IsNull(pn.CertNo,3)');
-  FSQLView.SQL.Add('Left join [dbo].[PackageSize] ps on ps.PackageSizeNo = pn.Package_Size');
-  FSQLView.SQL.Add('and ps.LanguageCode = 1');
-  FSQLView.SQL.Add('inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagetypeno');
-
-  FSQLView.SQL.Add('Inner Join dbo.LengthSpec LS ON LS.LengthSpecNo = pt.LengthSpecNo');
-  FSQLView.SQL.Add('inner join dbo.Product p on p.ProductNo = pt.ProductNo');
-  FSQLView.SQL.Add('Left join dbo.ProductDesc pde on pde.ProductNo = pt.ProductNo');
-  FSQLView.SQL.Add('AND pde.LanguageID = @LanguageCode');
-  FSQLView.SQL.Add('inner join dbo.ProductGroup pg on pg.ProductGroupNo = p.ProductGroupNo');
-  FSQLView.SQL.Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo');
-  FSQLView.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
-  FSQLView.SQL.Add('Inner Join dbo.City cy on cy.CityNo = PIP.PhyInvPointNameNo');
-  FSQLView.SQL.Add('Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.VarugruppNo');
-  FSQLView.SQL.Add('AND va.LanguageCode = @LanguageCode');
-  FSQLView.SQL.Add('Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg.ProductCategoryNo');
-  FSQLView.SQL.Add('AND imp.LanguageCode = @LanguageCode');
-  FSQLView.SQL.Add('Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo');
-  FSQLView.SQL.Add('AND SPE.LanguageCode = @LanguageCode');
-  FSQLView.SQL.Add('Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo');
-  FSQLView.SQL.Add('AND SUR.LanguageCode = @LanguageCode');
-  FSQLView.SQL.Add('Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo');
-  FSQLView.SQL.Add('AND Gr.LanguageCode = @LanguageCode');
-
-  FSQLView.SQL.Add('WHERE');
+  for j := 0 To FSQLView.FBaseSQL.Count-1  do
+    FSQLView.SQL.Add(FSQLView.FBaseSQL[j]);
+   FSQLView.SQL.Add('WHERE');
   for j := 0 to FSQLView.WhereList.Count-1 do
     FSQLView.SQL.Add(FSQLView.WhereList[j]);
   FSQLView.SQL.Add('Group by');
@@ -273,9 +249,7 @@ begin
   begin
     if FSQLView.ObjectList[j].Visible = True then
     begin
-      TempIndex := Pos('Group by', FSQLView.SQL.Text);
-      IndexNo := Pos(FSQLView.ObjectList[j].group,
-        (Copy(FSQLView.SQL.Text, TempIndex, Length(FSQLView.SQL.Text))));
+      IndexNo := 0;
       if (IndexNo = 0) and (FSQLView.ObjectList[j].group <> '') then
       begin
         FSQLView.SQL.Add(FSQLView.ObjectList[j].group);
@@ -299,33 +273,48 @@ end;
 
 { TWhereString }
 
-procedure TWhereString.add(const aDecimalType: byte; const aCombo: TcxCheckComboBox;
-  const aFieldName: string);
+procedure TWhereString.add(const s: string);
+begin
+  if not assigned(FWhereStringList) then
+    FWhereStringList := TStringList.Create
+  else
+    FWhereStringList.Add(' AND ');
+
+  FWhereStringList.Add('('+s+')');
+end;
+
+procedure TWhereString.addFromCombo(const aDecimalType: byte;
+  const aCombo: TcxCheckComboBox; const aFieldName: string);
 var
   values: TStringList;
-  value: string;
+  Value: string;
   temp: string;
 begin
-  values := TStringList.Create;
-  Values := getCheckedValues(aDecimalType, aCombo);
-  if Values.Count > 0 then
-  begin
-    if not assigned(FWhereStringList) then
+  // values := TStringList.Create;
+  try
+    values := getCheckedValues(aDecimalType, aCombo);
+    if assigned(values) and (values.Count > 0) then
     begin
-      FWhereStringList := TStringList.Create;
-//      temp := 'WHERE (';
-    end
-    else
-      temp := 'AND (';
+      if not assigned(FWhereStringList) then
+      begin
+        FWhereStringList := TStringList.create;
+        temp := '(';
+      end
+      else
+        temp := 'AND (';
 
-    temp := temp + aFieldName + ' IN (';
-    for value in Values do
-    begin
-      temp := temp + value + ',';
+      temp := temp + aFieldName + ' IN (';
+      for Value in values do
+      begin
+        temp := temp + Value + ',';
+      end;
+      temp := copy(temp, 1, temp.Length - 1);
+      temp := temp + '))';
+      FWhereStringList.add(temp);
     end;
-    temp := copy(temp,1,temp.Length-1);
-    temp := temp + ')';
-    FWhereStringList.Add(temp);
+  finally
+    if assigned(values) then
+      values.Free;
   end;
 end;
 

@@ -21,7 +21,30 @@ uses
   udmFilterSQL in '..\udmFilterSQL.pas' {dmFilterSQL: TDataModule},
   TestdmFilterSQL in 'TestdmFilterSQL.pas',
   uICMObserver in '..\uICMObserver.pas',
-  uICMSubject in '..\uICMSubject.pas';
+  uICMSubject in '..\uICMSubject.pas',
+  TestPositionView in 'TestPositionView.pas',
+  uPositionView in '..\uPositionView.pas' {fPositionView},
+  VidaType in '..\VidaType.pas',
+  dm_Inventory in '..\dm_Inventory.pas' {dmInventory: TDataModule},
+  VidaConst in '..\VidaConst.pas',
+  VidaUser in '..\VidaUser.pas',
+  dmsDataConn in '..\dmsDataConn.pas' {dmsConnector: TDataModule},
+  dmsVidaContact in '..\dmsVidaContact.pas' {dmsContact: TDataModule},
+  dmsVidaSystem in '..\dmsVidaSystem.pas' {dmsSystem: TDataModule},
+  VidaUtils in '..\VidaUtils.pas',
+  dlgPickPkg_II in '..\dlgPickPkg_II.pas' {frmPackagePicker_II},
+  uLagerPos in '..\uLagerPos.pas' {fLagerPos},
+  uShowMemo in '..\uShowMemo.pas' {fShowMemo},
+  uSendMapiMail in '..\uSendMapiMail.pas' {dm_SendMapiMail: TDataModule},
+  udmLanguage in '..\udmLanguage.pas' {dmLanguage: TDataModule},
+  dmc_ArrivingLoads in '..\dmc_ArrivingLoads.pas' {dmArrivingLoads: TDataModule},
+  uPackageSize in '..\uPackageSize.pas' {fPackageSize},
+  uEnterLengthData in '..\Visab\uEnterLengthData.pas' {fEnterLengthData},
+  dmsVidaProduct in '..\dmsVidaProduct.pas' {dmsProduct: TDataModule},
+  uCert in '..\uCert.pas' {fCert},
+  dmcVidaSystem in '..\dmcVidaSystem.pas' {dmcSystem: TDataModule},
+  dmc_UserProps in '..\dmc_UserProps.pas' {dm_UserProps: TDataModule},
+  uEntryField in '..\uEntryField.pas' {fEntryField};
 
 var
   runner : ITestRunner;
