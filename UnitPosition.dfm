@@ -13,6 +13,7 @@ object Position: TPosition
   Font.Height = -14
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsStayOnTop
   OldCreateOrder = False
   Visible = True
   OnCloseQuery = FormCloseQuery
@@ -108,6 +109,10 @@ object Position: TPosition
       Font.Style = [fsBold]
       ImageIndex = 1
       ParentFont = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object cxGrid_MatchPosition: TcxGrid
         Left = 0
         Top = 0
@@ -190,6 +195,10 @@ object Position: TPosition
       Margins.Bottom = 4
       Caption = 'Matcha Referens'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object grid_Matcha_Ref: TcxGrid
         Left = 0
         Top = 0
