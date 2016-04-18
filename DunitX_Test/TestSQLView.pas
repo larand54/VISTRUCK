@@ -3,6 +3,7 @@ unit TestSQLView;
 interface
 uses
   DUnitX.TestFramework,
+  System.Classes,
   cxCheckComboBox, uSQLView;
 
 
@@ -35,6 +36,16 @@ type
     [TestCase('ReplaceCommasWithDecimal_two_Commas_inline','Hej, på, d,,ig|Hej. på. d..ig','|')]
     procedure TestReplaceCommasWithDecimal(astring, aExpected : string);
     [Test]
+    procedure TestGetWhereStatement_When_Empty;
+    [Test]
+    procedure TestGetWhereStatement_First_Line;
+    [Test]
+    procedure TestGetWhereStatement_Additional_Line;
+    [Test]
+    procedure TestGetAddFromComboFirst;
+    [Test]
+    procedure TestGetAddFromComboContinuing;
+    [Test]
     procedure TestGetSQLofComboFilter(dtype: integer);
     [Test]
     procedure TestReadPropertiesSQLViewField_FieldName;
@@ -48,7 +59,7 @@ type
 
 implementation
 
-uses system.classes, System.SysUtils, cxLookAndFeelPainters;
+uses  System.SysUtils, cxLookAndFeelPainters;
 
 
 
@@ -94,6 +105,34 @@ begin
 end;
 
 
+procedure TTestSQLView.TestGetAddFromComboContinuing;
+var
+  Actual: string;
+  Expected: string;
+  WStr: TWhereString;
+begin
+  WStr := TWhereString.Create;
+  WStr.add('SR.ID = 55');
+  Expected := '(SR.ID = 55)'#13#10 + 'AND (TestItem1 IN (nr001,nr002,nr003))'#13#10;
+  WStr.addFromCombo(0, FCombo,'TestItem1');
+  Actual := WStr.getWhereStatement.Text;
+  Assert.AreEqual(Expected, Actual);
+end;
+
+procedure TTestSQLView.TestGetAddFromComboFirst;
+var
+  Actual: string;
+  Expected: string;
+  WStr: TWhereString;
+begin
+  WStr := TWhereString.Create;
+  Expected := '(TestItem1 IN (nr001,nr002,nr003))'#13#10;
+  WStr.addFromCombo(0, FCombo,'TestItem1');
+  Actual := WStr.getWhereStatement.Text;
+  Assert.AreEqual(Expected, Actual);
+end;
+
+
 procedure TTestSQLView.TestGetSQLofComboFilter(dtype: integer);
 var
   Actual: string;
@@ -105,6 +144,46 @@ begin
   Actual := TSQLHelper.GetSQLofComboFilter(0, 'TestItem1', FCombo);
   Assert.AreEqual(Expected, Actual);
 end;
+
+procedure TTestSQLView.TestGetWhereStatement_When_Empty;
+var
+  WStr: TWhereString;
+  Actual, Expected: string;
+begin
+  WStr := TWhereString.Create;
+  Actual := WStr.getWhereStatement.Text;
+  Expected := '';
+  Assert.AreEqual(Expected, Actual);
+end;
+
+procedure TTestSQLView.TestGetWhereStatement_Additional_Line;
+var
+  WStr: TWhereString;
+  Actual, Expected, s1, s2: string;
+begin
+  s1 := 'First line';
+  s2 := 'Second line';
+  WStr := TWhereString.Create;
+  Expected := '('+s1+')' + #13#10 + ' AND ' + #13#10 + '('+s2+')' + #13#10;
+  WStr.add(s1);
+  WStr.add(s2);
+  Actual := WStr.getWhereStatement.Text;
+  Assert.AreEqual(Expected, Actual);
+end;
+
+procedure TTestSQLView.TestGetWhereStatement_First_Line;
+var
+  WStr: TWhereString;
+  Actual, Expected: string;
+begin
+  WStr := TWhereString.Create;
+  Expected := 'Testhis 123';
+  WStr.add(Expected);
+  Expected := '('+Expected+')' + #13#10;
+  Actual := WStr.getWhereStatement.Text;
+  Assert.AreEqual(Expected, Actual);
+end;
+
 
 procedure TTestSQLView.TestReadPropertiesSQLViewField_FieldName;
 var

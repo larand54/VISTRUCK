@@ -265,7 +265,6 @@ type
     acUlrikaRapport: TAction;
     sq_ST_Del_Stat: TFDQuery;
     frxCrossObject1: TfrxCrossObject;
-    siLangLinked_fDeliveryReport: TsiLangLinked;
     mtuserProp: TkbmMemTable;
     mtuserPropUserID: TIntegerField;
     mtuserPropForm: TStringField;
@@ -390,10 +389,13 @@ type
     grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn;
     cbInklEjFakt: TcxComboBox;
     ccbReference: TcxCheckComboBox;
-    cxCheckComboBox1: TcxCheckComboBox;
-    cxCheckComboBox2: TcxCheckComboBox;
+    ccbInfo2: TcxCheckComboBox;
+    ccbInfo1: TcxCheckComboBox;
     cxLabel13: TcxLabel;
     cbInkTimeInDateFilter: TcxCheckBox;
+    cxBtnUpdFilter: TcxButton;
+    acRequestFilterUpdate: TAction;
+    siLangLinked1: TsiLangLinked;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -433,9 +435,12 @@ type
     procedure acRefreshProdSUMExecute(Sender: TObject);
     procedure cbStoragePosPropertiesCloseUp(Sender: TObject);
     procedure cbInkTimeInDateFilterPropertiesChange(Sender: TObject);
+    procedure acRequestFilterUpdateExecute(Sender: TObject);
+    procedure cxBtnUpdFilterClick(Sender: TObject);
 
   private
     { Private declarations }
+    FFilterUpdated: boolean;  // Filter combos updated
     procedure SetDateFields ;
     procedure LoadCheckBoxWithVerk ;
     procedure LoadCheckBoxWithSalesRegion;
@@ -470,12 +475,15 @@ type
     procedure ClearProductFilter ;
 
     procedure OpenStandardMall(Sender: TObject);
+    procedure EnableFilterButton(Enable: boolean);
+
   public
     { Public declarations }
 //    Function  GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
     function GetBaseSQL(const aSQL: TStrings): TStrings;
     Procedure CreateCo(Sender: TObject;CompanyNo: Integer);
     procedure Update(aSubject: IInterface);
+    property filterUpdated: boolean read FFilterUpdated;
   end;
 
 var
@@ -487,7 +495,8 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmcVidaSystem , {uGridSetting,}
   dmc_UserProps, dmsVidaSystem,
  // dmsVidaPkg,
-  uEntryField{, uSokAvropMall , uAngeNyMall, VidaDeliveryClass}, uSQLView;
+  uEntryField{, uSokAvropMall , uAngeNyMall, VidaDeliveryClass}, uSQLView,
+  udmLanguage;
 
 {$R *.dfm}
 
@@ -670,7 +679,12 @@ begin
   UpdateFilterCombos(ccbKV2, TdmFilterSQL(aSubject).GradeL);
   UpdateFilterCombos(ccbSU2, TdmFilterSQL(aSubject).SUL);
   UpdateFilterCombos(ccbIMP, TdmFilterSQL(aSubject).IMPL);
+  UpdateFilterCombos(ccbREFERENCE, TdmFilterSQL(aSubject).REFL);
+  UpdateFilterCombos(ccbInfo1, TdmFilterSQL(aSubject).Info1L);
+  UpdateFilterCombos(ccbInfo2, TdmFilterSQL(aSubject).Info2L);
   UpdateFilterCombos(ccVarugrupp, TdmFilterSQL(aSubject).VaruGruppL);
+  FFilterUpdated := true;
+  EnableFilterButton(false);
 end;
 
 procedure TfPositionView.UpdateFilterCombos(const aCombo: TcxCheckComboBox;
@@ -686,6 +700,8 @@ begin
   Begin
     try
       s2 := aList.Items[s1];
+      if s2 = '' then continue;
+
       aCombo.Properties.Items.AddCheckItem(s1,s2);
     except
       on E: Exception do
@@ -865,6 +881,12 @@ begin
       s := s + cbStorageArea.Properties.Items[x].ShortDescription + ',';
     end;
   end;
+  if s = '' then  // No Area select is considered all selected
+  for x := 0 to cbStorageArea.Properties.Items.Count - 1 do
+  begin
+    s := s + cbStorageArea.Properties.Items[x].ShortDescription + ',';
+  end;
+
   s := copy(s, 1, s.Length-1);  // Remove last ','
   if s = '' then begin
     cbStoragePos.Clear;
@@ -982,6 +1004,9 @@ begin
 end;
 
 function TfPositionView.CreateWhereList(const aDecimalType: byte; const aSource: integer): TStringList;
+const
+  quoted: integer = 1;
+  notQuoted: integer = 0;
 var
   WhereList: TWhereString;
 begin
@@ -1000,15 +1025,19 @@ begin
   WhereList.add('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)));
   WhereList.add('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)));
 
-  WhereList.addFromCombo(aDecimalType,cbOwner,'PIP.OwnerNo');
-  WhereList.addFromCombo(aDecimalType,cbStorageGroup,'LIP.LogicalInventoryPointNo');
-  WhereList.addFromCombo(aDecimalType,cbStorageArea,'Ar.AreaID');
-  WhereList.addFromCombo(aDecimalType,cbStoragePos,'PN.PositionID');
-  WhereList.addFromCombo(1,ccbAT,'pg.ActualThicknessMM');
-  WhereList.addFromCombo(1,ccbNT,'pg.NominalThicknessMM');
-  WhereList.addFromCombo(1,ccbAB,'pg.ActualWidthMM');
-  WhereList.addFromCombo(1,ccbNB,'pg.NominalWidthMM');
-  WhereList.addFromCombo(1,ccbAL,'dbo.getMaxLengthOfPackage(PN.PackageNo)');
+  WhereList.addFromCombo(aDecimalType,notQuoted,cbOwner,'PIP.OwnerNo');
+  WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageGroup,'LIP.LogicalInventoryPointNo');
+  WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageArea,'Ar.AreaID');
+  WhereList.addFromCombo(aDecimalType,notQuoted,cbStoragePos,'PN.PositionID');
+  WhereList.addFromCombo(1,notQuoted,ccbAT,'pg.ActualThicknessMM');
+  WhereList.addFromCombo(1,notQuoted,ccbNT,'pg.NominalThicknessMM');
+  WhereList.addFromCombo(1,notQuoted,ccbAB,'pg.ActualWidthMM');
+  WhereList.addFromCombo(1,notQuoted,ccbNB,'pg.NominalWidthMM');
+  WhereList.addFromCombo(1,notQuoted,ccbAL,'dbo.getMaxLengthOfPackage(PN.PackageNo)');
+  WhereList.addFromCombo(1,Quoted,ccbReference,'PN.REFERENCE');
+  WhereList.addFromCombo(1,notQuoted,ccbInfo1,'PN.Info1');
+  WhereList.addFromCombo(1,notQuoted,ccbInfo2,'PN.Info2');
+
   result := WhereList.getWhereStatement;
 end;
 
@@ -1022,10 +1051,13 @@ end;
 
 procedure TfPositionView.FormCreate(Sender: TObject);
 begin
+{$IFDEF DUNITX} // Avoid connection to database during unit-testing for now.
+{$ELSE}
   dmFilterSQL := TdmFilterSQL.Create(self);
   dmFilterSQL.Attach(self);
   createCo(nil,ThisUser.CompanyNo);
   cbInkTimeInDateFilter.Properties.OnChange(self); //Setup Dateinput to correspond o this checkbox;
+{$ENDIF}
 end;
 
 procedure TfPositionView.FormKeyPress(Sender: TObject; var Key: Char);
@@ -1165,7 +1197,7 @@ end;
 
 procedure TfPositionView.acDeleteProdPaketNrMallExecute(Sender: TObject);
 begin
- if MessageDlg(siLangLinked_fDeliveryReport.GetTextOrDefault('IDS_39' (* 'Vill du ta bort?' *) ),
+ if MessageDlg('Vill du ta bort?',
     mtConfirmation, [mbYes, mbNo], 0) = mrYes then
  With dmInventory do
  Begin
@@ -1364,7 +1396,7 @@ Var FilterString : String ;
 begin
   dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Clear ;
 
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(siLangLinked_fDeliveryReport.GetTextOrDefault('IDS_45' (* 'Leverans' *) )) ;
+  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add('Leverans') ;
   dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(DateTimeToStr(deStartPeriod.Date) + ' - ' + DateTimeToStr(deEndPeriod.Date) ) ;
 
   dxComponentPrinter1Link1.PrinterPage.Orientation    := poLandscape ;
@@ -1446,6 +1478,11 @@ begin
         SQLView.Free;
     end;
   end;
+end;
+
+procedure TfPositionView.acRequestFilterUpdateExecute(Sender: TObject);
+begin
+  EnableFilterButton(true);
 end;
 
 procedure TfPositionView.ccbATPropertiesClickCheck(Sender: TObject;
@@ -1556,7 +1593,7 @@ begin
  Begin
   FileName:= SaveDialog1.FileName ;
   Try
-  ShowMessage(siLangLinked_fDeliveryReport.GetTextOrDefault('IDS_81' (* 'Tabell exporterad till excel fil ' *) ) + FileName);
+  ShowMessage('Tabell exporterad till excel fil '  + FileName);
   Except
   End ;
  End ;
@@ -1662,7 +1699,6 @@ begin
         end;
       end;
 
-    dmFilterSQL.UpdateFilterData(T);
   finally
     if assigned(T) then
       T.Free;
@@ -1691,6 +1727,46 @@ begin
  End;
 end;
 
+procedure TfPositionView.cxBtnUpdFilterClick(Sender: TObject);
+var
+  T: TList<integer>;
+  iValue, Count, x: integer;
+begin
+  try
+    T := TList<integer>.create;
+
+    // Check if positions loaded
+    Count := cbStoragePos.Properties.Items.Count;
+    if cbStoragePos.Properties.Items.Count < 1 then
+      // try load
+      LoadCheckBoxWithStoragePos;
+    Count := cbStoragePos.Properties.Items.Count;
+    if cbStoragePos.Properties.Items.Count > 0 then
+    begin
+      for x := 0 to Count - 1 do
+      begin
+        if cbStoragePos.States[x] = cbsChecked then
+        begin
+          iValue := strToInt(cbStoragePos.Properties.Items[x].ShortDescription);
+          T.add(iValue);
+        end;
+      end;
+      // if nothing checked then all checked considered.
+      if T.Count < 1 then
+        for x := 0 to Count - 1 do
+        begin
+          iValue := strToInt(cbStoragePos.Properties.Items[x].ShortDescription);
+          T.add(iValue);
+        end;
+    end;
+
+    dmFilterSQL.UpdateFilterData(T);
+  finally
+    if assigned(T) then
+      T.Free;
+  end;
+end;
+
 procedure TfPositionView.cxButton1Click(Sender: TObject);
 begin
  Close ;
@@ -1703,6 +1779,15 @@ end;
 
 
 
+
+procedure TfPositionView.EnableFilterButton(Enable: boolean);
+begin
+  cxBtnUpdFilter.Enabled := Enable;
+  if not Enable then
+    cxBtnUpdFilter.Caption := 'Filter updated'
+  else
+    cxBtnUpdFilter.Caption := 'Update Filter!'
+end;
 
 procedure TfPositionView.SaveUserProfile ;
 Begin

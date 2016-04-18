@@ -28,10 +28,6 @@ type
     procedure TestSQLFilterWithTwoItems;
     [Test]
     procedure TestSQLFilterWithFiveItems;
-//    [TestCase('TestB','3,4')]
-//    procedure Test2(const AValue1 : Integer;const AValue2 : Integer);
-    [Test]
-    procedure TestWithData;
   end;
 
 implementation
@@ -60,7 +56,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.PositionID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.PositionID = -1'+#13#10;
+  Expected := SF.sqFilterData.SQL.Text;  //no change is expected
   T := TList<integer>.create;
   SF.UpdateSQLFilterData(T);
   Actual := SF.sqFilterData.SQL.Text ;
@@ -112,25 +108,6 @@ begin
   Assert.AreEqual(Expected, Actual);
 end;
 
-procedure TTestdmFilterSQL.TestWithData;
-var
-  T: TList<integer>;
-  Actual,
-  Expected: string;
-begin
-  Expected := '';
-  T := TList<integer>.create;
-  T.Add(145);T.Add(146);
-  SF.UpdateSQLFilterData(T);
-  Actual := '';
-  Assert.AreEqual(Expected, Actual);
-end;
-
-(*
-procedure TTestdmFilterSQL.Test2(const AValue1 : Integer;const AValue2 : Integer);
-begin
-end;
-  *)
 initialization
   TDUnitX.RegisterTestFixture(TTestdmFilterSQL);
 end.

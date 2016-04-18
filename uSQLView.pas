@@ -13,7 +13,7 @@ type
       function getCheckedValues(const aDecimalType: byte; const aCombo: TcxCheckComboBox): TStringList;
     public
       procedure add(const s:string);
-      procedure addFromCombo(const aDecimalType: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
+      procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
       function getWhereStatement: TStringList;
   end;
 
@@ -77,7 +77,8 @@ type
 
 implementation
 
-
+uses
+  dialogs;
 
 class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
@@ -92,7 +93,8 @@ Begin
   try
     with Combo do
     begin
-     CalculateCheckStates(Value, Properties.Items,Properties.EditValueFormat , APCheckStates^);
+     CalculateCheckStates(Value, Properties.Items,Properties.EditValueFormat ,
+     APCheckStates^);
      if Properties.Items.Count > 0 then
      Begin
       for x := 0 to Properties.Items.Count - 1 do
@@ -283,7 +285,7 @@ begin
   FWhereStringList.Add('('+s+')');
 end;
 
-procedure TWhereString.addFromCombo(const aDecimalType: byte;
+procedure TWhereString.addFromCombo(const aDecimalType, quotedString: byte;
   const aCombo: TcxCheckComboBox; const aFieldName: string);
 var
   values: TStringList;
@@ -306,7 +308,10 @@ begin
       temp := temp + aFieldName + ' IN (';
       for Value in values do
       begin
-        temp := temp + Value + ',';
+        if quotedString = 1 then
+          temp := temp + quotedStr(Value) + ','
+        else
+          temp := temp + Value + ',';
       end;
       temp := copy(temp, 1, temp.Length - 1);
       temp := temp + '))';
@@ -322,15 +327,19 @@ function TWhereString.getCheckedValues( const aDecimalType: byte;
   const aCombo: TcxCheckComboBox): TStringList;
 var
   i: integer;
+  value: string;
 begin
   result := TStringList.Create;
   for i := 0 to aCombo.Properties.Items.Count -1 do
   begin
+    value := aCombo.Properties.Items[i].ShortDescription;
+    if value = '' then continue;
+
     if aCombo.GetItemState(i) = cbsChecked then
       if aDecimalType = 0 then
-        result.Add(aCombo.Properties.Items[i].ShortDescription)
+        result.Add(value)
       else
-        result.Add(TSQLHelper.ReplaceCommasWithDecimal(aCombo.Properties.Items[i].ShortDescription));
+        result.Add(TSQLHelper.ReplaceCommasWithDecimal(value));
   end;
   if result.Count = 0 then
     FreeAndNil( result);
@@ -338,7 +347,9 @@ end;
 
 function TWhereString.getWhereStatement: TStringList;
 begin
-  result := FWhereStringList;
+  if Assigned(FWhereStringList) then
+    result := FWhereStringList
+  else result := TStringList.create;
 end;
 
 initialization

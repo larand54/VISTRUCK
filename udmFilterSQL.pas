@@ -231,6 +231,7 @@ begin
 (*    notify;
     exit;
 *)  end;
+  sqFilterData.SQL.SaveToFile('FilterSQL.sql');
   sqFilterData.Active := true;
   sqFilterData.First;
   if not sqFilterData.Eof then
@@ -256,8 +257,8 @@ begin
 
     end;
     end;
-    Notify;
   end;
+    Notify;
 end;
 
 procedure TdmFilterSQL.UpdateSQLFilterData(aStorePosList: TList<integer>);
