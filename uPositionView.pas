@@ -757,58 +757,96 @@ end;
 
 procedure TfPositionView.LoadCheckBoxWithSTorageArea;
 Var
-  Count, x: Integer;
+  Count, x: integer;
   Mills: TList<string>;
-begin
-  cds_StorageAreas.Active := False;
+  SGroups: TList<string>;
 
-  // Collect all checked mills
-  Mills := TList<string>.Create;
-  try
-    for x := 0 to cbOwner.Properties.Items.Count - 1 do
-    begin
-      if cbOwner.GetItemState(x) = cbsChecked then
-      begin
-        Mills.Add(cbOwner.Properties.Items[x].ShortDescription);
-      end;
-    end;
-
-    // If any mill checked then create sql
-    if (assigned(Mills) AND (Mills.Count > 0))  then
-    begin
-      cds_StorageAreas.SQL.Clear;
-      cds_StorageAreas.SQL.Add('SELECT DISTINCT area.AreaName, area.AreaID');
-      cds_StorageAreas.SQL.Add('FROM  PhysicalInventoryPoint PIP');
-      cds_StorageAreas.SQL.Add('INNER JOIN Area ON Area.PIPNo = PIP.PhysicalInventoryPointNo');
-      if (assigned(Mills) AND (Mills.Count > 0)) then
-      begin
-        cds_StorageAreas.SQL.Add('WHERE  (PIP.OwnerNo = ' + Mills[0] + ')');
-        for x := 1 to Mills.Count-1 do
-          cds_StorageAreas.SQL.Add('OR (PIP.OwnerNo = ' + Mills[x] + ')');
-      end;
-      cds_StorageAreas.SQL.Add('Order by area.AreaName');
-
-      // Retrieve storageareas for checked mills and fill combobox
+  procedure UpdateAreaCombo(PIPNos: TList<string>);
+  begin
+    if (assigned(PIPNos) AND (PIPNos.Count > 0)) then
+      // Retrieve storageareas and fill combobox
       Try
-        cds_StorageAreas.Active := true;
+        cds_StorageAreas.SQL.SaveToFile('cds_StorageAreas.sql');
+        cds_StorageAreas.Active := True;
         cbStorageArea.Properties.Items.Clear;
         cds_StorageAreas.First;
         While not cds_StorageAreas.Eof do
         Begin
-          cbStorageArea.Properties.Items.AddCheckItem(cds_StorageAreas.FieldByName('AreaName')
+          cbStorageArea.Properties.Items.AddCheckItem
+            (cds_StorageAreas.FieldByName('AreaName')
             .AsString, cds_StorageAreas.FieldByName('AreaID').AsString);
           cds_StorageAreas.Next;
         End;
 
       Finally
         cds_StorageAreas.Active := False;
+        if assigned(PIPNos) then
+          PIPNos.Free;
       end;
+  end;
+
+begin
+  cds_StorageAreas.Active := False;
+
+  // Check if any storagegroup selected then use these to fill up the Area-combo
+  SGroups := TList<string>.create;
+  try
+    for x := 0 to cbStorageGroup.Properties.Items.Count - 1 do
+    begin
+      if cbStorageGroup.GetItemState(x) = cbsChecked then
+        SGroups.add(cbStorageGroup.Properties.Items[x].ShortDescription);
+    end;
+    // If any Storagegroup checked then create sql
+    if (assigned(SGroups) AND (SGroups.Count > 0)) then
+    begin
+      cds_StorageAreas.SQL.Clear;
+      cds_StorageAreas.SQL.add('SELECT DISTINCT area.AreaName, area.AreaID');
+      cds_StorageAreas.SQL.add('FROM  PhysicalInventoryPoint PIP');
+      cds_StorageAreas.SQL.add
+        ('INNER JOIN Area ON Area.PIPNo = PIP.PhysicalInventoryPointNo');
+      cds_StorageAreas.SQL.add('WHERE  (PIP.PhysicalInventoryPointNo = ' + SGroups[0] + ')');
+      for x := 1 to SGroups.Count - 1 do
+        cds_StorageAreas.SQL.add('OR (PIP.PhysicalInventoryPointNo = ' +
+          SGroups[x] + ')');
+      cds_StorageAreas.SQL.add('Order by area.AreaName');
+      UpdateAreaCombo(SGroups);
     end
     else
-    // No mill checked - empty combo
-      cbStorageArea.properties.Items.Clear;
+    begin
+      // Collect all checked mills
+      Mills := TList<string>.create;
+      for x := 0 to cbOwner.Properties.Items.Count - 1 do
+      begin
+        if cbOwner.GetItemState(x) = cbsChecked then
+        begin
+          Mills.add(cbOwner.Properties.Items[x].ShortDescription);
+        end;
+      end;
+
+      // If any mill checked then create sql
+      if (assigned(Mills) AND (Mills.Count > 0)) then
+      begin
+        cds_StorageAreas.SQL.Clear;
+        cds_StorageAreas.SQL.add('SELECT DISTINCT area.AreaName, area.AreaID');
+        cds_StorageAreas.SQL.add('FROM  PhysicalInventoryPoint PIP');
+        cds_StorageAreas.SQL.add
+          ('INNER JOIN Area ON Area.PIPNo = PIP.PhysicalInventoryPointNo');
+        if (assigned(Mills) AND (Mills.Count > 0)) then
+        begin
+          cds_StorageAreas.SQL.add('WHERE  (PIP.OwnerNo = ' + Mills[0] + ')');
+          for x := 1 to Mills.Count - 1 do
+            cds_StorageAreas.SQL.add('OR (PIP.OwnerNo = ' + Mills[x] + ')');
+        end;
+        cds_StorageAreas.SQL.add('Order by area.AreaName');
+
+        // Retrieve storageareas for checked mills and fill combobox
+        UpdateAreaCombo(Mills);
+      end
+      else
+        // No mill/StorageGrops checked - empty combo
+        cbStorageArea.Properties.Items.Clear;
+    end;
   finally
-    Mills.Free;
   end;
 end;
 
@@ -855,7 +893,9 @@ begin
     cds_StorageGroups.SQL.Clear;
     cds_StorageGroups.SQL.Text := SQL.Text;
     SQL.Free;
-    LoadCheckBox('PLIP', 'LIPNO', '', cds_StorageGroups, cbStorageGroup);
+    cds_StorageGroups.SQL.SaveToFile('cds_StorageGroups.sql');
+
+    LoadCheckBox('PLIP', 'PIPNO', '', cds_StorageGroups, cbStorageGroup);
   end
   else // No owner selected - empty the combo
   begin
@@ -899,6 +939,8 @@ begin
       + s + ')');
 
     Try
+      cds_StoragePos.SQL.SaveToFile('cds_StoragePos.sql');
+
       cds_StoragePos.Active := True;
       cbStoragePos.Properties.Items.Clear;
 
@@ -955,6 +997,7 @@ begin
 
     end;
     Try
+      cds_verk.SQL.SaveToFile('cds_verk.sql');
       cds_verk.Active := true;
       cbOwner.Properties.Items.Clear;
 

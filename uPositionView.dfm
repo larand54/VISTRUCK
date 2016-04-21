@@ -2767,6 +2767,7 @@ object fPositionView: TfPositionView
     object dxComponentPrinter1Link1: TdxGridReportLink
       Active = True
       Component = grdProdPaketNr
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2787,7 +2788,8 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42478.744677268520000000
+      ReportDocument.CreationDate = 42481.374057951390000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -5343,6 +5345,7 @@ object fPositionView: TfPositionView
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
+    UseDefaultLanguage = True
     NumOfLanguages = 3
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
