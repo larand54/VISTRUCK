@@ -954,6 +954,7 @@ begin
   if not assigned(uPositionView.fPositionView) then
     fPositionView := TfPositionView.Create(self);
   fPositionView.Parent := panelBase;
+  dxRibbon1.ShowTabGroups  := False ;
   fPositionView.Show;
 end;
 

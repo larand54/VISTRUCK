@@ -550,21 +550,21 @@ object fPositionView: TfPositionView
           Text = 'cbProdSUM'
           Width = 149
         end
-        object rgpReportSelection: TRadioGroup
-          Left = 12
-          Top = -1
-          Width = 498
-          Height = 53
-          Caption = 'Rapportval'
-          Columns = 3
-          Items.Strings = (
-            'PL Area+Ref'
+        object cbReportSelection: TcxComboBox
+          Left = 9
+          Top = 19
+          Properties.DropDownRows = 15
+          Properties.DropDownSizeable = True
+          Properties.Items.Strings = (
+            'PL Area + Ref'
             'PL Area + Ref + Dim'
-            'PL A + D + R + L'#228'ngd'
+            'PLA + D + R + L'#228'ngd'
             'D'#228'cklista'
-            'Paketlista'
+            'PaketLista'
             'Tomma R'#228'ckor')
           TabOrder = 7
+          Text = 'PL Area + Ref'
+          Width = 196
         end
       end
       object grdPosition: TcxGrid
@@ -831,6 +831,18 @@ object fPositionView: TfPositionView
             Position.ColIndex = 24
             Position.RowIndex = 0
           end
+          object grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Product'
+            Position.BandIndex = 0
+            Position.ColIndex = 25
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PN'
+            Position.BandIndex = 0
+            Position.ColIndex = 26
+            Position.RowIndex = 0
+          end
         end
         object grdPositionDBBandedTableView2: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
@@ -935,6 +947,7 @@ object fPositionView: TfPositionView
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitTop = 4
         object Bevel1: TBevel
           Left = 4
           Top = 32
@@ -964,12 +977,12 @@ object fPositionView: TfPositionView
           Properties.ListOptions.ShowHeader = False
           Properties.MaxLength = 0
           Style.StyleController = cxEditStyleController3
-          TabOrder = 25
+          TabOrder = 23
           Visible = False
           Width = 23
         end
         object cxLabel2: TcxLabel
-          Left = 201
+          Left = 160
           Top = 9
           Margins.Left = 4
           Margins.Top = 4
@@ -1149,7 +1162,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 14
+          TabOrder = 12
           Width = 70
         end
         object ccbAB: TcxCheckComboBox
@@ -1168,7 +1181,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
-          TabOrder = 15
+          TabOrder = 13
           Width = 70
         end
         object ccbAL: TcxCheckComboBox
@@ -1187,7 +1200,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
-          TabOrder = 16
+          TabOrder = 14
           Width = 70
         end
         object ccbTS2: TcxCheckComboBox
@@ -1267,7 +1280,7 @@ object fPositionView: TfPositionView
           Width = 105
         end
         object cbOwner: TcxCheckComboBox
-          Left = 243
+          Left = 209
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
@@ -1281,7 +1294,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 1
-          Width = 100
+          Width = 60
         end
         object ccVarugrupp: TcxCheckComboBox
           Left = 729
@@ -1455,7 +1468,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
-          TabOrder = 12
+          TabOrder = 10
           Visible = False
           Width = 79
         end
@@ -1478,7 +1491,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 32
+          TabOrder = 30
           Width = 70
         end
         object ccbNB: TcxCheckComboBox
@@ -1500,7 +1513,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 33
+          TabOrder = 31
           Width = 70
         end
         object cxLabel35: TcxLabel
@@ -1561,7 +1574,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
-          TabOrder = 13
+          TabOrder = 11
           Visible = False
           Width = 108
         end
@@ -1575,7 +1588,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'St'#228'ng'
-          TabOrder = 36
+          TabOrder = 34
           OnClick = cxButton1Click
         end
         object cxButton2: TcxButton
@@ -1588,7 +1601,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Rensa filter'
-          TabOrder = 37
+          TabOrder = 35
           OnClick = cxButton2Click
         end
         object cxLabel14: TcxLabel
@@ -1639,37 +1652,6 @@ object fPositionView: TfPositionView
           Height = 19
           Width = 50
         end
-        object deStartPeriod: TcxDBDateEdit
-          Left = 4
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'StartPeriod'
-          DataBinding.DataSource = dsUserProp
-          Properties.InputKind = ikStandard
-          Properties.Kind = ckDateTime
-          Style.BorderStyle = ebsSingle
-          TabOrder = 10
-          Width = 115
-        end
-        object deEndPeriod: TcxDBDateEdit
-          Left = 127
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'EndPeriod'
-          DataBinding.DataSource = dsUserProp
-          Properties.InputKind = ikStandard
-          Style.BorderStyle = ebsSingle
-          Style.Color = clWindow
-          Style.ButtonStyle = btsOffice11
-          TabOrder = 11
-          Width = 117
-        end
         object cxLabel3: TcxLabel
           Left = 5
           Top = 9
@@ -1696,10 +1678,10 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 0
-          Width = 100
+          Width = 60
         end
         object cbStorageArea: TcxCheckComboBox
-          Left = 635
+          Left = 516
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
@@ -1714,10 +1696,10 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 3
-          Width = 100
+          Width = 60
         end
         object cxLabel4: TcxLabel
-          Left = 552
+          Left = 434
           Top = 9
           Margins.Left = 4
           Margins.Top = 4
@@ -1729,7 +1711,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController1
         end
         object cbStoragePos: TcxCheckComboBox
-          Left = 820
+          Left = 661
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
@@ -1744,10 +1726,10 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 4
-          Width = 100
+          Width = 60
         end
         object cxLabel5: TcxLabel
-          Left = 743
+          Left = 584
           Top = 9
           Margins.Left = 4
           Margins.Top = 4
@@ -1759,7 +1741,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController1
         end
         object cbStorageGroup: TcxCheckComboBox
-          Left = 444
+          Left = 366
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
@@ -1774,10 +1756,10 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 2
-          Width = 100
+          Width = 60
         end
         object cxLabel12: TcxLabel
-          Left = 353
+          Left = 275
           Top = 9
           Margins.Left = 4
           Margins.Top = 4
@@ -1789,8 +1771,8 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController1
         end
         object cbInklEjFakt: TcxComboBox
-          Left = 797
-          Top = 104
+          Left = 775
+          Top = 7
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -1802,7 +1784,7 @@ object fPositionView: TfPositionView
             'Lager + ej fakt'
             'Ej fakturerat')
           Properties.MaxLength = 0
-          TabOrder = 44
+          TabOrder = 42
           Text = 'Lager'
           Width = 123
         end
@@ -1811,7 +1793,7 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 45
+          TabOrder = 43
           Width = 97
         end
         object ccbInfo2: TcxCheckComboBox
@@ -1819,7 +1801,7 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 46
+          TabOrder = 44
           Width = 95
         end
         object ccbInfo1: TcxCheckComboBox
@@ -1827,37 +1809,15 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 47
+          TabOrder = 45
           Width = 95
-        end
-        object cxLabel13: TcxLabel
-          Left = 797
-          Top = 84
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'K'#228'lla'
-          ParentColor = False
-          ParentFont = False
-          Style.Color = clWindow
-          Style.Font.Charset = ANSI_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Arial Rounded MT Bold'
-          Style.Font.Style = []
-          Style.StyleController = cxEditStyleController2
-          Style.TextColor = clMaroon
-          Style.TextStyle = []
-          Style.IsFontAssigned = True
-          Visible = False
         end
         object cbInkTimeInDateFilter: TcxCheckBox
           Left = 818
           Top = 53
           Caption = 'Inkludera tid i datumfilter'
           Properties.OnChange = cbInkTimeInDateFilterPropertiesChange
-          TabOrder = 49
+          TabOrder = 46
           Width = 213
         end
         object cxBtnUpdFilter: TcxButton
@@ -1870,11 +1830,57 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Uppdatera filter'
-          TabOrder = 50
+          TabOrder = 47
           OnClick = cxBtnUpdFilterClick
+        end
+        object deStartPeriod: TcxDateEdit
+          Left = 4
+          Top = 104
+          TabOrder = 48
+          Width = 116
+        end
+        object deEndPeriod: TcxDateEdit
+          Left = 126
+          Top = 104
+          TabOrder = 49
+          Width = 116
+        end
+        object cxLabel16: TcxLabel
+          Left = 729
+          Top = 9
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'K'#228'lla:'
+          ParentColor = False
+          Style.Color = clWindow
+          Style.StyleController = cxEditStyleController1
         end
       end
     end
+  end
+  object cxLabel13: TcxLabel
+    Left = 9
+    Top = 153
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    Caption = 'Rapportval'
+    ParentColor = False
+    ParentFont = False
+    Style.Color = clWindow
+    Style.Font.Charset = ANSI_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -15
+    Style.Font.Name = 'Arial Rounded MT Bold'
+    Style.Font.Style = []
+    Style.StyleController = cxEditStyleController2
+    Style.TextColor = clMaroon
+    Style.TextStyle = []
+    Style.IsFontAssigned = True
+    Visible = False
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -2767,7 +2773,6 @@ object fPositionView: TfPositionView
     object dxComponentPrinter1Link1: TdxGridReportLink
       Active = True
       Component = grdProdPaketNr
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2788,8 +2793,7 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42481.374057951390000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42482.623246388890000000
       BuiltInReportLink = True
     end
   end
@@ -5258,8 +5262,9 @@ object fPositionView: TfPositionView
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'SELECT Distinct isNull(LIP.InvCode,'#39#39')+'#39'/'#39'+RTRIM(LIP.LogicalInve' +
-        'ntoryName)+'#39'/'#39'+RTRIM(C.ClientName) AS PLIP,'
+        'SELECT Distinct RTRIM(LIP.LogicalInventoryName)+'#39'/'#39'+RTRIM(C.Clie' +
+        'ntName)+ '#39'/'#39'+CAST(LIP.LogicalInventoryPointNo AS VARCHAR(6)) AS ' +
+        'PLIP, '
       
         'LIP.LogicalInventoryPointNo AS LIPNo, PH.PhysicalInventoryPointN' +
         'o AS PIPNO, CY.CITYNAME,'

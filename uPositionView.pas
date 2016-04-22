@@ -55,7 +55,7 @@ uses
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
   FireDAC.Phys.MSSQL
   , uICMObserver,
-  udmFilterSQL ;
+  udmFilterSQL, dxCore, cxDateUtils ;
 
 
 type
@@ -258,8 +258,6 @@ type
     sq_UserProfileInputOption: TIntegerField;
     sq_UserProfileStartPeriod: TSQLTimeStampField;
     sq_UserProfileEndPeriod: TSQLTimeStampField;
-    deStartPeriod: TcxDBDateEdit;
-    deEndPeriod: TcxDBDateEdit;
     frxDB_ST_Del_Stat: TfrxDBDataset;
     frxReport2: TfrxReport;
     acUlrikaRapport: TAction;
@@ -356,7 +354,6 @@ type
     cds_StorageGroupsCITYNAME: TStringField;
     cds_StorageGroupsLogicalInventoryName: TStringField;
     cds_StorageGroupsInvCode: TStringField;
-    rgpReportSelection: TRadioGroup;
     grdPositionDBBandedTableView2: TcxGridDBBandedTableView;
     grdPositionDBBandedTableView3: TcxGridDBBandedTableView;
     grdPositionDBBandedTableView4: TcxGridDBBandedTableView;
@@ -391,11 +388,17 @@ type
     ccbReference: TcxCheckComboBox;
     ccbInfo2: TcxCheckComboBox;
     ccbInfo1: TcxCheckComboBox;
-    cxLabel13: TcxLabel;
     cbInkTimeInDateFilter: TcxCheckBox;
     cxBtnUpdFilter: TcxButton;
     acRequestFilterUpdate: TAction;
     siLangLinked1: TsiLangLinked;
+    deStartPeriod: TcxDateEdit;
+    deEndPeriod: TcxDateEdit;
+    grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn;
+    cxLabel16: TcxLabel;
+    cbReportSelection: TcxComboBox;
+    cxLabel13: TcxLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -447,7 +450,7 @@ type
     procedure LoadCheckBoxWithSTorageArea;
     procedure LoadCheckBoxWithStoragePos;
     procedure LoadCheckBoxWithStorageGroup;
-    procedure LoadCheckBox(const aFieldName, aCheckItemFld, aCheckItem: string; const aDataSet: TFDQuery; const aCombo: TcxCheckComboBox);
+    procedure LoadCheckBox(const aFieldName, aCheckItemFld, aTagField, aCheckItem: string; const aDataSet: TFDQuery; const aCombo: TcxCheckComboBox);
     procedure UpdateFilterCombos(const aCombo: TcxCheckComboBox; aList: TCMSL);
     //    function prepareDataSetForCombo(aTargetCbo, aSourceCbo: TcxCheckComboBox;InitialSQL, finalSQL: TStrings): TFDQuery;
     procedure Open_UserProfile ;
@@ -714,9 +717,10 @@ begin
   End;
 end;
 
-procedure TfPositionView.LoadCheckBox(const aFieldName, aCheckItemFld, aCheckItem: string;
+procedure TfPositionView.LoadCheckBox(const aFieldName, aCheckItemFld, aTagField, aCheckItem: string;
   const aDataSet: TFDQuery; const aCombo: TcxCheckComboBox);
 Var i : Integer ;
+  cb: TcxCheckComboBoxItem;
 begin
   aDataSet.Active := not aDataSet.Active ;
   Try
@@ -726,9 +730,12 @@ begin
     Begin
       try
         if aCheckItemFld <> '' then
-          aCombo.Properties.Items.AddCheckItem(aDataSet.FieldByName(aFieldName).AsString, aDataSet.FieldByName(aCheckItemFld).AsString)
+          cb := aCombo.Properties.Items.AddCheckItem(aDataSet.FieldByName(aFieldName).AsString, aDataSet.FieldByName(aCheckItemFld).AsString)
         else
-          aCombo.Properties.Items.AddCheckItem(aDataSet.FieldByName(aFieldName).AsString);
+          cb := aCombo.Properties.Items.AddCheckItem(aDataSet.FieldByName(aFieldName).AsString);
+        if aTagField <> '' then
+          cb.Tag := aDataSet.FieldByName(aTagField).AsInteger;
+
         aDataSet.Next ;
       except
         on E : EDatabaseError do
@@ -752,7 +759,7 @@ end;
 procedure TfPositionView.LoadCheckBoxWithSalesRegion;
 begin
   cds_SalesRegion.Params.ParamByName('SalesRegionNo').AsInteger := ThisUser.CompanyNo;
-  LoadCheckBox('ClientName','ClientNo','',cds_SalesRegion,cbSalesRegion);
+  LoadCheckBox('ClientName','ClientNo','','',cds_SalesRegion,cbSalesRegion);
 end;
 
 procedure TfPositionView.LoadCheckBoxWithSTorageArea;
@@ -794,7 +801,7 @@ begin
     for x := 0 to cbStorageGroup.Properties.Items.Count - 1 do
     begin
       if cbStorageGroup.GetItemState(x) = cbsChecked then
-        SGroups.add(cbStorageGroup.Properties.Items[x].ShortDescription);
+        SGroups.add(intToStr(cbStorageGroup.Properties.Items[x].Tag));
     end;
     // If any Storagegroup checked then create sql
     if (assigned(SGroups) AND (SGroups.Count > 0)) then
@@ -887,7 +894,7 @@ begin
     SQL.Add('WHERE PH2.OwnerNo = ' + intToStr(ThisUser.CompanyNo) + ')');
 
     // Add Order by
-    SQL.Add('Order By  LIP.InvCode, LIP.LogicalInventoryName, CY.CITYNAME');
+    SQL.Add('Order By LIP.LogicalInventoryName, CY.CITYNAME');
 
     // Put new SQL into the dataset and activate it and load checkCombobox from it
     cds_StorageGroups.SQL.Clear;
@@ -895,7 +902,7 @@ begin
     SQL.Free;
     cds_StorageGroups.SQL.SaveToFile('cds_StorageGroups.sql');
 
-    LoadCheckBox('PLIP', 'PIPNO', '', cds_StorageGroups, cbStorageGroup);
+    LoadCheckBox('PLIP', 'LIPNO','PIPNo', '', cds_StorageGroups, cbStorageGroup);
   end
   else // No owner selected - empty the combo
   begin
@@ -1024,21 +1031,12 @@ begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
  Try
-
+  deStartPeriod.Clear;
+  deEndPeriod.Clear;
   LoadCheckBoxWithSalesRegion;
   LoadCheckBoxWithVerk ;
-(*  LoadCheckBoxWithStorageGroup;
-  LoadCheckBoxWithSTorageArea;
-  LoadCheckBoxWithStoragePos;
-*)
   SetCheckComboBoxes ;
-(*
-  SetCheckComboBoxes_Where_PktNrLevKod_Required('18') ;
-  dmInventory.cds_PkgList.Active:= True ;
-*)
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
-
-
   PopulateCheckBoxMallar ;
 
  Finally
@@ -1065,8 +1063,10 @@ begin
        WhereList.add('OH.OrderType = 0');
     end;
   end;
-  WhereList.add('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)));
-  WhereList.add('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)));
+  if deStartPeriod.EditValue <> null then
+    WhereList.add('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)));
+  if deEndPeriod.EditValue <> null then
+    WhereList.add('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)));
 
   WhereList.addFromCombo(aDecimalType,notQuoted,cbOwner,'PIP.OwnerNo');
   WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageGroup,'LIP.LogicalInventoryPointNo');
@@ -1379,20 +1379,20 @@ End ;
 
 function TfPositionView.GetReportIndex: integer;
 begin
-  result := rgpReportSelection.ItemIndex;
+  result := cbReportSelection.ItemIndex;
 end;
 
 function TfPositionView.GetReportTemplate(const aIndex: integer): string;
 begin
   case aIndex of
     0: result := 'AreaRef.txt';
-    1: result := 'AreaDimRef.txt';
-    2: result := 'AreaDimRefLength.txt';
-    3: result := 'DeckList.txt';
-    4: result := 'PkgList.txt';
-    5: result := 'Empty.Recktxt';
+    1: result := 'AreaRef.txt';
+    2: result := 'AreaRef.txt';
+    3: result := 'AreaRef.txt';
+    4: result := 'AreaRef.txt';
+    5: result := 'AreaRef.txt';
   else
-    result :='';
+    result :='AreaRef.txt';
   end;
 end;
 
@@ -1569,7 +1569,7 @@ begin
   fPositionView.Name + '2'
 //  sq_UserProfileForm.AsString
 
-  ,grdPositionDBBandedTableView1,'fDeliveryReport') ;
+  ,grdPositionDBBandedTableView1,'fPositionReport') ;
 
  End;
 end;

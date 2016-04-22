@@ -19,7 +19,7 @@ object dmFilterSQL: TdmFilterSQL
     Top = 8
   end
   object sqFilterData: TFDQuery
-    Connection = FDConnectionForTest
+    Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
         'SELECT DISTINCT PN.PositionID, PG.ActualThicknessMM, PG.ActualWi' +
@@ -63,27 +63,6 @@ object dmFilterSQL: TdmFilterSQL
         Value = 1
       end>
   end
-  object mtFilterData: TFDMemTable
-    FieldDefs = <>
-    IndexDefs = <>
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    FormatOptions.AssignedValues = [fvMaxBcdPrecision, fvMaxBcdScale]
-    FormatOptions.MaxBcdPrecision = 2147483647
-    FormatOptions.MaxBcdScale = 2147483647
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired]
-    UpdateOptions.CheckRequired = False
-    StoreDefs = True
-    Left = 48
-    Top = 64
-  end
-  object dscFilteredData: TDataSource
-    DataSet = mtFilterData
-    Left = 48
-    Top = 120
-  end
   object ds_PositionView: TDataSource
     DataSet = cds_PositionView_Invoiced
     Left = 276
@@ -123,7 +102,10 @@ object dmFilterSQL: TdmFilterSQL
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
-      ',PN.StoredDate'
+      ',PN.StoredDate,'
+      'pde.ProductDisplayName AS Product,'
+      'PN.PackageNo AS PN'
+      ''
       ''
       ''
       'from dbo.PackageNumber pn'
@@ -201,135 +183,12 @@ object dmFilterSQL: TdmFilterSQL
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName,'
-      'PN.StoredDate')
+      'PN.StoredDate,'
+      'pde.ProductDisplayName,'
+      'PN.PackageNo'
+      '')
     Left = 276
     Top = 13
-    object cds_PositionView_InvoicedCity: TStringField
-      FieldName = 'City'
-      Origin = 'City'
-      Size = 50
-    end
-    object cds_PositionView_InvoicedLogicalInventoryName: TStringField
-      FieldName = 'LogicalInventoryName'
-      Origin = 'LogicalInventoryName'
-      Size = 50
-    end
-    object cds_PositionView_InvoicedPaket: TIntegerField
-      FieldName = 'Paket'
-      Origin = 'Paket'
-      ReadOnly = True
-    end
-    object cds_PositionView_Invoicedpcs: TIntegerField
-      FieldName = 'pcs'
-      Origin = 'pcs'
-      ReadOnly = True
-    end
-    object cds_PositionView_InvoicedAM3: TFloatField
-      FieldName = 'AM3'
-      Origin = 'AM3'
-      ReadOnly = True
-    end
-    object cds_PositionView_InvoicedNM3: TFloatField
-      FieldName = 'NM3'
-      Origin = 'NM3'
-      ReadOnly = True
-    end
-    object cds_PositionView_Invoiceddim: TStringField
-      FieldName = 'dim'
-      Origin = 'dim'
-      ReadOnly = True
-      Size = 13
-    end
-    object cds_PositionView_InvoicedTS: TStringField
-      FieldName = 'TS'
-      Origin = 'TS'
-      Required = True
-      Size = 30
-    end
-    object cds_PositionView_InvoicedPC: TStringField
-      FieldName = 'PC'
-      Origin = 'PC'
-      Required = True
-      Size = 40
-    end
-    object cds_PositionView_InvoicedKV: TStringField
-      FieldName = 'KV'
-      Origin = 'KV'
-      Required = True
-      FixedChar = True
-      Size = 30
-    end
-    object cds_PositionView_InvoicedUT: TStringField
-      FieldName = 'UT'
-      Origin = 'UT'
-      Required = True
-      Size = 30
-    end
-    object cds_PositionView_InvoicedLIPNo: TIntegerField
-      FieldName = 'LIPNo'
-      Origin = 'LIPNo'
-      Required = True
-    end
-    object cds_PositionView_InvoicedPIPNo: TIntegerField
-      FieldName = 'PIPNo'
-      Origin = 'PIPNo'
-      Required = True
-    end
-    object cds_PositionView_InvoicedVarugruppNamn: TStringField
-      FieldName = 'VarugruppNamn'
-      Origin = 'VarugruppNamn'
-      Size = 35
-    end
-    object cds_PositionView_InvoicedREFERENCE: TStringField
-      FieldName = 'REFERENCE'
-      Origin = 'REFERENCE'
-      Size = 30
-    end
-    object cds_PositionView_InvoicedInfo1: TStringField
-      FieldName = 'Info1'
-      Origin = 'Info1'
-      Size = 30
-    end
-    object cds_PositionView_InvoicedInfo2: TStringField
-      FieldName = 'Info2'
-      Origin = 'Info2'
-      Size = 30
-    end
-    object cds_PositionView_InvoicedAreaName: TStringField
-      FieldName = 'AreaName'
-      Origin = 'AreaName'
-      Size = 50
-    end
-    object cds_PositionView_InvoicedPositionName: TStringField
-      FieldName = 'PositionName'
-      Origin = 'PositionName'
-      Size = 50
-    end
-    object cds_PositionView_InvoicedStoredDate: TSQLTimeStampField
-      FieldName = 'StoredDate'
-      Origin = 'StoredDate'
-    end
-    object cds_PositionView_InvoicedAT: TFloatField
-      FieldName = 'AT'
-      Origin = 'AT'
-    end
-    object cds_PositionView_InvoicedAB: TFloatField
-      FieldName = 'AB'
-      Origin = 'AB'
-    end
-    object cds_PositionView_InvoicedNT: TFloatField
-      FieldName = 'NT'
-      Origin = 'NT'
-    end
-    object cds_PositionView_InvoicedNB: TFloatField
-      FieldName = 'NB'
-      Origin = 'NB'
-    end
-    object cds_PositionView_InvoicedAL: TFloatField
-      FieldName = 'AL'
-      Origin = 'AL'
-      ReadOnly = True
-    end
   end
   object cds_PositionView_not_Invoiced: TFDQuery
     Connection = dmsConnector.FDConnection1
@@ -365,7 +224,10 @@ object dmFilterSQL: TdmFilterSQL
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
-      ',PN.StoredDate'
+      ',PN.StoredDate,'
+      'pde.ProductDisplayName AS Product,'
+      'PN.PackageNo AS PN'
+      ''
       ''
       ''
       'FROM  dbo.Client Verk'
@@ -474,134 +336,11 @@ object dmFilterSQL: TdmFilterSQL
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName,'
-      'PN.StoredDate')
+      'PN.StoredDate,'
+      'pde.ProductDisplayName,'
+      'PN.PackageNo'
+      '')
     Left = 460
     Top = 13
-    object StringField1: TStringField
-      FieldName = 'City'
-      Origin = 'City'
-      Size = 50
-    end
-    object StringField2: TStringField
-      FieldName = 'LogicalInventoryName'
-      Origin = 'LogicalInventoryName'
-      Size = 50
-    end
-    object IntegerField1: TIntegerField
-      FieldName = 'Paket'
-      Origin = 'Paket'
-      ReadOnly = True
-    end
-    object IntegerField2: TIntegerField
-      FieldName = 'pcs'
-      Origin = 'pcs'
-      ReadOnly = True
-    end
-    object FloatField1: TFloatField
-      FieldName = 'AM3'
-      Origin = 'AM3'
-      ReadOnly = True
-    end
-    object FloatField2: TFloatField
-      FieldName = 'NM3'
-      Origin = 'NM3'
-      ReadOnly = True
-    end
-    object StringField3: TStringField
-      FieldName = 'dim'
-      Origin = 'dim'
-      ReadOnly = True
-      Size = 13
-    end
-    object StringField4: TStringField
-      FieldName = 'TS'
-      Origin = 'TS'
-      Required = True
-      Size = 30
-    end
-    object StringField5: TStringField
-      FieldName = 'PC'
-      Origin = 'PC'
-      Required = True
-      Size = 40
-    end
-    object StringField6: TStringField
-      FieldName = 'KV'
-      Origin = 'KV'
-      Required = True
-      FixedChar = True
-      Size = 30
-    end
-    object StringField7: TStringField
-      FieldName = 'UT'
-      Origin = 'UT'
-      Required = True
-      Size = 30
-    end
-    object IntegerField3: TIntegerField
-      FieldName = 'LIPNo'
-      Origin = 'LIPNo'
-      Required = True
-    end
-    object IntegerField4: TIntegerField
-      FieldName = 'PIPNo'
-      Origin = 'PIPNo'
-      Required = True
-    end
-    object StringField8: TStringField
-      FieldName = 'VarugruppNamn'
-      Origin = 'VarugruppNamn'
-      Size = 35
-    end
-    object StringField9: TStringField
-      FieldName = 'REFERENCE'
-      Origin = 'REFERENCE'
-      Size = 30
-    end
-    object StringField10: TStringField
-      FieldName = 'Info1'
-      Origin = 'Info1'
-      Size = 30
-    end
-    object StringField11: TStringField
-      FieldName = 'Info2'
-      Origin = 'Info2'
-      Size = 30
-    end
-    object StringField12: TStringField
-      FieldName = 'AreaName'
-      Origin = 'AreaName'
-      Size = 50
-    end
-    object StringField13: TStringField
-      FieldName = 'PositionName'
-      Origin = 'PositionName'
-      Size = 50
-    end
-    object SQLTimeStampField1: TSQLTimeStampField
-      FieldName = 'StoredDate'
-      Origin = 'StoredDate'
-    end
-    object FloatField3: TFloatField
-      FieldName = 'AT'
-      Origin = 'AT'
-    end
-    object FloatField4: TFloatField
-      FieldName = 'AB'
-      Origin = 'AB'
-    end
-    object FloatField5: TFloatField
-      FieldName = 'NT'
-      Origin = 'NT'
-    end
-    object FloatField6: TFloatField
-      FieldName = 'NB'
-      Origin = 'NB'
-    end
-    object FloatField7: TFloatField
-      FieldName = 'AL'
-      Origin = 'AL'
-      ReadOnly = True
-    end
   end
 end
