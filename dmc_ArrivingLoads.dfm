@@ -536,6 +536,7 @@ object dmArrivingLoads: TdmArrivingLoads
     Top = 528
   end
   object cdsArrivingLoads: TFDQuery
+    Active = True
     CachedUpdates = True
     Indexes = <
       item
@@ -628,7 +629,15 @@ object dmArrivingLoads: TdmArrivingLoads
       '(Select Count(*) FROM dbo.LoadDetail LD'
       'WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,'
       '(Select Count(*) FROM dbo.PackageARConfirmed PC'
-      'WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed'
+      'WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,'
+      '(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl'
+      
+        'inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_Load' +
+        'No'
+      
+        'inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.In' +
+        'ternalInvoiceNo'
+      'WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo'
       ''
       ''
       ''
@@ -930,6 +939,12 @@ object dmArrivingLoads: TdmArrivingLoads
     object cdsArrivingLoadsOriginalLoadNo: TIntegerField
       FieldName = 'OriginalLoadNo'
       Origin = 'OriginalLoadNo'
+      ReadOnly = True
+    end
+    object cdsArrivingLoadsOriginalInvoiceNo: TIntegerField
+      FieldName = 'OriginalInvoiceNo'
+      Origin = 'OriginalInvoiceNo'
+      ProviderFlags = []
       ReadOnly = True
     end
   end
@@ -5586,6 +5601,27 @@ object dmArrivingLoads: TdmArrivingLoads
     IndexName = 'cdsAllPackageNosIndex01'
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
+      'SELECT DISTINCT  L.LoadNo, LD.PackageNo, LD.SupplierCode'
+      'FROM dbo.CustomerShippingPlanHeader CSH'
+      'Inner join dbo.Orders OH on OH.OrderNo = CSH.OrderNo'
+      
+        'Inner join dbo.CustomerShippingPlanDetails CSD ON CSD.ShippingPl' +
+        'anNo = csh.ShippingPlanNo'
+      
+        'INNER JOIN dbo.LoadShippingPlan LSP '#9#9'ON '#9'LSP.ShippingPlanNo = C' +
+        'SH.ShippingPlanNo'
+      'Inner Join dbo.LoadDetail LD on LD.LoadNo = LSP.LoadNo'
+      'INNER JOIN dbo.Loads L ON'#9'LSP.LoadNo '#9#9'= L.LoadNo'
+      'AND     L.CustomerNo '#9#9'= OH.CustomerNo'
+      'AND     L.SupplierNo '#9#9'= OH.SalesRegionNo'
+      'WHERE'
+      'OH.SalesRegionNo = :Customerno'
+      'AND LD.PackageNo = :PkgNo'
+      'AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)'
+      'AND L.LoadAR = 0'
+      ''
+      'UNION'
+      ''
       'SELECT DISTINCT  L.LoadNo, LD.PackageNo, LD.SupplierCode'
       'FROM dbo.SupplierShippingPlan       SP'
       'Left Outer Join dbo.LogicalInventoryPoint LIP'

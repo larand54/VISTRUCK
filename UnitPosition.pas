@@ -500,7 +500,9 @@ var
 
    if ( not FDQ_Position.Active) then
    begin
-   //FDQ_Position.Active := True;
+    if FDQ_Position.Active then
+     FDQ_Position.Active := False ;
+    FDQ_Position.ParamByName('PIPNo').AsInteger := dmArrivingLoads.PIPNo ;//10220;
     FDQ_Position.Open;
     FDQ_Position.First;
     while not FDQ_Position.Eof do
@@ -556,7 +558,7 @@ begin
     begin
       cxGrid_MatchPosition.Visible := True;
       FDQ_ProdRefLength.Close;
-      FDQ_ProdRefLength.ParamByName('@ProductNo').AsInteger := ProductNo;
+      FDQ_ProdRefLength.ParamByName('@ProductNo').AsInteger     := ProductNo;
       FDQ_ProdRefLength.ParamByName('@PIPNo').AsInteger         := dmArrivingLoads.PIPNo ;//10220;
       FDQ_ProdRefLength.ParamByName('@LanguageCode').AsInteger  := ThisUser.LanguageID ;//1;
       FDQ_ProdRefLength.Open;
