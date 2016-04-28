@@ -68,6 +68,7 @@ type
       FSQL: TStringList;
       FSQLView: TSQLView;
       FSQLReady: boolean;
+      LoggDir: string;
     public
       constructor Create(aSQLView: TSQLView);
       destructor destroy;
@@ -78,7 +79,7 @@ type
 implementation
 
 uses
-  dialogs;
+  dialogs, dmsVidaSystem;
 
 class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
@@ -232,6 +233,8 @@ begin
   FSQLView.SQL.Clear;
   FSQLView.SQL.Add('DECLARE @LanguageCode int = 1');
   FSQLView.SQL.Add('Select distinct');
+  LoggDir := dmsSystem.Get_Dir('UserDir');
+
 
   for j := 0 to FSQLView.FObjectList.Count - 1 do
   begin
@@ -261,11 +264,12 @@ begin
   end;
 
  // Remove last comma
-  FSQLView.SQL.SaveToFile('SQL1.txt');
   if FSQLView.SQL.Text[FSQLView.SQL.Text.length - 2] = ',' then
     FSQLView.SQL.Text := copy(FSQLView.SQL.Text,0,FSQLView.SQL.Text.Length - 3);
-  FSQLView.SQL.SaveToFile('SQL2.txt');
-
+  try
+    FSQLView.SQL.SaveToFile(LoggDir+'SQL2.txt');
+  except
+  end;
 end;
 
 destructor TSQLBuild.destroy;

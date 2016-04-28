@@ -16,7 +16,6 @@ type
   TCMSL = TDictionary<string,string>;
 
   TdmFilterSQL = class(TDataModule, ICMSubject)
-    FDConnectionForTest: TFDConnection;
     sqFilterData: TFDQuery;
     ds_PositionView: TDataSource;
     cds_PositionView_Invoiced: TFDQuery;
@@ -71,11 +70,12 @@ type
 
 var
   dmFilterSQL: TdmFilterSQL;
+  LoggDir: string;
 
 implementation
 
 uses
-  Dialogs;
+  Dialogs, dmsVidaSystem;
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
@@ -129,6 +129,7 @@ begin
   FListREF := TCMSL.create; // REFERENCE
   FListInfo1 := TCMSL.create; // Info1
   FListInfo2 := TCMSL.create; // Info2
+  LoggDir := dmsSystem.Get_Dir('UserDir');
 end;
 
 destructor TdmFilterSQL.Destroy;
@@ -180,7 +181,11 @@ begin
 (*    notify;
     exit;
 *)  end;
-  sqFilterData.SQL.SaveToFile('FilterSQL.sql');
+  try
+    sqFilterData.SQL.SaveToFile(LoggDir+'FilterSQL.sql');
+  except
+  end;
+
   sqFilterData.Active := true;
   sqFilterData.First;
   if not sqFilterData.Eof then

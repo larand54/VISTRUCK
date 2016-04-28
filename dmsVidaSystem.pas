@@ -9,7 +9,8 @@ uses
   VidaType, Controls, Dialogs, kbmMemTable,
   cxGridTableView, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
-  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore, dateutils ;
+  FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore, dateutils,
+  FireDAC.Stan.StorageBin ;
 
 type
  TAmbiguityEvent = procedure(
@@ -1443,11 +1444,19 @@ Begin
       else if pFieldName = 'MyEmailAddress' then
         if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
            Result := 'larand54@gmail.com'
+      else if pFieldName = 'UserDir' then
+          result := ExtractFilePath(ParamStr(0))
       else
         result := dmsConnector.DriveLetter + 'VIS\TEMP\';
       exit;
     end;
   {$ENDIF}
+    if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+    begin
+      if pFieldName = 'UserDir' then
+          result := ExtractFilePath(ParamStr(0));
+      exit;
+    end;
   cds_Props.Active := False;
   cds_Props.ParamByName('UserID').AsInteger := ThisUser.UserID;
   cds_Props.ParamByName('Form').AsString    := 'Global';
@@ -2374,7 +2383,8 @@ begin
   Begin
    Stream := TMemoryStream.Create;
    try
-    cds_GridSetsSets.SaveToStream(Stream);
+    sq_GridSets2.SaveToStream(Stream);
+//    cds_GridSetsSets.SaveToStream(Stream);
     Stream.Position := 0;
     AGridView.RestoreFromStream(Stream);
     Result:= True ;
@@ -2385,6 +2395,7 @@ begin
   sq_GridSets2.Active:= False ;
  End ;
 end;
+
 
 
 procedure TdmsSystem.StoreGridSets(const UserID : Integer;const Name, Form, ViewName : String;AGridView: TcxGridTableView) ;

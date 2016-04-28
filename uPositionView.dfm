@@ -45,408 +45,6 @@ object fPositionView: TfPositionView
     ClientRectBottom = 859
     ClientRectRight = 1550
     ClientRectTop = 0
-    object tsProduktionPerPaketnr: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Caption = 'Leveranser'
-      ImageIndex = 4
-      object Panel7: TPanel
-        Left = 0
-        Top = 0
-        Width = 1550
-        Height = 50
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alTop
-        TabOrder = 0
-        object cxButton3: TcxButton
-          Left = 10
-          Top = 11
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acRefreshProdPaketNr
-          TabOrder = 0
-        end
-        object cxButton4: TcxButton
-          Left = 127
-          Top = 12
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acExpandAllProdPaketNr
-          TabOrder = 1
-        end
-        object cxButton5: TcxButton
-          Left = 244
-          Top = 12
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acCollapseAllProdPaketNr
-          TabOrder = 2
-        end
-        object cxButton6: TcxButton
-          Left = 809
-          Top = 11
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acNewProdPaketNrMall
-          TabOrder = 3
-        end
-        object cxButton7: TcxButton
-          Left = 926
-          Top = 11
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acDeleteProdPaketNrMall
-          TabOrder = 4
-        end
-        object cxButton8: TcxButton
-          Left = 1042
-          Top = 11
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acSaveProdPaketNrMall
-          TabOrder = 5
-        end
-        object cbProdPaketNr: TcxComboBox
-          Left = 601
-          Top = 17
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.OnChange = cbProdPaketNrPropertiesChange
-          TabOrder = 6
-          Width = 200
-        end
-        object cxButton15: TcxButton
-          Left = 361
-          Top = 12
-          Width = 109
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acPrint
-          TabOrder = 7
-        end
-        object cbExpanded: TcxCheckBox
-          Left = 482
-          Top = 14
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Expanderad'
-          Properties.OnChange = cbExpandedPropertiesChange
-          TabOrder = 8
-          Width = 109
-        end
-      end
-      object grdProdPaketNr: TcxGrid
-        Left = 0
-        Top = 50
-        Width = 1550
-        Height = 809
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alClient
-        TabOrder = 1
-        object grdProdPaketNrDBBandedTableView1: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.KeyFieldNames = 'ProductNo;OwnerNo;LO'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'NM3'
-            end
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'AM3'
-            end
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'NETTO'
-            end
-            item
-              Format = '#####.0'
-              Kind = skAverage
-              FieldName = 'MEDELPRIS'
-            end
-            item
-              Format = '##########'
-              Kind = skSum
-              FieldName = 'Styck'
-            end>
-          DataController.Summary.SummaryGroups = <
-            item
-              Links = <
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end>
-              SummaryItems = <
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'NM3'
-                end
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'AM3'
-                end
-                item
-                  Format = '#,###,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'NETTO'
-                end
-                item
-                  Format = '#####.0'
-                  Kind = skAverage
-                  Position = spFooter
-                  FieldName = 'MEDELPRIS'
-                end>
-            end>
-          DataController.Summary.Options = [soMultipleSelectedRecords]
-          DataController.Summary.OnAfterSummary = grdProdPaketNrDBBandedTableView1DataControllerSummaryAfterSummary
-          OptionsBehavior.PullFocusing = True
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.CellSelect = False
-          OptionsSelection.MultiSelect = True
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.Footer = True
-          OptionsView.GroupFooters = gfAlwaysVisible
-          OptionsView.Indicator = True
-          Styles.GroupFooterSortedSummary = cxStyle3
-          Styles.GroupSortedSummary = cxStyle1
-          Bands = <
-            item
-              Caption = 'Band1'
-            end>
-          object grdProdPaketNrDBBandedTableView1CityName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'CityName'
-            Width = 75
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'LogicalInventoryName'
-            Width = 151
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1Paket: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Paket'
-            Width = 56
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1pcs: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'pcs'
-            Width = 59
-            Position.BandIndex = 0
-            Position.ColIndex = 3
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1AM3: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'AM3'
-            Width = 43
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1NM3: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'NM3'
-            Width = 38
-            Position.BandIndex = 0
-            Position.ColIndex = 5
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1dim: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'dim'
-            Width = 38
-            Position.BandIndex = 0
-            Position.ColIndex = 6
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1TS: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'TS'
-            Width = 85
-            Position.BandIndex = 0
-            Position.ColIndex = 7
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1PC: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PC'
-            Width = 115
-            Position.BandIndex = 0
-            Position.ColIndex = 8
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1KV: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'KV'
-            Width = 85
-            Position.BandIndex = 0
-            Position.ColIndex = 9
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1UT: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'UT'
-            Width = 87
-            Position.BandIndex = 0
-            Position.ColIndex = 10
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1LIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'LIPNo'
-            Width = 31
-            Position.BandIndex = 0
-            Position.ColIndex = 11
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1PIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PIPNo'
-            Width = 27
-            Position.BandIndex = 0
-            Position.ColIndex = 12
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'VarugruppNamn'
-            Width = 101
-            Position.BandIndex = 0
-            Position.ColIndex = 13
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'REFERENCE'
-            Width = 87
-            Position.BandIndex = 0
-            Position.ColIndex = 14
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1Info1: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info1'
-            Width = 87
-            Position.BandIndex = 0
-            Position.ColIndex = 15
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1Info2: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info2'
-            Width = 87
-            Position.BandIndex = 0
-            Position.ColIndex = 16
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1AreaName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'AreaName'
-            Width = 142
-            Position.BandIndex = 0
-            Position.ColIndex = 17
-            Position.RowIndex = 0
-          end
-          object grdProdPaketNrDBBandedTableView1PositionName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PositionName'
-            Width = 142
-            Position.BandIndex = 0
-            Position.ColIndex = 18
-            Position.RowIndex = 0
-          end
-        end
-        object grdProdPaketNrLevel1: TcxGridLevel
-          GridView = grdProdPaketNrDBBandedTableView1
-        end
-      end
-      object cxLookupComboBox1: TcxLookupComboBox
-        Left = 295
-        Top = -79
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Properties.ListColumns = <>
-        TabOrder = 2
-        Width = 179
-      end
-    end
     object tsProduktionProduktSummary: TcxTabSheet
       Margins.Left = 4
       Margins.Top = 4
@@ -475,7 +73,7 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Action = acRefreshProdSUM
+          Action = acRefreshReport
           TabOrder = 0
         end
         object cxButton10: TcxButton
@@ -487,7 +85,7 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Action = acExpandAllProdSUM
+          Action = acExpandAllGridView
           TabOrder = 1
         end
         object cxButton11: TcxButton
@@ -499,7 +97,7 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Action = acCollapseAllProdSum
+          Action = acCollapseAllGridView
           TabOrder = 2
         end
         object cxButton12: TcxButton
@@ -511,7 +109,7 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Action = acNewProdSUMMall
+          Action = acNewTemplate
           TabOrder = 3
         end
         object cxButton13: TcxButton
@@ -535,20 +133,8 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Action = acSaveProdSUMMall
+          Action = acSaveTemplate
           TabOrder = 5
-        end
-        object cbProdSUM: TcxComboBox
-          Left = 1251
-          Top = 8
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.OnChange = cbProdSUMPropertiesChange
-          TabOrder = 6
-          Text = 'cbProdSUM'
-          Width = 149
         end
         object cbReportSelection: TcxComboBox
           Left = 9
@@ -556,14 +142,15 @@ object fPositionView: TfPositionView
           Properties.DropDownRows = 15
           Properties.DropDownSizeable = True
           Properties.Items.Strings = (
-            'PL Area + Ref'
-            'PL Area + Ref + Dim'
-            'PLA + D + R + L'#228'ngd'
+            'Area-Ref'
+            'Area-Ref-Dim'
+            'Area-Ref-Dim-L'#228'ngd'
             'D'#228'cklista'
             'PaketLista'
             'Tomma R'#228'ckor')
-          TabOrder = 7
-          Text = 'PL Area + Ref'
+          Properties.OnChange = cbReportSelectionPropertiesChange
+          TabOrder = 6
+          Text = 'Area-Ref'
           Width = 196
         end
       end
@@ -583,27 +170,31 @@ object fPositionView: TfPositionView
           DataController.DataSource = dmFilterSQL.ds_PositionView
           DataController.DetailKeyFieldNames = 'AreaName'
           DataController.KeyFieldNames = 'AreaName'
-          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.DefaultGroupSummaryItems = <
+            item
+              FieldName = 'AM3'
+            end>
           DataController.Summary.FooterSummaryItems = <
             item
               Format = '#,###,###.0'
               Kind = skSum
               FieldName = 'NM3'
+              Column = grdPositionDBBandedTableView1NM3
+              DisplayText = 'NM3 Total'
             end
             item
               Format = '#,###,###.0'
               Kind = skSum
               FieldName = 'AM3'
-            end
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'AM1'
+              Column = grdPositionDBBandedTableView1AM3
+              DisplayText = 'AM3 Total'
             end
             item
               Format = '###########'
               Kind = skSum
-              FieldName = 'STYCK'
+              FieldName = 'pcs'
+              Column = grdPositionDBBandedTableView1pcs
+              DisplayText = 'Totalt antal'
             end>
           DataController.Summary.SummaryGroups = <
             item
@@ -644,6 +235,27 @@ object fPositionView: TfPositionView
                   Kind = skSum
                   Position = spFooter
                   FieldName = 'NM3'
+                end
+                item
+                  Format = '#,###,###'
+                  Kind = skSum
+                  Position = spFooter
+                  FieldName = 'pcs'
+                end>
+            end
+            item
+              Links = <
+                item
+                  Column = grdPositionDBBandedTableView1AM3
+                end>
+              SummaryItems = <
+                item
+                  Format = '#,###,###.0'
+                  Kind = skSum
+                  Position = spFooter
+                  FieldName = 'AM3'
+                  Column = grdPositionDBBandedTableView1AM3
+                  DisplayText = 'AM3'
                 end>
             end>
           OptionsView.ColumnAutoWidth = True
@@ -652,14 +264,6 @@ object fPositionView: TfPositionView
             item
               Caption = 'PRODUKTION'
               Width = 958
-            end
-            item
-              Caption = 'PRODUKT'
-              Width = 355
-            end
-            item
-              Caption = 'KVANTITET'
-              Width = 223
             end>
           object grdPositionDBBandedTableView1City: TcxGridDBBandedColumn
             DataBinding.FieldName = 'City'
@@ -947,7 +551,6 @@ object fPositionView: TfPositionView
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 4
         object Bevel1: TBevel
           Left = 4
           Top = 32
@@ -1867,7 +1470,7 @@ object fPositionView: TfPositionView
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
-    Caption = 'Rapportval'
+    Caption = 'V'#228'lj Mall'
     ParentColor = False
     ParentFont = False
     Style.Color = clWindow
@@ -1880,7 +1483,6 @@ object fPositionView: TfPositionView
     Style.TextColor = clMaroon
     Style.TextStyle = []
     Style.IsFontAssigned = True
-    Visible = False
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
@@ -2291,16 +1893,20 @@ object fPositionView: TfPositionView
       Down = True
     end
     object dxBarButton40: TdxBarButton
-      Action = acSaveGridLayout
+      Caption = 'Spara layout'
       Category = 0
+      Visible = ivAlways
     end
     object dxBarButton41: TdxBarButton
-      Action = acLoadGridLayout
+      Caption = #214'ppna layout'
       Category = 0
+      Visible = ivAlways
     end
     object dxBarButton42: TdxBarButton
-      Action = acExportToExcel
+      Caption = 'Spara som excel'
       Category = 0
+      Visible = ivAlways
+      OnClick = acExportToExcelExecute
     end
     object dxBarButton1: TdxBarButton
       Action = acPkgInfo
@@ -2672,60 +2278,29 @@ object fPositionView: TfPositionView
     object acPkgInfo: TAction
       Caption = 'Paketinformation'
     end
-    object acSaveGridLayout: TAction
-      Caption = 'Spara layout'
-    end
-    object acLoadGridLayout: TAction
-      Caption = #214'ppna layout'
-    end
-    object acExportToExcel: TAction
-      Caption = 'Spara som excel'
-      OnExecute = acExportToExcelExecute
-    end
-    object acNewProdPaketNrMall: TAction
-      Caption = 'L'#228'gg till Ny Mall'
-    end
-    object acDeleteProdPaketNrMall: TAction
-      Caption = 'Ta bort mall'
-      OnExecute = acDeleteProdPaketNrMallExecute
-    end
-    object acSaveProdPaketNrMall: TAction
-      Caption = 'Spara mall'
-      OnExecute = acSaveProdPaketNrMallExecute
-    end
-    object acRefreshProdPaketNr: TAction
-      Caption = 'Uppdatera'
-    end
-    object acExpandAllProdPaketNr: TAction
-      Caption = 'Maximera alla'
-      OnExecute = acExpandAllProdPaketNrExecute
-    end
-    object acCollapseAllProdPaketNr: TAction
-      Caption = 'Minimera alla'
-      OnExecute = acCollapseAllProdPaketNrExecute
-    end
-    object acNewProdSUMMall: TAction
+    object acNewTemplate: TAction
       Caption = 'L'#228'gg till ny mall'
+      OnExecute = acNewTemplateExecute
     end
-    object acSaveProdSUMMall: TAction
+    object acSaveTemplate: TAction
       Caption = 'Spara mall'
-      OnExecute = acSaveProdSUMMallExecute
+      OnExecute = acSaveTemplateExecute
     end
-    object acRefreshProdSUM: TAction
+    object acRefreshReport: TAction
       Caption = 'Uppdatera'
-      OnExecute = acRefreshProdSUMExecute
+      OnExecute = acRefreshReportExecute
     end
-    object acDeleteProdSUMMall: TAction
-      Caption = 'acDeleteProdSUMMall'
-      OnExecute = acDeleteProdSUMMallExecute
+    object acDeleteTemplate: TAction
+      Caption = 'acDeleteTemplate'
+      OnExecute = acDeleteTemplateExecute
     end
-    object acCollapseAllProdSum: TAction
+    object acCollapseAllGridView: TAction
       Caption = 'Minimera alla'
-      OnExecute = acCollapseAllProdSumExecute
+      OnExecute = acCollapseAllGridViewExecute
     end
-    object acExpandAllProdSUM: TAction
+    object acExpandAllGridView: TAction
       Caption = 'Maximera alla'
-      OnExecute = acExpandAllProdSUMExecute
+      OnExecute = acExpandAllGridViewExecute
     end
     object acPrint: TAction
       Caption = 'Skriv ut'
@@ -2771,8 +2346,6 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
-      Active = True
-      Component = grdProdPaketNr
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2793,7 +2366,7 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42482.623246388890000000
+      ReportDocument.CreationDate = 42485.411061793980000000
       BuiltInReportLink = True
     end
   end
@@ -4514,7 +4087,6 @@ object fPositionView: TfPositionView
     end
   end
   object cxGridPopupMenu1: TcxGridPopupMenu
-    Grid = grdProdPaketNr
     PopupMenus = <>
     Left = 312
     Top = 432
@@ -4822,10 +4394,6 @@ object fPositionView: TfPositionView
         'stomerNo, pc.ProductCode')
     Left = 928
     Top = 544
-  end
-  object frxCrossObject1: TfrxCrossObject
-    Left = 928
-    Top = 608
   end
   object mtuserProp: TkbmMemTable
     DesignActivation = True
@@ -5406,5 +4974,48 @@ object fPositionView: TfPositionView
       7300740043006F006C006C0065006300740069006F006E0073005F0055006E00
       690063006F00640065000D000A00730074004300680061007200530065007400
       73005F0055006E00690063006F00640065000D000A00}
+  end
+  object sq_GridSets2: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.GridSettings'
+      'WHERE ViewName = :ViewName'
+      'AND UserID = :UserID')
+    Left = 440
+    Top = 304
+    ParamData = <
+      item
+        Name = 'ViewName'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GridSets2ViewName: TStringField
+      FieldName = 'ViewName'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Size = 50
+    end
+    object sq_GridSets2UserID: TIntegerField
+      FieldName = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object sq_GridSets2Sets: TBlobField
+      FieldName = 'Sets'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sq_GridSets2Name: TStringField
+      FieldName = 'Name'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object sq_GridSets2Form: TStringField
+      FieldName = 'Form'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
   end
 end

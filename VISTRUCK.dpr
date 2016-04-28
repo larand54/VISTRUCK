@@ -132,7 +132,8 @@ uses
   uLogger in '..\CommonSources\DelphiLogg\uLogger.pas',
   uIMsgObserver in '..\CommonSources\DelphiLogg\uIMsgObserver.pas',
   uICMObserver in 'uICMObserver.pas',
-  uICMSubject in 'uICMSubject.pas';
+  uICMSubject in 'uICMSubject.pas',
+  uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall};
 
 {$R *.res}
 begin

@@ -3,21 +3,6 @@ object dmFilterSQL: TdmFilterSQL
   OnCreate = DataModuleCreate
   Height = 334
   Width = 720
-  object FDConnectionForTest: TFDConnection
-    Params.Strings = (
-      'Server=alvesql03'
-      'Database=Vis_Vida'
-      'OSAuthent=no'
-      'MetaDefCatalog=vis_vida'
-      'MetaDefSchema=dbo'
-      'User_Name=lars'
-      'Password=woods2011'
-      'DriverID=MSSQL')
-    Connected = True
-    LoginPrompt = False
-    Left = 48
-    Top = 8
-  end
   object sqFilterData: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (

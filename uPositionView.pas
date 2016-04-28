@@ -176,11 +176,8 @@ type
     ccbSU2: TcxCheckComboBox;
     ccbIMP: TcxCheckComboBox;
     cbOwner: TcxCheckComboBox;
-    acSaveGridLayout: TAction;
-    acLoadGridLayout: TAction;
     dxBarButton40: TdxBarButton;
     dxBarButton41: TdxBarButton;
-    acExportToExcel: TAction;
     dxBarButton42: TdxBarButton;
     dxBarButton43: TdxBarButton;
     ccVarugrupp: TcxCheckComboBox;
@@ -201,16 +198,7 @@ type
     cxButton2: TcxButton;
     cxLabel14: TcxLabel;
     cxLabel15: TcxLabel;
-    tsProduktionPerPaketnr: TcxTabSheet;
-    Panel7: TPanel;
     tsProduktionProduktSummary: TcxTabSheet;
-    cxButton3: TcxButton;
-    cxButton4: TcxButton;
-    cxButton5: TcxButton;
-    cxButton6: TcxButton;
-    cxButton7: TcxButton;
-    cxButton8: TcxButton;
-    cbProdPaketNr: TcxComboBox;
     Panel8: TPanel;
     cxButton9: TcxButton;
     cxButton10: TcxButton;
@@ -218,43 +206,29 @@ type
     cxButton12: TcxButton;
     cxButton13: TcxButton;
     cxButton14: TcxButton;
-    cbProdSUM: TcxComboBox;
     cds_Verk: TFDQuery;
     cds_VerkClientNo: TIntegerField;
     cds_VerkClientName: TStringField;
     cds_VerkSearchName: TStringField;
     cds_VerkSalesRegionNo: TIntegerField;
     cds_VerkPktNrLevKod: TStringField;
-    grdProdPaketNrLevel1: TcxGridLevel;
-    grdProdPaketNr: TcxGrid;
-    cxLookupComboBox1: TcxLookupComboBox;
     sq_UserProfile: TFDQuery;
     sq_UserProfileUserID: TIntegerField;
     sq_UserProfileForm: TStringField;
     sq_UserProfileName: TStringField;
-    acNewProdPaketNrMall: TAction;
-    acDeleteProdPaketNrMall: TAction;
-    acSaveProdPaketNrMall: TAction;
-    acRefreshProdPaketNr: TAction;
-    acExpandAllProdPaketNr: TAction;
-    acCollapseAllProdPaketNr: TAction;
-    acNewProdSUMMall: TAction;
-    acSaveProdSUMMall: TAction;
+    acNewTemplate: TAction;
+    acSaveTemplate: TAction;
     grdPositionLevel1: TcxGridLevel;
     grdPosition: TcxGrid;
-    acRefreshProdSUM: TAction;
-    acDeleteProdSUMMall: TAction;
+    acRefreshReport: TAction;
+    acDeleteTemplate: TAction;
     cxGridPopupMenu1: TcxGridPopupMenu;
     pmPkgNos: TdxBarPopupMenu;
-    acCollapseAllProdSum: TAction;
-    acExpandAllProdSUM: TAction;
-    grdProdPaketNrDBBandedTableView1: TcxGridDBBandedTableView;
+    acExpandAllGridView: TAction;
     grdPositionDBBandedTableView1: TcxGridDBBandedTableView;
     cxGridPopupMenu2: TcxGridPopupMenu;
     acPrint: TAction;
     dxComponentPrinter1Link1: TdxGridReportLink;
-    cxButton15: TcxButton;
-    cbExpanded: TcxCheckBox;
     sq_UserProfileInputOption: TIntegerField;
     sq_UserProfileStartPeriod: TSQLTimeStampField;
     sq_UserProfileEndPeriod: TSQLTimeStampField;
@@ -262,7 +236,6 @@ type
     frxReport2: TfrxReport;
     acUlrikaRapport: TAction;
     sq_ST_Del_Stat: TFDQuery;
-    frxCrossObject1: TfrxCrossObject;
     mtuserProp: TkbmMemTable;
     mtuserPropUserID: TIntegerField;
     mtuserPropForm: TStringField;
@@ -310,25 +283,6 @@ type
     mtuserPropFilter1: TStringField;
     mtuserPropFilter2: TStringField;
     mtuserPropRoletype: TIntegerField;
-    grdProdPaketNrDBBandedTableView1CityName: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1Paket: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1pcs: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1AM3: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1NM3: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1dim: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1TS: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1PC: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1KV: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1UT: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1LIPNo: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1PIPNo: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1Info1: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1Info2: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1AreaName: TcxGridDBBandedColumn;
-    grdProdPaketNrDBBandedTableView1PositionName: TcxGridDBBandedColumn;
     cxLabel3: TcxLabel;
     cbSalesRegion: TcxCheckComboBox;
     cbStorageArea: TcxCheckComboBox;
@@ -399,6 +353,12 @@ type
     cxLabel16: TcxLabel;
     cbReportSelection: TcxComboBox;
     cxLabel13: TcxLabel;
+    sq_GridSets2: TFDQuery;
+    sq_GridSets2ViewName: TStringField;
+    sq_GridSets2UserID: TIntegerField;
+    sq_GridSets2Sets: TBlobField;
+    sq_GridSets2Name: TStringField;
+    sq_GridSets2Form: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -418,28 +378,21 @@ type
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
     procedure sq_UserProfileAfterInsert(DataSet: TDataSet);
-    procedure cbProdPaketNrPropertiesChange(Sender: TObject);
-    procedure acSaveProdPaketNrMallExecute(Sender: TObject);
-    procedure acExpandAllProdPaketNrExecute(Sender: TObject);
-    procedure acSaveProdSUMMallExecute(Sender: TObject);
-    procedure cbProdSUMPropertiesChange(Sender: TObject);
-    procedure acDeleteProdPaketNrMallExecute(Sender: TObject);
-    procedure acDeleteProdSUMMallExecute(Sender: TObject);
-    procedure acCollapseAllProdPaketNrExecute(Sender: TObject);
-    procedure acCollapseAllProdSumExecute(Sender: TObject);
-    procedure acExpandAllProdSUMExecute(Sender: TObject);
+    procedure acSaveTemplateExecute(Sender: TObject);
+    procedure cbReportSelectionPropertiesChange(Sender: TObject);
+    procedure acDeleteTemplateExecute(Sender: TObject);
+    procedure acCollapseAllGridViewExecute(Sender: TObject);
+    procedure acExpandAllGridViewExecute(Sender: TObject);
     procedure acPrintExecute(Sender: TObject);
-    procedure cbExpandedPropertiesChange(Sender: TObject);
-    procedure grdProdPaketNrDBBandedTableView1DataControllerSummaryAfterSummary(
-      ASender: TcxDataSummary);
     procedure cbSalesRegionPropertiesCloseUp(Sender: TObject);
     procedure cbStorageGroupPropertiesCloseUp(Sender: TObject);
     procedure cbStorageAreaPropertiesCloseUp(Sender: TObject);
-    procedure acRefreshProdSUMExecute(Sender: TObject);
+    procedure acRefreshReportExecute(Sender: TObject);
     procedure cbStoragePosPropertiesCloseUp(Sender: TObject);
     procedure cbInkTimeInDateFilterPropertiesChange(Sender: TObject);
     procedure acRequestFilterUpdateExecute(Sender: TObject);
     procedure cxBtnUpdFilterClick(Sender: TObject);
+    procedure acNewTemplateExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -455,19 +408,16 @@ type
     //    function prepareDataSetForCombo(aTargetCbo, aSourceCbo: TcxCheckComboBox;InitialSQL, finalSQL: TStrings): TFDQuery;
     procedure Open_UserProfile ;
     procedure SaveUserProfile ;
-    procedure PopulateCheckBoxMallarProdSUM ;
-    procedure OpenProdSUMMall ;
-    procedure OpenProdPaketNrMall ;
-    procedure PopulateCheckBoxMallar ;
+    procedure PopulateCheckBoxTemplate ;
+    procedure PopulateCheckBoxTemplates;
+    procedure OpenTemplate ;
     function getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMSL ): integer overload;
     function getCheckedCount(const aCombo: TcxCheckComboBox): integer overload;
-    procedure SetCheckComboBoxes_Where_PktNrLevKod_Required (const PktNrLevKod : String) ;
 //    procedure CheckAllItems ;
 
     Function  SelectedOwnersOK : Boolean ;
 
 
-    procedure SetCheckComboBoxes ;
     function CreateWhereList(const aDecimalType: byte; const aSource: integer): TStringList;
     Function  CheckIfAnyCheckedItemsInComboFilter(combo : TcxCheckComboBox) : Boolean ;
 
@@ -477,8 +427,12 @@ type
     function  GetReportTemplate(const aIndex: integer): string;
     procedure ClearProductFilter ;
 
-    procedure OpenStandardMall(Sender: TObject);
+    procedure OpenStandardTemplate(Sender: TObject);
     procedure EnableFilterButton(Enable: boolean);
+    procedure StoreGridLayout(const UserID : Integer;const Form, ViewName : String;
+      AGridView: TcxGridTableView;const MallName : String) ;
+    function LoadGridLayout(const UserID : Integer;const Form, ViewName : String;
+      AGridView: TcxGridTableView;const MallName : String): boolean;
 
   public
     { Public declarations }
@@ -491,6 +445,7 @@ type
 
 var
   fPositionView: TfPositionView;
+  LoggDir: string;
 
 implementation
 
@@ -498,34 +453,15 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmcVidaSystem , {uGridSetting,}
   dmc_UserProps, dmsVidaSystem,
  // dmsVidaPkg,
-  uEntryField{, uSokAvropMall , uAngeNyMall, VidaDeliveryClass}, uSQLView,
-  udmLanguage;
+  uEntryField{, uSokAvropMall , uAngeNy, VidaDeliveryClass}, uSQLView,
+  udmLanguage, uAngeNyMall;
 
 {$R *.dfm}
 
-procedure TfPositionView.PopulateCheckBoxMallar ;
+
+procedure TfPositionView.PopulateCheckBoxTemplate ;
 Begin
- cbProdPaketNr.Properties.Items.Clear ;
- sq_UserProfile.Active  := False ;
- sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
- sq_UserProfile.ParamByName('Form').AsString    := TForm(Self).Name + '1' ;
- sq_UserProfile.ParamByName('Name').AsString    := 'ALL' ;
- sq_UserProfile.Active  := True ;
- sq_UserProfile.First ;
- while not sq_UserProfile.Eof do
- Begin
-  cbProdPaketNr.Properties.Items.Add(sq_UserProfileName.AsString) ;
-  sq_UserProfile.Next ;
- End;
-
- if cbProdPaketNr.Properties.Items.Count > 0 then
-  cbProdPaketNr.ItemIndex  := 0 ;
-
-End;
-
-procedure TfPositionView.PopulateCheckBoxMallarProdSUM ;
-Begin
- cbProdSUM.Clear ;
+ cbReportSelection.Clear ;
 
  sq_UserProfile.Active  := False ;
  sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
@@ -535,15 +471,34 @@ Begin
  sq_UserProfile.First ;
  while not sq_UserProfile.Eof do
  Begin
-  cbProdSUM.Properties.Items.Add(sq_UserProfileName.AsString) ;
+  cbReportSelection.Properties.Items.Add(sq_UserProfileName.AsString) ;
   sq_UserProfile.Next ;
  End;
 
- if cbProdSUM.Properties.Items.Count > 0 then
-  cbProdSUM.ItemIndex  := 0 ;
+ if cbReportSelection.Properties.Items.Count > 0 then
+  cbReportSelection.ItemIndex  := 0 ;
 
 End;
 
+
+procedure TfPositionView.PopulateCheckBoxTemplates;
+begin
+ cbReportSelection.Properties.Items.Clear ;
+ sq_UserProfile.Active  := False ;
+ sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
+ sq_UserProfile.ParamByName('Form').AsString    := TForm(self).Name ;
+ sq_UserProfile.ParamByName('Name').AsString    := 'ALL' ;
+ sq_UserProfile.Active  := True ;
+ sq_UserProfile.First ;
+ while not sq_UserProfile.Eof do
+ Begin
+  cbReportSelection.Properties.Items.Add(sq_UserProfileName.AsString) ;
+  sq_UserProfile.Next ;
+ End;
+
+ if cbReportSelection.Properties.Items.Count > 0 then
+  cbReportSelection.ItemIndex  := 0 ;
+end;
 
 procedure TfPositionView.ClearProductFilter ;
 Begin
@@ -561,113 +516,87 @@ Begin
  ccVarugrupp.Clear ;
  ccMatpunkt.Clear ;
  ccSkiftLag.Clear ;
+ ccbReference.Clear;
+ ccbInfo1.Clear;
+ ccbInfo2.Clear;
 
-End ;
-
-procedure TfPositionView.SetCheckComboBoxes ;
-Begin
- With dmInventory do
- Begin
-  ccbTS2.Properties.Items.Clear ;
-  sq_Specie.ParamByName('LanguageCode').AsInteger  := ThisUser.LanguageID ;
-  sq_Specie.Active:= True ;
-  While not sq_Specie.Eof do
-  Begin
-   ccbTS2.Properties.Items.AddCheckItem(sq_Specie.FieldByName('speciesName').AsString, sq_Specie.FieldByName('speciescode').AsString) ;
-   sq_Specie.Next ;
-  End ;
-  sq_Specie.Active:= False ;
-
-  ccbAT.Properties.Items.Clear ;
-  sq_AT.Open ;
-  While not sq_AT.Eof do
-  Begin
-   ccbAT.Properties.Items.AddCheckItem(sq_AT.FieldByName('AT').AsString, sq_AT.FieldByName('AT').AsString) ;
-   sq_AT.Next ;
-  End ;
-  sq_AT.Close ;
-
-  ccbAB.Properties.Items.Clear ;
-  sq_AB.Open ;
-  While not sq_AB.Eof do
-  Begin
-   ccbAB.Properties.Items.AddCheckItem(sq_AB.FieldByName('AB').AsString, sq_AB.FieldByName('AB').AsString) ;
-   sq_AB.Next ;
-  End ;
-  sq_AB.Close ;
-
-  ccbNT.Properties.Items.Clear ;
-  sq_NT.Open ;
-  While not sq_NT.Eof do
-  Begin
-   ccbNT.Properties.Items.AddCheckItem(sq_NT.FieldByName('NT').AsString, sq_NT.FieldByName('NT').AsString) ;
-   sq_NT.Next ;
-  End ;
-  sq_NT.Close ;
-
-  ccbNB.Properties.Items.Clear ;
-  sq_NB.Open ;
-  While not sq_NB.Eof do
-  Begin
-   ccbNB.Properties.Items.AddCheckItem(sq_NB.FieldByName('NB').AsString, sq_NB.FieldByName('NB').AsString) ;
-   sq_NB.Next ;
-  End ;
-  sq_NB.Close ;
-
-  ccbAL.Properties.Items.Clear ;
-  sq_AL.Open ;
-  While not sq_AL.Eof do
-  Begin
-   ccbAL.Properties.Items.AddCheckItem(sq_AL.FieldByName('AL').AsString, sq_AL.FieldByName('AL').AsString) ;
-   sq_AL.Next ;
-  End ;
-  sq_AL.Close ;
-
-  ccVarugrupp.Properties.Items.Clear ;
-  sq_Varugrupp.ParamByName('LanguageCode').AsInteger  := ThisUser.LanguageID ;
-  sq_Varugrupp.Open ;
-  While not sq_Varugrupp.Eof do
-  Begin
-   ccVarugrupp.Properties.Items.AddCheckItem(sq_Varugrupp.FieldByName('Varugruppnamn').AsString, sq_Varugrupp.FieldByName('VarugruppID').AsString) ;
-   sq_Varugrupp.Next ;
-  End ;
-  sq_Varugrupp.Close ;
-
- End ;//With dmInventory
-End ;
-
-procedure TfPositionView.SetCheckComboBoxes_Where_PktNrLevKod_Required (const PktNrLevKod : String) ;
-Begin
- With dmInventory do
- Begin
-
-  sq_Grade.Active:= True ;
-  While not sq_Grade.Eof do
-  Begin
-   ccbKV2.Properties.Items.AddCheckItem(sq_Grade.FieldByName('gradeName').AsString, sq_Grade.FieldByName('gradecode').AsString) ;
-   sq_Grade.Next ;
-  End ;
-  sq_Grade.Active:= False ;
-
-  ccbSU2.Properties.Items.Clear ;
-  sq_Surfacing.ParamByName('PktNrLevKod').AsString    := PktNrLevKod ;
-  sq_Surfacing.ParamByName('LanguageCode').AsInteger  := ThisUser.LanguageID ;
-  sq_Surfacing.Open ;
-  While not sq_Surfacing.Eof do
-  Begin
-   ccbSU2.Properties.Items.AddCheckItem(sq_Surfacing.FieldByName('SurfacingName').AsString, sq_Surfacing.FieldByName('SurfacingCode').AsString) ;
-   sq_Surfacing.Next ;
-  End ;
-  sq_Surfacing.Close ;
-
-  ccbIMP.Properties.Items.Clear ;
-  ccbIMP.Properties.BeginUpdate ;
-   End ;//With
 End ;
 
 procedure TfPositionView.sq_UserProfileAfterInsert(DataSet: TDataSet);
 begin
  sq_UserProfileUserID.AsInteger := ThisUser.UserID ;
+end;
+
+procedure TfPositionView.StoreGridLayout(const UserID : Integer;const Form, ViewName : String;
+AGridView: TcxGridTableView;const MallName : String) ;
+var
+  Stream: TMemoryStream;
+begin
+ With dmsSystem do
+ Begin
+  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
+  sq_GridSets2.ParamByName('UserID').AsInteger   := UserID ;
+//  sq_GridSets2.ParamByName('Form').AsString      := Form ;
+//  sq_GridSets2.ParamByName('Name').AsString      := MallName ;
+
+  sq_GridSets2.Active:= True ;
+  if not sq_GridSets2.Eof then
+  sq_GridSets2.Edit
+  else
+  Begin
+   sq_GridSets2.Insert ;
+   sq_GridSets2ViewName.AsString  := ViewName ;
+   sq_GridSets2UserID.AsInteger   := UserID ;
+   sq_GridSets2Form.AsString      := Form ;
+   sq_GridSets2Name.AsString      := MallName ;
+  End ;
+  if sq_GridSets2.State in  [dsEdit, dsInsert] then
+  begin
+   Stream := TMemoryStream.Create;
+   try
+    AGridView.StoreToStream(Stream);
+    Stream.Position := 0;
+    sq_GridSets2Sets.LoadFromStream(Stream);
+   finally
+    Stream.Free;
+   end;
+   if sq_GridSets2.State in [dsEdit, dsInsert] then
+   sq_GridSets2.Post;
+   if sq_GridSets2.ChangeCount > 0 then
+    sq_GridSets2.ApplyUpdates(0) ;
+  end;
+  sq_GridSets2.Active:= False ;
+ End ;
+end;
+
+
+function TfPositionView.LoadGridLayout(const UserID : Integer;const Form, ViewName : String;
+AGridView: TcxGridTableView;const MallName : String): boolean;
+var
+  Stream: TMemoryStream;
+begin
+ Result:= False ;
+ With dmsSystem do
+ Begin
+  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
+  sq_GridSets2.ParamByName('UserID').AsInteger   := UserID ;
+//  sq_GridSets2.ParamByName('Form').AsString      := Form ;
+//  sq_GridSets2.ParamByName('Name').AsString      := MallName ;
+  sq_GridSets2.Active:= True ;
+  if not sq_GridSets2.Eof then
+  Begin
+   Stream := TMemoryStream.Create;
+   try
+    sq_GridSets2Sets.SaveToStream(Stream);
+    Stream.Position := 0;
+    AGridView.RestoreFromStream(Stream);
+    Result:= True ;
+   finally
+    Stream.Free;
+   end;
+  End ;
+  sq_GridSets2.Active:= False ;
+ End ;
 end;
 
 procedure TfPositionView.Update(aSubject: IInterface);
@@ -773,7 +702,10 @@ Var
     if (assigned(PIPNos) AND (PIPNos.Count > 0)) then
       // Retrieve storageareas and fill combobox
       Try
-        cds_StorageAreas.SQL.SaveToFile('cds_StorageAreas.sql');
+        try
+          cds_StorageAreas.SQL.SaveToFile(LoggDir+'cds_StorageAreas.sql');
+        except
+        end;
         cds_StorageAreas.Active := True;
         cbStorageArea.Properties.Items.Clear;
         cds_StorageAreas.First;
@@ -900,8 +832,10 @@ begin
     cds_StorageGroups.SQL.Clear;
     cds_StorageGroups.SQL.Text := SQL.Text;
     SQL.Free;
-    cds_StorageGroups.SQL.SaveToFile('cds_StorageGroups.sql');
-
+    try
+      cds_StorageGroups.SQL.SaveToFile(LoggDir+'cds_StorageGroups.sql');
+    except
+    end;
     LoadCheckBox('PLIP', 'LIPNO','PIPNo', '', cds_StorageGroups, cbStorageGroup);
   end
   else // No owner selected - empty the combo
@@ -946,7 +880,7 @@ begin
       + s + ')');
 
     Try
-      cds_StoragePos.SQL.SaveToFile('cds_StoragePos.sql');
+      cds_StoragePos.SQL.SaveToFile(LoggDir+'cds_StoragePos.sql');
 
       cds_StoragePos.Active := True;
       cbStoragePos.Properties.Items.Clear;
@@ -1004,7 +938,12 @@ begin
 
     end;
     Try
-      cds_verk.SQL.SaveToFile('cds_verk.sql');
+
+      try
+        cds_verk.SQL.SaveToFile(LoggDir+'cds_verk.sql');
+      except
+      end;
+
       cds_verk.Active := true;
       cbOwner.Properties.Items.Clear;
 
@@ -1030,14 +969,13 @@ var
 begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+ LoggDir := dmsSystem.Get_Dir('UserDir');
  Try
   deStartPeriod.Clear;
   deEndPeriod.Clear;
   LoadCheckBoxWithSalesRegion;
   LoadCheckBoxWithVerk ;
-  SetCheckComboBoxes ;
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
-  PopulateCheckBoxMallar ;
 
  Finally
   Screen.Cursor := Save_Cursor ;
@@ -1097,9 +1035,10 @@ begin
 {$IFDEF DUNITX} // Avoid connection to database during unit-testing for now.
 {$ELSE}
   dmFilterSQL := TdmFilterSQL.Create(self);
-  dmFilterSQL.Attach(self);
+  dmFilterSQL.Attach(self);   // Register this form as an observer (Observer pattern)
   createCo(nil,ThisUser.CompanyNo);
   cbInkTimeInDateFilter.Properties.OnChange(self); //Setup Dateinput to correspond o this checkbox;
+  OpenTemplate;
 {$ENDIF}
 end;
 
@@ -1182,98 +1121,25 @@ begin
   AText:= '' ;
 end;
 
-procedure TfPositionView.grdProdPaketNrDBBandedTableView1DataControllerSummaryAfterSummary(
-  ASender: TcxDataSummary);
 
-  procedure CalcFooterSummary;
-  var
-    V1, V2, AResult: Variant;
-  begin
-  end;
-
-  procedure CalcGropSummaries;
-
-    function Groups: TcxDataControllerGroups;
-    begin
-      Result := grdProdPaketNrDBBandedTableView1.DataController.Groups;
-    end;
-
-    procedure CalcGroupSummary(ADataGroupIndex: Integer);
-    var
-      V1, V2, AResult: Variant;
-      ASummaryItems: TcxDataSummaryItems;
-    begin
-    end;
-
-    procedure CalcGroupSummariesByDataGroupIndex(ADataGroupIndex: Integer);
-    var
-      I: Integer;
-    begin
-      if Groups.Level[ADataGroupIndex] >= Groups.GroupingItemCount - 1 then
-        Exit;
-      for I := 0 to Groups.ChildCount[ADataGroupIndex] - 1 do
-      begin
-        CalcGroupSummary(Groups.ChildDataGroupIndex[ADataGroupIndex, I]);
-        CalcGroupSummariesByDataGroupIndex(Groups.ChildDataGroupIndex[ADataGroupIndex, I]);
-      end;
-    end;
-
-  begin
-    CalcGroupSummariesByDataGroupIndex(-1);
-  end;
-
-
-begin
-  CalcFooterSummary;
-  CalcGropSummaries;
-end;
-
-procedure TfPositionView.acCollapseAllProdPaketNrExecute(Sender: TObject);
-begin
- grdProdPaketNrDBBandedTableView1.ViewData.Collapse(True);
-end;
-
-procedure TfPositionView.acCollapseAllProdSumExecute(Sender: TObject);
+procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
  grdPositionDBBandedTableView1.ViewData.Collapse(True);
 end;
 
-procedure TfPositionView.acDeleteProdPaketNrMallExecute(Sender: TObject);
-begin
- if MessageDlg('Vill du ta bort?',
-    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
- With dmInventory do
- Begin
-  if cbProdPaketNr.ItemIndex > -1 then
-  Begin
-   sq_UserProfile.Active := False ;
-   sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
-   sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '1' ;
-   sq_UserProfile.ParamByName('Name').AsString    := cbProdPaketNr.Properties.Items.Strings[cbProdPaketNr.ItemIndex] ;
-   sq_UserProfile.Active := True ;
-   Try
-   if not sq_UserProfile.Eof then
-    sq_UserProfile.Delete ;
-   Finally
-    sq_UserProfile.Active     := False ;
-   End;
-   PopulateCheckBoxMallar ;
-  End;
- End;
-end;
 
-procedure TfPositionView.acDeleteProdSUMMallExecute(Sender: TObject);
+procedure TfPositionView.acDeleteTemplateExecute(Sender: TObject);
 begin
  With dmInventory do
  Begin
-  if cbProdSUM.ItemIndex > -1 then
+  if cbReportSelection.ItemIndex > -1 then
   Begin
    sq_UserProfile.Active := False ;
    sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
    sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '2' ;
    sq_UserProfile.Active := True ;
    Try
-   sq_UserProfile.Filter  := 'Name = ' + cbProdSUM.Properties.Items.Strings[cbProdSUM.ItemIndex] ;
+   sq_UserProfile.Filter  := 'Name = ' + cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex] ;
    sq_UserProfile.Filtered  := True ;
    if not sq_UserProfile.Eof then
     sq_UserProfile.Delete ;
@@ -1285,17 +1151,8 @@ begin
  End;
 end;
 
-procedure TfPositionView.acExpandAllProdPaketNrExecute(Sender: TObject);
-begin
- cbExpanded.Properties.OnChange := nil ;
- Try
- grdProdPaketNrDBBandedTableView1.ViewData.Expand(True);
- Finally
-  cbExpanded.Properties.OnChange := cbExpandedPropertiesChange ;
- End;
-end;
 
-procedure TfPositionView.acExpandAllProdSUMExecute(Sender: TObject);
+procedure TfPositionView.acExpandAllGridViewExecute(Sender: TObject);
 begin
  grdPositionDBBandedTableView1.ViewData.Expand(True);
 end;
@@ -1468,7 +1325,7 @@ begin
   mtUserProp.Post ;
 End;
 
-procedure TfPositionView.acRefreshProdSUMExecute(Sender: TObject);
+procedure TfPositionView.acRefreshReportExecute(Sender: TObject);
 var
   reportIndex: integer;
   reportTemplate: string;
@@ -1535,52 +1392,35 @@ begin
 end;
 
 
-procedure TfPositionView.acSaveProdPaketNrMallExecute(Sender: TObject);
+procedure TfPositionView.acSaveTemplateExecute(Sender: TObject);
+var
+  UserID: integer;
+  Form: string;
+  View: string;
+  Grid: TcxGridTableView;
+  Template: string;
 begin
- if cbProdPaketNr.ItemIndex > -1 then
- Begin
-  dmsSystem.StoreGridLayout_Special( ThisUser.UserID,   fPositionView.Name + '1',
-
-  cbProdPaketNr.Properties.Items.Strings[cbProdPaketNr.ItemIndex]
-
-  + '/' +
-
-  fPositionView.Name + '1'
-//  sq_UserProfileForm.AsString
-
-  ,grdProdPaketNrDBBandedTableView1,'fDeliveryReport') ;
-
-  SaveUserProfile ;
- End;
-
-// dmsSystem.StoreGridLayout_Special(ThisUser.UserID, Self.Name, cds_PropsName.AsString + '/' + cds_PropsForm.AsString, cxGrid1DBBandedTableView1, 'frmInventoryReport') ;
+  if cbReportSelection.ItemIndex > -1 then
+  Begin
+    UserID := ThisUser.UserID;
+    Form := TForm(Self).Name;
+    Template := cbReportSelection.Properties.Items.Strings
+      [cbReportSelection.ItemIndex];
+    View := Template + '/' + Form;
+    Grid := grdPositionDBBandedTableView1;
+    StoreGridLayout(UserID, Form, View, Grid, Template);
+//    dmsSystem.StoreGridLayout_Special(UserID, Form, View, Grid, Template);
+    SaveUserProfile;
+  End;
 end;
 
-procedure TfPositionView.acSaveProdSUMMallExecute(Sender: TObject);
-begin
- if cbProdSUM.ItemIndex > -1 then
- Begin
-  dmsSystem.StoreGridLayout_Special( ThisUser.UserID,   fPositionView.Name + '2',
-
-  cbProdSUM.Properties.Items.Strings[cbProdSUM.ItemIndex]
-
-  + '/' +
-
-  fPositionView.Name + '2'
-//  sq_UserProfileForm.AsString
-
-  ,grdPositionDBBandedTableView1,'fPositionReport') ;
-
- End;
-end;
-
-procedure TfPositionView.OpenStandardMall(Sender: TObject);
+procedure TfPositionView.OpenStandardTemplate(Sender: TObject);
 begin
  With dmInventory do
  Begin
   cds_Props.Active:= False ;
   cds_Props.ParamByName('UserID').AsInteger  := ThisUser.UserID ;
-  cds_Props.ParamByName('Name').AsString     := 'InventoryReport' ;
+  cds_Props.ParamByName('Name').AsString     := cbReportSelection.Properties.Items.Strings[0];
   cds_Props.Active:= True ;
   cds_Props.Filter:= 'LOObjectType = 1' ; //Default
   cds_Props.Filtered:= True ;
@@ -1643,12 +1483,34 @@ begin
 
 end;
 
-procedure TfPositionView.cbExpandedPropertiesChange(Sender: TObject);
+procedure TfPositionView.acNewTemplateExecute(Sender: TObject);
+var  fAngeNyMall  : TfAngeNyMall;
+     NewIndex     : Integer ;
 begin
- if cbExpanded.Checked then
-  grdProdPaketNrDBBandedTableView1.ViewData.Expand(True)
-   else
-    grdProdPaketNrDBBandedTableView1.ViewData.Collapse(True) ;
+ fAngeNyMall  := TfAngeNyMall.Create(nil);
+ Try
+  if fAngeNyMall.ShowModal = mrOK then
+  Begin
+    if not sq_UserProfile.Active then
+      sq_UserProfile.Active := true;
+   sq_UserProfile.Insert ;
+   sq_UserProfileName.AsString    := fAngeNyMall.teMall.Text ;
+   sq_UserProfileForm.AsString    := fPositionView.Name + '2' ;
+   sq_UserProfile.Post ;
+
+   cbReportSelection.Properties.Items.Add(fAngeNyMall.teMall.Text) ;
+
+   NewIndex := cbReportSelection.Properties.Items.IndexOf(fAngeNyMall.teMall.Text) ;
+
+   if NewIndex > -1 then
+   Begin
+    cbReportSelection.ItemIndex  :=  NewIndex ;
+    acSaveTemplateExecute(Sender) ;
+   End;
+  End;
+ Finally
+  FreeAndNil(fAngeNyMall) ;
+ End;
 end;
 
 procedure TfPositionView.cbInkTimeInDateFilterPropertiesChange(Sender: TObject);
@@ -1671,39 +1533,24 @@ begin
   LoadCheckBoxWithStoragePos;
 end;
 
-procedure TfPositionView.cbProdPaketNrPropertiesChange(Sender: TObject);
-begin
-//Open paketnr grid Mall
- OpenProdPaketNrMall ;
- Open_UserProfile ;
-end;
 
 procedure TfPositionView.Open_UserProfile ;
 Begin
  sq_UserProfile.Active  := False ;
  sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
  sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '1' ;
- sq_UserProfile.ParamByName('Name').AsString    := cbProdPaketNr.Text ;
+ sq_UserProfile.ParamByName('Name').AsString    := cbReportSelection.Text ;
  sq_UserProfile.Active  := True ;
  Try
- if not sq_UserProfile.Eof then
- Begin
-  if sq_UserProfileInputOption.AsInteger = 1 then
-  cbExpanded.Checked  := True
-  else
-  cbExpanded.Checked  := False ;
-
-
- End;
  Finally
   sq_UserProfile.Active  := False ;
  End;
 End;
 
-procedure TfPositionView.cbProdSUMPropertiesChange(Sender: TObject);
+procedure TfPositionView.cbReportSelectionPropertiesChange(Sender: TObject);
 begin
-//Open prod sum grid Mall
- OpenProdSUMMall ;
+//Open grid template
+ OpenTemplate ;
 end;
 
 procedure TfPositionView.cbSalesRegionPropertiesCloseUp(Sender: TObject);
@@ -1748,25 +1595,25 @@ begin
   end;
 end;
 
-procedure TfPositionView.OpenProdPaketNrMall ;
-begin
-//Open Mall
- if cbProdPaketNr.ItemIndex > -1 then
- Begin
-  dmsSystem.LoadGridLayout_Special( ThisUser.UserID, fPositionView.Name + '1',
-  cbProdPaketNr.Properties.Items.Strings[cbProdPaketNr.ItemIndex]
-  + '/' + fPositionView.Name + '1', grdProdPaketNrDBBandedTableView1,'fPositionView') ;
- End;
-end;
 
-procedure TfPositionView.OpenProdSUMMall ;
+procedure TfPositionView.OpenTemplate ;
+var
+  UserID: integer;
+  Form: string;
+  View: string;
+  Grid: TcxGridTableView;
+  Template: string;
 begin
 //Open Mall
- if cbProdSUM.ItemIndex > -1 then
+ if cbReportSelection.ItemIndex > -1 then
  Begin
-  dmsSystem.LoadGridLayout_Special( ThisUser.UserID, fPositionView.Name + '2',
-  cbProdSUM.Properties.Items.Strings[cbProdSUM.ItemIndex]
-  + '/' + fPositionView.Name + '2', grdPositionDBBandedTableView1,'fPositionView') ;
+  UserID := ThisUser.UserID;
+  Form := TForm(self).Name;
+  Template := cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex];
+  View := Template + '/' + Form;
+  Grid := grdPositionDBBandedTableView1;
+  LoadGridLayout( UserID, Form, View, Grid, Template);
+//  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
  End;
 end;
 
@@ -1812,16 +1659,14 @@ end;
 
 procedure TfPositionView.cxButton1Click(Sender: TObject);
 begin
- Close ;
+  SaveUserProfile;
+  Close ;
 end;
 
 procedure TfPositionView.cxButton2Click(Sender: TObject);
 begin
- ClearProductFilter ;
+  ClearProductFilter ;
 end;
-
-
-
 
 procedure TfPositionView.EnableFilterButton(Enable: boolean);
 begin
@@ -1834,24 +1679,20 @@ end;
 
 procedure TfPositionView.SaveUserProfile ;
 Begin
- sq_UserProfile.Active  := False ;
- sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
- sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '1' ;
- sq_UserProfile.ParamByName('Name').AsString    := cbProdPaketNr.Text ;
- sq_UserProfile.Active  := True ;
- Try
- if not sq_UserProfile.Eof then
- Begin
-  sq_UserProfile.Edit ;
-  if cbExpanded.Checked then
-  sq_UserProfileInputOption.AsInteger := 1
-  else
-  sq_UserProfileInputOption.AsInteger := 0 ;
-  sq_UserProfile.Post ;
- End;
- Finally
-  sq_UserProfile.Active  := False ;
- End;
+  sq_UserProfile.Active := False;
+  sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID;
+  sq_UserProfile.ParamByName('Form').AsString := fPositionView.Name;
+  sq_UserProfile.ParamByName('Name').AsString := cbReportSelection.Text;
+  sq_UserProfile.Active := True;
+  Try
+    if not sq_UserProfile.Eof then
+    Begin
+      sq_UserProfile.Edit;
+      sq_UserProfile.Post;
+    End;
+  Finally
+    sq_UserProfile.Active := False;
+  End;
 End;
 
 { TCMComboBoxItems }
