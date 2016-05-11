@@ -54,7 +54,7 @@ type
     public
       Constructor create(const aGridView: TcxGridDBBandedTableView; const aSQLFile: string;
        const aWhereList: TStrings; const aBaseSQL: TStrings);
-      Destructor destroy;
+      Destructor destroy; override;
       property ObjectList: TList<TSQLViewField> read FObjectList;
       property gridView: TcxGridDBBandedTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
@@ -71,7 +71,7 @@ type
       LoggDir: string;
     public
       constructor Create(aSQLView: TSQLView);
-      destructor destroy;
+      destructor destroy;override;
       property SQL: TStringList read FSQL;
       property SQLReady: boolean read FSQLReady;
   end;
@@ -158,7 +158,7 @@ destructor TSQLView.destroy;
 begin
   if assigned(FObjectList) then FreeAndNil(FObjectList);
   if assigned(FSQL) then FreeAndNil(FSQL);
-
+  inherited;
 end;
 
 function TSQLView.getStatus(aGridField: string): boolean;
@@ -275,6 +275,7 @@ end;
 destructor TSQLBuild.destroy;
 begin
   if assigned(FSQL) then FSQL.Free;
+  inherited;
 end;
 
 { TWhereString }

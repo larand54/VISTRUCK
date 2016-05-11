@@ -133,7 +133,8 @@ uses
   uIMsgObserver in '..\CommonSources\DelphiLogg\uIMsgObserver.pas',
   uICMObserver in 'uICMObserver.pas',
   uICMSubject in 'uICMSubject.pas',
-  uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall};
+  uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall},
+  uTwoReportInOne in '..\CommonSources\FastReport\uTwoReportInOne.pas';
 
 {$R *.res}
 begin
