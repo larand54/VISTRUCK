@@ -27,9 +27,9 @@ object fLager: TfLager
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 173
+    Top = 169
     Width = 1578
-    Height = 684
+    Height = 688
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -43,7 +43,7 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 684
+    ClientRectBottom = 688
     ClientRectRight = 1578
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
@@ -57,7 +57,7 @@ object fLager: TfLager
         Left = 0
         Top = 0
         Width = 1578
-        Height = 684
+        Height = 688
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -69,7 +69,7 @@ object fLager: TfLager
           Left = 0
           Top = 0
           Width = 1578
-          Height = 319
+          Height = 323
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -80,7 +80,6 @@ object fLager: TfLager
           RootLevelOptions.DetailTabsPosition = dtpTop
           RootLevelStyles.Tab = cxStyle54
           OnActiveTabChanged = grdBoTActiveTabChanged
-          ExplicitLeft = -1
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
@@ -247,7 +246,7 @@ object fLager: TfLager
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 327
+          Top = 331
           Width = 1578
           Height = 357
           Margins.Left = 4
@@ -553,7 +552,7 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 319
+          Top = 323
           Width = 1578
           Height = 8
           Margins.Left = 4
@@ -573,7 +572,7 @@ object fLager: TfLager
     Left = 0
     Top = 0
     Width = 1578
-    Height = 26
+    Height = 22
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -583,7 +582,7 @@ object fLager: TfLager
   end
   object Panel3: TPanel
     Left = 0
-    Top = 26
+    Top = 22
     Width = 1578
     Height = 147
     Margins.Left = 4
@@ -1030,7 +1029,7 @@ object fLager: TfLager
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1060,8 +1059,8 @@ object fLager: TfLager
     LookAndFeel.Kind = lfFlat
     PopupMenuLinks = <>
     UseSystemFont = False
-    Left = 312
-    Top = 177
+    Left = 288
+    Top = 161
     DockControlHeights = (
       0
       0
@@ -1417,11 +1416,10 @@ object fLager: TfLager
   object dxComponentPrinter1: TdxComponentPrinter
     CurrentLink = dxComponentPrinter1Link1
     Version = 0
-    Left = 648
+    Left = 1008
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1443,14 +1441,12 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1470,7 +1466,6 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -1482,7 +1477,7 @@ object fLager: TfLager
     Top = 545
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 184
+    Left = 120
     Top = 201
     PixelsPerInch = 120
     object cxStyle1: TcxStyle
@@ -2518,7 +2513,7 @@ object fLager: TfLager
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 184
+    Left = 120
     Top = 257
     object mtPkgNosPackageNo: TIntegerField
       FieldName = 'PackageNo'
@@ -2564,7 +2559,7 @@ object fLager: TfLager
   object cxEditStyleController1: TcxEditStyleController
     Style.TextColor = clMaroon
     Style.TextStyle = [fsBold]
-    Left = 312
+    Left = 288
     Top = 272
     PixelsPerInch = 120
   end
@@ -2583,8 +2578,8 @@ object fLager: TfLager
     StyleDisabled.LookAndFeel.Kind = lfFlat
     StyleFocused.LookAndFeel.Kind = lfFlat
     StyleHot.LookAndFeel.Kind = lfFlat
-    Left = 312
-    Top = 320
+    Left = 288
+    Top = 328
     PixelsPerInch = 120
   end
   object cxEditStyleControllerEditControls: TcxEditStyleController
@@ -2597,8 +2592,8 @@ object fLager: TfLager
     Style.ButtonStyle = btsOffice11
     Style.ButtonTransparency = ebtHideUnselected
     Style.IsFontAssigned = True
-    Left = 312
-    Top = 368
+    Left = 288
+    Top = 384
     PixelsPerInch = 120
   end
   object cxImageList1: TcxImageList
@@ -3691,8 +3686,8 @@ object fLager: TfLager
   object ImageList1: TImageList
     Height = 24
     Width = 24
-    Left = 312
-    Top = 225
+    Left = 288
+    Top = 209
     Bitmap = {
       494C01010D001100040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
@@ -4891,7 +4886,7 @@ object fLager: TfLager
   end
   object ds_PLIP: TDataSource
     DataSet = cds_PLIP
-    Left = 752
+    Left = 776
     Top = 248
   end
   object cdsVerk: TFDQuery
@@ -4910,7 +4905,7 @@ object fLager: TfLager
       'OR (R.RoleType = 7))'
       ''
       'Order by C.clientName')
-    Left = 800
+    Left = 840
     Top = 192
     object cdsVerkClientNo: TIntegerField
       FieldName = 'ClientNo'
@@ -4964,7 +4959,7 @@ object fLager: TfLager
       'WHERE PH2.OwnerNo = :LegoOwnerNo)'
       ''
       'Order By  LIP.InvCode, LIP.LogicalInventoryName, CY.CITYNAME')
-    Left = 752
+    Left = 776
     Top = 192
     ParamData = <
       item
@@ -5008,7 +5003,7 @@ object fLager: TfLager
       'Select * FROM dbo.userprops'
       'WHERE UserID = :UserID'
       'AND Form = :Form')
-    Left = 856
+    Left = 896
     Top = 192
     ParamData = <
       item
@@ -5315,7 +5310,7 @@ object fLager: TfLager
   end
   object ds_Props: TDataSource
     DataSet = cds_Props
-    Left = 856
+    Left = 896
     Top = 248
   end
   object cxGridPopupMenu2: TcxGridPopupMenu
@@ -5377,7 +5372,7 @@ object fLager: TfLager
     Height = 32
     Width = 32
     FormatVersion = 1
-    DesignInfo = 29950432
+    DesignInfo = 24707728
     ImageInfo = <
       item
         Image.Data = {
@@ -6464,7 +6459,7 @@ object fLager: TfLager
     Height = 32
     Width = 32
     FormatVersion = 1
-    DesignInfo = 35586592
+    DesignInfo = 24576760
     ImageInfo = <
       item
         Image.Data = {
@@ -6612,7 +6607,7 @@ object fLager: TfLager
     Top = 541
   end
   object FD_Query: TFDQuery
-    Left = 649
+    Left = 1009
     Top = 349
   end
   object ds_invpiv: TDataSource
@@ -6860,7 +6855,7 @@ object fLager: TfLager
         PropertyType = tkUString
         ValuesEx = {FFFE520045004600010001000100}
       end>
-    Left = 648
+    Left = 1008
     Top = 408
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
@@ -8020,7 +8015,7 @@ object fLager: TfLager
         ItemName = 'dxBarButton10'
       end>
     UseOwnFont = False
-    Left = 616
-    Top = 253
+    Left = 456
+    Top = 349
   end
 end

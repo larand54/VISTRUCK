@@ -2,7 +2,6 @@ object frmMain: TfrmMain
   Left = 252
   Top = 102
   Hint = 'Currency'
-  ActiveControl = cxButton1
   Caption = 'VIS'
   ClientHeight = 978
   ClientWidth = 1393
@@ -21,9 +20,9 @@ object frmMain: TfrmMain
   TextHeight = 16
   object Panel1: TPanel
     Left = 0
-    Top = 154
+    Top = 134
     Width = 1393
-    Height = 824
+    Height = 844
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -35,7 +34,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 1393
-      Height = 824
+      Height = 844
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -43,42 +42,75 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      object cxButton1: TcxButton
-        Left = 59
-        Top = 30
-        Width = 198
-        Height = 60
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Action = acBytAnvandare
+      object PanelTop: TPanel
+        Left = 0
+        Top = 0
+        Width = 1393
+        Height = 65
+        Align = alTop
         TabOrder = 0
+        object cxButton1: TcxButton
+          Left = 16
+          Top = 10
+          Width = 121
+          Height = 49
+          Action = acRefresh_Usersmonpu_piv
+          TabOrder = 0
+        end
       end
-      object cxButton2: TcxButton
-        Left = 59
-        Top = 108
-        Width = 198
-        Height = 61
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Action = acChangeLanguage
+      object PanelMain: TPanel
+        Left = 0
+        Top = 65
+        Width = 1393
+        Height = 779
+        Align = alClient
         TabOrder = 1
-      end
-      object cxbtnChangeReporter: TcxButton
-        Left = 59
-        Top = 220
-        Width = 198
-        Height = 61
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Change to FastReport'
-        TabOrder = 2
-        OnClick = cxbtnChangeReporterClick
+        object Panel2: TPanel
+          Left = 1119
+          Top = 1
+          Width = 273
+          Height = 777
+          Align = alRight
+          Caption = 'Panelpositionering'
+          TabOrder = 0
+        end
+        object Panel3: TPanel
+          Left = 1
+          Top = 1
+          Width = 1118
+          Height = 777
+          Align = alClient
+          Caption = 'Panel3'
+          TabOrder = 1
+          object Panel4: TPanel
+            Left = 1
+            Top = 464
+            Width = 1116
+            Height = 312
+            Align = alBottom
+            Caption = 'Panel4'
+            TabOrder = 0
+          end
+          object grdPkgOutput: TcxGrid
+            Left = 1
+            Top = 1
+            Width = 1116
+            Height = 463
+            Align = alClient
+            TabOrder = 1
+            object grdPkgOutputDBTableView1: TcxGridDBTableView
+              Navigator.Buttons.CustomButtons = <>
+              DataController.DataSource = dmInventory.ds_usersmonpu_piv
+              DataController.KeyFieldNames = 'RowGroupNo'
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+            end
+            object grdPkgOutputLevel1: TcxGridLevel
+              GridView = grdPkgOutputDBTableView1
+            end
+          end
+        end
       end
     end
   end
@@ -86,7 +118,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1393
-    Height = 154
+    Height = 134
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -412,6 +444,10 @@ object frmMain: TfrmMain
       Caption = 'Positions vyer'
       ImageIndex = 14
       OnExecute = acPositionViewExecute
+    end
+    object acRefresh_Usersmonpu_piv: TAction
+      Caption = 'Uppdatera'
+      OnExecute = acRefresh_Usersmonpu_pivExecute
     end
   end
   object imglOutbar_large: TImageList
@@ -3103,7 +3139,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -3238,6 +3274,18 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxBarLargeButton31'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton33'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton34'
+        end
+        item
+          Visible = True
+          ItemName = 'cxbtnChangeReporter'
         end>
       OneOnRow = True
       Row = 0
@@ -3420,6 +3468,21 @@ object frmMain: TfrmMain
     object dxBarLargeButton32: TdxBarLargeButton
       Action = acPositionView
       Category = 0
+    end
+    object dxBarLargeButton33: TdxBarLargeButton
+      Action = acBytAnvandare
+      Category = 0
+    end
+    object dxBarLargeButton34: TdxBarLargeButton
+      Action = acChangeLanguage
+      Category = 0
+    end
+    object cxbtnChangeReporter: TdxBarLargeButton
+      Caption = 'Change to FastReport'
+      Category = 0
+      Hint = 'Change to FastReport'
+      Visible = ivAlways
+      OnClick = cxbtnChangeReporterClick
     end
     object dxBarButton1: TdxBarButton
       Action = atExit

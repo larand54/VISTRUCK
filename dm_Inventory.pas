@@ -1311,6 +1311,20 @@ type
     sq_SurfacingSurfacingcode: TStringField;
     sq_SurfacingSurfacingNo: TIntegerField;
     sq_SurfacingSurfacingName: TStringField;
+    sp_usersmonpu_piv: TFDStoredProc;
+    ds_usersmonpu_piv: TDataSource;
+    sp_GetProdDescByPkgNoAndSifferPrefix: TFDStoredProc;
+    sp_allPkgsatoutput: TFDStoredProc;
+    sp_allPkgsatoutputProductDisplayName: TStringField;
+    sp_allPkgsatoutputProductionUnitCode: TStringField;
+    sp_allPkgsatoutputPackageNo: TIntegerField;
+    sp_allPkgsatoutputLongPkgNo: TStringField;
+    sp_allPkgsatoutputDIM_Grade: TStringField;
+    sp_allPkgsatoutputMaxLength: TStringField;
+    sp_allPkgsatoutputMaxLengthMM: TFloatField;
+    sp_allPkgsatoutputReference: TStringField;
+    sp_allPkgsatoutputInfo1: TStringField;
+    sp_allPkgsatoutputInfo2: TStringField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1354,6 +1368,10 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
+    Function  GetPackageDescription(const PackageNoString : string) : String ;
+    procedure Refresh_allPkgsatoutput (const VerkNo : integer) ;
+    function  GetProductDescriptionByPkgNoAndRegPointName(const PackageNoString : string;const RegPointname : String) : String ;
+    function  Refresh_sp_usersmonpu_piv : Boolean ; //Result true if rows available
     procedure Refresh_sp_Vis_LagerPOS_v1(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
     function  PkgExistInInventoryKILN(const PackageNo, LIPNo : Integer;const Prefix : String3) : Boolean ;
     function  GetProductNoByPackageNoproductno(const PackageNo : Integer;const Prefix : String) : Integer ;
@@ -1385,6 +1403,7 @@ type
 
     function  IsRunValid : String ;
     Function  ValidUtfall_BookingDtl : Boolean ;
+
 
 
     procedure CalcRunTime_For_cds_Scheduler ;
@@ -2688,6 +2707,75 @@ Begin
 //  End ;
  End ;
 End ;
+
+function TdmInventory.Refresh_sp_usersmonpu_piv : Boolean ; //Result true if rows available
+Begin
+  Refresh_allPkgsatoutput (ThisUser.CompanyNo) ;
+  if sp_usersmonpu_piv.Active then
+    sp_usersmonpu_piv.Active  := False ;
+  Try
+  sp_usersmonpu_piv.ParamByName('@UserID').AsInteger  := 217 ;//  ThisUser.UserID ;
+  sp_usersmonpu_piv.Active  := True ;
+  if sp_usersmonpu_piv.RecordCount > 0 then
+   Result := True
+    else
+     Result := False ;
+  Except
+{
+           On E: Exception do
+           Begin
+            ShowMessage(E.Message+' :sp_GetCurrentSD.ExecProc') ;
+            Raise ;
+           End ;
+
+}  End;
+End;
+
+function TdmInventory.GetProductDescriptionByPkgNoAndRegPointName(const PackageNoString : string;const RegPointname : String) : String ;
+Begin
+  sp_GetProdDescByPkgNoAndSifferPrefix.ParamByName('@PackageNo').AsString     :=  PackageNoString ;
+  sp_GetProdDescByPkgNoAndSifferPrefix.ParamByName('@ClientNo').AsInteger     :=  ThisUser.CompanyNo ;
+  sp_GetProdDescByPkgNoAndSifferPrefix.ParamByName('@RegPointName').AsString  :=  RegPointName ;
+  sp_GetProdDescByPkgNoAndSifferPrefix.ParamByName('@LanguageID').AsInteger   :=  1 ;
+  sp_GetProdDescByPkgNoAndSifferPrefix.Active :=  True ;
+  Try
+  if strToIntDef(PackageNoString,0) > 0 then
+  Begin
+    if not sp_GetProdDescByPkgNoAndSifferPrefix.Eof then
+     Result := sp_GetProdDescByPkgNoAndSifferPrefix.FieldByName('ProductDisplayName').AsString
+      else
+      Begin
+       if Length(PackageNoString) > 0 then
+        Result := PackageNoString + ' / ' + RegPointName
+         else
+          Result  := '' ;
+      End;
+  End
+   else
+    Result  := '' ;
+  Finally
+    sp_GetProdDescByPkgNoAndSifferPrefix.Active :=  False ;
+  End;
+End;
+
+procedure TdmInventory.Refresh_allPkgsatoutput (const VerkNo : integer) ;
+Begin
+ if sp_allPkgsatoutput.Active then
+  sp_allPkgsatoutput.Active := False ;
+ sp_allPkgsatoutput.ParamByName('@VerkNo').AsInteger      := VerkNo ;
+ sp_allPkgsatoutput.ParamByName('@LanguageID').AsInteger  := 1 ;
+ sp_allPkgsatoutput.Active  := True ;
+End;
+
+Function TdmInventory.GetPackageDescription(const PackageNoString : string) : String ;
+Var PkgNo : integer ;
+Begin
+ PkgNo  := strtointDef(PackageNoString,-1) ;
+  if sp_allPkgsatoutput.findkey([PkgNo]) then
+   Result := sp_allPkgsatoutputDIM_Grade.AsString + ' ' + sp_allPkgsatoutputMaxLength.AsString
+    else
+     Result := PackageNoString ;
+End;
 
 end.
 
