@@ -10493,4 +10493,166 @@ object dmInventory: TdmInventory
       Size = 50
     end
   end
+  object sp_usersmonpu_piv: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.Vis_usersmonpu_piv'
+    Left = 160
+    Top = 848
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object ds_usersmonpu_piv: TDataSource
+    DataSet = sp_usersmonpu_piv
+    Left = 160
+    Top = 904
+  end
+  object sp_GetProdDescByPkgNoAndSifferPrefix: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_GetProdDescByPkgNoAndnrPrefix'
+    Left = 336
+    Top = 840
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Position = 3
+        Name = '@ClientNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@RegPointName'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 20
+      end
+      item
+        Position = 5
+        Name = '@LanguageID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_allPkgsatoutput: TFDStoredProc
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'allPkgsAtOutput_Index01'
+        Fields = 'LongPkgNo'
+      end
+      item
+        Active = True
+        Name = 'allPkgsAtOutput_Index02'
+        Fields = 'PackageNo'
+      end>
+    IndexName = 'allPkgsAtOutput_Index01'
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_allPkgsatoutput'
+    Left = 336
+    Top = 904
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@VerkNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@LanguageID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_allPkgsatoutputProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object sp_allPkgsatoutputProductionUnitCode: TStringField
+      FieldName = 'ProductionUnitCode'
+      Origin = 'ProductionUnitCode'
+      Required = True
+      Size = 2
+    end
+    object sp_allPkgsatoutputPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      Required = True
+    end
+    object sp_allPkgsatoutputLongPkgNo: TStringField
+      FieldName = 'LongPkgNo'
+      Origin = 'LongPkgNo'
+      ReadOnly = True
+      Size = 12
+    end
+    object sp_allPkgsatoutputDIM_Grade: TStringField
+      FieldName = 'DIM_Grade'
+      Origin = 'DIM_Grade'
+      ReadOnly = True
+      Size = 74
+    end
+    object sp_allPkgsatoutputMaxLength: TStringField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+      Size = 15
+    end
+    object sp_allPkgsatoutputMaxLengthMM: TFloatField
+      FieldName = 'MaxLengthMM'
+      Origin = 'MaxLengthMM'
+      ReadOnly = True
+    end
+    object sp_allPkgsatoutputReference: TStringField
+      FieldName = 'Reference'
+      Origin = 'Reference'
+      ReadOnly = True
+      Required = True
+      Size = 30
+    end
+    object sp_allPkgsatoutputInfo1: TStringField
+      FieldName = 'Info1'
+      Origin = 'Info1'
+      ReadOnly = True
+      Required = True
+      Size = 30
+    end
+    object sp_allPkgsatoutputInfo2: TStringField
+      FieldName = 'Info2'
+      Origin = 'Info2'
+      ReadOnly = True
+      Required = True
+      Size = 30
+    end
+  end
 end

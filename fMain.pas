@@ -40,10 +40,12 @@ uses
   dxSkinsdxBarPainter, dxBarApplicationMenu, dxScreenTip, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxRibbonCustomizationForm, siComp, siLngLnk,
-  System.Actions, udmFR, uReportController ;
+  System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator ;
 
 
 
+const
+ cFirstColumnNoWithRegPoint = 1 ;
 
 type
   TfrmMain = class(TForm)
@@ -172,7 +174,6 @@ type
     dxBarLargeButton27: TdxBarLargeButton;
     acAndraPaket: TAction;
     dxBarLargeButton28: TdxBarLargeButton;
-    cxButton1: TcxButton;
     dxBarLargeButton29: TdxBarLargeButton;
     acPkgStdSizeIntervall: TAction;
     dxBarLargeButton30: TdxBarLargeButton;
@@ -180,12 +181,23 @@ type
     acTorkhanteraren: TAction;
     acChangeLanguage: TAction;
     dxBarButton12: TdxBarButton;
-    cxButton2: TcxButton;
     dxBarLargeButton31: TdxBarLargeButton;
     acDeRegisterPackages: TAction;
-    cxbtnChangeReporter: TcxButton;
     dxBarLargeButton32: TdxBarLargeButton;
     acPositionView: TAction;
+    dxBarLargeButton33: TdxBarLargeButton;
+    dxBarLargeButton34: TdxBarLargeButton;
+    cxbtnChangeReporter: TdxBarLargeButton;
+    PanelTop: TPanel;
+    PanelMain: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    grdPkgOutput: TcxGrid;
+    grdPkgOutputDBTableView1: TcxGridDBTableView;
+    grdPkgOutputLevel1: TcxGridLevel;
+    cxButton1: TcxButton;
+    acRefresh_Usersmonpu_piv: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -207,12 +219,17 @@ type
     procedure acTorkhanterarenExecute(Sender: TObject);
     procedure acChangeLanguageExecute(Sender: TObject);
     procedure acDeRegisterPackagesExecute(Sender: TObject);
-    procedure cxbtnChangeReporterClick(Sender: TObject);
     procedure acPositionViewExecute(Sender: TObject);
+    procedure cxbtnChangeReporterClick(Sender: TObject);
+    procedure acRefresh_Usersmonpu_pivExecute(Sender: TObject);
+    procedure grdPkgOutputDBTableView1GetDisplayText(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AText: string);
 
   private
     OriginalUserID  : Integer ;
     a : String ;
+    procedure SetGridParamsFor_Usersmonpu_piv(Sender: TObject);
     Procedure InitOnStartOfProgram;
     function  SelectSortingOrderNo : Integer ;
     procedure AvregistreraPaket ;
@@ -265,7 +282,7 @@ uses
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
-  uSelectSortingOrderNo, dmsVidaContact, uPositionView;
+  uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -552,6 +569,19 @@ begin
  End ;
 end;
 
+procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);
+begin
+  if cxbtnChangeReporter.Caption = 'Change to FastReport' then begin
+    cxbtnChangeReporter.Caption := 'Change to CrystalReports';
+    uReportController.useFR := true;
+  end
+  else
+  begin
+    cxbtnChangeReporter.Caption := 'Change to FastReport';
+    uReportController.useFR := false;
+  end;
+end;
+
 procedure TfrmMain.acUserPreferenceExecute(Sender: TObject);
 begin
  TfUserPreference.Execute ;
@@ -580,19 +610,6 @@ begin
 
  if Assigned(frmPortArrivals) then
   FreeAndNil(frmPortArrivals) ;
-end;
-
-procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);
-begin
-  if cxbtnChangeReporter.Caption = 'Change to FastReport' then begin
-    cxbtnChangeReporter.Caption := 'Change to CrystalReports';
-    uReportController.useFR := true;
-  end
-  else
-  begin
-    cxbtnChangeReporter.Caption := 'Change to FastReport';
-    uReportController.useFR := false;
-  end;
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -987,6 +1004,236 @@ begin
   fPositionView.Parent := panelBase;
   dxRibbon1.ShowTabGroups  := False ;
   fPositionView.Show;
+end;
+
+procedure TfrmMain.acRefresh_Usersmonpu_pivExecute(Sender: TObject);
+begin
+// dmInventory.sp_invpiv.DisableControls ;
+// grdPkgOutput.ClearItems ;
+ dmInventory.Refresh_sp_usersmonpu_piv ;
+
+ SetGridParamsFor_Usersmonpu_piv(Sender);
+end;
+
+procedure TfrmMain.grdPkgOutputDBTableView1GetDisplayText(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AText: string);
+begin
+
+{
+    if AText = '283276' then
+     AText  := Sender.Caption
+      else
+        if AText = '914195' then
+          AText  := Sender.Caption ;
+}
+
+ AText  := dmInventory.GetPackageDescription(AText) ;
+
+end;
+
+procedure TfrmMain.SetGridParamsFor_Usersmonpu_piv(Sender: TObject);
+Var Save_Cursor : TCursor;
+ //   aColumn     : TcxGridDBBandedColumn ;
+    x           : Integer ;
+begin
+ Try
+ grdPkgOutputDBTableView1.ClearItems ;
+
+ grdPkgOutputDBTableView1.DataController.CreateAllItems(True) ;
+
+  Except
+   on E: eDatabaseError do
+   Begin
+    ShowMessage(
+{TSI:IGNORE ON}
+	'ClearItems, CreateAllItems '
+{TSI:IGNORE OFF}
+ + E.Message) ;
+    Raise ;
+   End ;
+  End ;
+
+   for x := cFirstColumnNoWithRegPoint to grdPkgOutputDBTableView1.ColumnCount - 1 do
+   Begin
+//    grdPkgOutputDBTableView1.Columns[x].Styles.OnGetContentStyle := DoOnGetContentStyle ;
+//    grdDBBandedPerSortiment.Columns[x].OnCustomDrawHeader       := grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader ;
+    grdPkgOutputDBTableView1.Columns[x].OnGetDisplayText       := grdPkgOutputDBTableView1GetDisplayText ;
+   End;
+
+{
+   for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
+   Begin
+    grdDBBandedPerSortiment.Columns[x].Styles.OnGetContentStyle := DoOnGetContentStyle ;
+    grdDBBandedPerSortiment.Columns[x].OnCustomDrawHeader       := grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader ;
+   End;
+
+
+
+  // SetFilter ;
+
+   dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel              := 'Paket' ;
+   dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel                 := 'PT' ;
+   dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel                := 'Ställe' ;
+   dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel                := 'Grupp' ;
+   dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Produkt' ;
+   dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel    := 'Storlek' ;
+
+   dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel                 := 'AT' ;
+   dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel                 := 'AB' ;
+
+   dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel          := 'Medellängd' ;
+
+
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('productNo');
+   aColumn.Visible  := False ;
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIPNo');
+   aColumn.Visible  := False ;
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIPNo');
+   aColumn.Visible  := False ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
+   aColumn.Visible  := False ;
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('ProductValue');
+   aColumn.Visible  := False ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('InventorySource');
+   aColumn.Visible  := False ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AT');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 1 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AB');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 1 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('ProductDisplayName');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 1 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PackageSizeName');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 1 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Package_Size');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 1 ;
+
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LP');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 1 ;
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
+   aColumn.Visible  := False ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 3 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+   aColumn.Visible  := True ;
+   aColumn.Position.BandIndex := 3 ;
+
+   For x := cFirstLengthFieldNumber to dmInventory.sp_invpiv.FieldCount -1 do
+   Begin
+    dmInventory.sp_invpiv.Fields.Fields[x].ReadOnly  := False ;
+    dmInventory.sp_invpiv.Fields.Fields[x].Required  := False ;
+   End ;
+
+   For x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
+    Begin
+     grdDBBandedPerSortiment.Columns[x].Position.BandIndex  := 2 ;
+    End ;
+
+
+      LoadGridLayoutSortimentsVy ;
+
+   grdDBBandedPerSortiment.BeginUpdate ;
+   Try
+     For x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount -1 do
+
+     if Length(grdDBBandedPerSortiment.Columns[x].Caption) = 0 then
+     Begin
+      grdDBBandedPerSortiment.Columns[x].Visible  := False ;
+     End
+       else
+       Begin
+        grdDBBandedPerSortiment.Columns[x].Visible  := True ;
+
+       End;
+
+   Finally
+    grdDBBandedPerSortiment.EndUpdate ;
+   End ;
+
+   SetSummary_grdDBBandedPerSortiment(Sender) ;
+
+   grdDBBandedPerSortiment.Bands[0].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_11' (* 'PAKET ID' *) );
+   grdDBBandedPerSortiment.Bands[1].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_12' (* 'PRODUKT' *) );
+   grdDBBandedPerSortiment.Bands[2].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) );
+   grdDBBandedPerSortiment.Bands[3].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_14' (* 'LAGER' *) );
+   grdDBBandedPerSortiment.Bands[4].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_15' (* 'KVANTITET' *) );
+
+   FormatLengthColumns ;
+
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
+   aColumn.Position.BandIndex := 3 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+   aColumn.Position.BandIndex := 3 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
+   aColumn.Position.BandIndex := 4 ;
+
+   aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
+   aColumn.Position.BandIndex := 4 ;
+}
 end;
 
 procedure TfrmMain.acAndraPaketExecute(Sender: TObject);

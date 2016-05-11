@@ -485,6 +485,7 @@
             <Form>fAngeNyMall</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\CommonSources\FastReport\uTwoReportInOne.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
