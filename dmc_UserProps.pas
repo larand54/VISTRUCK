@@ -132,6 +132,8 @@ type
     cds_UserDirImportDir: TStringField;
     cds_UserDirExportDir: TStringField;
     cds_UserDirDeliveryMessageWood_XSD: TStringField;
+    cds_PropsFilter1: TStringField;
+    cds_PropsFilter2: TStringField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -217,7 +219,10 @@ Begin
   mtuserprop.FieldByName('EndPeriod').AsDateTime        := SQLTimeStampToDateTime(cds_PropsEndPeriod.AsSQLTimeStamp) ;
 
 
-  mtuserprop.FieldByName('LengthVolUnitNo').AsInteger := cds_PropsLengthVolUnitNo.AsInteger ;
+  mtuserprop.FieldByName('LengthVolUnitNo').AsInteger   := cds_PropsLengthVolUnitNo.AsInteger ;
+  mtuserprop.FieldByName('Filter1').AsString            := cds_PropsFilter1.AsString ;
+  mtuserprop.FieldByName('Filter2').AsString            := cds_PropsFilter2.AsString ;
+  mtuserprop.FieldByName('Name').AsString               := cds_PropsName.AsString ;
 
   mtuserprop.Post ;
   Finally
@@ -285,6 +290,9 @@ Begin
   mtuserprop.FieldByName('BookingTypeNo').AsInteger     := 0 ;
   mtuserprop.FieldByName('CustomerNo').AsInteger        := 0 ;
   mtuserprop.FieldByName('ShowProduct').AsInteger       := 0 ;
+  mtuserprop.FieldByName('Filter1').AsString            := '';
+  mtuserprop.FieldByName('Filter2').AsString            := '' ;
+  mtuserprop.FieldByName('Name').AsString               := '' ;
 
   mtuserprop.Post ;
  End ;
@@ -349,6 +357,9 @@ Begin
   cds_PropsBookingTypeNo.AsInteger      := mtuserprop.FieldByName('BookingTypeNo').AsInteger ;
   cds_PropsCustomerNo.AsInteger         := mtuserprop.FieldByName('CustomerNo').AsInteger ;
   cds_PropsShowProduct.AsInteger        := mtuserprop.FieldByName('ShowProduct').AsInteger ;
+  cds_PropsFilter1.AsString             := mtuserprop.FieldByName('Filter1').AsString ;
+  cds_PropsFilter2.AsString             := mtuserprop.FieldByName('Filter2').AsString ;
+  cds_PropsName.AsString                := mtuserprop.FieldByName('Name').AsString ;
 
   cds_PropsStartPeriod.AsSQLTimeStamp   := DateTimeToSQLTimeStamp(mtuserprop.FieldByName('StartPeriod').AsDateTime) ;
   cds_PropsEndPeriod.AsSQLTimeStamp     := DateTimeToSQLTimeStamp(mtuserprop.FieldByName('EndPeriod').AsDateTime) ;

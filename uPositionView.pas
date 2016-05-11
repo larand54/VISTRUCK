@@ -194,8 +194,8 @@ type
     cxLabel35: TcxLabel;
     cxLabel36: TcxLabel;
     ccSkiftLag: TcxCheckComboBox;
-    cxButton1: TcxButton;
-    cxButton2: TcxButton;
+    cxbtnCloseForm: TcxButton;
+    cxbtnClearFilter: TcxButton;
     cxLabel14: TcxLabel;
     cxLabel15: TcxLabel;
     tsProduktionProduktSummary: TcxTabSheet;
@@ -359,6 +359,44 @@ type
     sq_GridSets2Sets: TBlobField;
     sq_GridSets2Name: TStringField;
     sq_GridSets2Form: TStringField;
+    sq_UserProfileVerkNo: TIntegerField;
+    sq_UserProfileOwnerNo: TIntegerField;
+    sq_UserProfilePIPNo: TIntegerField;
+    sq_UserProfileLIPNo: TIntegerField;
+    sq_UserProfileRegPointNo: TIntegerField;
+    sq_UserProfileRegDate: TSQLTimeStampField;
+    sq_UserProfileCopyPcs: TIntegerField;
+    sq_UserProfileRunNo: TIntegerField;
+    sq_UserProfileProducerNo: TIntegerField;
+    sq_UserProfileAutoColWidth: TIntegerField;
+    sq_UserProfileSupplierCode: TStringField;
+    sq_UserProfileLengthOption: TIntegerField;
+    sq_UserProfileLengthGroupNo: TIntegerField;
+    sq_UserProfileNewItemRow: TIntegerField;
+    sq_UserProfileSalesRegionNo: TIntegerField;
+    sq_UserProfileMarketRegionNo: TIntegerField;
+    sq_UserProfileOrderTypeNo: TIntegerField;
+    sq_UserProfileStatus: TIntegerField;
+    sq_UserProfileFilterOrderDate: TIntegerField;
+    sq_UserProfileClientNo: TIntegerField;
+    sq_UserProfileSalesPersonNo: TIntegerField;
+    sq_UserProfileVerkSupplierNo: TIntegerField;
+    sq_UserProfileVerkKundNo: TIntegerField;
+    sq_UserProfileLOObjectType: TIntegerField;
+    sq_UserProfileBarCodeNo: TIntegerField;
+    sq_UserProfileGradeStampNo: TIntegerField;
+    sq_UserProfileVolumeUnitNo: TIntegerField;
+    sq_UserProfileLengthFormatNo: TIntegerField;
+    sq_UserProfileLengthVolUnitNo: TIntegerField;
+    sq_UserProfileGroupByBox: TIntegerField;
+    sq_UserProfileGroupSummary: TIntegerField;
+    sq_UserProfileAgentNo: TIntegerField;
+    sq_UserProfileLoadingLocationNo: TIntegerField;
+    sq_UserProfileShipperNo: TIntegerField;
+    sq_UserProfileBookingTypeNo: TIntegerField;
+    sq_UserProfileCustomerNo: TIntegerField;
+    sq_UserProfileShowProduct: TIntegerField;
+    sq_UserProfileFilter1: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -375,8 +413,8 @@ type
       ItemIndex: Integer; var AllowToggle: Boolean);
     procedure acExportToExcelExecute(Sender: TObject);
     procedure cbOwnerPropertiesCloseUp(Sender: TObject);
-    procedure cxButton1Click(Sender: TObject);
-    procedure cxButton2Click(Sender: TObject);
+    procedure cxbtnCloseFormClick(Sender: TObject);
+    procedure cxbtnClearFilterClick(Sender: TObject);
     procedure sq_UserProfileAfterInsert(DataSet: TDataSet);
     procedure acSaveTemplateExecute(Sender: TObject);
     procedure cbReportSelectionPropertiesChange(Sender: TObject);
@@ -398,6 +436,7 @@ type
     { Private declarations }
     FFilterUpdated: boolean;  // Filter combos updated
     procedure SetDateFields ;
+    procedure LoadMainCombos;
     procedure LoadCheckBoxWithVerk ;
     procedure LoadCheckBoxWithSalesRegion;
     procedure LoadCheckBoxWithSTorageArea;
@@ -973,13 +1012,35 @@ begin
  Try
   deStartPeriod.Clear;
   deEndPeriod.Clear;
-  LoadCheckBoxWithSalesRegion;
-  LoadCheckBoxWithVerk ;
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
-
+  cbReportSelection.EditValue := mtuserPropName.AsString;
+  LoadMainCombos;
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
+end;
+
+procedure TfPositionView.LoadMainCombos;
+var
+  s: string;
+  sl: TStringList;
+begin
+  s := mtUserPropFilter2.AsString;
+  sl := TStringList.Create;
+  sl.Delimiter := ' ';
+//  sl.StrictDelimiter := true;
+  sl.QuoteChar := '|';
+  sl.DelimitedText := s;
+  LoadCheckBoxWithSalesRegion;
+  if sl.Count <= 2 then exit
+  else
+  begin
+    if sl[0] <> '' then cbSalesRegion.EditValue := sl[0];
+    LoadCheckBoxWithVerk ;
+    if sl[1] <> '' then cbOwner.EditValue := sl[1];
+    LoadCheckBoxWithStorageGroup;
+    if sl[2] <> '' then cbStorageGroup.EditValue := sl[2];
+  end;
 end;
 
 function TfPositionView.CreateWhereList(const aDecimalType: byte; const aSource: integer): TStringList;
@@ -1025,6 +1086,7 @@ end;
 procedure TfPositionView.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
+  dm_UserProps.SaveUserProps(Self.Name,mtUserProp);
   Action:= caFree ;
   fPositionView := nil;
   dmFilterSQL.Detach(self);
@@ -1657,13 +1719,13 @@ begin
   end;
 end;
 
-procedure TfPositionView.cxButton1Click(Sender: TObject);
+procedure TfPositionView.cxbtnCloseFormClick(Sender: TObject);
 begin
   SaveUserProfile;
   Close ;
 end;
 
-procedure TfPositionView.cxButton2Click(Sender: TObject);
+procedure TfPositionView.cxbtnClearFilterClick(Sender: TObject);
 begin
   ClearProductFilter ;
 end;
@@ -1678,11 +1740,16 @@ begin
 end;
 
 procedure TfPositionView.SaveUserProfile ;
+var
+  s: string;
 Begin
   sq_UserProfile.Active := False;
   sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID;
-  sq_UserProfile.ParamByName('Form').AsString := fPositionView.Name;
+  sq_UserProfile.ParamByName('Form').AsString := fPositionView.Name+'2';
   sq_UserProfile.ParamByName('Name').AsString := cbReportSelection.Text;
+
+//  mtuserProp.Active := False;
+
   sq_UserProfile.Active := True;
   Try
     if not sq_UserProfile.Eof then
@@ -1690,6 +1757,15 @@ Begin
       sq_UserProfile.Edit;
       sq_UserProfile.Post;
     End;
+      mtuserProp.Edit;
+      mtUserPropUserID.AsInteger := ThisUser.UserID;
+      mtUserPropForm.AsString := fPositionView.Name+'2';
+      mtUserPropName.AsString := cbReportSelection.Text;
+      s := '|' + cbSalesRegion.EditValue+ '| ';
+      s := s + '|' + cbOwner.EditValue+ '| ';
+      s := s + '|' + cbStorageGroup.EditValue + '|';
+      mtUserPropFilter2.AsString := s;
+      mtuserProp.Post;
   Finally
     sq_UserProfile.Active := False;
   End;

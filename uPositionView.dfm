@@ -883,14 +883,14 @@ object fPositionView: TfPositionView
           Width = 105
         end
         object cbOwner: TcxCheckComboBox
-          Left = 209
+          Left = 199
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Properties.DropDownRows = 15
-          Properties.EditValueFormat = cvfCaptions
+          Properties.EditValueFormat = cvfIndices
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbOwnerPropertiesCloseUp
@@ -1181,7 +1181,7 @@ object fPositionView: TfPositionView
           Visible = False
           Width = 108
         end
-        object cxButton1: TcxButton
+        object cxbtnCloseForm: TcxButton
           Left = 1140
           Top = 1
           Width = 74
@@ -1192,9 +1192,9 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           Caption = 'St'#228'ng'
           TabOrder = 34
-          OnClick = cxButton1Click
+          OnClick = cxbtnCloseFormClick
         end
-        object cxButton2: TcxButton
+        object cxbtnClearFilter: TcxButton
           Left = 1045
           Top = 1
           Width = 87
@@ -1205,7 +1205,7 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           Caption = 'Rensa filter'
           TabOrder = 35
-          OnClick = cxButton2Click
+          OnClick = cxbtnClearFilterClick
         end
         object cxLabel14: TcxLabel
           Left = 352
@@ -1275,6 +1275,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Properties.DropDownRows = 35
+          Properties.EditValueFormat = cvfIndices
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbSalesRegionPropertiesCloseUp
@@ -1352,7 +1353,7 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           Properties.EmptySelectionText = 'Alla'
           Properties.DropDownRows = 35
-          Properties.EditValueFormat = cvfCaptions
+          Properties.EditValueFormat = cvfIndices
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbStorageGroupPropertiesCloseUp
@@ -2346,6 +2347,7 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2367,6 +2369,7 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42485.411061793980000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -2445,7 +2448,7 @@ object fPositionView: TfPositionView
   object dsUserProp: TDataSource
     DataSet = mtuserProp
     Left = 176
-    Top = 336
+    Top = 344
   end
   object ds_Verk: TDataSource
     DataSet = cds_Verk
@@ -4085,6 +4088,160 @@ object fPositionView: TfPositionView
       Origin = 'EndPeriod'
       ProviderFlags = [pfInUpdate]
     end
+    object sq_UserProfileVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+      Origin = 'VerkNo'
+    end
+    object sq_UserProfileOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+      Origin = 'OwnerNo'
+    end
+    object sq_UserProfilePIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object sq_UserProfileLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+    end
+    object sq_UserProfileRegPointNo: TIntegerField
+      FieldName = 'RegPointNo'
+      Origin = 'RegPointNo'
+    end
+    object sq_UserProfileRegDate: TSQLTimeStampField
+      FieldName = 'RegDate'
+      Origin = 'RegDate'
+    end
+    object sq_UserProfileCopyPcs: TIntegerField
+      FieldName = 'CopyPcs'
+      Origin = 'CopyPcs'
+    end
+    object sq_UserProfileRunNo: TIntegerField
+      FieldName = 'RunNo'
+      Origin = 'RunNo'
+    end
+    object sq_UserProfileProducerNo: TIntegerField
+      FieldName = 'ProducerNo'
+      Origin = 'ProducerNo'
+    end
+    object sq_UserProfileAutoColWidth: TIntegerField
+      FieldName = 'AutoColWidth'
+      Origin = 'AutoColWidth'
+    end
+    object sq_UserProfileSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      Size = 3
+    end
+    object sq_UserProfileLengthOption: TIntegerField
+      FieldName = 'LengthOption'
+      Origin = 'LengthOption'
+    end
+    object sq_UserProfileLengthGroupNo: TIntegerField
+      FieldName = 'LengthGroupNo'
+      Origin = 'LengthGroupNo'
+    end
+    object sq_UserProfileNewItemRow: TIntegerField
+      FieldName = 'NewItemRow'
+      Origin = 'NewItemRow'
+    end
+    object sq_UserProfileSalesRegionNo: TIntegerField
+      FieldName = 'SalesRegionNo'
+      Origin = 'SalesRegionNo'
+    end
+    object sq_UserProfileMarketRegionNo: TIntegerField
+      FieldName = 'MarketRegionNo'
+      Origin = 'MarketRegionNo'
+    end
+    object sq_UserProfileOrderTypeNo: TIntegerField
+      FieldName = 'OrderTypeNo'
+      Origin = 'OrderTypeNo'
+    end
+    object sq_UserProfileStatus: TIntegerField
+      FieldName = 'Status'
+      Origin = 'Status'
+    end
+    object sq_UserProfileFilterOrderDate: TIntegerField
+      FieldName = 'FilterOrderDate'
+      Origin = 'FilterOrderDate'
+    end
+    object sq_UserProfileClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+    end
+    object sq_UserProfileSalesPersonNo: TIntegerField
+      FieldName = 'SalesPersonNo'
+      Origin = 'SalesPersonNo'
+    end
+    object sq_UserProfileVerkSupplierNo: TIntegerField
+      FieldName = 'VerkSupplierNo'
+      Origin = 'VerkSupplierNo'
+    end
+    object sq_UserProfileVerkKundNo: TIntegerField
+      FieldName = 'VerkKundNo'
+      Origin = 'VerkKundNo'
+    end
+    object sq_UserProfileLOObjectType: TIntegerField
+      FieldName = 'LOObjectType'
+      Origin = 'LOObjectType'
+    end
+    object sq_UserProfileBarCodeNo: TIntegerField
+      FieldName = 'BarCodeNo'
+      Origin = 'BarCodeNo'
+    end
+    object sq_UserProfileGradeStampNo: TIntegerField
+      FieldName = 'GradeStampNo'
+      Origin = 'GradeStampNo'
+    end
+    object sq_UserProfileVolumeUnitNo: TIntegerField
+      FieldName = 'VolumeUnitNo'
+      Origin = 'VolumeUnitNo'
+    end
+    object sq_UserProfileLengthFormatNo: TIntegerField
+      FieldName = 'LengthFormatNo'
+      Origin = 'LengthFormatNo'
+    end
+    object sq_UserProfileLengthVolUnitNo: TIntegerField
+      FieldName = 'LengthVolUnitNo'
+      Origin = 'LengthVolUnitNo'
+    end
+    object sq_UserProfileGroupByBox: TIntegerField
+      FieldName = 'GroupByBox'
+      Origin = 'GroupByBox'
+    end
+    object sq_UserProfileGroupSummary: TIntegerField
+      FieldName = 'GroupSummary'
+      Origin = 'GroupSummary'
+    end
+    object sq_UserProfileAgentNo: TIntegerField
+      FieldName = 'AgentNo'
+      Origin = 'AgentNo'
+    end
+    object sq_UserProfileLoadingLocationNo: TIntegerField
+      FieldName = 'LoadingLocationNo'
+      Origin = 'LoadingLocationNo'
+    end
+    object sq_UserProfileShipperNo: TIntegerField
+      FieldName = 'ShipperNo'
+      Origin = 'ShipperNo'
+    end
+    object sq_UserProfileBookingTypeNo: TIntegerField
+      FieldName = 'BookingTypeNo'
+      Origin = 'BookingTypeNo'
+    end
+    object sq_UserProfileCustomerNo: TIntegerField
+      FieldName = 'CustomerNo'
+      Origin = 'CustomerNo'
+    end
+    object sq_UserProfileShowProduct: TIntegerField
+      FieldName = 'ShowProduct'
+      Origin = 'ShowProduct'
+    end
+    object sq_UserProfileFilter1: TStringField
+      FieldName = 'Filter1'
+      Origin = 'Filter1'
+      Size = 50
+    end
   end
   object cxGridPopupMenu1: TcxGridPopupMenu
     PopupMenus = <>
@@ -4599,8 +4756,8 @@ object fPositionView: TfPositionView
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 120
-    Top = 322
+    Left = 176
+    Top = 298
     object mtuserPropUserID: TIntegerField
       FieldName = 'UserID'
       Required = True

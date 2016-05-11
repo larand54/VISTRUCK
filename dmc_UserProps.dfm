@@ -750,6 +750,16 @@ object dm_UserProps: Tdm_UserProps
       FieldName = 'ShowProduct'
       Origin = 'ShowProduct'
     end
+    object cds_PropsFilter1: TStringField
+      FieldName = 'Filter1'
+      Origin = 'Filter1'
+      Size = 50
+    end
+    object cds_PropsFilter2: TStringField
+      FieldName = 'Filter2'
+      Origin = 'Filter2'
+      Size = 255
+    end
   end
   object cds_PIP2: TFDQuery
     CachedUpdates = True
