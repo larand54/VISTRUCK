@@ -134,7 +134,8 @@ uses
   uICMObserver in 'uICMObserver.pas',
   uICMSubject in 'uICMSubject.pas',
   uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall},
-  uTwoReportInOne in '..\CommonSources\FastReport\uTwoReportInOne.pas';
+  uTwoReportInOne in '..\CommonSources\FastReport\uTwoReportInOne.pas',
+  uSetupUserOutput in 'uSetupUserOutput.pas' {fSetupUserOutput};
 
 {$R *.res}
 begin

@@ -1,8 +1,6 @@
 object dmcLO: TdmcLO
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Left = 228
-  Top = 180
   Height = 437
   Width = 895
   object sq_LO1: TSQLQuery

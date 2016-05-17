@@ -6493,6 +6493,7 @@ var
   ErrorText         : String ;
   LoadNo            : Integer ;
   ErrorCode         : Integer ;
+  NumberPrefix      : String ;
 begin
  With dmArrivingLoads do
  Begin
@@ -6509,7 +6510,7 @@ begin
     Begin //LÅNGA KODEN
      Try
      Action := eaAccept ;
-     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode) ;
+     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode, NumberPrefix) ;
    //  NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
      Except
       on E: EConvertError do

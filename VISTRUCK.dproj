@@ -486,6 +486,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\CommonSources\FastReport\uTwoReportInOne.pas"/>
+        <DCCReference Include="uSetupUserOutput.pas">
+            <Form>fSetupUserOutput</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
@@ -538,8 +542,13 @@
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress VCL\Library\RS20\dcldxPSDBTeeChartRS20.bpl">ExpressPrinting System ReportLink for DBTeeChart by Developer Express Inc.</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress VCL\Library\RS20\dxPScxPCProdRS20.bpl">ExpressPrinting System ContainerProducer for ExpressPageControl by Developer Express Inc.</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress VCL\Library\RS20\dcldxPScxCommonRS20.bpl">ExpressPrinting System Cross Platform Library by Developer Express Inc.</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress VCL\Library\RS20\dcldxPScxExtCommonRS20.bpl">ExpressPrinting System Extended Cross Platform Library by Developer Express Inc.</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k200.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp200.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Program Files (x86)\RemObjects Software\Hydra for Delphi\Dcu\D20\win32\Hydra_IDE_D20.bpl">RemObjects Hydra - IDE Integration</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>

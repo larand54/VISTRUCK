@@ -40,7 +40,8 @@ uses
   dxSkinsdxBarPainter, dxBarApplicationMenu, dxScreenTip, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxRibbonCustomizationForm, siComp, siLngLnk,
-  System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator ;
+  System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator,
+  System.Variants ;
 
 
 
@@ -190,14 +191,38 @@ type
     cxbtnChangeReporter: TdxBarLargeButton;
     PanelTop: TPanel;
     PanelMain: TPanel;
+    cxButton1: TcxButton;
+    acRefresh_Usersmonpu_piv: TAction;
+    Panel5: TPanel;
+    PanelBottom: TPanel;
     Panel2: TPanel;
-    Panel3: TPanel;
+    Panelgrid: TPanel;
     Panel4: TPanel;
     grdPkgOutput: TcxGrid;
     grdPkgOutputDBTableView1: TcxGridDBTableView;
     grdPkgOutputLevel1: TcxGridLevel;
-    cxButton1: TcxButton;
-    acRefresh_Usersmonpu_piv: TAction;
+    mePackageNo: TcxTextEdit;
+    cxStyleRepository1: TcxStyleRepository;
+    GridTableViewStyleSheetWindowsStandardlarge: TcxGridTableViewStyleSheet;
+    cxStyle1: TcxStyle;
+    cxStyle2: TcxStyle;
+    cxStyle3: TcxStyle;
+    cxStyle4: TcxStyle;
+    cxStyle5: TcxStyle;
+    cxStyle6: TcxStyle;
+    cxStyle7: TcxStyle;
+    cxStyle8: TcxStyle;
+    cxStyle9: TcxStyle;
+    cxStyle10: TcxStyle;
+    cxStyle11: TcxStyle;
+    FDQuery1: TFDQuery;
+    mtScannedPkgs: TFDMemTable;
+    mtScannedPkgsPackageNo: TIntegerField;
+    mtScannedPkgsPefix: TStringField;
+    cxStyleMarkedPkgs: TcxStyle;
+    mtScannedPkgsLongPkgNo: TStringField;
+    acSetupUserOutput: TAction;
+    cxButton2: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -225,10 +250,21 @@ type
     procedure grdPkgOutputDBTableView1GetDisplayText(
   Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
   var AText: string);
+    procedure grdPkgOutputDBTableView1StylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure grdPkgOutputDBTableView1CustomDrawCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+    procedure acSetupUserOutputExecute(Sender: TObject);
 
   private
+    ScanningEnabled : Boolean ;
+    TempEditString  : String ;
     OriginalUserID  : Integer ;
     a : String ;
+    function  ScannedPkg(const AViewInfo  : String) : Boolean ;
+    procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
     procedure SetGridParamsFor_Usersmonpu_piv(Sender: TObject);
     Procedure InitOnStartOfProgram;
     function  SelectSortingOrderNo : Integer ;
@@ -282,7 +318,8 @@ uses
   UPortArrivals, uChangeLogins , //uChkAvrLoads,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
-  uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory;
+  uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
+  uSetupUserOutput;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -395,6 +432,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 // ExceptionNotify := MyNotify; // Assign ExceptionNotify variable to MyNotify procedure.
   Application.OnException := AppException;
+  mtScannedPkgs.Active  := True ;
 end;
 
 
@@ -470,6 +508,7 @@ procedure TfrmMain.FormShow(Sender: TObject);
 var Height, Width, Top, Left, LanguageNo : Integer ;
     lCaption  : String ;
 begin
+ ScanningEnabled  := True ;
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
   ShowMessage('Change drive to H:\') ;
@@ -587,14 +626,202 @@ begin
  TfUserPreference.Execute ;
 end;
 
+procedure TfrmMain.GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
+//  ; var DisplayValue: Variant; var ErrorText: TCaption;
+//  var Error: Boolean);
+var
+  PkgSupplierCode   : String3;
+  PkgSupplierNo     : Integer ;
+  Action            : TEditAction;
+  ProductNo         : Integer ;
+  Save_Cursor       : TCursor;
+  Res_UserName      : String ;
+  ProductLengthNo   : Integer ;
+  NoOfLengths       : Integer ;
+  Error             : Boolean ;
+  NewPkgNo          : Integer ;
+  PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
+  ErrorText         : String ;
+  NumberPrefix      : String ;
+  LongPkgNo         : String ;
+begin
+ With dmInventory do
+ Begin
+  NewPkgNo := 0 ;
+
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  try
+    { Do some lengthy operation }
+   if Length(Trim(PackageNo)) > 0 then
+   Begin
+    if Length(Trim(PackageNo)) > 10 then
+    Begin //LÅNGA KODEN
+     Try
+     Action := eaAccept ;
+     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode, NumberPrefix) ;
+
+   //  NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
+     Except
+      on E: EConvertError do
+         ShowMessage(E.ClassName + E.Message);
+     End ;
+     if NewPkgNo < 1 then
+       Action :=  eaREJECT ;
+
+     if Length(PkgSupplierCode) < 1 then
+       Action :=  eaREJECT ;
+
+
+
+      if not mtScannedPkgs.Active then
+       mtScannedPkgs.Active := True ;
+
+       if Action =  eaAccept then
+       Begin
+        LongPkgNo := inttoStr(NewPkgNo) + NumberPrefix ;
+        if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
+        Begin
+          Action := eaAccept ;
+          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo]);
+        End
+         else
+          Action :=  eaREJECT ;
+       End;
+
+
+    End
+     else //Length < 11
+      Begin
+       NewPkgNo:= StrToIntDef(PackageNo,0) ;
+       if NewPkgNo = 0 then
+       Begin
+//        Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) ) ;
+        Exit ;
+       End ;
+
+
+       sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index02' ;
+       Try
+       if sp_allPkgsatoutput.FindKey([NewPkgNo]) then
+        Begin
+          NumberPrefix  :=  sp_allPkgsatoutputProductionUnitCode.AsString ;
+          Action := eaAccept ;
+          LongPkgNo := inttoStr(NewPkgNo) + NumberPrefix ;
+          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo]);
+        End
+       Finally
+        sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
+       End;
+
+{
+          Action := IdentifyPackageSupplier(
+          NewPkgNo,
+          dmLoadEntrySSP.FSupplierNo,
+          PkgSupplierCode,
+          PkgSupplierNo, ProductNo, Res_UserName, ProductLengthNo, NoOfLengths );
+}
+      End ;
+   End ; //if StrToInt(Trim(PackageNo)) > 0 then
+
+{
+     if (NewPkgNo > 0) and (Length(PkgSupplierCode) > 0) then
+     Begin
+
+  //Får inte använda post själv, det gör rutinen automatiskt
+    if Action = eaACCEPT then
+    Begin
+        AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
+    //Långsamt här
+        if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
+        Begin
+         Errortext := 'Paketnr ' + IntToStr(NewPkgNo) +  ' prefix:'  + PkgSupplierCode +  ' does not exist in inventory ' + Trim(lcPIP.Text) ;
+         Error      := True ;
+        End
+        else
+        Begin
+         Error:= False ;
+        End ;
+    End
+       else
+       if Action = eaREJECT then
+        Begin
+         Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_28' (* ' finns inte i lager ' *) ) + Trim(lcPIP.Text) ;
+         Error      := True ;
+        End
+        else
+         if Action = eaReserved then
+          Begin
+           Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_24' (* ' är reserverat av ' *) ) + Res_UserName ;
+           Error      := True ;
+          End
+          else
+           if Action = eaDuplicate then
+            Begin
+             Errortext  := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_19' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_89' (* ' prefix:' *) ) + PkgSupplierCode + siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_99' (* ' är redan inmatat' *) ) ;
+             Error      := True ;
+            End ;
+        End
+         else
+          Begin
+           Errortext := 'Paketnr saknas.' ;
+           Error      := True ;
+          End ;
+     if Error then
+      ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext) ;
+
+}
+
+  finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  end;
+ End ;//With
+end;
+
 procedure TfrmMain.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-{
-   if Key = #13 then begin
-      Key := #0;
-        Perform(Wm_NextDlgCtl,0,0);
-    end;
-}
+ if ScanningEnabled then
+ Begin
+  if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+  Begin
+   Try
+//    ScanningPkgNo(Sender, mePackageNo.Text) ;
+    GetpackageNoEntered(Sender, mePackageNo.Text) ;
+    grdPkgOutputDBTableView1.Invalidate(false);
+//    grdPkgOutput.Invalidate();
+//    SaveLoad ;
+    mePackageNo.Text:= '' ;
+   Except
+    mePackageNo.Text:= '' ;
+   End ;
+  End//if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+  else
+  if (Key = #8) and (Length(mePackageNo.Text) > 0) then
+  Begin
+   Try
+    if Length(TempEditString) > 1 then
+    TempEditString  := Copy(TempEditString, 1, Length(TempEditString) - 1)
+    else
+    TempEditString  := '' ;
+    mePackageNo.Text  := TempEditString ;
+   Except
+//    mePackageNo.Text:= '' ;
+   End ;
+  End//if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+
+  else
+   Begin
+//    if (acStart.Caption = 'Stoppa inläsning med skanner F10') then
+     if key in ['0','1','2','3','4','5','6','7','8','9'] then
+      mePackageNo.Text:= mePackageNo.Text + Key ;
+   End ;
+//  End ;//if sender
+ End ;
+
+
+
+ TempEditString := mePackageNo.Text ;
+
 end;
 
 procedure TfrmMain.CleanUpForms(Sender: TObject);
@@ -1015,6 +1242,36 @@ begin
  SetGridParamsFor_Usersmonpu_piv(Sender);
 end;
 
+procedure TfrmMain.acSetupUserOutputExecute(Sender: TObject);
+var fSetupUserOutput: TfSetupUserOutput;
+begin
+  fSetupUserOutput  := TfSetupUserOutput.Create(nil);
+  Try
+  fSetupUserOutput.ShowModal ;
+  Finally
+    FreeAndNil(fSetupUserOutput) ;
+  End;
+end;
+
+procedure TfrmMain.grdPkgOutputDBTableView1CustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+begin
+//  if AViewInfo.Value < 0 then
+//    ACanvas.FillRect(AViewInfo.Bounds, <AColor>);
+
+  if ((AViewInfo.Value) <> null) and (ScannedPkg(AViewInfo.Value)) then
+   ACanvas.FillRect(AViewInfo.Bounds, clGreen);
+end;
+
+function TfrmMain.ScannedPkg(const AViewInfo  : String) : Boolean ;
+Begin
+ if mtScannedPkgs.FindKey([AViewInfo]) then
+  Result  := True
+   else
+    Result  := False ;
+End;
+
 procedure TfrmMain.grdPkgOutputDBTableView1GetDisplayText(
   Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
   var AText: string);
@@ -1030,6 +1287,23 @@ begin
 
  AText  := dmInventory.GetPackageDescription(AText) ;
 
+end;
+
+procedure TfrmMain.grdPkgOutputDBTableView1StylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+var
+  aColumn: TcxCustomGridTableItem;
+  aValue: Variant;
+begin
+{
+    aValue := ARecord.Values[AItem.Index];
+
+    if (ARecord.Values[AItem.Index] <> null) and (AItem <> nil) and
+    (aValue = '86457518') then
+     AStyle:= cxStyleMarkedPkgs ;
+
+}
 end;
 
 procedure TfrmMain.SetGridParamsFor_Usersmonpu_piv(Sender: TObject);

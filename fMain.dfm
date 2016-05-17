@@ -11,6 +11,7 @@ object frmMain: TfrmMain
   Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -55,7 +56,26 @@ object frmMain: TfrmMain
           Width = 121
           Height = 49
           Action = acRefresh_Usersmonpu_piv
+          SpeedButtonOptions.CanBeFocused = False
           TabOrder = 0
+          TabStop = False
+        end
+        object mePackageNo: TcxTextEdit
+          Left = 256
+          Top = 24
+          Enabled = False
+          TabOrder = 1
+          Width = 681
+        end
+        object cxButton2: TcxButton
+          Left = 960
+          Top = 10
+          Width = 105
+          Height = 49
+          Action = acSetupUserOutput
+          SpeedButtonOptions.CanBeFocused = False
+          TabOrder = 2
+          TabStop = False
         end
       end
       object PanelMain: TPanel
@@ -65,49 +85,81 @@ object frmMain: TfrmMain
         Height = 779
         Align = alClient
         TabOrder = 1
-        object Panel2: TPanel
-          Left = 1119
-          Top = 1
-          Width = 273
-          Height = 777
-          Align = alRight
-          Caption = 'Panelpositionering'
-          TabOrder = 0
-        end
-        object Panel3: TPanel
+        object Panel5: TPanel
           Left = 1
           Top = 1
-          Width = 1118
-          Height = 777
+          Width = 1391
+          Height = 57
+          Align = alTop
+          Caption = 'Panel5'
+          TabOrder = 0
+        end
+        object PanelBottom: TPanel
+          Left = 1
+          Top = 58
+          Width = 1391
+          Height = 720
           Align = alClient
-          Caption = 'Panel3'
           TabOrder = 1
-          object Panel4: TPanel
-            Left = 1
-            Top = 464
-            Width = 1116
-            Height = 312
-            Align = alBottom
-            Caption = 'Panel4'
+          object Panel2: TPanel
+            Left = 1078
+            Top = 1
+            Width = 312
+            Height = 718
+            Align = alRight
+            Caption = 'Panelpositionering'
             TabOrder = 0
           end
-          object grdPkgOutput: TcxGrid
+          object Panelgrid: TPanel
             Left = 1
             Top = 1
-            Width = 1116
-            Height = 463
+            Width = 1077
+            Height = 718
             Align = alClient
             TabOrder = 1
-            object grdPkgOutputDBTableView1: TcxGridDBTableView
-              Navigator.Buttons.CustomButtons = <>
-              DataController.DataSource = dmInventory.ds_usersmonpu_piv
-              DataController.KeyFieldNames = 'RowGroupNo'
-              DataController.Summary.DefaultGroupSummaryItems = <>
-              DataController.Summary.FooterSummaryItems = <>
-              DataController.Summary.SummaryGroups = <>
+            object Panel4: TPanel
+              Left = 1
+              Top = 536
+              Width = 1075
+              Height = 181
+              Align = alBottom
+              Caption = 'Panel4'
+              TabOrder = 0
             end
-            object grdPkgOutputLevel1: TcxGridLevel
-              GridView = grdPkgOutputDBTableView1
+            object grdPkgOutput: TcxGrid
+              Left = 1
+              Top = 1
+              Width = 1075
+              Height = 535
+              Align = alClient
+              TabOrder = 1
+              object grdPkgOutputDBTableView1: TcxGridDBTableView
+                Navigator.Buttons.CustomButtons = <>
+                OnCustomDrawCell = grdPkgOutputDBTableView1CustomDrawCell
+                DataController.DataSource = dmInventory.ds_usersmonpu_piv
+                DataController.KeyFieldNames = 'RowGroupNo'
+                DataController.Summary.DefaultGroupSummaryItems = <>
+                DataController.Summary.FooterSummaryItems = <>
+                DataController.Summary.SummaryGroups = <>
+                OptionsCustomize.DataRowSizing = True
+                OptionsData.Deleting = False
+                OptionsData.Editing = False
+                OptionsData.Inserting = False
+                OptionsSelection.InvertSelect = False
+                OptionsSelection.MultiSelect = True
+                OptionsSelection.CellMultiSelect = True
+                OptionsView.FocusRect = False
+                OptionsView.ColumnAutoWidth = True
+                OptionsView.DataRowHeight = 100
+                OptionsView.GridLines = glVertical
+                OptionsView.GroupByBox = False
+                OptionsView.Indicator = True
+                Styles.OnGetContentStyle = grdPkgOutputDBTableView1StylesGetContentStyle
+                Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
+              end
+              object grdPkgOutputLevel1: TcxGridLevel
+                GridView = grdPkgOutputDBTableView1
+              end
             end
           end
         end
@@ -448,6 +500,10 @@ object frmMain: TfrmMain
     object acRefresh_Usersmonpu_piv: TAction
       Caption = 'Uppdatera'
       OnExecute = acRefresh_Usersmonpu_pivExecute
+    end
+    object acSetupUserOutput: TAction
+      Caption = 'Inst'#228'llningar'
+      OnExecute = acSetupUserOutputExecute
     end
   end
   object imglOutbar_large: TImageList
@@ -4167,5 +4223,177 @@ object frmMain: TfrmMain
       410055004C0054005F0043004800410052005300450054000100440045004600
       410055004C0054005F0043004800410052005300450054000100440045004600
       410055004C0054005F00430048004100520053004500540001000D000A00}
+  end
+  object cxStyleRepository1: TcxStyleRepository
+    Left = 210
+    Top = 426
+    PixelsPerInch = 120
+    object cxStyle1: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Verdana'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Verdana'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle3: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Verdana'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle4: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle5: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clGray
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 13160660
+    end
+    object cxStyle6: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 10841658
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle7: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle8: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6956042
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle9: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 13160660
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = 6956042
+    end
+    object cxStyle11: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6956042
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyleMarkedPkgs: TcxStyle
+      AssignedValues = [svFont]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+    end
+    object GridTableViewStyleSheetWindowsStandardlarge: TcxGridTableViewStyleSheet
+      Caption = 'Windows Standard (large)'
+      Styles.Content = cxStyle1
+      Styles.ContentEven = cxStyle2
+      Styles.ContentOdd = cxStyle3
+      Styles.Inactive = cxStyle8
+      Styles.Selection = cxStyle11
+      Styles.Footer = cxStyle4
+      Styles.Group = cxStyle5
+      Styles.GroupByBox = cxStyle6
+      Styles.Header = cxStyle7
+      Styles.Indicator = cxStyle9
+      Styles.Preview = cxStyle10
+      BuiltIn = True
+    end
+  end
+  object FDQuery1: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    Left = 210
+    Top = 522
+  end
+  object mtScannedPkgs: TFDMemTable
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'mtScannedPkgsIndex01'
+        Fields = 'LongPkgNo'
+      end>
+    IndexName = 'mtScannedPkgsIndex01'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 210
+    Top = 586
+    object mtScannedPkgsPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+    end
+    object mtScannedPkgsPefix: TStringField
+      FieldName = 'Pefix'
+      Size = 3
+    end
+    object mtScannedPkgsLongPkgNo: TStringField
+      FieldName = 'LongPkgNo'
+      Size = 8
+    end
   end
 end

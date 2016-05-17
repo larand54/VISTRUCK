@@ -1325,6 +1325,32 @@ type
     sp_allPkgsatoutputReference: TStringField;
     sp_allPkgsatoutputInfo1: TStringField;
     sp_allPkgsatoutputInfo2: TStringField;
+    mtUserOutput: TFDMemTable;
+    ds_Users: TDataSource;
+    cds_Users: TFDQuery;
+    cds_UsersUserID: TIntegerField;
+    cds_UsersNamn: TStringField;
+    mtUserOutputUserID: TIntegerField;
+    mtUserOutputUserName: TStringField;
+    sp_UsersOutputProdunits: TFDStoredProc;
+    ds_UsersOutputProdunits: TDataSource;
+    sp_UsersOutputProdunitsSelected: TIntegerField;
+    sp_UsersOutputProdunitsProductionUnitNo: TIntegerField;
+    sp_UsersOutputProdunitsClientNo: TIntegerField;
+    sp_UsersOutputProdunitsLogicalInventoryPointNo: TIntegerField;
+    sp_UsersOutputProdunitsRegistrationPointNo: TIntegerField;
+    sp_UsersOutputProdunitsPositionID: TIntegerField;
+    sp_UsersOutputProdunitsRegPointName: TStringField;
+    sp_Positioner: TFDStoredProc;
+    cds_UsersCompanyNo: TIntegerField;
+    sp_UsersOutputProdunitsPhysicalInventoryPointNo: TIntegerField;
+    sp_PositionerPosition: TStringField;
+    sp_PositionerAreaID: TIntegerField;
+    sp_PositionerPIPNo: TIntegerField;
+    sp_PositionerPositionID: TIntegerField;
+    sp_UsersOutputProdunitsPosition: TStringField;
+    dsUserOutput: TDataSource;
+    sp_ChangeSelectedOutput: TFDStoredProc;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1355,6 +1381,7 @@ type
     procedure cds_KilnChargeRowsAfterPost(DataSet: TDataSet);
     procedure cds_KilnChargeRowsBeforeDelete(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
+    procedure mtUserOutputUserIDChange(Sender: TField);
   private
     { Private declarations }
     procedure LoadAllBookingHdrIntoTempTable ;
@@ -1368,6 +1395,9 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
+    procedure ChangeSelectedOutput(const ProductionUnitNo, UserID, Change, PositionID : Integer) ;
+    procedure RefreshPositionerByVerkNo(const VerkNo : Integer) ;
+    procedure RefreshUsersOutputProdunits (const VerkNo, UserID : Integer) ;
     Function  GetPackageDescription(const PackageNoString : string) : String ;
     procedure Refresh_allPkgsatoutput (const VerkNo : integer) ;
     function  GetProductDescriptionByPkgNoAndRegPointName(const PackageNoString : string;const RegPointname : String) : String ;
@@ -1918,6 +1948,13 @@ begin
    else
     if MarkedPkgs > 0 then
      MarkedPkgs:= Pred(MarkedPkgs) ;
+end;
+
+procedure TdmInventory.mtUserOutputUserIDChange(Sender: TField);
+begin
+  cds_Users.FindKey([mtUserOutputUserID.AsInteger]) ;
+  RefreshPositionerByVerkNo(cds_UsersCompanyNo.AsInteger) ;
+  RefreshUsersOutputProdunits (cds_UsersCompanyNo.AsInteger, mtUserOutputUserID.AsInteger) ;
 end;
 
 function TdmInventory.GetAntalLamellerOfRawMtrl : Integer ;
@@ -2714,7 +2751,7 @@ Begin
   if sp_usersmonpu_piv.Active then
     sp_usersmonpu_piv.Active  := False ;
   Try
-  sp_usersmonpu_piv.ParamByName('@UserID').AsInteger  := 217 ;//  ThisUser.UserID ;
+  sp_usersmonpu_piv.ParamByName('@UserID').AsInteger  := ThisUser.UserID ;
   sp_usersmonpu_piv.Active  := True ;
   if sp_usersmonpu_piv.RecordCount > 0 then
    Result := True
@@ -2772,9 +2809,45 @@ Var PkgNo : integer ;
 Begin
  PkgNo  := strtointDef(PackageNoString,-1) ;
   if sp_allPkgsatoutput.findkey([PkgNo]) then
-   Result := sp_allPkgsatoutputDIM_Grade.AsString + ' ' + sp_allPkgsatoutputMaxLength.AsString
+   Result := sp_allPkgsatoutputPackageNo.AsString + ' ' +
+   sp_allPkgsatoutputDIM_Grade.AsString + ' ' + sp_allPkgsatoutputMaxLength.AsString
     else
      Result := PackageNoString ;
+End;
+
+procedure TdmInventory.RefreshUsersOutputProdunits (const VerkNo, UserID : Integer) ;
+Begin
+  if sp_UsersOutputProdunits.Active then
+   sp_UsersOutputProdunits.Active  := False ;
+  sp_UsersOutputProdunits.ParamByName('@VerkNo').AsInteger := VerkNo ;
+  sp_UsersOutputProdunits.ParamByName('@UserID').AsInteger := UserID ;
+  sp_UsersOutputProdunits.Active  := True ;
+End;
+
+procedure TdmInventory.RefreshPositionerByVerkNo(const VerkNo : Integer) ;
+Begin
+  if sp_Positioner.Active then
+   sp_Positioner.Active := False ;
+   sp_Positioner.ParamByName('@VerkNo').AsInteger := VerkNo ;
+   sp_Positioner.Active := True ;
+End;
+
+procedure TdmInventory.ChangeSelectedOutput(const ProductionUnitNo, UserID, Change, PositionID : Integer) ;
+Begin
+ Try
+  sp_ChangeSelectedOutput.ParamByName('@ProductionUnitNo').AsInteger  := ProductionUnitNo ;
+  sp_ChangeSelectedOutput.ParamByName('@UserID').AsInteger            := UserID ;
+  sp_ChangeSelectedOutput.ParamByName('@Change').AsInteger            := Change ;
+  sp_ChangeSelectedOutput.ParamByName('@PositionID').AsInteger        := PositionID ;
+  sp_ChangeSelectedOutput.ExecProc ;
+ except
+  On E: Exception do
+  Begin
+   dmsSystem.FDoLog(E.Message) ;
+   ShowMessage(E.Message);
+   Raise ;
+  End ;
+ end;
 End;
 
 end.

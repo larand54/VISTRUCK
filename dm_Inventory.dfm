@@ -3111,7 +3111,7 @@ object dmInventory: TdmInventory
   object ds_LIP: TDataSource
     DataSet = cds_LIP
     Left = 158
-    Top = 168
+    Top = 176
   end
   object cds_PIP: TFDQuery
     CachedUpdates = True
@@ -9330,8 +9330,8 @@ object dmInventory: TdmInventory
       'WHERE     PN.PackageNo = :PackageNo'
       'AND PN.SupplierCode = :SupplierCode'
       '')
-    Left = 1168
-    Top = 832
+    Left = 1048
+    Top = 952
     ParamData = <
       item
         Name = 'PACKAGENO'
@@ -10654,5 +10654,238 @@ object dmInventory: TdmInventory
       Required = True
       Size = 30
     end
+  end
+  object mtUserOutput: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 688
+    Top = 920
+    object mtUserOutputUserID: TIntegerField
+      FieldName = 'UserID'
+      OnChange = mtUserOutputUserIDChange
+    end
+    object mtUserOutputUserName: TStringField
+      FieldKind = fkLookup
+      FieldName = 'UserName'
+      LookupDataSet = cds_Users
+      LookupKeyFields = 'UserID'
+      LookupResultField = 'Namn'
+      KeyFields = 'UserID'
+      Size = 36
+      Lookup = True
+    end
+  end
+  object ds_Users: TDataSource
+    DataSet = cds_Users
+    Left = 808
+    Top = 976
+  end
+  object cds_Users: TFDQuery
+    CachedUpdates = True
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'cds_UsersIndex01'
+        Fields = 'UserID'
+      end>
+    IndexName = 'cds_UsersIndex01'
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select UserID, CompanyNo,'
+      'INITIALS+'#39' '#39'+RTrim(LastName) +'#39', '#39'+RTRIM(FirstName) AS Namn'
+      'FROM dbo.Users'
+      'Order By INITIALS')
+    Left = 808
+    Top = 920
+    object cds_UsersUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_UsersNamn: TStringField
+      FieldName = 'Namn'
+      Origin = 'Namn'
+      ReadOnly = True
+      Size = 36
+    end
+    object cds_UsersCompanyNo: TIntegerField
+      FieldName = 'CompanyNo'
+      Origin = 'CompanyNo'
+    end
+  end
+  object sp_UsersOutputProdunits: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_UsersOutputProdunits'
+    Left = 536
+    Top = 840
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@VerkNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_UsersOutputProdunitsSelected: TIntegerField
+      DisplayLabel = 'Vald'
+      FieldName = 'Selected'
+      Origin = 'Selected'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsProductionUnitNo: TIntegerField
+      FieldName = 'ProductionUnitNo'
+      Origin = 'ProductionUnitNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sp_UsersOutputProdunitsClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sp_UsersOutputProdunitsLogicalInventoryPointNo: TIntegerField
+      FieldName = 'LogicalInventoryPointNo'
+      Origin = 'LogicalInventoryPointNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sp_UsersOutputProdunitsRegistrationPointNo: TIntegerField
+      FieldName = 'RegistrationPointNo'
+      Origin = 'RegistrationPointNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sp_UsersOutputProdunitsPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sp_UsersOutputProdunitsRegPointName: TStringField
+      DisplayLabel = 'M'#228'tpunkt'
+      FieldName = 'RegPointName'
+      Origin = 'RegPointName'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 30
+    end
+    object sp_UsersOutputProdunitsPhysicalInventoryPointNo: TIntegerField
+      FieldName = 'PhysicalInventoryPointNo'
+      Origin = 'PhysicalInventoryPointNo'
+    end
+    object sp_UsersOutputProdunitsPosition: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Position'
+      LookupDataSet = sp_Positioner
+      LookupKeyFields = 'PositionID'
+      LookupResultField = 'Position'
+      KeyFields = 'PositionID'
+      ProviderFlags = []
+      Size = 101
+      Lookup = True
+    end
+  end
+  object ds_UsersOutputProdunits: TDataSource
+    DataSet = sp_UsersOutputProdunits
+    Left = 536
+    Top = 896
+  end
+  object sp_Positioner: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_Positioner'
+    Left = 536
+    Top = 960
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@VerkNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_PositionerPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      ReadOnly = True
+      Size = 101
+    end
+    object sp_PositionerAreaID: TIntegerField
+      FieldName = 'AreaID'
+      Origin = 'AreaID'
+      Required = True
+    end
+    object sp_PositionerPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object sp_PositionerPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+  end
+  object dsUserOutput: TDataSource
+    DataSet = mtUserOutput
+    Left = 688
+    Top = 976
+  end
+  object sp_ChangeSelectedOutput: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_ChangeSelectedOutput'
+    Left = 336
+    Top = 960
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@ProductionUnitNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@Change'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@PositionID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

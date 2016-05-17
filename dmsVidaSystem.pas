@@ -626,7 +626,7 @@ type
     function  GetProductLengthNoByUserLengthSpec(const LengthString : String) : Integer ;
     function  GetProductLengthNoByALMM_II (const ALMM : Double) : Integer ;
     procedure SetPkgPositionID (const PackageNo, PositionID : Integer;const Prefix : String) ;
-    procedure ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3) ;
+    procedure ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3;Var NumberPrefix : String) ;
     function  GetLanguageNo : Integer ;
     procedure SaveLanguage(const LanguageNo : Integer) ;
 
@@ -3145,15 +3145,16 @@ Begin
   End ;
 End;
 
-procedure TdmsSystem.ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3) ;
+procedure TdmsSystem.ParsePkgID(const Paketnr :  string;var PackageNo : Integer;Var Prefix  : String3;Var NumberPrefix : String) ;
 Begin
  sp_parsePkgID.ParamByName('@Paketnr').AsString :=  Paketnr ;
  sp_parsePkgID.Active :=  True ;
  Try
  if not sp_parsePkgID.Eof then
  Begin
-   PackageNo  := sp_parsePkgID.FieldByName('packageno').AsInteger ;
-   Prefix     := sp_parsePkgID.FieldByName('AliasPrefix').AsString ;
+   PackageNo    := sp_parsePkgID.FieldByName('packageno').AsInteger ;
+   Prefix       := sp_parsePkgID.FieldByName('AliasPrefix').AsString ;
+   NumberPrefix := sp_parsePkgID.FieldByName('NumberPrefix').AsString ;
  End;
  Finally
   sp_parsePkgID.Active :=  False ;

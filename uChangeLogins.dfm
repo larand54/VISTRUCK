@@ -110,6 +110,12 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     NumGlyphs = 2
     TabOrder = 5
   end
+  object cxLabel1: TcxLabel
+    Left = 8
+    Top = 216
+    Caption = 'Vida\alvetruck'
+    OnDblClick = cxLabel1DblClick
+  end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'
     StringsTypes.Strings = (

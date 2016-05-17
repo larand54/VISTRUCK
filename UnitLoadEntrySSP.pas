@@ -6211,6 +6211,7 @@ var
   NewPkgNo          : Integer ;
   PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
   ErrorText         : String ;
+  NumberPrefix      : String ;
 begin
  With dmLoadEntrySSP do
  Begin
@@ -6226,7 +6227,7 @@ begin
     Begin //LÅNGA KODEN
      Try
      Action := eaAccept ;
-     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode) ;
+     dmsSystem.ParsePkgID(PackageNo, NewPkgNo, PkgSupplierCode, NumberPrefix) ;
    //  NewPkgNo := StrToInt(Copy(PackageNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr)) ;
      Except
       on E: EConvertError do
