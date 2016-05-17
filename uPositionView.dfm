@@ -65,7 +65,7 @@ object fPositionView: TfPositionView
         Align = alTop
         TabOrder = 0
         object cxButton9: TcxButton
-          Left = 517
+          Left = 512
           Top = 10
           Width = 110
           Height = 31
@@ -112,7 +112,7 @@ object fPositionView: TfPositionView
           Action = acNewTemplate
           TabOrder = 3
         end
-        object cxButton13: TcxButton
+        object cxbtnDeleteTemplate: TcxButton
           Left = 969
           Top = 10
           Width = 110
@@ -121,7 +121,7 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Caption = 'Ta bort mall'
+          Action = acDeleteTemplate
           TabOrder = 4
         end
         object cxButton14: TcxButton
@@ -135,23 +135,6 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           Action = acSaveTemplate
           TabOrder = 5
-        end
-        object cbReportSelection: TcxComboBox
-          Left = 9
-          Top = 19
-          Properties.DropDownRows = 15
-          Properties.DropDownSizeable = True
-          Properties.Items.Strings = (
-            'Area-Ref'
-            'Area-Ref-Dim'
-            'Area-Ref-Dim-L'#228'ngd'
-            'D'#228'cklista'
-            'PaketLista'
-            'Tomma R'#228'ckor')
-          Properties.OnChange = cbReportSelectionPropertiesChange
-          TabOrder = 6
-          Text = 'Area-Ref'
-          Width = 196
         end
       end
       object grdPosition: TcxGrid
@@ -258,6 +241,7 @@ object fPositionView: TfPositionView
                   DisplayText = 'AM3'
                 end>
             end>
+          OptionsSelection.MultiSelect = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.Indicator = True
           Bands = <
@@ -365,6 +349,8 @@ object fPositionView: TfPositionView
           end
           object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
             DataBinding.FieldName = 'REFERENCE'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.OnEditValueChanged = grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged
             Width = 20
             Position.BandIndex = 0
             Position.ColIndex = 14
@@ -1461,12 +1447,29 @@ object fPositionView: TfPositionView
           Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
+        object cbReportSelection: TcxComboBox
+          Left = 818
+          Top = 104
+          Properties.DropDownRows = 15
+          Properties.DropDownSizeable = True
+          Properties.Items.Strings = (
+            'Area-Ref'
+            'Area-Ref-Dim'
+            'Area-Ref-Dim-L'#228'ngd'
+            'D'#228'cklista'
+            'PaketLista'
+            'Tomma R'#228'ckor')
+          Properties.OnChange = cbReportSelectionPropertiesChange
+          TabOrder = 51
+          Text = 'Area-Ref'
+          Width = 196
+        end
       end
     end
   end
   object cxLabel13: TcxLabel
-    Left = 9
-    Top = 153
+    Left = 823
+    Top = 88
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -2292,7 +2295,7 @@ object fPositionView: TfPositionView
       OnExecute = acRefreshReportExecute
     end
     object acDeleteTemplate: TAction
-      Caption = 'acDeleteTemplate'
+      Caption = 'Ta bort mall'
       OnExecute = acDeleteTemplateExecute
     end
     object acCollapseAllGridView: TAction
@@ -2347,7 +2350,6 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2369,7 +2371,6 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42485.411061793980000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -4987,9 +4988,9 @@ object fPositionView: TfPositionView
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'SELECT Distinct RTRIM(LIP.LogicalInventoryName)+'#39'/'#39'+RTRIM(C.Clie' +
-        'ntName)+ '#39'/'#39'+CAST(LIP.LogicalInventoryPointNo AS VARCHAR(6)) AS ' +
-        'PLIP, '
+        'SELECT Distinct RTRIM(CY.CityName)+'#39'/'#39'+RTRIM(LIP.LogicalInventor' +
+        'yName)+'#39'/'#39'+RTRIM(C.ClientName)+ '#39'/'#39'+CAST(LIP.LogicalInventoryPoi' +
+        'ntNo AS VARCHAR(6)) AS PLIP, '
       
         'LIP.LogicalInventoryPointNo AS LIPNo, PH.PhysicalInventoryPointN' +
         'o AS PIPNO, CY.CITYNAME,'

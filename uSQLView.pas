@@ -10,9 +10,11 @@ type
   TWhereString = class(TInterfacedObject)
     private
       FWhereStringList: TStringList;
+      procedure addString(const s: string);
       function getCheckedValues(const aDecimalType: byte; const aCombo: TcxCheckComboBox): TStringList;
     public
-      procedure add(const s:string);
+      procedure addAND(const s:string; aFirst, aLast: boolean);
+      procedure addOR(const s:string; aFirst, aLast: boolean);
       procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
       function getWhereStatement: TStringList;
   end;
@@ -228,6 +230,7 @@ constructor TSQLBuild.Create(aSQLView: TSQLView);
 var
   j, IndexNo, TempIndex, SQLLength: Integer;
   TempSQLStr1, TempSQLStr2: string;
+  first: boolean;
 begin
   FSQLView := aSQLView;
   FSQLView.SQL.Clear;
@@ -235,13 +238,14 @@ begin
   FSQLView.SQL.Add('Select distinct');
   LoggDir := dmsSystem.Get_Dir('UserDir');
 
-
+  first := true;
   for j := 0 to FSQLView.FObjectList.Count - 1 do
   begin
     if FSQLView.ObjectList[j].Visible = True then
     begin
-      if j > 0 then FSQLView.SQL.Text := FSQLView.SQL.Text + ',';
+      if not first then FSQLView.SQL.Text := FSQLView.SQL.Text + ',';
       FSQLView.SQL.Add(FSQLView.ObjectList[j].fieldSQL);
+      first := false;
     end;
   end;
   for j := 0 To FSQLView.FBaseSQL.Count-1  do
@@ -280,14 +284,26 @@ end;
 
 { TWhereString }
 
-procedure TWhereString.add(const s: string);
+procedure TWhereString.addAND(const s: string; aFirst, aLast: boolean);
 begin
   if not assigned(FWhereStringList) then
-    FWhereStringList := TStringList.Create
-  else
-    FWhereStringList.Add(' AND ');
+    FWhereStringList := TStringList.Create;
+  if aFirst then
+    if aLast then
+      begin
+        AddString(' AND ('+s+')');
+      end
+      else
+      begin
+        AddString(' AND ('+s);
+      end
 
-  FWhereStringList.Add('('+s+')');
+  else if aLast and not aFirst then
+  begin
+    AddString(s+')')
+  end
+  else
+    AddString(s);
 end;
 
 procedure TWhereString.addFromCombo(const aDecimalType, quotedString: byte;
@@ -326,6 +342,45 @@ begin
     if assigned(values) then
       values.Free;
   end;
+end;
+
+procedure TWhereString.addOR(const s: string; aFirst, aLast: boolean);
+begin
+  if not assigned(FWhereStringList) then
+    FWhereStringList := TStringList.Create;
+  if aFirst then
+    if aLast then
+      begin
+        AddString('OR ('+s+')');
+      end
+      else
+      begin
+        AddString('OR ('+s);
+      end
+
+  else if aLast and not aFirst then
+  begin
+    AddString(s+')')
+  end
+  else
+    AddString(s);
+end;
+
+procedure TWhereString.addString(const s: string);
+var
+  i,l: integer;
+  sq: string;
+begin
+  sq := UpperCase(s);
+  if FWhereStringList.Count = 0 then
+  begin
+    sq := sq.TrimLeft;
+    i := pos('OR (',sq);
+    l := pos('AND (',sq);
+    if i = 1 then sq := sq.Remove(0,3)
+    else if l = 1 then sq := sq.Remove(0,4);
+  end;
+  FWhereStringList.Add(sq);
 end;
 
 function TWhereString.getCheckedValues( const aDecimalType: byte;

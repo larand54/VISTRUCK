@@ -204,7 +204,7 @@ type
     cxButton10: TcxButton;
     cxButton11: TcxButton;
     cxButton12: TcxButton;
-    cxButton13: TcxButton;
+    cxbtnDeleteTemplate: TcxButton;
     cxButton14: TcxButton;
     cds_Verk: TFDQuery;
     cds_VerkClientNo: TIntegerField;
@@ -351,7 +351,6 @@ type
     grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
     grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn;
     cxLabel16: TcxLabel;
-    cbReportSelection: TcxComboBox;
     cxLabel13: TcxLabel;
     sq_GridSets2: TFDQuery;
     sq_GridSets2ViewName: TStringField;
@@ -397,6 +396,7 @@ type
     sq_UserProfileCustomerNo: TIntegerField;
     sq_UserProfileShowProduct: TIntegerField;
     sq_UserProfileFilter1: TStringField;
+    cbReportSelection: TcxComboBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -431,6 +431,8 @@ type
     procedure acRequestFilterUpdateExecute(Sender: TObject);
     procedure cxBtnUpdFilterClick(Sender: TObject);
     procedure acNewTemplateExecute(Sender: TObject);
+    procedure grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged(
+      Sender: TObject);
 
   private
     { Private declarations }
@@ -841,6 +843,8 @@ begin
 
   // Now, add the WHERE-clause
   SQL.add('WHERE');
+
+  // List checked owners
   for i := 0 to cbOwner.Properties.Items.Count - 1 do
   begin
     if cbOwner.GetItemState(i) = cbsChecked then
@@ -850,6 +854,8 @@ begin
       CheckedOwners.add(cbOwner.Properties.Items[i].ShortDescription);
     end;
   end;
+
+  // At least one owner is needed
   if assigned(CheckedOwners) and (CheckedOwners.Count > 0) then
   begin
     SQL.add(' (PH.OwnerNo = ' + CheckedOwners[0]);
@@ -879,6 +885,7 @@ begin
   end
   else // No owner selected - empty the combo
   begin
+    showmessage('Please select at least one owner/mill!');
     cbStorageGroup.properties.items.Clear;
   end;
 
@@ -944,6 +951,7 @@ Var
   s1,s2: string;
   SQLSave: TStrings;
 begin
+  SRList := TCMComboBoxItems.Create;
   cds_Verk.Active := False;
   SQLSave := cds_verk.SQL;
   try
@@ -1015,6 +1023,7 @@ begin
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
   cbReportSelection.EditValue := mtuserPropName.AsString;
   LoadMainCombos;
+  PopulateCheckBoxTemplate;
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
@@ -1032,7 +1041,7 @@ begin
   sl.QuoteChar := '|';
   sl.DelimitedText := s;
   LoadCheckBoxWithSalesRegion;
-  if sl.Count <= 2 then exit
+  if sl.Count <= 3 then exit
   else
   begin
     if sl[0] <> '' then cbSalesRegion.EditValue := sl[0];
@@ -1040,6 +1049,7 @@ begin
     if sl[1] <> '' then cbOwner.EditValue := sl[1];
     LoadCheckBoxWithStorageGroup;
     if sl[2] <> '' then cbStorageGroup.EditValue := sl[2];
+    if sl[3] <> '' then cbInklEjFakt.EditValue := sl[3];
   end;
 end;
 
@@ -1052,20 +1062,23 @@ var
 begin
   WhereList := TWhereString.Create;
   case aSource of
-    0: WhereList.add('PN.Status = 1');
-    1: begin
-       WhereList.add('PN.status = 0');
-       WhereList.add('OH.OrderType = 0');
+    0: WhereList.addAND('PN.Status = 1',true,true);         // In store
+    1: begin                                   // Not invoiced and in store
+       WhereList.addOR('(NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
+       WhereList.addOR('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
+       WhereList.addOR('PN.status = 1)',true,true);
+       WhereList.addAND('OH.OrderType = 0',true,true);
     end;
-    2: begin
-       WhereList.add('PN.status = 1');
-       WhereList.add('OH.OrderType = 0');
+    2: begin                                   // Not Invoiced
+       WhereList.addAND('OH.OrderType = 0',true,true);
+       WhereList.addAND('NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
+       WhereList.addAND('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
     end;
   end;
   if deStartPeriod.EditValue <> null then
-    WhereList.add('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)));
+    WhereList.addAND('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)),true,true);
   if deEndPeriod.EditValue <> null then
-    WhereList.add('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)));
+    WhereList.addAND('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)),true,true);
 
   WhereList.addFromCombo(aDecimalType,notQuoted,cbOwner,'PIP.OwnerNo');
   WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageGroup,'LIP.LogicalInventoryPointNo');
@@ -1184,6 +1197,16 @@ begin
 end;
 
 
+procedure TfPositionView.grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  DS: TDataset;
+begin
+(*   DS := TcxGridDBBandedTableView(Sender).DataController.DataSource.DataSet;
+   DS.Edit;
+   DS.Post; *)
+end;
+
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
  grdPositionDBBandedTableView1.ViewData.Collapse(True);
@@ -1201,13 +1224,15 @@ begin
    sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '2' ;
    sq_UserProfile.Active := True ;
    Try
-   sq_UserProfile.Filter  := 'Name = ' + cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex] ;
+   sq_UserProfile.Filter  := 'Name = ' + QuotedStr(cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex]) ;
    sq_UserProfile.Filtered  := True ;
    if not sq_UserProfile.Eof then
     sq_UserProfile.Delete ;
    Finally
     sq_UserProfile.Filtered   := False ;
     sq_UserProfile.Active     := False ;
+    cbReportSelection.Properties.Items.Delete(cbReportSelection.ItemIndex);
+    cbReportSelection.ItemIndex := 0;
    End;
   End;
  End;
@@ -1664,17 +1689,17 @@ var
   Form: string;
   View: string;
   Grid: TcxGridTableView;
-  Template: string;
+  GridTemplate: string;
 begin
 //Open Mall
  if cbReportSelection.ItemIndex > -1 then
  Begin
   UserID := ThisUser.UserID;
   Form := TForm(self).Name;
-  Template := cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex];
-  View := Template + '/' + Form;
+  GridTemplate := cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex];
+  View := GridTemplate + '/' + Form;
   Grid := grdPositionDBBandedTableView1;
-  LoadGridLayout( UserID, Form, View, Grid, Template);
+  LoadGridLayout( UserID, Form, View, Grid, GridTemplate);
 //  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
  End;
 end;
@@ -1763,7 +1788,8 @@ Begin
       mtUserPropName.AsString := cbReportSelection.Text;
       s := '|' + cbSalesRegion.EditValue+ '| ';
       s := s + '|' + cbOwner.EditValue+ '| ';
-      s := s + '|' + cbStorageGroup.EditValue + '|';
+      s := s + '|' + cbStorageGroup.EditValue + '| ';
+      s := s + '|' + cbInklEjFakt.EditValue + '| ';
       mtUserPropFilter2.AsString := s;
       mtuserProp.Post;
   Finally
