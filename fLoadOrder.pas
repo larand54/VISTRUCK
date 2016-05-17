@@ -4473,7 +4473,7 @@ begin
     Screen.Cursor := crSQLWait; { Show hourglass cursor }
     params := TCMParams.Create();
     params.Add('@Language',Lang);;
-    params.Add('@SHIPPINGPLANNO',grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
+    params.Add('@SHIPPINGPLANNO',grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
 
     if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger = c_Sales then begin
       if Lang = cSwedish then
