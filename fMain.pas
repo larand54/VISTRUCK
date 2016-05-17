@@ -189,11 +189,8 @@ type
     dxBarLargeButton33: TdxBarLargeButton;
     dxBarLargeButton34: TdxBarLargeButton;
     cxbtnChangeReporter: TdxBarLargeButton;
-    PanelTop: TPanel;
     PanelMain: TPanel;
-    cxButton1: TcxButton;
     acRefresh_Usersmonpu_piv: TAction;
-    Panel5: TPanel;
     PanelBottom: TPanel;
     Panel2: TPanel;
     Panelgrid: TPanel;
@@ -201,7 +198,6 @@ type
     grdPkgOutput: TcxGrid;
     grdPkgOutputDBTableView1: TcxGridDBTableView;
     grdPkgOutputLevel1: TcxGridLevel;
-    mePackageNo: TcxTextEdit;
     cxStyleRepository1: TcxStyleRepository;
     GridTableViewStyleSheetWindowsStandardlarge: TcxGridTableViewStyleSheet;
     cxStyle1: TcxStyle;
@@ -222,6 +218,9 @@ type
     cxStyleMarkedPkgs: TcxStyle;
     mtScannedPkgsLongPkgNo: TStringField;
     acSetupUserOutput: TAction;
+    PanelTop: TPanel;
+    cxButton1: TcxButton;
+    mePackageNo: TcxTextEdit;
     cxButton2: TcxButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
@@ -508,6 +507,7 @@ procedure TfrmMain.FormShow(Sender: TObject);
 var Height, Width, Top, Left, LanguageNo : Integer ;
     lCaption  : String ;
 begin
+ PanelMain.Visible  := False ;
  ScanningEnabled  := True ;
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then

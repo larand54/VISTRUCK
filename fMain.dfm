@@ -43,96 +43,63 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      object PanelTop: TPanel
+      object PanelMain: TPanel
         Left = 0
         Top = 0
         Width = 1393
-        Height = 65
-        Align = alTop
-        TabOrder = 0
-        object cxButton1: TcxButton
-          Left = 16
-          Top = 10
-          Width = 121
-          Height = 49
-          Action = acRefresh_Usersmonpu_piv
-          SpeedButtonOptions.CanBeFocused = False
-          TabOrder = 0
-          TabStop = False
-        end
-        object mePackageNo: TcxTextEdit
-          Left = 256
-          Top = 24
-          Enabled = False
-          TabOrder = 1
-          Width = 681
-        end
-        object cxButton2: TcxButton
-          Left = 960
-          Top = 10
-          Width = 105
-          Height = 49
-          Action = acSetupUserOutput
-          SpeedButtonOptions.CanBeFocused = False
-          TabOrder = 2
-          TabStop = False
-        end
-      end
-      object PanelMain: TPanel
-        Left = 0
-        Top = 65
-        Width = 1393
-        Height = 779
+        Height = 844
         Align = alClient
-        TabOrder = 1
-        object Panel5: TPanel
-          Left = 1
-          Top = 1
-          Width = 1391
-          Height = 57
-          Align = alTop
-          Caption = 'Panel5'
-          TabOrder = 0
-        end
+        TabOrder = 0
+        ExplicitTop = 65
+        ExplicitHeight = 779
         object PanelBottom: TPanel
           Left = 1
-          Top = 58
+          Top = 66
           Width = 1391
-          Height = 720
+          Height = 777
           Align = alClient
-          TabOrder = 1
+          TabOrder = 0
+          ExplicitTop = 88
+          ExplicitHeight = 755
           object Panel2: TPanel
             Left = 1078
             Top = 1
             Width = 312
-            Height = 718
+            Height = 775
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
+            ExplicitHeight = 718
           end
           object Panelgrid: TPanel
             Left = 1
             Top = 1
             Width = 1077
-            Height = 718
+            Height = 775
             Align = alClient
             TabOrder = 1
+            ExplicitTop = 80
+            ExplicitWidth = 1389
+            ExplicitHeight = 639
             object Panel4: TPanel
               Left = 1
-              Top = 536
+              Top = 593
               Width = 1075
               Height = 181
               Align = alBottom
               Caption = 'Panel4'
               TabOrder = 0
+              ExplicitTop = 536
             end
             object grdPkgOutput: TcxGrid
               Left = 1
               Top = 1
               Width = 1075
-              Height = 535
+              Height = 592
               Align = alClient
               TabOrder = 1
+              ExplicitTop = 104
+              ExplicitHeight = 432
               object grdPkgOutputDBTableView1: TcxGridDBTableView
                 Navigator.Buttons.CustomButtons = <>
                 OnCustomDrawCell = grdPkgOutputDBTableView1CustomDrawCell
@@ -161,6 +128,44 @@ object frmMain: TfrmMain
                 GridView = grdPkgOutputDBTableView1
               end
             end
+          end
+        end
+        object PanelTop: TPanel
+          Left = 1
+          Top = 1
+          Width = 1391
+          Height = 65
+          Align = alTop
+          TabOrder = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 1393
+          object cxButton1: TcxButton
+            Left = 16
+            Top = 10
+            Width = 121
+            Height = 49
+            Action = acRefresh_Usersmonpu_piv
+            SpeedButtonOptions.CanBeFocused = False
+            TabOrder = 0
+            TabStop = False
+          end
+          object mePackageNo: TcxTextEdit
+            Left = 256
+            Top = 24
+            Enabled = False
+            TabOrder = 1
+            Width = 681
+          end
+          object cxButton2: TcxButton
+            Left = 960
+            Top = 10
+            Width = 105
+            Height = 49
+            Action = acSetupUserOutput
+            SpeedButtonOptions.CanBeFocused = False
+            TabOrder = 2
+            TabStop = False
           end
         end
       end
@@ -269,7 +274,7 @@ object frmMain: TfrmMain
   end
   object ActionList1: TActionList
     Images = imglOutbar_large
-    Left = 336
+    Left = 320
     Top = 190
     object atDataCountry: TAction
       Category = 'DATA'
@@ -3840,24 +3845,24 @@ object frmMain: TfrmMain
     ExtraPane.Items = <>
     ItemLinks = <>
     UseOwnFont = False
-    Left = 632
-    Top = 224
+    Left = 688
+    Top = 440
   end
   object dxRibbonPopupMenu1: TdxRibbonPopupMenu
     BarManager = dxBarManager1
     ItemLinks = <>
     Ribbon = dxRibbon1
     UseOwnFont = False
-    Left = 632
-    Top = 280
+    Left = 728
+    Top = 248
   end
   object dxRibbonDropDownGallery1: TdxRibbonDropDownGallery
     BarManager = dxBarManager1
     ItemLinks = <>
     Ribbon = dxRibbon1
     UseOwnFont = False
-    Left = 632
-    Top = 176
+    Left = 640
+    Top = 160
   end
   object siLangLinked1: TsiLangLinked
     Version = '7.2'
