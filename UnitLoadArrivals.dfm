@@ -23,6 +23,8 @@ object frmLoadArrivals: TfrmLoadArrivals
   OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 120
   TextHeight = 16
   object cxSplitter1: TcxSplitter
@@ -39,6 +41,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
