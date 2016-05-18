@@ -1034,8 +1034,8 @@ begin
     Exit;
   if uReportController.useFR then
   begin
-    Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-      .AsInteger;
+    Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+      //.AsInteger;
     LastOrderVerk := dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger <> 2;
     LastOrderInkop := dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1;
     LONo := grdLODBTableView1.DataController.DataSet
@@ -1093,8 +1093,8 @@ begin
     Exit;
   if uReportController.useFR then
   begin
-    Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-      .AsInteger;
+    Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+      //.AsInteger;
     LastOrderVerk := dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger <> 2;
     LastOrderInkop := dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1;
     LONo := grdLODBTableView1.DataController.DataSet
@@ -4084,8 +4084,8 @@ begin
   Supplier := aSupplierNo;
   if LoNo < 1 then
     Exit;
-  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-    .AsInteger;
+  Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+    //.AsInteger;
   Try
     ReportType := cLastorder_manuell;
     FR := TFastReports.create;
