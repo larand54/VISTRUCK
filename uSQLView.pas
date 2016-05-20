@@ -253,6 +253,7 @@ begin
    FSQLView.SQL.Add('WHERE');
   for j := 0 to FSQLView.WhereList.Count-1 do
     FSQLView.SQL.Add(FSQLView.WhereList[j]);
+
   FSQLView.SQL.Add('Group by');
   for j := 0 to FSQLView.ObjectList.Count - 1 do
   begin

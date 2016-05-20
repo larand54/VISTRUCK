@@ -54,16 +54,22 @@ object dmFilterSQL: TdmFilterSQL
     Top = 69
   end
   object cds_PositionView_Invoiced: TFDQuery
+    OnUpdateRecord = cds_PositionView_InvoicedUpdateRecord
     Connection = dmsConnector.FDConnection1
+    UpdateOptions.UpdateTableName = 'dbo.PackageNumber'
+    UpdateObject = PkgUpdateSQL1
     SQL.Strings = (
       'declare @LanguageCode int = 1'
-      'select cy.CityName AS City, '
+      
+        'declare @Alternativ int = 1 -- LAGRADE PAKET, (2)=EJ FAKTURERADE' +
+        ' & EJ LAGRADE PAKET, (3)=EJ FAKTURERADE + LAGRADE PAKET '
+      'select '
+      'cy.CityName AS City, '
       'LIP.LogicalInventoryName, '
-      'Count(str(PackageNo)+suppliercode) AS Paket, '
-      ''
-      'sum(pt.TotalNoOfPieces) AS pcs, '
-      'sum(pt.Totalm3Actual) AS AM3, '
-      'sum(pt.Totalm3Nominal) AS NM3,'
+      '--Count(str(PN.PackageNo)+PN.SupplierCode) AS Paket, '
+      'pt.TotalNoOfPieces AS pcs, '
+      'pt.Totalm3Actual AS AM3, '
+      'pt.Totalm3Nominal AS NM3,'
       ''
       'pg.ActualThicknessMM AS AT,'
       'pg.ActualWidthMM AS AB,'
@@ -87,9 +93,11 @@ object dmFilterSQL: TdmFilterSQL
       'pn.Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
-      ',PN.StoredDate,'
-      'pde.ProductDisplayName AS Product,'
-      'PN.PackageNo AS PN'
+      ',PN.StoredDate'
+      ',pde.ProductDisplayName AS Product'
+      ',PN.PackageNo'
+      ',PN.SupplierCode'
+      ',PN.DateCreated'
       ''
       ''
       ''
@@ -97,6 +105,16 @@ object dmFilterSQL: TdmFilterSQL
       'Left outer join dbo.Position posi '
       'inner join dbo.Area ar on ar.AreaID = posi.AreaID'
       'on posi.PositionID = pn.PositionID '
+      ''
+      ''
+      'LEFT OUTER Join dbo.LoadDetail LD '
+      'LEFT join dbo.Invoiced_Load inl on inl.LoadNo = LD.LoadNo'
+      
+        'Inner Join dbo.CustomerShippingPlanDetails csd on csd.CustShipPl' +
+        'anDetailObjectNo = LD.DefaultCustShipObjectNo'
+      'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
+      'on LD.PackageNo = PN.PackageNo'
+      ''
       ''
       
         'Left Outer Join dbo.CertificationWood cw on cw.CertNo = IsNull(p' +
@@ -129,52 +147,215 @@ object dmFilterSQL: TdmFilterSQL
       
         'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.Varugrupp' +
         'No'
-      'AND va.LanguageCode = @LanguageCode'
+      'AND va.LanguageCode = :LanguageCode'
       
         'Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg' +
         '.ProductCategoryNo'
-      'AND imp.LanguageCode = @LanguageCode'
+      'AND imp.LanguageCode = :LanguageCode'
       'Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo'
-      'AND SPE.LanguageCode = @LanguageCode'
+      'AND SPE.LanguageCode = :LanguageCode'
       'Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo'
-      'AND SUR.LanguageCode = @LanguageCode'
+      'AND SUR.LanguageCode = :LanguageCode'
       'Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo'
-      'AND Gr.LanguageCode = @LanguageCode'
+      'AND Gr.LanguageCode = :LanguageCode'
       ''
       'WHERE '
-      '(PIP.Owner=830)'
-      'AND (pn.Status = 1)'
-      'AND (LIP.LogicalInventoryPointNo IN (10718))'
-      'and '
-      'Group by cy.CityName, LIP.LogicalInventoryName, '
-      'pg.ActualThicknessMM,'
-      'pg.ActualWidthMM,'
-      'pg.NominalThicknessMM,'
-      'pg.NominalWidthMM,'
-      'dbo.getMaxlengthOfPackage(PN.PackageNo),'
-      ''
+      'PIP.OwnerNo = 830'
+      'and LIP.LogicalInventoryPointNo=10721'
+      'and PN.DateCreated > DATEADD(year,-1,GETDATE())'
+      '--  EJ FAKTURERADE OCH EJ LAGRADE'
+      '--  ============================='
+      '--and pn.[Status] = 0 --1460 rader'
       
-        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
-        'idthMM as varchar(6)),'
+        '--AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Int' +
+        'ernalInvoiceNo = inl.InternalInvoiceNo)'
       ''
-      'SPE.SpeciesName,'
-      'imp.ProductCategoryName,'
-      'Gr.GradeName,'
-      'SUR.SurfacingName,'
-      'lip.LogicalInventoryPointNo, '
-      'pip.PhysicalInventoryPointNo,'
-      'va.VarugruppNamn,'
-      'pn.REFERENCE, '
-      'pn.BL_NO,  '
-      'pn.Info2,'
-      'ar.AreaName,'
-      'Posi.PositionName,'
-      'PN.StoredDate,'
-      'pde.ProductDisplayName,'
-      'PN.PackageNo'
+      '--and pn.Status=1 -- 24 rader (2750 - 2726)'
+      
+        '--AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Int' +
+        'ernalInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      '--and pn.Status=1 -- 2726 rader (169952 - 172678)'
+      
+        '--AND EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Interna' +
+        'lInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      '--and pn.Status=0 --169952 rader'
+      
+        '--AND EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Interna' +
+        'lInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      '--  LAGRADE PAKET'
+      '--  ============='
+      'and pn.Status=1 -- 2750 rader'
+      ''
+      '--172678 rader'
+      
+        '--AND EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Interna' +
+        'lInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      '-- 1484 rader'
+      
+        '--AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Int' +
+        'ernalInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      ''
+      '--and pn.Status not in (0)'
+      ''
+      '-- LAGER + OFAKTURERADE PAKET'
+      '-- ============================='
+      '--and (pn.Status=1 -- 4182 rader'
+      
+        '--OR not EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Inte' +
+        'rnalInvoiceNo = inl.InternalInvoiceNo))'
+      'Order by PN.DateCreated'
       '')
     Left = 276
     Top = 13
+    ParamData = <
+      item
+        Name = 'LANGUAGECODE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 1
+      end>
+    object cds_PositionView_InvoicedCity: TStringField
+      FieldName = 'City'
+      Origin = 'City'
+      Size = 50
+    end
+    object cds_PositionView_InvoicedLogicalInventoryName: TStringField
+      FieldName = 'LogicalInventoryName'
+      Origin = 'LogicalInventoryName'
+      Size = 50
+    end
+    object cds_PositionView_Invoicedpcs: TIntegerField
+      FieldName = 'pcs'
+      Origin = 'pcs'
+    end
+    object cds_PositionView_InvoicedAM3: TFloatField
+      FieldName = 'AM3'
+      Origin = 'AM3'
+    end
+    object cds_PositionView_InvoicedNM3: TFloatField
+      FieldName = 'NM3'
+      Origin = 'NM3'
+    end
+    object cds_PositionView_InvoicedAT: TFloatField
+      FieldName = 'AT'
+      Origin = 'AT'
+    end
+    object cds_PositionView_InvoicedAB: TFloatField
+      FieldName = 'AB'
+      Origin = 'AB'
+    end
+    object cds_PositionView_InvoicedNT: TFloatField
+      FieldName = 'NT'
+      Origin = 'NT'
+    end
+    object cds_PositionView_InvoicedNB: TFloatField
+      FieldName = 'NB'
+      Origin = 'NB'
+    end
+    object cds_PositionView_InvoicedAL: TFloatField
+      FieldName = 'AL'
+      Origin = 'AL'
+      ReadOnly = True
+    end
+    object cds_PositionView_Invoiceddim: TStringField
+      FieldName = 'dim'
+      Origin = 'dim'
+      ReadOnly = True
+      Size = 13
+    end
+    object cds_PositionView_InvoicedTS: TStringField
+      FieldName = 'TS'
+      Origin = 'TS'
+      Required = True
+      Size = 30
+    end
+    object cds_PositionView_InvoicedPC: TStringField
+      FieldName = 'PC'
+      Origin = 'PC'
+      Required = True
+      Size = 40
+    end
+    object cds_PositionView_InvoicedKV: TStringField
+      FieldName = 'KV'
+      Origin = 'KV'
+      Required = True
+      FixedChar = True
+      Size = 30
+    end
+    object cds_PositionView_InvoicedUT: TStringField
+      FieldName = 'UT'
+      Origin = 'UT'
+      Required = True
+      Size = 30
+    end
+    object cds_PositionView_InvoicedLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+      Required = True
+    end
+    object cds_PositionView_InvoicedPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+      Required = True
+    end
+    object cds_PositionView_InvoicedVarugruppNamn: TStringField
+      FieldName = 'VarugruppNamn'
+      Origin = 'VarugruppNamn'
+      Size = 35
+    end
+    object cds_PositionView_InvoicedREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object cds_PositionView_InvoicedInfo1: TStringField
+      FieldName = 'Info1'
+      Origin = 'Info1'
+      Size = 30
+    end
+    object cds_PositionView_InvoicedInfo2: TStringField
+      FieldName = 'Info2'
+      Origin = 'Info2'
+      Size = 30
+    end
+    object cds_PositionView_InvoicedAreaName: TStringField
+      FieldName = 'AreaName'
+      Origin = 'AreaName'
+      Size = 50
+    end
+    object cds_PositionView_InvoicedPositionName: TStringField
+      FieldName = 'PositionName'
+      Origin = 'PositionName'
+      Size = 50
+    end
+    object cds_PositionView_InvoicedStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+    end
+    object cds_PositionView_InvoicedProduct: TStringField
+      FieldName = 'Product'
+      Origin = 'Product'
+      Size = 150
+    end
+    object cds_PositionView_InvoicedPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_PositionView_InvoicedSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
   end
   object cds_PositionView_not_Invoiced: TFDQuery
     Connection = dmsConnector.FDConnection1
@@ -307,7 +488,47 @@ object dmFilterSQL: TdmFilterSQL
       'pde.ProductDisplayName,'
       'PN.PackageNo'
       '')
-    Left = 460
+    Left = 484
     Top = 13
+  end
+  object PkgUpdateSQL1: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
+    InsertSQL.Strings = (
+      'INSERT INTO PackageNumber'
+      '(PackageNo, SupplierCode, REFERENCE, Info2, '
+      '  StoredDate)'
+      
+        'VALUES (:NEW_PackageNo, :NEW_SupplierCode, :NEW_REFERENCE, :NEW_' +
+        'Info2, '
+      '  :NEW_StoredDate)')
+    ModifySQL.Strings = (
+      'UPDATE PackageNumber'
+      
+        'SET PackageNo = :NEW_PackageNo, SupplierCode = :NEW_SupplierCode' +
+        ', '
+      
+        '  REFERENCE = :NEW_REFERENCE, Info2 = :NEW_Info2, StoredDate = :' +
+        'NEW_StoredDate'
+      
+        'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
+        'rCode')
+    DeleteSQL.Strings = (
+      'DELETE FROM PackageNumber'
+      
+        'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
+        'rCode')
+    FetchRowSQL.Strings = (
+      
+        'SELECT PackageNo, PackageTypeNo, SupplierCode, LogicalInventoryP' +
+        'ointNo, '
+      '  SupplierNo, Status, SequenceNo, CreatedUser, ModifiedUser, '
+      '  DateCreated, Original_Price, Original_In_Date, Update_Price, '
+      '  Update_Price_Date, CreatedOfPkgStr, AvgLengthType, REFERENCE, '
+      '  BL_NO, RegPointType, Info2, PkgArticleNo, Package_Size, '
+      '  CertNo, LOid, PositionID, StoredDate, RowGroupNo, MyPositionID'
+      'FROM PackageNumber'
+      'WHERE PackageNo = :PackageNo AND SupplierCode = :SupplierCode')
+    Left = 280
+    Top = 136
   end
 end

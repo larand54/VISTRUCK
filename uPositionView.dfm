@@ -153,6 +153,7 @@ object fPositionView: TfPositionView
           DataController.DataSource = dmFilterSQL.ds_PositionView
           DataController.DetailKeyFieldNames = 'AreaName'
           DataController.KeyFieldNames = 'AreaName'
+          DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
           DataController.Summary.DefaultGroupSummaryItems = <
             item
               FieldName = 'AM3'
@@ -162,21 +163,18 @@ object fPositionView: TfPositionView
               Format = '#,###,###.0'
               Kind = skSum
               FieldName = 'NM3'
-              Column = grdPositionDBBandedTableView1NM3
               DisplayText = 'NM3 Total'
             end
             item
               Format = '#,###,###.0'
               Kind = skSum
               FieldName = 'AM3'
-              Column = grdPositionDBBandedTableView1AM3
               DisplayText = 'AM3 Total'
             end
             item
               Format = '###########'
               Kind = skSum
               FieldName = 'pcs'
-              Column = grdPositionDBBandedTableView1pcs
               DisplayText = 'Totalt antal'
             end>
           DataController.Summary.SummaryGroups = <
@@ -229,7 +227,6 @@ object fPositionView: TfPositionView
             item
               Links = <
                 item
-                  Column = grdPositionDBBandedTableView1AM3
                 end>
               SummaryItems = <
                 item
@@ -237,7 +234,6 @@ object fPositionView: TfPositionView
                   Kind = skSum
                   Position = spFooter
                   FieldName = 'AM3'
-                  Column = grdPositionDBBandedTableView1AM3
                   DisplayText = 'AM3'
                 end>
             end>
@@ -251,184 +247,162 @@ object fPositionView: TfPositionView
             end>
           object grdPositionDBBandedTableView1City: TcxGridDBBandedColumn
             DataBinding.FieldName = 'City'
-            Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 0
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn
             DataBinding.FieldName = 'LogicalInventoryName'
-            Width = 24
             Position.BandIndex = 0
             Position.ColIndex = 1
             Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1Paket: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Paket'
-            Width = 20
+          object grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'pcs'
             Position.BandIndex = 0
             Position.ColIndex = 2
             Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'pcs'
-            Width = 20
+          object grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'AM3'
             Position.BandIndex = 0
             Position.ColIndex = 3
             Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'AM3'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
-          end
           object grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NM3'
-            Width = 20
             Position.BandIndex = 0
-            Position.ColIndex = 5
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'dim'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 6
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'TS'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 7
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PC'
-            Width = 28
-            Position.BandIndex = 0
-            Position.ColIndex = 8
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'KV'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 9
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'UT'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 10
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'LIPNo'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 11
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PIPNo'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 12
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'VarugruppNamn'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 13
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'REFERENCE'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Properties.OnEditValueChanged = grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 14
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info1'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 15
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info2'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 16
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'AreaName'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 17
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PositionName'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 18
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'StoredDate'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 19
+            Position.ColIndex = 4
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AT'
             Position.BandIndex = 0
-            Position.ColIndex = 20
+            Position.ColIndex = 5
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AB'
             Position.BandIndex = 0
-            Position.ColIndex = 21
+            Position.ColIndex = 6
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NT'
             Position.BandIndex = 0
-            Position.ColIndex = 22
+            Position.ColIndex = 7
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NB'
             Position.BandIndex = 0
-            Position.ColIndex = 23
+            Position.ColIndex = 8
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AL'
             Position.BandIndex = 0
-            Position.ColIndex = 24
+            Position.ColIndex = 9
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'dim'
+            Position.BandIndex = 0
+            Position.ColIndex = 10
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'TS'
+            Position.BandIndex = 0
+            Position.ColIndex = 11
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PC'
+            Position.BandIndex = 0
+            Position.ColIndex = 12
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'KV'
+            Position.BandIndex = 0
+            Position.ColIndex = 13
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'UT'
+            Position.BandIndex = 0
+            Position.ColIndex = 14
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LIPNo'
+            Position.BandIndex = 0
+            Position.ColIndex = 15
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PIPNo'
+            Position.BandIndex = 0
+            Position.ColIndex = 16
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'VarugruppNamn'
+            Position.BandIndex = 0
+            Position.ColIndex = 17
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'REFERENCE'
+            Position.BandIndex = 0
+            Position.ColIndex = 18
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Info1'
+            Position.BandIndex = 0
+            Position.ColIndex = 19
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Info2'
+            Position.BandIndex = 0
+            Position.ColIndex = 20
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'AreaName'
+            Position.BandIndex = 0
+            Position.ColIndex = 21
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PositionName'
+            Position.BandIndex = 0
+            Position.ColIndex = 22
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'StoredDate'
+            Position.BandIndex = 0
+            Position.ColIndex = 23
             Position.RowIndex = 0
           end
           object grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Product'
             Position.BandIndex = 0
+            Position.ColIndex = 24
+            Position.RowIndex = 0
+          end
+          object grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PackageNo'
+            Position.BandIndex = 0
             Position.ColIndex = 25
             Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PN'
+          object grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SupplierCode'
             Position.BandIndex = 0
             Position.ColIndex = 26
             Position.RowIndex = 0

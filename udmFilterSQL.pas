@@ -20,7 +20,38 @@ type
     ds_PositionView: TDataSource;
     cds_PositionView_Invoiced: TFDQuery;
     cds_PositionView_not_Invoiced: TFDQuery;
+    PkgUpdateSQL1: TFDUpdateSQL;
+    cds_PositionView_InvoicedCity: TStringField;
+    cds_PositionView_InvoicedLogicalInventoryName: TStringField;
+    cds_PositionView_Invoicedpcs: TIntegerField;
+    cds_PositionView_InvoicedAM3: TFloatField;
+    cds_PositionView_InvoicedNM3: TFloatField;
+    cds_PositionView_InvoicedAT: TFloatField;
+    cds_PositionView_InvoicedAB: TFloatField;
+    cds_PositionView_InvoicedNT: TFloatField;
+    cds_PositionView_InvoicedNB: TFloatField;
+    cds_PositionView_InvoicedAL: TFloatField;
+    cds_PositionView_Invoiceddim: TStringField;
+    cds_PositionView_InvoicedTS: TStringField;
+    cds_PositionView_InvoicedPC: TStringField;
+    cds_PositionView_InvoicedKV: TStringField;
+    cds_PositionView_InvoicedUT: TStringField;
+    cds_PositionView_InvoicedLIPNo: TIntegerField;
+    cds_PositionView_InvoicedPIPNo: TIntegerField;
+    cds_PositionView_InvoicedVarugruppNamn: TStringField;
+    cds_PositionView_InvoicedREFERENCE: TStringField;
+    cds_PositionView_InvoicedInfo1: TStringField;
+    cds_PositionView_InvoicedInfo2: TStringField;
+    cds_PositionView_InvoicedAreaName: TStringField;
+    cds_PositionView_InvoicedPositionName: TStringField;
+    cds_PositionView_InvoicedStoredDate: TSQLTimeStampField;
+    cds_PositionView_InvoicedProduct: TStringField;
+    cds_PositionView_InvoicedPackageNo: TIntegerField;
+    cds_PositionView_InvoicedSupplierCode: TStringField;
     procedure DataModuleCreate(Sender: TObject);
+    procedure cds_PositionView_InvoicedUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
 
   private
     { Private declarations }
@@ -94,6 +125,17 @@ end;
 procedure TdmFilterSQL.Attach(Observer: ICMObserver);
 begin
   FObserver.Add(Observer);
+end;
+
+procedure TdmFilterSQL.cds_PositionView_InvoicedUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
+begin
+ PkgUpdateSQL1.ConnectionName  := cds_PositionView_Invoiced.ConnectionName;
+ PkgUpdateSQL1.DataSet         := cds_PositionView_Invoiced;
+ PkgUpdateSQL1.Apply(ARequest, AAction, AOptions);
+
+ AAction := eaApplied;
 end;
 
 procedure TdmFilterSQL.Clear;

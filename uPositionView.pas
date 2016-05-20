@@ -313,31 +313,6 @@ type
     grdPositionDBBandedTableView4: TcxGridDBBandedTableView;
     grdPositionDBBandedTableView5: TcxGridDBBandedTableView;
     grdPositionDBBandedTableView6: TcxGridDBBandedTableView;
-    grdPositionDBBandedTableView1City: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Paket: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn;
     cbInklEjFakt: TcxComboBox;
     ccbReference: TcxCheckComboBox;
     ccbInfo2: TcxCheckComboBox;
@@ -348,8 +323,6 @@ type
     siLangLinked1: TsiLangLinked;
     deStartPeriod: TcxDateEdit;
     deEndPeriod: TcxDateEdit;
-    grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn;
     cxLabel16: TcxLabel;
     cxLabel13: TcxLabel;
     sq_GridSets2: TFDQuery;
@@ -397,6 +370,33 @@ type
     sq_UserProfileShowProduct: TIntegerField;
     sq_UserProfileFilter1: TStringField;
     cbReportSelection: TcxComboBox;
+    grdPositionDBBandedTableView1City: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn;
+    grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -431,8 +431,6 @@ type
     procedure acRequestFilterUpdateExecute(Sender: TObject);
     procedure cxBtnUpdFilterClick(Sender: TObject);
     procedure acNewTemplateExecute(Sender: TObject);
-    procedure grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged(
-      Sender: TObject);
 
   private
     { Private declarations }
@@ -1062,8 +1060,11 @@ var
 begin
   WhereList := TWhereString.Create;
   case aSource of
-    0: WhereList.addAND('PN.Status = 1',true,true);         // In store
-    1: begin                                   // Not invoiced and in store
+    0: begin
+       WhereList.addAND('PN.Status = 1',true,true);         // In store
+       WhereList.addAND('OH.OrderType = 0',true,true);
+    end;
+    1: begin                                   // Not invoiced + store
        WhereList.addOR('(NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
        WhereList.addOR('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
        WhereList.addOR('PN.status = 1)',true,true);
@@ -1071,10 +1072,12 @@ begin
     end;
     2: begin                                   // Not Invoiced
        WhereList.addAND('OH.OrderType = 0',true,true);
+       WhereList.addAND('PN.Status = 0',true,true);
        WhereList.addAND('NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
        WhereList.addAND('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
     end;
   end;
+//  WhereList.addAND('PN.DateCreated > DATEADD(year,-1,GETDATE())',true,true);
   if deStartPeriod.EditValue <> null then
     WhereList.addAND('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)),true,true);
   if deEndPeriod.EditValue <> null then
@@ -1196,16 +1199,6 @@ begin
   AText:= '' ;
 end;
 
-
-procedure TfPositionView.grdPositionDBBandedTableView1REFERENCEPropertiesEditValueChanged(
-  Sender: TObject);
-var
-  DS: TDataset;
-begin
-(*   DS := TcxGridDBBandedTableView(Sender).DataController.DataSource.DataSet;
-   DS.Edit;
-   DS.Post; *)
-end;
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
@@ -1437,8 +1430,8 @@ begin
       Source := cbInklEjFakt.ItemIndex;
       case Source of
         0: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
-        1: DataSet := dmFilterSQL.cds_PositionView_Not_Invoiced;
-        2: DataSet := dmFilterSQL.cds_PositionView_Not_Invoiced;
+        1: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
+        2: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
       end;
       // Deactivate datasource
       DataSet.Active := false;
