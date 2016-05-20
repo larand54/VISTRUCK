@@ -3930,8 +3930,7 @@ Var
   Lang: integer;
   FR: TFastReports;
 begin
-  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-    .AsInteger;
+  Lang := ThisUser.LanguageID;
   Supplier := grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
     .AsInteger;
   LONo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
