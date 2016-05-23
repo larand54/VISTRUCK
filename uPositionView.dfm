@@ -136,6 +136,35 @@ object fPositionView: TfPositionView
           Action = acSaveTemplate
           TabOrder = 5
         end
+        object GroupBox1: TGroupBox
+          Left = 81
+          Top = -2
+          Width = 256
+          Height = 52
+          Caption = 'Exportera till EXCEL'
+          TabOrder = 6
+          object btnExportToExcel: TcxButton
+            Left = 4
+            Top = 17
+            Width = 110
+            Height = 31
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Action = acExportGridToExcel
+            Caption = 'Exportera'
+            TabOrder = 0
+          end
+          object ckbSelectedLines: TCheckBox
+            Left = 136
+            Top = 24
+            Width = 113
+            Height = 17
+            Caption = 'Valda rader'
+            TabOrder = 1
+          end
+        end
       end
       object grdPosition: TcxGrid
         Left = 0
@@ -150,6 +179,7 @@ object fPositionView: TfPositionView
         TabOrder = 1
         object grdPositionDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
+          OnEditing = grdPositionDBBandedTableView1Editing
           DataController.DataSource = dmFilterSQL.ds_PositionView
           DataController.DetailKeyFieldNames = 'AreaName'
           DataController.KeyFieldNames = 'AreaName'
@@ -2290,6 +2320,10 @@ object fPositionView: TfPositionView
     object acRequestFilterUpdate: TAction
       Caption = 'acRequestFilterUpdate'
       OnExecute = acRequestFilterUpdateExecute
+    end
+    object acExportGridToExcel: TAction
+      Caption = 'Exportera till EXCEL'
+      OnExecute = acExportGridToExcelExecute
     end
   end
   object pmFormShortcuts: TPopupMenu

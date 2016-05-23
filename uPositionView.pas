@@ -397,6 +397,10 @@ type
     grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
     grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn;
     grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn;
+    acExportGridToExcel: TAction;
+    GroupBox1: TGroupBox;
+    btnExportToExcel: TcxButton;
+    ckbSelectedLines: TCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -431,6 +435,10 @@ type
     procedure acRequestFilterUpdateExecute(Sender: TObject);
     procedure cxBtnUpdFilterClick(Sender: TObject);
     procedure acNewTemplateExecute(Sender: TObject);
+    procedure acExportGridToExcelExecute(Sender: TObject);
+    procedure grdPositionDBBandedTableView1Editing(
+      Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+      var AAllow: Boolean);
 
   private
     { Private declarations }
@@ -485,6 +493,7 @@ type
 var
   fPositionView: TfPositionView;
   LoggDir: string;
+  cUserLipNoExists: boolean;
 
 implementation
 
@@ -775,6 +784,9 @@ begin
         SGroups.add(intToStr(cbStorageGroup.Properties.Items[x].Tag));
     end;
     // If any Storagegroup checked then create sql
+    if (assigned(SGroups) AND (SGroups.Count = 0)) then
+      for x := 0 to cbStorageGroup.Properties.Items.Count - 1 do
+          SGroups.add(intToStr(cbStorageGroup.Properties.Items[x].Tag));
     if (assigned(SGroups) AND (SGroups.Count > 0)) then
     begin
       cds_StorageAreas.SQL.Clear;
@@ -782,7 +794,10 @@ begin
       cds_StorageAreas.SQL.add('FROM  PhysicalInventoryPoint PIP');
       cds_StorageAreas.SQL.add
         ('INNER JOIN Area ON Area.PIPNo = PIP.PhysicalInventoryPointNo');
+
+        // Get first area
       cds_StorageAreas.SQL.add('WHERE  (PIP.PhysicalInventoryPointNo = ' + SGroups[0] + ')');
+        // Get the rest...
       for x := 1 to SGroups.Count - 1 do
         cds_StorageAreas.SQL.add('OR (PIP.PhysicalInventoryPointNo = ' +
           SGroups[x] + ')');
@@ -791,6 +806,7 @@ begin
     end
     else
     begin
+(*
       // Collect all checked mills
       Mills := TList<string>.create;
       for x := 0 to cbOwner.Properties.Items.Count - 1 do
@@ -821,6 +837,7 @@ begin
         UpdateAreaCombo(Mills);
       end
       else
+*)
         // No mill/StorageGrops checked - empty combo
         cbStorageArea.Properties.Items.Clear;
     end;
@@ -867,6 +884,12 @@ begin
     SQL.Add('AND PH.PhyInvPointNameNo in (Select PH2.PhyInvPointNameNo');
     SQL.Add('FROM dbo.PHYSICALINVENTORYPOINT PH2');
     SQL.Add('WHERE PH2.OwnerNo = ' + intToStr(ThisUser.CompanyNo) + ')');
+    if cUserLipNoExists then
+    Begin
+      SQL.Add('AND ((exists (Select * from dbo.UserLipNo ul') ;
+      SQL.Add('WHERE ul.LIPNo = LIP.LogicalInventoryPointNo') ;
+      SQL.Add('AND ul.UserID = ' + IntToStr(ThisUser.UserID) + ')))') ;
+    End;
 
     // Add Order by
     SQL.Add('Order By LIP.LogicalInventoryName, CY.CITYNAME');
@@ -980,7 +1003,6 @@ begin
       end;
       cds_verk.SQL.Add(' )');
       cds_verk.SQL.Add('Order by C.clientName');
-
     end;
     Try
 
@@ -1012,19 +1034,24 @@ Procedure TfPositionView.CreateCo(Sender: TObject; CompanyNo: Integer);
 var
   Save_Cursor : TCursor;
 begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crHourGlass;    { Show hourglass cursor }
- LoggDir := dmsSystem.Get_Dir('UserDir');
- Try
-  deStartPeriod.Clear;
-  deEndPeriod.Clear;
-  dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
-  cbReportSelection.EditValue := mtuserPropName.AsString;
-  LoadMainCombos;
-  PopulateCheckBoxTemplate;
- Finally
-  Screen.Cursor := Save_Cursor ;
- End ;
+  if dmInventory.UserLipNoExists then
+    cUserLipNoExists  := True
+  else
+    cUserLipNoExists := false;
+
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  LoggDir := dmsSystem.Get_Dir('UserDir');
+  Try
+    deStartPeriod.Clear;
+    deEndPeriod.Clear;
+    dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
+    cbReportSelection.EditValue := mtuserPropName.AsString;
+    LoadMainCombos;
+    PopulateCheckBoxTemplate;
+  Finally
+    Screen.Cursor := Save_Cursor ;
+  End ;
 end;
 
 procedure TfPositionView.LoadMainCombos;
@@ -1200,6 +1227,24 @@ begin
 end;
 
 
+procedure TfPositionView.grdPositionDBBandedTableView1Editing(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  var AAllow: Boolean);
+var
+  ColPkgNo,
+  ColSupplierCode: TcxCustomGridTableItem;
+begin
+  AAllow := False;
+  if AItem.Name = 'grdPositionDBBandedTableView1REFERENCE' then
+  begin
+    ColPkgNo := Sender.FindItemByName('grdPositionDBBandedTableView1PackageNo');
+    ColSupplierCode := Sender.FindItemByName('grdPositionDBBandedTableView1SupplierCode');
+    if (ColPkgNo <> nil) and (ColSupplierCode <> nil) then
+      if ColPkgNo.Visible and ColSupplierCode.Visible then
+        AAllow := True
+  end;
+end;
+
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
  grdPositionDBBandedTableView1.ViewData.Collapse(True);
@@ -1249,6 +1294,26 @@ begin
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
+end;
+
+procedure TfPositionView.acExportGridToExcelExecute(Sender: TObject);
+Var FileName  : String ;
+begin
+  SaveDialog1.Filter := 'Excel files (*.xls)|*.xls';
+  SaveDialog1.DefaultExt := 'xls';
+  if SaveDialog1.Execute then
+  Begin
+    FileName := SaveDialog1.FileName;
+    Try
+    if ckbSelectedLines.Checked then
+      ExportGridToExcel(FileName, grdPosition, False, False, True, 'xls')
+    else
+      ExportGridToExcel(FileName, grdPosition, False, True, True, 'xls');
+    ShowMessage('Tabell exporterad till excel fil '  + FileName);
+    Except
+      on E: Exception do raise Exception.Create('Tabell kunde inte exporteras! '+sLineBreak+ E.Message);
+    End;
+  end;
 end;
 
 //Sortiment

@@ -1351,6 +1351,9 @@ type
     sp_UsersOutputProdunitsPosition: TStringField;
     dsUserOutput: TDataSource;
     sp_ChangeSelectedOutput: TFDStoredProc;
+    sq_UserLipNoExists: TFDQuery;
+    sq_UserLipNoExistsUserID: TIntegerField;
+    sq_UserLipNoExistsLIPNo: TIntegerField;
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1395,6 +1398,7 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
+    Function  UserLipNoExists : Boolean ;
     procedure ChangeSelectedOutput(const ProductionUnitNo, UserID, Change, PositionID : Integer) ;
     procedure RefreshPositionerByVerkNo(const VerkNo : Integer) ;
     procedure RefreshUsersOutputProdunits (const VerkNo, UserID : Integer) ;
@@ -1471,6 +1475,20 @@ begin
   Result:= not sp_OnePackageNo.eof ;
   sp_OnePackageNo.Close;
 end; }
+
+Function TdmInventory.UserLipNoExists : Boolean ;
+Begin
+  sq_UserLipNoExists.ParamByName('UserID').AsInteger  := ThisUser.UserID ;
+  sq_UserLipNoExists.Active := True ;
+  Try
+  if not sq_UserLipNoExists.Eof then
+  Result  := True
+  else
+  Result  := False ;
+  Finally
+    sq_UserLipNoExists.Active := False ;
+  End;
+End;
 
 
 procedure TdmInventory.EditVagn(const pKilnChargeNo, VagnNo : Integer) ;

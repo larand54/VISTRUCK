@@ -6,7 +6,7 @@ uses
   Classes,
   DB,
 
-  
+
   SysUtils, FMTBcd, Provider, ImgList, Controls, Dialogs,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
@@ -297,6 +297,7 @@ end;
 
 procedure TdmsConnector.DataModuleCreate(Sender: TObject);
 begin
+
 {$IFDEF DEBUG}
   if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
     dmsConnector.DriveLetter := 'C:\';
