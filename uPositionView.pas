@@ -186,26 +186,15 @@ type
     cxLabel31: TcxLabel;
     cxLabel32: TcxLabel;
     cxStyleNormalAktivePkg: TcxStyle;
-    cxLabel33: TcxLabel;
-    cxLabel34: TcxLabel;
-    ccMatpunkt: TcxCheckComboBox;
     ccbNT: TcxCheckComboBox;
     ccbNB: TcxCheckComboBox;
     cxLabel35: TcxLabel;
     cxLabel36: TcxLabel;
-    ccSkiftLag: TcxCheckComboBox;
     cxbtnCloseForm: TcxButton;
     cxbtnClearFilter: TcxButton;
     cxLabel14: TcxLabel;
     cxLabel15: TcxLabel;
     tsProduktionProduktSummary: TcxTabSheet;
-    Panel8: TPanel;
-    cxButton9: TcxButton;
-    cxButton10: TcxButton;
-    cxButton11: TcxButton;
-    cxButton12: TcxButton;
-    cxbtnDeleteTemplate: TcxButton;
-    cxButton14: TcxButton;
     cds_Verk: TFDQuery;
     cds_VerkClientNo: TIntegerField;
     cds_VerkClientName: TStringField;
@@ -398,6 +387,12 @@ type
     grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn;
     grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn;
     acExportGridToExcel: TAction;
+    cxButton1: TcxButton;
+    cxButton2: TcxButton;
+    cxbtnDeleteTemplate: TcxButton;
+    cxButton3: TcxButton;
+    cxButton4: TcxButton;
+    cxButton5: TcxButton;
     GroupBox1: TGroupBox;
     btnExportToExcel: TcxButton;
     ckbSelectedLines: TCheckBox;
@@ -458,7 +453,7 @@ type
     procedure PopulateCheckBoxTemplate ;
     procedure PopulateCheckBoxTemplates;
     procedure OpenTemplate ;
-    function getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMSL ): integer overload;
+    function getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMDL ): integer overload;
     function getCheckedCount(const aCombo: TcxCheckComboBox): integer overload;
 //    procedure CheckAllItems ;
 
@@ -562,8 +557,6 @@ Begin
  ccbSU2.Clear ;
  ccbIMP.Clear ;
  ccVarugrupp.Clear ;
- ccMatpunkt.Clear ;
- ccSkiftLag.Clear ;
  ccbReference.Clear;
  ccbInfo1.Clear;
  ccbInfo2.Clear;
@@ -676,13 +669,10 @@ begin
   aCombo.Properties.Items.Clear;
 //  SortedKeys := TList<string>.create(aList.Keys);
 //  SortedKeys.Sort;
-  for s1 in aList.Keys do
+  for s1 in aList do
   Begin
     try
-      s2 := aList.Items[s1];
-      if s2 = '' then continue;
-
-      aCombo.Properties.Items.AddCheckItem(s1,s2);
+      aCombo.Properties.Items.AddCheckItem(s1,s1);
     except
       on E: Exception do
       begin
@@ -1176,18 +1166,18 @@ end;
 function TfPositionView.getCheckedCount(
   const aCombo: TcxCheckComboBox): integer;
 var
-  aList: TCMSL;
+  aList: TCMDL;
 begin
   aList := nil;
   result := getCheckedCount(aCombo, aList);
   aList.Free;
 end;
 
-function TfPositionView.getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMSL ): integer;
+function TfPositionView.getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMDL ): integer;
 var  i, count: integer;
 begin
   if not assigned(aChkList) then
-    aChkList := TCMSL.Create
+    aChkList := TCMDL.Create
   else
     aChkList.Clear;
   result := 0;
@@ -1493,11 +1483,7 @@ begin
   begin
     try
       Source := cbInklEjFakt.ItemIndex;
-      case Source of
-        0: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
-        1: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
-        2: DataSet := dmFilterSQL.cds_PositionView_Invoiced;
-      end;
+      DataSet := dmFilterSQL.cds_PositionView;
       // Deactivate datasource
       DataSet.Active := false;
 
@@ -1764,10 +1750,14 @@ end;
 
 procedure TfPositionView.cxBtnUpdFilterClick(Sender: TObject);
 var
-  T: TList<integer>;
+  T: TList<integer>; // Selected positions
+  A: TList<integer>; // Selected Areas
+  G: TList<integer>; // Selected groups
+  Source: integer;
   iValue, Count, x: integer;
 begin
   try
+    Source := cbInklEjFakt.ItemIndex;
     T := TList<integer>.create;
 
     // Check if positions loaded
@@ -1786,19 +1776,47 @@ begin
           T.add(iValue);
         end;
       end;
-      // if nothing checked then all checked considered.
-      if T.Count < 1 then
-        for x := 0 to Count - 1 do
+    end;
+    // if nothing checked then all positions checked considered.
+    if T.Count < 1 then
+    begin
+      // Check if storage areas is selected
+      A := TList<integer>.create;
+      Count := cbStorageArea.Properties.Items.Count;
+      for x := 0 to Count - 1 do
+      begin
+        if cbStorageArea.States[x] = cbsChecked then
         begin
-          iValue := strToInt(cbStoragePos.Properties.Items[x].ShortDescription);
-          T.add(iValue);
+          iValue := strToInt(cbStorageArea.Properties.Items[x]
+            .ShortDescription);
+          A.add(iValue);
         end;
+      end;
+    end;
+    if A.Count < 1 then
+    begin
+      // Check if storage groups is selected
+      G := TList<integer>.create;
+      Count := cbStorageGroup.Properties.Items.Count;
+      for x := 0 to Count - 1 do
+      begin
+        if cbStorageGroup.States[x] = cbsChecked then
+        begin
+          iValue := strToInt(cbStorageGroup.Properties.Items[x]
+            .ShortDescription);
+          G.add(iValue);
+        end;
+      end;
     end;
 
-    dmFilterSQL.UpdateFilterData(T);
+    dmFilterSQL.UpdateFilterData(T, A, G, Source);
   finally
     if assigned(T) then
       T.Free;
+    if assigned(A) then
+      A.Free;
+    if assigned(G) then
+      G.Free;
   end;
 end;
 

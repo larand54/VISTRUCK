@@ -53,130 +53,19 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
-      object Panel8: TPanel
+      object grdPosition: TcxGrid
         Left = 0
         Top = 0
         Width = 1550
-        Height = 57
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alTop
-        TabOrder = 0
-        object cxButton9: TcxButton
-          Left = 512
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acRefreshReport
-          TabOrder = 0
-        end
-        object cxButton10: TcxButton
-          Left = 630
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acExpandAllGridView
-          TabOrder = 1
-        end
-        object cxButton11: TcxButton
-          Left = 743
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acCollapseAllGridView
-          TabOrder = 2
-        end
-        object cxButton12: TcxButton
-          Left = 856
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acNewTemplate
-          TabOrder = 3
-        end
-        object cxbtnDeleteTemplate: TcxButton
-          Left = 969
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acDeleteTemplate
-          TabOrder = 4
-        end
-        object cxButton14: TcxButton
-          Left = 1082
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acSaveTemplate
-          TabOrder = 5
-        end
-        object GroupBox1: TGroupBox
-          Left = 81
-          Top = -2
-          Width = 256
-          Height = 52
-          Caption = 'Exportera till EXCEL'
-          TabOrder = 6
-          object btnExportToExcel: TcxButton
-            Left = 4
-            Top = 17
-            Width = 110
-            Height = 31
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
-            Action = acExportGridToExcel
-            Caption = 'Exportera'
-            TabOrder = 0
-          end
-          object ckbSelectedLines: TCheckBox
-            Left = 136
-            Top = 24
-            Width = 113
-            Height = 17
-            Caption = 'Valda rader'
-            TabOrder = 1
-          end
-        end
-      end
-      object grdPosition: TcxGrid
-        Left = 0
-        Top = 57
-        Width = 1550
-        Height = 802
+        Height = 859
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
-        TabOrder = 1
+        TabOrder = 0
+        ExplicitTop = 57
+        ExplicitHeight = 802
         object grdPositionDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = grdPositionDBBandedTableView1Editing
@@ -270,172 +159,168 @@ object fPositionView: TfPositionView
           OptionsSelection.MultiSelect = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.Indicator = True
-          Bands = <
-            item
-              Caption = 'PRODUKTION'
-              Width = 958
-            end>
+          Bands = <>
           object grdPositionDBBandedTableView1City: TcxGridDBBandedColumn
             DataBinding.FieldName = 'City'
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn
             DataBinding.FieldName = 'LogicalInventoryName'
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn
             DataBinding.FieldName = 'pcs'
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AM3'
-            Position.BandIndex = 0
-            Position.ColIndex = 3
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NM3'
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AT'
-            Position.BandIndex = 0
-            Position.ColIndex = 5
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AB'
-            Position.BandIndex = 0
-            Position.ColIndex = 6
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NT'
-            Position.BandIndex = 0
-            Position.ColIndex = 7
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn
             DataBinding.FieldName = 'NB'
-            Position.BandIndex = 0
-            Position.ColIndex = 8
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AL'
-            Position.BandIndex = 0
-            Position.ColIndex = 9
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn
             DataBinding.FieldName = 'dim'
-            Position.BandIndex = 0
-            Position.ColIndex = 10
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn
             DataBinding.FieldName = 'TS'
-            Position.BandIndex = 0
-            Position.ColIndex = 11
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn
             DataBinding.FieldName = 'PC'
-            Position.BandIndex = 0
-            Position.ColIndex = 12
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn
             DataBinding.FieldName = 'KV'
-            Position.BandIndex = 0
-            Position.ColIndex = 13
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn
             DataBinding.FieldName = 'UT'
-            Position.BandIndex = 0
-            Position.ColIndex = 14
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn
             DataBinding.FieldName = 'LIPNo'
-            Position.BandIndex = 0
-            Position.ColIndex = 15
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn
             DataBinding.FieldName = 'PIPNo'
-            Position.BandIndex = 0
-            Position.ColIndex = 16
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
             DataBinding.FieldName = 'VarugruppNamn'
-            Position.BandIndex = 0
-            Position.ColIndex = 17
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
             DataBinding.FieldName = 'REFERENCE'
-            Position.BandIndex = 0
-            Position.ColIndex = 18
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Info1'
-            Position.BandIndex = 0
-            Position.ColIndex = 19
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Info2'
-            Position.BandIndex = 0
-            Position.ColIndex = 20
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn
             DataBinding.FieldName = 'AreaName'
-            Position.BandIndex = 0
-            Position.ColIndex = 21
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn
             DataBinding.FieldName = 'PositionName'
-            Position.BandIndex = 0
-            Position.ColIndex = 22
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn
             DataBinding.FieldName = 'StoredDate'
-            Position.BandIndex = 0
-            Position.ColIndex = 23
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn
             DataBinding.FieldName = 'Product'
-            Position.BandIndex = 0
-            Position.ColIndex = 24
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn
             DataBinding.FieldName = 'PackageNo'
-            Position.BandIndex = 0
-            Position.ColIndex = 25
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
           object grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn
             DataBinding.FieldName = 'SupplierCode'
-            Position.BandIndex = 0
-            Position.ColIndex = 26
-            Position.RowIndex = 0
+            Position.BandIndex = -1
+            Position.ColIndex = -1
+            Position.RowIndex = -1
           end
         end
         object grdPositionDBBandedTableView2: TcxGridDBBandedTableView
@@ -542,8 +427,8 @@ object fPositionView: TfPositionView
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel1: TBevel
-          Left = 4
-          Top = 32
+          Left = 0
+          Top = 34
           Width = 1429
           Height = 12
           Margins.Left = 4
@@ -570,7 +455,7 @@ object fPositionView: TfPositionView
           Properties.ListOptions.ShowHeader = False
           Properties.MaxLength = 0
           Style.StyleController = cxEditStyleController3
-          TabOrder = 23
+          TabOrder = 21
           Visible = False
           Width = 23
         end
@@ -755,7 +640,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 12
+          TabOrder = 10
           Width = 70
         end
         object ccbAB: TcxCheckComboBox
@@ -774,7 +659,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
-          TabOrder = 13
+          TabOrder = 11
           Width = 70
         end
         object ccbAL: TcxCheckComboBox
@@ -793,7 +678,7 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
-          TabOrder = 14
+          TabOrder = 12
           Width = 70
         end
         object ccbTS2: TcxCheckComboBox
@@ -1001,70 +886,6 @@ object fPositionView: TfPositionView
           Height = 21
           Width = 117
         end
-        object cxLabel33: TcxLabel
-          Left = 593
-          Top = 84
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'M'#228'tpunkt'
-          ParentColor = False
-          ParentFont = False
-          Style.Color = clWindow
-          Style.Font.Charset = ANSI_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Arial Rounded MT Bold'
-          Style.Font.Style = []
-          Style.StyleController = cxEditStyleController2
-          Style.TextColor = clMaroon
-          Style.TextStyle = []
-          Style.IsFontAssigned = True
-          Visible = False
-        end
-        object cxLabel34: TcxLabel
-          Left = 681
-          Top = 84
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Skiftlag'
-          ParentColor = False
-          ParentFont = False
-          Style.Color = clWindow
-          Style.Font.Charset = ANSI_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Arial Rounded MT Bold'
-          Style.Font.Style = []
-          Style.StyleController = cxEditStyleController2
-          Style.TextColor = clMaroon
-          Style.TextStyle = []
-          Style.IsFontAssigned = True
-          Visible = False
-        end
-        object ccMatpunkt: TcxCheckComboBox
-          Left = 594
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.EmptySelectionText = 'Alla'
-          Properties.ClearKey = 46
-          Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
-          Properties.DropDownWidth = 300
-          Properties.EditValueFormat = cvfStatesString
-          Properties.Items = <>
-          Style.BorderStyle = ebsSingle
-          Style.StyleController = cxEditStyleController3
-          TabOrder = 10
-          Visible = False
-          Width = 79
-        end
         object ccbNT: TcxCheckComboBox
           Left = 150
           Top = 56
@@ -1084,7 +905,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 30
+          TabOrder = 26
           Width = 70
         end
         object ccbNB: TcxCheckComboBox
@@ -1106,7 +927,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 31
+          TabOrder = 27
           Width = 70
         end
         object cxLabel35: TcxLabel
@@ -1151,26 +972,6 @@ object fPositionView: TfPositionView
           Style.TextStyle = []
           Style.IsFontAssigned = True
         end
-        object ccSkiftLag: TcxCheckComboBox
-          Left = 681
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.EmptySelectionText = 'Alla'
-          Properties.ClearKey = 46
-          Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
-          Properties.DropDownWidth = 300
-          Properties.EditValueFormat = cvfStatesString
-          Properties.Items = <>
-          Style.BorderStyle = ebsSingle
-          Style.StyleController = cxEditStyleController3
-          TabOrder = 11
-          Visible = False
-          Width = 108
-        end
         object cxbtnCloseForm: TcxButton
           Left = 1140
           Top = 1
@@ -1181,7 +982,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'St'#228'ng'
-          TabOrder = 34
+          TabOrder = 30
           OnClick = cxbtnCloseFormClick
         end
         object cxbtnClearFilter: TcxButton
@@ -1194,7 +995,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Rensa filter'
-          TabOrder = 35
+          TabOrder = 31
           OnClick = cxbtnClearFilterClick
         end
         object cxLabel14: TcxLabel
@@ -1378,7 +1179,7 @@ object fPositionView: TfPositionView
             'Lager + ej fakt'
             'Ej fakturerat')
           Properties.MaxLength = 0
-          TabOrder = 42
+          TabOrder = 38
           Text = 'Lager'
           Width = 123
         end
@@ -1387,7 +1188,7 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 43
+          TabOrder = 39
           Width = 97
         end
         object ccbInfo2: TcxCheckComboBox
@@ -1395,7 +1196,7 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 44
+          TabOrder = 40
           Width = 95
         end
         object ccbInfo1: TcxCheckComboBox
@@ -1403,7 +1204,7 @@ object fPositionView: TfPositionView
           Top = 104
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 45
+          TabOrder = 41
           Width = 95
         end
         object cbInkTimeInDateFilter: TcxCheckBox
@@ -1411,7 +1212,7 @@ object fPositionView: TfPositionView
           Top = 53
           Caption = 'Inkludera tid i datumfilter'
           Properties.OnChange = cbInkTimeInDateFilterPropertiesChange
-          TabOrder = 46
+          TabOrder = 42
           Width = 213
         end
         object cxBtnUpdFilter: TcxButton
@@ -1424,19 +1225,19 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Uppdatera filter'
-          TabOrder = 47
+          TabOrder = 43
           OnClick = cxBtnUpdFilterClick
         end
         object deStartPeriod: TcxDateEdit
           Left = 4
           Top = 104
-          TabOrder = 48
+          TabOrder = 44
           Width = 116
         end
         object deEndPeriod: TcxDateEdit
           Left = 126
           Top = 104
-          TabOrder = 49
+          TabOrder = 45
           Width = 116
         end
         object cxLabel16: TcxLabel
@@ -1452,7 +1253,7 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController1
         end
         object cbReportSelection: TcxComboBox
-          Left = 818
+          Left = 553
           Top = 104
           Properties.DropDownRows = 15
           Properties.DropDownSizeable = True
@@ -1464,16 +1265,135 @@ object fPositionView: TfPositionView
             'PaketLista'
             'Tomma R'#228'ckor')
           Properties.OnChange = cbReportSelectionPropertiesChange
-          TabOrder = 51
+          TabOrder = 47
           Text = 'Area-Ref'
-          Width = 196
+          Width = 106
+        end
+        object cxButton1: TcxButton
+          Left = 664
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acExpandAllGridView
+          TabOrder = 48
+        end
+        object cxButton2: TcxButton
+          Left = 1116
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acSaveTemplate
+          TabOrder = 49
+        end
+        object cxbtnDeleteTemplate: TcxButton
+          Left = 1003
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acDeleteTemplate
+          TabOrder = 50
+        end
+        object cxButton3: TcxButton
+          Left = 890
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acNewTemplate
+          TabOrder = 51
+        end
+        object cxButton4: TcxButton
+          Left = 777
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acCollapseAllGridView
+          TabOrder = 52
+        end
+        object cxButton5: TcxButton
+          Left = 1229
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acRefreshReport
+          TabOrder = 53
+        end
+        object GroupBox1: TGroupBox
+          Left = 993
+          Top = 39
+          Width = 233
+          Height = 52
+          Caption = 'Exportera till EXCEL'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -14
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 54
+          object btnExportToExcel: TcxButton
+            Left = 4
+            Top = 17
+            Width = 110
+            Height = 26
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Action = acExportGridToExcel
+            Caption = 'Exportera'
+            TabOrder = 0
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -14
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object ckbSelectedLines: TCheckBox
+            Left = 121
+            Top = 24
+            Width = 113
+            Height = 17
+            Caption = 'Valda rader'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -14
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
         end
       end
     end
   end
   object cxLabel13: TcxLabel
-    Left = 823
-    Top = 88
+    Left = 553
+    Top = 89
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -2358,6 +2278,7 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2379,6 +2300,7 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42485.411061793980000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

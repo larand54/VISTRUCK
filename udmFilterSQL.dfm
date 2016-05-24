@@ -37,6 +37,13 @@ object dmFilterSQL: TdmFilterSQL
       
         'JOIN dbo.ProductCategory IMP ON IMP.ProductCategoryNo = PG.Produ' +
         'ctCategoryNo AND IMP.LanguageCode=:LanguageCode'
+      'LEFT OUTER Join dbo.LoadDetail LD '
+      'LEFT join dbo.Invoiced_Load inl on inl.LoadNo = LD.LoadNo'
+      
+        'Inner Join dbo.CustomerShippingPlanDetails csd on csd.CustShipPl' +
+        'anDetailObjectNo = LD.DefaultCustShipObjectNo'
+      'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
+      'on LD.PackageNo = PN.PackageNo'
       'WHERE PN.PositionID IN (145,146)')
     Left = 152
     Top = 8
@@ -49,12 +56,12 @@ object dmFilterSQL: TdmFilterSQL
       end>
   end
   object ds_PositionView: TDataSource
-    DataSet = cds_PositionView_Invoiced
+    DataSet = cds_PositionView
     Left = 276
     Top = 69
   end
-  object cds_PositionView_Invoiced: TFDQuery
-    OnUpdateRecord = cds_PositionView_InvoicedUpdateRecord
+  object cds_PositionView: TFDQuery
+    OnUpdateRecord = cds_PositionViewUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.PackageNumber'
     UpdateObject = PkgUpdateSQL1
@@ -219,136 +226,136 @@ object dmFilterSQL: TdmFilterSQL
         ParamType = ptInput
         Value = 1
       end>
-    object cds_PositionView_InvoicedCity: TStringField
+    object cds_PositionViewCity: TStringField
       FieldName = 'City'
       Origin = 'City'
       Size = 50
     end
-    object cds_PositionView_InvoicedLogicalInventoryName: TStringField
+    object cds_PositionViewLogicalInventoryName: TStringField
       FieldName = 'LogicalInventoryName'
       Origin = 'LogicalInventoryName'
       Size = 50
     end
-    object cds_PositionView_Invoicedpcs: TIntegerField
+    object cds_PositionViewpcs: TIntegerField
       FieldName = 'pcs'
       Origin = 'pcs'
     end
-    object cds_PositionView_InvoicedAM3: TFloatField
+    object cds_PositionViewAM3: TFloatField
       FieldName = 'AM3'
       Origin = 'AM3'
     end
-    object cds_PositionView_InvoicedNM3: TFloatField
+    object cds_PositionViewNM3: TFloatField
       FieldName = 'NM3'
       Origin = 'NM3'
     end
-    object cds_PositionView_InvoicedAT: TFloatField
+    object cds_PositionViewAT: TFloatField
       FieldName = 'AT'
       Origin = 'AT'
     end
-    object cds_PositionView_InvoicedAB: TFloatField
+    object cds_PositionViewAB: TFloatField
       FieldName = 'AB'
       Origin = 'AB'
     end
-    object cds_PositionView_InvoicedNT: TFloatField
+    object cds_PositionViewNT: TFloatField
       FieldName = 'NT'
       Origin = 'NT'
     end
-    object cds_PositionView_InvoicedNB: TFloatField
+    object cds_PositionViewNB: TFloatField
       FieldName = 'NB'
       Origin = 'NB'
     end
-    object cds_PositionView_InvoicedAL: TFloatField
+    object cds_PositionViewAL: TFloatField
       FieldName = 'AL'
       Origin = 'AL'
       ReadOnly = True
     end
-    object cds_PositionView_Invoiceddim: TStringField
+    object cds_PositionViewdim: TStringField
       FieldName = 'dim'
       Origin = 'dim'
       ReadOnly = True
       Size = 13
     end
-    object cds_PositionView_InvoicedTS: TStringField
+    object cds_PositionViewTS: TStringField
       FieldName = 'TS'
       Origin = 'TS'
       Required = True
       Size = 30
     end
-    object cds_PositionView_InvoicedPC: TStringField
+    object cds_PositionViewPC: TStringField
       FieldName = 'PC'
       Origin = 'PC'
       Required = True
       Size = 40
     end
-    object cds_PositionView_InvoicedKV: TStringField
+    object cds_PositionViewKV: TStringField
       FieldName = 'KV'
       Origin = 'KV'
       Required = True
       FixedChar = True
       Size = 30
     end
-    object cds_PositionView_InvoicedUT: TStringField
+    object cds_PositionViewUT: TStringField
       FieldName = 'UT'
       Origin = 'UT'
       Required = True
       Size = 30
     end
-    object cds_PositionView_InvoicedLIPNo: TIntegerField
+    object cds_PositionViewLIPNo: TIntegerField
       FieldName = 'LIPNo'
       Origin = 'LIPNo'
       Required = True
     end
-    object cds_PositionView_InvoicedPIPNo: TIntegerField
+    object cds_PositionViewPIPNo: TIntegerField
       FieldName = 'PIPNo'
       Origin = 'PIPNo'
       Required = True
     end
-    object cds_PositionView_InvoicedVarugruppNamn: TStringField
+    object cds_PositionViewVarugruppNamn: TStringField
       FieldName = 'VarugruppNamn'
       Origin = 'VarugruppNamn'
       Size = 35
     end
-    object cds_PositionView_InvoicedREFERENCE: TStringField
+    object cds_PositionViewREFERENCE: TStringField
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
       Size = 30
     end
-    object cds_PositionView_InvoicedInfo1: TStringField
+    object cds_PositionViewInfo1: TStringField
       FieldName = 'Info1'
       Origin = 'Info1'
       Size = 30
     end
-    object cds_PositionView_InvoicedInfo2: TStringField
+    object cds_PositionViewInfo2: TStringField
       FieldName = 'Info2'
       Origin = 'Info2'
       Size = 30
     end
-    object cds_PositionView_InvoicedAreaName: TStringField
+    object cds_PositionViewAreaName: TStringField
       FieldName = 'AreaName'
       Origin = 'AreaName'
       Size = 50
     end
-    object cds_PositionView_InvoicedPositionName: TStringField
+    object cds_PositionViewPositionName: TStringField
       FieldName = 'PositionName'
       Origin = 'PositionName'
       Size = 50
     end
-    object cds_PositionView_InvoicedStoredDate: TSQLTimeStampField
+    object cds_PositionViewStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
     end
-    object cds_PositionView_InvoicedProduct: TStringField
+    object cds_PositionViewProduct: TStringField
       FieldName = 'Product'
       Origin = 'Product'
       Size = 150
     end
-    object cds_PositionView_InvoicedPackageNo: TIntegerField
+    object cds_PositionViewPackageNo: TIntegerField
       FieldName = 'PackageNo'
       Origin = 'PackageNo'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cds_PositionView_InvoicedSupplierCode: TStringField
+    object cds_PositionViewSupplierCode: TStringField
       FieldName = 'SupplierCode'
       Origin = 'SupplierCode'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
@@ -356,140 +363,6 @@ object dmFilterSQL: TdmFilterSQL
       FixedChar = True
       Size = 3
     end
-  end
-  object cds_PositionView_not_Invoiced: TFDQuery
-    Connection = dmsConnector.FDConnection1
-    SQL.Strings = (
-      'declare @LanguageCode int = 1'
-      'select cy.CityName AS City, '
-      'LIP.LogicalInventoryName, '
-      'Count(str(PackageNo)+suppliercode) AS Paket, '
-      ''
-      'sum(pt.TotalNoOfPieces) AS pcs, '
-      'sum(pt.Totalm3Actual) AS AM3, '
-      'sum(pt.Totalm3Nominal) AS NM3,'
-      ''
-      'pg.ActualThicknessMM AS AT,'
-      'pg.ActualWidthMM AS AB,'
-      'pg.NominalThicknessMM AS NT,'
-      'pg.NominalWidthMM AS NB,'
-      'dbo.getMaxlengthOfPackage(PN.PackageNo) AS AL,'
-      ''
-      
-        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
-        'idthMM as varchar(6)) AS dim,'
-      ''
-      'SPE.SpeciesName AS TS,'
-      'imp.ProductCategoryName AS PC,'
-      'Gr.GradeName AS KV,'
-      'SUR.SurfacingName AS UT,'
-      'lip.LogicalInventoryPointNo AS LIPNo, '
-      'pip.PhysicalInventoryPointNo AS PIPNo,'
-      'va.VarugruppNamn,'
-      'pn.REFERENCE, '
-      'pn.BL_NO AS Info1,  '
-      'pn.Info2,'
-      'ar.AreaName,'
-      'Posi.PositionName'
-      ',PN.StoredDate,'
-      'pde.ProductDisplayName AS Product,'
-      'PN.PackageNo AS PN'
-      ''
-      ''
-      ''
-      'from dbo.PackageNumber pn'
-      'Left outer join dbo.Position posi '
-      'inner join dbo.Area ar on ar.AreaID = posi.AreaID'
-      'on posi.PositionID = pn.PositionID '
-      ''
-      ''
-      'Inner Join dbo.LoadDetail LD on LD.PackageNo = PN.PackageNo'
-      'LEFT join dbo.Invoiced_Load inl on inl.LoadNo = LD.LoadNo'
-      
-        'Inner Join dbo.CustomerShippingPlanDetails csd on csd.CustShipPl' +
-        'anDetailObjectNo = LD.DefaultCustShipObjectNo'
-      'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
-      ''
-      ''
-      
-        'Left Outer Join dbo.CertificationWood cw on cw.CertNo = IsNull(p' +
-        'n.CertNo,3)'
-      
-        'Left join [dbo].[PackageSize] ps on ps.PackageSizeNo = pn.Packag' +
-        'e_Size'
-      'and ps.LanguageCode = 1'
-      
-        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
-        'peno'
-      ''
-      
-        'Inner Join dbo.LengthSpec LS ON LS.LengthSpecNo = pt.LengthSpecN' +
-        'o'
-      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
-      'Left join dbo.ProductDesc pde on pde.ProductNo = pt.ProductNo'
-      'AND pde.LanguageID = @LanguageCode'
-      
-        'inner join dbo.ProductGroup pg on pg.ProductGroupNo = p.ProductG' +
-        'roupNo'
-      
-        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
-        'PointNo = pn.LogicalInventoryPointNo'
-      
-        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
-        'ryPointNo = LIP.PhysicalInventoryPointNo'
-      'Inner Join dbo.City cy on cy.CityNo = PIP.PhyInvPointNameNo'
-      ''
-      
-        'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.Varugrupp' +
-        'No'
-      'AND va.LanguageCode = @LanguageCode'
-      
-        'Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg' +
-        '.ProductCategoryNo'
-      'AND imp.LanguageCode = @LanguageCode'
-      'Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo'
-      'AND SPE.LanguageCode = @LanguageCode'
-      'Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo'
-      'AND SUR.LanguageCode = @LanguageCode'
-      'Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo'
-      'AND Gr.LanguageCode = @LanguageCode'
-      ''
-      'WHERE '
-      'PIP.OwnerNo = 830'
-      'and pn.[Status] = 1'
-      
-        'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Inter' +
-        'nalInvoiceNo = inl.InternalInvoiceNo)'
-      ''
-      'Group by cy.CityName, LIP.LogicalInventoryName, '
-      'pg.ActualThicknessMM,'
-      'pg.ActualWidthMM,'
-      'pg.NominalThicknessMM,'
-      'pg.NominalWidthMM,'
-      'dbo.getMaxlengthOfPackage(PN.PackageNo),'
-      ''
-      
-        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
-        'idthMM as varchar(6)),'
-      ''
-      'SPE.SpeciesName,'
-      'imp.ProductCategoryName,'
-      'Gr.GradeName,'
-      'SUR.SurfacingName,'
-      'lip.LogicalInventoryPointNo, '
-      'pip.PhysicalInventoryPointNo,'
-      'va.VarugruppNamn,'
-      'pn.REFERENCE, '
-      'pn.BL_NO,  '
-      'pn.Info2,'
-      'ar.AreaName,'
-      'Posi.PositionName,'
-      'PN.StoredDate,'
-      'pde.ProductDisplayName,'
-      'PN.PackageNo'
-      '')
-    Left = 484
-    Top = 13
   end
   object PkgUpdateSQL1: TFDUpdateSQL
     Connection = dmsConnector.FDConnection1
