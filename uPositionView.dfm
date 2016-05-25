@@ -64,310 +64,96 @@ object fPositionView: TfPositionView
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
-        object grdPositionDBBandedTableView1: TcxGridDBBandedTableView
+        object grdPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
-          OnEditing = grdPositionDBBandedTableView1Editing
           DataController.DataSource = dmFilterSQL.ds_PositionView
-          DataController.DetailKeyFieldNames = 'AreaName'
-          DataController.KeyFieldNames = 'AreaName'
-          DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
-          DataController.Summary.DefaultGroupSummaryItems = <
-            item
-              FieldName = 'AM3'
-            end>
-          DataController.Summary.FooterSummaryItems = <
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'NM3'
-              DisplayText = 'NM3 Total'
-            end
-            item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'AM3'
-              DisplayText = 'AM3 Total'
-            end
-            item
-              Format = '###########'
-              Kind = skSum
-              FieldName = 'pcs'
-              DisplayText = 'Totalt antal'
-            end>
-          DataController.Summary.SummaryGroups = <
-            item
-              Links = <
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end>
-              SummaryItems = <
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'AM3'
-                end
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'NM3'
-                end
-                item
-                  Format = '#,###,###'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'pcs'
-                end>
-            end
-            item
-              Links = <
-                item
-                end>
-              SummaryItems = <
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'AM3'
-                  DisplayText = 'AM3'
-                end>
-            end>
-          OptionsSelection.MultiSelect = True
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.Indicator = True
-          Bands = <>
-          object grdPositionDBBandedTableView1City: TcxGridDBBandedColumn
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          object grdPositionDBTableView1City: TcxGridDBColumn
             DataBinding.FieldName = 'City'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn
+          object grdPositionDBTableView1LogicalInventoryName: TcxGridDBColumn
             DataBinding.FieldName = 'LogicalInventoryName'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn
+          object grdPositionDBTableView1pcs: TcxGridDBColumn
             DataBinding.FieldName = 'pcs'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AM3: TcxGridDBColumn
             DataBinding.FieldName = 'AM3'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NM3: TcxGridDBColumn
             DataBinding.FieldName = 'NM3'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AT: TcxGridDBColumn
             DataBinding.FieldName = 'AT'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AB: TcxGridDBColumn
             DataBinding.FieldName = 'AB'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NT: TcxGridDBColumn
             DataBinding.FieldName = 'NT'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NB: TcxGridDBColumn
             DataBinding.FieldName = 'NB'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AL: TcxGridDBColumn
             DataBinding.FieldName = 'AL'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn
+          object grdPositionDBTableView1dim: TcxGridDBColumn
             DataBinding.FieldName = 'dim'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn
+          object grdPositionDBTableView1TS: TcxGridDBColumn
             DataBinding.FieldName = 'TS'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn
+          object grdPositionDBTableView1PC: TcxGridDBColumn
             DataBinding.FieldName = 'PC'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn
+          object grdPositionDBTableView1KV: TcxGridDBColumn
             DataBinding.FieldName = 'KV'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn
+          object grdPositionDBTableView1UT: TcxGridDBColumn
             DataBinding.FieldName = 'UT'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn
+          object grdPositionDBTableView1LIPNo: TcxGridDBColumn
             DataBinding.FieldName = 'LIPNo'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn
+          object grdPositionDBTableView1PIPNo: TcxGridDBColumn
             DataBinding.FieldName = 'PIPNo'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
+          object grdPositionDBTableView1VarugruppNamn: TcxGridDBColumn
             DataBinding.FieldName = 'VarugruppNamn'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+          object grdPositionDBTableView1REFERENCE: TcxGridDBColumn
             DataBinding.FieldName = 'REFERENCE'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn
+          object grdPositionDBTableView1Info1: TcxGridDBColumn
             DataBinding.FieldName = 'Info1'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn
+          object grdPositionDBTableView1Info2: TcxGridDBColumn
             DataBinding.FieldName = 'Info2'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AreaName: TcxGridDBColumn
             DataBinding.FieldName = 'AreaName'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn
+          object grdPositionDBTableView1PositionName: TcxGridDBColumn
             DataBinding.FieldName = 'PositionName'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn
+          object grdPositionDBTableView1StoredDate: TcxGridDBColumn
             DataBinding.FieldName = 'StoredDate'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn
+          object grdPositionDBTableView1Product: TcxGridDBColumn
             DataBinding.FieldName = 'Product'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn
+          object grdPositionDBTableView1PackageNo: TcxGridDBColumn
             DataBinding.FieldName = 'PackageNo'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-          object grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn
+          object grdPositionDBTableView1SupplierCode: TcxGridDBColumn
             DataBinding.FieldName = 'SupplierCode'
-            Position.BandIndex = -1
-            Position.ColIndex = -1
-            Position.RowIndex = -1
           end
-        end
-        object grdPositionDBBandedTableView2: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView3: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView4: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView5: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView6: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
         end
         object grdPositionLevel1: TcxGridLevel
-          GridView = grdPositionDBBandedTableView1
+          GridView = grdPositionDBTableView1
         end
       end
     end
@@ -2295,6 +2081,7 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2316,6 +2103,7 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42485.411061793980000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

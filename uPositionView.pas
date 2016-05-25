@@ -214,7 +214,6 @@ type
     cxGridPopupMenu1: TcxGridPopupMenu;
     pmPkgNos: TdxBarPopupMenu;
     acExpandAllGridView: TAction;
-    grdPositionDBBandedTableView1: TcxGridDBBandedTableView;
     cxGridPopupMenu2: TcxGridPopupMenu;
     acPrint: TAction;
     dxComponentPrinter1Link1: TdxGridReportLink;
@@ -297,11 +296,6 @@ type
     cds_StorageGroupsCITYNAME: TStringField;
     cds_StorageGroupsLogicalInventoryName: TStringField;
     cds_StorageGroupsInvCode: TStringField;
-    grdPositionDBBandedTableView2: TcxGridDBBandedTableView;
-    grdPositionDBBandedTableView3: TcxGridDBBandedTableView;
-    grdPositionDBBandedTableView4: TcxGridDBBandedTableView;
-    grdPositionDBBandedTableView5: TcxGridDBBandedTableView;
-    grdPositionDBBandedTableView6: TcxGridDBBandedTableView;
     cbInklEjFakt: TcxComboBox;
     ccbReference: TcxCheckComboBox;
     ccbInfo2: TcxCheckComboBox;
@@ -359,33 +353,6 @@ type
     sq_UserProfileShowProduct: TIntegerField;
     sq_UserProfileFilter1: TStringField;
     cbReportSelection: TcxComboBox;
-    grdPositionDBBandedTableView1City: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1PackageNo: TcxGridDBBandedColumn;
-    grdPositionDBBandedTableView1SupplierCode: TcxGridDBBandedColumn;
     acExportGridToExcel: TAction;
     cxButton1: TcxButton;
     cxButton2: TcxButton;
@@ -397,6 +364,34 @@ type
     btnExportToExcel: TcxButton;
     ckbSelectedLines: TCheckBox;
     acOnEnterFilterCombos: TAction;
+    grdPositionDBTableView1: TcxGridDBTableView;
+    grdPositionDBTableView1City: TcxGridDBColumn;
+    grdPositionDBTableView1LogicalInventoryName: TcxGridDBColumn;
+    grdPositionDBTableView1pcs: TcxGridDBColumn;
+    grdPositionDBTableView1AM3: TcxGridDBColumn;
+    grdPositionDBTableView1NM3: TcxGridDBColumn;
+    grdPositionDBTableView1AT: TcxGridDBColumn;
+    grdPositionDBTableView1AB: TcxGridDBColumn;
+    grdPositionDBTableView1NT: TcxGridDBColumn;
+    grdPositionDBTableView1NB: TcxGridDBColumn;
+    grdPositionDBTableView1AL: TcxGridDBColumn;
+    grdPositionDBTableView1dim: TcxGridDBColumn;
+    grdPositionDBTableView1TS: TcxGridDBColumn;
+    grdPositionDBTableView1PC: TcxGridDBColumn;
+    grdPositionDBTableView1KV: TcxGridDBColumn;
+    grdPositionDBTableView1UT: TcxGridDBColumn;
+    grdPositionDBTableView1LIPNo: TcxGridDBColumn;
+    grdPositionDBTableView1PIPNo: TcxGridDBColumn;
+    grdPositionDBTableView1VarugruppNamn: TcxGridDBColumn;
+    grdPositionDBTableView1REFERENCE: TcxGridDBColumn;
+    grdPositionDBTableView1Info1: TcxGridDBColumn;
+    grdPositionDBTableView1Info2: TcxGridDBColumn;
+    grdPositionDBTableView1AreaName: TcxGridDBColumn;
+    grdPositionDBTableView1PositionName: TcxGridDBColumn;
+    grdPositionDBTableView1StoredDate: TcxGridDBColumn;
+    grdPositionDBTableView1Product: TcxGridDBColumn;
+    grdPositionDBTableView1PackageNo: TcxGridDBColumn;
+    grdPositionDBTableView1SupplierCode: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -621,7 +616,7 @@ begin
  Result:= False ;
  With dmsSystem do
  Begin
-  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
+(*  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
   sq_GridSets2.ParamByName('UserID').AsInteger   := UserID ;
 //  sq_GridSets2.ParamByName('Form').AsString      := Form ;
 //  sq_GridSets2.ParamByName('Name').AsString      := MallName ;
@@ -639,7 +634,7 @@ begin
    end;
   End ;
   sq_GridSets2.Active:= False ;
- End ;
+*) End ;
 end;
 
 procedure TfPositionView.Update(aSubject: IInterface);
@@ -893,7 +888,7 @@ begin
     End;
 
     // Add Order by
-    SQL.Add('Order By LIP.LogicalInventoryName, CY.CITYNAME');
+    SQL.Add('Order By CY.CITYNAME, LIP.LogicalInventoryName');
 
     // Put new SQL into the dataset and activate it and load checkCombobox from it
     cds_StorageGroups.SQL.Clear;
@@ -1041,7 +1036,7 @@ begin
     cUserLipNoExists  := True
   else
     cUserLipNoExists := false;
-
+  dmFilterSQL.cds_PositionView.Active := false;
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
   LoggDir := dmsSystem.Get_Dir('UserDir');
@@ -1250,7 +1245,7 @@ end;
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
- grdPositionDBBandedTableView1.ViewData.Collapse(True);
+ grdPositionDBTableView1.ViewData.Collapse(True);
 end;
 
 
@@ -1282,7 +1277,7 @@ end;
 
 procedure TfPositionView.acExpandAllGridViewExecute(Sender: TObject);
 begin
- grdPositionDBBandedTableView1.ViewData.Expand(True);
+ grdPositionDBTableView1.ViewData.Expand(True);
 end;
 
 procedure TfPositionView.acExportExecute(Sender: TObject);
@@ -1399,6 +1394,7 @@ begin
   else
     result :='AreaRef.txt';
   end;
+  result := getCurrentDir + '\'+result;
 end;
 
 Function TfPositionView.ComboBoxFilterChecked(const Kolumn : String;combo : TcxCheckComboBox) : Boolean ;
@@ -1490,37 +1486,37 @@ begin
     exit;
   end;
   // Select report
-  reportIndex := GetReportindex;
-  reportTemplate := getReportTemplate(reportIndex);
-  if reportTemplate <> '' then
-  begin
-    try
-      Source := cbInklEjFakt.ItemIndex;
-      DataSet := dmFilterSQL.cds_PositionView;
-      // Deactivate datasource
-      DataSet.Active := false;
+  reportIndex := GetReportIndex;
+  reportTemplate := GetReportTemplate(reportIndex);
+  if not fileExists(reportTemplate) then
+    raise Exception.create('The SQL-Setup file: ' + reportTemplate +
+      ' does not exist!');
+  try
+    Source := cbInklEjFakt.ItemIndex;
+    DataSet := dmFilterSQL.cds_PositionView;
+    // Deactivate datasource
+    DataSet.Active := False;
+    DataSet.ParamByName('LanguageCode').AsInteger := ThisUser.LanguageID;
 
-      // Connect the dataset to the grid:s datasource
-      dmFilterSQL.ds_PositionView.DataSet := DataSet;
-      // Retrieve base-sql
-      BaseSQL := GetBaseSQL(DataSet.SQL);
-      // Create WHERE-section
-      WhereList := CreateWhereList(0,source);
-      // Create the complete SQL
-      SQLView := TSQLView.create(grdPositionDBBandedTableView1, reportTemplate,
-                    WhereList, BaseSQL);
-      SQLBUILD := TSQLBuild.create(SQLView);
+    // Connect the dataset to the grid:s datasource
+    dmFilterSQL.ds_PositionView.DataSet := DataSet;
+    // Retrieve base-sql
+    BaseSQL := GetBaseSQL(DataSet.SQL);
+    // Create WHERE-section
+    WhereList := CreateWhereList(0, Source);
+    // Create the complete SQL
+    SQLView := TSQLView.create(grdPositionDBTableView1, reportTemplate,
+      WhereList, BaseSQL);
+    SQLBuild := TSQLBuild.create(SQLView);
 
-
-      // Run query
-      DataSet.SQL := SQLView.SQL;
-      DataSet.Active := True;
-    finally
-      if assigned(SQLBUILD) then
-        SQLBUILD.Free;
-      if assigned(SQLView) then
-        SQLView.Free;
-    end;
+    // Run query
+    DataSet.SQL := SQLView.SQL;
+    DataSet.Active := True;
+  finally
+    if assigned(SQLBuild) then
+      SQLBuild.Free;
+    if assigned(SQLView) then
+      SQLView.Free;
   end;
 end;
 
@@ -1551,7 +1547,7 @@ begin
     Template := cbReportSelection.Properties.Items.Strings
       [cbReportSelection.ItemIndex];
     View := Template + '/' + Form;
-    Grid := grdPositionDBBandedTableView1;
+    Grid := grdPositionDBTableView1;
     StoreGridLayout(UserID, Form, View, Grid, Template);
 //    dmsSystem.StoreGridLayout_Special(UserID, Form, View, Grid, Template);
     SaveUserProfile;
@@ -1764,7 +1760,7 @@ begin
   Form := TForm(self).Name;
   GridTemplate := cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex];
   View := GridTemplate + '/' + Form;
-  Grid := grdPositionDBBandedTableView1;
+  Grid := grdPositionDBTableView1;
   LoadGridLayout( UserID, Form, View, Grid, GridTemplate);
 //  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
  End;

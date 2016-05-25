@@ -3,7 +3,7 @@ unit uSQLView;
 interface
 uses
   Classes, SysUtils, System.Generics.Collections,
-  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBBandedTableView,
+  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBTableView,
   uISQLHelper, uISQLViewField, uISQLView, uISQLBuild;
 type
 
@@ -43,7 +43,7 @@ type
 
   TSQLView = class(TInterfacedObject, ISQLView)
     private
-      Fgridview : TcxGridDBBandedTableView;
+      Fgridview : TcxGridDBTableView;
       FObjectList : TList<TSQLViewField>;
       FKeyFields: String;
       FSQLFile: string;           //D:\git\delphi\VISTRUCK\EXE\SQL_SetUp.txt
@@ -54,11 +54,11 @@ type
       function getStatus(aGridField: string): boolean;
       procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
-      Constructor create(const aGridView: TcxGridDBBandedTableView; const aSQLFile: string;
+      Constructor create(const aGridView: TcxGridDBTableView; const aSQLFile: string;
        const aWhereList: TStrings; const aBaseSQL: TStrings);
       Destructor destroy; override;
       property ObjectList: TList<TSQLViewField> read FObjectList;
-      property gridView: TcxGridDBBandedTableView read FGridView;
+      property gridView: TcxGridDBTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
       property SQLFile: string read FSQLFile;
       property SQL: TStrings read FSQL;
@@ -141,7 +141,7 @@ begin
  Result:= S ;
 end;
 
-constructor TSQLView.create(const aGridView: TcxGridDBBandedTableView;
+constructor TSQLView.create(const aGridView: TcxGridDBTableView;
               const aSQLFile: string; const aWhereList: TStrings; const aBaseSQL: TStrings);
 begin
   Fgridview := aGridView;
@@ -181,11 +181,12 @@ var
   FieldVisible : Boolean;
   dir          : string ;
 begin
-  dir          := GetCurrentDir;
   FObjectList  := TList<TSQLViewField>.Create;
   buffer       := TStringList.Create;
   StrTemp      := TStringList.Create;
-  buffer.LoadFromFile(dir + '\'+SQLFile);
+  if not FileExists(SQLFile) then raise Exception.Create('The SQL-Setup file: '+SQLFILE+' does not exist!');
+
+  buffer.LoadFromFile(SQLFile);
   for i:= 0 to buffer.Count - 1 do
   begin
     StrTemp.Delimiter     := ' ';
