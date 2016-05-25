@@ -346,7 +346,7 @@ begin
   end
   else if aStoreAreaList.Count > 0 then
   begin
-    s := 'WHERE PN.AreaID IN (';
+    s := 'WHERE Ar.AreaID IN (';
     for i in aStoreAreaList do
     begin
       s := s + intToStr(i) + ',';
@@ -367,20 +367,20 @@ begin
     case aSource of
       0:
         begin
-          s := s + 'AND PN.Status = 1'; // In store
-          s := s + 'AND OH.OrderType = 0';
+          s := s + 'AND PN.Status = 1 '; // In store
+          s := s + 'AND OH.OrderType = 0 ';
         end;
       1:
         begin // Not invoiced + store
           s := s + 'OR (NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
           s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
-          s := s + 'OR PN.status = 1)';
-          s := s + 'AND OH.OrderType = 0';
+          s := s + 'OR PN.status = 1) ';
+          s := s + 'AND OH.OrderType = 0 ';
         end;
       2:
         begin // Not Invoiced
-          s := s + 'AND OH.OrderType = 0';
-          s := s + 'AND PN.Status = 0';
+          s := s + 'AND OH.OrderType = 0 ';
+          s := s + 'AND PN.Status = 0 ';
           s := s + 'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
           s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
         end;
@@ -389,10 +389,13 @@ begin
     strSQL := copy(sqFilterData.SQL.Text, 1,
       pos('WHERE', sqFilterData.SQL.Text) - 1);
     sqFilterData.SQL.Text := strSQL + s;
+//    sqFilterData.SQL.Text := strSQL + ' WHERE PN.Status=-999';
   end
   else
   begin
-
+    strSQL := copy(sqFilterData.SQL.Text, 1,
+      pos('WHERE', sqFilterData.SQL.Text) - 1);
+    sqFilterData.SQL.Text := strSQL + ' WHERE PN.Status=-999';
   end;
 
 end;

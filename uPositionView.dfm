@@ -64,8 +64,6 @@ object fPositionView: TfPositionView
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 57
-        ExplicitHeight = 802
         object grdPositionDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = grdPositionDBBandedTableView1Editing
@@ -641,6 +639,7 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 10
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbAB: TcxCheckComboBox
@@ -660,6 +659,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
           TabOrder = 11
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbAL: TcxCheckComboBox
@@ -679,6 +679,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsFlat
           Style.StyleController = cxEditStyleController3
           TabOrder = 12
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbTS2: TcxCheckComboBox
@@ -698,6 +699,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 5
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 77
         end
         object ccbKV2: TcxCheckComboBox
@@ -717,6 +719,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 6
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 72
         end
         object ccbSU2: TcxCheckComboBox
@@ -736,6 +739,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 7
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 94
         end
         object ccbIMP: TcxCheckComboBox
@@ -755,6 +759,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 8
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 105
         end
         object cbOwner: TcxCheckComboBox
@@ -791,6 +796,7 @@ object fPositionView: TfPositionView
           Style.BorderStyle = ebsSingle
           Style.StyleController = cxEditStyleController3
           TabOrder = 9
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 82
         end
         object cxLabel29: TcxLabel
@@ -906,6 +912,7 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 26
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbNB: TcxCheckComboBox
@@ -928,6 +935,7 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = btsOffice11
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 27
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object cxLabel35: TcxLabel
@@ -1189,6 +1197,7 @@ object fPositionView: TfPositionView
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
           TabOrder = 39
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 97
         end
         object ccbInfo2: TcxCheckComboBox
@@ -1197,6 +1206,7 @@ object fPositionView: TfPositionView
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
           TabOrder = 40
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 95
         end
         object ccbInfo1: TcxCheckComboBox
@@ -1205,6 +1215,7 @@ object fPositionView: TfPositionView
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
           TabOrder = 41
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 95
         end
         object cbInkTimeInDateFilter: TcxCheckBox
@@ -1226,18 +1237,20 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           Caption = 'Uppdatera filter'
           TabOrder = 43
-          OnClick = cxBtnUpdFilterClick
+          OnClick = UpdateDataFilterCombos
         end
         object deStartPeriod: TcxDateEdit
           Left = 4
           Top = 104
           TabOrder = 44
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 116
         end
         object deEndPeriod: TcxDateEdit
           Left = 126
           Top = 104
           TabOrder = 45
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 116
         end
         object cxLabel16: TcxLabel
@@ -2245,6 +2258,10 @@ object fPositionView: TfPositionView
       Caption = 'Exportera till EXCEL'
       OnExecute = acExportGridToExcelExecute
     end
+    object acOnEnterFilterCombos: TAction
+      Caption = 'acOnEnterFilterCombos'
+      OnExecute = acOnEnterFilterCombosExecute
+    end
   end
   object pmFormShortcuts: TPopupMenu
     AutoPopup = False
@@ -2278,7 +2295,6 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2300,7 +2316,6 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42485.411061793980000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

@@ -396,6 +396,7 @@ type
     GroupBox1: TGroupBox;
     btnExportToExcel: TcxButton;
     ckbSelectedLines: TCheckBox;
+    acOnEnterFilterCombos: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -428,12 +429,13 @@ type
     procedure cbStoragePosPropertiesCloseUp(Sender: TObject);
     procedure cbInkTimeInDateFilterPropertiesChange(Sender: TObject);
     procedure acRequestFilterUpdateExecute(Sender: TObject);
-    procedure cxBtnUpdFilterClick(Sender: TObject);
+    procedure UpdateDataFilterCombos(Sender: TObject);
     procedure acNewTemplateExecute(Sender: TObject);
     procedure acExportGridToExcelExecute(Sender: TObject);
     procedure grdPositionDBBandedTableView1Editing(
       Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
       var AAllow: Boolean);
+    procedure acOnEnterFilterCombosExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -642,7 +644,7 @@ end;
 
 procedure TfPositionView.Update(aSubject: IInterface);
 begin
-
+  try
   UpdateFilterCombos(ccbAT, TdmFilterSQL(aSubject).ATL);
   UpdateFilterCombos(ccbAB, TdmFilterSQL(aSubject).AWL);
   UpdateFilterCombos(ccbNT, TdmFilterSQL(aSubject).NTL);
@@ -658,6 +660,12 @@ begin
   UpdateFilterCombos(ccVarugrupp, TdmFilterSQL(aSubject).VaruGruppL);
   FFilterUpdated := true;
   EnableFilterButton(false);
+  finally
+    TdmFilterSQL(aSubject).ATL.free;
+    TdmFilterSQL(aSubject).AWL.free;
+    TdmFilterSQL(aSubject).NTL.free;
+    TdmFilterSQL(aSubject).NWL.free;
+  end;
 end;
 
 procedure TfPositionView.UpdateFilterCombos(const aCombo: TcxCheckComboBox;
@@ -666,22 +674,25 @@ Var i : Integer ;
   s1,s2: string;
 //  SortedKeys: TList<String>;
 begin
-  aCombo.Properties.Items.Clear;
-//  SortedKeys := TList<string>.create(aList.Keys);
-//  SortedKeys.Sort;
-  for s1 in aList do
-  Begin
-    try
-      aCombo.Properties.Items.AddCheckItem(s1,s1);
-    except
-      on E: Exception do
-      begin
-        ShowMessage('FilterData error! Please contact support! Code: ' +
-          intToStr(i) + sLineBreak + 'Send the bugreport!');
-        raise;
+  try
+    aCombo.Properties.Items.Clear;
+    // SortedKeys := TList<string>.create(aList.Keys);
+    // SortedKeys.Sort;
+    for s1 in aList do
+    Begin
+      try
+        aCombo.Properties.Items.AddCheckItem(s1, s1);
+      except
+        on E: Exception do
+        begin
+          ShowMessage('FilterData error! Please contact support! Code: ' +
+            intToStr(i) + sLineBreak + 'Send the bugreport!');
+          raise;
+        end;
       end;
-    end;
-  End;
+    End;
+  finally
+  end;
 end;
 
 procedure TfPositionView.LoadCheckBox(const aFieldName, aCheckItemFld, aTagField, aCheckItem: string;
@@ -937,8 +948,10 @@ begin
       + s + ')');
 
     Try
-      cds_StoragePos.SQL.SaveToFile(LoggDir+'cds_StoragePos.sql');
-
+      try
+        cds_StoragePos.SQL.SaveToFile(LoggDir+'cds_StoragePos.sql');
+      except
+      end;
       cds_StoragePos.Active := True;
       cbStoragePos.Properties.Items.Clear;
 
@@ -1644,6 +1657,15 @@ begin
  End;
 end;
 
+procedure TfPositionView.acOnEnterFilterCombosExecute(Sender: TObject);
+begin
+  if not filterUpdated then
+  begin
+    UpdateDataFilterCombos(Sender);
+    EnableFilterButton(false);
+  end;
+end;
+
 procedure TfPositionView.cbInkTimeInDateFilterPropertiesChange(Sender: TObject);
 begin
   if cbInkTimeInDateFilter.Checked then
@@ -1748,7 +1770,7 @@ begin
  End;
 end;
 
-procedure TfPositionView.cxBtnUpdFilterClick(Sender: TObject);
+procedure TfPositionView.UpdateDataFilterCombos(Sender: TObject);
 var
   T: TList<integer>; // Selected positions
   A: TList<integer>; // Selected Areas
@@ -1756,9 +1778,11 @@ var
   Source: integer;
   iValue, Count, x: integer;
 begin
+  T := TList<integer>.create;
+  A := TList<integer>.create;
+  G := TList<integer>.create;
   try
     Source := cbInklEjFakt.ItemIndex;
-    T := TList<integer>.create;
 
     // Check if positions loaded
     Count := cbStoragePos.Properties.Items.Count;
@@ -1781,7 +1805,6 @@ begin
     if T.Count < 1 then
     begin
       // Check if storage areas is selected
-      A := TList<integer>.create;
       Count := cbStorageArea.Properties.Items.Count;
       for x := 0 to Count - 1 do
       begin
@@ -1796,7 +1819,6 @@ begin
     if A.Count < 1 then
     begin
       // Check if storage groups is selected
-      G := TList<integer>.create;
       Count := cbStorageGroup.Properties.Items.Count;
       for x := 0 to Count - 1 do
       begin
@@ -1834,10 +1856,14 @@ end;
 procedure TfPositionView.EnableFilterButton(Enable: boolean);
 begin
   cxBtnUpdFilter.Enabled := Enable;
-  if not Enable then
-    cxBtnUpdFilter.Caption := 'Filter updated'
-  else
-    cxBtnUpdFilter.Caption := 'Update Filter!'
+  if not Enable then begin
+    cxBtnUpdFilter.Caption := 'Filter updated';
+    FFilterUpdated := true
+  end
+  else begin
+    cxBtnUpdFilter.Caption := 'Update Filter!';
+    FFilterUpdated := false;
+  end;
 end;
 
 procedure TfPositionView.SaveUserProfile ;

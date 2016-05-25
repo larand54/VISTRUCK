@@ -44,6 +44,12 @@ object dmFilterSQL: TdmFilterSQL
         'anDetailObjectNo = LD.DefaultCustShipObjectNo'
       'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
       'on LD.PackageNo = PN.PackageNo'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = PN.LogicalInventoryPointNo'
+      
+        'Inner Join dbo.Area Ar on Ar.PIPNo = LIP.PhysicalInventoryPointN' +
+        'o'
       'WHERE PN.PositionID IN (145,146)')
     Left = 152
     Top = 8
