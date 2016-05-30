@@ -74,21 +74,22 @@ object dmFilterSQL: TdmFilterSQL
     SQL.Strings = (
       'declare @LanguageCode int = 1'
       
-        'declare @Alternativ int = 1 -- LAGRADE PAKET, (2)=EJ FAKTURERADE' +
-        ' & EJ LAGRADE PAKET, (3)=EJ FAKTURERADE + LAGRADE PAKET '
+        'declare @Source int = 1 -- LAGRADE PAKET, (2)=EJ FAKTURERADE & E' +
+        'J LAGRADE PAKET, (3)=EJ FAKTURERADE + LAGRADE PAKET '
+      'SET @LanguageCode = :LanguageCode'
+      'SET @Source = :Source'
       'select '
       'cy.CityName AS City, '
       'LIP.LogicalInventoryName, '
-      '--Count(str(PN.PackageNo)+PN.SupplierCode) AS Paket, '
-      'pt.TotalNoOfPieces AS pcs, '
-      'pt.Totalm3Actual AS AM3, '
-      'pt.Totalm3Nominal AS NM3,'
-      ''
+      'COUNT(pn.PackageNo) as Paket,'
+      'sum(ptd.NoOfPieces) AS PCS,'
+      'sum(ptd.m3Actual) AS AM3,'
+      'sum(ptd.m3Nominal) AS NM3,'
       'pg.ActualThicknessMM AS AT,'
       'pg.ActualWidthMM AS AB,'
       'pg.NominalThicknessMM AS NT,'
       'pg.NominalWidthMM AS NB,'
-      'dbo.getMaxlengthOfPackage(PN.PackageNo) AS AL,'
+      'dbo.getMaxlengthOfPackage(PN.PackageNo, PN.SupplierCode) AS AL,'
       ''
       
         'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
@@ -98,19 +99,17 @@ object dmFilterSQL: TdmFilterSQL
       'imp.ProductCategoryName AS PC,'
       'Gr.GradeName AS KV,'
       'SUR.SurfacingName AS UT,'
-      'lip.LogicalInventoryPointNo AS LIPNo, '
-      'pip.PhysicalInventoryPointNo AS PIPNo,'
       'va.VarugruppNamn,'
       'pn.REFERENCE, '
-      'pn.BL_NO AS Info1,  '
-      'pn.Info2,'
+      'isnull(pn.BL_NO,'#39#39') AS Info1,  '
+      'isnull(pn.Info2,'#39#39') AS Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
       ',PN.StoredDate'
       ',pde.ProductDisplayName AS Product'
       ',PN.PackageNo'
       ',PN.SupplierCode'
-      ',PN.DateCreated'
+      '--,PN.DateCreated'
       ''
       ''
       ''
@@ -126,7 +125,9 @@ object dmFilterSQL: TdmFilterSQL
         'Inner Join dbo.CustomerShippingPlanDetails csd on csd.CustShipPl' +
         'anDetailObjectNo = LD.DefaultCustShipObjectNo'
       'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
-      'on LD.PackageNo = PN.PackageNo'
+      
+        'on LD.PackageNo = PN.PackageNo AND LD.SupplierCode = PN.Supplier' +
+        'Code AND @Source > 1'
       ''
       ''
       
@@ -137,12 +138,12 @@ object dmFilterSQL: TdmFilterSQL
         'e_Size'
       'and ps.LanguageCode = 1'
       
-        'inner join dbo.Packagetype pt on pt.packagetypeno = pn.packagety' +
+        'inner join dbo.Packagetypedetail ptd on ptd.packagetypeno = pn.p' +
+        'ackagetypeno'
+      
+        'inner join dbo.PackageType pt on pt.packagetypeno = pn.packagety' +
         'peno'
       ''
-      
-        'Inner Join dbo.LengthSpec LS ON LS.LengthSpecNo = pt.LengthSpecN' +
-        'o'
       'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
       'Left join dbo.ProductDesc pde on pde.ProductNo = pt.ProductNo'
       'AND pde.LanguageID = @LanguageCode'
@@ -160,22 +161,24 @@ object dmFilterSQL: TdmFilterSQL
       
         'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.Varugrupp' +
         'No'
-      'AND va.LanguageCode = :LanguageCode'
+      'AND va.LanguageCode = @LanguageCode'
       
         'Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg' +
         '.ProductCategoryNo'
-      'AND imp.LanguageCode = :LanguageCode'
+      'AND imp.LanguageCode = @LanguageCode'
       'Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo'
-      'AND SPE.LanguageCode = :LanguageCode'
+      'AND SPE.LanguageCode = @LanguageCode'
       'Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo'
-      'AND SUR.LanguageCode = :LanguageCode'
+      'AND SUR.LanguageCode = @LanguageCode'
       'Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo'
-      'AND Gr.LanguageCode = :LanguageCode'
+      'AND Gr.LanguageCode = @LanguageCode'
       ''
       'WHERE '
-      'PIP.OwnerNo = 830'
-      'and LIP.LogicalInventoryPointNo=10721'
-      'and PN.DateCreated > DATEADD(year,-1,GETDATE())'
+      '(PN.STATUS = 1)'
+      ''
+      'AND (PIP.OwnerNo IN (76))'
+      'AND (LIP.LogicalInventoryPointNo IN (10435))'
+      '--and (@Source>0 AND OH.ORDERTYPE = 0)'
       '--  EJ FAKTURERADE OCH EJ LAGRADE'
       '--  ============================='
       '--and pn.[Status] = 0 --1460 rader'
@@ -221,7 +224,51 @@ object dmFilterSQL: TdmFilterSQL
       
         '--OR not EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Inte' +
         'rnalInvoiceNo = inl.InternalInvoiceNo))'
-      'Order by PN.DateCreated'
+      'Group by'
+      'cy.CityName,'
+      'LIP.LogicalInventoryName, '
+      
+        'CAST(pg.ActualThicknessMM as varchar(6)) + '#39'x'#39' + cast(pg.ActualW' +
+        'idthMM as varchar(6))'
+      ','
+      'SPE.SpeciesName'
+      ','
+      'imp.ProductCategoryName'
+      ','
+      'Gr.GradeName'
+      ','
+      'SUR.SurfacingName'
+      ''
+      ','
+      'pg.ActualThicknessMM'
+      ','
+      'pg.ActualWidthMM'
+      ','
+      'pg.NominalThicknessMM'
+      ','
+      'pg.NominalWidthMM'
+      ','
+      'dbo.getMaxLengthOfPackage(PN.PackageNo, PN.SupplierCode)'
+      ','
+      'va.VarugruppNamn'
+      ','
+      'pn.REFERENCE'
+      ','
+      'pn.BL_NO'
+      ','
+      'pn.Info2'
+      ','
+      'ar.AreaName'
+      ','
+      'Posi.PositionName'
+      ','
+      'PN.StoredDate'
+      ','
+      'PDE.ProductDisplayName'
+      ',PN.PackageNo'
+      ',PN.SupplierCode'
+      '--,PN.DateCreated'
+      '--Order by PN.DateCreated'
       '')
     Left = 276
     Top = 13
@@ -231,144 +278,13 @@ object dmFilterSQL: TdmFilterSQL
         DataType = ftInteger
         ParamType = ptInput
         Value = 1
+      end
+      item
+        Name = 'SOURCE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 0
       end>
-    object cds_PositionViewCity: TStringField
-      FieldName = 'City'
-      Origin = 'City'
-      Size = 50
-    end
-    object cds_PositionViewLogicalInventoryName: TStringField
-      FieldName = 'LogicalInventoryName'
-      Origin = 'LogicalInventoryName'
-      Size = 50
-    end
-    object cds_PositionViewpcs: TIntegerField
-      FieldName = 'pcs'
-      Origin = 'pcs'
-    end
-    object cds_PositionViewAM3: TFloatField
-      FieldName = 'AM3'
-      Origin = 'AM3'
-    end
-    object cds_PositionViewNM3: TFloatField
-      FieldName = 'NM3'
-      Origin = 'NM3'
-    end
-    object cds_PositionViewAT: TFloatField
-      FieldName = 'AT'
-      Origin = 'AT'
-    end
-    object cds_PositionViewAB: TFloatField
-      FieldName = 'AB'
-      Origin = 'AB'
-    end
-    object cds_PositionViewNT: TFloatField
-      FieldName = 'NT'
-      Origin = 'NT'
-    end
-    object cds_PositionViewNB: TFloatField
-      FieldName = 'NB'
-      Origin = 'NB'
-    end
-    object cds_PositionViewAL: TFloatField
-      FieldName = 'AL'
-      Origin = 'AL'
-      ReadOnly = True
-    end
-    object cds_PositionViewdim: TStringField
-      FieldName = 'dim'
-      Origin = 'dim'
-      ReadOnly = True
-      Size = 13
-    end
-    object cds_PositionViewTS: TStringField
-      FieldName = 'TS'
-      Origin = 'TS'
-      Required = True
-      Size = 30
-    end
-    object cds_PositionViewPC: TStringField
-      FieldName = 'PC'
-      Origin = 'PC'
-      Required = True
-      Size = 40
-    end
-    object cds_PositionViewKV: TStringField
-      FieldName = 'KV'
-      Origin = 'KV'
-      Required = True
-      FixedChar = True
-      Size = 30
-    end
-    object cds_PositionViewUT: TStringField
-      FieldName = 'UT'
-      Origin = 'UT'
-      Required = True
-      Size = 30
-    end
-    object cds_PositionViewLIPNo: TIntegerField
-      FieldName = 'LIPNo'
-      Origin = 'LIPNo'
-      Required = True
-    end
-    object cds_PositionViewPIPNo: TIntegerField
-      FieldName = 'PIPNo'
-      Origin = 'PIPNo'
-      Required = True
-    end
-    object cds_PositionViewVarugruppNamn: TStringField
-      FieldName = 'VarugruppNamn'
-      Origin = 'VarugruppNamn'
-      Size = 35
-    end
-    object cds_PositionViewREFERENCE: TStringField
-      FieldName = 'REFERENCE'
-      Origin = 'REFERENCE'
-      Size = 30
-    end
-    object cds_PositionViewInfo1: TStringField
-      FieldName = 'Info1'
-      Origin = 'Info1'
-      Size = 30
-    end
-    object cds_PositionViewInfo2: TStringField
-      FieldName = 'Info2'
-      Origin = 'Info2'
-      Size = 30
-    end
-    object cds_PositionViewAreaName: TStringField
-      FieldName = 'AreaName'
-      Origin = 'AreaName'
-      Size = 50
-    end
-    object cds_PositionViewPositionName: TStringField
-      FieldName = 'PositionName'
-      Origin = 'PositionName'
-      Size = 50
-    end
-    object cds_PositionViewStoredDate: TSQLTimeStampField
-      FieldName = 'StoredDate'
-      Origin = 'StoredDate'
-    end
-    object cds_PositionViewProduct: TStringField
-      FieldName = 'Product'
-      Origin = 'Product'
-      Size = 150
-    end
-    object cds_PositionViewPackageNo: TIntegerField
-      FieldName = 'PackageNo'
-      Origin = 'PackageNo'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cds_PositionViewSupplierCode: TStringField
-      FieldName = 'SupplierCode'
-      Origin = 'SupplierCode'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-      FixedChar = True
-      Size = 3
-    end
   end
   object PkgUpdateSQL1: TFDUpdateSQL
     Connection = dmsConnector.FDConnection1

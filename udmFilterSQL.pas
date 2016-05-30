@@ -27,33 +27,6 @@ type
     ds_PositionView: TDataSource;
     cds_PositionView: TFDQuery;
     PkgUpdateSQL1: TFDUpdateSQL;
-    cds_PositionViewCity: TStringField;
-    cds_PositionViewLogicalInventoryName: TStringField;
-    cds_PositionViewpcs: TIntegerField;
-    cds_PositionViewAM3: TFloatField;
-    cds_PositionViewNM3: TFloatField;
-    cds_PositionViewAT: TFloatField;
-    cds_PositionViewAB: TFloatField;
-    cds_PositionViewNT: TFloatField;
-    cds_PositionViewNB: TFloatField;
-    cds_PositionViewAL: TFloatField;
-    cds_PositionViewdim: TStringField;
-    cds_PositionViewTS: TStringField;
-    cds_PositionViewPC: TStringField;
-    cds_PositionViewKV: TStringField;
-    cds_PositionViewUT: TStringField;
-    cds_PositionViewLIPNo: TIntegerField;
-    cds_PositionViewPIPNo: TIntegerField;
-    cds_PositionViewVarugruppNamn: TStringField;
-    cds_PositionViewREFERENCE: TStringField;
-    cds_PositionViewInfo1: TStringField;
-    cds_PositionViewInfo2: TStringField;
-    cds_PositionViewAreaName: TStringField;
-    cds_PositionViewPositionName: TStringField;
-    cds_PositionViewStoredDate: TSQLTimeStampField;
-    cds_PositionViewProduct: TStringField;
-    cds_PositionViewPackageNo: TIntegerField;
-    cds_PositionViewSupplierCode: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_PositionViewUpdateRecord(ASender: TDataSet;
       ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
@@ -76,6 +49,7 @@ type
     FListInfo1: TCMSL;      // Info1
     FListInfo2: TCMSL;      // Info2
     FObserver: TList<ICMObserver>;
+
     procedure AddFilterData(const aList: TCMSL; aS1: string);
     procedure AddFilterDataFloat(const aList: TCMFL; aFl: double);
     procedure Clear;
@@ -83,23 +57,25 @@ type
     function getFListAW: TCMSL;
     function getFListNT: TCMSL;
     function getFListNW: TCMSL;
-    function FloatListToStringList(const fl: TCMFL): TCMSL;
   public
     { Public declarations }
     destructor Destroy;
     procedure UpdateSQLFilterData(aStorePosList: TList<integer>;
                                   aStoreAreaList: TList<integer>;
                                   aStoreGroupList: TList<integer>;
+                                  aOwnerList: TList<integer>;
                                   aSource: integer);
     procedure SetupDBConnection(aCon: TFDConnection);
     procedure UpdateFilterData(aStorePosList: TList<integer>;
                                aStoreAreaList: TList<integer>;
                                aStoreGroupList: TList<integer>;
+                               aOwnerList: TList<integer>;
                                aSource: integer);
     {procedures from interface ISubject in ObserverPattern}
     procedure Attach(Observer: ICMObserver);
     procedure Detach(Observer: ICMObserver);
     procedure Notify;
+    function FloatListToStringList(const fl: TCMFL): TCMSL;
     {Properties}
     Property DBCon: TFDConnection read FDBCon;
     property ATL: TCMSL read getFListAT;
@@ -271,11 +247,12 @@ end;
 procedure TdmFilterSQL.UpdateFilterData(aStorePosList: TList<integer>;
                                         aStoreAreaList: TList<integer>;
                                         aStoreGroupList: TList<integer>;
+                                        aOwnerList: TList<integer>;
                                         aSource: integer);
 begin
   sqFilterData.Active := false;
   Clear;
-  UpdateSQLFilterData(aStorePosList, aStoreAreaList, aStoreGroupList, aSource);
+  UpdateSQLFilterData(aStorePosList, aStoreAreaList, aStoreGroupList, aOwnerList, aSource);
   try
     sqFilterData.SQL.SaveToFile(LoggDir + 'FilterSQL.sql');
   except
@@ -328,6 +305,7 @@ end;
 procedure TdmFilterSQL.UpdateSQLFilterData(aStorePosList: TList<integer>;
                                            aStoreAreaList: TList<integer>;
                                            aStoreGroupList: TList<integer>;
+                                           aOwnerList: TList<integer>;
                                            aSource: integer);
 var
   strSQL: string;
@@ -361,6 +339,15 @@ begin
       s := s + intToStr(i) + ',';
     end;
     s := copy(s, 1, s.Length - 1) + ')';
+  end
+  else if aOwnerList.Count > 0 then
+  begin
+    s := 'WHERE PN.SupplierNo IN (';
+    for i in aOwnerList do
+    begin
+      s := s + intToStr(i) + ',';
+    end;
+    s := copy(s, 1, s.Length - 1) + ')';
   end;
   if s <> '' then
   begin
@@ -368,7 +355,7 @@ begin
       0:
         begin
           s := s + 'AND PN.Status = 1 '; // In store
-          s := s + 'AND OH.OrderType = 0 ';
+//          s := s + 'AND OH.OrderType = 0 ';  Not used in store
         end;
       1:
         begin // Not invoiced + store

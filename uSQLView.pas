@@ -236,6 +236,9 @@ begin
   FSQLView := aSQLView;
   FSQLView.SQL.Clear;
   FSQLView.SQL.Add('DECLARE @LanguageCode int = 1');
+  FSQLView.SQL.Add('DECLARE @Source int = 0');
+  FSQLView.SQL.Add('SET @LanguageCode = :LanguageCode');
+  FSQLView.SQL.Add('SET @Source = :Source');
   FSQLView.SQL.Add('Select distinct');
   LoggDir := dmsSystem.Get_Dir('UserDir');
 

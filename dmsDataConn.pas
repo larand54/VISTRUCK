@@ -331,7 +331,17 @@ begin
         Params.Add('DriverID=MSSQL');
         Params.Add('ApplicationName=VISTRUCK');
       end;
-  end
+  end else
+  with dmsConnector.FDConnection1 do begin
+      Params.Clear;
+      Params.Add('Server=alvesql01');
+      Params.Add('Database=vis_vida');
+      Params.Add('OSAuthent=yes');
+      Params.add('MetaDefCatalog=vis_vida');
+      Params.Add('MetaDefSchema=dbo');
+      Params.Add('DriverID=MSSQL');
+      Params.Add('ApplicationName=VISTRUCK');
+  end;
 {$ENDIF}
 // FDMoniFlatFileClientLink1.Tracing := False ;
 //ALVESQL04

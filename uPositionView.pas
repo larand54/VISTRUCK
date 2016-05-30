@@ -158,7 +158,6 @@ type
     pgInventory: TcxPageControl;
     tsLagret: TcxTabSheet;
     Panel3: TPanel;
-    Bevel1: TBevel;
     lcPIPNAME: TcxDBLookupComboBox;
     cxLabel2: TcxLabel;
     cxLabel1: TcxLabel;
@@ -367,7 +366,8 @@ type
     grdPositionDBTableView1: TcxGridDBTableView;
     grdPositionDBTableView1City: TcxGridDBColumn;
     grdPositionDBTableView1LogicalInventoryName: TcxGridDBColumn;
-    grdPositionDBTableView1pcs: TcxGridDBColumn;
+    grdPositionDBTableView1Paket: TcxGridDBColumn;
+    grdPositionDBTableView1PCS: TcxGridDBColumn;
     grdPositionDBTableView1AM3: TcxGridDBColumn;
     grdPositionDBTableView1NM3: TcxGridDBColumn;
     grdPositionDBTableView1AT: TcxGridDBColumn;
@@ -380,8 +380,6 @@ type
     grdPositionDBTableView1PC: TcxGridDBColumn;
     grdPositionDBTableView1KV: TcxGridDBColumn;
     grdPositionDBTableView1UT: TcxGridDBColumn;
-    grdPositionDBTableView1LIPNo: TcxGridDBColumn;
-    grdPositionDBTableView1PIPNo: TcxGridDBColumn;
     grdPositionDBTableView1VarugruppNamn: TcxGridDBColumn;
     grdPositionDBTableView1REFERENCE: TcxGridDBColumn;
     grdPositionDBTableView1Info1: TcxGridDBColumn;
@@ -394,7 +392,6 @@ type
     grdPositionDBTableView1SupplierCode: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure acCloseExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure grdPkgTblDBBandedTableView1L1GetDisplayText(
@@ -427,7 +424,7 @@ type
     procedure UpdateDataFilterCombos(Sender: TObject);
     procedure acNewTemplateExecute(Sender: TObject);
     procedure acExportGridToExcelExecute(Sender: TObject);
-    procedure grdPositionDBBandedTableView1Editing(
+    procedure grdPositionDBTableView1Editing(
       Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
       var AAllow: Boolean);
     procedure acOnEnterFilterCombosExecute(Sender: TObject);
@@ -472,6 +469,7 @@ type
       AGridView: TcxGridTableView;const MallName : String) ;
     function LoadGridLayout(const UserID : Integer;const Form, ViewName : String;
       AGridView: TcxGridTableView;const MallName : String): boolean;
+    procedure DeleteGridLayout(const UserID : Integer; const ViewName : String) ;
 
   public
     { Public declarations }
@@ -502,10 +500,10 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
 procedure TfPositionView.PopulateCheckBoxTemplate ;
 Begin
  cbReportSelection.Clear ;
-
+ cbReportSelection.Properties.Items.Clear;
  sq_UserProfile.Active  := False ;
  sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
- sq_UserProfile.ParamByName('Form').AsString    := TForm(Self).Name + '2' ;
+ sq_UserProfile.ParamByName('Form').AsString    := TForm(Self).Name;
  sq_UserProfile.ParamByName('Name').AsString    := 'ALL' ;
  sq_UserProfile.Active  := True ;
  sq_UserProfile.First ;
@@ -616,7 +614,7 @@ begin
  Result:= False ;
  With dmsSystem do
  Begin
-(*  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
+  sq_GridSets2.ParamByName('ViewName').AsString  := ViewName ;
   sq_GridSets2.ParamByName('UserID').AsInteger   := UserID ;
 //  sq_GridSets2.ParamByName('Form').AsString      := Form ;
 //  sq_GridSets2.ParamByName('Name').AsString      := MallName ;
@@ -634,7 +632,7 @@ begin
    end;
   End ;
   sq_GridSets2.Active:= False ;
-*) End ;
+ End ;
 end;
 
 procedure TfPositionView.Update(aSubject: IInterface);
@@ -1044,7 +1042,6 @@ begin
     deStartPeriod.Clear;
     deEndPeriod.Clear;
     dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
-    cbReportSelection.EditValue := mtuserPropName.AsString;
     LoadMainCombos;
     PopulateCheckBoxTemplate;
   Finally
@@ -1087,7 +1084,7 @@ begin
   case aSource of
     0: begin
        WhereList.addAND('PN.Status = 1',true,true);         // In store
-       WhereList.addAND('OH.OrderType = 0',true,true);
+//       WhereList.addAND('OH.OrderType = 0',true,true);
     end;
     1: begin                                   // Not invoiced + store
        WhereList.addOR('(NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
@@ -1143,15 +1140,6 @@ begin
   cbInkTimeInDateFilter.Properties.OnChange(self); //Setup Dateinput to correspond o this checkbox;
   OpenTemplate;
 {$ENDIF}
-end;
-
-procedure TfPositionView.FormKeyPress(Sender: TObject; var Key: Char);
-begin
- if Key = #13 then
-  begin
-   Key := #0;
-   Perform(Wm_NextDlgCtl,0,0);
-  end;
 end;
 
 function TfPositionView.GetBaseSQL(const aSQL: TStrings): TStrings;
@@ -1225,7 +1213,7 @@ begin
 end;
 
 
-procedure TfPositionView.grdPositionDBBandedTableView1Editing(
+procedure TfPositionView.grdPositionDBTableView1Editing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
 var
@@ -1233,15 +1221,16 @@ var
   ColSupplierCode: TcxCustomGridTableItem;
 begin
   AAllow := False;
-  if AItem.Name = 'grdPositionDBBandedTableView1REFERENCE' then
+  if AItem.Name = 'grdPositionDBTableView1REFERENCE' then
   begin
-    ColPkgNo := Sender.FindItemByName('grdPositionDBBandedTableView1PackageNo');
-    ColSupplierCode := Sender.FindItemByName('grdPositionDBBandedTableView1SupplierCode');
+    ColPkgNo := Sender.FindItemByName('grdPositionDBTableView1PackageNo');
+    ColSupplierCode := Sender.FindItemByName('grdPositionDBTableView1SupplierCode');
     if (ColPkgNo <> nil) and (ColSupplierCode <> nil) then
       if ColPkgNo.Visible and ColSupplierCode.Visible then
         AAllow := True
   end;
 end;
+
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
@@ -1250,25 +1239,34 @@ end;
 
 
 procedure TfPositionView.acDeleteTemplateExecute(Sender: TObject);
+var
+  UserID: integer;
+  Form, Template, View: string;
 begin
+  UserID := ThisUser.UserID;
+  Form := TForm(Self).Name;
+  Template := cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex];
+  View := Template + '/' + Form;
  With dmInventory do
  Begin
   if cbReportSelection.ItemIndex > -1 then
   Begin
    sq_UserProfile.Active := False ;
-   sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
-   sq_UserProfile.ParamByName('Form').AsString    := fPositionView.Name + '2' ;
+   sq_UserProfile.ParamByName('UserID').AsInteger := UserID ;
+   sq_UserProfile.ParamByName('Form').AsString    := Form ;
    sq_UserProfile.Active := True ;
    Try
    sq_UserProfile.Filter  := 'Name = ' + QuotedStr(cbReportSelection.Properties.Items.Strings[cbReportSelection.ItemIndex]) ;
    sq_UserProfile.Filtered  := True ;
-   if not sq_UserProfile.Eof then
+   if not sq_UserProfile.Eof then begin
     sq_UserProfile.Delete ;
+    cbReportSelection.Properties.Items.Delete(cbReportSelection.ItemIndex);
+    cbReportSelection.ItemIndex := 0;
+    DeleteGridLayout(UserID, View);
+   end;
    Finally
     sq_UserProfile.Filtered   := False ;
     sq_UserProfile.Active     := False ;
-    cbReportSelection.Properties.Items.Delete(cbReportSelection.ItemIndex);
-    cbReportSelection.ItemIndex := 0;
    End;
   End;
  End;
@@ -1496,7 +1494,6 @@ begin
     DataSet := dmFilterSQL.cds_PositionView;
     // Deactivate datasource
     DataSet.Active := False;
-    DataSet.ParamByName('LanguageCode').AsInteger := ThisUser.LanguageID;
 
     // Connect the dataset to the grid:s datasource
     dmFilterSQL.ds_PositionView.DataSet := DataSet;
@@ -1511,6 +1508,9 @@ begin
 
     // Run query
     DataSet.SQL := SQLView.SQL;
+    DataSet.Prepare;
+    DataSet.ParamByName('LanguageCode').AsInteger := ThisUser.LanguageID;
+    DataSet.ParamByName('Source').AsInteger := Source;
     DataSet.Active := True;
   finally
     if assigned(SQLBuild) then
@@ -1635,7 +1635,7 @@ begin
       sq_UserProfile.Active := true;
    sq_UserProfile.Insert ;
    sq_UserProfileName.AsString    := fAngeNyMall.teMall.Text ;
-   sq_UserProfileForm.AsString    := fPositionView.Name + '2' ;
+   sq_UserProfileForm.AsString    := fPositionView.Name ;
    sq_UserProfile.Post ;
 
    cbReportSelection.Properties.Items.Add(fAngeNyMall.teMall.Text) ;
@@ -1771,12 +1771,14 @@ var
   T: TList<integer>; // Selected positions
   A: TList<integer>; // Selected Areas
   G: TList<integer>; // Selected groups
+  O: TList<integer>; // Selected owners
   Source: integer;
   iValue, Count, x: integer;
 begin
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
+  O := TList<integer>.create;
   try
     Source := cbInklEjFakt.ItemIndex;
 
@@ -1827,7 +1829,22 @@ begin
       end;
     end;
 
-    dmFilterSQL.UpdateFilterData(T, A, G, Source);
+    if G.Count < 1 then
+    begin
+      // Check if Verk(Owner) is selected
+      Count := cbOwner.Properties.Items.Count;
+      for x := 0 to Count - 1 do
+      begin
+        if cbOwner.States[x] = cbsChecked then
+        begin
+          iValue := strToInt(cbOwner.Properties.Items[x]
+            .ShortDescription);
+          O.add(iValue);
+        end;
+      end;
+    end;
+
+    dmFilterSQL.UpdateFilterData(T, A, G, O, Source);
   finally
     if assigned(T) then
       T.Free;
@@ -1835,6 +1852,8 @@ begin
       A.Free;
     if assigned(G) then
       G.Free;
+    if assigned(O) then
+      O.Free;
   end;
 end;
 
@@ -1842,6 +1861,23 @@ procedure TfPositionView.cxbtnCloseFormClick(Sender: TObject);
 begin
   SaveUserProfile;
   Close ;
+end;
+
+procedure TfPositionView.DeleteGridLayout(const UserID: Integer; const ViewName: String);
+begin
+  With dmsSystem do
+  Begin
+    sq_GridSets2.ParamByName('ViewName').AsString := ViewName;
+    sq_GridSets2.ParamByName('UserID').AsInteger := UserID;
+    // sq_GridSets2.ParamByName('Form').AsString      := Form ;
+    // sq_GridSets2.ParamByName('Name').AsString      := MallName ;
+    sq_GridSets2.Active := True;
+    if not sq_GridSets2.Eof then
+    Begin
+      sq_GridSets2.Delete ;
+    End;
+    sq_GridSets2.Active := False;
+  End;
 end;
 
 procedure TfPositionView.cxbtnClearFilterClick(Sender: TObject);
@@ -1870,8 +1906,6 @@ Begin
   sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID;
   sq_UserProfile.ParamByName('Form').AsString := fPositionView.Name+'2';
   sq_UserProfile.ParamByName('Name').AsString := cbReportSelection.Text;
-
-//  mtuserProp.Active := False;
 
   sq_UserProfile.Active := True;
   Try
