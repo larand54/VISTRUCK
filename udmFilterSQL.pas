@@ -17,9 +17,9 @@ type
   TCMSL = class (TStringList)
     constructor create;
   end;
-  TCMFL = class (TList<Double>)
-    function Add(fl: Double): boolean;
-    function exists(fl: double): boolean;
+  TCMFL = class (TList<extended>)
+    function Add(fl: extended): boolean;
+    function exists(fl: extended): boolean;
   end;
 
   TdmFilterSQL = class(TDataModule, ICMSubject)
@@ -400,7 +400,7 @@ begin
   begin
     strSQL := copy(sqFilterData.SQL.Text, 1,
       pos('WHERE', sqFilterData.SQL.Text) - 1);
-    sqFilterData.SQL.Text := strSQL + ' WHERE PN.Status=-999';
+    sqFilterData.SQL.Text := strSQL + 'WHERE PN.Status=-999';
   end;
 
 end;
@@ -416,13 +416,13 @@ end;
 
 { TCMFL }
 
-function TCMFL.Add(fl: Double): boolean;
+function TCMFL.Add(fl: extended): boolean;
 begin
   if not exists(fl) then
     inherited Add(fl);
 end;
 
-function TCMFL.exists(fl: double): boolean;
+function TCMFL.exists(fl: extended): boolean;
 var
   i: integer;
 begin

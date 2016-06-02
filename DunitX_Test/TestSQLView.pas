@@ -112,9 +112,9 @@ var
   WStr: TWhereString;
 begin
   WStr := TWhereString.Create;
-  WStr.add('SR.ID = 55');
+  WStr.addAND('SR.ID = 55',true,true);
   Expected := '(SR.ID = 55)'#13#10 + 'AND (TestItem1 IN (nr001,nr002,nr003))'#13#10;
-  WStr.addFromCombo(0, FCombo,'TestItem1');
+  WStr.addFromCombo(0, 0,FCombo,'TestItem1');
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -127,7 +127,7 @@ var
 begin
   WStr := TWhereString.Create;
   Expected := '(TestItem1 IN (nr001,nr002,nr003))'#13#10;
-  WStr.addFromCombo(0, FCombo,'TestItem1');
+  WStr.addFromCombo(0, 0, FCombo,'TestItem1');
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -164,9 +164,9 @@ begin
   s1 := 'First line';
   s2 := 'Second line';
   WStr := TWhereString.Create;
-  Expected := '('+s1+')' + #13#10 + ' AND ' + #13#10 + '('+s2+')' + #13#10;
-  WStr.add(s1);
-  WStr.add(s2);
+  Expected := '('+s1+')' + #13#10 + ' AND ' + '('+s2+')' + #13#10;
+  WStr.addAND(s1,true,true);
+  WStr.addAND(s2,true,true);
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -178,7 +178,7 @@ var
 begin
   WStr := TWhereString.Create;
   Expected := 'Testhis 123';
-  WStr.add(Expected);
+  WStr.addAND(Expected,true,true);
   Expected := '('+Expected+')' + #13#10;
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
