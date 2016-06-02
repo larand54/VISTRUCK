@@ -276,7 +276,7 @@ begin
   if FSQLView.SQL.Text[FSQLView.SQL.Text.length - 2] = ',' then
     FSQLView.SQL.Text := copy(FSQLView.SQL.Text,0,FSQLView.SQL.Text.Length - 3);
   try
-    FSQLView.SQL.SaveToFile(LoggDir+'SQL2.txt');
+    FSQLView.SQL.SaveToFile(LoggDir+'SQL2.sql');
   except
   end;
 end;

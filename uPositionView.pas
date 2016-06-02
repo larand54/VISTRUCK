@@ -390,6 +390,9 @@ type
     grdPositionDBTableView1Product: TcxGridDBColumn;
     grdPositionDBTableView1PackageNo: TcxGridDBColumn;
     grdPositionDBTableView1SupplierCode: TcxGridDBColumn;
+    cxButton6: TcxButton;
+    cxImageListPrinting: TcxImageList;
+    acPrintPositionView: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -428,6 +431,7 @@ type
       Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
       var AAllow: Boolean);
     procedure acOnEnterFilterCombosExecute(Sender: TObject);
+    procedure acPrintPositionViewExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -737,9 +741,9 @@ procedure TfPositionView.LoadCheckBoxWithSTorageArea;
 Var
   Count, x: integer;
   Mills: TList<string>;
-  SGroups: TList<string>;
+  SGroups: TStringList;//TList<string>;
 
-  procedure UpdateAreaCombo(PIPNos: TList<string>);
+  procedure UpdateAreaCombo(PIPNos: TStringList);
   begin
     if (assigned(PIPNos) AND (PIPNos.Count > 0)) then
       // Retrieve storageareas and fill combobox
@@ -770,7 +774,9 @@ begin
   cds_StorageAreas.Active := False;
 
   // Check if any storagegroup selected then use these to fill up the Area-combo
-  SGroups := TList<string>.create;
+  SGroups := TStringList.create;
+  SGroups.Sorted := true;
+  SGroups.Duplicates := dupIgnore;
   try
     for x := 0 to cbStorageGroup.Properties.Items.Count - 1 do
     begin
@@ -1440,6 +1446,25 @@ begin
 
   dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add('Leverans') ;
   dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(DateTimeToStr(deStartPeriod.Date) + ' - ' + DateTimeToStr(deEndPeriod.Date) ) ;
+
+  dxComponentPrinter1Link1.PrinterPage.Orientation    := poLandscape ;
+  dxComponentPrinter1Link1.ShrinkToPageWidth          := True ;
+  dxComponentPrinter1Link1.OptionsOnEveryPage.Footers := False ;
+  dxComponentPrinter1Link1.PrinterPage.ApplyToPrintDevice ;
+
+  dxComponentPrinter1.Preview(True, dxComponentPrinter1Link1) ;
+end;
+
+procedure TfPositionView.acPrintPositionViewExecute(Sender: TObject);
+begin
+
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Clear ;
+  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Clear ;
+
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(icLagerVy.Text) ;
+  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add('Lagerrapport') ;
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(lcPIPNAME.Text+'/'+lcLIPNAME.Text) ;
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add(lcPIPNAME.Text+'/'+lcLIPNAME.Text) ;
 
   dxComponentPrinter1Link1.PrinterPage.Orientation    := poLandscape ;
   dxComponentPrinter1Link1.ShrinkToPageWidth          := True ;
