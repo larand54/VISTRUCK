@@ -100,7 +100,7 @@ var
 implementation
 
 uses
-  Dialogs, dmsVidaSystem;
+  VidaUser,Dialogs, dmsVidaSystem;
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
@@ -249,6 +249,8 @@ procedure TdmFilterSQL.UpdateFilterData(aStorePosList: TList<integer>;
                                         aStoreGroupList: TList<integer>;
                                         aOwnerList: TList<integer>;
                                         aSource: integer);
+var
+  s: string;
 begin
   sqFilterData.Active := false;
   Clear;
@@ -257,7 +259,9 @@ begin
     sqFilterData.SQL.SaveToFile(LoggDir + 'FilterSQL.sql');
   except
   end;
-
+  sqFilterData.Prepare;
+  sqFilterData.ParamByName('LanguageCode').AsInteger := ThisUser.LanguageID;
+  sqFilterData.ParamByName('Source').AsInteger := aSource;
   sqFilterData.Active := true;
   sqFilterData.First;
   if not sqFilterData.Eof then
@@ -273,20 +277,34 @@ begin
           sqFilterData.FieldByName('NominalWidthMM').AsFloat);
         AddFilterDataFloat(FListAW,
           sqFilterData.FieldByName('ActualWidthMM').AsFloat);
-        AddFilterData(FListGrade, sqFilterData.FieldByName('GradeName')
-          .AsString);
-        AddFilterData(FListSU, sqFilterData.FieldByName('SurfacingName')
-          .AsString);
-        AddFilterData(FListSpecies, sqFilterData.FieldByName('SpeciesName')
-          .AsString);
-        AddFilterData(FListVaruGrupp, sqFilterData.FieldByName('VarugruppNamn')
-          .AsString);
-        AddFilterData(FListIMP, sqFilterData.FieldByName('PC').AsString);
-        AddFilterData(FListLengthDesc, sqFilterData.FieldByName('LengthDesc')
-          .AsString);
-        AddFilterData(FListREF, sqFilterData.FieldByName('REFERENCE').AsString);
-        AddFilterData(FListInfo1, sqFilterData.FieldByName('Info1').AsString);
-        AddFilterData(FListInfo2, sqFilterData.FieldByName('Info2').AsString);
+
+        s := sqFilterData.FieldByName('GradeName').AsString;
+        if s <> '' then AddFilterData(FListGrade, s);
+
+        s := sqFilterData.FieldByName('SurfacingName').AsString;
+        if s <> '' then AddFilterData(FListSU, s);
+
+        s := sqFilterData.FieldByName('SpeciesName').AsString;
+        if s <> '' then AddFilterData(FListSpecies, s);
+
+        s := sqFilterData.FieldByName('VarugruppNamn').AsString;
+        if s <> '' then AddFilterData(FListVaruGrupp, s);
+
+        s := sqFilterData.FieldByName('PC').AsString;
+        if s <> '' then AddFilterData(FListIMP, s);
+
+(*        s := sqFilterData.FieldByName('LengthDesc').AsString;
+        if s <> '' then AddFilterData(FListLengthDesc, s);
+  *)
+        s := sqFilterData.FieldByName('REFERENCE').AsString;
+        if s <> '' then AddFilterData(FListREF, s);
+
+        s := sqFilterData.FieldByName('Info1').AsString;
+        if s <> '' then AddFilterData(FListInfo1, s);
+
+        s := sqFilterData.FieldByName('Info2').AsString;
+        if s <> '' then AddFilterData(FListInfo2, s);
+
         sqFilterData.Next;
       except
         on E: Exception do
@@ -342,7 +360,7 @@ begin
   end
   else if aOwnerList.Count > 0 then
   begin
-    s := 'WHERE PN.SupplierNo IN (';
+    s := 'WHERE PIP.OwnerNo IN (';
     for i in aOwnerList do
     begin
       s := s + intToStr(i) + ',';

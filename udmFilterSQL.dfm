@@ -6,51 +6,74 @@ object dmFilterSQL: TdmFilterSQL
   object sqFilterData: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
+      'DECLARE @LanguageCode int = 1'
+      'DECLARE @Source int = 0'
+      'SET @LanguageCode = :LanguageCode'
+      'SET @Source = :Source'
       
-        'SELECT DISTINCT PN.PositionID, PG.ActualThicknessMM, PG.ActualWi' +
-        'dthMM, '
+        'SELECT DISTINCT  PN. PositionID, PG.ActualThicknessMM, PG.Actual' +
+        'WidthMM, '
       'PG.NominalThicknessMM, PG.NominalWidthMM'
       
-        ',G.GradeName, G.GradeCode, S.SurfacingName, S.SurfacingCode, SP.' +
-        'SpeciesName, SP.SpeciesCode, VG.VarugruppNamn, VG.VarugruppNo'
-      
-        ',IMP.ProductCategoryName AS PC, LS.LengthDesc, PN.REFERENCE, PN.' +
-        'BL_NO AS Info1'
-      ',PN.Info2 '
+        ',GR.GradeName, GR.GradeCode, SUR.SurfacingName, SUR.SurfacingCod' +
+        'e, SPE.SpeciesName, SPE.SpeciesCode, VA.VarugruppNamn, VA.Varugr' +
+        'uppNo'
+      ',IMP.ProductCategoryName AS PC, PN.REFERENCE, PN.BL_NO AS Info1'
+      ',PN.Info2'
+      ''
       'FROM dbo.PackageNumber PN'
-      'JOIN dbo.PackageType PT ON PT.PackageTypeNo = PN.PackageTypeNo'
-      'JOIN dbo.Product P ON P.ProductNo = PT.ProductNo'
-      'JOIN dbo.ProductGroup PG ON PG.ProductGroupNo = P.ProductGroupNo'
-      'JOIN dbo.LengthSpec LS ON LS.LengthSpecNo = PT.LengthSpecNo'
-      
-        'JOIN dbo.Grade G ON G.GradeNo = P.GradeNo AND G.LanguageCode=:La' +
-        'nguageCode'
-      
-        'JOIN dbo.Surfacing S ON S.SurfacingNo = PG.SurfacingNo AND S.Lan' +
-        'guageCode=:LanguageCode'
-      
-        'JOIN dbo.Species SP ON SP.SpeciesNo = PG.SpeciesNo AND SP.Langua' +
-        'geCode=:LanguageCode'
-      
-        'LEFT OUTER JOIN dbo.VaruGrupp VG ON VG.VarugruppNo = P.Varugrupp' +
-        'No AND VG.LanguageCode=:LanguageCode'
-      
-        'JOIN dbo.ProductCategory IMP ON IMP.ProductCategoryNo = PG.Produ' +
-        'ctCategoryNo AND IMP.LanguageCode=:LanguageCode'
+      'Left outer join dbo.Position posi '
+      'inner join dbo.Area ar on ar.AreaID = posi.AreaID'
+      'on posi.PositionID = pn.PositionID '
+      ''
       'LEFT OUTER Join dbo.LoadDetail LD '
       'LEFT join dbo.Invoiced_Load inl on inl.LoadNo = LD.LoadNo'
       
         'Inner Join dbo.CustomerShippingPlanDetails csd on csd.CustShipPl' +
         'anDetailObjectNo = LD.DefaultCustShipObjectNo'
       'Inner Join dbo.Orders oh on oh.OrderNo = csd.OrderNo'
-      'on LD.PackageNo = PN.PackageNo'
+      
+        'on LD.PackageNo = PN.PackageNo AND LD.SupplierCode = PN.Supplier' +
+        'Code AND @Source > 0'
+      ''
+      
+        'inner join dbo.Packagetypedetail ptd on ptd.packagetypeno = pn.p' +
+        'ackagetypeno'
+      
+        'inner join dbo.PackageType pt on pt.packagetypeno = pn.packagety' +
+        'peno'
+      ''
+      'inner join dbo.Product p on p.ProductNo = pt.ProductNo'
+      'Left join dbo.ProductDesc pde on pde.ProductNo = pt.ProductNo'
+      'AND pde.LanguageID = @LanguageCode'
+      
+        'inner join dbo.ProductGroup pg on pg.ProductGroupNo = p.ProductG' +
+        'roupNo'
       
         'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
-        'PointNo = PN.LogicalInventoryPointNo'
+        'PointNo = pn.LogicalInventoryPointNo'
       
-        'Inner Join dbo.Area Ar on Ar.PIPNo = LIP.PhysicalInventoryPointN' +
-        'o'
-      'WHERE PN.PositionID IN (145,146)')
+        'Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInvento' +
+        'ryPointNo = LIP.PhysicalInventoryPointNo'
+      'Inner Join dbo.City cy on cy.CityNo = PIP.PhyInvPointNameNo'
+      ''
+      
+        'Left Outer Join dbo.Varugrupp va on va.VarugruppNo = p.Varugrupp' +
+        'No'
+      'AND va.LanguageCode = @LanguageCode'
+      
+        'Inner Join dbo.ProductCategory imp ON imp.ProductCategoryNo = pg' +
+        '.ProductCategoryNo'
+      'AND imp.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Species SPE ON SPE.SpeciesNo = pg.SpeciesNo'
+      'AND SPE.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Surfacing SUR ON SUR.SurfacingNo = pg.SurfacingNo'
+      'AND SUR.LanguageCode = @LanguageCode'
+      'Inner Join dbo.Grade   Gr ON Gr.GradeNo = p.GradeNo'
+      'AND Gr.LanguageCode = @LanguageCode'
+      'WHERE'
+      '(PN.STATUS = 1)'
+      'AND (PIP.OwnerNo IN (76))')
     Left = 152
     Top = 8
     ParamData = <
@@ -59,6 +82,12 @@ object dmFilterSQL: TdmFilterSQL
         DataType = ftInteger
         ParamType = ptInput
         Value = 1
+      end
+      item
+        Name = 'SOURCE'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 0
       end>
   end
   object ds_PositionView: TDataSource
