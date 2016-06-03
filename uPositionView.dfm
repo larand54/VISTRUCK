@@ -206,8 +206,8 @@ object fPositionView: TfPositionView
             Caption = 'Referens'
             DataBinding.FieldName = 'REFERENCE'
           end
-          object grdPositionDBTableView1Info1: TcxGridDBColumn
-            DataBinding.FieldName = 'Info1'
+          object grdPositionDBTableView1BL_NO: TcxGridDBColumn
+            DataBinding.FieldName = 'BL_NO'
           end
           object grdPositionDBTableView1Info2: TcxGridDBColumn
             DataBinding.FieldName = 'Info2'
@@ -1137,6 +1137,7 @@ object fPositionView: TfPositionView
             'D'#228'cklista'
             'PaketLista'
             'Tomma R'#228'ckor')
+          Properties.Sorted = True
           Properties.OnChange = cbReportSelectionPropertiesChange
           TabOrder = 47
           Text = 'Area-Ref'
@@ -2182,7 +2183,6 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2204,7 +2204,6 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42521.421175902770000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

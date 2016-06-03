@@ -52,11 +52,11 @@ type
       FWhereList: TStrings;
       procedure InitiateFieldObjects;
       function getStatus(aGridField: string): boolean;
-      procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
       Constructor create(const aGridView: TcxGridDBTableView; const aSQLFile: string;
        const aWhereList: TStrings; const aBaseSQL: TStrings);
       Destructor destroy; override;
+      procedure SetKeyFields(aStatus: boolean; aGridField: string);
       property ObjectList: TList<TSQLViewField> read FObjectList;
       property gridView: TcxGridDBTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;

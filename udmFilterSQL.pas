@@ -299,7 +299,7 @@ begin
         s := sqFilterData.FieldByName('REFERENCE').AsString;
         if s <> '' then AddFilterData(FListREF, s);
 
-        s := sqFilterData.FieldByName('Info1').AsString;
+        s := sqFilterData.FieldByName('BL_NO').AsString;
         if s <> '' then AddFilterData(FListInfo1, s);
 
         s := sqFilterData.FieldByName('Info2').AsString;

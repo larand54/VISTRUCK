@@ -382,7 +382,7 @@ type
     grdPositionDBTableView1UT: TcxGridDBColumn;
     grdPositionDBTableView1VarugruppNamn: TcxGridDBColumn;
     grdPositionDBTableView1REFERENCE: TcxGridDBColumn;
-    grdPositionDBTableView1Info1: TcxGridDBColumn;
+    grdPositionDBTableView1BL_NO: TcxGridDBColumn;
     grdPositionDBTableView1Info2: TcxGridDBColumn;
     grdPositionDBTableView1AreaName: TcxGridDBColumn;
     grdPositionDBTableView1PositionName: TcxGridDBColumn;
@@ -1227,7 +1227,9 @@ var
   ColSupplierCode: TcxCustomGridTableItem;
 begin
   AAllow := False;
-  if AItem.Name = 'grdPositionDBTableView1REFERENCE' then
+  if (AItem.Name = 'grdPositionDBTableView1REFERENCE')
+  OR (AItem.Name = 'grdPositionDBTableView1Info2')
+  OR (AItem.Name = 'grdPositionDBTableView1BL_NO') then
   begin
     ColPkgNo := Sender.FindItemByName('grdPositionDBTableView1PackageNo');
     ColSupplierCode := Sender.FindItemByName('grdPositionDBTableView1SupplierCode');
@@ -1502,6 +1504,18 @@ var
   BaseSQL: TStrings;  // BaseSQL without SELECT, WHERE and GROUP BY sections.
   Source: integer; // Selection of Storage, storage with non-invoiced or non-invoiced.
   DataSet: TFDQuery;
+
+  procedure SetReadOnlyForFields(aReadOnly: boolean);
+  begin
+    try
+      dmFilterSQL.cds_PositionView.FieldByName('BL_NO').ReadOnly := aReadOnly;
+    except
+    end;
+    try
+      dmFilterSQL.cds_PositionView.FieldByName('Info2').ReadOnly := aReadOnly;
+    except
+    end;
+  end;
 begin
   // Check that at least one region and or mill is selected
   if GetCheckedCount(cbOwner) <= 0 then begin
@@ -1537,6 +1551,7 @@ begin
     DataSet.ParamByName('LanguageCode').AsInteger := ThisUser.LanguageID;
     DataSet.ParamByName('Source').AsInteger := Source;
     DataSet.Active := True;
+    SetReadOnlyForFields(false);
   finally
     if assigned(SQLBuild) then
       SQLBuild.Free;

@@ -96,6 +96,7 @@ object dmFilterSQL: TdmFilterSQL
     Top = 69
   end
   object cds_PositionView: TFDQuery
+    Active = True
     OnUpdateRecord = cds_PositionViewUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.PackageNumber'
@@ -130,7 +131,7 @@ object dmFilterSQL: TdmFilterSQL
       'SUR.SurfacingName AS UT,'
       'va.VarugruppNamn,'
       'pn.REFERENCE, '
-      'isnull(pn.BL_NO,'#39#39') AS Info1,  '
+      'isnull(pn.BL_NO,'#39#39') AS BL_NO,  '
       'isnull(pn.Info2,'#39#39') AS Info2,'
       'ar.AreaName,'
       'Posi.PositionName'
@@ -319,20 +320,20 @@ object dmFilterSQL: TdmFilterSQL
     Connection = dmsConnector.FDConnection1
     InsertSQL.Strings = (
       'INSERT INTO PackageNumber'
-      '(PackageNo, SupplierCode, REFERENCE, Info2, '
-      '  StoredDate)'
+      '(PackageNo, SupplierCode, REFERENCE, BL_NO, '
+      '  Info2)'
       
         'VALUES (:NEW_PackageNo, :NEW_SupplierCode, :NEW_REFERENCE, :NEW_' +
-        'Info2, '
-      '  :NEW_StoredDate)')
+        'BL_NO, '
+      '  :NEW_Info2)')
     ModifySQL.Strings = (
       'UPDATE PackageNumber'
       
         'SET PackageNo = :NEW_PackageNo, SupplierCode = :NEW_SupplierCode' +
         ', '
       
-        '  REFERENCE = :NEW_REFERENCE, Info2 = :NEW_Info2, StoredDate = :' +
-        'NEW_StoredDate'
+        '  REFERENCE = :NEW_REFERENCE, BL_NO = :NEW_BL_NO, Info2 = :NEW_I' +
+        'nfo2'
       
         'WHERE PackageNo = :OLD_PackageNo AND SupplierCode = :OLD_Supplie' +
         'rCode')
@@ -349,7 +350,7 @@ object dmFilterSQL: TdmFilterSQL
       '  DateCreated, Original_Price, Original_In_Date, Update_Price, '
       '  Update_Price_Date, CreatedOfPkgStr, AvgLengthType, REFERENCE, '
       '  BL_NO, RegPointType, Info2, PkgArticleNo, Package_Size, '
-      '  CertNo, LOid, PositionID, StoredDate, RowGroupNo, MyPositionID'
+      '  CertNo, LOid, PositionID, StoredDate'
       'FROM PackageNumber'
       'WHERE PackageNo = :PackageNo AND SupplierCode = :SupplierCode')
     Left = 280
