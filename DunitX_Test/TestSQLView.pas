@@ -9,6 +9,9 @@ uses
 
 type
 
+  TSQLViewForTest = class(TSQLView)
+    constructor create;
+  end;
   [TestFixture]
   TTestSQLView = class(TObject)
   private
@@ -55,11 +58,17 @@ type
     procedure TestReadPropertiesSQLViewField_fieldSQL;
     [Test]
     procedure TestReadPropertiesSQLViewField_Visible;
+    [Test]
+    procedure TestAddOneKeyField;
+    [Test]
+    procedure TestAddTwoKeyFields;
+    [Test]
+    procedure TestAddFiveKeyFields;
   end;
 
 implementation
 
-uses  System.SysUtils, cxLookAndFeelPainters;
+uses  System.SysUtils, cxLookAndFeelPainters, cxGridDBTableView;
 
 
 
@@ -104,6 +113,56 @@ begin
   if assigned(FSQLBuild) then FreeAndNil(FSQLBuild);
 end;
 
+
+procedure TTestSQLView.TestAddFiveKeyFields;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält1');
+  sQLView.SetKeyFields(true,'Fält2');
+  sQLView.SetKeyFields(true,'Fält3');
+  sQLView.SetKeyFields(true,'Fält4');
+  sQLView.SetKeyFields(true,'Fält5');
+  Expected := 'Fält1;Fält2;Fält3;Fält4;Fält5';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
+
+procedure TTestSQLView.TestAddOneKeyField;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält3');
+  Expected := 'Fält3';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
+
+procedure TTestSQLView.TestAddTwoKeyFields;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält3');
+  sQLView.SetKeyFields(true,'Fält5');
+  Expected := 'Fält3;Fält5';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
 
 procedure TTestSQLView.TestGetAddFromComboContinuing;
 var
@@ -245,6 +304,13 @@ begin
   Assert.AreEqual(aExpected, Actual);
 end;
 
+
+{ TSQLViewForTest }
+
+constructor TSQLViewForTest.create;
+begin
+  // do nothing;
+end;
 
 initialization
   TDUnitX.RegisterTestFixture(TTestSQLView);
