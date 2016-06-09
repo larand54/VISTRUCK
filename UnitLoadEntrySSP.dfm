@@ -22,34 +22,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
-  object Splitter2: TSplitter
-    Left = 0
-    Top = 367
-    Width = 1522
-    Height = 3
-    Cursor = crVSplit
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    Color = clBlack
-    ParentColor = False
-  end
-  object Splitter3: TSplitter
-    Left = 0
-    Top = 562
-    Width = 1522
-    Height = 4
-    Cursor = crVSplit
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    Color = clBlack
-    ParentColor = False
-  end
   object dxPageControl1: TcxPageControl
     Left = 0
     Top = 101
@@ -66,8 +38,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.Kind = lfUltraFlat
     LookAndFeel.SkinName = ''
-    ClientRectBottom = 266
-    ClientRectRight = 1522
+    ClientRectBottom = 262
+    ClientRectLeft = 4
+    ClientRectRight = 1518
     ClientRectTop = 27
     object tsLoadData: TcxTabSheet
       Margins.Left = 4
@@ -75,26 +48,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Leveranshuvud'
-      object Splitter1: TSplitter
-        Left = 0
-        Top = 179
-        Width = 1522
-        Height = 6
-        Cursor = crVSplit
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alBottom
-        Color = clBlack
-        ParentColor = False
-        ExplicitTop = 171
-        ExplicitWidth = 1513
-      end
       object pLoadHead: TPanel
         Left = 0
         Top = 0
-        Width = 1522
+        Width = 1514
         Height = 91
         Margins.Left = 4
         Margins.Top = 4
@@ -531,243 +488,276 @@ object fLoadEntrySSP: TfLoadEntrySSP
           ParentFont = False
         end
       end
-      object grdAddress: TcxGrid
-        Left = 0
-        Top = 185
-        Width = 1522
-        Height = 54
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alBottom
-        TabOrder = 1
-        object grdAddressDBTableView1: TcxGridDBTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmsContact.dsrcAddressAndReference
-          DataController.KeyFieldNames = 'Address'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.CellSelect = False
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.GroupByBox = False
-          OptionsView.Indicator = True
-          Styles.Content = cxStyleContent
-          Styles.ContentEven = cxStyleContent
-          Styles.ContentOdd = cxStyleContentOdd
-          Styles.Header = cxStyleHeader
-          object grdAddressDBTableView1Address: TcxGridDBColumn
-            DataBinding.FieldName = 'Address'
-            Options.Filtering = False
-          end
-          object grdAddressDBTableView1Destination: TcxGridDBColumn
-            DataBinding.FieldName = 'Destination'
-            Options.Filtering = False
-          end
-          object grdAddressDBTableView1Reference: TcxGridDBColumn
-            DataBinding.FieldName = 'Reference'
-            Options.Filtering = False
-          end
-        end
-        object grdAddressLevel1: TcxGridLevel
-          GridView = grdAddressDBTableView1
-        end
-      end
-      object grdLO: TcxGrid
+      object pgrdLO: TPanel
         Left = 0
         Top = 91
-        Width = 1522
-        Height = 88
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alClient
+        Width = 1514
+        Height = 50
+        Align = alTop
+        TabOrder = 1
+        object grdLO: TcxGrid
+          Left = 1
+          Top = 1
+          Width = 1512
+          Height = 48
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = alTop
+          TabOrder = 0
+          ExplicitLeft = 10
+          ExplicitWidth = 1503
+          object grdLODBTableView1: TcxGridDBTableView
+            PopupMenu = pmLONumber
+            Navigator.Buttons.CustomButtons = <>
+            DataController.DataSource = dmLoadEntrySSP.ds_LSP
+            DataController.KeyFieldNames = 'LoadNo;ShippingPlanNo'
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsData.Deleting = False
+            OptionsData.Editing = False
+            OptionsData.Inserting = False
+            OptionsSelection.CellSelect = False
+            OptionsView.ColumnAutoWidth = True
+            OptionsView.GroupByBox = False
+            OptionsView.Indicator = True
+            Styles.Content = cxStyleContent
+            Styles.ContentEven = cxStyleContent
+            Styles.ContentOdd = cxStyleContentOdd
+            Styles.Header = cxStyleHeader
+            object grdLODBTableView1LoadNo: TcxGridDBColumn
+              DataBinding.FieldName = 'LoadNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1ShippingPlanNo: TcxGridDBColumn
+              DataBinding.FieldName = 'ShippingPlanNo'
+              Options.Filtering = False
+              Width = 59
+            end
+            object grdLODBTableView1CUSTOMER: TcxGridDBColumn
+              DataBinding.FieldName = 'CUSTOMER'
+              Options.Filtering = False
+              Width = 114
+            end
+            object grdLODBTableView1SUPPLIER: TcxGridDBColumn
+              DataBinding.FieldName = 'SUPPLIER'
+              Options.Filtering = False
+              Width = 100
+            end
+            object grdLODBTableView1LOC_CUST: TcxGridDBColumn
+              DataBinding.FieldName = 'LOC_CUST'
+              Options.Filtering = False
+              Width = 100
+            end
+            object grdLODBTableView1SHIPPER: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIPPER'
+              Options.Filtering = False
+              Width = 100
+            end
+            object grdLODBTableView1READYDATE: TcxGridDBColumn
+              DataBinding.FieldName = 'READYDATE'
+              Options.Filtering = False
+              Width = 104
+            end
+            object grdLODBTableView1VESSEL: TcxGridDBColumn
+              DataBinding.FieldName = 'VESSEL'
+              Options.Filtering = False
+              Width = 100
+            end
+            object grdLODBTableView1ETD: TcxGridDBColumn
+              DataBinding.FieldName = 'ETD'
+              Options.Filtering = False
+              Width = 70
+            end
+            object grdLODBTableView1ETA: TcxGridDBColumn
+              DataBinding.FieldName = 'ETA'
+              Options.Filtering = False
+              Width = 70
+            end
+            object grdLODBTableView1SHIPPER_REF: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIPPER_REF'
+              Options.Filtering = False
+              Width = 70
+            end
+            object grdLODBTableView1SHIPPERID: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIPPERID'
+              Options.Filtering = False
+            end
+            object grdLODBTableView1SHIPPERS_SHIPDATE: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIPPERS_SHIPDATE'
+              Visible = False
+              Options.Filtering = False
+              Width = 70
+            end
+            object grdLODBTableView1SHIPPERS_SHIPTIME: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIPPERS_SHIPTIME'
+              Visible = False
+              Options.Filtering = False
+              Width = 70
+            end
+            object grdLODBTableView1ORDERNO: TcxGridDBColumn
+              DataBinding.FieldName = 'ORDERNO'
+              Visible = False
+              Options.Filtering = False
+            end
+            object grdLODBTableView1ORDERTYPE: TcxGridDBColumn
+              Caption = 'Kontrakttyp'
+              DataBinding.FieldName = 'ORDERTYPE'
+              Visible = False
+              Options.Filtering = False
+            end
+            object grdLODBTableView1LOADING_LOCATION: TcxGridDBColumn
+              DataBinding.FieldName = 'LOADING_LOCATION'
+              Visible = False
+              Options.Filtering = False
+              Width = 60
+            end
+            object grdLODBTableView1SHIP_TO: TcxGridDBColumn
+              DataBinding.FieldName = 'SHIP_TO'
+              Visible = False
+              Options.Filtering = False
+              Width = 60
+            end
+            object grdLODBTableView1SupplierNo: TcxGridDBColumn
+              DataBinding.FieldName = 'SupplierNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+              Width = 87
+            end
+            object grdLODBTableView1CreatedUser: TcxGridDBColumn
+              DataBinding.FieldName = 'CreatedUser'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1ModifiedUser: TcxGridDBColumn
+              DataBinding.FieldName = 'ModifiedUser'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1DateCreated: TcxGridDBColumn
+              DataBinding.FieldName = 'DateCreated'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+              Width = 84
+            end
+            object grdLODBTableView1CustomerNo: TcxGridDBColumn
+              DataBinding.FieldName = 'CustomerNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1ObjectType: TcxGridDBColumn
+              DataBinding.FieldName = 'ObjectType'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1Avrop_CustomerNo: TcxGridDBColumn
+              DataBinding.FieldName = 'Avrop_CustomerNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1LoadingLocationNo: TcxGridDBColumn
+              DataBinding.FieldName = 'LoadingLocationNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1ShipToInvPointNo: TcxGridDBColumn
+              DataBinding.FieldName = 'ShipToInvPointNo'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+            object grdLODBTableView1Shipping: TcxGridDBColumn
+              DataBinding.FieldName = 'Shipping'
+              Visible = False
+              Options.Filtering = False
+              VisibleForCustomization = False
+            end
+          end
+          object grdLOLevel1: TcxGridLevel
+            GridView = grdLODBTableView1
+          end
+        end
+      end
+      object pgrdAddress: TPanel
+        Left = 0
+        Top = 149
+        Width = 1514
+        Height = 60
+        Align = alTop
         TabOrder = 2
-        object grdLODBTableView1: TcxGridDBTableView
-          PopupMenu = pmLONumber
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmLoadEntrySSP.ds_LSP
-          DataController.KeyFieldNames = 'LoadNo;ShippingPlanNo'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.CellSelect = False
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.GroupByBox = False
-          OptionsView.Indicator = True
-          Styles.Content = cxStyleContent
-          Styles.ContentEven = cxStyleContent
-          Styles.ContentOdd = cxStyleContentOdd
-          Styles.Header = cxStyleHeader
-          object grdLODBTableView1LoadNo: TcxGridDBColumn
-            DataBinding.FieldName = 'LoadNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
+        ExplicitTop = 157
+        object grdAddress: TcxGrid
+          Left = 1
+          Top = 1
+          Width = 1512
+          Height = 58
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = alTop
+          TabOrder = 0
+          ExplicitHeight = 64
+          object grdAddressDBTableView1: TcxGridDBTableView
+            Navigator.Buttons.CustomButtons = <>
+            DataController.DataSource = dmsContact.dsrcAddressAndReference
+            DataController.KeyFieldNames = 'Address'
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <>
+            DataController.Summary.SummaryGroups = <>
+            OptionsData.Deleting = False
+            OptionsData.Editing = False
+            OptionsData.Inserting = False
+            OptionsSelection.CellSelect = False
+            OptionsView.ColumnAutoWidth = True
+            OptionsView.GroupByBox = False
+            OptionsView.Indicator = True
+            Styles.Content = cxStyleContent
+            Styles.ContentEven = cxStyleContent
+            Styles.ContentOdd = cxStyleContentOdd
+            Styles.Header = cxStyleHeader
+            object grdAddressDBTableView1Address: TcxGridDBColumn
+              DataBinding.FieldName = 'Address'
+              Options.Filtering = False
+            end
+            object grdAddressDBTableView1Destination: TcxGridDBColumn
+              DataBinding.FieldName = 'Destination'
+              Options.Filtering = False
+            end
+            object grdAddressDBTableView1Reference: TcxGridDBColumn
+              DataBinding.FieldName = 'Reference'
+              Options.Filtering = False
+            end
           end
-          object grdLODBTableView1ShippingPlanNo: TcxGridDBColumn
-            DataBinding.FieldName = 'ShippingPlanNo'
-            Options.Filtering = False
-            Width = 59
-          end
-          object grdLODBTableView1CUSTOMER: TcxGridDBColumn
-            DataBinding.FieldName = 'CUSTOMER'
-            Options.Filtering = False
-            Width = 114
-          end
-          object grdLODBTableView1SUPPLIER: TcxGridDBColumn
-            DataBinding.FieldName = 'SUPPLIER'
-            Options.Filtering = False
-            Width = 100
-          end
-          object grdLODBTableView1LOC_CUST: TcxGridDBColumn
-            DataBinding.FieldName = 'LOC_CUST'
-            Options.Filtering = False
-            Width = 100
-          end
-          object grdLODBTableView1SHIPPER: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPER'
-            Options.Filtering = False
-            Width = 100
-          end
-          object grdLODBTableView1READYDATE: TcxGridDBColumn
-            DataBinding.FieldName = 'READYDATE'
-            Options.Filtering = False
-            Width = 104
-          end
-          object grdLODBTableView1VESSEL: TcxGridDBColumn
-            DataBinding.FieldName = 'VESSEL'
-            Options.Filtering = False
-            Width = 100
-          end
-          object grdLODBTableView1ETD: TcxGridDBColumn
-            DataBinding.FieldName = 'ETD'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1ETA: TcxGridDBColumn
-            DataBinding.FieldName = 'ETA'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPER_REF: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPER_REF'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPERID: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERID'
-            Options.Filtering = False
-          end
-          object grdLODBTableView1SHIPPERS_SHIPDATE: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERS_SHIPDATE'
-            Visible = False
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPERS_SHIPTIME: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERS_SHIPTIME'
-            Visible = False
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1ORDERNO: TcxGridDBColumn
-            DataBinding.FieldName = 'ORDERNO'
-            Visible = False
-            Options.Filtering = False
-          end
-          object grdLODBTableView1ORDERTYPE: TcxGridDBColumn
-            Caption = 'Kontrakttyp'
-            DataBinding.FieldName = 'ORDERTYPE'
-            Visible = False
-            Options.Filtering = False
-          end
-          object grdLODBTableView1LOADING_LOCATION: TcxGridDBColumn
-            DataBinding.FieldName = 'LOADING_LOCATION'
-            Visible = False
-            Options.Filtering = False
-            Width = 60
-          end
-          object grdLODBTableView1SHIP_TO: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIP_TO'
-            Visible = False
-            Options.Filtering = False
-            Width = 60
-          end
-          object grdLODBTableView1SupplierNo: TcxGridDBColumn
-            DataBinding.FieldName = 'SupplierNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-            Width = 87
-          end
-          object grdLODBTableView1CreatedUser: TcxGridDBColumn
-            DataBinding.FieldName = 'CreatedUser'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ModifiedUser: TcxGridDBColumn
-            DataBinding.FieldName = 'ModifiedUser'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1DateCreated: TcxGridDBColumn
-            DataBinding.FieldName = 'DateCreated'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-            Width = 84
-          end
-          object grdLODBTableView1CustomerNo: TcxGridDBColumn
-            DataBinding.FieldName = 'CustomerNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ObjectType: TcxGridDBColumn
-            DataBinding.FieldName = 'ObjectType'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1Avrop_CustomerNo: TcxGridDBColumn
-            DataBinding.FieldName = 'Avrop_CustomerNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1LoadingLocationNo: TcxGridDBColumn
-            DataBinding.FieldName = 'LoadingLocationNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ShipToInvPointNo: TcxGridDBColumn
-            DataBinding.FieldName = 'ShipToInvPointNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1Shipping: TcxGridDBColumn
-            DataBinding.FieldName = 'Shipping'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
+          object grdAddressLevel1: TcxGridLevel
+            GridView = grdAddressDBTableView1
           end
         end
-        object grdLOLevel1: TcxGridLevel
-          GridView = grdLODBTableView1
-        end
+      end
+      object cxSplitter1: TcxSplitter
+        Left = 0
+        Top = 141
+        Width = 1514
+        Height = 8
+        HotZoneClassName = 'TcxMediaPlayer8Style'
+        AlignSplitter = salTop
+        Control = pgrdLO
+        Color = clMaroon
+        ParentColor = False
+        ExplicitLeft = 1
+        ExplicitTop = 147
       end
     end
     object tsLoadNote: TcxTabSheet
@@ -776,9 +766,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Notering'
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object meInternalNote: TcxDBMemo
         Left = 0
         Top = 0
@@ -790,8 +777,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         DataBinding.DataField = 'InternalNote'
         DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
         TabOrder = 0
-        Height = 239
-        Width = 1522
+        Height = 235
+        Width = 1514
       end
     end
   end
@@ -822,7 +809,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 1405
-        Height = 48
+        Height = 49
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -870,7 +857,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Left = 1
         Top = 1
         Width = 78
-        Height = 48
+        Height = 49
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -882,7 +869,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object PanelLORows: TPanel
     Left = 0
-    Top = 370
+    Top = 375
     Width = 1522
     Height = 192
     Margins.Left = 4
@@ -891,6 +878,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Margins.Bottom = 4
     Align = alTop
     TabOrder = 2
+    ExplicitTop = 370
     object Panel1: TPanel
       Left = 1
       Top = 1
@@ -1428,15 +1416,17 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object PanelPackages: TPanel
     Left = 0
-    Top = 566
+    Top = 575
     Width = 1522
-    Height = 369
+    Height = 360
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alClient
     TabOrder = 3
+    ExplicitTop = 566
+    ExplicitHeight = 369
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -1532,8 +1522,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object cxButton3: TcxButton
         Left = 659
         Top = 3
-        Width = 267
-        Height = 38
+        Width = 118
+        Height = 37
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -1620,13 +1610,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Left = 1
       Top = 47
       Width = 1520
-      Height = 321
+      Height = 312
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 1
+      ExplicitHeight = 321
       object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
         PopupMenu = pmPkgs
         OnKeyDown = grdPkgsDBBandedTableView1KeyDown
@@ -2194,10 +2185,40 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Width = 1520
     end
   end
+  object cxSplitter3: TcxSplitter
+    Left = 0
+    Top = 567
+    Width = 1522
+    Height = 8
+    HotZoneClassName = 'TcxMediaPlayer8Style'
+    AlignSplitter = salTop
+    Control = PanelLORows
+    Color = clMaroon
+    ParentColor = False
+    ExplicitLeft = -280
+    ExplicitTop = 583
+  end
+  object cxSplitter2: TcxSplitter
+    Left = 0
+    Top = 367
+    Width = 1522
+    Height = 8
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
+    HotZoneClassName = 'TcxMediaPlayer8Style'
+    AlignSplitter = salTop
+    Control = dxPageControl1
+    Color = clSilver
+    ParentColor = False
+    ExplicitTop = 209
+    ExplicitWidth = 1514
+  end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False

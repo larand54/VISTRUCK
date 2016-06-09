@@ -390,6 +390,11 @@ type
     cds_LoadPackagesREFERENCE: TStringField;
     cds_LoadPackagesINFO1: TStringField;
     cds_LoadPackagesINFO2: TStringField;
+    cds_PropsFilter1: TStringField;
+    cds_SaveFormSettings: TFDQuery;
+    cds_SaveFormSettingsFilter1: TStringField;
+    cds_SaveFormSettingsUserID: TIntegerField;
+    cds_SaveFormSettingsForm: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
