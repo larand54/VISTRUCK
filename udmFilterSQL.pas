@@ -44,7 +44,7 @@ type
     FListSpecies: TCMSL;    // SpeciesName
     FListVaruGrupp: TCMSL;  // VarugruppNamn
     FListIMP: TCMSL;        // PC
-    FListLengthDesc: TCMSL; // LengthDesc
+    FListAL: TCMSL; // LengthDesc
     FListREF: TCMSL;        // REFERENCE
     FListInfo1: TCMSL;      // Info1
     FListInfo2: TCMSL;      // Info2
@@ -87,11 +87,12 @@ type
     property SpeciesL: TCMSL read FListSpecies;
     property VaruGruppL: TCMSL read FListVaruGrupp;
     property IMPL: TCMSL read FListIMP;
-    property LengthDescL: TCMSL read FListLengthDesc;
+    property AL: TCMSL read FListAL;
     property REFL: TCMSL read FListREF;
     property Info1L: TCMSL read FListInfo1;
     property Info2L: TCMSL read FListInfo2;
   end;
+
 
 var
   dmFilterSQL: TdmFilterSQL;
@@ -100,7 +101,8 @@ var
 implementation
 
 uses
-  VidaUser,Dialogs, dmsVidaSystem;
+  VidaUser,Dialogs, dmsVidaSystem,
+  uDynSQL_const;
 { %CLASSGROUP 'Vcl.Controls.TControl' }
 
 {$R *.dfm}
@@ -110,6 +112,7 @@ uses
 procedure TdmFilterSQL.AddFilterData(const aList: TCMSL; aS1: string);
 begin
   try
+    if As1 = '' then aS1 := blank;
     aList.Add(aS1);
   Except
         // Duplicate key error - That's ok.
@@ -152,7 +155,7 @@ begin
     FListSpecies.Clear;    // SpeciesName
     FListVaruGrupp.Clear;  // VarugruppNamn
     FListIMP.Clear;        // PC
-    FListLengthDesc.Clear; // LengthDesc
+    FListAL.Clear; // LengthDesc
     FListREF.Clear;        // REFERENCE
     FListInfo1.Clear;      // Info1
     FListInfo2.Clear;      // Info2
@@ -170,7 +173,7 @@ begin
   FListSpecies := TCMSL.create; // SpeciesName
   FListVaruGrupp := TCMSL.create; // VarugruppNamn
   FListIMP := TCMSL.create; // PC
-  FListLengthDesc := TCMSL.create; // LengthDesc
+  FListAL := TCMSL.create; // LengthDesc
   FListREF := TCMSL.create; // REFERENCE
   FListInfo1 := TCMSL.create; // Info1
   FListInfo2 := TCMSL.create; // Info2
@@ -188,7 +191,7 @@ begin
   FListSpecies.Free;
   FListVaruGrupp.Free;
   FListIMP.Free;
-  FListLengthDesc.Free;
+  FListAL.Free;
   FListREF.Free;
   FListInfo1.Free;
   FListInfo2.Free;
@@ -279,31 +282,31 @@ begin
           sqFilterData.FieldByName('ActualWidthMM').AsFloat);
 
         s := sqFilterData.FieldByName('GradeName').AsString;
-        if s <> '' then AddFilterData(FListGrade, s);
+        AddFilterData(FListGrade, s);
 
         s := sqFilterData.FieldByName('SurfacingName').AsString;
-        if s <> '' then AddFilterData(FListSU, s);
+        AddFilterData(FListSU, s);
 
         s := sqFilterData.FieldByName('SpeciesName').AsString;
-        if s <> '' then AddFilterData(FListSpecies, s);
+        AddFilterData(FListSpecies, s);
 
         s := sqFilterData.FieldByName('VarugruppNamn').AsString;
-        if s <> '' then AddFilterData(FListVaruGrupp, s);
+        AddFilterData(FListVaruGrupp, s);
 
         s := sqFilterData.FieldByName('PC').AsString;
-        if s <> '' then AddFilterData(FListIMP, s);
+        AddFilterData(FListIMP, s);
 
-(*        s := sqFilterData.FieldByName('LengthDesc').AsString;
-        if s <> '' then AddFilterData(FListLengthDesc, s);
-  *)
+        s := sqFilterData.FieldByName('AL').AsString;
+        AddFilterData(FListAL, s);
+
         s := sqFilterData.FieldByName('REFERENCE').AsString;
-        if s <> '' then AddFilterData(FListREF, s);
+        AddFilterData(FListREF, s);
 
-        s := sqFilterData.FieldByName('BL_NO').AsString;
-        if s <> '' then AddFilterData(FListInfo1, s);
+        s := sqFilterData.FieldByName('Info1').AsString;
+        AddFilterData(FListInfo1, s);
 
         s := sqFilterData.FieldByName('Info2').AsString;
-        if s <> '' then AddFilterData(FListInfo2, s);
+        AddFilterData(FListInfo2, s);
 
         sqFilterData.Next;
       except

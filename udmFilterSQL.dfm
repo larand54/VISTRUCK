@@ -18,8 +18,11 @@ object dmFilterSQL: TdmFilterSQL
         ',GR.GradeName, GR.GradeCode, SUR.SurfacingName, SUR.SurfacingCod' +
         'e, SPE.SpeciesName, SPE.SpeciesCode, VA.VarugruppNamn, VA.Varugr' +
         'uppNo'
-      ',IMP.ProductCategoryName AS PC, PN.REFERENCE, PN.BL_NO AS Info1'
-      ',PN.Info2'
+      
+        ',IMP.ProductCategoryName AS PC, isnull(PN.REFERENCE,'#39'NULL'#39') AS R' +
+        'EFERENCE, isnull(PN.BL_NO, '#39'NULL'#39') AS Info1'
+      ',isnull(PN.Info2,'#39'NULL'#39') AS Info2'
+      ',dbo.getMaxlengthOfPackage(PN.PackageNo, PN.SupplierCode) AS AL'
       ''
       'FROM dbo.PackageNumber PN'
       'Left outer join dbo.Position posi '
@@ -96,7 +99,6 @@ object dmFilterSQL: TdmFilterSQL
     Top = 69
   end
   object cds_PositionView: TFDQuery
-    Active = True
     OnUpdateRecord = cds_PositionViewUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateOptions.UpdateTableName = 'dbo.PackageNumber'

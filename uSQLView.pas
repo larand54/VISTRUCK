@@ -81,7 +81,8 @@ type
 implementation
 
 uses
-  dialogs, dmsVidaSystem;
+  dialogs, dmsVidaSystem,
+  uDynSQL_const;
 
 class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
@@ -315,37 +316,63 @@ procedure TWhereString.addFromCombo(const aDecimalType, quotedString: byte;
   const aCombo: TcxCheckComboBox; const aFieldName: string);
 var
   values: TStringList;
+  nulls: TStringList;
   Value: string;
   temp: string;
+  i: integer;
 begin
   // values := TStringList.Create;
+  nulls := TStringList.Create;
   try
     values := getCheckedValues(aDecimalType, aCombo);
     if assigned(values) and (values.Count > 0) then
     begin
-      if not assigned(FWhereStringList) then
-      begin
-        FWhereStringList := TStringList.create;
-        temp := '(';
-      end
-      else
-        temp := 'AND (';
-
-      temp := temp + aFieldName + ' IN (';
-      for Value in values do
-      begin
-        if quotedString = 1 then
-          temp := temp + quotedStr(Value) + ','
+      for value in values do
+        if Value = NULL then nulls.Add(aFieldName+ ' IS  NULL');
+      if nulls.count < Values.count then begin
+        if not assigned(FWhereStringList) then
+        begin
+          FWhereStringList := TStringList.create;
+          temp := '(';
+        end
         else
-          temp := temp + Value + ',';
+          temp := 'AND (';
+        temp := temp + aFieldName + ' IN (';
+        for Value in values do
+        begin
+          if quotedString = 1 then
+          begin
+            if Value = BLANK then
+              temp := temp + quotedStr('') + ','
+            else if Value = NULL then continue
+            else temp := temp + quotedStr(Value) + ','
+          end
+          else
+            temp := temp + Value + ',';
+        end;
+        temp := copy(temp, 1, temp.Length - 1);
+        temp := temp + ')'
       end;
-      temp := copy(temp, 1, temp.Length - 1);
-      temp := temp + '))';
+      if nulls.Count > 0 then
+      begin
+        if not assigned(FWhereStringList) then
+        begin
+          FWhereStringList := TStringList.create;
+        end;
+        for i := 0 to nulls.count-1 do
+        begin
+          temp := temp + ' OR (' + nulls[i]+')';
+        end;
+      end;
+      if nulls.count < Values.count then
+        temp := temp + ')';
       FWhereStringList.add(temp);
     end;
   finally
     if assigned(values) then
       values.Free;
+    if assigned(nulls) then
+      nulls.Free;
   end;
 end;
 

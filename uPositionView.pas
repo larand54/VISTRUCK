@@ -432,6 +432,10 @@ type
       var AAllow: Boolean);
     procedure acOnEnterFilterCombosExecute(Sender: TObject);
     procedure acPrintPositionViewExecute(Sender: TObject);
+    procedure grdPositionDBTableView1BL_NOGetDataText(
+      Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
+    procedure grdPositionDBTableView1Info2GetDataText(
+      Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
 
   private
     { Private declarations }
@@ -474,7 +478,7 @@ type
     function LoadGridLayout(const UserID : Integer;const Form, ViewName : String;
       AGridView: TcxGridTableView;const MallName : String): boolean;
     procedure DeleteGridLayout(const UserID : Integer; const ViewName : String) ;
-
+    procedure CheckAndRemoveFantomColumns(AGridView: TcxGridTableView);
   public
     { Public declarations }
 //    Function  GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
@@ -496,7 +500,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmc_UserProps, dmsVidaSystem,
  // dmsVidaPkg,
   uEntryField{, uSokAvropMall , uAngeNy, VidaDeliveryClass}, uSQLView,
-  udmLanguage, uAngeNyMall;
+  udmLanguage, uAngeNyMall, uDynSQL_const;
 
 {$R *.dfm}
 
@@ -646,7 +650,7 @@ begin
   UpdateFilterCombos(ccbAB, TdmFilterSQL(aSubject).AWL);
   UpdateFilterCombos(ccbNT, TdmFilterSQL(aSubject).NTL);
   UpdateFilterCombos(ccbNB, TdmFilterSQL(aSubject).NWL);
-  UpdateFilterCombos(ccbAL, TdmFilterSQL(aSubject).LengthDescL);
+  UpdateFilterCombos(ccbAL, TdmFilterSQL(aSubject).AL);
   UpdateFilterCombos(ccbTS2, TdmFilterSQL(aSubject).SpeciesL);
   UpdateFilterCombos(ccbKV2, TdmFilterSQL(aSubject).GradeL);
   UpdateFilterCombos(ccbSU2, TdmFilterSQL(aSubject).SUL);
@@ -1074,7 +1078,12 @@ begin
     LoadCheckBoxWithVerk ;
     if sl[1] <> '' then cbOwner.EditValue := sl[1];
     LoadCheckBoxWithStorageGroup;
-    if sl[2] <> '' then cbStorageGroup.EditValue := sl[2];
+    if sl[2] <> '' then
+    begin
+      cbStorageGroup.EditValue := sl[2];
+      LoadCheckBoxWithSTorageArea;
+      LoadCheckBoxWithStoragePos;
+    end;
     if sl[3] <> '' then cbInklEjFakt.EditValue := sl[3];
   end;
 end;
@@ -1106,9 +1115,9 @@ begin
     end;
   end;
 //  WhereList.addAND('PN.DateCreated > DATEADD(year,-1,GETDATE())',true,true);
-  if deStartPeriod.EditValue <> null then
+  if deStartPeriod.EditValue > 0 then
     WhereList.addAND('PN.StoredDate >= ' + QuotedStr(DateTimeToStr(deStartPeriod.Date)),true,true);
-  if deEndPeriod.EditValue <> null then
+  if deEndPeriod.EditValue > 0 then
     WhereList.addAND('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)),true,true);
 
   WhereList.addFromCombo(aDecimalType,notQuoted,cbOwner,'PIP.OwnerNo');
@@ -1119,10 +1128,10 @@ begin
   WhereList.addFromCombo(1,notQuoted,ccbNT,'pg.NominalThicknessMM');
   WhereList.addFromCombo(1,notQuoted,ccbAB,'pg.ActualWidthMM');
   WhereList.addFromCombo(1,notQuoted,ccbNB,'pg.NominalWidthMM');
-  WhereList.addFromCombo(1,notQuoted,ccbAL,'dbo.getMaxLengthOfPackage(PN.PackageNo)');
+  WhereList.addFromCombo(1,notQuoted,ccbAL,'dbo.getMaxLengthOfPackage(PN.PackageNo, PN.SupplierCode)');
   WhereList.addFromCombo(1,Quoted,ccbReference,'PN.REFERENCE');
-  WhereList.addFromCombo(1,notQuoted,ccbInfo1,'PN.Info1');
-  WhereList.addFromCombo(1,notQuoted,ccbInfo2,'PN.Info2');
+  WhereList.addFromCombo(1,Quoted,ccbInfo1,'PN.BL_NO');
+  WhereList.addFromCombo(1,Quoted,ccbInfo2,'PN.Info2');
 
   result := WhereList.getWhereStatement;
 end;
@@ -1219,6 +1228,14 @@ begin
 end;
 
 
+
+procedure TfPositionView.grdPositionDBTableView1BL_NOGetDataText(
+  Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
+begin
+  if AText = '' then AText := BLANK;
+
+end;
+
 procedure TfPositionView.grdPositionDBTableView1Editing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
@@ -1239,6 +1256,13 @@ begin
   end;
 end;
 
+
+procedure TfPositionView.grdPositionDBTableView1Info2GetDataText(
+  Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
+begin
+  if AText = '' then AText := BLANK;
+
+end;
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
@@ -1619,6 +1643,18 @@ begin
  End ;
 end;
 
+procedure TfPositionView.CheckAndRemoveFantomColumns(
+  AGridView: TcxGridTableView);
+var
+  i: integer;
+begin
+  for i := AGridView.ColumnCount-1 downto 0 do
+  begin
+    if AGridView.Columns[i].DataBinding.Item.Caption = '' then
+      AGridView.Columns[i].Free; //showmessage('Fantomkolumn: '+intToStr(i+1));
+  end;
+end;
+
 Function TfPositionView.CheckIfAnyCheckedItemsInComboFilter(combo : TcxCheckComboBox) : Boolean ;
 Var
     APCheckStates : ^TcxCheckStates;
@@ -1802,6 +1838,7 @@ begin
   View := GridTemplate + '/' + Form;
   Grid := grdPositionDBTableView1;
   LoadGridLayout( UserID, Form, View, Grid, GridTemplate);
+  CheckAndRemoveFantomColumns(Grid);
 //  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
  End;
 end;

@@ -207,10 +207,13 @@ object fPositionView: TfPositionView
             DataBinding.FieldName = 'REFERENCE'
           end
           object grdPositionDBTableView1BL_NO: TcxGridDBColumn
+            Caption = 'Info1'
             DataBinding.FieldName = 'BL_NO'
+            OnGetDataText = grdPositionDBTableView1BL_NOGetDataText
           end
           object grdPositionDBTableView1Info2: TcxGridDBColumn
             DataBinding.FieldName = 'Info2'
+            OnGetDataText = grdPositionDBTableView1Info2GetDataText
           end
           object grdPositionDBTableView1AreaName: TcxGridDBColumn
             Caption = 'LagerArea'
