@@ -1123,7 +1123,7 @@ begin
     WhereList.addAND('PN.StoredDate <= ' + QuotedStr(DateTimeToStr(deEndPeriod.Date)),true,true);
 
   WhereList.addFromCombo(aDecimalType,notQuoted,cbOwner,'PIP.OwnerNo');
-  WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageGroup,'LIP.LogicalInventoryPointNo');
+  WhereList.addFromCombo(SELECT_ALL_IF_NONE, aDecimalType,notQuoted,cbStorageGroup,'LIP.LogicalInventoryPointNo');
   WhereList.addFromCombo(aDecimalType,notQuoted,cbStorageArea,'Ar.AreaID');
   WhereList.addFromCombo(aDecimalType,notQuoted,cbStoragePos,'PN.PositionID');
   WhereList.addFromCombo(1,notQuoted,ccbAT,'pg.ActualThicknessMM');

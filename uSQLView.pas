@@ -15,7 +15,8 @@ type
     public
       procedure addAND(const s:string; aFirst, aLast: boolean);
       procedure addOR(const s:string; aFirst, aLast: boolean);
-      procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
+      procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string) overload;
+      procedure addFromCombo(const aSelectAllIfNone: boolean; const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string) overload;
       function getWhereStatement: TStringList;
   end;
 
@@ -374,6 +375,31 @@ begin
     if assigned(nulls) then
       nulls.Free;
   end;
+end;
+
+procedure TWhereString.addFromCombo(const aSelectAllIfNone: boolean;
+  const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox;
+  const aFieldName: string);
+var
+  tempCombo: TcxCheckComboBox;
+  i: integer;
+begin
+  if (aCombo.EditValue = '') and aSelectAllIfNone then
+  begin
+    tempCombo := TcxCheckComboBox.Create(nil);
+    try
+      for i := 0 to aCombo.Properties.Items.Count-1 do
+      begin
+        tempCombo.Properties.Items.AddCheckItem(aCombo.Properties.Items[i].Description, aCombo.Properties.Items[i].ShortDescription);
+        tempCombo.states[i] := cbsChecked;
+      end;
+      addFromCombo(aDecimalType, quotedString, tempCombo, aFieldName);
+    finally
+      if assigned(tempCombo) then tempCombo.Free;
+    end;
+  end
+  else
+    addFromCombo(aDecimalType, quotedString, aCombo, aFieldName);
 end;
 
 procedure TWhereString.addOR(const s: string; aFirst, aLast: boolean);
