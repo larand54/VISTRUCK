@@ -1283,6 +1283,17 @@ object fPositionView: TfPositionView
           OptionsImage.Images = cxImageListPrinting
           TabOrder = 55
         end
+        object cxBtnChgTreatmentInfo: TcxButton
+          Left = 1234
+          Top = 1
+          Width = 111
+          Height = 38
+          Action = acChgRef_and_Info
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 56
+          WordWrap = True
+        end
       end
     end
   end
@@ -2150,6 +2161,11 @@ object fPositionView: TfPositionView
       ImageIndex = 0
       OnExecute = acPrintPositionViewExecute
     end
+    object acChgRef_and_Info: TAction
+      Caption = #196'ndra Ref o Info f'#246'r markerade'
+      OnExecute = acChgRef_and_InfoExecute
+      OnHint = acChgRef_and_InfoHint
+    end
   end
   object pmFormShortcuts: TPopupMenu
     AutoPopup = False
@@ -2205,7 +2221,7 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42521.421175902770000000
+      ReportDocument.CreationDate = 42521.421175902760000000
       AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end

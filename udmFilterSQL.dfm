@@ -358,4 +358,83 @@ object dmFilterSQL: TdmFilterSQL
     Left = 280
     Top = 136
   end
+  object mtSelectedPackages: TkbmMemTable
+    Active = True
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <
+      item
+        Name = 'PackageNo'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'SupplierCode'
+        Attributes = [faRequired]
+        DataType = ftString
+        Size = 3
+      end
+      item
+        Name = 'REFERENCE'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'BL_NO'
+        Attributes = [faReadonly, faRequired]
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'Info2'
+        Attributes = [faReadonly, faRequired]
+        DataType = ftString
+        Size = 30
+      end>
+    IndexFieldNames = 'PackageNo;SupplierCode'
+    IndexName = 'mtSelectedPackagesIndex2'
+    IndexDefs = <
+      item
+        Name = 'mtSelectedPackagesIndex2'
+        Fields = 'PackageNo;SupplierCode'
+      end>
+    SortOptions = []
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    LoadedCompletely = True
+    SavedCompletely = False
+    FilterOptions = []
+    Version = '7.63.00 Standard Edition'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 464
+    Top = 32
+    object mtSelectedPackagesPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Required = True
+    end
+    object mtSelectedPackagesSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object mtSelectedPackagesREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Size = 30
+    end
+    object mtSelectedPackagesBL_NO: TStringField
+      FieldName = 'BL_NO'
+      Required = True
+      Size = 30
+    end
+    object mtSelectedPackagesInfo2: TStringField
+      FieldName = 'Info2'
+      Required = True
+      Size = 30
+    end
+  end
 end

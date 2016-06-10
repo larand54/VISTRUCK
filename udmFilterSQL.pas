@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   uICMSubject, uICMObserver
-  , dmsDataConn;
+  , dmsDataConn, kbmMemTable;
 
 type
   TCMDL = TDictionary<string,string>;
@@ -27,6 +27,12 @@ type
     ds_PositionView: TDataSource;
     cds_PositionView: TFDQuery;
     PkgUpdateSQL1: TFDUpdateSQL;
+    mtSelectedPackages: TkbmMemTable;
+    mtSelectedPackagesREFERENCE: TStringField;
+    mtSelectedPackagesBL_NO: TStringField;
+    mtSelectedPackagesInfo2: TStringField;
+    mtSelectedPackagesPackageNo: TIntegerField;
+    mtSelectedPackagesSupplierCode: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_PositionViewUpdateRecord(ASender: TDataSet;
       ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;

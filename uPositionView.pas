@@ -393,6 +393,8 @@ type
     cxButton6: TcxButton;
     cxImageListPrinting: TcxImageList;
     acPrintPositionView: TAction;
+    cxBtnChgTreatmentInfo: TcxButton;
+    acChgRef_and_Info: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -432,6 +434,8 @@ type
       var AAllow: Boolean);
     procedure acOnEnterFilterCombosExecute(Sender: TObject);
     procedure acPrintPositionViewExecute(Sender: TObject);
+    procedure acChgRef_and_InfoExecute(Sender: TObject);
+    procedure acChgRef_and_InfoHint(var HintStr: string; var CanShow: Boolean);
 
   private
     { Private declarations }
@@ -475,10 +479,12 @@ type
       AGridView: TcxGridTableView;const MallName : String): boolean;
     procedure DeleteGridLayout(const UserID : Integer; const ViewName : String) ;
     procedure CheckAndRemoveFantomColumns(AGridView: TcxGridTableView);
+    procedure getMarkedPkgs;
   public
     { Public declarations }
 //    Function  GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
     function GetBaseSQL(const aSQL: TStrings): TStrings;
+    function KeyColumnsVisible: boolean;
     Procedure CreateCo(Sender: TObject;CompanyNo: Integer);
     procedure Update(aSubject: IInterface);
     property filterUpdated: boolean read FFilterUpdated;
@@ -496,7 +502,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmc_UserProps, dmsVidaSystem,
  // dmsVidaPkg,
   uEntryField{, uSokAvropMall , uAngeNy, VidaDeliveryClass}, uSQLView,
-  udmLanguage, uAngeNyMall, uDynSQL_const;
+  udmLanguage, uAngeNyMall, uDynSQL_const, uDlgReferensAndInfo;
 
 {$R *.dfm}
 
@@ -1197,6 +1203,78 @@ begin
   end;
 end;
 
+procedure TfPositionView.acChgRef_and_InfoExecute(Sender: TObject);
+Var
+  REFERENCE,
+  cur_REFERENCE,
+  INFO1,
+  cur_INFO1,
+  INFO2,
+  cur_INFO2   : String ;
+  PkgNo: integer;
+  SupplierCode: String;
+  Save_Cursor   : TCursor ;
+  PositionID    : Integer ;
+Begin
+  if not KeyColumnsVisible then
+  begin
+    showMessage('Paketnr och Prefix  kolumnerna måste vara invalda i gridden!');
+    exit;
+  end;
+  if  grdPositionDBTableView1.Controller.SelectedRecordCount <= 0 then
+  begin
+    showMessage('Inga poster valda  gridden');
+    exit;
+  end;
+
+  With dmFilterSQL do
+  Begin
+    if TdlgChgRef_and_Info.Execute(REFERENCE, INFO1, INFO2) = mrOK then
+    Try
+	    mtSelectedPackages.Active := True ;
+	    GetMarkedPkgs ;
+	    cds_PositionView.DisableControls ;
+      try
+        if mtSelectedPackages.Eof then exit;
+		    mtSelectedPackages.First ;
+		    While not mtSelectedPackages.Eof do
+		    Begin
+		      if cds_PositionView.Locate('PackageNo;SupplierCode', VarArrayOf([mtSelectedPackagesPackageNo.AsInteger, mtSelectedPackagesSupplierCode.AsString]),[]) then
+		      Begin
+			      PkgNo := cds_PositionView.FieldByName('PACKAGENO').AsInteger;
+			      SupplierCode := cds_PositionView.FieldByName('SupplierCode').AsString;
+            dmInventory.GetCurrentTreatmInfo(PkgNo, SupplierCode,
+                cur_REFERENCE, cur_INFO1, cur_INFO2);
+            if REFERENCE = '' then REFERENCE := cur_REFERENCE;
+            if     INFO1 = '' then INFO1     := cur_INFO1;
+            if     INFO2 = '' then INFO2     := cur_INFO2;
+            dmInventory.CngRefAndInfo(PkgNo, REFERENCE, INFO1, INFO2, SupplierCode);
+		      end ;
+		      mtSelectedPackages.Next;
+        End;
+		    cds_PositionView.Refresh;
+      Finally
+      End;
+    finally
+      mtSelectedPackages.Active:= False ;
+		  cds_PositionView.EnableControls ;
+	  end;
+  End;
+end;
+
+
+procedure TfPositionView.acChgRef_and_InfoHint(var HintStr: string;
+  var CanShow: Boolean);
+begin
+  CanShow := not KeyColumnsVisible;
+  if CanShow then
+    HintStr := 'Kolumnerna PaketNr och Prefix måste vara invalda i gridden!'
+  else if  grdPositionDBTableView1.Controller.SelectedRecordCount <= 0 then
+    HintStr := 'Inga poster valda  gridden'
+  else
+    HintStr := '';
+end;
+
 procedure TfPositionView.acCloseExecute(Sender: TObject);
 begin
  Close ;
@@ -1224,7 +1302,6 @@ begin
 end;
 
 
-
 procedure TfPositionView.grdPositionDBTableView1Editing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
@@ -1245,6 +1322,12 @@ begin
   end;
 end;
 
+
+function TfPositionView.KeyColumnsVisible: boolean;
+begin
+  result := (grdPositionDBTableView1PackageNo.Visible AND
+              grdPositionDBTableView1SupplierCode.Visible);
+end;
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
@@ -1388,6 +1471,48 @@ Begin
     Dispose(APCheckStates)
   end;
 End ;
+
+procedure TfPositionView.getMarkedPkgs;
+Var
+  PkgNo: integer;
+  SupplierCode: string;
+  i,
+    RecIDX,
+    ColIdx: integer;
+  Save_Cursor: TCursor;
+begin
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait; { Show hourglass cursor }
+  With dmFilterSQL do
+  Begin
+    grdPositionDBTableView1.BeginUpdate;
+    grdPositionDBTableView1.DataController.BeginLocate;
+    Try
+      For i := 0 to grdPositionDBTableView1.Controller.
+        SelectedRecordCount - 1 do
+      Begin
+        RecIDX := grdPositionDBTableView1.Controller.SelectedRecords[i]
+          .RecordIndex;
+        ColIdx  := grdPositionDBTableView1.DataController.GetItemByFieldName('PackageNo').Index;
+        PkgNo   := grdPositionDBTableView1.DataController.Values[RecIDX, ColIdx];
+        ColIdx  := grdPositionDBTableView1.DataController.GetItemByFieldName('SupplierCode').Index;
+        SupplierCode := grdPositionDBTableView1.DataController.Values[RecIDX, ColIdx];
+        mtSelectedPackages.Insert;
+        mtSelectedPackagesPackageNo.AsInteger   := PkgNo;
+        mtSelectedPackagesSupplierCode.AsString := SupplierCode;
+        mtSelectedPackagesREFERENCE.AsString    := cds_PositionView.FieldByName('REFERENCE').AsString;
+        mtSelectedPackagesBL_NO.AsString        := cds_PositionView.FieldByName('BL_NO').AsString;
+        mtSelectedPackagesInfo2.AsString        := cds_PositionView.FieldByName('Info2').AsString;
+        mtSelectedPackages.Post;
+      End; // for
+
+    Finally
+      grdPositionDBTableView1.DataController.EndLocate;
+      grdPositionDBTableView1.EndUpdate;
+      Screen.Cursor := Save_Cursor; { Always restore to normal }
+    End;
+  End; // with
+end;
 
 function TfPositionView.GetReportIndex: integer;
 begin
@@ -1821,6 +1946,7 @@ begin
   Grid := grdPositionDBTableView1;
   LoadGridLayout( UserID, Form, View, Grid, GridTemplate);
   CheckAndRemoveFantomColumns(Grid);
+
 //  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
  End;
 end;
