@@ -321,7 +321,6 @@ var
   temp: string;
   i: integer;
 begin
-  // values := TStringList.Create;
   nulls := TStringList.Create;
   try
     values := getCheckedValues(aDecimalType, aCombo);
@@ -329,7 +328,8 @@ begin
     begin
       for value in values do
         if Value = NULL then nulls.Add(aFieldName+ ' IS  NULL');
-      if nulls.count < Values.count then begin
+      if nulls.count < Values.count then
+      begin
         if not assigned(FWhereStringList) then
         begin
           FWhereStringList := TStringList.create;
@@ -361,7 +361,7 @@ begin
         end;
         for i := 0 to nulls.count-1 do
         begin
-          temp := temp + ' OR (' + nulls[i]+')';
+          temp := temp + ' AND (' + nulls[i]+')';
         end;
       end;
       if nulls.count < Values.count then

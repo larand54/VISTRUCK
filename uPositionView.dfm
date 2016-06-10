@@ -209,11 +209,9 @@ object fPositionView: TfPositionView
           object grdPositionDBTableView1BL_NO: TcxGridDBColumn
             Caption = 'Info1'
             DataBinding.FieldName = 'BL_NO'
-            OnGetDataText = grdPositionDBTableView1BL_NOGetDataText
           end
           object grdPositionDBTableView1Info2: TcxGridDBColumn
             DataBinding.FieldName = 'Info2'
-            OnGetDataText = grdPositionDBTableView1Info2GetDataText
           end
           object grdPositionDBTableView1AreaName: TcxGridDBColumn
             Caption = 'LagerArea'
@@ -2186,6 +2184,7 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2207,6 +2206,7 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42521.421175902770000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

@@ -432,10 +432,6 @@ type
       var AAllow: Boolean);
     procedure acOnEnterFilterCombosExecute(Sender: TObject);
     procedure acPrintPositionViewExecute(Sender: TObject);
-    procedure grdPositionDBTableView1BL_NOGetDataText(
-      Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
-    procedure grdPositionDBTableView1Info2GetDataText(
-      Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
 
   private
     { Private declarations }
@@ -1229,13 +1225,6 @@ end;
 
 
 
-procedure TfPositionView.grdPositionDBTableView1BL_NOGetDataText(
-  Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
-begin
-  if AText = '' then AText := BLANK;
-
-end;
-
 procedure TfPositionView.grdPositionDBTableView1Editing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
@@ -1256,13 +1245,6 @@ begin
   end;
 end;
 
-
-procedure TfPositionView.grdPositionDBTableView1Info2GetDataText(
-  Sender: TcxCustomGridTableItem; ARecordIndex: Integer; var AText: string);
-begin
-  if AText = '' then AText := BLANK;
-
-end;
 
 procedure TfPositionView.acCollapseAllGridViewExecute(Sender: TObject);
 begin
