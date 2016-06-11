@@ -381,22 +381,22 @@ begin
     case aSource of
       0:
         begin
-          s := s + 'AND PN.Status = 1 '; // In store
+          s := s + ' AND PN.Status = 1 '; // In store
 //          s := s + 'AND OH.OrderType = 0 ';  Not used in store
         end;
       1:
         begin // Not invoiced + store
-          s := s + 'OR (NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
-          s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
-          s := s + 'OR PN.status = 1) ';
-          s := s + 'AND OH.OrderType = 0 ';
+          s := s + ' AND (NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
+          s := s + ' WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
+          s := s + ' AND OH.OrderType = 0 ';
+          s := s + ' OR PN.status = 1) ';
         end;
       2:
         begin // Not Invoiced
-          s := s + 'AND OH.OrderType = 0 ';
-          s := s + 'AND PN.Status = 0 ';
-          s := s + 'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
-          s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
+          s := s + ' AND OH.OrderType = 0 ';
+        //  s := s + 'AND PN.Status = 0 ';
+          s := s + ' AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
+          s := s + ' WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
         end;
     end;
 

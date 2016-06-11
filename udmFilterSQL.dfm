@@ -382,13 +382,13 @@ object dmFilterSQL: TdmFilterSQL
       end
       item
         Name = 'BL_NO'
-        Attributes = [faReadonly, faRequired]
+        Attributes = [faRequired]
         DataType = ftString
         Size = 30
       end
       item
         Name = 'Info2'
-        Attributes = [faReadonly, faRequired]
+        Attributes = [faRequired]
         DataType = ftString
         Size = 30
       end>

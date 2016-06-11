@@ -1106,12 +1106,12 @@ begin
     1: begin                                   // Not invoiced + store
        WhereList.addOR('(NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
        WhereList.addOR('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
-       WhereList.addOR('PN.status = 1)',true,true);
        WhereList.addAND('OH.OrderType = 0',true,true);
+       WhereList.addOR('PN.status = 1)',true,true);
     end;
     2: begin                                   // Not Invoiced
        WhereList.addAND('OH.OrderType = 0',true,true);
-       WhereList.addAND('PN.Status = 0',true,true);
+      // WhereList.addAND('PN.Status = 0',true,true);
        WhereList.addAND('NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos',true,false);
        WhereList.addAND('WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)',false,true);
     end;

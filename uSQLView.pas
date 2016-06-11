@@ -297,15 +297,15 @@ begin
     FWhereStringList := TStringList.Create;
   if aFirst then
     if aLast then
-      begin
+    begin
         AddString(' AND ('+s+')');
-      end
-      else
-      begin
+    end
+    else
+    begin
         AddString(' AND ('+s);
-      end
+    end
 
-  else if aLast and not aFirst then
+  else if aLast then
   begin
     AddString(s+')')
   end
@@ -416,7 +416,7 @@ begin
         AddString('OR ('+s);
       end
 
-  else if aLast and not aFirst then
+  else if aLast then
   begin
     AddString(s+')')
   end

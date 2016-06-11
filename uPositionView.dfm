@@ -4,7 +4,7 @@ object fPositionView: TfPositionView
   Align = alClient
   BorderStyle = bsNone
   Caption = 'LAGERRAPPORT'
-  ClientHeight = 570
+  ClientHeight = 779
   ClientWidth = 1550
   Color = clBtnFace
   DragKind = dkDock
@@ -27,7 +27,7 @@ object fPositionView: TfPositionView
     Left = 0
     Top = 153
     Width = 1550
-    Height = 417
+    Height = 626
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -41,7 +41,8 @@ object fPositionView: TfPositionView
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 417
+    ExplicitHeight = 417
+    ClientRectBottom = 626
     ClientRectRight = 1550
     ClientRectTop = 0
     object tsProduktionProduktSummary: TcxTabSheet
@@ -52,17 +53,19 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
+      ExplicitHeight = 417
       object grdPosition: TcxGrid
         Left = 0
         Top = 0
         Width = 1550
-        Height = 417
+        Height = 626
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 417
         object grdPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = grdPositionDBTableView1Editing
@@ -2200,7 +2203,6 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2221,8 +2223,7 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42521.421175902760000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42521.421175902770000000
       BuiltInReportLink = True
     end
   end
