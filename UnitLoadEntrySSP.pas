@@ -394,6 +394,7 @@ type
     cxSplitter1: TcxSplitter;
     cxSplitter2: TcxSplitter;
     cxSplitter3: TcxSplitter;
+    Panel3: TPanel;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -514,6 +515,8 @@ type
     procedure acMailTreatmentCertificateExecute(Sender: TObject);
     procedure acChgRef_and_InfoExecute(Sender: TObject);
     procedure cbShowOriginalLOPropertiesChange(Sender: TObject);
+    procedure cxSplitter2Moved(Sender: TObject);
+    procedure cxSplitter1Moved(Sender: TObject);
 
   private
     { Private declarations }
@@ -1145,6 +1148,16 @@ begin
   cdsLORows.Filtered  := True ;
  End ; //with
 
+end;
+
+procedure TfLoadEntrySSP.cxSplitter1Moved(Sender: TObject);
+begin
+  pgrdLO.Height := cxSplitter1.Top-pgrdLO.Top;
+end;
+
+procedure TfLoadEntrySSP.cxSplitter2Moved(Sender: TObject);
+begin
+  PanelLORows.Top := dxPageControl1.Top + dxPageControl1.Height + cxSplitter2.Height;
 end;
 
 procedure TfLoadEntrySSP.bePkgFontCurChange(Sender: TObject);
