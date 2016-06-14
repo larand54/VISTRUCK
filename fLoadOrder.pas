@@ -3861,6 +3861,8 @@ begin
 
  If Assigned(dmcOrder) then
   FreeAndNil(dmcOrder) ;
+ if Assigned(fLoadEntrySSP) then
+  FreeAndNil(fLoadEntrySSP);
 end;
 
 procedure TfrmVisTruckLoadOrder.Timer1Timer(Sender: TObject);

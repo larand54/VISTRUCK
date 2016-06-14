@@ -971,6 +971,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           OptionsData.Deleting = False
           OptionsData.Inserting = False
           OptionsSelection.HideSelection = True
+          OptionsView.CellAutoHeight = True
           OptionsView.ColumnAutoWidth = True
           OptionsView.Footer = True
           OptionsView.GroupByBox = False
