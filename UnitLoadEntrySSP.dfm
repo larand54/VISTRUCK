@@ -27,12 +27,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Width = 1522
     Height = 935
     Align = alClient
-    Caption = 'Panel3'
     TabOrder = 4
-    ExplicitLeft = 56
-    ExplicitTop = 8
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object cxSplitter2: TcxSplitter
       Left = 1
       Top = 368
@@ -59,9 +54,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Control = PanelLORows
       Color = clMaroon
       ParentColor = False
-      ExplicitLeft = 0
-      ExplicitTop = 559
-      ExplicitWidth = 1522
     end
     object dxPageControl1: TcxPageControl
       Left = 1
@@ -79,7 +71,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Properties.CustomButtons.Buttons = <>
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.SkinName = ''
-      ExplicitTop = 28
       ClientRectBottom = 262
       ClientRectLeft = 4
       ClientRectRight = 1516
@@ -90,7 +81,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Right = 4
         Margins.Bottom = 4
         Caption = 'Leveranshuvud'
-        ExplicitWidth = 1514
         object pLoadHead: TPanel
           Left = 0
           Top = 0
@@ -103,7 +93,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 1514
           object detLoaded: TcxDBDateEdit
             Left = 98
             Top = 32
@@ -531,6 +520,18 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Font.Style = [fsBold]
             ParentFont = False
           end
+          object BitBtn1: TBitBtn
+            Left = 1336
+            Top = 0
+            Width = 107
+            Height = 25
+            Hint = #197'terst'#228'ller de flyttbara panelerna'
+            Caption = #197'terst'#228'll formul'#228'r'
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 23
+            OnClick = BitBtn1Click
+          end
         end
         object pgrdLO: TPanel
           Left = 0
@@ -539,7 +540,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Height = 50
           Align = alTop
           TabOrder = 1
-          ExplicitWidth = 1514
           object grdLO: TcxGrid
             Left = 1
             Top = 1
@@ -551,7 +551,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Margins.Bottom = 4
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 1512
             object grdLODBTableView1: TcxGridDBTableView
               PopupMenu = pmLONumber
               Navigator.Buttons.CustomButtons = <>
@@ -741,7 +740,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Height = 60
           Align = alTop
           TabOrder = 2
-          ExplicitWidth = 1514
           object grdAddress: TcxGrid
             Left = 1
             Top = 1
@@ -753,7 +751,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Margins.Bottom = 4
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 1512
             object grdAddressDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dmsContact.dsrcAddressAndReference
@@ -801,7 +798,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           OnMoved = cxSplitter1Moved
           Color = clMaroon
           ParentColor = False
-          ExplicitWidth = 1514
         end
       end
       object tsLoadNote: TcxTabSheet
@@ -838,7 +834,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -850,8 +845,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = 1
         object dxBarDockControl1: TdxBarDockControl
           Left = 1
           Top = 1
@@ -863,7 +856,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Margins.Bottom = 4
           Align = dalTop
           BarManager = dxBarManager1
-          ExplicitWidth = 1405
         end
       end
       object Panel6: TPanel
@@ -877,7 +869,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Bottom = 4
         Align = alRight
         TabOrder = 1
-        ExplicitLeft = 1407
         object Edit1: TEdit
           Left = 10
           Top = 10
@@ -902,7 +893,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Bottom = 4
         Align = alRight
         TabOrder = 2
-        ExplicitLeft = 1442
         object dxBarDockControl2: TdxBarDockControl
           Left = 1
           Top = 1
@@ -928,8 +918,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Bottom = 4
       Align = alTop
       TabOrder = 4
-      ExplicitTop = -151
-      ExplicitWidth = 183
       object Panel1: TPanel
         Left = 1
         Top = 1
@@ -950,7 +938,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 1520
       end
       object grdLORows: TcxGrid
         Left = 1
@@ -964,7 +951,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Align = alClient
         PopupMenu = ppmenuLO_Lines
         TabOrder = 1
-        ExplicitWidth = 1520
         object grdLORowsDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
           OnCellClick = grdLORowsDBBandedTableView1CellClick
@@ -1478,9 +1464,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Bottom = 2
       Align = alTop
       TabOrder = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 1522
       object cxDBTextEdit1: TcxDBTextEdit
         Left = 1
         Top = 1
@@ -1499,7 +1482,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 0
-        ExplicitWidth = 1520
         Width = 1518
       end
     end
@@ -1514,9 +1496,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 6
-      ExplicitTop = -894
-      ExplicitWidth = 183
-      ExplicitHeight = 935
       object Panel2: TPanel
         Left = 1
         Top = 1
@@ -1536,7 +1515,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 1520
         object mePackageNo: TcxMaskEdit
           Left = 130
           Top = 6
@@ -1668,7 +1646,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          ExplicitLeft = 1426
         end
         object cxButton4: TcxButton
           Left = 930
@@ -1709,8 +1686,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 1
-        ExplicitWidth = 1520
-        ExplicitHeight = 887
         object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
           PopupMenu = pmPkgs
           OnKeyDown = grdPkgsDBBandedTableView1KeyDown

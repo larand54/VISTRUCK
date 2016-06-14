@@ -31,7 +31,7 @@ uses
   dxSkinsdxBarPainter, cxSpinEdit, cxBarEditItem, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
-  Vcl.Touch.Keyboard, uReportController, cxSplitter ;
+  Vcl.Touch.Keyboard, uReportController, cxSplitter, Vcl.Buttons ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -395,6 +395,7 @@ type
     cxSplitter2: TcxSplitter;
     cxSplitter3: TcxSplitter;
     Panel3: TPanel;
+    BitBtn1: TBitBtn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -517,6 +518,7 @@ type
     procedure cbShowOriginalLOPropertiesChange(Sender: TObject);
     procedure cxSplitter2Moved(Sender: TObject);
     procedure cxSplitter1Moved(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -677,6 +679,19 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 {$R *.dfm}
 
 { TfrmLoadEntry }
+type
+  TMovablePanels = class
+    private
+      FAddressPanelHeight: integer;
+      FLOPanelHeight     :integer;
+      FPageCtrlHeight    : integer;
+    public
+      constructor Save(const aAddrPnlHeight, aLoPnlHeight, aPgCtrlHeight: integer);
+      procedure restore(var aAddrPnlHeight, aLoPnlHeight, aPgCtrlHeight: integer);
+  end;
+
+var
+  MovablePanels: TMovablePanels;
 
 Procedure TfLoadEntrySSP.GetLO_Records ;
  Begin
@@ -1168,6 +1183,16 @@ begin
  cxStyleAqua.Font.Size    := bePkgFont.EditValue ;
  cxStyleContentOdd.Font.Size    := bePkgFont.EditValue ;
  cxStyleContent.Font.Size    := bePkgFont.EditValue ;
+end;
+
+procedure TfLoadEntrySSP.BitBtn1Click(Sender: TObject);
+var
+  a,b,c: integer;
+begin
+  MovablePanels.restore(a,b,c);
+  pgrdAddress.Height := a;
+  pgrdLO.Height := b;
+  dxPageControl1.Height := c;
 end;
 
 procedure TfLoadEntrySSP.cbShowOriginalLOPropertiesChange(Sender: TObject);
@@ -1997,6 +2022,11 @@ begin
      acImportPackages.Enabled:= False ;
 
  dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
+
+ // Save original settings of some panels etc
+ MovablePanels := TMovablePanels.Save(pgrdAddress.Height, pgrdLO.Height, dxPageControl1.Height);
+
+ // Load last used settings for some movable panels etc
  LoadFormSettings;
 end;
 
@@ -6839,5 +6869,24 @@ begin
  End;
 end;
 
+
+{ TMovablePanels }
+
+procedure TMovablePanels.restore(var aAddrPnlHeight, aLoPnlHeight,
+  aPgCtrlHeight: integer);
+begin
+  aAddrPnlHeight := FAddressPanelHeight;
+  aLoPnlHeight := FLOPanelHeight;
+  aPgCtrlHeight := FPageCtrlHeight;
+end;
+
+constructor TMovablePanels.Save(const aAddrPnlHeight, aLoPnlHeight,
+  aPgCtrlHeight: integer);
+begin
+  inherited create;
+  FAddressPanelHeight := aAddrPnlHeight;
+  FLOPanelHeight := aLoPnlHeight;
+  FPageCtrlHeight := aPgCtrlHeight;
+end;
 
 end.
