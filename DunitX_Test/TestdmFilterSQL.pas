@@ -115,17 +115,16 @@ procedure TTestdmFilterSQL.Setup;
 begin
   SF := TdmFilterSQL.Create(nil);
   s := '';
-  s := s + 'AND OH.OrderType = 0 ';
-  s := s + 'AND PN.Status = 0 ';
-  s := s + 'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
-  s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
+  s := s + ' AND OH.OrderType = 0 ';
+  s := s + ' AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
+  s := s + ' WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
   FsNotInvoiced := s + #13#10;
 
   s := '';
-  s := s + 'OR (NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
-  s := s + 'WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
-  s := s + 'OR PN.status = 1) ';
-  s := s + 'AND OH.OrderType = 0 ';
+  s := s + ' AND (NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos';
+  s := s + ' WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)';
+  s := s + ' AND OH.OrderType = 0 ';
+  s := s + ' OR PN.status = 1) ';
   FsNotInvoicedANDLager := s + #13#10;
 end;
 
@@ -289,7 +288,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE Ar.AreaID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (10,11,12,13,14)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (10,11,12,13,14)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -310,7 +309,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE Ar.AreaID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (12)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (12)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -331,7 +330,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE Ar.AreaID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (10,13)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE Ar.AreaID IN (10,13)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -638,7 +637,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (10,11,12,13,14)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (10,11,12,13,14)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -659,7 +658,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (12)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (12)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -680,7 +679,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (10,13)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PIP.OwnerNo IN (10,13)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -828,7 +827,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (10,11,12,13,14)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (10,11,12,13,14)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -849,7 +848,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (12)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (12)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -870,7 +869,7 @@ var
 begin
   SF.sqFilterData.Active := false;
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (10,13)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.LogicalInventoryPointNo IN (10,13)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -911,7 +910,7 @@ var
   source: integer;
 begin
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.PositionID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10,11,12,13,14)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10,11,12,13,14)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -931,7 +930,7 @@ var
   source: integer;
 begin
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.PositionID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;
@@ -951,7 +950,7 @@ var
   source: integer;
 begin
   SF.sqFilterData.SQL.Text := 'SELECT * FROM XXX WHERE PN.PositionID IN (1,2)';
-  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10,14)'+'AND PN.Status = 1 '+#13#10;
+  Expected := 'SELECT * FROM XXX WHERE PN.PositionID IN (10,14)'+' AND PN.Status = 1 '+#13#10;
   T := TList<integer>.create;
   A := TList<integer>.create;
   G := TList<integer>.create;

@@ -45,7 +45,9 @@ uses
   dmcVidaSystem in '..\dmcVidaSystem.pas' {dmcSystem: TDataModule},
   dmc_UserProps in '..\dmc_UserProps.pas' {dm_UserProps: TDataModule},
   uEntryField in '..\uEntryField.pas' {fEntryField},
-  uAngeNyMall in '..\uAngeNyMall.pas' {fAngeNyMall};
+  uAngeNyMall in '..\uAngeNyMall.pas' {fAngeNyMall},
+  uDynSQL_const in '..\uDynSQL_const.pas',
+  uDlgReferensAndInfo in '..\uDlgReferensAndInfo.pas' {dlgChgRef_and_Info};
 
 var
   runner : ITestRunner;

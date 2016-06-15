@@ -225,6 +225,11 @@
             <Form>fAngeNyMall</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\uDynSQL_const.pas"/>
+        <DCCReference Include="..\uDlgReferensAndInfo.pas">
+            <Form>dlgChgRef_and_Info</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
