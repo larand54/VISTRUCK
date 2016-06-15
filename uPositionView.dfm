@@ -41,7 +41,6 @@ object fPositionView: TfPositionView
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ExplicitHeight = 417
     ClientRectBottom = 626
     ClientRectRight = 1550
     ClientRectTop = 0
@@ -53,7 +52,6 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
-      ExplicitHeight = 417
       object grdPosition: TcxGrid
         Left = 0
         Top = 0
@@ -65,7 +63,6 @@ object fPositionView: TfPositionView
         Margins.Bottom = 4
         Align = alClient
         TabOrder = 0
-        ExplicitHeight = 417
         object grdPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           OnEditing = grdPositionDBTableView1Editing
@@ -1289,8 +1286,8 @@ object fPositionView: TfPositionView
         object cxBtnChgTreatmentInfo: TcxButton
           Left = 1234
           Top = 1
-          Width = 111
-          Height = 38
+          Width = 159
+          Height = 84
           Action = acChgRef_and_Info
           ParentShowHint = False
           ShowHint = True
@@ -2203,6 +2200,7 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2223,7 +2221,8 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42521.421175902770000000
+      ReportDocument.CreationDate = 42521.421175902760000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
