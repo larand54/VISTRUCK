@@ -5248,4 +5248,23 @@ object dmsSystem: TdmsSystem
     Left = 856
     Top = 896
   end
+  object sp_UserPerm: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_UsPerm'
+    Left = 39
+    Top = 874
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

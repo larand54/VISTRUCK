@@ -95,7 +95,6 @@
         <Icon_MainIcon>VIS_TRUCK.ico</Icon_MainIcon>
         <VerInfo_Special>true</VerInfo_Special>
         <VerInfo_Private>true</VerInfo_Private>
-        <DCC_Define>madExcept;$(DCC_Define)</DCC_Define>
         <VerInfo_Debug>false</VerInfo_Debug>
         <VerInfo_PreRelease>true</VerInfo_PreRelease>
         <VerInfo_Build>77</VerInfo_Build>
