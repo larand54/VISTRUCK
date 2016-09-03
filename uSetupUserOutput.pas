@@ -23,7 +23,8 @@ uses
   dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxNavigator, Data.DB, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView, cxGrid,
-  cxCheckBox;
+  cxCheckBox, System.Actions, Vcl.ActnList, Vcl.Menus, Vcl.StdCtrls, cxButtons,
+  cxDBEdit;
 
 type
   TfSetupUserOutput = class(TForm)
@@ -37,7 +38,6 @@ type
     grdUsersOutputProdunitsDBTableView1: TcxGridDBTableView;
     grdUsersOutputProdunitsLevel1: TcxGridLevel;
     grdUsersOutputProdunits: TcxGrid;
-    grdUsersOutputProdunitsDBTableView1Selected: TcxGridDBColumn;
     grdUsersOutputProdunitsDBTableView1ProductionUnitNo: TcxGridDBColumn;
     grdUsersOutputProdunitsDBTableView1ClientNo: TcxGridDBColumn;
     grdUsersOutputProdunitsDBTableView1LogicalInventoryPointNo: TcxGridDBColumn;
@@ -46,10 +46,20 @@ type
     grdUsersOutputProdunitsDBTableView1RegPointName: TcxGridDBColumn;
     grdUsersOutputProdunitsDBTableView1PhysicalInventoryPointNo: TcxGridDBColumn;
     grdUsersOutputProdunitsDBTableView1Position: TcxGridDBColumn;
+    ActionList1: TActionList;
+    acCreateUserOutputs: TAction;
+    cxButton1: TcxButton;
+    grdUsersOutputProdunitsDBTableView1UserID: TcxGridDBColumn;
+    grdUsersOutputProdunitsDBTableView1CreatedUser: TcxGridDBColumn;
+    grdUsersOutputProdunitsDBTableView1DateCreated: TcxGridDBColumn;
+    grdUsersOutputProdunitsDBTableView1Active: TcxGridDBColumn;
+    cxDBCheckBox1: TcxDBCheckBox;
+    cxDBCheckBox2: TcxDBCheckBox;
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure grdUsersOutputProdunitsDBTableView1SelectedPropertiesEditValueChanged(
       Sender: TObject);
+    procedure acCreateUserOutputsExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +74,16 @@ implementation
 
 uses dm_Inventory, VidaUser ;
 
+procedure TfSetupUserOutput.acCreateUserOutputsExecute(Sender: TObject);
+begin
+ with dmInventory do
+ begin
+  cds_Users.FindKey([mtUserOutputUserID.AsInteger]) ;
+  CreateUsersOutputProdunits(cds_UsersCompanyNo.AsInteger, mtUserOutputUserID.AsInteger) ;
+  RefreshProductionUnits ;
+ end;
+end;
+
 procedure TfSetupUserOutput.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
@@ -77,6 +97,8 @@ procedure TfSetupUserOutput.FormShow(Sender: TObject);
 begin
  with dmInventory do
  begin
+  if mtUserOutput.Active then
+   mtUserOutput.Active :=  False ;
   mtUserOutput.Active :=  True ;
   mtUserOutput.Insert ;
   mtUserOutputUserID.AsInteger  := ThisUser.UserID ;
@@ -89,7 +111,7 @@ procedure TfSetupUserOutput.grdUsersOutputProdunitsDBTableView1SelectedPropertie
 begin
  with dmInventory do
  begin
-  if sp_UsersOutputProdunitsSelected.AsInteger = 0 then
+  if sp_UsersOutputProdunitsActive.AsInteger = 0 then
    ChangeSelectedOutput(sp_UsersOutputProdunitsProductionUnitNo.AsInteger, mtUserOutputUserID.AsInteger,
    1, sp_UsersOutputProdunitsPositionID.AsInteger)
    else

@@ -1826,12 +1826,12 @@ object dmsConnector: TdmsConnector
     Params.Strings = (
       'Server=alvesql03'
       'Database=Vis_Vida'
-      'OSAuthent=Yes'
-      'Password=woods2011'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
       'ApplicationName=Vis_Truck'
       'User_Name=Lars'
+      'Password=woods2011'
       'DriverID=MSSQL')
     FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
     FetchOptions.Mode = fmAll
