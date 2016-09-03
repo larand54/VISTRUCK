@@ -9,6 +9,9 @@ uses
 
 type
 
+  TSQLViewForTest = class(TSQLView)
+    constructor create;
+  end;
   [TestFixture]
   TTestSQLView = class(TObject)
   private
@@ -55,11 +58,17 @@ type
     procedure TestReadPropertiesSQLViewField_fieldSQL;
     [Test]
     procedure TestReadPropertiesSQLViewField_Visible;
+    [Test]
+    procedure TestAddOneKeyField;
+    [Test]
+    procedure TestAddTwoKeyFields;
+    [Test]
+    procedure TestAddFiveKeyFields;
   end;
 
 implementation
 
-uses  System.SysUtils, cxLookAndFeelPainters;
+uses  System.SysUtils, cxLookAndFeelPainters, cxGridDBTableView;
 
 
 
@@ -105,6 +114,56 @@ begin
 end;
 
 
+procedure TTestSQLView.TestAddFiveKeyFields;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält1');
+  sQLView.SetKeyFields(true,'Fält2');
+  sQLView.SetKeyFields(true,'Fält3');
+  sQLView.SetKeyFields(true,'Fält4');
+  sQLView.SetKeyFields(true,'Fält5');
+  Expected := 'Fält1;Fält2;Fält3;Fält4;Fält5';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
+
+procedure TTestSQLView.TestAddOneKeyField;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält3');
+  Expected := 'Fält3';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
+
+procedure TTestSQLView.TestAddTwoKeyFields;
+var
+  SQLView: TSQLViewForTest;
+  Expected: string;
+  Actual: string;
+  gridview: TcxGridDBTableView;
+begin
+  SQLView := TSQLViewForTest.create();//(gridview,'',nil,nil);
+  sQLView.SetKeyFields(true,'Fält3');
+  sQLView.SetKeyFields(true,'Fält5');
+  Expected := 'Fält3;Fält5';
+  Actual := SQLView.KeyFields;
+  Assert.AreEqual(Expected,Actual);
+  SQLView.Free;
+end;
+
 procedure TTestSQLView.TestGetAddFromComboContinuing;
 var
   Actual: string;
@@ -112,9 +171,9 @@ var
   WStr: TWhereString;
 begin
   WStr := TWhereString.Create;
-  WStr.add('SR.ID = 55');
+  WStr.addAND('SR.ID = 55',true,true);
   Expected := '(SR.ID = 55)'#13#10 + 'AND (TestItem1 IN (nr001,nr002,nr003))'#13#10;
-  WStr.addFromCombo(0, FCombo,'TestItem1');
+  WStr.addFromCombo(0, 0,FCombo,'TestItem1');
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -127,7 +186,7 @@ var
 begin
   WStr := TWhereString.Create;
   Expected := '(TestItem1 IN (nr001,nr002,nr003))'#13#10;
-  WStr.addFromCombo(0, FCombo,'TestItem1');
+  WStr.addFromCombo(0, 0, FCombo,'TestItem1');
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -164,9 +223,9 @@ begin
   s1 := 'First line';
   s2 := 'Second line';
   WStr := TWhereString.Create;
-  Expected := '('+s1+')' + #13#10 + ' AND ' + #13#10 + '('+s2+')' + #13#10;
-  WStr.add(s1);
-  WStr.add(s2);
+  Expected := '('+s1+')' + #13#10 + ' AND ' + '('+s2+')' + #13#10;
+  WStr.addAND(s1,true,true);
+  WStr.addAND(s2,true,true);
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
 end;
@@ -178,7 +237,7 @@ var
 begin
   WStr := TWhereString.Create;
   Expected := 'Testhis 123';
-  WStr.add(Expected);
+  WStr.addAND(Expected,true,true);
   Expected := '('+Expected+')' + #13#10;
   Actual := WStr.getWhereStatement.Text;
   Assert.AreEqual(Expected, Actual);
@@ -245,6 +304,13 @@ begin
   Assert.AreEqual(aExpected, Actual);
 end;
 
+
+{ TSQLViewForTest }
+
+constructor TSQLViewForTest.create;
+begin
+  // do nothing;
+end;
 
 initialization
   TDUnitX.RegisterTestFixture(TTestSQLView);

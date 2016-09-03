@@ -439,6 +439,8 @@ type
     updLoadsForLO_forVW: TFDUpdateSQL;
     cdsSawmillLoadOrdersLoadedAM3: TFloatField;
     cdsSawmillLoadOrdersProduktnotering: TStringField;
+    sp_LOBuffertLO: TFDStoredProc;
+    sp_SetAvropStatus: TFDStoredProc;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;
@@ -498,6 +500,8 @@ type
   public
     SupplierNo : Integer ;
     Shipping : Integer ; //Deliver or Receiving selected by user in fLoadForm
+    procedure SetAvropStatusToActive(const LONo, AvropStatus : Integer) ;
+    function  LOBuffertLO (const LONo : Integer) : Boolean ;
     procedure SetIntHdrStatus (const sspNo, Status : Integer) ;
     function  GetNewPackage_Size(var PackageSizeName : String) : Integer ;
     function  LO_Status(const ShippingPlanNo : Integer) : Integer ;
@@ -529,6 +533,7 @@ type
 
 var
   dmcOrder: TdmcOrder;
+    sp_SetAvropStatus: TFDStoredProc;
 
 implementation
 
@@ -2506,6 +2511,42 @@ Begin
  Finally
   FreeAndNil(fPackageSize) ;
  End;
+End;
+
+function TdmcOrder.LOBuffertLO (const LONo : Integer) : Boolean ;
+Begin
+ sp_LOBuffertLO.ParamByname('@LONo').AsInteger := LONo ;
+ sp_LOBuffertLO.Active  := True ;
+ Try
+ if not sp_LOBuffertLO.Eof then
+ Begin
+  if sp_LOBuffertLO.FieldByName('LOBNo').AsInteger > 0 then
+   Result  := True
+    else
+     Result  := False ;
+ End
+   else
+    Result  := False ;
+ Finally
+  sp_LOBuffertLO.Active  := False ;
+ End;
+End;
+
+procedure TdmcOrder.SetAvropStatusToActive(const LONo, AvropStatus : Integer) ;
+Begin
+ Try
+ sp_SetAvropStatus.ParamByname('@LONo').AsInteger         := LONo ;
+ sp_SetAvropStatus.ParamByname('@AvropStatus').AsInteger  := AvropStatus ;
+ sp_SetAvropStatus.ParamByname('@UserID').AsInteger       := ThisUser.UserID ;
+ sp_SetAvropStatus.ExecProc ;
+  except
+    On E: Exception do
+    Begin
+     dmsSystem.FDoLog(E.Message) ;
+  //      ShowMessage(E.Message);
+     Raise ;
+    End ;
+   end;
 End;
 
 end.

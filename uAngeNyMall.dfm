@@ -18,11 +18,15 @@ object fAngeNyMall: TfAngeNyMall
   object teMall: TcxTextEdit
     Left = 114
     Top = 49
+    Hint = 'Max 50 tecken!'
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     ParentFont = False
+    ParentShowHint = False
+    Properties.MaxLength = 50
+    ShowHint = True
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -23
@@ -59,8 +63,6 @@ object fAngeNyMall: TfAngeNyMall
     Margins.Bottom = 4
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 237
-    ExplicitWidth = 628
     object cxButton1: TcxButton
       Left = 55
       Top = 21

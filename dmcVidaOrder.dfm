@@ -3848,4 +3848,54 @@ object dmcOrder: TdmcOrder
     Left = 472
     Top = 144
   end
+  object sp_LOBuffertLO: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_LOBuffertLO'
+    Left = 264
+    Top = 632
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_SetAvropStatus: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_SetAvropStatus'
+    Left = 72
+    Top = 648
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@AvropStatus'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

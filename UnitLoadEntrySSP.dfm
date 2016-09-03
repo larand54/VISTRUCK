@@ -1,7 +1,6 @@
 object fLoadEntrySSP: TfLoadEntrySSP
   Left = 247
   Top = 145
-  ActiveControl = mePackageNo
   Caption = 'LAST (SSP)'
   ClientHeight = 935
   ClientWidth = 1522
@@ -22,2182 +21,2211 @@ object fLoadEntrySSP: TfLoadEntrySSP
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 16
-  object Splitter2: TSplitter
+  object Panel3: TPanel
     Left = 0
-    Top = 367
+    Top = 0
     Width = 1522
-    Height = 3
-    Cursor = crVSplit
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    Color = clBlack
-    ParentColor = False
-  end
-  object Splitter3: TSplitter
-    Left = 0
-    Top = 562
-    Width = 1522
-    Height = 4
-    Cursor = crVSplit
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    Color = clBlack
-    ParentColor = False
-  end
-  object dxPageControl1: TcxPageControl
-    Left = 0
-    Top = 101
-    Width = 1522
-    Height = 266
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    TabOrder = 0
-    Visible = False
-    Properties.ActivePage = tsLoadData
-    Properties.CustomButtons.Buttons = <>
-    LookAndFeel.Kind = lfUltraFlat
-    LookAndFeel.SkinName = ''
-    ClientRectBottom = 266
-    ClientRectRight = 1522
-    ClientRectTop = 27
-    object tsLoadData: TcxTabSheet
+    Height = 935
+    Align = alClient
+    TabOrder = 4
+    object cxSplitter2: TcxSplitter
+      Left = 1
+      Top = 368
+      Width = 1520
+      Height = 8
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
-      Caption = 'Leveranshuvud'
-      object Splitter1: TSplitter
-        Left = 0
-        Top = 179
-        Width = 1522
-        Height = 6
-        Cursor = crVSplit
+      HotZoneClassName = 'TcxMediaPlayer8Style'
+      AlignSplitter = salTop
+      Control = dxPageControl1
+      OnMoved = cxSplitter2Moved
+      Color = clSilver
+      ParentColor = False
+    end
+    object cxSplitter3: TcxSplitter
+      Left = 1
+      Top = 568
+      Width = 1520
+      Height = 8
+      HotZoneClassName = 'TcxMediaPlayer8Style'
+      AlignSplitter = salTop
+      Control = PanelLORows
+      Color = clMaroon
+      ParentColor = False
+    end
+    object dxPageControl1: TcxPageControl
+      Left = 1
+      Top = 102
+      Width = 1520
+      Height = 266
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alTop
+      TabOrder = 2
+      Visible = False
+      Properties.ActivePage = tsLoadData
+      Properties.CustomButtons.Buttons = <>
+      LookAndFeel.Kind = lfUltraFlat
+      LookAndFeel.SkinName = ''
+      ClientRectBottom = 262
+      ClientRectLeft = 4
+      ClientRectRight = 1516
+      ClientRectTop = 27
+      object tsLoadData: TcxTabSheet
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        Align = alBottom
-        Color = clBlack
-        ParentColor = False
-        ExplicitTop = 171
-        ExplicitWidth = 1513
+        Caption = 'Leveranshuvud'
+        object pLoadHead: TPanel
+          Left = 0
+          Top = 0
+          Width = 1512
+          Height = 91
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          object detLoaded: TcxDBDateEdit
+            Left = 98
+            Top = 32
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LoadedDate'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.ImmediatePost = True
+            Properties.Kind = ckDateTime
+            Style.LookAndFeel.Kind = lfFlat
+            Style.StyleController = cxEditStyleControllerEditControls
+            StyleDisabled.LookAndFeel.Kind = lfFlat
+            StyleFocused.LookAndFeel.Kind = lfFlat
+            StyleHot.LookAndFeel.Kind = lfFlat
+            TabOrder = 0
+            Width = 179
+          end
+          object imgcbStatus: TcxDBImageComboBox
+            Left = 98
+            Top = 62
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'SenderLoadStatus'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.Images = images1616
+            Properties.ImmediatePost = True
+            Properties.Items = <
+              item
+                Description = 'Prelimin'#228'r'
+                ImageIndex = 0
+                Value = 0
+              end
+              item
+                Description = 'Problem last'
+                ImageIndex = 1
+                Value = 1
+              end
+              item
+                Description = 'Avslutad'
+                ImageIndex = 2
+                Value = 2
+              end>
+            Properties.ReadOnly = True
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 1
+            Width = 179
+          end
+          object teLoadID: TcxDBTextEdit
+            Left = 384
+            Top = 2
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LoadID'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 2
+            Width = 149
+          end
+          object teFS: TcxDBTextEdit
+            Left = 384
+            Top = 32
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'FS'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 3
+            Width = 149
+          end
+          object lcLocalShipper: TcxDBLookupComboBox
+            Left = 762
+            Top = 2
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LocalShippingCompanyNo'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.KeyFieldNames = 'ClientNo'
+            Properties.ListColumns = <
+              item
+                FieldName = 'ClientName'
+              end>
+            Properties.ListOptions.ShowHeader = False
+            Properties.ListSource = dmsContact.ds_LocalShipper
+            Properties.MaxLength = 0
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 4
+            Width = 178
+          end
+          object lcFrom: TcxDBLookupComboBox
+            Left = 762
+            Top = 32
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LocalLoadingLocation'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.KeyFieldNames = 'CityNo'
+            Properties.ListColumns = <
+              item
+                FieldName = 'CityName'
+              end>
+            Properties.ListOptions.ShowHeader = False
+            Properties.ListSource = dmsContact.dsrcCities
+            Properties.MaxLength = 0
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 5
+            Width = 178
+          end
+          object lcTo: TcxDBLookupComboBox
+            Left = 762
+            Top = 62
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LocalDestinationNo'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.KeyFieldNames = 'CityNo'
+            Properties.ListColumns = <
+              item
+                FieldName = 'CityName'
+              end>
+            Properties.ListOptions.ShowHeader = False
+            Properties.ListSource = dmsContact.dsrcCities
+            Properties.MaxLength = 0
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 6
+            Width = 178
+          end
+          object eLoadNo: TcxDBTextEdit
+            Left = 98
+            Top = 2
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LoadNo'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            Enabled = False
+            ParentFont = False
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 7
+            Width = 179
+          end
+          object cxLabel4: TcxLabel
+            Left = 10
+            Top = 7
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'LastNr:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel5: TcxLabel
+            Left = 10
+            Top = 37
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Utlastad:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel6: TcxLabel
+            Left = 10
+            Top = 66
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Status:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel7: TcxLabel
+            Left = 305
+            Top = 10
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Last ID:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel8: TcxLabel
+            Left = 305
+            Top = 37
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'FS:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel9: TcxLabel
+            Left = 594
+            Top = 7
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Lokalfraktf'#246'rare:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel10: TcxLabel
+            Left = 594
+            Top = 37
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Fr'#229'n:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel11: TcxLabel
+            Left = 594
+            Top = 66
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Till:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object lcLIP: TcxDBLookupComboBox
+            Left = 1113
+            Top = 32
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'LIP'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'LIPNo'
+            Properties.ListColumns = <
+              item
+                FieldName = 'LIPName'
+              end
+              item
+                FieldName = 'PIPNAME'
+              end>
+            Properties.ListOptions.ShowHeader = False
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 16
+            Width = 168
+          end
+          object lcPIP: TcxDBLookupComboBox
+            Left = 1113
+            Top = 2
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            DataBinding.DataField = 'PIP'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'PIPNO'
+            Properties.ListColumns = <
+              item
+                FieldName = 'PIPNAME'
+              end>
+            Properties.ListOptions.ShowHeader = False
+            Style.StyleController = cxEditStyleControllerEditControls
+            TabOrder = 17
+            Width = 168
+          end
+          object cxLabel1: TcxLabel
+            Left = 948
+            Top = 7
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Lagerst'#228'lle:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cxLabel2: TcxLabel
+            Left = 948
+            Top = 37
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Lagergrupp:'
+            ParentFont = False
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+          end
+          object cbShowOriginalLO: TcxDBCheckBox
+            Left = 948
+            Top = 60
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Caption = 'Visa 0-LO rader'
+            DataBinding.DataField = 'ShowOriginalLO'
+            DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            ParentFont = False
+            Properties.ImmediatePost = True
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnChange = cbShowOriginalLOPropertiesChange
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -18
+            Style.Font.Name = 'Tahoma'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+            TabOrder = 20
+            Width = 333
+          end
+          object btTextPad: TcxButton
+            Left = 528
+            Top = 6
+            Width = 66
+            Height = 31
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Action = acTextPad
+            TabOrder = 21
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -10
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object btTextPadFS: TcxButton
+            Left = 528
+            Top = 42
+            Width = 66
+            Height = 31
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Action = acTextPadFS
+            TabOrder = 22
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object BitBtn1: TBitBtn
+            Left = 1336
+            Top = 0
+            Width = 107
+            Height = 25
+            Hint = #197'terst'#228'ller de flyttbara panelerna'
+            Caption = #197'terst'#228'll formul'#228'r'
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 23
+            OnClick = BitBtn1Click
+          end
+        end
+        object pgrdLO: TPanel
+          Left = 0
+          Top = 91
+          Width = 1512
+          Height = 50
+          Align = alTop
+          TabOrder = 1
+          object grdLO: TcxGrid
+            Left = 1
+            Top = 1
+            Width = 1510
+            Height = 48
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Align = alClient
+            TabOrder = 0
+            object grdLODBTableView1: TcxGridDBTableView
+              PopupMenu = pmLONumber
+              Navigator.Buttons.CustomButtons = <>
+              DataController.DataSource = dmLoadEntrySSP.ds_LSP
+              DataController.KeyFieldNames = 'LoadNo;ShippingPlanNo'
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+              OptionsData.Deleting = False
+              OptionsData.Editing = False
+              OptionsData.Inserting = False
+              OptionsSelection.CellSelect = False
+              OptionsView.ColumnAutoWidth = True
+              OptionsView.GroupByBox = False
+              OptionsView.Indicator = True
+              Styles.Content = cxStyleContent
+              Styles.ContentEven = cxStyleContent
+              Styles.ContentOdd = cxStyleContentOdd
+              Styles.Header = cxStyleHeader
+              object grdLODBTableView1LoadNo: TcxGridDBColumn
+                DataBinding.FieldName = 'LoadNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1ShippingPlanNo: TcxGridDBColumn
+                DataBinding.FieldName = 'ShippingPlanNo'
+                Options.Filtering = False
+                Width = 59
+              end
+              object grdLODBTableView1CUSTOMER: TcxGridDBColumn
+                DataBinding.FieldName = 'CUSTOMER'
+                Options.Filtering = False
+                Width = 114
+              end
+              object grdLODBTableView1SUPPLIER: TcxGridDBColumn
+                DataBinding.FieldName = 'SUPPLIER'
+                Options.Filtering = False
+                Width = 100
+              end
+              object grdLODBTableView1LOC_CUST: TcxGridDBColumn
+                DataBinding.FieldName = 'LOC_CUST'
+                Options.Filtering = False
+                Width = 100
+              end
+              object grdLODBTableView1SHIPPER: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIPPER'
+                Options.Filtering = False
+                Width = 100
+              end
+              object grdLODBTableView1READYDATE: TcxGridDBColumn
+                DataBinding.FieldName = 'READYDATE'
+                Options.Filtering = False
+                Width = 104
+              end
+              object grdLODBTableView1VESSEL: TcxGridDBColumn
+                DataBinding.FieldName = 'VESSEL'
+                Options.Filtering = False
+                Width = 100
+              end
+              object grdLODBTableView1ETD: TcxGridDBColumn
+                DataBinding.FieldName = 'ETD'
+                Options.Filtering = False
+                Width = 70
+              end
+              object grdLODBTableView1ETA: TcxGridDBColumn
+                DataBinding.FieldName = 'ETA'
+                Options.Filtering = False
+                Width = 70
+              end
+              object grdLODBTableView1SHIPPER_REF: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIPPER_REF'
+                Options.Filtering = False
+                Width = 70
+              end
+              object grdLODBTableView1SHIPPERID: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIPPERID'
+                Options.Filtering = False
+              end
+              object grdLODBTableView1SHIPPERS_SHIPDATE: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIPPERS_SHIPDATE'
+                Visible = False
+                Options.Filtering = False
+                Width = 70
+              end
+              object grdLODBTableView1SHIPPERS_SHIPTIME: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIPPERS_SHIPTIME'
+                Visible = False
+                Options.Filtering = False
+                Width = 70
+              end
+              object grdLODBTableView1ORDERNO: TcxGridDBColumn
+                DataBinding.FieldName = 'ORDERNO'
+                Visible = False
+                Options.Filtering = False
+              end
+              object grdLODBTableView1ORDERTYPE: TcxGridDBColumn
+                Caption = 'Kontrakttyp'
+                DataBinding.FieldName = 'ORDERTYPE'
+                Visible = False
+                Options.Filtering = False
+              end
+              object grdLODBTableView1LOADING_LOCATION: TcxGridDBColumn
+                DataBinding.FieldName = 'LOADING_LOCATION'
+                Visible = False
+                Options.Filtering = False
+                Width = 60
+              end
+              object grdLODBTableView1SHIP_TO: TcxGridDBColumn
+                DataBinding.FieldName = 'SHIP_TO'
+                Visible = False
+                Options.Filtering = False
+                Width = 60
+              end
+              object grdLODBTableView1SupplierNo: TcxGridDBColumn
+                DataBinding.FieldName = 'SupplierNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+                Width = 87
+              end
+              object grdLODBTableView1CreatedUser: TcxGridDBColumn
+                DataBinding.FieldName = 'CreatedUser'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1ModifiedUser: TcxGridDBColumn
+                DataBinding.FieldName = 'ModifiedUser'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1DateCreated: TcxGridDBColumn
+                DataBinding.FieldName = 'DateCreated'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+                Width = 84
+              end
+              object grdLODBTableView1CustomerNo: TcxGridDBColumn
+                DataBinding.FieldName = 'CustomerNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1ObjectType: TcxGridDBColumn
+                DataBinding.FieldName = 'ObjectType'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1Avrop_CustomerNo: TcxGridDBColumn
+                DataBinding.FieldName = 'Avrop_CustomerNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1LoadingLocationNo: TcxGridDBColumn
+                DataBinding.FieldName = 'LoadingLocationNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1ShipToInvPointNo: TcxGridDBColumn
+                DataBinding.FieldName = 'ShipToInvPointNo'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+              object grdLODBTableView1Shipping: TcxGridDBColumn
+                DataBinding.FieldName = 'Shipping'
+                Visible = False
+                Options.Filtering = False
+                VisibleForCustomization = False
+              end
+            end
+            object grdLOLevel1: TcxGridLevel
+              GridView = grdLODBTableView1
+            end
+          end
+        end
+        object pgrdAddress: TPanel
+          Left = 0
+          Top = 149
+          Width = 1512
+          Height = 60
+          Align = alTop
+          TabOrder = 2
+          object grdAddress: TcxGrid
+            Left = 1
+            Top = 1
+            Width = 1510
+            Height = 58
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Align = alClient
+            TabOrder = 0
+            object grdAddressDBTableView1: TcxGridDBTableView
+              Navigator.Buttons.CustomButtons = <>
+              DataController.DataSource = dmsContact.dsrcAddressAndReference
+              DataController.KeyFieldNames = 'Address'
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+              OptionsData.Deleting = False
+              OptionsData.Editing = False
+              OptionsData.Inserting = False
+              OptionsSelection.CellSelect = False
+              OptionsView.ColumnAutoWidth = True
+              OptionsView.GroupByBox = False
+              OptionsView.Indicator = True
+              Styles.Content = cxStyleContent
+              Styles.ContentEven = cxStyleContent
+              Styles.ContentOdd = cxStyleContentOdd
+              Styles.Header = cxStyleHeader
+              object grdAddressDBTableView1Address: TcxGridDBColumn
+                DataBinding.FieldName = 'Address'
+                Options.Filtering = False
+              end
+              object grdAddressDBTableView1Destination: TcxGridDBColumn
+                DataBinding.FieldName = 'Destination'
+                Options.Filtering = False
+              end
+              object grdAddressDBTableView1Reference: TcxGridDBColumn
+                DataBinding.FieldName = 'Reference'
+                Options.Filtering = False
+              end
+            end
+            object grdAddressLevel1: TcxGridLevel
+              GridView = grdAddressDBTableView1
+            end
+          end
+        end
+        object cxSplitter1: TcxSplitter
+          Left = 0
+          Top = 141
+          Width = 1512
+          Height = 8
+          HotZoneClassName = 'TcxMediaPlayer8Style'
+          AlignSplitter = salTop
+          Control = pgrdLO
+          OnMoved = cxSplitter1Moved
+          Color = clMaroon
+          ParentColor = False
+        end
       end
-      object pLoadHead: TPanel
+      object tsLoadNote: TcxTabSheet
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Caption = 'Notering'
+        object meInternalNote: TcxDBMemo
+          Left = 0
+          Top = 0
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = alClient
+          DataBinding.DataField = 'InternalNote'
+          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+          TabOrder = 0
+          Height = 235
+          Width = 1512
+        end
+      end
+    end
+    object Panel4: TPanel
+      Left = 1
+      Top = 1
+      Width = 1520
+      Height = 68
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 3
+      object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 1522
-        Height = 91
+        Width = 1405
+        Height = 68
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Align = alClient
+        TabOrder = 0
+        object dxBarDockControl1: TdxBarDockControl
+          Left = 1
+          Top = 1
+          Width = 1403
+          Height = 49
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = dalTop
+          BarManager = dxBarManager1
+        end
+      end
+      object Panel6: TPanel
+        Left = 1405
+        Top = 0
+        Width = 35
+        Height = 68
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Align = alRight
+        TabOrder = 1
+        object Edit1: TEdit
+          Left = 10
+          Top = 10
+          Width = 1
+          Height = 24
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          TabOrder = 0
+          Text = 'Edit1'
+        end
+      end
+      object Panel7: TPanel
+        Left = 1440
+        Top = 0
+        Width = 80
+        Height = 68
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Align = alRight
+        TabOrder = 2
+        object dxBarDockControl2: TdxBarDockControl
+          Left = 1
+          Top = 1
+          Width = 78
+          Height = 49
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = dalTop
+          BarManager = dxBarManager1
+        end
+      end
+    end
+    object PanelLORows: TPanel
+      Left = 1
+      Top = 376
+      Width = 1520
+      Height = 192
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alTop
+      TabOrder = 4
+      object Panel1: TPanel
+        Left = 1
+        Top = 1
+        Width = 1518
+        Height = 20
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alTop
         BevelOuter = bvNone
+        Caption = 'LASTORDERRADER'
+        Color = clMaroon
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
-        object detLoaded: TcxDBDateEdit
-          Left = 98
-          Top = 32
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LoadedDate'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.ImmediatePost = True
-          Properties.Kind = ckDateTime
-          Style.LookAndFeel.Kind = lfFlat
-          Style.StyleController = cxEditStyleControllerEditControls
-          StyleDisabled.LookAndFeel.Kind = lfFlat
-          StyleFocused.LookAndFeel.Kind = lfFlat
-          StyleHot.LookAndFeel.Kind = lfFlat
-          TabOrder = 0
-          Width = 179
-        end
-        object imgcbStatus: TcxDBImageComboBox
-          Left = 98
-          Top = 62
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'SenderLoadStatus'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.Images = images1616
-          Properties.ImmediatePost = True
-          Properties.Items = <
-            item
-              Description = 'Prelimin'#228'r'
-              ImageIndex = 0
-              Value = 0
-            end
-            item
-              Description = 'Problem last'
-              ImageIndex = 1
-              Value = 1
-            end
-            item
-              Description = 'Avslutad'
-              ImageIndex = 2
-              Value = 2
-            end>
-          Properties.ReadOnly = True
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 1
-          Width = 179
-        end
-        object teLoadID: TcxDBTextEdit
-          Left = 384
-          Top = 2
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LoadID'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 2
-          Width = 149
-        end
-        object teFS: TcxDBTextEdit
-          Left = 384
-          Top = 32
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'FS'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 3
-          Width = 149
-        end
-        object lcLocalShipper: TcxDBLookupComboBox
-          Left = 762
-          Top = 2
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LocalShippingCompanyNo'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.KeyFieldNames = 'ClientNo'
-          Properties.ListColumns = <
-            item
-              FieldName = 'ClientName'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Properties.ListSource = dmsContact.ds_LocalShipper
-          Properties.MaxLength = 0
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 4
-          Width = 178
-        end
-        object lcFrom: TcxDBLookupComboBox
-          Left = 762
-          Top = 32
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LocalLoadingLocation'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.KeyFieldNames = 'CityNo'
-          Properties.ListColumns = <
-            item
-              FieldName = 'CityName'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Properties.ListSource = dmsContact.dsrcCities
-          Properties.MaxLength = 0
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 5
-          Width = 178
-        end
-        object lcTo: TcxDBLookupComboBox
-          Left = 762
-          Top = 62
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LocalDestinationNo'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.KeyFieldNames = 'CityNo'
-          Properties.ListColumns = <
-            item
-              FieldName = 'CityName'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Properties.ListSource = dmsContact.dsrcCities
-          Properties.MaxLength = 0
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 6
-          Width = 178
-        end
-        object eLoadNo: TcxDBTextEdit
-          Left = 98
-          Top = 2
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LoadNo'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          Enabled = False
-          ParentFont = False
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 7
-          Width = 179
-        end
-        object cxLabel4: TcxLabel
-          Left = 10
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'LastNr:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel5: TcxLabel
-          Left = 10
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Utlastad:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel6: TcxLabel
-          Left = 10
-          Top = 66
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Status:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel7: TcxLabel
-          Left = 305
-          Top = 10
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Last ID:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel8: TcxLabel
-          Left = 305
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'FS:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel9: TcxLabel
-          Left = 594
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Lokalfraktf'#246'rare:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel10: TcxLabel
-          Left = 594
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Fr'#229'n:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel11: TcxLabel
-          Left = 594
-          Top = 66
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Till:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object lcLIP: TcxDBLookupComboBox
-          Left = 1113
-          Top = 32
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'LIP'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.ImmediatePost = True
-          Properties.KeyFieldNames = 'LIPNo'
-          Properties.ListColumns = <
-            item
-              FieldName = 'LIPName'
-            end
-            item
-              FieldName = 'PIPNAME'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 16
-          Width = 168
-        end
-        object lcPIP: TcxDBLookupComboBox
-          Left = 1113
-          Top = 2
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          DataBinding.DataField = 'PIP'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.ImmediatePost = True
-          Properties.KeyFieldNames = 'PIPNO'
-          Properties.ListColumns = <
-            item
-              FieldName = 'PIPNAME'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Style.StyleController = cxEditStyleControllerEditControls
-          TabOrder = 17
-          Width = 168
-        end
-        object cxLabel1: TcxLabel
-          Left = 948
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Lagerst'#228'lle:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cxLabel2: TcxLabel
-          Left = 948
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Lagergrupp:'
-          ParentFont = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-        end
-        object cbShowOriginalLO: TcxDBCheckBox
-          Left = 948
-          Top = 60
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Visa 0-LO rader'
-          DataBinding.DataField = 'ShowOriginalLO'
-          DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-          ParentFont = False
-          Properties.ImmediatePost = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Properties.OnChange = cbShowOriginalLOPropertiesChange
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -18
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = [fsBold]
-          Style.IsFontAssigned = True
-          TabOrder = 20
-          Width = 333
-        end
-        object btTextPad: TcxButton
-          Left = 528
-          Top = 6
-          Width = 66
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acTextPad
-          TabOrder = 21
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -10
-          Font.Name = 'MS Sans Serif'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object btTextPadFS: TcxButton
-          Left = 528
-          Top = 42
-          Width = 66
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acTextPadFS
-          TabOrder = 22
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -15
-          Font.Name = 'MS Sans Serif'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
       end
-      object grdAddress: TcxGrid
-        Left = 0
-        Top = 185
-        Width = 1522
-        Height = 54
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alBottom
-        TabOrder = 1
-        object grdAddressDBTableView1: TcxGridDBTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmsContact.dsrcAddressAndReference
-          DataController.KeyFieldNames = 'Address'
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsData.Deleting = False
-          OptionsData.Editing = False
-          OptionsData.Inserting = False
-          OptionsSelection.CellSelect = False
-          OptionsView.ColumnAutoWidth = True
-          OptionsView.GroupByBox = False
-          OptionsView.Indicator = True
-          Styles.Content = cxStyleContent
-          Styles.ContentEven = cxStyleContent
-          Styles.ContentOdd = cxStyleContentOdd
-          Styles.Header = cxStyleHeader
-          object grdAddressDBTableView1Address: TcxGridDBColumn
-            DataBinding.FieldName = 'Address'
-            Options.Filtering = False
-          end
-          object grdAddressDBTableView1Destination: TcxGridDBColumn
-            DataBinding.FieldName = 'Destination'
-            Options.Filtering = False
-          end
-          object grdAddressDBTableView1Reference: TcxGridDBColumn
-            DataBinding.FieldName = 'Reference'
-            Options.Filtering = False
-          end
-        end
-        object grdAddressLevel1: TcxGridLevel
-          GridView = grdAddressDBTableView1
-        end
-      end
-      object grdLO: TcxGrid
-        Left = 0
-        Top = 91
-        Width = 1522
-        Height = 88
+      object grdLORows: TcxGrid
+        Left = 1
+        Top = 21
+        Width = 1518
+        Height = 170
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
-        TabOrder = 2
-        object grdLODBTableView1: TcxGridDBTableView
-          PopupMenu = pmLONumber
+        PopupMenu = ppmenuLO_Lines
+        TabOrder = 1
+        object grdLORowsDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
-          DataController.DataSource = dmLoadEntrySSP.ds_LSP
-          DataController.KeyFieldNames = 'LoadNo;ShippingPlanNo'
+          OnCellClick = grdLORowsDBBandedTableView1CellClick
+          DataController.DataSource = dmLoadEntrySSP.dsLORows
+          DataController.KeyFieldNames = 'SupplierShipPlanObjectNo'
           DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '######'
+              Kind = skSum
+              FieldName = 'LoadedPkgs'
+              Column = grdLORowsDBBandedTableView1LoadedPkgs
+            end
+            item
+            end>
           DataController.Summary.SummaryGroups = <>
+          OptionsCustomize.DataRowSizing = True
           OptionsData.Deleting = False
-          OptionsData.Editing = False
           OptionsData.Inserting = False
-          OptionsSelection.CellSelect = False
+          OptionsSelection.HideSelection = True
           OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
           OptionsView.GroupByBox = False
           OptionsView.Indicator = True
-          Styles.Content = cxStyleContent
-          Styles.ContentEven = cxStyleContent
-          Styles.ContentOdd = cxStyleContentOdd
+          OptionsView.BandHeaders = False
+          Styles.OnGetContentStyle = grdLORowsDBBandedTableView1StylesGetContentStyle
           Styles.Header = cxStyleHeader
-          object grdLODBTableView1LoadNo: TcxGridDBColumn
-            DataBinding.FieldName = 'LoadNo'
+          Bands = <
+            item
+              Caption = 'MATCH'
+              Width = 52
+            end
+            item
+              Width = 897
+            end>
+          object grdLORowsDBBandedTableView1MATCH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'MATCH'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Properties.OnChange = grdLORowsDBBandedTableView1MATCHPropertiesChange
+            Options.Filtering = False
+            Width = 58
+            Position.BandIndex = 0
+            Position.ColIndex = 0
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ShippingPlanNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ShippingPlanNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 38
+            Position.BandIndex = 1
+            Position.ColIndex = 1
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PKGCODE: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PKGCODE'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 71
+            Position.BandIndex = 1
+            Position.ColIndex = 5
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PRODUCTDESCRIPTION: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INTERNPRODDESC'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 188
+            Position.BandIndex = 1
+            Position.ColIndex = 6
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1LENGTHDESC: TcxGridDBBandedColumn
+            Caption = 'L'#228'ngdbesk.'
+            DataBinding.FieldName = 'LENGTHDESC'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 73
+            Position.BandIndex = 1
+            Position.ColIndex = 9
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1Internnotering: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Internnotering'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 132
+            Position.BandIndex = 1
+            Position.ColIndex = 10
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1NOOFUNITS: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'NOOFUNITS'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 68
+            Position.BandIndex = 1
+            Position.ColIndex = 13
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1VOLUNIT: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'VOLUNIT'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 50
+            Position.BandIndex = 1
+            Position.ColIndex = 14
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PRICE: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PRICE'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 40
+            Position.BandIndex = 1
+            Position.ColIndex = 39
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PRICEUNIT: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PRICEUNIT'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 84
+            Position.BandIndex = 1
+            Position.ColIndex = 16
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+            Caption = 'Adress/kundreferens'
+            DataBinding.FieldName = 'REFERENCE'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 83
+            Position.BandIndex = 1
+            Position.ColIndex = 15
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1LEV_PERIOD_START: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LEV_PERIOD_START'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 44
+            Position.BandIndex = 1
+            Position.ColIndex = 22
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1LEV_PERIOD_END: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LEV_PERIOD_END'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 43
+            Position.BandIndex = 1
+            Position.ColIndex = 23
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ORDERNO: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ORDERNO'
+            PropertiesClassName = 'TcxLabelProperties'
             Visible = False
             Options.Filtering = False
             VisibleForCustomization = False
+            Width = 86
+            Position.BandIndex = 1
+            Position.ColIndex = 24
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1ShippingPlanNo: TcxGridDBColumn
-            DataBinding.FieldName = 'ShippingPlanNo'
+          object grdLORowsDBBandedTableView1KR_Ref: TcxGridDBBandedColumn
+            Caption = 'Produktm'#228'rkning'
+            DataBinding.FieldName = 'KR_Ref'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 49
+            Position.BandIndex = 1
+            Position.ColIndex = 25
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1NOM_THICK: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'NOM_THICK'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 28
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1NOM_WIDTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'NOM_WIDTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 29
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PRODUCTGROUPNO: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PRODUCTGROUPNO'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 27
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PCSPERPKG: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PCSPERPKG'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 61
+            Position.BandIndex = 1
+            Position.ColIndex = 26
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ProductLengthNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProductLengthNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 21
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1LoadNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LoadNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 0
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1SupplierShipPlanObjectNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SupplierShipPlanObjectNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 67
+            Position.BandIndex = 1
+            Position.ColIndex = 31
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ACT_THICK: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ACT_THICK'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 19
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ACT_WIDTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ACT_WIDTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 20
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ACT_LENGTH: TcxGridDBBandedColumn
+            Caption = 'Akt.l'#228'ngd'
+            DataBinding.FieldName = 'ACT_LENGTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 63
+            Position.BandIndex = 1
+            Position.ColIndex = 12
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1LoadingLocationNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LoadingLocationNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 2
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1INTERNPRODDESC: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INTERNPRODDESC'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 137
+            Position.BandIndex = 1
+            Position.ColIndex = 8
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ShipToInvPointNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ShipToInvPointNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 3
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ProductNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProductNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 7
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1MIN_LENGTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'MIN_LENGTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 17
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1MAX_LENGTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'MAX_LENGTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 18
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1CustomerNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'CustomerNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 4
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1CustShipPlanDetailObjectNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'CustShipPlanDetailObjectNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 67
+            Position.BandIndex = 1
+            Position.ColIndex = 30
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1ProductLengthGroupNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProductLengthGroupNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 32
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1INCH_THICK: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INCH_THICK'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 33
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1INVCH_WIDTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INVCH_WIDTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 34
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SurfacingNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 35
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1SpeciesNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SpeciesNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 36
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1GradeNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'GradeNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 37
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1PackageTypeNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PackageTypeNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 1
+            Position.ColIndex = 38
+            Position.RowIndex = 0
+          end
+          object grdLORowsDBBandedTableView1Prislista: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Prislista'
+            Visible = False
             Options.Filtering = False
             Width = 59
+            Position.BandIndex = 1
+            Position.ColIndex = 40
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1CUSTOMER: TcxGridDBColumn
-            DataBinding.FieldName = 'CUSTOMER'
-            Options.Filtering = False
-            Width = 114
+          object grdLORowsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
+            Caption = 'Till'#229't alla l'#228'ngder'
+            DataBinding.FieldName = 'OverrideRL'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ReadOnly = True
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Width = 49
+            Position.BandIndex = 1
+            Position.ColIndex = 41
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1SUPPLIER: TcxGridDBColumn
-            DataBinding.FieldName = 'SUPPLIER'
-            Options.Filtering = False
-            Width = 100
+          object grdLORowsDBBandedTableView1CERTI: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'CERTI'
+            Width = 40
+            Position.BandIndex = 1
+            Position.ColIndex = 42
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1LOC_CUST: TcxGridDBColumn
-            DataBinding.FieldName = 'LOC_CUST'
-            Options.Filtering = False
-            Width = 100
+          object grdLORowsDBBandedTableView1Trslag: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Tr'#228'slag'
+            Visible = False
+            Width = 144
+            Position.BandIndex = 1
+            Position.ColIndex = 43
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1SHIPPER: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPER'
-            Options.Filtering = False
-            Width = 100
-          end
-          object grdLODBTableView1READYDATE: TcxGridDBColumn
-            DataBinding.FieldName = 'READYDATE'
-            Options.Filtering = False
+          object grdLORowsDBBandedTableView1LoadedPkgs: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LoadedPkgs'
             Width = 104
+            Position.BandIndex = 1
+            Position.ColIndex = 44
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1VESSEL: TcxGridDBColumn
-            DataBinding.FieldName = 'VESSEL'
-            Options.Filtering = False
-            Width = 100
+          object grdLORowsDBBandedTableView1PkgDiff: TcxGridDBBandedColumn
+            Caption = 'Diff'
+            DataBinding.FieldName = 'PkgDiff'
+            PropertiesClassName = 'TcxLabelProperties'
+            Styles.OnGetContentStyle = grdLORowsDBBandedTableView1PkgDiffStylesGetContentStyle
+            Width = 72
+            Position.BandIndex = 1
+            Position.ColIndex = 45
+            Position.RowIndex = 0
           end
-          object grdLODBTableView1ETD: TcxGridDBColumn
-            DataBinding.FieldName = 'ETD'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1ETA: TcxGridDBColumn
-            DataBinding.FieldName = 'ETA'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPER_REF: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPER_REF'
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPERID: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERID'
-            Options.Filtering = False
-          end
-          object grdLODBTableView1SHIPPERS_SHIPDATE: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERS_SHIPDATE'
-            Visible = False
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1SHIPPERS_SHIPTIME: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIPPERS_SHIPTIME'
-            Visible = False
-            Options.Filtering = False
-            Width = 70
-          end
-          object grdLODBTableView1ORDERNO: TcxGridDBColumn
-            DataBinding.FieldName = 'ORDERNO'
-            Visible = False
-            Options.Filtering = False
-          end
-          object grdLODBTableView1ORDERTYPE: TcxGridDBColumn
-            Caption = 'Kontrakttyp'
-            DataBinding.FieldName = 'ORDERTYPE'
-            Visible = False
-            Options.Filtering = False
-          end
-          object grdLODBTableView1LOADING_LOCATION: TcxGridDBColumn
-            DataBinding.FieldName = 'LOADING_LOCATION'
-            Visible = False
-            Options.Filtering = False
-            Width = 60
-          end
-          object grdLODBTableView1SHIP_TO: TcxGridDBColumn
-            DataBinding.FieldName = 'SHIP_TO'
-            Visible = False
-            Options.Filtering = False
-            Width = 60
-          end
-          object grdLODBTableView1SupplierNo: TcxGridDBColumn
-            DataBinding.FieldName = 'SupplierNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-            Width = 87
-          end
-          object grdLODBTableView1CreatedUser: TcxGridDBColumn
-            DataBinding.FieldName = 'CreatedUser'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ModifiedUser: TcxGridDBColumn
-            DataBinding.FieldName = 'ModifiedUser'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1DateCreated: TcxGridDBColumn
-            DataBinding.FieldName = 'DateCreated'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-            Width = 84
-          end
-          object grdLODBTableView1CustomerNo: TcxGridDBColumn
-            DataBinding.FieldName = 'CustomerNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ObjectType: TcxGridDBColumn
-            DataBinding.FieldName = 'ObjectType'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1Avrop_CustomerNo: TcxGridDBColumn
-            DataBinding.FieldName = 'Avrop_CustomerNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1LoadingLocationNo: TcxGridDBColumn
-            DataBinding.FieldName = 'LoadingLocationNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1ShipToInvPointNo: TcxGridDBColumn
-            DataBinding.FieldName = 'ShipToInvPointNo'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
-          end
-          object grdLODBTableView1Shipping: TcxGridDBColumn
-            DataBinding.FieldName = 'Shipping'
-            Visible = False
-            Options.Filtering = False
-            VisibleForCustomization = False
+          object grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Paketstorlek'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 96
+            Position.BandIndex = 1
+            Position.ColIndex = 11
+            Position.RowIndex = 0
           end
         end
-        object grdLOLevel1: TcxGridLevel
-          GridView = grdLODBTableView1
+        object grdLORowsLevel1: TcxGridLevel
+          GridView = grdLORowsDBBandedTableView1
         end
       end
     end
-    object tsLoadNote: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Caption = 'Notering'
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-      object meInternalNote: TcxDBMemo
-        Left = 0
-        Top = 0
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+    object PanelNote: TPanel
+      Left = 1
+      Top = 69
+      Width = 1520
+      Height = 33
+      Margins.Left = 2
+      Margins.Top = 2
+      Margins.Right = 2
+      Margins.Bottom = 2
+      Align = alTop
+      TabOrder = 5
+      object cxDBTextEdit1: TcxDBTextEdit
+        Left = 1
+        Top = 1
+        Margins.Left = 2
+        Margins.Top = 2
+        Margins.Right = 2
+        Margins.Bottom = 2
         Align = alClient
-        DataBinding.DataField = 'InternalNote'
+        DataBinding.DataField = 'ShortNote'
         DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-        TabOrder = 0
-        Height = 239
-        Width = 1522
-      end
-    end
-  end
-  object Panel4: TPanel
-    Left = 0
-    Top = 0
-    Width = 1522
-    Height = 68
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    BevelOuter = bvNone
-    TabOrder = 1
-    object Panel5: TPanel
-      Left = 0
-      Top = 0
-      Width = 1407
-      Height = 68
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alClient
-      TabOrder = 0
-      object dxBarDockControl1: TdxBarDockControl
-        Left = 1
-        Top = 1
-        Width = 1405
-        Height = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = dalTop
-        BarManager = dxBarManager1
-      end
-    end
-    object Panel6: TPanel
-      Left = 1407
-      Top = 0
-      Width = 35
-      Height = 68
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alRight
-      TabOrder = 1
-      object Edit1: TEdit
-        Left = 10
-        Top = 10
-        Width = 1
-        Height = 24
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        TabOrder = 0
-        Text = 'Edit1'
-      end
-    end
-    object Panel7: TPanel
-      Left = 1442
-      Top = 0
-      Width = 80
-      Height = 68
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alRight
-      TabOrder = 2
-      object dxBarDockControl2: TdxBarDockControl
-        Left = 1
-        Top = 1
-        Width = 78
-        Height = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = dalTop
-        BarManager = dxBarManager1
-      end
-    end
-  end
-  object PanelLORows: TPanel
-    Left = 0
-    Top = 370
-    Width = 1522
-    Height = 192
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alTop
-    TabOrder = 2
-    object Panel1: TPanel
-      Left = 1
-      Top = 1
-      Width = 1520
-      Height = 20
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alTop
-      BevelOuter = bvNone
-      Caption = 'LASTORDERRADER'
-      Color = clMaroon
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -15
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-    end
-    object grdLORows: TcxGrid
-      Left = 1
-      Top = 21
-      Width = 1520
-      Height = 170
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alClient
-      PopupMenu = ppmenuLO_Lines
-      TabOrder = 1
-      object grdLORowsDBBandedTableView1: TcxGridDBBandedTableView
-        Navigator.Buttons.CustomButtons = <>
-        OnCellClick = grdLORowsDBBandedTableView1CellClick
-        DataController.DataSource = dmLoadEntrySSP.dsLORows
-        DataController.KeyFieldNames = 'SupplierShipPlanObjectNo'
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = '######'
-            Kind = skSum
-            FieldName = 'LoadedPkgs'
-            Column = grdLORowsDBBandedTableView1LoadedPkgs
-          end
-          item
-          end>
-        DataController.Summary.SummaryGroups = <>
-        OptionsCustomize.DataRowSizing = True
-        OptionsData.Deleting = False
-        OptionsData.Inserting = False
-        OptionsSelection.HideSelection = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        OptionsView.Indicator = True
-        OptionsView.BandHeaders = False
-        Styles.OnGetContentStyle = grdLORowsDBBandedTableView1StylesGetContentStyle
-        Styles.Header = cxStyleHeader
-        Bands = <
-          item
-            Caption = 'MATCH'
-            Width = 52
-          end
-          item
-            Width = 897
-          end>
-        object grdLORowsDBBandedTableView1MATCH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'MATCH'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ImmediatePost = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Properties.OnChange = grdLORowsDBBandedTableView1MATCHPropertiesChange
-          Options.Filtering = False
-          Width = 58
-          Position.BandIndex = 0
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ShippingPlanNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ShippingPlanNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 38
-          Position.BandIndex = 1
-          Position.ColIndex = 1
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PKGCODE: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PKGCODE'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 71
-          Position.BandIndex = 1
-          Position.ColIndex = 5
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PRODUCTDESCRIPTION: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INTERNPRODDESC'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 188
-          Position.BandIndex = 1
-          Position.ColIndex = 6
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LENGTHDESC: TcxGridDBBandedColumn
-          Caption = 'L'#228'ngdbesk.'
-          DataBinding.FieldName = 'LENGTHDESC'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 73
-          Position.BandIndex = 1
-          Position.ColIndex = 9
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1Internnotering: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Internnotering'
-          PropertiesClassName = 'TcxLabelProperties'
-          Width = 132
-          Position.BandIndex = 1
-          Position.ColIndex = 10
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1NOOFUNITS: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'NOOFUNITS'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 68
-          Position.BandIndex = 1
-          Position.ColIndex = 13
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1VOLUNIT: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'VOLUNIT'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 50
-          Position.BandIndex = 1
-          Position.ColIndex = 14
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PRICE: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PRICE'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 40
-          Position.BandIndex = 1
-          Position.ColIndex = 39
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PRICEUNIT: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PRICEUNIT'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 84
-          Position.BandIndex = 1
-          Position.ColIndex = 16
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
-          Caption = 'Adress/kundreferens'
-          DataBinding.FieldName = 'REFERENCE'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 83
-          Position.BandIndex = 1
-          Position.ColIndex = 15
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LEV_PERIOD_START: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LEV_PERIOD_START'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 44
-          Position.BandIndex = 1
-          Position.ColIndex = 22
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LEV_PERIOD_END: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LEV_PERIOD_END'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 43
-          Position.BandIndex = 1
-          Position.ColIndex = 23
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ORDERNO: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ORDERNO'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 86
-          Position.BandIndex = 1
-          Position.ColIndex = 24
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1KR_Ref: TcxGridDBBandedColumn
-          Caption = 'Produktm'#228'rkning'
-          DataBinding.FieldName = 'KR_Ref'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 49
-          Position.BandIndex = 1
-          Position.ColIndex = 25
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1NOM_THICK: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'NOM_THICK'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 28
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1NOM_WIDTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'NOM_WIDTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 29
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PRODUCTGROUPNO: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PRODUCTGROUPNO'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 27
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PCSPERPKG: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PCSPERPKG'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 61
-          Position.BandIndex = 1
-          Position.ColIndex = 26
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ProductLengthNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProductLengthNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 21
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LoadNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LoadNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1SupplierShipPlanObjectNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SupplierShipPlanObjectNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 67
-          Position.BandIndex = 1
-          Position.ColIndex = 31
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ACT_THICK: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ACT_THICK'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 19
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ACT_WIDTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ACT_WIDTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 20
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ACT_LENGTH: TcxGridDBBandedColumn
-          Caption = 'Akt.l'#228'ngd'
-          DataBinding.FieldName = 'ACT_LENGTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 63
-          Position.BandIndex = 1
-          Position.ColIndex = 12
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LoadingLocationNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LoadingLocationNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 2
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1INTERNPRODDESC: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INTERNPRODDESC'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 137
-          Position.BandIndex = 1
-          Position.ColIndex = 8
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ShipToInvPointNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ShipToInvPointNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 3
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ProductNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProductNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 7
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1MIN_LENGTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'MIN_LENGTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 17
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1MAX_LENGTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'MAX_LENGTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 18
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1CustomerNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'CustomerNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 4
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1CustShipPlanDetailObjectNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'CustShipPlanDetailObjectNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 67
-          Position.BandIndex = 1
-          Position.ColIndex = 30
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1ProductLengthGroupNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProductLengthGroupNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 32
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1INCH_THICK: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INCH_THICK'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 33
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1INVCH_WIDTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INVCH_WIDTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 34
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SurfacingNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 35
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1SpeciesNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SpeciesNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 36
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1GradeNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'GradeNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 37
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PackageTypeNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PackageTypeNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 1
-          Position.ColIndex = 38
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1Prislista: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Prislista'
-          Visible = False
-          Options.Filtering = False
-          Width = 59
-          Position.BandIndex = 1
-          Position.ColIndex = 40
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
-          Caption = 'Till'#229't alla l'#228'ngder'
-          DataBinding.FieldName = 'OverrideRL'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ReadOnly = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Width = 49
-          Position.BandIndex = 1
-          Position.ColIndex = 41
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1CERTI: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'CERTI'
-          Width = 40
-          Position.BandIndex = 1
-          Position.ColIndex = 42
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1Trslag: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Tr'#228'slag'
-          Visible = False
-          Width = 144
-          Position.BandIndex = 1
-          Position.ColIndex = 43
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1LoadedPkgs: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LoadedPkgs'
-          Width = 104
-          Position.BandIndex = 1
-          Position.ColIndex = 44
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1PkgDiff: TcxGridDBBandedColumn
-          Caption = 'Diff'
-          DataBinding.FieldName = 'PkgDiff'
-          PropertiesClassName = 'TcxLabelProperties'
-          Styles.OnGetContentStyle = grdLORowsDBBandedTableView1PkgDiffStylesGetContentStyle
-          Width = 72
-          Position.BandIndex = 1
-          Position.ColIndex = 45
-          Position.RowIndex = 0
-        end
-        object grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Paketstorlek'
-          PropertiesClassName = 'TcxLabelProperties'
-          Width = 96
-          Position.BandIndex = 1
-          Position.ColIndex = 11
-          Position.RowIndex = 0
-        end
-      end
-      object grdLORowsLevel1: TcxGridLevel
-        GridView = grdLORowsDBBandedTableView1
-      end
-    end
-  end
-  object PanelPackages: TPanel
-    Left = 0
-    Top = 566
-    Width = 1522
-    Height = 369
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
-    Align = alClient
-    TabOrder = 3
-    object Panel2: TPanel
-      Left = 1
-      Top = 1
-      Width = 1520
-      Height = 46
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alTop
-      BevelOuter = bvNone
-      Color = clMaroon
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -15
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      object mePackageNo: TcxMaskEdit
-        Left = 130
-        Top = 6
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        ParentFont = False
-        Properties.ReadOnly = False
-        Style.Font.Charset = DEFAULT_CHARSET
-        Style.Font.Color = clBlack
-        Style.Font.Height = -20
-        Style.Font.Name = 'MS Sans Serif'
-        Style.Font.Style = []
-        Style.IsFontAssigned = True
-        TabOrder = 0
-        OnKeyDown = mePackageNoKeyDown
-        Width = 268
-      end
-      object cxLabel3: TcxLabel
-        Left = 2
-        Top = 14
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Ange paketnr:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
-        Style.Font.Color = clWhite
+        Style.Font.Color = clRed
         Style.Font.Height = -18
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
+        TabOrder = 0
+        Width = 1518
       end
-      object cxButton1: TcxButton
-        Left = 404
-        Top = 4
-        Width = 119
-        Height = 38
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Action = acRaderaPaket
-        SpeedButtonOptions.CanBeFocused = False
-        TabOrder = 2
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object cxButton2: TcxButton
-        Left = 532
-        Top = 4
-        Width = 119
-        Height = 38
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Action = acPickPkgNos
-        SpeedButtonOptions.CanBeFocused = False
-        TabOrder = 3
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object cxButton3: TcxButton
-        Left = 659
-        Top = 3
-        Width = 267
-        Height = 38
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Action = acKopplaPaketMotLOManuellt
-        SpeedButtonOptions.CanBeFocused = False
-        TabOrder = 4
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -15
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object cbKopplaEjMotDublett: TcxCheckBox
-        Left = 1127
-        Top = 14
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Caption = 'Koppla ej om dublett'
-        ParentBackground = False
-        ParentColor = False
-        ParentFont = False
-        Style.Color = clMaroon
-        Style.Font.Charset = DEFAULT_CHARSET
-        Style.Font.Color = clWhite
-        Style.Font.Height = -15
-        Style.Font.Name = 'MS Sans Serif'
-        Style.Font.Style = []
-        Style.IsFontAssigned = True
-        TabOrder = 5
-        Width = 174
-      end
-      object btNumPad: TcxButton
-        Left = 1426
-        Top = 0
-        Width = 94
+    end
+    object PanelPackages: TPanel
+      Left = 1
+      Top = 576
+      Width = 1520
+      Height = 358
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alClient
+      TabOrder = 6
+      object Panel2: TPanel
+        Left = 1
+        Top = 1
+        Width = 1518
         Height = 46
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
-        Align = alRight
-        Action = acNumPad
-        TabOrder = 6
+        Align = alTop
+        BevelOuter = bvNone
+        Color = clMaroon
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -20
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-      end
-      object cxButton4: TcxButton
-        Left = 930
-        Top = 4
-        Width = 191
-        Height = 38
-        Margins.Left = 2
-        Margins.Top = 2
-        Margins.Right = 2
-        Margins.Bottom = 2
-        Action = acSetPositionInAllPkgs
-        TabOrder = 7
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
+        Font.Color = clWhite
         Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-      end
-      object cxBtnChgTreatmentInfo: TcxButton
-        Left = 1308
-        Top = 6
-        Width = 111
-        Height = 38
-        Action = acChgRef_and_Info
-        TabOrder = 8
-        WordWrap = True
-      end
-    end
-    object grdPkgs: TcxGrid
-      Left = 1
-      Top = 47
-      Width = 1520
-      Height = 321
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      Align = alClient
-      TabOrder = 1
-      object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
-        PopupMenu = pmPkgs
-        OnKeyDown = grdPkgsDBBandedTableView1KeyDown
-        Navigator.Buttons.CustomButtons = <>
-        OnEditing = grdPkgsDBBandedTableView1Editing
-        DataController.DataSource = dmLoadEntrySSP.ds_LoadPackages2
-        DataController.KeyFieldNames = 'LoadNo;LoadDetailNo'
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
-          item
-            Format = '######'
-            Kind = skCount
-            FieldName = 'PACKAGENO'
-            Column = grdPkgsDBBandedTableView1PACKAGENO
-          end
-          item
-            Format = '#,###,###.000'
-            Kind = skSum
-            FieldName = 'M3_NET'
-            Column = grdPkgsDBBandedTableView1M3_NET
-          end
-          item
-            Format = '#,###,###.000'
-            Kind = skSum
-            FieldName = 'KVM'
-            Column = grdPkgsDBBandedTableView1KVM
-          end
-          item
-            Format = '#,###,###.000'
-            Kind = skSum
-            FieldName = 'M3_NOM'
-            Column = grdPkgsDBBandedTableView1M3_NOM
-          end
-          item
-            Format = '######'
-            Kind = skSum
-            FieldName = 'PCS'
-            Column = grdPkgsDBBandedTableView1PCS
-          end
-          item
-            Format = '#,###,###.000'
-            Kind = skSum
-            FieldName = 'MFBM'
-            Column = grdPkgsDBBandedTableView1MFBM
-          end
-          item
-            Format = '#,###,###.000'
-            Kind = skSum
-            FieldName = 'LOPM'
-            Column = grdPkgsDBBandedTableView1LOPM
-          end>
-        DataController.Summary.SummaryGroups = <>
-        OptionsBehavior.FocusCellOnTab = True
-        OptionsBehavior.FocusFirstCellOnNewRecord = True
-        OptionsCustomize.ColumnVertSizing = False
-        OptionsData.Deleting = False
-        OptionsData.Inserting = False
-        OptionsSelection.HideSelection = True
-        OptionsSelection.MultiSelect = True
-        OptionsView.ColumnAutoWidth = True
-        OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        OptionsView.Indicator = True
-        OptionsView.BandHeaders = False
-        Styles.Content = cxStyleContent
-        Styles.ContentEven = cxStyleContent
-        Styles.ContentOdd = cxStyleContentOdd
-        Styles.OnGetContentStyle = grdPkgsDBBandedTableView1StylesGetContentStyle
-        Styles.Footer = cxStyleHeader
-        Styles.Header = cxStyleHeader
-        Bands = <
-          item
-            Caption = 'OTHER'
-          end>
-        object grdPkgsDBBandedTableView1PACKAGENO: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PACKAGENO'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 74
-          Position.BandIndex = 0
-          Position.ColIndex = 2
-          Position.RowIndex = 0
+        TabOrder = 0
+        object mePackageNo: TcxMaskEdit
+          Left = 130
+          Top = 6
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          ParentFont = False
+          Properties.ReadOnly = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clBlack
+          Style.Font.Height = -20
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.IsFontAssigned = True
+          TabOrder = 0
+          OnKeyDown = mePackageNoKeyDown
+          Width = 268
         end
-        object grdPkgsDBBandedTableView1SupplierCode: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SupplierCode'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 52
-          Position.BandIndex = 0
-          Position.ColIndex = 3
-          Position.RowIndex = 0
+        object cxLabel3: TcxLabel
+          Left = 2
+          Top = 14
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Ange paketnr:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWhite
+          Style.Font.Height = -18
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.IsFontAssigned = True
         end
-        object grdPkgsDBBandedTableView1ShippingPlanNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ShippingPlanNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 71
-          Position.BandIndex = 0
-          Position.ColIndex = 4
-          Position.RowIndex = 0
+        object cxButton1: TcxButton
+          Left = 404
+          Top = 4
+          Width = 119
+          Height = 38
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acRaderaPaket
+          SpeedButtonOptions.CanBeFocused = False
+          TabOrder = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
-        object grdPkgsDBBandedTableView1PRODUCT: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PRODUCT'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 400
-          Position.BandIndex = 0
-          Position.ColIndex = 5
-          Position.RowIndex = 0
+        object cxButton2: TcxButton
+          Left = 532
+          Top = 4
+          Width = 119
+          Height = 38
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acPickPkgNos
+          SpeedButtonOptions.CanBeFocused = False
+          TabOrder = 3
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
-        object grdPkgsDBBandedTableView1PackageOK: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PackageOK'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ReadOnly = True
-          Properties.ValueChecked = 0
-          Properties.ValueUnchecked = 1
-          Options.Filtering = False
-          Width = 74
-          Position.BandIndex = 0
-          Position.ColIndex = 9
-          Position.RowIndex = 0
+        object cxButton3: TcxButton
+          Left = 659
+          Top = 3
+          Width = 118
+          Height = 37
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acKopplaPaketMotLOManuellt
+          SpeedButtonOptions.CanBeFocused = False
+          TabOrder = 4
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
-        object grdPkgsDBBandedTableView1ProblemPackageLog: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProblemPackageLog'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 61
-          Position.BandIndex = 0
-          Position.ColIndex = 10
-          Position.RowIndex = 0
+        object cbKopplaEjMotDublett: TcxCheckBox
+          Left = 1127
+          Top = 14
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Caption = 'Koppla ej om dublett'
+          ParentBackground = False
+          ParentColor = False
+          ParentFont = False
+          Style.Color = clMaroon
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWhite
+          Style.Font.Height = -15
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = []
+          Style.IsFontAssigned = True
+          TabOrder = 5
+          Width = 174
         end
-        object grdPkgsDBBandedTableView1M3_NET: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'M3_NET'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 53
-          Position.BandIndex = 0
-          Position.ColIndex = 14
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1PCS: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PCS'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 38
-          Position.BandIndex = 0
-          Position.ColIndex = 15
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1M3_NOM: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'M3_NOM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 41
-          Position.BandIndex = 0
-          Position.ColIndex = 16
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1MFBM: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'MFBM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 59
-          Position.BandIndex = 0
-          Position.ColIndex = 17
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1KVM: TcxGridDBBandedColumn
-          Caption = 'm2'
-          DataBinding.FieldName = 'KVM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 58
-          Position.BandIndex = 0
-          Position.ColIndex = 18
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1LOPM: TcxGridDBBandedColumn
-          Caption = 'Lpm'
-          DataBinding.FieldName = 'LOPM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          Width = 61
-          Position.BandIndex = 0
-          Position.ColIndex = 19
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1PCS_PER_LENGTH: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PCS_PER_LENGTH'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 240
-          Position.BandIndex = 0
-          Position.ColIndex = 8
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1DefaultCustShipObjectNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'DefaultCustShipObjectNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 49
-          Position.BandIndex = 0
-          Position.ColIndex = 31
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1ProductLengthNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProductLengthNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 22
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1ALMM: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ALMM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 23
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1ActualThicknessMM: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ActualThicknessMM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 24
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1ActualWidthMM: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ActualWidthMM'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 25
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SurfacingNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 26
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1SpeciesNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'SpeciesNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 27
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1MainGradeNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'MainGradeNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 28
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1NoOfLengths: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'NoOfLengths'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 21
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1OverrideMatch: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'OverrideMatch'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Options.Filtering = False
-          Width = 27
-          Position.BandIndex = 0
-          Position.ColIndex = 29
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1DateCreated: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'DateCreated'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
+        object btNumPad: TcxButton
+          Left = 1424
+          Top = 0
           Width = 94
-          Position.BandIndex = 0
-          Position.ColIndex = 13
-          Position.RowIndex = 0
+          Height = 46
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Align = alRight
+          Action = acNumPad
+          TabOrder = 6
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -20
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
-        object grdPkgsDBBandedTableView1ProductNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ProductNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 20
-          Position.RowIndex = 0
+        object cxButton4: TcxButton
+          Left = 930
+          Top = 4
+          Width = 191
+          Height = 38
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
+          Action = acSetPositionInAllPkgs
+          TabOrder = 7
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
         end
-        object grdPkgsDBBandedTableView1LoadNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LoadNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 0
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1LoadDetailNo: TcxGridDBBandedColumn
-          Caption = 'Radnr'
-          DataBinding.FieldName = 'LoadDetailNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Options.Filtering = False
-          Width = 48
-          Position.BandIndex = 0
-          Position.ColIndex = 1
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1NoOfPackages: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'NoOfPackages'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 67
-          Position.BandIndex = 0
-          Position.ColIndex = 6
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1PACKAGETYPENO: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PACKAGETYPENO'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 7
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1CreatedUser: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'CreatedUser'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 11
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1ModifiedUser: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'ModifiedUser'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 12
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1LIPNo: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'LIPNo'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 30
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Pkg_State: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Pkg_State'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 32
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Pkg_Function: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Pkg_Function'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 33
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Changed: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Changed'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Position.BandIndex = 0
-          Position.ColIndex = 34
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Defsspno: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Defsspno'
-          PropertiesClassName = 'TcxLabelProperties'
-          Visible = False
-          Options.Filtering = False
-          VisibleForCustomization = False
-          Width = 51
-          Position.BandIndex = 0
-          Position.ColIndex = 35
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'OverrideRL'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ReadOnly = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Width = 72
-          Position.BandIndex = 0
-          Position.ColIndex = 36
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1InvNr: TcxGridDBBandedColumn
-          Caption = 'IK'
-          DataBinding.FieldName = 'InvNr'
-          PropertiesClassName = 'TcxCheckBoxProperties'
-          Properties.ReadOnly = True
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          Visible = False
-          Width = 50
-          Position.BandIndex = 0
-          Position.ColIndex = 37
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Paketstorlek'
-          PropertiesClassName = 'TcxLabelProperties'
-          Width = 77
-          Position.BandIndex = 0
-          Position.ColIndex = 38
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'REFERENCE'
-          Position.BandIndex = 0
-          Position.ColIndex = 41
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INFO1'
-          Position.BandIndex = 0
-          Position.ColIndex = 42
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'INFO2'
-          Position.BandIndex = 0
-          Position.ColIndex = 43
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1Certfiering: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'Certfiering'
-          PropertiesClassName = 'TcxLabelProperties'
-          Width = 64
-          Position.BandIndex = 0
-          Position.ColIndex = 39
-          Position.RowIndex = 0
-        end
-        object grdPkgsDBBandedTableView1PositionName: TcxGridDBBandedColumn
-          DataBinding.FieldName = 'PositionName'
-          PropertiesClassName = 'TcxLabelProperties'
-          Width = 186
-          Position.BandIndex = 0
-          Position.ColIndex = 40
-          Position.RowIndex = 0
+        object cxBtnChgTreatmentInfo: TcxButton
+          Left = 1308
+          Top = 6
+          Width = 111
+          Height = 38
+          Action = acChgRef_and_Info
+          TabOrder = 8
+          WordWrap = True
         end
       end
-      object grdPkgsLevel1: TcxGridLevel
-        GridView = grdPkgsDBBandedTableView1
+      object grdPkgs: TcxGrid
+        Left = 1
+        Top = 47
+        Width = 1518
+        Height = 310
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Align = alClient
+        TabOrder = 1
+        object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
+          PopupMenu = pmPkgs
+          OnKeyDown = grdPkgsDBBandedTableView1KeyDown
+          Navigator.Buttons.CustomButtons = <>
+          OnEditing = grdPkgsDBBandedTableView1Editing
+          DataController.DataSource = dmLoadEntrySSP.ds_LoadPackages2
+          DataController.KeyFieldNames = 'LoadNo;LoadDetailNo'
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '######'
+              Kind = skCount
+              FieldName = 'PACKAGENO'
+              Column = grdPkgsDBBandedTableView1PACKAGENO
+            end
+            item
+              Format = '#,###,###.000'
+              Kind = skSum
+              FieldName = 'M3_NET'
+              Column = grdPkgsDBBandedTableView1M3_NET
+            end
+            item
+              Format = '#,###,###.000'
+              Kind = skSum
+              FieldName = 'KVM'
+              Column = grdPkgsDBBandedTableView1KVM
+            end
+            item
+              Format = '#,###,###.000'
+              Kind = skSum
+              FieldName = 'M3_NOM'
+              Column = grdPkgsDBBandedTableView1M3_NOM
+            end
+            item
+              Format = '######'
+              Kind = skSum
+              FieldName = 'PCS'
+              Column = grdPkgsDBBandedTableView1PCS
+            end
+            item
+              Format = '#,###,###.000'
+              Kind = skSum
+              FieldName = 'MFBM'
+              Column = grdPkgsDBBandedTableView1MFBM
+            end
+            item
+              Format = '#,###,###.000'
+              Kind = skSum
+              FieldName = 'LOPM'
+              Column = grdPkgsDBBandedTableView1LOPM
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsCustomize.ColumnVertSizing = False
+          OptionsData.Deleting = False
+          OptionsData.Inserting = False
+          OptionsSelection.HideSelection = True
+          OptionsSelection.MultiSelect = True
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          OptionsView.BandHeaders = False
+          Styles.Content = cxStyleContent
+          Styles.ContentEven = cxStyleContent
+          Styles.ContentOdd = cxStyleContentOdd
+          Styles.OnGetContentStyle = grdPkgsDBBandedTableView1StylesGetContentStyle
+          Styles.Footer = cxStyleHeader
+          Styles.Header = cxStyleHeader
+          Bands = <
+            item
+              Caption = 'OTHER'
+            end>
+          object grdPkgsDBBandedTableView1PACKAGENO: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PACKAGENO'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 74
+            Position.BandIndex = 0
+            Position.ColIndex = 2
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1SupplierCode: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SupplierCode'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 52
+            Position.BandIndex = 0
+            Position.ColIndex = 3
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ShippingPlanNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ShippingPlanNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 71
+            Position.BandIndex = 0
+            Position.ColIndex = 4
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PRODUCT: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PRODUCT'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 400
+            Position.BandIndex = 0
+            Position.ColIndex = 5
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PackageOK: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PackageOK'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ReadOnly = True
+            Properties.ValueChecked = 0
+            Properties.ValueUnchecked = 1
+            Options.Filtering = False
+            Width = 74
+            Position.BandIndex = 0
+            Position.ColIndex = 9
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ProblemPackageLog: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProblemPackageLog'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 61
+            Position.BandIndex = 0
+            Position.ColIndex = 10
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1M3_NET: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'M3_NET'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 53
+            Position.BandIndex = 0
+            Position.ColIndex = 14
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PCS: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PCS'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 38
+            Position.BandIndex = 0
+            Position.ColIndex = 15
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1M3_NOM: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'M3_NOM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 41
+            Position.BandIndex = 0
+            Position.ColIndex = 16
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1MFBM: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'MFBM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 59
+            Position.BandIndex = 0
+            Position.ColIndex = 17
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1KVM: TcxGridDBBandedColumn
+            Caption = 'm2'
+            DataBinding.FieldName = 'KVM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 58
+            Position.BandIndex = 0
+            Position.ColIndex = 18
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1LOPM: TcxGridDBBandedColumn
+            Caption = 'Lpm'
+            DataBinding.FieldName = 'LOPM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            Width = 61
+            Position.BandIndex = 0
+            Position.ColIndex = 19
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PCS_PER_LENGTH: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PCS_PER_LENGTH'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 240
+            Position.BandIndex = 0
+            Position.ColIndex = 8
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1DefaultCustShipObjectNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'DefaultCustShipObjectNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 49
+            Position.BandIndex = 0
+            Position.ColIndex = 31
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ProductLengthNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProductLengthNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 22
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ALMM: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ALMM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 23
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ActualThicknessMM: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ActualThicknessMM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 24
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ActualWidthMM: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ActualWidthMM'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 25
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SurfacingNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 26
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1SpeciesNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'SpeciesNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 27
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1MainGradeNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'MainGradeNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 28
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1NoOfLengths: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'NoOfLengths'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 21
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1OverrideMatch: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'OverrideMatch'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Options.Filtering = False
+            Width = 27
+            Position.BandIndex = 0
+            Position.ColIndex = 29
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1DateCreated: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'DateCreated'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 94
+            Position.BandIndex = 0
+            Position.ColIndex = 13
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ProductNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ProductNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 20
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1LoadNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LoadNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 0
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1LoadDetailNo: TcxGridDBBandedColumn
+            Caption = 'Radnr'
+            DataBinding.FieldName = 'LoadDetailNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Options.Filtering = False
+            Width = 48
+            Position.BandIndex = 0
+            Position.ColIndex = 1
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1NoOfPackages: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'NoOfPackages'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 67
+            Position.BandIndex = 0
+            Position.ColIndex = 6
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PACKAGETYPENO: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PACKAGETYPENO'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 7
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1CreatedUser: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'CreatedUser'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 11
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1ModifiedUser: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'ModifiedUser'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 12
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1LIPNo: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'LIPNo'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 30
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Pkg_State: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Pkg_State'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 32
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Pkg_Function: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Pkg_Function'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 33
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Changed: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Changed'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Position.BandIndex = 0
+            Position.ColIndex = 34
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Defsspno: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Defsspno'
+            PropertiesClassName = 'TcxLabelProperties'
+            Visible = False
+            Options.Filtering = False
+            VisibleForCustomization = False
+            Width = 51
+            Position.BandIndex = 0
+            Position.ColIndex = 35
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'OverrideRL'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ReadOnly = True
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Width = 72
+            Position.BandIndex = 0
+            Position.ColIndex = 36
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1InvNr: TcxGridDBBandedColumn
+            Caption = 'IK'
+            DataBinding.FieldName = 'InvNr'
+            PropertiesClassName = 'TcxCheckBoxProperties'
+            Properties.ReadOnly = True
+            Properties.ValueChecked = 1
+            Properties.ValueUnchecked = 0
+            Visible = False
+            Width = 50
+            Position.BandIndex = 0
+            Position.ColIndex = 37
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Paketstorlek'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 77
+            Position.BandIndex = 0
+            Position.ColIndex = 38
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'REFERENCE'
+            Position.BandIndex = 0
+            Position.ColIndex = 41
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INFO1'
+            Position.BandIndex = 0
+            Position.ColIndex = 42
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'INFO2'
+            Position.BandIndex = 0
+            Position.ColIndex = 43
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1Certfiering: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'Certfiering'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 64
+            Position.BandIndex = 0
+            Position.ColIndex = 39
+            Position.RowIndex = 0
+          end
+          object grdPkgsDBBandedTableView1PositionName: TcxGridDBBandedColumn
+            DataBinding.FieldName = 'PositionName'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 186
+            Position.BandIndex = 0
+            Position.ColIndex = 40
+            Position.RowIndex = 0
+          end
+        end
+        object grdPkgsLevel1: TcxGridLevel
+          GridView = grdPkgsDBBandedTableView1
+        end
       end
-    end
-    object TouchKeyboard1: TTouchKeyboard
-      Left = 170
-      Top = 49
-      Width = 800
-      Height = 246
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'Standard'
-      Visible = False
-    end
-    object TouchKeyboard2: TTouchKeyboard
-      Left = 1024
-      Top = 39
-      Width = 308
-      Height = 283
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
-      GradientEnd = clSilver
-      GradientStart = clGray
-      Layout = 'NumPad'
-      Visible = False
-    end
-  end
-  object PanelNote: TPanel
-    Left = 0
-    Top = 68
-    Width = 1522
-    Height = 33
-    Margins.Left = 2
-    Margins.Top = 2
-    Margins.Right = 2
-    Margins.Bottom = 2
-    Align = alTop
-    TabOrder = 8
-    object cxDBTextEdit1: TcxDBTextEdit
-      Left = 1
-      Top = 1
-      Margins.Left = 2
-      Margins.Top = 2
-      Margins.Right = 2
-      Margins.Bottom = 2
-      Align = alClient
-      DataBinding.DataField = 'ShortNote'
-      DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
-      ParentFont = False
-      Style.Font.Charset = DEFAULT_CHARSET
-      Style.Font.Color = clRed
-      Style.Font.Height = -18
-      Style.Font.Name = 'MS Sans Serif'
-      Style.Font.Style = []
-      Style.IsFontAssigned = True
-      TabOrder = 0
-      Width = 1520
+      object TouchKeyboard1: TTouchKeyboard
+        Left = 170
+        Top = 49
+        Width = 800
+        Height = 246
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        GradientEnd = clSilver
+        GradientStart = clGray
+        Layout = 'Standard'
+        Visible = False
+      end
+      object TouchKeyboard2: TTouchKeyboard
+        Left = 1024
+        Top = 39
+        Width = 308
+        Height = 283
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        GradientEnd = clSilver
+        GradientStart = clGray
+        Layout = 'NumPad'
+        Visible = False
+      end
     end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -15
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False

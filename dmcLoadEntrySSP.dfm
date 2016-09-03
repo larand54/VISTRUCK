@@ -3293,6 +3293,7 @@
     end
   end
   object cds_Props: TFDQuery
+    Active = True
     AfterInsert = cds_PropsAfterInsert
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
@@ -3534,6 +3535,11 @@
       Origin = 'ShowProduct'
       ProviderFlags = [pfInUpdate]
     end
+    object cds_PropsFilter1: TStringField
+      FieldName = 'Filter1'
+      Origin = 'Filter1'
+      Size = 50
+    end
   end
   object sp_LOBSetChanged: TFDStoredProc
     Connection = dmsConnector.FDConnection1
@@ -3617,5 +3623,47 @@
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object cds_SaveFormSettings: TFDQuery
+    AfterInsert = cds_PropsAfterInsert
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select UserID, Form, Filter1 FROM dbo.userprops'
+      'WHERE UserID = :UserID'
+      'AND Form = :Form')
+    Left = 480
+    Top = 512
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'FORM'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object cds_SaveFormSettingsUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_SaveFormSettingsForm: TStringField
+      FieldName = 'Form'
+      Origin = 'Form'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object cds_SaveFormSettingsFilter1: TStringField
+      FieldName = 'Filter1'
+      Origin = 'Filter1'
+      Size = 50
+    end
   end
 end

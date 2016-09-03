@@ -3,17 +3,20 @@ unit uSQLView;
 interface
 uses
   Classes, SysUtils, System.Generics.Collections,
-  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBBandedTableView,
+  cxCheckComboBox, cxCheckBox,cxLookAndFeelPainters,cxControls,cxGridDBTableView,
   uISQLHelper, uISQLViewField, uISQLView, uISQLBuild;
 type
 
   TWhereString = class(TInterfacedObject)
     private
       FWhereStringList: TStringList;
+      procedure addString(const s: string);
       function getCheckedValues(const aDecimalType: byte; const aCombo: TcxCheckComboBox): TStringList;
     public
-      procedure add(const s:string);
-      procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string);
+      procedure addAND(const s:string; aFirst, aLast: boolean);
+      procedure addOR(const s:string; aFirst, aLast: boolean);
+      procedure addFromCombo(const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string) overload;
+      procedure addFromCombo(const aSelectAllIfNone: boolean; const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox; const aFieldName: string) overload;
       function getWhereStatement: TStringList;
   end;
 
@@ -41,7 +44,7 @@ type
 
   TSQLView = class(TInterfacedObject, ISQLView)
     private
-      Fgridview : TcxGridDBBandedTableView;
+      Fgridview : TcxGridDBTableView;
       FObjectList : TList<TSQLViewField>;
       FKeyFields: String;
       FSQLFile: string;           //D:\git\delphi\VISTRUCK\EXE\SQL_SetUp.txt
@@ -50,13 +53,13 @@ type
       FWhereList: TStrings;
       procedure InitiateFieldObjects;
       function getStatus(aGridField: string): boolean;
-      procedure SetKeyFields(aStatus: boolean; aGridField: string);
     public
-      Constructor create(const aGridView: TcxGridDBBandedTableView; const aSQLFile: string;
+      Constructor create(const aGridView: TcxGridDBTableView; const aSQLFile: string;
        const aWhereList: TStrings; const aBaseSQL: TStrings);
       Destructor destroy; override;
+      procedure SetKeyFields(aStatus: boolean; aGridField: string);
       property ObjectList: TList<TSQLViewField> read FObjectList;
-      property gridView: TcxGridDBBandedTableView read FGridView;
+      property gridView: TcxGridDBTableView read FGridView;
       property KeyFields: string read FKeyFields write FKeyFields;
       property SQLFile: string read FSQLFile;
       property SQL: TStrings read FSQL;
@@ -79,7 +82,8 @@ type
 implementation
 
 uses
-  dialogs, dmsVidaSystem;
+  dialogs, dmsVidaSystem,
+  uDynSQL_const;
 
 class Function TSQLHelper.GetSQLofComboFilter(const dType : Byte;const Kolumn : String;combo : TcxCheckComboBox) : String ;
 Var
@@ -139,7 +143,7 @@ begin
  Result:= S ;
 end;
 
-constructor TSQLView.create(const aGridView: TcxGridDBBandedTableView;
+constructor TSQLView.create(const aGridView: TcxGridDBTableView;
               const aSQLFile: string; const aWhereList: TStrings; const aBaseSQL: TStrings);
 begin
   Fgridview := aGridView;
@@ -179,11 +183,12 @@ var
   FieldVisible : Boolean;
   dir          : string ;
 begin
-  dir          := GetCurrentDir;
   FObjectList  := TList<TSQLViewField>.Create;
   buffer       := TStringList.Create;
   StrTemp      := TStringList.Create;
-  buffer.LoadFromFile(dir + '\'+SQLFile);
+  if not FileExists(SQLFile) then raise Exception.Create('The SQL-Setup file: '+SQLFILE+' does not exist!');
+
+  buffer.LoadFromFile(SQLFile);
   for i:= 0 to buffer.Count - 1 do
   begin
     StrTemp.Delimiter     := ' ';
@@ -228,20 +233,25 @@ constructor TSQLBuild.Create(aSQLView: TSQLView);
 var
   j, IndexNo, TempIndex, SQLLength: Integer;
   TempSQLStr1, TempSQLStr2: string;
+  first: boolean;
 begin
   FSQLView := aSQLView;
   FSQLView.SQL.Clear;
   FSQLView.SQL.Add('DECLARE @LanguageCode int = 1');
+  FSQLView.SQL.Add('DECLARE @Source int = 0');
+  FSQLView.SQL.Add('SET @LanguageCode = :LanguageCode');
+  FSQLView.SQL.Add('SET @Source = :Source');
   FSQLView.SQL.Add('Select distinct');
   LoggDir := dmsSystem.Get_Dir('UserDir');
 
-
+  first := true;
   for j := 0 to FSQLView.FObjectList.Count - 1 do
   begin
     if FSQLView.ObjectList[j].Visible = True then
     begin
-      if j > 0 then FSQLView.SQL.Text := FSQLView.SQL.Text + ',';
+      if not first then FSQLView.SQL.Text := FSQLView.SQL.Text + ',';
       FSQLView.SQL.Add(FSQLView.ObjectList[j].fieldSQL);
+      first := false;
     end;
   end;
   for j := 0 To FSQLView.FBaseSQL.Count-1  do
@@ -249,6 +259,7 @@ begin
    FSQLView.SQL.Add('WHERE');
   for j := 0 to FSQLView.WhereList.Count-1 do
     FSQLView.SQL.Add(FSQLView.WhereList[j]);
+
   FSQLView.SQL.Add('Group by');
   for j := 0 to FSQLView.ObjectList.Count - 1 do
   begin
@@ -267,7 +278,7 @@ begin
   if FSQLView.SQL.Text[FSQLView.SQL.Text.length - 2] = ',' then
     FSQLView.SQL.Text := copy(FSQLView.SQL.Text,0,FSQLView.SQL.Text.Length - 3);
   try
-    FSQLView.SQL.SaveToFile(LoggDir+'SQL2.txt');
+    FSQLView.SQL.SaveToFile(LoggDir+'SQL2.sql');
   except
   end;
 end;
@@ -280,52 +291,154 @@ end;
 
 { TWhereString }
 
-procedure TWhereString.add(const s: string);
+procedure TWhereString.addAND(const s: string; aFirst, aLast: boolean);
 begin
   if not assigned(FWhereStringList) then
-    FWhereStringList := TStringList.Create
-  else
-    FWhereStringList.Add(' AND ');
+    FWhereStringList := TStringList.Create;
+  if aFirst then
+    if aLast then
+    begin
+        AddString(' AND ('+s+')');
+    end
+    else
+    begin
+        AddString(' AND ('+s);
+    end
 
-  FWhereStringList.Add('('+s+')');
+  else if aLast then
+  begin
+    AddString(s+')')
+  end
+  else
+    AddString(s);
 end;
 
 procedure TWhereString.addFromCombo(const aDecimalType, quotedString: byte;
   const aCombo: TcxCheckComboBox; const aFieldName: string);
 var
   values: TStringList;
+  nulls: TStringList;
   Value: string;
   temp: string;
+  i: integer;
 begin
-  // values := TStringList.Create;
+  nulls := TStringList.Create;
   try
     values := getCheckedValues(aDecimalType, aCombo);
     if assigned(values) and (values.Count > 0) then
     begin
-      if not assigned(FWhereStringList) then
+      for value in values do
+        if Value = NULL then nulls.Add(aFieldName+ ' IS  NULL');
+      if nulls.count < Values.count then
       begin
-        FWhereStringList := TStringList.create;
-        temp := '(';
-      end
-      else
-        temp := 'AND (';
-
-      temp := temp + aFieldName + ' IN (';
-      for Value in values do
-      begin
-        if quotedString = 1 then
-          temp := temp + quotedStr(Value) + ','
+        if not assigned(FWhereStringList) then
+        begin
+          FWhereStringList := TStringList.create;
+          temp := '(';
+        end
         else
-          temp := temp + Value + ',';
+          temp := 'AND (';
+        temp := temp + aFieldName + ' IN (';
+        for Value in values do
+        begin
+          if quotedString = 1 then
+          begin
+            if Value = BLANK then
+              temp := temp + quotedStr('') + ','
+            else if Value = NULL then continue
+            else temp := temp + quotedStr(Value) + ','
+          end
+          else
+            temp := temp + Value + ',';
+        end;
+        temp := copy(temp, 1, temp.Length - 1);
+        temp := temp + ')'
       end;
-      temp := copy(temp, 1, temp.Length - 1);
-      temp := temp + '))';
+      if nulls.Count > 0 then
+      begin
+        if not assigned(FWhereStringList) then
+        begin
+          FWhereStringList := TStringList.create;
+        end;
+        for i := 0 to nulls.count-1 do
+        begin
+          temp := temp + ' AND (' + nulls[i]+')';
+        end;
+      end;
+      if nulls.count < Values.count then
+        temp := temp + ')';
       FWhereStringList.add(temp);
     end;
   finally
     if assigned(values) then
       values.Free;
+    if assigned(nulls) then
+      nulls.Free;
   end;
+end;
+
+procedure TWhereString.addFromCombo(const aSelectAllIfNone: boolean;
+  const aDecimalType, quotedString: byte; const aCombo: TcxCheckComboBox;
+  const aFieldName: string);
+var
+  tempCombo: TcxCheckComboBox;
+  i: integer;
+begin
+  if (aCombo.EditValue = '') and aSelectAllIfNone then
+  begin
+    tempCombo := TcxCheckComboBox.Create(nil);
+    try
+      for i := 0 to aCombo.Properties.Items.Count-1 do
+      begin
+        tempCombo.Properties.Items.AddCheckItem(aCombo.Properties.Items[i].Description, aCombo.Properties.Items[i].ShortDescription);
+        tempCombo.states[i] := cbsChecked;
+      end;
+      addFromCombo(aDecimalType, quotedString, tempCombo, aFieldName);
+    finally
+      if assigned(tempCombo) then tempCombo.Free;
+    end;
+  end
+  else
+    addFromCombo(aDecimalType, quotedString, aCombo, aFieldName);
+end;
+
+procedure TWhereString.addOR(const s: string; aFirst, aLast: boolean);
+begin
+  if not assigned(FWhereStringList) then
+    FWhereStringList := TStringList.Create;
+  if aFirst then
+    if aLast then
+      begin
+        AddString('OR ('+s+')');
+      end
+      else
+      begin
+        AddString('OR ('+s);
+      end
+
+  else if aLast then
+  begin
+    AddString(s+')')
+  end
+  else
+    AddString(s);
+end;
+
+procedure TWhereString.addString(const s: string);
+var
+  i,l: integer;
+  sq: string;
+begin
+  sq := UpperCase(s);
+  if FWhereStringList.Count = 0 then
+  begin
+    sq := sq.TrimLeft;
+    i := pos('OR (',sq);
+    l := pos('AND (',sq);
+    if i = 1 then sq := sq.Remove(0,3)
+    else if l = 1 then sq := sq.Remove(0,4);
+  end;
+  FWhereStringList.Add(sq);
 end;
 
 function TWhereString.getCheckedValues( const aDecimalType: byte;

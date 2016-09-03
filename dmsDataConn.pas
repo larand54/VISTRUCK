@@ -6,7 +6,7 @@ uses
   Classes,
   DB,
 
-  
+
   SysUtils, FMTBcd, Provider, ImgList, Controls, Dialogs,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
@@ -297,6 +297,7 @@ end;
 
 procedure TdmsConnector.DataModuleCreate(Sender: TObject);
 begin
+
 {$IFDEF DEBUG}
   if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
     dmsConnector.DriveLetter := 'C:\';
@@ -330,7 +331,17 @@ begin
         Params.Add('DriverID=MSSQL');
         Params.Add('ApplicationName=VISTRUCK');
       end;
-  end
+  end else
+  with dmsConnector.FDConnection1 do begin
+      Params.Clear;
+      Params.Add('Server=alvesql01');
+      Params.Add('Database=vis_vida');
+      Params.Add('OSAuthent=yes');
+      Params.add('MetaDefCatalog=vis_vida');
+      Params.Add('MetaDefSchema=dbo');
+      Params.Add('DriverID=MSSQL');
+      Params.Add('ApplicationName=VISTRUCK');
+  end;
 {$ENDIF}
 // FDMoniFlatFileClientLink1.Tracing := False ;
 //ALVESQL04

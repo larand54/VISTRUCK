@@ -4,7 +4,7 @@ object fPositionView: TfPositionView
   Align = alClient
   BorderStyle = bsNone
   Caption = 'LAGERRAPPORT'
-  ClientHeight = 1012
+  ClientHeight = 779
   ClientWidth = 1550
   Color = clBtnFace
   DragKind = dkDock
@@ -21,14 +21,13 @@ object fPositionView: TfPositionView
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnKeyPress = FormKeyPress
   PixelsPerInch = 120
   TextHeight = 16
   object pcInventory: TcxPageControl
     Left = 0
     Top = 153
     Width = 1550
-    Height = 859
+    Height = 626
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -42,7 +41,8 @@ object fPositionView: TfPositionView
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 859
+    ExplicitHeight = 417
+    ClientRectBottom = 626
     ClientRectRight = 1550
     ClientRectTop = 0
     object tsProduktionProduktSummary: TcxTabSheet
@@ -53,448 +53,196 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
-      object Panel8: TPanel
+      ExplicitHeight = 417
+      object grdPosition: TcxGrid
         Left = 0
         Top = 0
         Width = 1550
-        Height = 57
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
-        Align = alTop
-        TabOrder = 0
-        object cxButton9: TcxButton
-          Left = 517
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acRefreshReport
-          TabOrder = 0
-        end
-        object cxButton10: TcxButton
-          Left = 630
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acExpandAllGridView
-          TabOrder = 1
-        end
-        object cxButton11: TcxButton
-          Left = 743
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acCollapseAllGridView
-          TabOrder = 2
-        end
-        object cxButton12: TcxButton
-          Left = 856
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acNewTemplate
-          TabOrder = 3
-        end
-        object cxButton13: TcxButton
-          Left = 969
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Ta bort mall'
-          TabOrder = 4
-        end
-        object cxButton14: TcxButton
-          Left = 1082
-          Top = 10
-          Width = 110
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Action = acSaveTemplate
-          TabOrder = 5
-        end
-        object cbReportSelection: TcxComboBox
-          Left = 9
-          Top = 19
-          Properties.DropDownRows = 15
-          Properties.DropDownSizeable = True
-          Properties.Items.Strings = (
-            'Area-Ref'
-            'Area-Ref-Dim'
-            'Area-Ref-Dim-L'#228'ngd'
-            'D'#228'cklista'
-            'PaketLista'
-            'Tomma R'#228'ckor')
-          Properties.OnChange = cbReportSelectionPropertiesChange
-          TabOrder = 6
-          Text = 'Area-Ref'
-          Width = 196
-        end
-      end
-      object grdPosition: TcxGrid
-        Left = 0
-        Top = 57
-        Width = 1550
-        Height = 802
+        Height = 626
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
-        TabOrder = 1
-        object grdPositionDBBandedTableView1: TcxGridDBBandedTableView
+        TabOrder = 0
+        ExplicitHeight = 417
+        object grdPositionDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          OnEditing = grdPositionDBTableView1Editing
           DataController.DataSource = dmFilterSQL.ds_PositionView
-          DataController.DetailKeyFieldNames = 'AreaName'
-          DataController.KeyFieldNames = 'AreaName'
           DataController.Summary.DefaultGroupSummaryItems = <
             item
+              Kind = skSum
               FieldName = 'AM3'
+              Column = grdPositionDBTableView1AM3
             end>
           DataController.Summary.FooterSummaryItems = <
             item
-              Format = '#,###,###.0'
-              Kind = skSum
-              FieldName = 'NM3'
-              Column = grdPositionDBBandedTableView1NM3
-              DisplayText = 'NM3 Total'
-            end
-            item
-              Format = '#,###,###.0'
+              Format = '########.##'
               Kind = skSum
               FieldName = 'AM3'
-              Column = grdPositionDBBandedTableView1AM3
-              DisplayText = 'AM3 Total'
+              Column = grdPositionDBTableView1AM3
             end
             item
-              Format = '###########'
+              Format = '#######'
               Kind = skSum
-              FieldName = 'pcs'
-              Column = grdPositionDBBandedTableView1pcs
-              DisplayText = 'Totalt antal'
+              Column = grdPositionDBTableView1Paket
+            end
+            item
+              Format = '########.##'
+              Kind = skSum
+              Column = grdPositionDBTableView1NM3
+            end
+            item
+              Format = '########'
+              Kind = skSum
+              Column = grdPositionDBTableView1PCS
             end>
           DataController.Summary.SummaryGroups = <
             item
               Links = <
                 item
+                  Column = grdPositionDBTableView1LogicalInventoryName
                 end
                 item
+                  Column = grdPositionDBTableView1AreaName
                 end
                 item
+                  Column = grdPositionDBTableView1PositionName
                 end
                 item
+                  Column = grdPositionDBTableView1Product
                 end
                 item
+                  Column = grdPositionDBTableView1City
                 end
                 item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
-                end
-                item
+                  Column = grdPositionDBTableView1REFERENCE
                 end>
               SummaryItems = <
                 item
-                  Format = '#,###,###.0'
                   Kind = skSum
-                  Position = spFooter
                   FieldName = 'AM3'
-                end
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'NM3'
-                end
-                item
-                  Format = '#,###,###'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'pcs'
-                end>
-            end
-            item
-              Links = <
-                item
-                  Column = grdPositionDBBandedTableView1AM3
-                end>
-              SummaryItems = <
-                item
-                  Format = '#,###,###.0'
-                  Kind = skSum
-                  Position = spFooter
-                  FieldName = 'AM3'
-                  Column = grdPositionDBBandedTableView1AM3
-                  DisplayText = 'AM3'
+                  Column = grdPositionDBTableView1AM3
                 end>
             end>
+          DataController.Summary.Options = [soMultipleSelectedRecords]
+          OptionsBehavior.PullFocusing = True
+          OptionsData.Deleting = False
+          OptionsData.Inserting = False
+          OptionsSelection.InvertSelect = False
+          OptionsSelection.MultiSelect = True
+          OptionsSelection.CellMultiSelect = True
           OptionsView.ColumnAutoWidth = True
-          OptionsView.Indicator = True
-          Bands = <
-            item
-              Caption = 'PRODUKTION'
-              Width = 958
-            end>
-          object grdPositionDBBandedTableView1City: TcxGridDBBandedColumn
+          OptionsView.Footer = True
+          object grdPositionDBTableView1City: TcxGridDBColumn
+            Caption = 'Lagerst'#228'lle'
             DataBinding.FieldName = 'City'
-            Width = 24
-            Position.BandIndex = 0
-            Position.ColIndex = 0
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1LogicalInventoryName: TcxGridDBBandedColumn
+          object grdPositionDBTableView1LogicalInventoryName: TcxGridDBColumn
+            Caption = 'Lagergrupp'
             DataBinding.FieldName = 'LogicalInventoryName'
-            Width = 24
-            Position.BandIndex = 0
-            Position.ColIndex = 1
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1Paket: TcxGridDBBandedColumn
+          object grdPositionDBTableView1Paket: TcxGridDBColumn
             DataBinding.FieldName = 'Paket'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 2
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1pcs: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'pcs'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 3
-            Position.RowIndex = 0
+          object grdPositionDBTableView1PCS: TcxGridDBColumn
+            Caption = 'Styck'
+            DataBinding.FieldName = 'PCS'
           end
-          object grdPositionDBBandedTableView1AM3: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AM3: TcxGridDBColumn
             DataBinding.FieldName = 'AM3'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 4
-            Position.RowIndex = 0
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = '######.##'
+            Properties.Precision = 15
+            Properties.ReadOnly = False
           end
-          object grdPositionDBBandedTableView1NM3: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NM3: TcxGridDBColumn
             DataBinding.FieldName = 'NM3'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 5
-            Position.RowIndex = 0
+            PropertiesClassName = 'TcxCalcEditProperties'
+            Properties.Alignment.Horz = taRightJustify
+            Properties.DisplayFormat = '######.##'
+            Properties.Precision = 15
+            Properties.ReadOnly = False
           end
-          object grdPositionDBBandedTableView1dim: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'dim'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 6
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1TS: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'TS'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 7
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PC: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PC'
-            Width = 28
-            Position.BandIndex = 0
-            Position.ColIndex = 8
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1KV: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'KV'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 9
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1UT: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'UT'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 10
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1LIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'LIPNo'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 11
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PIPNo: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PIPNo'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 12
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1VarugruppNamn: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'VarugruppNamn'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 13
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'REFERENCE'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 14
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1Info1: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info1'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 15
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1Info2: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'Info2'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 16
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1AreaName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'AreaName'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 17
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1PositionName: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PositionName'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 18
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1StoredDate: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'StoredDate'
-            Width = 20
-            Position.BandIndex = 0
-            Position.ColIndex = 19
-            Position.RowIndex = 0
-          end
-          object grdPositionDBBandedTableView1AT: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AT: TcxGridDBColumn
             DataBinding.FieldName = 'AT'
-            Position.BandIndex = 0
-            Position.ColIndex = 20
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1AB: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AB: TcxGridDBColumn
             DataBinding.FieldName = 'AB'
-            Position.BandIndex = 0
-            Position.ColIndex = 21
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1NT: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NT: TcxGridDBColumn
             DataBinding.FieldName = 'NT'
-            Position.BandIndex = 0
-            Position.ColIndex = 22
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1NB: TcxGridDBBandedColumn
+          object grdPositionDBTableView1NB: TcxGridDBColumn
             DataBinding.FieldName = 'NB'
-            Position.BandIndex = 0
-            Position.ColIndex = 23
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1AL: TcxGridDBBandedColumn
+          object grdPositionDBTableView1AL: TcxGridDBColumn
             DataBinding.FieldName = 'AL'
-            Position.BandIndex = 0
-            Position.ColIndex = 24
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1Product: TcxGridDBBandedColumn
+          object grdPositionDBTableView1dim: TcxGridDBColumn
+            Caption = 'Dim'
+            DataBinding.FieldName = 'dim'
+          end
+          object grdPositionDBTableView1TS: TcxGridDBColumn
+            Caption = 'Tr'#228'slag'
+            DataBinding.FieldName = 'TS'
+          end
+          object grdPositionDBTableView1PC: TcxGridDBColumn
+            Caption = 'Impregnering'
+            DataBinding.FieldName = 'PC'
+          end
+          object grdPositionDBTableView1KV: TcxGridDBColumn
+            Caption = 'Kvalitet'
+            DataBinding.FieldName = 'KV'
+          end
+          object grdPositionDBTableView1UT: TcxGridDBColumn
+            Caption = 'Utf'#246'rande'
+            DataBinding.FieldName = 'UT'
+          end
+          object grdPositionDBTableView1VarugruppNamn: TcxGridDBColumn
+            Caption = 'Varugrupp'
+            DataBinding.FieldName = 'VarugruppNamn'
+          end
+          object grdPositionDBTableView1REFERENCE: TcxGridDBColumn
+            Caption = 'Referens'
+            DataBinding.FieldName = 'REFERENCE'
+          end
+          object grdPositionDBTableView1BL_NO: TcxGridDBColumn
+            Caption = 'Info1'
+            DataBinding.FieldName = 'BL_NO'
+          end
+          object grdPositionDBTableView1Info2: TcxGridDBColumn
+            DataBinding.FieldName = 'Info2'
+          end
+          object grdPositionDBTableView1AreaName: TcxGridDBColumn
+            Caption = 'LagerArea'
+            DataBinding.FieldName = 'AreaName'
+          end
+          object grdPositionDBTableView1PositionName: TcxGridDBColumn
+            Caption = 'LagerPos'
+            DataBinding.FieldName = 'PositionName'
+          end
+          object grdPositionDBTableView1StoredDate: TcxGridDBColumn
+            Caption = 'Lagerdatum'
+            DataBinding.FieldName = 'StoredDate'
+          end
+          object grdPositionDBTableView1Product: TcxGridDBColumn
+            Caption = 'Produkt'
             DataBinding.FieldName = 'Product'
-            Position.BandIndex = 0
-            Position.ColIndex = 25
-            Position.RowIndex = 0
           end
-          object grdPositionDBBandedTableView1PN: TcxGridDBBandedColumn
-            DataBinding.FieldName = 'PN'
-            Position.BandIndex = 0
-            Position.ColIndex = 26
-            Position.RowIndex = 0
+          object grdPositionDBTableView1PackageNo: TcxGridDBColumn
+            Caption = 'PaketNr'
+            DataBinding.FieldName = 'PackageNo'
           end
-        end
-        object grdPositionDBBandedTableView2: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView3: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView4: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView5: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
-        end
-        object grdPositionDBBandedTableView6: TcxGridDBBandedTableView
-          Navigator.Buttons.CustomButtons = <>
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          Bands = <
-            item
-            end>
+          object grdPositionDBTableView1SupplierCode: TcxGridDBColumn
+            Caption = 'Prefix'
+            DataBinding.FieldName = 'SupplierCode'
+          end
         end
         object grdPositionLevel1: TcxGridLevel
-          GridView = grdPositionDBBandedTableView1
+          GridView = grdPositionDBTableView1
         end
       end
     end
@@ -550,17 +298,9 @@ object fPositionView: TfPositionView
         Margins.Bottom = 4
         Align = alClient
         BevelOuter = bvNone
+        Color = clSilver
+        ParentBackground = False
         TabOrder = 0
-        object Bevel1: TBevel
-          Left = 4
-          Top = 32
-          Width = 1429
-          Height = 12
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-        end
         object lcPIPNAME: TcxDBLookupComboBox
           Left = 1583
           Top = 91
@@ -580,7 +320,7 @@ object fPositionView: TfPositionView
           Properties.ListOptions.ShowHeader = False
           Properties.MaxLength = 0
           Style.StyleController = cxEditStyleController3
-          TabOrder = 23
+          TabOrder = 21
           Visible = False
           Width = 23
         end
@@ -592,8 +332,6 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Verk:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
         object cxLabel1: TcxLabel
@@ -605,9 +343,7 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Tjocklek'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -628,9 +364,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Bredd'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -642,16 +376,14 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel7: TcxLabel
-          Left = 296
+          Left = 291
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'L'#228'ngd'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -663,16 +395,14 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel8: TcxLabel
-          Left = 367
+          Left = 359
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Tr'#228'slag'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -684,16 +414,14 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel9: TcxLabel
-          Left = 449
+          Left = 429
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Kvalitet'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -705,16 +433,14 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel10: TcxLabel
-          Left = 524
+          Left = 499
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Utf'#246'rande'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -726,16 +452,14 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel11: TcxLabel
-          Left = 621
+          Left = 579
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Impregnering'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -747,8 +471,8 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object ccbAT: TcxCheckComboBox
-          Left = 4
-          Top = 56
+          Left = 5
+          Top = 55
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -756,16 +480,17 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
           Properties.OnClickCheck = ccbATPropertiesClickCheck
-          Style.BorderStyle = ebsFlat
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
-          Style.ButtonStyle = btsOffice11
+          Style.ButtonStyle = bts3D
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 12
+          TabOrder = 10
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbAB: TcxCheckComboBox
@@ -778,17 +503,19 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsFlat
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
-          TabOrder = 13
+          Style.ButtonStyle = bts3D
+          TabOrder = 11
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbAL: TcxCheckComboBox
-          Left = 296
+          Left = 291
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -797,17 +524,19 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsFlat
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
-          TabOrder = 14
-          Width = 70
+          Style.ButtonStyle = bts3D
+          TabOrder = 12
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 65
         end
         object ccbTS2: TcxCheckComboBox
-          Left = 369
+          Left = 359
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -816,17 +545,19 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 5
-          Width = 77
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 67
         end
         object ccbKV2: TcxCheckComboBox
-          Left = 449
+          Left = 429
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -835,17 +566,19 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 6
-          Width = 72
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 67
         end
         object ccbSU2: TcxCheckComboBox
-          Left = 524
+          Left = 499
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -854,17 +587,19 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 7
-          Width = 94
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 77
         end
         object ccbIMP: TcxCheckComboBox
-          Left = 621
+          Left = 579
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -873,13 +608,15 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 8
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 105
         end
         object cbOwner: TcxCheckComboBox
@@ -889,18 +626,21 @@ object fPositionView: TfPositionView
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
-          Properties.DropDownRows = 15
+          Properties.DropDownRows = 25
+          Properties.DropDownWidth = 80
           Properties.EditValueFormat = cvfIndices
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbOwnerPropertiesCloseUp
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 1
           Width = 60
         end
         object ccVarugrupp: TcxCheckComboBox
-          Left = 729
+          Left = 687
           Top = 56
           Margins.Left = 4
           Margins.Top = 4
@@ -909,26 +649,26 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 9
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 82
         end
         object cxLabel29: TcxLabel
-          Left = 729
+          Left = 687
           Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Varugrupp'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -940,17 +680,15 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel30: TcxLabel
-          Left = 252
-          Top = 85
+          Left = 772
+          Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Referens'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -972,9 +710,7 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Lager datum >='
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -996,9 +732,7 @@ object fPositionView: TfPositionView
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Lager datum <='
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -1011,70 +745,6 @@ object fPositionView: TfPositionView
           Height = 21
           Width = 117
         end
-        object cxLabel33: TcxLabel
-          Left = 593
-          Top = 84
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'M'#228'tpunkt'
-          ParentColor = False
-          ParentFont = False
-          Style.Color = clWindow
-          Style.Font.Charset = ANSI_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Arial Rounded MT Bold'
-          Style.Font.Style = []
-          Style.StyleController = cxEditStyleController2
-          Style.TextColor = clMaroon
-          Style.TextStyle = []
-          Style.IsFontAssigned = True
-          Visible = False
-        end
-        object cxLabel34: TcxLabel
-          Left = 681
-          Top = 84
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Caption = 'Skiftlag'
-          ParentColor = False
-          ParentFont = False
-          Style.Color = clWindow
-          Style.Font.Charset = ANSI_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Arial Rounded MT Bold'
-          Style.Font.Style = []
-          Style.StyleController = cxEditStyleController2
-          Style.TextColor = clMaroon
-          Style.TextStyle = []
-          Style.IsFontAssigned = True
-          Visible = False
-        end
-        object ccMatpunkt: TcxCheckComboBox
-          Left = 594
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.EmptySelectionText = 'Alla'
-          Properties.ClearKey = 46
-          Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
-          Properties.DropDownWidth = 300
-          Properties.EditValueFormat = cvfStatesString
-          Properties.Items = <>
-          Style.BorderStyle = ebsSingle
-          Style.StyleController = cxEditStyleController3
-          TabOrder = 10
-          Visible = False
-          Width = 79
-        end
         object ccbNT: TcxCheckComboBox
           Left = 150
           Top = 56
@@ -1085,16 +755,17 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
           Properties.OnClickCheck = ccbATPropertiesClickCheck
-          Style.BorderStyle = ebsFlat
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
-          Style.ButtonStyle = btsOffice11
+          Style.ButtonStyle = bts3D
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 30
+          TabOrder = 26
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 70
         end
         object ccbNB: TcxCheckComboBox
@@ -1107,17 +778,18 @@ object fPositionView: TfPositionView
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
           Properties.DropDownWidth = 300
           Properties.EditValueFormat = cvfStatesString
           Properties.Items = <>
           Properties.OnClickCheck = ccbATPropertiesClickCheck
-          Style.BorderStyle = ebsFlat
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
-          Style.ButtonStyle = btsOffice11
+          Style.ButtonStyle = bts3D
           Style.ButtonTransparency = ebtHideUnselected
-          TabOrder = 31
-          Width = 70
+          TabOrder = 27
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 65
         end
         object cxLabel35: TcxLabel
           Left = 145
@@ -1127,9 +799,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Tjkl, nom'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -1148,9 +818,7 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Br, nom'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -1161,28 +829,8 @@ object fPositionView: TfPositionView
           Style.TextStyle = []
           Style.IsFontAssigned = True
         end
-        object ccSkiftLag: TcxCheckComboBox
-          Left = 681
-          Top = 104
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
-          Properties.EmptySelectionText = 'Alla'
-          Properties.ClearKey = 46
-          Properties.DropDownRows = 30
-          Properties.DropDownSizeable = True
-          Properties.DropDownWidth = 300
-          Properties.EditValueFormat = cvfStatesString
-          Properties.Items = <>
-          Style.BorderStyle = ebsSingle
-          Style.StyleController = cxEditStyleController3
-          TabOrder = 11
-          Visible = False
-          Width = 108
-        end
         object cxbtnCloseForm: TcxButton
-          Left = 1140
+          Left = 1153
           Top = 1
           Width = 74
           Height = 31
@@ -1191,11 +839,17 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'St'#228'ng'
-          TabOrder = 34
+          TabOrder = 30
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -14
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
           OnClick = cxbtnCloseFormClick
         end
         object cxbtnClearFilter: TcxButton
-          Left = 1045
+          Left = 1058
           Top = 1
           Width = 87
           Height = 31
@@ -1204,21 +858,19 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Rensa filter'
-          TabOrder = 35
+          TabOrder = 31
           OnClick = cxbtnClearFilterClick
         end
         object cxLabel14: TcxLabel
-          Left = 352
-          Top = 85
+          Left = 854
+          Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Info1'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -1232,17 +884,15 @@ object fPositionView: TfPositionView
           Width = 49
         end
         object cxLabel15: TcxLabel
-          Left = 449
-          Top = 85
+          Left = 932
+          Top = 37
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
           Margins.Bottom = 4
           AutoSize = False
           Caption = 'Info2'
-          ParentColor = False
           ParentFont = False
-          Style.Color = clWindow
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
           Style.Font.Height = -15
@@ -1263,12 +913,10 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'F'#246'rs.region:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
         object cbSalesRegion: TcxCheckComboBox
-          Left = 93
+          Left = 92
           Top = 7
           Margins.Left = 4
           Margins.Top = 4
@@ -1279,8 +927,10 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbSalesRegionPropertiesCloseUp
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 0
           Width = 60
         end
@@ -1292,13 +942,15 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Properties.EmptySelectionText = 'Alla'
-          Properties.DropDownRows = 15
+          Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbStorageAreaPropertiesCloseUp
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 3
           Width = 60
         end
@@ -1310,8 +962,6 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Lagerarea:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
         object cbStoragePos: TcxCheckComboBox
@@ -1322,13 +972,15 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Properties.EmptySelectionText = 'Alla'
-          Properties.DropDownRows = 15
+          Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbStoragePosPropertiesCloseUp
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 4
           Width = 60
         end
@@ -1340,8 +992,6 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Lagerpos:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
         object cbStorageGroup: TcxCheckComboBox
@@ -1357,8 +1007,10 @@ object fPositionView: TfPositionView
           Properties.Items = <>
           Properties.OnChange = acRequestFilterUpdateExecute
           Properties.OnCloseUp = cbStorageGroupPropertiesCloseUp
-          Style.BorderStyle = ebsSingle
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
           Style.StyleController = cxEditStyleController3
+          Style.ButtonStyle = bts3D
           TabOrder = 2
           Width = 60
         end
@@ -1370,8 +1022,6 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Lagergrupp:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
         end
         object cbInklEjFakt: TcxComboBox
@@ -1388,44 +1038,62 @@ object fPositionView: TfPositionView
             'Lager + ej fakt'
             'Ej fakturerat')
           Properties.MaxLength = 0
-          TabOrder = 42
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
+          Style.ButtonStyle = bts3D
+          TabOrder = 38
           Text = 'Lager'
-          Width = 123
+          Width = 76
         end
         object ccbReference: TcxCheckComboBox
-          Left = 248
-          Top = 104
+          Left = 772
+          Top = 56
+          Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 43
-          Width = 97
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
+          Style.ButtonStyle = bts3D
+          TabOrder = 39
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 79
         end
         object ccbInfo2: TcxCheckComboBox
-          Left = 452
-          Top = 104
+          Left = 932
+          Top = 56
+          Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 44
-          Width = 95
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
+          Style.ButtonStyle = bts3D
+          TabOrder = 40
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 69
         end
         object ccbInfo1: TcxCheckComboBox
-          Left = 351
-          Top = 104
+          Left = 854
+          Top = 56
+          Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
-          TabOrder = 45
-          Width = 95
+          Style.BorderStyle = ebs3D
+          Style.Color = clBtnFace
+          Style.ButtonStyle = bts3D
+          TabOrder = 41
+          OnEnter = acOnEnterFilterCombosExecute
+          Width = 75
         end
         object cbInkTimeInDateFilter: TcxCheckBox
-          Left = 818
-          Top = 53
+          Left = 248
+          Top = 102
           Caption = 'Inkludera tid i datumfilter'
           Properties.OnChange = cbInkTimeInDateFilterPropertiesChange
-          TabOrder = 46
+          TabOrder = 42
           Width = 213
         end
         object cxBtnUpdFilter: TcxButton
-          Left = 940
+          Left = 953
           Top = 1
           Width = 97
           Height = 31
@@ -1434,19 +1102,21 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'Uppdatera filter'
-          TabOrder = 47
-          OnClick = cxBtnUpdFilterClick
+          TabOrder = 43
+          OnClick = UpdateDataFilterCombos
         end
         object deStartPeriod: TcxDateEdit
           Left = 4
           Top = 104
-          TabOrder = 48
+          TabOrder = 44
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 116
         end
         object deEndPeriod: TcxDateEdit
           Left = 126
           Top = 104
-          TabOrder = 49
+          TabOrder = 45
+          OnEnter = acOnEnterFilterCombosExecute
           Width = 116
         end
         object cxLabel16: TcxLabel
@@ -1457,16 +1127,182 @@ object fPositionView: TfPositionView
           Margins.Right = 4
           Margins.Bottom = 4
           Caption = 'K'#228'lla:'
-          ParentColor = False
-          Style.Color = clWindow
           Style.StyleController = cxEditStyleController1
+        end
+        object cbReportSelection: TcxComboBox
+          Left = 426
+          Top = 103
+          Properties.DropDownRows = 30
+          Properties.DropDownWidth = 80
+          Properties.Items.Strings = (
+            'Area-Ref'
+            'Area-Ref-Dim'
+            'Area-Ref-Dim-L'#228'ngd'
+            'D'#228'cklista'
+            'PaketLista'
+            'Tomma R'#228'ckor')
+          Properties.Sorted = True
+          Properties.OnChange = cbReportSelectionPropertiesChange
+          TabOrder = 47
+          Text = 'Area-Ref'
+          Width = 106
+        end
+        object cxButton1: TcxButton
+          Left = 536
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acExpandAllGridView
+          TabOrder = 48
+        end
+        object cxButton2: TcxButton
+          Left = 988
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acSaveTemplate
+          TabOrder = 49
+        end
+        object cxbtnDeleteTemplate: TcxButton
+          Left = 875
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acDeleteTemplate
+          TabOrder = 50
+        end
+        object cxButton3: TcxButton
+          Left = 762
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acNewTemplate
+          TabOrder = 51
+        end
+        object cxButton4: TcxButton
+          Left = 649
+          Top = 102
+          Width = 110
+          Height = 26
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acCollapseAllGridView
+          TabOrder = 52
+        end
+        object cxButton5: TcxButton
+          Left = 1101
+          Top = 90
+          Width = 126
+          Height = 38
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acRefreshReport
+          Caption = 'Uppdatera F10'
+          TabOrder = 53
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object GroupBox1: TGroupBox
+          Left = 1007
+          Top = 33
+          Width = 220
+          Height = 52
+          Caption = 'Exportera till EXCEL'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -14
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 54
+          object btnExportToExcel: TcxButton
+            Left = 4
+            Top = 22
+            Width = 77
+            Height = 26
+            Margins.Left = 4
+            Margins.Top = 4
+            Margins.Right = 4
+            Margins.Bottom = 4
+            Action = acExportGridToExcel
+            Caption = 'Exportera'
+            TabOrder = 0
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -14
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object ckbSelectedLines: TCheckBox
+            Left = 88
+            Top = 27
+            Width = 113
+            Height = 17
+            Caption = 'Valda rader'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -14
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+        end
+        object cxButton6: TcxButton
+          Left = 857
+          Top = 1
+          Width = 91
+          Height = 31
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 4
+          Margins.Bottom = 4
+          Action = acPrintPositionView
+          OptionsImage.Images = cxImageListPrinting
+          TabOrder = 55
+        end
+        object cxBtnChgTreatmentInfo: TcxButton
+          Left = 1234
+          Top = 1
+          Width = 111
+          Height = 38
+          Action = acChgRef_and_Info
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 56
+          WordWrap = True
         end
       end
     end
   end
   object cxLabel13: TcxLabel
-    Left = 9
-    Top = 153
+    Left = 429
+    Top = 84
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -1474,7 +1310,7 @@ object fPositionView: TfPositionView
     Caption = 'V'#228'lj Mall'
     ParentColor = False
     ParentFont = False
-    Style.Color = clWindow
+    Style.Color = clSilver
     Style.Font.Charset = ANSI_CHARSET
     Style.Font.Color = clWindowText
     Style.Font.Height = -15
@@ -2289,10 +2125,11 @@ object fPositionView: TfPositionView
     end
     object acRefreshReport: TAction
       Caption = 'Uppdatera'
+      ShortCut = 121
       OnExecute = acRefreshReportExecute
     end
     object acDeleteTemplate: TAction
-      Caption = 'acDeleteTemplate'
+      Caption = 'Ta bort mall'
       OnExecute = acDeleteTemplateExecute
     end
     object acCollapseAllGridView: TAction
@@ -2313,6 +2150,24 @@ object fPositionView: TfPositionView
     object acRequestFilterUpdate: TAction
       Caption = 'acRequestFilterUpdate'
       OnExecute = acRequestFilterUpdateExecute
+    end
+    object acExportGridToExcel: TAction
+      Caption = 'Exportera till EXCEL'
+      OnExecute = acExportGridToExcelExecute
+    end
+    object acOnEnterFilterCombos: TAction
+      Caption = 'acOnEnterFilterCombos'
+      OnExecute = acOnEnterFilterCombosExecute
+    end
+    object acPrintPositionView: TAction
+      Caption = 'Skriv &ut'
+      ImageIndex = 0
+      OnExecute = acPrintPositionViewExecute
+    end
+    object acChgRef_and_Info: TAction
+      Caption = #196'ndra Ref o Info f'#246'r markerade'
+      OnExecute = acChgRef_and_InfoExecute
+      OnHint = acChgRef_and_InfoHint
     end
   end
   object pmFormShortcuts: TPopupMenu
@@ -2347,7 +2202,7 @@ object fPositionView: TfPositionView
     Left = 608
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
+      Component = grdPosition
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2368,8 +2223,7 @@ object fPositionView: TfPositionView
       PrinterPage.PaperSource = 257
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 42485.411061793980000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 42521.421175902770000000
       BuiltInReportLink = True
     end
   end
@@ -4987,9 +4841,9 @@ object fPositionView: TfPositionView
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'SELECT Distinct RTRIM(LIP.LogicalInventoryName)+'#39'/'#39'+RTRIM(C.Clie' +
-        'ntName)+ '#39'/'#39'+CAST(LIP.LogicalInventoryPointNo AS VARCHAR(6)) AS ' +
-        'PLIP, '
+        'SELECT Distinct RTRIM(CY.CityName)+'#39'/'#39'+RTRIM(LIP.LogicalInventor' +
+        'yName)+'#39'/'#39'+RTRIM(C.ClientName)+ '#39'/'#39'+CAST(LIP.LogicalInventoryPoi' +
+        'ntNo AS VARCHAR(6)) AS PLIP, '
       
         'LIP.LogicalInventoryPointNo AS LIPNo, PH.PhysicalInventoryPointN' +
         'o AS PIPNO, CY.CITYNAME,'
@@ -5174,5 +5028,398 @@ object fPositionView: TfPositionView
       ProviderFlags = [pfInUpdate]
       Size = 50
     end
+  end
+  object cxImageListPrinting: TcxImageList
+    Height = 24
+    ImageType = itMask
+    Width = 24
+    FormatVersion = 1
+    DesignInfo = 23135176
+    ImageInfo = <
+      item
+        Image.Data = {
+          36090000424D3609000000000000360000002800000018000000180000000100
+          2000000000000009000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000030000000C0000
+          001200000014000000140000001500000015000000140000000D000000030000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000009896256C2BD8A
+          78FFBE8A78FFBD8A78FFBD8978FFBD8978FFBE8978FF876356C30000000B0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000030000000E0000001500000021C08D7CFFF6EE
+          E9FFF5EDE9FFF5EDE9FFF5ECE8FFF4ECE8FFF5ECE7FFBF8D7BFF000000260000
+          00180000000F0000000400000000000000000000000000000000000000000000
+          000000000000000000000000000C7B5042C5A76E5BFF9F6755FFC2917FFFF7F0
+          ECFFE2B47DFFE2B37AFFE1B077FFE0AE72FFF6EEEAFFC2907FFF845545FF8958
+          47FF613E32C70000000E00000000000000000000000000000000000000000000
+          0000000000000000000000000011BB7E6BFFECD9CCFFE3CEBEFFC59483FFF9F2
+          F0FFE4B984FFE3B781FFE3B47CFFE0B176FFF7F0EDFFC59483FFE0CBBCFFEBD8
+          CBFFB67763FF0000001400000000000000000000000000000000000000000000
+          0000000000000000000000000010BE8571FFF1E5DAFFECDBD0FF7A4835FF7A48
+          35FF7A4835FF7A4835FF7A4835FF7A4835FF7A4835FF7A4835FFEBDBCFFFF1E2
+          D8FFB97C69FF0000001300000000000000000000000000000000000000000000
+          000000000000000000000000000EC28B78FFF5EEE7FFF2E7DDFFF2E7DEFFF3E7
+          DEFFF2E5DEFFF3E5DEFFF2E7DDFFF2E7DDFFF2E7DEFFF2E7DDFFF2E5DEFFF5ED
+          E6FFBC826EFF0000001200000000000000000000000000000000000000000000
+          000000000000000000000000000CC7937FFFFAF4F1FFCDBEB8FF6F5448FF6143
+          37FF614035FF5F3F34FF5E3F33FF5D3D32FF5D3D34FF6A4C44FFCABCB6FFF9F5
+          F1FFC18875FF0000001000000000000000000000000000000000000000000000
+          000000000000000000000000000ACC9986FFFDFAFAFF7D6054FF745043FF744F
+          43FF744E43FF734E43FF734E42FF724D42FF724C41FF724C40FF73584DFFFDFA
+          FAFFC58F7CFF0000000E00000000000000000000000000000000000000000000
+          0000000000000000000000000008CF9F8DFFFFFFFFFF7A5A4CFF8E695AFFF9F4
+          F1FFF0E6E0FFF0E5DFFFEFE5DEFFEFE5DEFFF6EFEBFF866253FF704F43FFFFFF
+          FFFFCA9683FF0000000B00000000000000000000000000000000000000000000
+          0000000000000000000000000005BE9584E9F5ECE8FF866656FF977262FFFAF6
+          F4FFF2E8E3FFF1E8E1FFF1E7E2FFF1E7E1FFF8F2EEFF8E6A5BFF7A5B4CFFF5EA
+          E6FFBA8E7DEA0000000800000000000000000000000000000000000000000000
+          000000000000000000000000000234292545A78375CC947262FFA07B6AFFFCF9
+          F8FFF3EBE6FFF4EAE5FFF2EAE5FFF3EAE3FFF9F5F3FF977263FF876658FFA680
+          72CE342823480000000300000000000000000000000000000000000000000000
+          000000000000000000000000000000000001000000030000000AC89B89FFFDFB
+          FAFFF5EDE8FFF4EDE8FFF5EDE7FFF5ECE7FFFBF7F6FFC59685FF000000110000
+          0004000000020000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000005CA9E8DFFFEFC
+          FCFFF7F0ECFFF6EFEBFFF7EFEBFFF5EFEAFFFCFAF8FFC89A89FF000000090000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000003CDA291FFFEFE
+          FDFFFEFDFDFFFEFDFCFFFEFCFCFFFEFCFBFFFDFBFAFFCB9F8DFF000000070000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000000000000019A796DBFCFA4
+          93FFCEA493FFCEA493FFCEA492FFCDA391FFCDA391FF98786BC1000000040000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36090000424D3609000000000000360000002800000018000000180000000100
+          2000000000000009000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF0000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF000000003C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF0000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36090000424D3609000000000000360000002800000018000000180000000100
+          2000000000000009000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000020000000A0000000F0000
+          00110000001100000011000000100000000B0000000300000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000090000000E000000168A6559C3BF8D7BFFBF8D
+          7BFFC08D7BFFBF8D7BFFC08D7BFF8A6558C500000019000000100000000A0000
+          0002000000000000000000000000000000000000000000000000000000000000
+          000000000000000000007B5143C0A76E5BFFA06855FFC2917FFFF7F0ECFFF7EF
+          ECFFF7F0EBFFF6EFEBFFF6EFEAFFC2917FFF875746FF8B5948FF623F33C20000
+          000A000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000BB7E6BFFECD9CCFFE3CEBEFFC59483FFF9F2F0FFE4B9
+          84FFE3B781FFE3B47CFFF8F1EDFFC49583FFE2CCBCFFE6D1C1FFB67764FF0000
+          000E000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000BE8571FFF1E5DAFFEBDACFFF794734FF794734FF7847
+          34FF784734FF784734FF784734FF784734FFECDACEFFEBDBCFFFBA7C69FF0000
+          000D000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000C28B78FFF5EEE7FFF2E7DDFFF2E7DEFFF3E7DEFFF2E5
+          DEFFF3E5DEFFF2E7DDFFF2E7DDFFF2E7DEFFF2E7DDFFF2E5DEFFBD836FFF0000
+          000C000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000C7937FFFFAF4F1FFCDBEB9FF72564AFF624338FF6140
+          36FF604035FF5F3F34FF5E3E33FF414C3AFF315F45FF0D482AFF2F5538FF0621
+          137A000100030000000000000000000000000000000000000000000000000000
+          00000000000000000000CC9986FFFDFAFAFF806256FF745043FF744F43FF744E
+          43FF734E42FF6F4D41FF265034FF13764BFF1AAC73FF52E1BAFF19AD73FF1376
+          4BFF0C4026C90103020900000000000000000000000000000000000000000000
+          00000000000000000000BB9080E9F5EBE6FF7D5C4DFF946E5EFFFAF6F3FFF0E6
+          E0FFF0E5DFFF7D9D88FF218058FF28CD90FF27CD8FFF035A2AFF28CD90FF27CD
+          8FFF22835AFF092F1C8400000000000000000000000000000000000000000000
+          0000000000000000000034292444A68172CC886857FF9B7565FFFBF8F6FFF2E8
+          E3FFF1E8E1FF317654FF30C18DFF32D49BFF33D49BFF57C4A0FF42D9A6FF33D4
+          9BFF31C18DFF115837DE00000000000000000000000000000000000000000000
+          0000000000000000000000000001000000030000000CC59685FFFCFAF9FFF3EB
+          E6FFF4EAE5FF1C744CFF55DDB0FF3EDAA6FF3EDAA6FF02451DFF60C4A4FF3EDA
+          A6FF56DDB1FF166E46F900000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000008C89B89FFFDFCFBFFF5ED
+          E8FFF4EDE8FF368B64FF8EDEC4FF4BE1B2FF79ECCBFF89F0D4FF013C18FF4BE1
+          B2FF8BDDC3FF176B47DE00000000000000000000000000000000000000000000
+          00000000000000000000000000000000000000000006CA9E8DFFFEFDFDFFFEFD
+          FCFFFEFCFCFF91C4ADFF51A986FFACF5E0FF1D6341FF013413FF267250FFACF5
+          E0FF57AE8BFF0E412B7B00000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000498786BC1CDA291FFCCA1
+          8FFFCCA090FFCAA08EFF49946CFF50AF89FFA7E2CFFFCAF8ECFFA7E2CFFF50AE
+          89FF176C49C00002010300000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000100000003000000050000
+          00050000000600000006000201090F432D741A7852CC219465FC1A7852CC0F43
+          2E72000201030000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36090000424D3609000000000000360000002800000018000000180000000100
+          2000000000000009000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000F0F0F4024242499353535E0353535E0242424990F0F
+          0F40000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000F0F0F40303030CC3C3C3CFF00000000000000003C3C3CFF3030
+          30CC0F0F0F400000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF00000000242424993C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF242424990000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF00000000353535E03C3C3CFF3C3C3CFF0000000000000000383838EF3C3C
+          3CFF353535E00000000000000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000353535E03C3C3CFF3C3C3CFF3C3C3CFF2D2D2DBF000000003C3C
+          3CFF353535E00606061900000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000242424993C3C3CFF000000002D2D2DBF2D2D2DBF000000003C3C
+          3CFF242424991414145400000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF0000000000000000000000000000
+          0000000000000F0F0F40303030CC383838EF0000000000000000383838EF3030
+          30CC0F0F0F40262626A300000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFE1E1E1E7F0F0F0F4024242499353535E0353535E0242424990F0F
+          0F401E1E1E7F3C3C3CFE00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFE262626A3141414540606061906060619141414542626
+          26A3000000003C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF0000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000003C3C3CFF3C3C3CFF000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          00003C3C3CFF3C3C3CFF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000003C3C3CFF3C3C3CFF3C3C
+          3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF3C3C3CFF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36090000424D3609000000000000360000002800000018000000180000000100
+          2000000000000009000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000020000000A0000000F0000
+          00110000001100000011000000100000000B0000000300000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000090000000E000000168A6559C3BF8D7BFFBF8D
+          7BFFC08D7BFFBF8D7BFFC08D7BFF8A6558C500000019000000100000000A0000
+          0002000000000000000000000000000000000000000000000000000000000000
+          000000000000000000007B5143C0A76E5BFFA06855FFC2917FFFF7F0ECFFF7EF
+          ECFFF7F0EBFFF6EFEBFFF6EFEAFFC2917FFF875746FF8B5948FF623F33C20000
+          000A000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000BB7E6BFFECD9CCFFE3CEBEFFC59483FFF9F2F0FFE4B9
+          84FFE3B781FFE3B47CFFF8F1EDFFC49583FFE2CCBCFFE6D1C1FFB67764FF0000
+          000E000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000BE8571FFF1E5DAFFEBDACFFF794734FF794734FF7847
+          34FF784734FF784734FF784734FF784734FFECDACEFFEBDBCFFFBA7C69FF0000
+          000D000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000C28B78FFF5EEE7FFF2E7DDFFF2E7DEFFF3E7DEFFF2E5
+          DEFFF3E5DEFFF2E7DDFFF2E7DDFFF2E7DEFFF2E7DDFFF2E5DEFFBD836FFF0000
+          000C000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000C7937FFFFAF4F1FFCDBEB9FF72564AFF624338FF6140
+          36FF604035FF5F3F34FF5F3E33FF6E4F47FFCCBDB6FFF7F0ECFFC18A76FF0000
+          000A000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000CC9986FFFDFAFAFF806256FF745043FF744F43FF744E
+          43FF734E42FF724D42FF724C41FF724C40FF7A5C50FFFCF8F6FFC5917CFF0000
+          0009000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000BB9080E9F5EBE6FF7D5C4DFF564BADFF3737D1FF3334
+          CDFF3131CBFF2F2FC9FF2B2BC5FF2929C4FF2626C2FF2425BFFF2222BCFF2020
+          BBFF1E1EB8FF14147CAD00000000000000000000000000000000000000000000
+          0000000000000000000034292444A68172CC886857FF3C3DD3FFFAF6F6FF3636
+          D0FF3233CCFF3030CAFFF8F2F1FFF7F2EFFF6B69D1FF2526C2FFF6EEEBFF2121
+          BCFF1F1FBBFF1D1EB9FF00000000000000000000000000000000000000000000
+          0000000000000000000000000001000000030000000C3E3ED4FFFBF7F6FF3738
+          D2FF3536D0FF3232CCFFF8F4F2FF2D2EC7FFF7F2EFFF2728C2FFF6F0ECFF2223
+          BDFF2121BCFF1E1EB9FF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000084040D7FFFBF8F7FFFBF7
+          F6FF7574DCFF3435CDFFF9F5F2FF2F2FCAFFF8F3F0FF292AC4FFF6F1EEFFF6EF
+          ECFF2222BDFF2020BBFF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000064042D9FFFCF8F8FF3C3C
+          D3FFFBF7F6FF3637D0FFFAF5F3FF3030CAFFF8F3F1FF2B2BC5FFF7F1EFFF2526
+          C2FF2323BFFF2121BCFF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000044243D9FFFBFAF9FFFCF8
+          F8FF7878DFFF3838D2FFFAF7F5FFFAF5F4FF706FD7FF2D2EC7FFF8F2F0FFF7F2
+          EFFFF6F0EDFF2222BDFF00000000000000000000000000000000000000000000
+          000000000000000000000000000000000000000000012E2E94AE4242D8FF4040
+          D7FF3D3ED4FF3A3AD3FF3737D0FF3435CDFF3132CBFF2F2FC9FF2B2CC7FF292A
+          C4FF2727C2FF181982AD00000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000}
+      end>
   end
 end

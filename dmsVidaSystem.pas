@@ -568,6 +568,7 @@ type
     cds_PkgLayoutsDateCreated: TSQLTimeStampField;
     cds_PkgLayoutsPrintFileName: TStringField;
     ds_PkgLayouts: TDataSource;
+    sp_UserPerm: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -613,6 +614,7 @@ type
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
 
    // function  GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
+    function  UserIsAllowedToSetStatusToActive(const LONo : Integer) : Boolean ;
     function  GetVerkNoForSortingOrderServer (const Default_SortingOrderNo : Integer) : Integer ;
     procedure AddPkgToLoggs (const PackageNo, SortingOrderNo, AvRegStatus : Integer;
     const Prefix, ScannedString : String) ;
@@ -3160,5 +3162,24 @@ Begin
   sp_parsePkgID.Active :=  False ;
  End;
 End ;
+
+function TdmsSystem.UserIsAllowedToSetStatusToActive(const LONo : Integer) : Boolean ;
+Begin
+  sp_UserPerm.ParamByName('@UserID').AsInteger :=  LONo  ;
+  sp_UserPerm.Active := True ;
+  Try
+  if not sp_UserPerm.Eof then
+  Begin
+   if sp_UserPerm.FieldByName('AllowedSetCOActive').AsInteger = 1 then
+    Result := True
+     else
+      Result  := False ;
+  End
+    else
+     Result := False ;
+  Finally
+    sp_UserPerm.Active := False ;
+  End;
+End;
 
 end.

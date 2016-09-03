@@ -10935,6 +10935,7 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
+<<<<<<< HEAD
   object mtScannedPkgs: TFDMemTable
     AfterPost = mtScannedPkgsAfterPost
     AfterDelete = mtScannedPkgsAfterDelete
@@ -11193,5 +11194,32 @@ object dmInventory: TdmInventory
       'WHERE ProductionUnitNo = :ProductionUnitNo')
     Left = 536
     Top = 952
+=======
+  object sq_UserLipNoExists: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.UserLIPNo'
+      'WHERE UserID = :UserID')
+    Left = 1157
+    Top = 88
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_UserLipNoExistsUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sq_UserLipNoExistsLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+>>>>>>> origin/master
   end
 end

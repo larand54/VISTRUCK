@@ -1034,8 +1034,8 @@ begin
     Exit;
   if uReportController.useFR then
   begin
-    Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-      .AsInteger;
+    Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+      //.AsInteger;
     LastOrderVerk := dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger <> 2;
     LastOrderInkop := dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1;
     LONo := grdLODBTableView1.DataController.DataSet
@@ -1093,8 +1093,8 @@ begin
     Exit;
   if uReportController.useFR then
   begin
-    Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-      .AsInteger;
+    Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+      //.AsInteger;
     LastOrderVerk := dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger <> 2;
     LastOrderInkop := dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1;
     LONo := grdLODBTableView1.DataController.DataSet
@@ -3113,17 +3113,60 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.SetShippingPlanStatus(const Status : Integer) ;
-Var x           : Integer ;
+Var x, LONo         : Integer ;
     Save_Cursor : TCursor;
+  //  isLOB,
+    SetLOStatus,
+    SetAvropStatusToNew : Boolean ;
 begin
+ SetAvropStatusToNew  := False ;
+ SetLOStatus          := False ;
  Try
  dmcOrder.cdsSawmillLoadOrders.IndexName  := 'indexSupplierShipPlanObjectNo' ;
  Save_Cursor                              := Screen.Cursor;
  Screen.Cursor                            := crSQLWait;    { Show hourglass cursor }
  dmcOrder.cdsSawmillLoadOrders.DisableControls ;
+ SetAvropStatusToNew := False ;
+ SetLOStatus         := False ;
  Try
  For x :=  0 to lbLO_To_Invoice.Items.Count - 1 do
  Begin
+//  isLOB  := False ;
+   if dmcOrder.cdsSawmillLoadOrders.FindKey([lbLO_To_Invoice.Items[x]]) then
+    LONo  :=  dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger ;
+
+   if Status = STATUS_ACCEPTED then
+   Begin
+    if dmcOrder.LOBuffertLO(LONo) then
+    Begin
+//     isLOB  := True ;
+      if dmssystem.UserIsAllowedToSetStatusToActive(ThisUser.UserID) then
+      Begin
+        SetAvropStatusToNew := True ;
+        SetLOStatus         := True ;
+      End //if (UserIsAllowedToSetStatusToActive(ThisUser.UserID) then
+       else
+        Begin
+          ShowMessage('You have not permission to accept this loading order, LOno ' + inttostr(LONo)) ;
+          SetAvropStatusToNew := False ;
+          SetLOStatus         := False ;
+          //Exit ;
+        End;
+    End //if LOBuffertLO then
+     else
+      Begin
+        SetAvropStatusToNew := False ;
+        SetLOStatus         := True ;
+      End;
+   End //if Status = STATUS_ACCEPTED then
+     else
+      Begin
+        SetAvropStatusToNew := False ;
+        SetLOStatus         := True ;
+      End;
+
+   if SetLOStatus then
+   Begin
     if dmcOrder.cdsSawmillLoadOrders.FindKey([lbLO_To_Invoice.Items[x]]) then
     Begin
      if (Status = STATUS_COMPLETE) and (dmcOrder.LoadStatusOK(dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger) = False) then
@@ -3136,9 +3179,14 @@ begin
       dmcOrder.cdsSawmillLoadOrders.Edit ;
       dmcOrder.cdsSawmillLoadOrdersShippingPlanStatus.AsInteger := Status ;
       dmcOrder.cdsSawmillLoadOrders.Post ;
+
+      if SetAvropStatusToNew then
+       dmcOrder.SetAvropStatusToActive(LONo, STATUS_LO_PROGRESS) ;
      End ;
     End ;
- End ;
+   End;
+
+ End ; //For x...
 
  Finally
   dmcOrder.cdsSawmillLoadOrders.IndexName:= 'cdsSawmillLoadOrdersLONo' ;
@@ -3930,8 +3978,7 @@ Var
   Lang: integer;
   FR: TFastReports;
 begin
-  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-    .AsInteger;
+  Lang := ThisUser.LanguageID;
   Supplier := grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
     .AsInteger;
   LONo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
@@ -4084,8 +4131,8 @@ begin
   Supplier := aSupplierNo;
   if LoNo < 1 then
     Exit;
-  Lang := grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
-    .AsInteger;
+  Lang := ThisUser.LanguageID;//grdLODBTableView1.DataController.DataSet.FieldByName('Languagecode')
+    //.AsInteger;
   Try
     ReportType := cLastorder_manuell;
     FR := TFastReports.create;
@@ -4473,7 +4520,7 @@ begin
     Screen.Cursor := crSQLWait; { Show hourglass cursor }
     params := TCMParams.Create();
     params.Add('@Language',Lang);;
-    params.Add('@SHIPPINGPLANNO',grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
+    params.Add('@SHIPPINGPLANNO',grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
 
     if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger = c_Sales then begin
       if Lang = cSwedish then

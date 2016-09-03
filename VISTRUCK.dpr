@@ -2,11 +2,6 @@ program VISTRUCK;
 
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -135,7 +130,8 @@ uses
   uICMSubject in 'uICMSubject.pas',
   uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall},
   uTwoReportInOne in '..\CommonSources\FastReport\uTwoReportInOne.pas',
-  uSetupUserOutput in 'uSetupUserOutput.pas' {fSetupUserOutput};
+  uSetupUserOutput in 'uSetupUserOutput.pas' {fSetupUserOutput},
+  uDynSQL_const in 'uDynSQL_const.pas';
 
 {$R *.res}
 begin

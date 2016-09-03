@@ -221,6 +221,10 @@
             <Form>fEntryField</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\uAngeNyMall.pas">
+            <Form>fAngeNyMall</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -44,7 +44,8 @@ uses
   uCert in '..\uCert.pas' {fCert},
   dmcVidaSystem in '..\dmcVidaSystem.pas' {dmcSystem: TDataModule},
   dmc_UserProps in '..\dmc_UserProps.pas' {dm_UserProps: TDataModule},
-  uEntryField in '..\uEntryField.pas' {fEntryField};
+  uEntryField in '..\uEntryField.pas' {fEntryField},
+  uAngeNyMall in '..\uAngeNyMall.pas' {fAngeNyMall};
 
 var
   runner : ITestRunner;

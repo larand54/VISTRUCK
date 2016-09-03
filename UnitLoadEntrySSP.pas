@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, dxBar,
+  Dialogs, ExtCtrls, dxBar, System.Generics.Collections,
 
   VidaType, db,
   kbmMemTable, StdCtrls, ImgList, SqlTimSt, cxPC, cxControls,
@@ -31,7 +31,7 @@ uses
   dxSkinsdxBarPainter, cxSpinEdit, cxBarEditItem, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
-  Vcl.Touch.Keyboard, uReportController ;
+  Vcl.Touch.Keyboard, uReportController, cxSplitter, Vcl.Buttons ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -39,9 +39,6 @@ type
     dxPageControl1: TcxPageControl;
     tsLoadData: TcxTabSheet;
     pLoadHead: TPanel;
-    Splitter1: TSplitter;
-    Splitter2: TSplitter;
-    Splitter3: TSplitter;
     lbSaveLoad: TdxBarLargeButton;
     lbClose: TdxBarLargeButton;
     lbReValidateAllPkgs: TdxBarLargeButton;
@@ -392,6 +389,13 @@ type
     grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
     grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn;
     grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn;
+    pgrdLO: TPanel;
+    pgrdAddress: TPanel;
+    cxSplitter1: TcxSplitter;
+    cxSplitter2: TcxSplitter;
+    cxSplitter3: TcxSplitter;
+    Panel3: TPanel;
+    BitBtn1: TBitBtn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -512,6 +516,9 @@ type
     procedure acMailTreatmentCertificateExecute(Sender: TObject);
     procedure acChgRef_and_InfoExecute(Sender: TObject);
     procedure cbShowOriginalLOPropertiesChange(Sender: TObject);
+    procedure cxSplitter2Moved(Sender: TObject);
+    procedure cxSplitter1Moved(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -619,6 +626,12 @@ type
     procedure ShowPkgInfo(const NewPkgNo : Integer;const PkgSupplierCode : String3;const Errortext : String) ;
     procedure ExternSaveLoad ;
     procedure SaveLoad ;
+    function unPackRestoredFormSettings(const aPack: string): TStringList;
+
+    function PackSavedFormSettings(const aList: TList<integer>): string;
+
+    procedure SaveFormSettings;
+    procedure LoadFormSettings;
 
     procedure CreateWithNewLoad
       (const LocalCustomerNo,
@@ -666,6 +679,19 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 {$R *.dfm}
 
 { TfrmLoadEntry }
+type
+  TMovablePanels = class
+    private
+      FAddressPanelHeight: integer;
+      FLOPanelHeight     :integer;
+      FPageCtrlHeight    : integer;
+    public
+      constructor Save(const aAddrPnlHeight, aLoPnlHeight, aPgCtrlHeight: integer);
+      procedure restore(var aAddrPnlHeight, aLoPnlHeight, aPgCtrlHeight: integer);
+  end;
+
+var
+  MovablePanels: TMovablePanels;
 
 Procedure TfLoadEntrySSP.GetLO_Records ;
  Begin
@@ -1139,6 +1165,16 @@ begin
 
 end;
 
+procedure TfLoadEntrySSP.cxSplitter1Moved(Sender: TObject);
+begin
+  pgrdLO.Height := cxSplitter1.Top-pgrdLO.Top;
+end;
+
+procedure TfLoadEntrySSP.cxSplitter2Moved(Sender: TObject);
+begin
+  PanelLORows.Top := dxPageControl1.Top + dxPageControl1.Height + cxSplitter2.Height;
+end;
+
 procedure TfLoadEntrySSP.bePkgFontCurChange(Sender: TObject);
 begin
  cxStyleYellow.Font.Size  := bePkgFont.EditValue ;
@@ -1147,6 +1183,16 @@ begin
  cxStyleAqua.Font.Size    := bePkgFont.EditValue ;
  cxStyleContentOdd.Font.Size    := bePkgFont.EditValue ;
  cxStyleContent.Font.Size    := bePkgFont.EditValue ;
+end;
+
+procedure TfLoadEntrySSP.BitBtn1Click(Sender: TObject);
+var
+  a,b,c: integer;
+begin
+  MovablePanels.restore(a,b,c);
+  pgrdAddress.Height := a;
+  pgrdLO.Height := b;
+  dxPageControl1.Height := c;
 end;
 
 procedure TfLoadEntrySSP.cbShowOriginalLOPropertiesChange(Sender: TObject);
@@ -1881,10 +1927,43 @@ Begin
   End ;
 end;
 
-Procedure TfLoadEntrySSP.GetLO_Records_AfterAddingLO_Number(LO_Number : Integer) ;
- Var x : integer ;
- Begin
-   With dmLoadEntrySSP do
+procedure TfLoadEntrySSP.LoadFormSettings;
+var
+  sl: TStringList;
+begin
+  with dmLoadEntrySSP do
+    try
+      cds_SaveFormSettings.ParamByName('UserID').AsInteger := ThisUser.UserID;
+      cds_SaveFormSettings.ParamByName('Form').AsString := Self.Name;
+      cds_SaveFormSettings.Active := True;
+      if cds_SaveFormSettings.Eof then
+        exit;
+
+      sl := unPackRestoredFormSettings
+        (dmLoadEntrySSP.cds_SaveFormSettingsFilter1.AsString);
+    finally
+      cds_SaveFormSettings.Active := False;
+    end;
+  try
+    if sl.Count < 3 then
+      exit
+    else
+    begin
+      pgrdLO.Height := strToInt(sl[0]);
+      PanelLORows.Height := strToInt(sl[1]);
+      dxPageControl1.Height := strToInt(sl[2]);
+    end;
+  finally
+    if assigned(sl) then
+      sl.Free;
+  end;
+end;
+
+Procedure TfLoadEntrySSP.GetLO_Records_AfterAddingLO_Number(LO_Number: Integer);
+Var
+  x: Integer;
+Begin
+  With dmLoadEntrySSP do
    Begin
     cdsLORows.DisableControls ;
     Try
@@ -1943,6 +2022,12 @@ begin
      acImportPackages.Enabled:= False ;
 
  dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
+
+ // Save original settings of some panels etc
+ MovablePanels := TMovablePanels.Save(pgrdAddress.Height, pgrdLO.Height, dxPageControl1.Height);
+
+ // Load last used settings for some movable panels etc
+ LoadFormSettings;
 end;
 
 procedure TfLoadEntrySSP.ResolvePkgNoAmbiguity(
@@ -2006,6 +2091,7 @@ begin
  //Remove entries in Pkgs_Res
  if CanClose = True then
  Begin
+  SaveFormSettings;
   if dmLoadEntrySSP.cds_Props.State in [dsBrowse] then
   dmLoadEntrySSP.cds_Props.Edit ;
   dmLoadEntrySSP.cds_PropsLengthOption.AsInteger   := cxStyleContent.Font.Size ;
@@ -3680,9 +3766,53 @@ Begin
  End ;//With
 end;
 
-procedure TfLoadEntrySSP.SaveLoad ;
+procedure TfLoadEntrySSP.SaveFormSettings;
 var
-  Save_Cursor   : TCursor;
+  iList: TList<integer>;
+  s: string;
+
+begin
+  iList := TList<integer>.create;
+  try
+  iList.Add(pgrdLO.Height);
+  iList.Add(PanelLORows.Height);
+    iList.Add(dxPageControl1.Height);
+    s := PackSavedFormSettings(iList);
+
+    with dmLoadEntrySSP do
+    try
+      cds_SaveFormSettings.ParamByName('UserID').AsInteger := ThisUser.UserID;
+      cds_SaveFormSettings.ParamByName('Form').AsString := Self.Name;
+      cds_SaveFormSettings.Active := True;
+      if cds_SaveFormSettings.Eof then
+      Begin
+        cds_SaveFormSettings.Insert;
+        cds_SaveFormSettingsForm.AsString := Self.Name;
+        cds_SaveFormSettingsUserID.AsInteger := ThisUser.UserID;
+      End
+      else
+        cds_SaveFormSettings.Edit;
+
+      cds_SaveFormSettingsFilter1.AsString := s;
+
+      cds_SaveFormSettings.Post;
+      if cds_SaveFormSettings.ChangeCount > 0 then
+      Begin
+        cds_SaveFormSettings.ApplyUpdates(0);
+        cds_SaveFormSettings.CommitUpdates;
+      End;
+    finally
+      cds_SaveFormSettings.Active := False;
+    end;
+  finally
+    if assigned(iList) then iList.Free;
+  end;
+
+end;
+
+procedure TfLoadEntrySSP.SaveLoad;
+var
+  Save_Cursor: TCursor;
   LastInvNr     : Integer ;
   InvDate       : TDateTime ;
   MaxDateMsg    : String ;
@@ -5658,6 +5788,18 @@ begin
    }
 end;
 
+function TfLoadEntrySSP.PackSavedFormSettings(const aList: TList<integer>): string;
+var
+  s: string;
+  i: integer;
+begin
+  for i := 0 to aList.Count-1 do
+  begin
+    s := s + '|' + intToStr(aList[i]) + '| ';
+  end;
+  result := s;
+end;
+
 procedure TfLoadEntrySSP.pmPkgsPopup(Sender: TObject);
 begin
  bePkgFont.EditValue   := cxStyleContent.Font.Size ;
@@ -6347,6 +6489,18 @@ begin
  Timer1.Enabled:= False ;
 end;
 
+function TfLoadEntrySSP.unPackRestoredFormSettings(const aPack: string): TStringList;
+var
+  s: string;
+  sl: TStringList;
+begin
+  sl := TStringList.Create;
+  sl.Delimiter := ' ';
+  sl.QuoteChar := '|';
+  sl.DelimitedText := aPack;
+  result := sl;
+end;
+
 procedure TfLoadEntrySSP.ExternSaveLoad ;
 var
   Save_Cursor   : TCursor;
@@ -6715,5 +6869,24 @@ begin
  End;
 end;
 
+
+{ TMovablePanels }
+
+procedure TMovablePanels.restore(var aAddrPnlHeight, aLoPnlHeight,
+  aPgCtrlHeight: integer);
+begin
+  aAddrPnlHeight := FAddressPanelHeight;
+  aLoPnlHeight := FLOPanelHeight;
+  aPgCtrlHeight := FPageCtrlHeight;
+end;
+
+constructor TMovablePanels.Save(const aAddrPnlHeight, aLoPnlHeight,
+  aPgCtrlHeight: integer);
+begin
+  inherited create;
+  FAddressPanelHeight := aAddrPnlHeight;
+  FLOPanelHeight := aLoPnlHeight;
+  FPageCtrlHeight := aPgCtrlHeight;
+end;
 
 end.
