@@ -21,6 +21,8 @@ object fPositionView: TfPositionView
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 120
   TextHeight = 16
   object pcInventory: TcxPageControl
@@ -52,6 +54,8 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object grdPosition: TcxGrid
         Left = 0
         Top = 0
@@ -258,6 +262,7 @@ object fPositionView: TfPositionView
     Control = pgInventory
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object pgInventory: TcxPageControl
     Left = 0
@@ -2200,7 +2205,6 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2222,7 +2226,6 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42521.421175902760000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

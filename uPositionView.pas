@@ -68,9 +68,11 @@ type
   TCMComboBoxItems = class(TObject)
   private
     Items: TList<TCMComboBoxItem>;
+  public
     procedure add(aDesc, aShortDesc: string; aidNo: integer) overload;
     procedure add(aDesc, aShortDesc: string) overload;
     procedure add(aDesc: string) overload;
+    property itm: TList<TCMComboBoxItem> read Items;
     constructor create;
     destructor destroy;
   end;
@@ -453,7 +455,6 @@ type
     procedure Open_UserProfile ;
     procedure SaveUserProfile ;
     procedure PopulateCheckBoxTemplate ;
-    procedure PopulateCheckBoxTemplates;
     procedure OpenTemplate ;
     function getCheckedCount(const aCombo: TcxCheckComboBox; var aChkList:TCMDL ): integer overload;
     function getCheckedCount(const aCombo: TcxCheckComboBox): integer overload;
@@ -527,26 +528,6 @@ Begin
   cbReportSelection.ItemIndex  := 0 ;
 
 End;
-
-
-procedure TfPositionView.PopulateCheckBoxTemplates;
-begin
- cbReportSelection.Properties.Items.Clear ;
- sq_UserProfile.Active  := False ;
- sq_UserProfile.ParamByName('UserID').AsInteger := ThisUser.UserID ;
- sq_UserProfile.ParamByName('Form').AsString    := TForm(self).Name ;
- sq_UserProfile.ParamByName('Name').AsString    := 'ALL' ;
- sq_UserProfile.Active  := True ;
- sq_UserProfile.First ;
- while not sq_UserProfile.Eof do
- Begin
-  cbReportSelection.Properties.Items.Add(sq_UserProfileName.AsString) ;
-  sq_UserProfile.Next ;
- End;
-
- if cbReportSelection.Properties.Items.Count > 0 then
-  cbReportSelection.ItemIndex  := 0 ;
-end;
 
 procedure TfPositionView.ClearProductFilter ;
 Begin
