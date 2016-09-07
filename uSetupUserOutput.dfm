@@ -85,14 +85,19 @@ object fSetupUserOutput: TfSetupUserOutput
           DataController.Summary.SummaryGroups = <>
           OptionsView.ColumnAutoWidth = True
           OptionsView.GroupByBox = False
-          object grdUsersOutputProdunitsDBTableView1Selected: TcxGridDBColumn
-            DataBinding.FieldName = 'Selected'
+          OptionsView.Indicator = True
+          object grdUsersOutputProdunitsDBTableView1Active: TcxGridDBColumn
+            Caption = 'Aktiv'
+            DataBinding.FieldName = 'Active'
             PropertiesClassName = 'TcxCheckBoxProperties'
-            Properties.ReadOnly = False
             Properties.ValueChecked = 1
             Properties.ValueUnchecked = 0
             Properties.OnEditValueChanged = grdUsersOutputProdunitsDBTableView1SelectedPropertiesEditValueChanged
-            Width = 53
+          end
+          object grdUsersOutputProdunitsDBTableView1RegPointName: TcxGridDBColumn
+            DataBinding.FieldName = 'RegPointName'
+            PropertiesClassName = 'TcxLabelProperties'
+            Width = 124
           end
           object grdUsersOutputProdunitsDBTableView1ProductionUnitNo: TcxGridDBColumn
             DataBinding.FieldName = 'ProductionUnitNo'
@@ -119,11 +124,6 @@ object fSetupUserOutput: TfSetupUserOutput
             PropertiesClassName = 'TcxLabelProperties'
             Width = 43
           end
-          object grdUsersOutputProdunitsDBTableView1RegPointName: TcxGridDBColumn
-            DataBinding.FieldName = 'RegPointName'
-            PropertiesClassName = 'TcxLabelProperties'
-            Width = 124
-          end
           object grdUsersOutputProdunitsDBTableView1PhysicalInventoryPointNo: TcxGridDBColumn
             DataBinding.FieldName = 'PhysicalInventoryPointNo'
             PropertiesClassName = 'TcxLabelProperties'
@@ -139,11 +139,50 @@ object fSetupUserOutput: TfSetupUserOutput
               end>
             Width = 271
           end
+          object grdUsersOutputProdunitsDBTableView1UserID: TcxGridDBColumn
+            DataBinding.FieldName = 'UserID'
+          end
+          object grdUsersOutputProdunitsDBTableView1CreatedUser: TcxGridDBColumn
+            DataBinding.FieldName = 'CreatedUser'
+          end
+          object grdUsersOutputProdunitsDBTableView1DateCreated: TcxGridDBColumn
+            DataBinding.FieldName = 'DateCreated'
+          end
         end
         object grdUsersOutputProdunitsLevel1: TcxGridLevel
           GridView = grdUsersOutputProdunitsDBTableView1
         end
       end
+    end
+    object cxButton1: TcxButton
+      Left = 376
+      Top = 22
+      Width = 217
+      Height = 57
+      Action = acCreateUserOutputs
+      TabOrder = 3
+    end
+    object cxDBCheckBox1: TcxDBCheckBox
+      Left = 156
+      Top = 85
+      Caption = 'Visa diagram'
+      TabOrder = 4
+      Width = 193
+    end
+    object cxDBCheckBox2: TcxDBCheckBox
+      Left = 156
+      Top = 117
+      Caption = 'Visa torkar som grupp'
+      TabOrder = 5
+      Width = 193
+    end
+  end
+  object ActionList1: TActionList
+    Left = 48
+    Top = 41
+    object acCreateUserOutputs: TAction
+      Caption = 'Registrera uttag p'#229' vald anv'#228'ndare'
+      OnExecute = acCreateUserOutputsExecute
     end
   end
 end

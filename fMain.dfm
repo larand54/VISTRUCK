@@ -50,8 +50,6 @@ object frmMain: TfrmMain
         Height = 844
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 65
-        ExplicitHeight = 779
         object PanelBottom: TPanel
           Left = 1
           Top = 66
@@ -59,8 +57,6 @@ object frmMain: TfrmMain
           Height = 777
           Align = alClient
           TabOrder = 0
-          ExplicitTop = 88
-          ExplicitHeight = 755
           object Panel2: TPanel
             Left = 1078
             Top = 1
@@ -69,39 +65,195 @@ object frmMain: TfrmMain
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
-            ExplicitHeight = 718
+            object Panel3: TPanel
+              Left = 1
+              Top = 1
+              Width = 310
+              Height = 56
+              Align = alTop
+              TabOrder = 0
+              object cxButton3: TcxButton
+                Left = 8
+                Top = 3
+                Width = 121
+                Height = 49
+                Action = acSelectPosition
+                TabOrder = 0
+              end
+            end
+            object grdMatchingGrid: TcxGrid
+              Left = 1
+              Top = 57
+              Width = 310
+              Height = 717
+              Align = alClient
+              TabOrder = 1
+              object grdMatchingGridDBCardView1: TcxGridDBCardView
+                Navigator.Buttons.CustomButtons = <>
+                DataController.DataSource = dmInventory.ds_Matching
+                DataController.KeyFieldNames = 'PositionID'
+                DataController.Summary.DefaultGroupSummaryItems = <>
+                DataController.Summary.FooterSummaryItems = <>
+                DataController.Summary.SummaryGroups = <>
+                OptionsView.CaptionWidth = 1
+                OptionsView.CardIndent = 5
+                OptionsView.CardWidth = 282
+                object grdMatchingGridDBCardView1Vald: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'Vald'
+                  PropertiesClassName = 'TcxCheckBoxProperties'
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1Position: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'Position'
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1REFERENCE: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'REFERENCE'
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1ProductNo: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'ProductNo'
+                  Visible = False
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1ActualLengthMM: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'ActualLengthMM'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1PositionID: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'PositionID'
+                  Visible = False
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1PhysicalInventoryPointNo: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'PhysicalInventoryPointNo'
+                  Visible = False
+                  Position.BeginsLayer = True
+                end
+                object grdMatchingGridDBCardView1PosStatus: TcxGridDBCardViewRow
+                  DataBinding.FieldName = 'PosStatus'
+                  PropertiesClassName = 'TcxCheckBoxProperties'
+                  Position.BeginsLayer = True
+                end
+              end
+              object grdMatchingGridDBBandedTableView1: TcxGridDBBandedTableView
+                Navigator.Buttons.CustomButtons = <>
+                DataController.DataSource = dmInventory.ds_Matching
+                DataController.KeyFieldNames = 'PositionID'
+                DataController.Summary.DefaultGroupSummaryItems = <>
+                DataController.Summary.FooterSummaryItems = <>
+                DataController.Summary.SummaryGroups = <>
+                OptionsCustomize.DataRowSizing = True
+                OptionsData.Deleting = False
+                OptionsData.Editing = False
+                OptionsData.Inserting = False
+                OptionsView.ColumnAutoWidth = True
+                OptionsView.GridLines = glNone
+                OptionsView.GroupByBox = False
+                OptionsView.Header = False
+                OptionsView.Indicator = True
+                OptionsView.RowSeparatorWidth = 3
+                OptionsView.BandHeaders = False
+                Bands = <
+                  item
+                    Width = 304
+                  end>
+                object grdMatchingGridDBBandedTableView1Vald: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'Vald'
+                  PropertiesClassName = 'TcxCheckBoxProperties'
+                  Properties.ValueChecked = 1
+                  Properties.ValueUnchecked = 0
+                  Width = 70
+                  Position.BandIndex = 0
+                  Position.ColIndex = 0
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1Position: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'Position'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 234
+                  Position.BandIndex = 0
+                  Position.ColIndex = 1
+                  Position.RowIndex = 1
+                end
+                object grdMatchingGridDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'REFERENCE'
+                  Width = 166
+                  Position.BandIndex = 0
+                  Position.ColIndex = 1
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1ProductNo: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'ProductNo'
+                  Visible = False
+                  Position.BandIndex = 0
+                  Position.ColIndex = 2
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1ActualLengthMM: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'ActualLengthMM'
+                  Width = 68
+                  Position.BandIndex = 0
+                  Position.ColIndex = 5
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1PositionID: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'PositionID'
+                  Visible = False
+                  Position.BandIndex = 0
+                  Position.ColIndex = 3
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1PhysicalInventoryPointNo: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'PhysicalInventoryPointNo'
+                  Visible = False
+                  Position.BandIndex = 0
+                  Position.ColIndex = 4
+                  Position.RowIndex = 0
+                end
+                object grdMatchingGridDBBandedTableView1PosStatus: TcxGridDBBandedColumn
+                  DataBinding.FieldName = 'PosStatus'
+                  PropertiesClassName = 'TcxCheckBoxProperties'
+                  Properties.ValueChecked = 1
+                  Properties.ValueUnchecked = 0
+                  Width = 70
+                  Position.BandIndex = 0
+                  Position.ColIndex = 0
+                  Position.RowIndex = 1
+                end
+              end
+              object grdMatchingGridLevel1: TcxGridLevel
+                GridView = grdMatchingGridDBBandedTableView1
+              end
+            end
           end
           object Panelgrid: TPanel
             Left = 1
             Top = 1
-            Width = 1077
+            Width = 1069
             Height = 775
             Align = alClient
             TabOrder = 1
-            ExplicitTop = 80
-            ExplicitWidth = 1389
-            ExplicitHeight = 639
             object Panel4: TPanel
               Left = 1
-              Top = 593
-              Width = 1075
-              Height = 181
+              Top = 720
+              Width = 1067
+              Height = 54
               Align = alBottom
-              Caption = 'Panel4'
               TabOrder = 0
-              ExplicitTop = 536
             end
             object grdPkgOutput: TcxGrid
               Left = 1
               Top = 1
-              Width = 1075
-              Height = 592
+              Width = 1067
+              Height = 719
               Align = alClient
               TabOrder = 1
-              ExplicitTop = 104
-              ExplicitHeight = 432
               object grdPkgOutputDBTableView1: TcxGridDBTableView
+                OnMouseDown = grdPkgOutputDBTableView1MouseDown
                 Navigator.Buttons.CustomButtons = <>
+                OnCellClick = grdPkgOutputDBTableView1CellClick
                 OnCustomDrawCell = grdPkgOutputDBTableView1CustomDrawCell
                 DataController.DataSource = dmInventory.ds_usersmonpu_piv
                 DataController.KeyFieldNames = 'RowGroupNo'
@@ -112,15 +264,14 @@ object frmMain: TfrmMain
                 OptionsData.Deleting = False
                 OptionsData.Editing = False
                 OptionsData.Inserting = False
-                OptionsSelection.InvertSelect = False
-                OptionsSelection.MultiSelect = True
-                OptionsSelection.CellMultiSelect = True
-                OptionsView.FocusRect = False
+                OptionsSelection.HideFocusRectOnExit = False
+                OptionsSelection.HideSelection = True
                 OptionsView.ColumnAutoWidth = True
                 OptionsView.DataRowHeight = 100
                 OptionsView.GridLines = glVertical
                 OptionsView.GroupByBox = False
                 OptionsView.Indicator = True
+                Styles.Selection = cxStyle1
                 Styles.OnGetContentStyle = grdPkgOutputDBTableView1StylesGetContentStyle
                 Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
               end
@@ -128,6 +279,76 @@ object frmMain: TfrmMain
                 GridView = grdPkgOutputDBTableView1
               end
             end
+            object PanelPkgsPerLine: TPanel
+              Left = 40
+              Top = 144
+              Width = 377
+              Height = 337
+              Caption = 'PanelPkgsPerLine'
+              TabOrder = 2
+              object grdPkgsPerMP: TcxGrid
+                Left = 1
+                Top = 1
+                Width = 375
+                Height = 335
+                Align = alClient
+                TabOrder = 0
+                object grdPkgsPerMPDBCardView1: TcxGridDBCardView
+                  Navigator.Buttons.CustomButtons = <>
+                  DataController.DataSource = dmInventory.ds_SumPkgsPerMP
+                  DataController.KeyFieldNames = 'RegPointName'
+                  DataController.Summary.DefaultGroupSummaryItems = <>
+                  DataController.Summary.FooterSummaryItems = <>
+                  DataController.Summary.SummaryGroups = <>
+                  OptionsData.Deleting = False
+                  OptionsData.Editing = False
+                  OptionsData.Inserting = False
+                  OptionsView.CardIndent = 7
+                  OptionsView.CardWidth = 544
+                  object grdPkgsPerMPDBCardView1RegPointName: TcxGridDBCardViewRow
+                    DataBinding.FieldName = 'RegPointName'
+                    Position.BeginsLayer = True
+                  end
+                  object grdPkgsPerMPDBCardView1Packages: TcxGridDBCardViewRow
+                    DataBinding.FieldName = 'Packages'
+                    Position.BeginsLayer = True
+                  end
+                end
+                object grdPkgsPerMPDBChartView1: TcxGridDBChartView
+                  DataController.DataSource = dmInventory.ds_SumPkgsPerMP
+                  DataController.KeyFieldNames = 'RegPointName'
+                  DiagramArea.Enabled = False
+                  DiagramColumn.Active = True
+                  DiagramColumn.Legend.KeyBorder = lbNone
+                  DiagramColumn.Legend.Position = cppNone
+                  OptionsBehavior.ValueHints = False
+                  Title.Position = cppNone
+                  ToolBox.Border = tbNone
+                  ToolBox.DataLevelsInfoVisible = dlivNever
+                  OnValueClick = grdPkgsPerMPDBChartView1ValueClick
+                  object grdPkgsPerMPDBChartView1DataGroup1: TcxGridDBChartDataGroup
+                    DataBinding.FieldName = 'RegPointName'
+                  end
+                  object grdPkgsPerMPDBChartView1Series1: TcxGridDBChartSeries
+                    DataBinding.FieldName = 'Packages'
+                  end
+                end
+                object grdPkgsPerMPLevel1: TcxGridLevel
+                  GridView = grdPkgsPerMPDBChartView1
+                end
+              end
+            end
+          end
+          object cxSplitter1: TcxSplitter
+            Left = 1070
+            Top = 1
+            Width = 8
+            Height = 775
+            HotZoneClassName = 'TcxMediaPlayer8Style'
+            AlignSplitter = salRight
+            Control = Panel2
+            Color = clMaroon
+            ParentColor = False
           end
         end
         object PanelTop: TPanel
@@ -137,12 +358,9 @@ object frmMain: TfrmMain
           Height = 65
           Align = alTop
           TabOrder = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 1393
           object cxButton1: TcxButton
             Left = 16
-            Top = 10
+            Top = 6
             Width = 121
             Height = 49
             Action = acRefresh_Usersmonpu_piv
@@ -158,13 +376,23 @@ object frmMain: TfrmMain
             Width = 681
           end
           object cxButton2: TcxButton
-            Left = 960
-            Top = 10
+            Left = 1238
+            Top = 6
             Width = 105
             Height = 49
             Action = acSetupUserOutput
             SpeedButtonOptions.CanBeFocused = False
             TabOrder = 2
+            TabStop = False
+          end
+          object bShowAllOutput: TcxButton
+            Left = 943
+            Top = 6
+            Width = 126
+            Height = 49
+            Action = acShowAllOutput
+            SpeedButtonOptions.CanBeFocused = False
+            TabOrder = 3
             TabStop = False
           end
         end
@@ -274,7 +502,7 @@ object frmMain: TfrmMain
   end
   object ActionList1: TActionList
     Images = imglOutbar_large
-    Left = 320
+    Left = 312
     Top = 190
     object atDataCountry: TAction
       Category = 'DATA'
@@ -510,11 +738,19 @@ object frmMain: TfrmMain
       Caption = 'Inst'#228'llningar'
       OnExecute = acSetupUserOutputExecute
     end
+    object acSelectPosition: TAction
+      Caption = 'V'#228'lj position'
+      ImageIndex = 14
+    end
+    object acShowAllOutput: TAction
+      Caption = 'Visa alla uttag'
+      OnExecute = acShowAllOutputExecute
+    end
   end
   object imglOutbar_large: TImageList
     Height = 24
     Width = 24
-    Left = 336
+    Left = 312
     Top = 248
     Bitmap = {
       494C010122002500040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -3826,18 +4062,18 @@ object frmMain: TfrmMain
   end
   object cxShellBrowserDialog1: TcxShellBrowserDialog
     Left = 482
-    Top = 232
+    Top = 240
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 500
     OnTimer = Timer1Timer
     Left = 482
-    Top = 280
+    Top = 296
   end
   object dxBarScreenTipRepository1: TdxBarScreenTipRepository
-    Left = 336
-    Top = 304
+    Left = 312
+    Top = 312
   end
   object dxBarApplicationMenu1: TdxBarApplicationMenu
     BarManager = dxBarManager1
@@ -3845,8 +4081,8 @@ object frmMain: TfrmMain
     ExtraPane.Items = <>
     ItemLinks = <>
     UseOwnFont = False
-    Left = 688
-    Top = 440
+    Left = 728
+    Top = 368
   end
   object dxRibbonPopupMenu1: TdxRibbonPopupMenu
     BarManager = dxBarManager1
@@ -3861,8 +4097,8 @@ object frmMain: TfrmMain
     ItemLinks = <>
     Ribbon = dxRibbon1
     UseOwnFont = False
-    Left = 640
-    Top = 160
+    Left = 728
+    Top = 304
   end
   object siLangLinked1: TsiLangLinked
     Version = '7.2'
@@ -3910,8 +4146,8 @@ object frmMain: TfrmMain
       'DataField'
       'KeyField'
       'ListField')
-    Left = 560
-    Top = 400
+    Left = 728
+    Top = 440
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A005400660072006D004D00610069006E000100560049005300
@@ -4230,8 +4466,8 @@ object frmMain: TfrmMain
       410055004C0054005F00430048004100520053004500540001000D000A00}
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 210
-    Top = 426
+    Left = 482
+    Top = 362
     PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
@@ -4365,40 +4601,6 @@ object frmMain: TfrmMain
       Styles.Indicator = cxStyle9
       Styles.Preview = cxStyle10
       BuiltIn = True
-    end
-  end
-  object FDQuery1: TFDQuery
-    Connection = dmsConnector.FDConnection1
-    Left = 210
-    Top = 522
-  end
-  object mtScannedPkgs: TFDMemTable
-    Indexes = <
-      item
-        Active = True
-        Selected = True
-        Name = 'mtScannedPkgsIndex01'
-        Fields = 'LongPkgNo'
-      end>
-    IndexName = 'mtScannedPkgsIndex01'
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired]
-    UpdateOptions.CheckRequired = False
-    Left = 210
-    Top = 586
-    object mtScannedPkgsPackageNo: TIntegerField
-      FieldName = 'PackageNo'
-    end
-    object mtScannedPkgsPefix: TStringField
-      FieldName = 'Pefix'
-      Size = 3
-    end
-    object mtScannedPkgsLongPkgNo: TStringField
-      FieldName = 'LongPkgNo'
-      Size = 8
     end
   end
 end

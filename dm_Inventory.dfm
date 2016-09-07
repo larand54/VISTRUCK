@@ -1,6 +1,6 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
-  Height = 1053
+  Height = 1178
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
@@ -10510,6 +10510,12 @@ object dmInventory: TdmInventory
         Name = '@UserID'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Active'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
   end
   object ds_usersmonpu_piv: TDataSource
@@ -10654,6 +10660,26 @@ object dmInventory: TdmInventory
       Required = True
       Size = 30
     end
+    object sp_allPkgsatoutputSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object sp_allPkgsatoutputMaxLengthALMM: TFloatField
+      FieldName = 'MaxLengthALMM'
+      Origin = 'MaxLengthALMM'
+      ReadOnly = True
+    end
+    object sp_allPkgsatoutputProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+    end
+    object sp_allPkgsatoutputPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
   end
   object mtUserOutput: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
@@ -10721,10 +10747,21 @@ object dmInventory: TdmInventory
     end
   end
   object sp_UsersOutputProdunits: TFDStoredProc
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'UsersOutputProdunits_Index01'
+        Fields = 'RegPointName'
+      end>
+    IndexName = 'UsersOutputProdunits_Index01'
+    OnUpdateRecord = sp_UsersOutputProdunitsUpdateRecord
     Connection = dmsConnector.FDConnection1
+    UpdateOptions.UpdateTableName = 'dbo.ProductionUnit'
+    UpdateObject = FDUpdateProductionUnit
     StoredProcName = 'dbo.vis_UsersOutputProdunits'
     Left = 536
-    Top = 840
+    Top = 848
     ParamData = <
       item
         Position = 1
@@ -10735,59 +10772,36 @@ object dmInventory: TdmInventory
       end
       item
         Position = 2
-        Name = '@VerkNo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 3
         Name = '@UserID'
         DataType = ftInteger
         ParamType = ptInput
       end>
-    object sp_UsersOutputProdunitsSelected: TIntegerField
-      DisplayLabel = 'Vald'
-      FieldName = 'Selected'
-      Origin = 'Selected'
-      ProviderFlags = []
-    end
     object sp_UsersOutputProdunitsProductionUnitNo: TIntegerField
       FieldName = 'ProductionUnitNo'
       Origin = 'ProductionUnitNo'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object sp_UsersOutputProdunitsClientNo: TIntegerField
-      FieldName = 'ClientNo'
-      Origin = 'ClientNo'
-      ProviderFlags = [pfInUpdate]
-    end
-    object sp_UsersOutputProdunitsLogicalInventoryPointNo: TIntegerField
-      FieldName = 'LogicalInventoryPointNo'
-      Origin = 'LogicalInventoryPointNo'
-      ProviderFlags = [pfInUpdate]
-    end
-    object sp_UsersOutputProdunitsRegistrationPointNo: TIntegerField
-      FieldName = 'RegistrationPointNo'
-      Origin = 'RegistrationPointNo'
-      ProviderFlags = [pfInUpdate]
-    end
-    object sp_UsersOutputProdunitsPositionID: TIntegerField
-      FieldName = 'PositionID'
-      Origin = 'PositionID'
-      ProviderFlags = [pfInUpdate]
-    end
-    object sp_UsersOutputProdunitsRegPointName: TStringField
-      DisplayLabel = 'M'#228'tpunkt'
-      FieldName = 'RegPointName'
-      Origin = 'RegPointName'
+    object sp_UsersOutputProdunitsUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
       ProviderFlags = []
-      FixedChar = True
-      Size = 30
+      Required = True
     end
-    object sp_UsersOutputProdunitsPhysicalInventoryPointNo: TIntegerField
-      FieldName = 'PhysicalInventoryPointNo'
-      Origin = 'PhysicalInventoryPointNo'
+    object sp_UsersOutputProdunitsCreatedUser: TIntegerField
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsActive: TIntegerField
+      FieldName = 'Active'
+      Origin = 'Active'
+      ProviderFlags = []
     end
     object sp_UsersOutputProdunitsPosition: TStringField
       FieldKind = fkLookup
@@ -10800,6 +10814,39 @@ object dmInventory: TdmInventory
       Size = 101
       Lookup = True
     end
+    object sp_UsersOutputProdunitsPhysicalInventoryPointNo: TIntegerField
+      FieldName = 'PhysicalInventoryPointNo'
+      Origin = 'PhysicalInventoryPointNo'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsRegPointName: TStringField
+      DisplayLabel = 'M'#228'tpunkt'
+      FieldName = 'RegPointName'
+      Origin = 'RegPointName'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 30
+    end
+    object sp_UsersOutputProdunitsPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sp_UsersOutputProdunitsRegistrationPointNo: TIntegerField
+      FieldName = 'RegistrationPointNo'
+      Origin = 'RegistrationPointNo'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsLogicalInventoryPointNo: TIntegerField
+      FieldName = 'LogicalInventoryPointNo'
+      Origin = 'LogicalInventoryPointNo'
+      ProviderFlags = []
+    end
+    object sp_UsersOutputProdunitsClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = []
+    end
   end
   object ds_UsersOutputProdunits: TDataSource
     DataSet = sp_UsersOutputProdunits
@@ -10809,8 +10856,8 @@ object dmInventory: TdmInventory
   object sp_Positioner: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Positioner'
-    Left = 536
-    Top = 960
+    Left = 336
+    Top = 1016
     ParamData = <
       item
         Position = 1
@@ -10888,6 +10935,266 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
+<<<<<<< HEAD
+  object mtScannedPkgs: TFDMemTable
+    AfterPost = mtScannedPkgsAfterPost
+    AfterDelete = mtScannedPkgsAfterDelete
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'mtScannedPkgsIndex01'
+        Fields = 'LongPkgNo'
+      end>
+    IndexName = 'mtScannedPkgsIndex01'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 162
+    Top = 986
+    object mtScannedPkgsPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+    end
+    object mtScannedPkgsPefix: TStringField
+      FieldName = 'Pefix'
+      Size = 3
+    end
+    object mtScannedPkgsLongPkgNo: TStringField
+      FieldName = 'LongPkgNo'
+      Size = 8
+    end
+    object mtScannedPkgsSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Size = 3
+    end
+  end
+  object sp_SetMyResPkg: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_SetMyResPkg'
+    Left = 48
+    Top = 832
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prefix'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_SumPkgsPerMP: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_SumPkgsPerMP'
+    Left = 48
+    Top = 928
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = '217'
+      end>
+  end
+  object ds_SumPkgsPerMP: TDataSource
+    DataSet = sp_SumPkgsPerMP
+    Left = 48
+    Top = 984
+  end
+  object sp_Matching: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_Matching'
+    Left = 536
+    Top = 1024
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = '17247'
+      end
+      item
+        Position = 3
+        Name = '@Reference'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 20
+        Value = '132238/CB54'
+      end
+      item
+        Position = 4
+        Name = '@ALMM'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+        Value = '5400'
+      end
+      item
+        Position = 5
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = '10506'
+      end>
+    object sp_MatchingVald: TIntegerField
+      FieldName = 'Vald'
+      Origin = 'Vald'
+      ReadOnly = True
+      Required = True
+    end
+    object sp_MatchingPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      ReadOnly = True
+      Size = 101
+    end
+    object sp_MatchingREFERENCE: TStringField
+      DisplayLabel = 'Referens'
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object sp_MatchingProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+    end
+    object sp_MatchingActualLengthMM: TFloatField
+      DisplayLabel = 'ALMM'
+      FieldName = 'ActualLengthMM'
+      Origin = 'ActualLengthMM'
+      Required = True
+    end
+    object sp_MatchingPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object sp_MatchingPhysicalInventoryPointNo: TIntegerField
+      FieldName = 'PhysicalInventoryPointNo'
+      Origin = 'PhysicalInventoryPointNo'
+    end
+    object sp_MatchingPosStatus: TIntegerField
+      DisplayLabel = 'Status'
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+  end
+  object ds_Matching: TDataSource
+    DataSet = sp_Matching
+    Left = 536
+    Top = 1080
+  end
+  object sp_CreateUsersOutputProdunits: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_CreateUsersOutputProdunits'
+    Left = 336
+    Top = 1080
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@VerkNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object FDUpdateProductionUnit: TFDUpdateSQL
+    Connection = dmsConnector.FDConnection1
+    ConnectionName = 'VIS'
+    InsertSQL.Strings = (
+      'INSERT INTO ProductionUnit'
+      '(ProductionUnitNo, ClientNo, CreatedUser, DateCreated, '
+      '  LogicalInventoryPointNo, RegistrationPointNo, '
+      '  PhysicalInventoryPointNo, PositionID)'
+      
+        'VALUES (:NEW_ProductionUnitNo, :NEW_ClientNo, :NEW_CreatedUser, ' +
+        ':NEW_DateCreated, '
+      '  :NEW_LogicalInventoryPointNo, :NEW_RegistrationPointNo, '
+      '  :NEW_PhysicalInventoryPointNo, :NEW_PositionID)')
+    ModifySQL.Strings = (
+      'UPDATE ProductionUnit'
+      
+        'SET ProductionUnitNo = :NEW_ProductionUnitNo, ClientNo = :NEW_Cl' +
+        'ientNo, '
+      
+        '  CreatedUser = :NEW_CreatedUser, DateCreated = :NEW_DateCreated' +
+        ', '
+      '  LogicalInventoryPointNo = :NEW_LogicalInventoryPointNo, '
+      
+        '  RegistrationPointNo = :NEW_RegistrationPointNo, PhysicalInvent' +
+        'oryPointNo = :NEW_PhysicalInventoryPointNo, '
+      '  PositionID = :NEW_PositionID'
+      'WHERE ProductionUnitNo = :OLD_ProductionUnitNo')
+    DeleteSQL.Strings = (
+      'DELETE FROM ProductionUnit'
+      'WHERE ProductionUnitNo = :OLD_ProductionUnitNo')
+    FetchRowSQL.Strings = (
+      
+        'SELECT ProductionUnitNo, ProductionUnitName, ClientNo, SequenceN' +
+        'o, '
+      
+        '  CreatedUser, ModifiedUser, DateCreated, LogicalInventoryPointN' +
+        'o, '
+      
+        '  RegistrationPointNo, OnSticks, SurfacingNo, DIM_DIV, TerminalN' +
+        'o, '
+      '  PhysicalInventoryPointNo, Cost, CapitalCost, OverheadCost, '
+      '  SalaryCost, LegoCostPerAM3, LIPGroupNo, ProductionUnitCode, '
+      
+        '  PkgPrefix, StoppOrsakFil, StoppTidFil, RegiShortCode, Position' +
+        'ID'
+      'FROM ProductionUnit'
+      'WHERE ProductionUnitNo = :ProductionUnitNo')
+    Left = 536
+    Top = 952
+=======
   object sq_UserLipNoExists: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
@@ -10913,5 +11220,6 @@ object dmInventory: TdmInventory
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
+>>>>>>> origin/master
   end
 end

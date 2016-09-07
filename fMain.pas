@@ -41,7 +41,9 @@ uses
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxRibbonCustomizationForm, siComp, siLngLnk,
   System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator,
-  System.Variants ;
+  System.Variants, cxGridChartView, cxGridDBChartView, cxGridCardView,
+  cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
+  cxGridDBBandedTableView ;
 
 
 
@@ -211,17 +213,47 @@ type
     cxStyle9: TcxStyle;
     cxStyle10: TcxStyle;
     cxStyle11: TcxStyle;
-    FDQuery1: TFDQuery;
-    mtScannedPkgs: TFDMemTable;
-    mtScannedPkgsPackageNo: TIntegerField;
-    mtScannedPkgsPefix: TStringField;
     cxStyleMarkedPkgs: TcxStyle;
-    mtScannedPkgsLongPkgNo: TStringField;
     acSetupUserOutput: TAction;
     PanelTop: TPanel;
     cxButton1: TcxButton;
     mePackageNo: TcxTextEdit;
     cxButton2: TcxButton;
+    PanelPkgsPerLine: TPanel;
+    grdPkgsPerMPLevel1: TcxGridLevel;
+    grdPkgsPerMP: TcxGrid;
+    grdPkgsPerMPDBCardView1: TcxGridDBCardView;
+    grdPkgsPerMPDBCardView1RegPointName: TcxGridDBCardViewRow;
+    grdPkgsPerMPDBCardView1Packages: TcxGridDBCardViewRow;
+    grdPkgsPerMPDBChartView1: TcxGridDBChartView;
+    grdPkgsPerMPDBChartView1DataGroup1: TcxGridDBChartDataGroup;
+    grdPkgsPerMPDBChartView1Series1: TcxGridDBChartSeries;
+    cxSplitter1: TcxSplitter;
+    Panel3: TPanel;
+    grdMatchingGridLevel1: TcxGridLevel;
+    grdMatchingGrid: TcxGrid;
+    grdMatchingGridDBCardView1: TcxGridDBCardView;
+    grdMatchingGridDBCardView1Vald: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1Position: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1REFERENCE: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1ProductNo: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1ActualLengthMM: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PositionID: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PhysicalInventoryPointNo: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PosStatus: TcxGridDBCardViewRow;
+    grdMatchingGridDBBandedTableView1: TcxGridDBBandedTableView;
+    grdMatchingGridDBBandedTableView1Vald: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1Position: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1ActualLengthMM: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PositionID: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PhysicalInventoryPointNo: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PosStatus: TcxGridDBBandedColumn;
+    cxButton3: TcxButton;
+    acSelectPosition: TAction;
+    bShowAllOutput: TcxButton;
+    acShowAllOutput: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -256,15 +288,24 @@ type
       Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
       AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
     procedure acSetupUserOutputExecute(Sender: TObject);
+    procedure grdPkgOutputDBTableView1CellClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure grdPkgsPerMPDBChartView1ValueClick(Sender: TcxGridChartView;
+      ASeries: TcxGridChartSeries; AValueIndex: Integer; var AHandled: Boolean);
+    procedure grdPkgOutputDBTableView1MouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure acShowAllOutputExecute(Sender: TObject);
 
   private
+    ShowAllOutput   : Boolean ;
     ScanningEnabled : Boolean ;
     TempEditString  : String ;
     OriginalUserID  : Integer ;
     a : String ;
     function  ScannedPkg(const AViewInfo  : String) : Boolean ;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
-    procedure SetGridParamsFor_Usersmonpu_piv(Sender: TObject);
+    procedure SetGridParamsFor_Usersmonpu_piv(Sender: TObject;const ShowAll : Boolean);
     Procedure InitOnStartOfProgram;
     function  SelectSortingOrderNo : Integer ;
     procedure AvregistreraPaket ;
@@ -431,7 +472,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
 // ExceptionNotify := MyNotify; // Assign ExceptionNotify variable to MyNotify procedure.
   Application.OnException := AppException;
-  mtScannedPkgs.Active  := True ;
+  ShowAllOutput := False ;
 end;
 
 
@@ -507,8 +548,13 @@ procedure TfrmMain.FormShow(Sender: TObject);
 var Height, Width, Top, Left, LanguageNo : Integer ;
     lCaption  : String ;
 begin
- PanelMain.Visible  := False ;
+// PanelMain.Visible  := False ;
+
+
+
+ dmInventory.mtScannedPkgs.Active  := True ;
  ScanningEnabled  := True ;
+ PanelPkgsPerLine.Align := alClient ;
  dmsConnector.DriveLetter := 'H:\' ;
  if dmsConnector.DriveLetter = 'C:\' then
   ShowMessage('Change drive to H:\') ;
@@ -597,7 +643,11 @@ begin
   uReportController.useFR := true;
   cxbtnChangeReporter.Caption := 'Change to CrystalReports';
   Caption  := lCaption ;
+
+ dmInventory.Set_mtUserUserID ;
 end;
+
+
 
 //Sparas centralt
 procedure TfrmMain.dxBarButton13Click(Sender: TObject);
@@ -683,7 +733,7 @@ begin
         if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
         Begin
           Action := eaAccept ;
-          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo]);
+          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString]);
         End
          else
           Action :=  eaREJECT ;
@@ -705,10 +755,10 @@ begin
        Try
        if sp_allPkgsatoutput.FindKey([NewPkgNo]) then
         Begin
-          NumberPrefix  :=  sp_allPkgsatoutputProductionUnitCode.AsString ;
-          Action := eaAccept ;
-          LongPkgNo := inttoStr(NewPkgNo) + NumberPrefix ;
-          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo]);
+          NumberPrefix  := sp_allPkgsatoutputProductionUnitCode.AsString ;
+          Action        := eaAccept ;
+          LongPkgNo     := inttoStr(NewPkgNo) + NumberPrefix ;
+          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString]);
         End
        Finally
         sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
@@ -959,6 +1009,8 @@ begin
  End
   else
    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_10' (* 'No access' *) ));
+
+dmInventory.Set_mtUserUserID ;
 end;
 
 procedure TfrmMain.acChangeLanguageExecute(Sender: TObject);
@@ -1239,7 +1291,8 @@ begin
 // grdPkgOutput.ClearItems ;
  dmInventory.Refresh_sp_usersmonpu_piv ;
 
- SetGridParamsFor_Usersmonpu_piv(Sender);
+ SetGridParamsFor_Usersmonpu_piv(Sender, ShowAllOutput);
+ PanelPkgsPerLine.Visible := True ;
 end;
 
 procedure TfrmMain.acSetupUserOutputExecute(Sender: TObject);
@@ -1250,6 +1303,60 @@ begin
   fSetupUserOutput.ShowModal ;
   Finally
     FreeAndNil(fSetupUserOutput) ;
+  End;
+end;
+
+procedure TfrmMain.acShowAllOutputExecute(Sender: TObject);
+begin
+ //Show all outputs linked to current user
+ if bShowAllOutput.Caption =  'Visa alla uttag' then
+ Begin
+  ShowAllOutput           :=  True ;
+  bShowAllOutput.Caption  :=  'Visa mina uttag' ;
+ End
+ else
+ Begin
+  ShowAllOutput           :=  False ;
+  bShowAllOutput.Caption  :=  'Visa alla uttag' ;
+ End;
+
+ dmInventory.Refresh_sp_usersmonpu_piv ;
+
+ SetGridParamsFor_Usersmonpu_piv(Sender, ShowAllOutput);
+// PanelPkgsPerLine.Visible := True ;
+end;
+
+procedure TfrmMain.grdPkgOutputDBTableView1CellClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+Var AColIndex, NewPkgNo: integer ;
+    AValue  : Variant ;
+    ADisplayText, NumberPrefix  : String ;
+begin
+        //
+
+  AColIndex     := Sender.Controller.FocusedItemIndex;
+  AValue        := Sender.Controller.FocusedRecord.Values[AColIndex];
+  ADisplayText  := Sender.Controller.FocusedRecord.DisplayTexts[AColIndex];
+
+  if Length(ADisplayText) > 0 then
+  with dmInventory do
+  Begin
+    NewPkgNo  := strToInt(Copy(ADisplayText, 1, 6)) ;
+    sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index02' ;
+     Try
+     if sp_allPkgsatoutput.FindKey([NewPkgNo]) then
+      Begin
+        NumberPrefix  :=  Copy(ADisplayText, 7,2) ;
+      //  Action := eaAccept ;
+      //  LongPkgNo := AValue ;//inttoStr(NewPkgNo) + NumberPrefix ;
+
+        ChangeClickedPackage(NewPkgNo, NumberPrefix, ADisplayText, sp_allPkgsatoutputSupplierCode.AsString);
+      End
+     Finally
+      sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
+     End;
+   grdPkgOutputDBTableView1.Invalidate();
   End;
 end;
 
@@ -1266,10 +1373,13 @@ end;
 
 function TfrmMain.ScannedPkg(const AViewInfo  : String) : Boolean ;
 Begin
- if mtScannedPkgs.FindKey([AViewInfo]) then
-  Result  := True
-   else
-    Result  := False ;
+ with dmInventory do
+ Begin
+   if mtScannedPkgs.FindKey([AViewInfo]) then
+    Result  := True
+     else
+      Result  := False ;
+ End;
 End;
 
 procedure TfrmMain.grdPkgOutputDBTableView1GetDisplayText(
@@ -1289,6 +1399,12 @@ begin
 
 end;
 
+procedure TfrmMain.grdPkgOutputDBTableView1MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+// ShowMessage('mouse down');
+end;
+
 procedure TfrmMain.grdPkgOutputDBTableView1StylesGetContentStyle(
   Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
   AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
@@ -1306,8 +1422,15 @@ begin
 }
 end;
 
-procedure TfrmMain.SetGridParamsFor_Usersmonpu_piv(Sender: TObject);
+procedure TfrmMain.grdPkgsPerMPDBChartView1ValueClick(Sender: TcxGridChartView;
+  ASeries: TcxGridChartSeries; AValueIndex: Integer; var AHandled: Boolean);
+begin
+ PanelPkgsPerLine.Visible := False ;
+end;
+
+procedure TfrmMain.SetGridParamsFor_Usersmonpu_piv(Sender: TObject;const ShowAll : Boolean);
 Var Save_Cursor : TCursor;
+    ColumnName  : String ;
  //   aColumn     : TcxGridDBBandedColumn ;
     x           : Integer ;
 begin
@@ -1332,7 +1455,14 @@ begin
    Begin
 //    grdPkgOutputDBTableView1.Columns[x].Styles.OnGetContentStyle := DoOnGetContentStyle ;
 //    grdDBBandedPerSortiment.Columns[x].OnCustomDrawHeader       := grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader ;
-    grdPkgOutputDBTableView1.Columns[x].OnGetDisplayText       := grdPkgOutputDBTableView1GetDisplayText ;
+
+
+    grdPkgOutputDBTableView1.Columns[x].OnGetDisplayText  := grdPkgOutputDBTableView1GetDisplayText ;
+    ColumnName                                            := grdPkgOutputDBTableView1.Columns[x].Caption ;
+    if not ShowAll then
+     grdPkgOutputDBTableView1.Columns[x].Visible           := dmInventory.CheckIfColumnVisible(ColumnName)
+      else
+       grdPkgOutputDBTableView1.Columns[x].Visible           := True ;
    End;
 
 {

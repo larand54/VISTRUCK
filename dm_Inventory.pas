@@ -7,7 +7,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, DateUtils, DB, FireDAC.UI.Intf, FireDAC.Stan.Def,
-  FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.MSSQL ;
+  FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.MSSQL, System.Variants ;
 
 type
   TdmInventory = class(TDataModule)
@@ -1334,7 +1334,6 @@ type
     mtUserOutputUserName: TStringField;
     sp_UsersOutputProdunits: TFDStoredProc;
     ds_UsersOutputProdunits: TDataSource;
-    sp_UsersOutputProdunitsSelected: TIntegerField;
     sp_UsersOutputProdunitsProductionUnitNo: TIntegerField;
     sp_UsersOutputProdunitsClientNo: TIntegerField;
     sp_UsersOutputProdunitsLogicalInventoryPointNo: TIntegerField;
@@ -1351,9 +1350,40 @@ type
     sp_UsersOutputProdunitsPosition: TStringField;
     dsUserOutput: TDataSource;
     sp_ChangeSelectedOutput: TFDStoredProc;
+<<<<<<< HEAD
+    mtScannedPkgs: TFDMemTable;
+    mtScannedPkgsPackageNo: TIntegerField;
+    mtScannedPkgsPefix: TStringField;
+    mtScannedPkgsLongPkgNo: TStringField;
+    sp_allPkgsatoutputSupplierCode: TStringField;
+    mtScannedPkgsSupplierCode: TStringField;
+    sp_SetMyResPkg: TFDStoredProc;
+    sp_SumPkgsPerMP: TFDStoredProc;
+    ds_SumPkgsPerMP: TDataSource;
+    sp_Matching: TFDStoredProc;
+    sp_allPkgsatoutputMaxLengthALMM: TFloatField;
+    sp_allPkgsatoutputProductNo: TIntegerField;
+    sp_allPkgsatoutputPIPNo: TIntegerField;
+    sp_MatchingVald: TIntegerField;
+    sp_MatchingPosition: TStringField;
+    sp_MatchingREFERENCE: TStringField;
+    sp_MatchingProductNo: TIntegerField;
+    sp_MatchingActualLengthMM: TFloatField;
+    sp_MatchingPositionID: TIntegerField;
+    sp_MatchingPhysicalInventoryPointNo: TIntegerField;
+    sp_MatchingPosStatus: TIntegerField;
+    ds_Matching: TDataSource;
+    sp_UsersOutputProdunitsUserID: TIntegerField;
+    sp_UsersOutputProdunitsCreatedUser: TIntegerField;
+    sp_UsersOutputProdunitsDateCreated: TSQLTimeStampField;
+    sp_UsersOutputProdunitsActive: TIntegerField;
+    sp_CreateUsersOutputProdunits: TFDStoredProc;
+    FDUpdateProductionUnit: TFDUpdateSQL;
+=======
     sq_UserLipNoExists: TFDQuery;
     sq_UserLipNoExistsUserID: TIntegerField;
     sq_UserLipNoExistsLIPNo: TIntegerField;
+>>>>>>> origin/master
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1385,6 +1415,11 @@ type
     procedure cds_KilnChargeRowsBeforeDelete(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
     procedure mtUserOutputUserIDChange(Sender: TField);
+    procedure mtScannedPkgsAfterPost(DataSet: TDataSet);
+    procedure mtScannedPkgsAfterDelete(DataSet: TDataSet);
+    procedure sp_UsersOutputProdunitsUpdateRecord(ASender: TDataSet;
+      ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
   private
     { Private declarations }
     procedure LoadAllBookingHdrIntoTempTable ;
@@ -1398,11 +1433,23 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
+<<<<<<< HEAD
+    procedure Set_mtUserUserID ;
+    function  CheckIfColumnVisible(const DriftPlatsNamn : String) : Boolean ;
+    procedure RefreshProductionUnits ;
+    procedure CreateUsersOutputProdunits(Const VerkNo, UserID  : Integer) ;
+    procedure CleanUpMatching ;
+    procedure Matching(const LongPkgNo  : String) ;
+    procedure SumPkgsPerMP(const UserID : Integer) ;
+    procedure SetDataBaseRecord(const PkgNo, UserID : Integer;const SupplierCode : String) ;
+    procedure ChangeClickedPackage(const NewPkgNo  : Integer;const NumberPrefix, ADisplayText,SupplierCode : String) ;
+=======
     Function  UserLipNoExists : Boolean ;
+>>>>>>> origin/master
     procedure ChangeSelectedOutput(const ProductionUnitNo, UserID, Change, PositionID : Integer) ;
     procedure RefreshPositionerByVerkNo(const VerkNo : Integer) ;
-    procedure RefreshUsersOutputProdunits (const VerkNo, UserID : Integer) ;
-    Function  GetPackageDescription(const PackageNoString : string) : String ;
+    procedure RefreshUsersOutputProdunits (const UserID : Integer) ;
+    Function  GetPackageDescription(const LongPackageNoString : string) : String ;
     procedure Refresh_allPkgsatoutput (const VerkNo : integer) ;
     function  GetProductDescriptionByPkgNoAndRegPointName(const PackageNoString : string;const RegPointname : String) : String ;
     function  Refresh_sp_usersmonpu_piv : Boolean ; //Result true if rows available
@@ -1568,13 +1615,13 @@ Begin
  sp_GetVolPerLG.ParamByName('@InvGrouping').AsInteger := LIPGroupNo ;
  sp_GetVolPerLG.ParamByName('@NoOfLengths').AsInteger := NoOfLengths ;
  sp_GetVolPerLG.Active  := True ;
-       Except
-         On E: Exception do
-         Begin
-          ShowMessage(E.Message+' :sp_GetVolPerLG.ExecProc') ;
-          Raise ;
-         End ;
-       End ;
+ Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_GetVolPerLG.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
 End ;
 
 procedure TdmInventory.cds_BookingDtlUtfallChange(Sender: TField);
@@ -1959,6 +2006,19 @@ Begin
  End ;
 End ;
 
+procedure TdmInventory.mtScannedPkgsAfterDelete(DataSet: TDataSet);
+begin
+ if Length(DataSet.FieldByName('LongPkgNo').AsString) > 0 then
+  Matching(DataSet.FieldByName('LongPkgNo').AsString)
+  else
+   CleanUpMatching ;
+end;
+
+procedure TdmInventory.mtScannedPkgsAfterPost(DataSet: TDataSet);
+begin
+ Matching(mtScannedPkgsLongPkgNo.AsString) ;
+end;
+
 procedure TdmInventory.mtSelectedPkgNoBeforePost(DataSet: TDataSet);
 begin
  if mtSelectedPkgNoMARKERAD.AsInteger = 1 then
@@ -1972,7 +2032,8 @@ procedure TdmInventory.mtUserOutputUserIDChange(Sender: TField);
 begin
   cds_Users.FindKey([mtUserOutputUserID.AsInteger]) ;
   RefreshPositionerByVerkNo(cds_UsersCompanyNo.AsInteger) ;
-  RefreshUsersOutputProdunits (cds_UsersCompanyNo.AsInteger, mtUserOutputUserID.AsInteger) ;
+  RefreshUsersOutputProdunits (mtUserOutputUserID.AsInteger) ;
+  SumPkgsPerMP(mtUserOutputUserID.AsInteger) ;
 end;
 
 function TdmInventory.GetAntalLamellerOfRawMtrl : Integer ;
@@ -2325,6 +2386,18 @@ begin
  upd_invpivPkg.ConnectionName := sp_invpivPkg.ConnectionName;
  upd_invpivPkg.DataSet        := sp_invpivPkg;
  upd_invpivPkg.Apply(ARequest, AAction, AOptions);
+
+ AAction := eaApplied;
+end;
+
+procedure TdmInventory.sp_UsersOutputProdunitsUpdateRecord(ASender: TDataSet;
+  ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+  AOptions: TFDUpdateRowOptions);
+begin
+
+ FDUpdateProductionUnit.ConnectionName  := sp_UsersOutputProdunits.ConnectionName;
+ FDUpdateProductionUnit.DataSet         := sp_UsersOutputProdunits;
+ FDUpdateProductionUnit.Apply(ARequest, AAction, AOptions);
 
  AAction := eaApplied;
 end;
@@ -2766,10 +2839,12 @@ End ;
 function TdmInventory.Refresh_sp_usersmonpu_piv : Boolean ; //Result true if rows available
 Begin
   Refresh_allPkgsatoutput (ThisUser.CompanyNo) ;
+  SumPkgsPerMP(ThisUser.UserID) ;
   if sp_usersmonpu_piv.Active then
     sp_usersmonpu_piv.Active  := False ;
   Try
   sp_usersmonpu_piv.ParamByName('@UserID').AsInteger  := ThisUser.UserID ;
+  sp_usersmonpu_piv.ParamByName('@Active').AsInteger  := -1 ; //Active ;
   sp_usersmonpu_piv.Active  := True ;
   if sp_usersmonpu_piv.RecordCount > 0 then
    Result := True
@@ -2822,22 +2897,21 @@ Begin
  sp_allPkgsatoutput.Active  := True ;
 End;
 
-Function TdmInventory.GetPackageDescription(const PackageNoString : string) : String ;
+Function TdmInventory.GetPackageDescription(const LongPackageNoString : string) : String ;
 Var PkgNo : integer ;
 Begin
- PkgNo  := strtointDef(PackageNoString,-1) ;
+ PkgNo  := strtointDef(LongPackageNoString,-1) ;
   if sp_allPkgsatoutput.findkey([PkgNo]) then
    Result := sp_allPkgsatoutputPackageNo.AsString + ' ' +
    sp_allPkgsatoutputDIM_Grade.AsString + ' ' + sp_allPkgsatoutputMaxLength.AsString
     else
-     Result := PackageNoString ;
+     Result := LongPackageNoString ;
 End;
 
-procedure TdmInventory.RefreshUsersOutputProdunits (const VerkNo, UserID : Integer) ;
+procedure TdmInventory.RefreshUsersOutputProdunits (const UserID : Integer) ;
 Begin
   if sp_UsersOutputProdunits.Active then
    sp_UsersOutputProdunits.Active  := False ;
-  sp_UsersOutputProdunits.ParamByName('@VerkNo').AsInteger := VerkNo ;
   sp_UsersOutputProdunits.ParamByName('@UserID').AsInteger := UserID ;
   sp_UsersOutputProdunits.Active  := True ;
 End;
@@ -2867,6 +2941,121 @@ Begin
   End ;
  end;
 End;
+
+{Var AColIndex, NewPkgNo: integer ;
+    AValue  : Variant ;
+    ADisplayText, NumberPrefix  : String ;}
+procedure TdmInventory.ChangeClickedPackage(const NewPkgNo  : Integer;const NumberPrefix, ADisplayText,SupplierCode : String) ;
+Begin
+ if mtScannedPkgs.FindKey([ADisplayText]) then
+ Begin
+  //Unreserv
+  mtScannedPkgs.Delete ;
+  SetDataBaseRecord(NewPkgNo, 0, SupplierCode) ;
+ End
+ else
+ Begin
+  //Reserv
+  mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, ADisplayText]);
+  SetDataBaseRecord(NewPkgNo, ThisUser.UserID, SupplierCode) ;
+ End;
+End;
+
+procedure TdmInventory.SetDataBaseRecord(const PkgNo, UserID : Integer;const SupplierCode : String) ;
+Begin
+  //Set PackageNumber fields.
+  Try
+  sp_SetMyResPkg.ParamByName('@PackageNo').AsInteger  :=  PkgNo ;
+  sp_SetMyResPkg.ParamByName('@Prefix').AsString      :=  SupplierCode ;
+  if UserID > 0 then
+   sp_SetMyResPkg.ParamByName('@UserID').AsInteger     :=  UserID
+    else
+     sp_SetMyResPkg.ParamByName('@UserID').Clear();
+  sp_SetMyResPkg.ExecProc ;
+   Except
+     On E: Exception do
+     Begin
+      ShowMessage(E.Message+' :sp_SetMyResPkg.ExecProc') ;
+      Raise ;
+     End ;
+   End ;
+End;
+
+procedure TdmInventory.SumPkgsPerMP(const UserID : Integer) ;
+Begin
+ if sp_SumPkgsPerMP.Active then
+  sp_SumPkgsPerMP.Active := False ;
+ sp_SumPkgsPerMP.ParamByName('@UserID').AsInteger :=  UserID ;
+ sp_SumPkgsPerMP.Active := True ;
+End ;
+
+procedure TdmInventory.Matching(const LongPkgNo  : String) ;
+Begin
+  sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
+  if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
+  Begin
+      if sp_Matching.Active then
+      sp_Matching.Active  := False ;
+    sp_Matching.ParamByName('@ProductNo').AsInteger :=  sp_allPkgsatoutputProductNo.AsInteger ;
+    sp_Matching.ParamByName('@PIPNo').AsInteger     :=  sp_allPkgsatoutputPIPNo.AsInteger ;
+    sp_Matching.ParamByName('@Reference').AsString  :=  sp_allPkgsatoutputReference.AsString ;
+    sp_Matching.ParamByName('@ALMM').AsFloat        :=  sp_allPkgsatoutputMaxLengthALMM.AsFloat ;
+    sp_Matching.Active  := True ;
+  End;
+End;
+
+procedure TdmInventory.CleanUpMatching ;
+Begin
+  if sp_Matching.Active then
+    sp_Matching.Active  := False ;
+End;
+
+procedure TdmInventory.CreateUsersOutputProdunits(Const VerkNo, UserID  : Integer) ;
+Begin
+ Try
+  sp_CreateUsersOutputProdunits.ParamByName('@VerkNo').AsInteger :=  VerkNo ;
+  sp_CreateUsersOutputProdunits.ParamByName('@UserID').AsInteger :=  UserID ;
+  sp_CreateUsersOutputProdunits.ExecProc ;
+  Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_CreateUsersOutputProdunits.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
+End;
+
+procedure TdmInventory.RefreshProductionUnits ;
+begin
+  cds_Users.FindKey([mtUserOutputUserID.AsInteger]) ;
+  RefreshPositionerByVerkNo(cds_UsersCompanyNo.AsInteger) ;
+  RefreshUsersOutputProdunits (mtUserOutputUserID.AsInteger) ;
+  SumPkgsPerMP(mtUserOutputUserID.AsInteger) ;
+end;
+
+function TdmInventory.CheckIfColumnVisible(const DriftPlatsNamn : String) : Boolean ;
+Begin
+  if not sp_UsersOutputProdunits.Active then
+   RefreshUsersOutputProdunits (mtUserOutputUserID.AsInteger) ;
+  if  sp_UsersOutputProdunits.FindKey([DriftPlatsNamn]) then
+   Result :=  sp_UsersOutputProdunitsActive.AsInteger = 1
+    else
+     Result := False ;
+End;
+
+procedure TdmInventory.Set_mtUserUserID ;
+Begin
+ with dmInventory do
+ begin
+  if mtUserOutput.Active then
+   mtUserOutput.Active :=  False ;
+  mtUserOutput.Active :=  True ;
+  mtUserOutput.Insert ;
+  mtUserOutputUserID.AsInteger  := ThisUser.UserID ;
+  mtUserOutput.Post ;
+ end;
+End;
+
 
 end.
 

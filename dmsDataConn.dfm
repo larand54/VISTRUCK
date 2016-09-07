@@ -1824,13 +1824,13 @@ object dmsConnector: TdmsConnector
   object FDConnection1: TFDConnection
     ConnectionName = 'VIS'
     Params.Strings = (
-      'Server=alvesql01'
+      'Server=visprodsql.vida.se'
       'Database=Vis_Vida'
-      'OSAuthent=no'
+      'OSAuthent=No'
       'MetaDefCatalog=vis_vida'
       'MetaDefSchema=dbo'
       'ApplicationName=Vis_Truck'
-      'User_Name=lars'
+      'User_Name=Lars'
       'Password=woods2011'
       'DriverID=MSSQL')
     FetchOptions.AssignedValues = [evMode, evRowsetSize, evCursorKind]
@@ -1838,7 +1838,6 @@ object dmsConnector: TdmsConnector
     FetchOptions.RowsetSize = 500
     ResourceOptions.AssignedValues = [rvDirectExecute]
     UpdateOptions.AssignedValues = [uvLockMode, uvRefreshMode]
-    Connected = True
     LoginPrompt = False
     Left = 464
     Top = 24

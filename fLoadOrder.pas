@@ -3113,17 +3113,60 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.SetShippingPlanStatus(const Status : Integer) ;
-Var x           : Integer ;
+Var x, LONo         : Integer ;
     Save_Cursor : TCursor;
+  //  isLOB,
+    SetLOStatus,
+    SetAvropStatusToNew : Boolean ;
 begin
+ SetAvropStatusToNew  := False ;
+ SetLOStatus          := False ;
  Try
  dmcOrder.cdsSawmillLoadOrders.IndexName  := 'indexSupplierShipPlanObjectNo' ;
  Save_Cursor                              := Screen.Cursor;
  Screen.Cursor                            := crSQLWait;    { Show hourglass cursor }
  dmcOrder.cdsSawmillLoadOrders.DisableControls ;
+ SetAvropStatusToNew := False ;
+ SetLOStatus         := False ;
  Try
  For x :=  0 to lbLO_To_Invoice.Items.Count - 1 do
  Begin
+//  isLOB  := False ;
+   if dmcOrder.cdsSawmillLoadOrders.FindKey([lbLO_To_Invoice.Items[x]]) then
+    LONo  :=  dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger ;
+
+   if Status = STATUS_ACCEPTED then
+   Begin
+    if dmcOrder.LOBuffertLO(LONo) then
+    Begin
+//     isLOB  := True ;
+      if dmssystem.UserIsAllowedToSetStatusToActive(ThisUser.UserID) then
+      Begin
+        SetAvropStatusToNew := True ;
+        SetLOStatus         := True ;
+      End //if (UserIsAllowedToSetStatusToActive(ThisUser.UserID) then
+       else
+        Begin
+          ShowMessage('You have not permission to accept this loading order, LOno ' + inttostr(LONo)) ;
+          SetAvropStatusToNew := False ;
+          SetLOStatus         := False ;
+          //Exit ;
+        End;
+    End //if LOBuffertLO then
+     else
+      Begin
+        SetAvropStatusToNew := False ;
+        SetLOStatus         := True ;
+      End;
+   End //if Status = STATUS_ACCEPTED then
+     else
+      Begin
+        SetAvropStatusToNew := False ;
+        SetLOStatus         := True ;
+      End;
+
+   if SetLOStatus then
+   Begin
     if dmcOrder.cdsSawmillLoadOrders.FindKey([lbLO_To_Invoice.Items[x]]) then
     Begin
      if (Status = STATUS_COMPLETE) and (dmcOrder.LoadStatusOK(dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger) = False) then
@@ -3136,9 +3179,14 @@ begin
       dmcOrder.cdsSawmillLoadOrders.Edit ;
       dmcOrder.cdsSawmillLoadOrdersShippingPlanStatus.AsInteger := Status ;
       dmcOrder.cdsSawmillLoadOrders.Post ;
+
+      if SetAvropStatusToNew then
+       dmcOrder.SetAvropStatusToActive(LONo, STATUS_LO_PROGRESS) ;
      End ;
     End ;
- End ;
+   End;
+
+ End ; //For x...
 
  Finally
   dmcOrder.cdsSawmillLoadOrders.IndexName:= 'cdsSawmillLoadOrdersLONo' ;
