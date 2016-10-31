@@ -125,6 +125,15 @@ type
     cds_KilnChargeHeaderInfo: TStringField;
     ds_KilnChargeHeader: TDataSource;
     cds_KilnsNoOfVagnarBefore: TIntegerField;
+    cds_Kiln: TFDQuery;
+    cds_KilnClientNo: TIntegerField;
+    cds_KilnKilnNo: TIntegerField;
+    cds_KilnKilnName: TStringField;
+    cds_KilnNoOfVagnar: TIntegerField;
+    cds_KilnTypeOfKiln: TIntegerField;
+    cds_KilnNoOfVagnarBefore: TIntegerField;
+    cds_KilnTypeOfLine: TIntegerField;
+    cds_KilnIMPNo: TIntegerField;
     procedure cds_KilnPropsOLDClientNoChange(Sender: TField);
     procedure cds_KilnPropsOLDKiln_PIPNoChange(Sender: TField);
     procedure ds_KilnChargeHdrDataChange(Sender: TObject; Field: TField);
@@ -140,6 +149,8 @@ type
     { Public declarations }
     KilnChargeNo : Integer ;
 
+    procedure SaveIMPNoWithKiln(const KilnNo, IMPNo : Integer) ;
+    function  GetIMPNoByKiln(const KilnNo : Integer) :  Integer ; //Get IMPNo
     procedure AddPkgsToTorkSatsTablePerSortiment(const LengthGroupNo, ProductNo, NoOfPkgs : Integer;const AL, Produkt : String) ;
     procedure AddPkgsToTorkSatsTablePerPaketNr(mtKilnPkgs : TkbmMemTable) ;
     Function  Get_LastKilnChNo : Integer ;
@@ -493,6 +504,38 @@ Begin
  sq_MoveToAfterKiln.ParamByName('LIPNo').AsInteger        := cds_KilnPropsAfterKiln_LIPNo.AsInteger ;
  sq_MoveToAfterKiln.ExecSQL ;
 End ;
+
+procedure Tdm_DryKiln.SaveIMPNoWithKiln(const KilnNo, IMPNo : Integer) ;
+Begin
+  cds_Kiln.Active := False ;
+  cds_Kiln.ParamByName('KilnNo').AsInteger  := KilnNo ;
+  cds_Kiln.Active := True ;
+  Try
+  if not cds_Kiln.Eof then
+  Begin
+    cds_Kiln.Edit ;
+    cds_KilnIMPNo.AsInteger :=  IMPNo ;
+    cds_Kiln.Post ;
+  End;
+  Finally
+    cds_Kiln.Active := False ;
+  End;
+End;
+
+function Tdm_DryKiln.GetIMPNoByKiln(const KilnNo : Integer) :  Integer ; //Get IMPNo
+Begin
+  cds_Kiln.Active := False ;
+  cds_Kiln.ParamByName('KilnNo').AsInteger  := KilnNo ;
+  cds_Kiln.Active := True ;
+  Try
+  if not cds_Kiln.Eof then
+    Result  :=  cds_KilnIMPNo.AsInteger
+     else
+      Result  := -1 ;
+  Finally
+    cds_Kiln.Active := False ;
+  End;
+End;
 
 
 

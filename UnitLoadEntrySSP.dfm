@@ -71,9 +71,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Properties.CustomButtons.Buttons = <>
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.SkinName = ''
-      ClientRectBottom = 262
-      ClientRectLeft = 4
-      ClientRectRight = 1516
+      ClientRectBottom = 266
+      ClientRectRight = 1520
       ClientRectTop = 27
       object tsLoadData: TcxTabSheet
         Margins.Left = 4
@@ -84,7 +83,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pLoadHead: TPanel
           Left = 0
           Top = 0
-          Width = 1512
+          Width = 1520
           Height = 91
           Margins.Left = 4
           Margins.Top = 4
@@ -536,14 +535,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pgrdLO: TPanel
           Left = 0
           Top = 91
-          Width = 1512
+          Width = 1520
           Height = 50
           Align = alTop
           TabOrder = 1
           object grdLO: TcxGrid
             Left = 1
             Top = 1
-            Width = 1510
+            Width = 1518
             Height = 48
             Margins.Left = 4
             Margins.Top = 4
@@ -736,14 +735,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pgrdAddress: TPanel
           Left = 0
           Top = 149
-          Width = 1512
+          Width = 1520
           Height = 60
           Align = alTop
           TabOrder = 2
           object grdAddress: TcxGrid
             Left = 1
             Top = 1
-            Width = 1510
+            Width = 1518
             Height = 58
             Margins.Left = 4
             Margins.Top = 4
@@ -790,7 +789,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object cxSplitter1: TcxSplitter
           Left = 0
           Top = 141
-          Width = 1512
+          Width = 1520
           Height = 8
           HotZoneClassName = 'TcxMediaPlayer8Style'
           AlignSplitter = salTop
@@ -817,8 +816,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.DataField = 'InternalNote'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           TabOrder = 0
-          Height = 235
-          Width = 1512
+          Height = 239
+          Width = 1520
         end
       end
     end
@@ -849,7 +848,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Left = 1
           Top = 1
           Width = 1403
-          Height = 49
+          Height = 48
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -897,7 +896,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Left = 1
           Top = 1
           Width = 78
-          Height = 49
+          Height = 48
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -2225,7 +2224,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False

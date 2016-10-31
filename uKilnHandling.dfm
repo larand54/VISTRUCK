@@ -77,9 +77,10 @@ object fkilnHandling: TfkilnHandling
         Align = alBottom
         TabOrder = 1
         Properties.CustomButtons.Buttons = <>
-        ClientRectBottom = 62
-        ClientRectRight = 1541
-        ClientRectTop = 0
+        ClientRectBottom = 61
+        ClientRectLeft = 1
+        ClientRectRight = 1540
+        ClientRectTop = 1
       end
       object cxSplitter1: TcxSplitter
         Left = 0
@@ -602,9 +603,10 @@ object fkilnHandling: TfkilnHandling
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 84
-    ClientRectRight = 1541
-    ClientRectTop = 0
+    ClientRectBottom = 83
+    ClientRectLeft = 1
+    ClientRectRight = 1540
+    ClientRectTop = 1
     object tsLagret: TcxTabSheet
       Margins.Left = 4
       Margins.Top = 4
@@ -615,8 +617,8 @@ object fkilnHandling: TfkilnHandling
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1541
-        Height = 84
+        Width = 1539
+        Height = 82
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -625,8 +627,8 @@ object fkilnHandling: TfkilnHandling
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          1541
-          84)
+          1539
+          82)
         object cxLabel2: TcxLabel
           Left = 5
           Top = 16
@@ -825,7 +827,7 @@ object fkilnHandling: TfkilnHandling
           Width = 105
         end
         object cxButton9: TcxButton
-          Left = 1417
+          Left = 1415
           Top = 15
           Width = 109
           Height = 61
@@ -861,7 +863,7 @@ object fkilnHandling: TfkilnHandling
         end
         object cxButton8: TcxButton
           Left = 1204
-          Top = 14
+          Top = 15
           Width = 91
           Height = 61
           Margins.Left = 4
@@ -2476,6 +2478,10 @@ object fkilnHandling: TfkilnHandling
     end
     object mtUserPropShowProduct: TIntegerField
       FieldName = 'ShowProduct'
+    end
+    object mtUserPropName: TStringField
+      FieldName = 'Name'
+      Size = 50
     end
   end
   object dsUserProp: TDataSource
@@ -4158,6 +4164,7 @@ object fkilnHandling: TfkilnHandling
     Top = 272
   end
   object cds_Verk: TFDQuery
+    Active = True
     AggregatesActive = True
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
@@ -4165,18 +4172,22 @@ object fkilnHandling: TfkilnHandling
         'SELECT  Distinct C.ClientNo, C.ClientName, C.SearchName, C.Sales' +
         'RegionNo, C.PktNrLevKod'
       ''
-      'FROM   dbo.Client        C,'
-      '       dbo.ClientRole    R'
+      'FROM   dbo.Client C'
+      '       inner join dbo.ClientRole    R on R.ClientNo = C.ClientNo'
+      '       inner join dbo.GroupClient gc on gc.ClientNo = C.ClientNo'
       ''
-      'WHERE  C.ClientNo = R.ClientNo'
-      'AND   ((R.RoleType = 9) '
-      'OR (R.RoleType = 6)'
-      'OR (R.RoleType = 7))'
+      'WHERE  gc.MainClientNo = :MainClientNo'
       ''
       'Order by C.clientName'
       '')
     Left = 136
     Top = 448
+    ParamData = <
+      item
+        Name = 'MAINCLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
     object cds_VerkClientNo: TIntegerField
       FieldName = 'ClientNo'
       Origin = 'ClientNo'
@@ -4437,7 +4448,7 @@ object fkilnHandling: TfkilnHandling
     SubLanguageID = 1
     LocaleID = 1024
     AfterInsert = mtLayoutAfterInsert
-    Left = 968
+    Left = 984
     Top = 301
     object mtLayoutPackageLogLayoutNo: TIntegerField
       FieldName = 'PackageLogLayoutNo'
@@ -4456,13 +4467,13 @@ object fkilnHandling: TfkilnHandling
   end
   object dsLayout: TDataSource
     DataSet = mtLayout
-    Left = 968
+    Left = 984
     Top = 357
   end
   object dsSpecData: TDataSource
     DataSet = mtSpecData
     Left = 904
-    Top = 349
+    Top = 357
   end
   object sq_OnePkg: TFDQuery
     Connection = dmsConnector.FDConnection1
@@ -4784,8 +4795,8 @@ object fkilnHandling: TfkilnHandling
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 616
-    Top = 400
+    Left = 608
+    Top = 544
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066006B0069006C006E00480061006E0064006C006900

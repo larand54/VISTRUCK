@@ -2280,6 +2280,7 @@ object fchgPkgVard: TfchgPkgVard
     end
     object mtUserPropOwnerNo: TIntegerField
       FieldName = 'OwnerNo'
+      OnChange = mtUserPropOwnerNoChange
     end
     object mtUserPropPIPNo: TIntegerField
       FieldName = 'PIPNo'
@@ -2513,6 +2514,18 @@ object fchgPkgVard: TfchgPkgVard
     end
     object mtUserPropShowProduct: TIntegerField
       FieldName = 'ShowProduct'
+    end
+    object mtUserPropFilter1: TStringField
+      FieldName = 'Filter1'
+      Size = 50
+    end
+    object mtUserPropFilter2: TStringField
+      FieldName = 'Filter2'
+      Size = 255
+    end
+    object mtUserPropName: TStringField
+      FieldName = 'Name'
+      Size = 50
     end
   end
   object dsUserProp: TDataSource

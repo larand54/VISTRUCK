@@ -21,6 +21,8 @@ object fPositionView: TfPositionView
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 120
   TextHeight = 16
   object pcInventory: TcxPageControl
@@ -53,6 +55,7 @@ object fPositionView: TfPositionView
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
+      ExplicitWidth = 0
       ExplicitHeight = 417
       object grdPosition: TcxGrid
         Left = 0
@@ -261,6 +264,7 @@ object fPositionView: TfPositionView
     Control = pgInventory
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object pgInventory: TcxPageControl
     Left = 0
@@ -276,10 +280,10 @@ object fPositionView: TfPositionView
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 141
-    ClientRectLeft = 4
-    ClientRectRight = 1546
-    ClientRectTop = 4
+    ClientRectBottom = 144
+    ClientRectLeft = 1
+    ClientRectRight = 1549
+    ClientRectTop = 1
     object tsLagret: TcxTabSheet
       Margins.Left = 4
       Margins.Top = 4
@@ -287,11 +291,15 @@ object fPositionView: TfPositionView
       Margins.Bottom = 4
       Caption = 'Lager'
       ImageIndex = 2
+      ExplicitLeft = 4
+      ExplicitTop = 4
+      ExplicitWidth = 1542
+      ExplicitHeight = 137
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1542
-        Height = 137
+        Width = 1548
+        Height = 143
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -301,6 +309,8 @@ object fPositionView: TfPositionView
         Color = clSilver
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 1542
+        ExplicitHeight = 137
         object lcPIPNAME: TcxDBLookupComboBox
           Left = 1583
           Top = 91
@@ -1324,7 +1334,7 @@ object fPositionView: TfPositionView
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (
@@ -2203,6 +2213,7 @@ object fPositionView: TfPositionView
     Top = 305
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdPosition
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2224,6 +2235,7 @@ object fPositionView: TfPositionView
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 42521.421175902770000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

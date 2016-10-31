@@ -2,6 +2,11 @@ program VISTRUCK;
 
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -131,7 +136,11 @@ uses
   uAngeNyMall in 'uAngeNyMall.pas' {fAngeNyMall},
   uTwoReportInOne in '..\CommonSources\FastReport\uTwoReportInOne.pas',
   uSetupUserOutput in 'uSetupUserOutput.pas' {fSetupUserOutput},
-  uDynSQL_const in 'uDynSQL_const.pas';
+  uDynSQL_const in 'uDynSQL_const.pas',
+  UnitSokAvropFormular in 'UnitSokAvropFormular.pas' {frmSokAvropFormular},
+  UnitBookingFormOrg in 'UnitBookingFormOrg.pas' {FormBookingFormOrg},
+  uSokAvropMall in 'uSokAvropMall.pas' {fSokAvropMall},
+  dmSokFormular in 'dmSokFormular.pas' {dm_SokFormular: TDataModule};
 
 {$R *.res}
 begin

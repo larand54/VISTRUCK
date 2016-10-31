@@ -1095,8 +1095,11 @@ begin
 
    cds_LoadPackages.Active                  := True ;
 
+
    dmsContact.cdsCities.Active              := False ;
+   dmsContact.cdsCities.ParamByName('@SalesRegionNo').AsInteger  :=  dmsContact.GetSalesRegionNo(ThisUser.CompanyNo) ;
    dmsContact.cdsCities.Active              := True ;
+
    dmsContact.cds_LocalShipper.Active       := True ;
 
    cds_LoadHead.Active:= True ;
@@ -3703,7 +3706,9 @@ begin
    fPickPkgNo.LabelPIPName.Caption    := lcPIP.Text ;
    fPickPkgNo.LabelOwner.Caption      := cds_LSPSUPPLIER.AsString ;
    fPickPkgNo.LabelLONr.Caption       := cdsLORowsShippingPlanNo.AsString ;
+   fPickPkgNo.LabelReferens.Caption   := cdsLORowsKR_Ref.AsString ;
    fPickPkgNo.ObjectType              := cds_LSPOBJECTTYPE.AsInteger ;
+   fPickPkgNo.Referens                := cdsLORowsKR_Ref.AsString ;
    if fPickPkgNo.ShowModal = mrOK then
     Begin
      Application.ProcessMessages ;

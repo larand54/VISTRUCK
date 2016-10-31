@@ -1,7 +1,5 @@
 object dm_SokFormular: Tdm_SokFormular
   OldCreateOrder = False
-  Left = 441
-  Top = 106
   Height = 537
   Width = 807
   object ds_SokAvrop: TDataSource
@@ -42,7 +40,7 @@ object dm_SokFormular: Tdm_SokFormular
     ResourceOptions.CmdExecMode = amCancelDialog
     UpdateOptions.UpdateTableName = 'Booking'
     SQL.Strings = (
-      'Select DISTINCT '
+      'Select DISTINCT'
       '  RTRIM(CONVERT(varchar(20),isnull(CSH.ShippingPlanNo,'#39#39')))+'
       'RTRIM(CONVERT(varchar(20),isnull(Supp.ClientName,'#39#39')))+'
       'RTRIM(CONVERT(varchar(20),isnull(Bk.BookingNo,'#39#39')))+'
@@ -79,7 +77,8 @@ object dm_SokFormular: Tdm_SokFormular
       #9'isnull(RTRIM(ST_ADR.PostalCode)+'#39' / '#39'   ,'#39#39')  +'
       
         #9'RTRIM(CONVERT(varchar(20),isnull(ST_AdrCY.CityName,'#39#39'))) AS POS' +
-        'TAL_CODE_DESTINATION, '
+        'TAL_CODE_DESTINATION,'
+      '  ST_AdrCtry.CountryName      AS Land,'
       #9'ST.Reference'#9#9#9'          AS SHIPTO_REFERENCE, '
       #9'BK.PreliminaryRequestedPeriod, '
       #9'SC.SearchName'#9#9#9'          AS SHIPPER, '
@@ -93,7 +92,8 @@ object dm_SokFormular: Tdm_SokFormular
       'Bk.Panic_Note AS PANIC_NOTE, '
       'CR.CarrierName AS VESSEL, '
       'VG.ETD, '
-      'VG.ETA, '
+      'VG.ETA,'
+      ''
       'CASE'
       
         'WHEN SP.ShippingPlanNo is null THEN ROUND(CAST((   SUM(CSD.m3Net' +
@@ -101,6 +101,7 @@ object dm_SokFormular: Tdm_SokFormular
       'ELSE'
       'ROUND(CAST((   SUM(SP.ActualM3Net)    ) As decimal(18,3)),3)'
       'END AS AM3,'
+      ''
       'CASE'
       'WHEN SP.ShippingPlanNo is null THEN'
       '(Select AM3 From  DelperCSDLO LD'
@@ -113,6 +114,7 @@ object dm_SokFormular: Tdm_SokFormular
       'WHERE LD.DefaultCustShipObjectNo = SP.CustShipPlanDetailObjectNo'
       'AND LD.SupplierNo = Supp.ClientNo)'
       'END AS LEVLO,'
+      ''
       'CASE'
       
         'WHEN SP.ShippingPlanNo is null THEN ROUND(CAST((   SUM(CSD.m3Net' +
@@ -132,6 +134,8 @@ object dm_SokFormular: Tdm_SokFormular
       'WHERE LD.DefaultCustShipObjectNo = SP.CustShipPlanDetailObjectNo'
       'AND LD.SupplierNo = Supp.ClientNo)'
       'END AS REST,'
+      ''
+      ''
       'Bk.SupplierReference ,'
       
         '(Select  Count(distinct SPP.LoadingLocationNo) from dbo.Supplier' +
@@ -141,6 +145,7 @@ object dm_SokFormular: Tdm_SokFormular
       ' AND SPP.ShippingPlanStatus <> 8)'
       ') AS NoOfSuppliers, CSH.CustomerNo, OH.OrderType,'
       'Bk.VoyageNo'
+      ''
       'FROM'#9'dbo.CustomerShippingPlanHeader CSH '
       #9'INNER JOIN dbo.Client '#9#9#9'C'#9'ON '#9'C.ClientNo'#9#9'= CSH.CustomerNo '
       
@@ -211,8 +216,8 @@ object dm_SokFormular: Tdm_SokFormular
         'OH.OrderNoText, CSH.Reference, CSH.ETDYearWeek, CSH.ETDWeekEnd, ' +
         'C.SearchName, AG.SearchName,'
       
-        'DT.DeliveryTerm,  ST_ADR.PostalCode, ST_AdrCY.CityName, ST.Refer' +
-        'ence, BK.PreliminaryRequestedPeriod,'
+        'DT.DeliveryTerm,  ST_ADR.PostalCode, ST_AdrCY.CityName, ST_AdrCt' +
+        'ry.CountryName, ST.Reference, BK.PreliminaryRequestedPeriod,'
       
         'SC.SearchName, Bk.ShippingCompanyBookingID, Bk.ShippersShipDate,' +
         ' Bt.BookingType, MR.MarketRegionName,'
@@ -379,7 +384,7 @@ object dm_SokFormular: Tdm_SokFormular
       FieldName = 'PANIC_NOTE'
       Origin = 'PANIC_NOTE'
       ProviderFlags = [pfInUpdate]
-      Size = 50
+      Size = 30
     end
     object cds_MakeSokAvropVESSEL: TStringField
       DisplayLabel = 'B'#229't'
@@ -474,6 +479,12 @@ object dm_SokFormular: Tdm_SokFormular
       FieldName = 'VoyageNo'
       Origin = 'VoyageNo'
       ProviderFlags = []
+    end
+    object cds_MakeSokAvropLand: TStringField
+      FieldName = 'Land'
+      Origin = 'Land'
+      ProviderFlags = []
+      Size = 30
     end
   end
   object cds_SokAvrop: TFDQuery

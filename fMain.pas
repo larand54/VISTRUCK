@@ -254,6 +254,9 @@ type
     acSelectPosition: TAction;
     bShowAllOutput: TcxButton;
     acShowAllOutput: TAction;
+    dxBarLargeButton35: TdxBarLargeButton;
+    acAskAvrop: TAction;
+    dxBarLargeButton36: TdxBarLargeButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -296,6 +299,7 @@ type
     procedure grdPkgOutputDBTableView1MouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure acShowAllOutputExecute(Sender: TObject);
+    procedure acAskAvropExecute(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -359,7 +363,7 @@ uses
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput;
+  uSetupUserOutput, UnitSokAvropFormular;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -1157,6 +1161,28 @@ begin
      frmLoadArrivals.Edit1.Setfocus ;
     end ;
   End ;
+end;
+
+procedure TfrmMain.acAskAvropExecute(Sender: TObject);
+begin
+  // const_SOKAVROP :
+  if ThisUser.CanView[dcUtlastningSec] then
+  Begin
+    if not Assigned(frmSokAvropFormular) then
+    Begin
+      frmSokAvropFormular := TfrmSokAvropFormular.Create(Nil);
+      frmSokAvropFormular.CreateCo(Sender, ThisUser.CompanyNo);
+      frmSokAvropFormular.Parent := panelBase;
+      frmSokAvropFormular.Show;
+      frmSokAvropFormular.lcSR.SetFocus;
+    End
+    else
+    begin
+      frmSokAvropFormular.Parent := panelBase;
+      frmSokAvropFormular.Show;
+      frmSokAvropFormular.lcSR.SetFocus;
+    End;
+  End;
 end;
 
 procedure TfrmMain.acUtlastningVerkExecute(Sender: TObject);

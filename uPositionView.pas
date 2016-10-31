@@ -1947,7 +1947,7 @@ begin
   LoadGridLayout( UserID, Form, View, Grid, GridTemplate);
   CheckAndRemoveFantomColumns(Grid);
 
-//  dmsSystem.LoadGridLayout_Special( UserID, Form, View, grdPositionDBBandedTableView1, Template);
+
  End;
 end;
 

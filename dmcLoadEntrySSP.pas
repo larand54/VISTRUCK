@@ -417,6 +417,7 @@ type
     procedure cdsLORowsCalcFields(DataSet: TDataSet);
     procedure cds_PropsAfterInsert(DataSet: TDataSet);
     procedure cds_LoadHeadShowOriginalLOChange(Sender: TField);
+    procedure cds_SaveFormSettingsAfterInsert(DataSet: TDataSet);
   private
     { Private declarations }
    FOnAmbiguousPkgNo: TAmbiguityEvent;
@@ -1425,6 +1426,11 @@ end;
 procedure TdmLoadEntrySSP.cds_PropsAfterInsert(DataSet: TDataSet);
 begin
  cds_PropsUserID.AsInteger := ThisUser.UserID ;
+end;
+
+procedure TdmLoadEntrySSP.cds_SaveFormSettingsAfterInsert(DataSet: TDataSet);
+begin
+  cds_SaveFormSettingsUserID.AsInteger  := ThisUser.UserID ;
 end;
 
 procedure TdmLoadEntrySSP.cds_LoadPackagesAfterInsert(DataSet: TDataSet);

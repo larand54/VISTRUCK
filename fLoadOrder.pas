@@ -3307,9 +3307,12 @@ begin
  if LOStatus in [1,3,6,9] then
  Begin
   tcLO.OnChange := nil ;
+
   Try
 
+
    CreateLoadForm ;
+   fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange  := nil ;
 
    fLoadEntrySSP.ExternSaveLoad ;
 
@@ -3323,6 +3326,7 @@ begin
    grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
    grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger) ;
 
+   fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange  := fLoadEntrySSP.cbShowOriginalLOPropertiesChange ;
    fLoadEntrySSP.Show ;
 //    Application.ProcessMessages ;
 

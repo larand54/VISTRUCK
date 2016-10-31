@@ -614,6 +614,10 @@ type
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
 
    // function  GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
+    procedure StoreGridLayout_Specialv2(const UserID: Integer;
+      const Form, ViewName: String; AGridView: TcxGridTableView);
+    function  LoadGridLayout_Specialv2(const UserID: Integer;
+      const Form, ViewName: String; AGridView: TcxGridTableView): Boolean;
     function  UserIsAllowedToSetStatusToActive(const LONo : Integer) : Boolean ;
     function  GetVerkNoForSortingOrderServer (const Default_SortingOrderNo : Integer) : Integer ;
     procedure AddPkgToLoggs (const PackageNo, SortingOrderNo, AvRegStatus : Integer;
@@ -2370,7 +2374,8 @@ begin
  End ;
 end;
 
-function TdmsSystem.LoadGridLayout_Special(const UserID : Integer;const Form, ViewName : String;AGridView: TcxGridTableView;const MallName : String) : Boolean ;
+function TdmsSystem.LoadGridLayout_Special(const UserID : Integer;const Form, ViewName : String;
+AGridView: TcxGridTableView;const MallName : String) : Boolean ;
 var
   Stream: TMemoryStream;
 begin
@@ -2385,7 +2390,7 @@ begin
   Begin
    Stream := TMemoryStream.Create;
    try
-    sq_GridSets2.SaveToStream(Stream);
+    sq_GridSets2Sets.SaveToStream(Stream);
 //    cds_GridSetsSets.SaveToStream(Stream);
     Stream.Position := 0;
     AGridView.RestoreFromStream(Stream);
@@ -3181,5 +3186,76 @@ Begin
     sp_UserPerm.Active := False ;
   End;
 End;
+
+function TdmsSystem.LoadGridLayout_Specialv2(const UserID: Integer;
+  const Form, ViewName: String; AGridView: TcxGridTableView): Boolean;
+var
+  Stream: TMemoryStream;
+begin
+  Result := False;
+  With dmsSystem do
+  Begin
+    cds_GridSets.ParamByName('ViewName').AsString := ViewName;
+    cds_GridSets.ParamByName('UserID').AsInteger := UserID;
+    cds_GridSets.ParamByName('Form').AsString := Form;
+    cds_GridSets.Active := True;
+    if not cds_GridSets.Eof then
+    Begin
+      Stream := TMemoryStream.Create;
+      try
+        cds_GridSetsSets.SaveToStream(Stream);
+        Stream.Position := 0;
+        AGridView.RestoreFromStream(Stream);
+        Result := True;
+      finally
+        Stream.free;
+      end;
+    End;
+    cds_GridSets.Active := False;
+  End;
+end;
+
+procedure TdmsSystem.StoreGridLayout_Specialv2(const UserID: Integer;
+  const Form, ViewName: String; AGridView: TcxGridTableView);
+var
+  Stream: TMemoryStream;
+begin
+  With dmsSystem do
+  Begin
+    cds_GridSets.ParamByName('ViewName').AsString := ViewName;
+    cds_GridSets.ParamByName('UserID').AsInteger := UserID;
+    cds_GridSets.ParamByName('Form').AsString := Form;
+
+    cds_GridSets.Active := True;
+    if not cds_GridSets.Eof then
+      cds_GridSets.Edit
+    else
+    Begin
+      cds_GridSets.Insert;
+      cds_GridSetsViewName.AsString := ViewName;
+      cds_GridSetsUserID.AsInteger := UserID;
+      cds_GridSetsForm.AsString := Form;
+    End;
+    if cds_GridSets.State in [dsEdit, dsInsert] then
+    begin
+      Stream := TMemoryStream.Create;
+      try
+        AGridView.StoreToStream(Stream);
+        Stream.Position := 0;
+        cds_GridSetsSets.LoadFromStream(Stream);
+      finally
+        Stream.free;
+      end;
+      cds_GridSets.Post;
+      if cds_GridSets.ChangeCount > 0 then
+      Begin
+        cds_GridSets.ApplyUpdates(0);
+        cds_GridSets.CommitUpdates;
+      End;
+    end;
+    cds_GridSets.Active := False;
+  End;
+end;
+
 
 end.
