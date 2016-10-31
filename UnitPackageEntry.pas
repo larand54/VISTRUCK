@@ -202,6 +202,9 @@ type
     cds_LIP2LIPNo: TIntegerField;
     cds_LIP2LIPName: TStringField;
     siLangLinked_frmPackageEntry: TsiLangLinked;
+    mtUserPropFilter1: TStringField;
+    mtUserPropFilter2: TStringField;
+    mtUserPropName: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure grdPkgsTaBortChangeNodeEx(Sender: TObject);
 

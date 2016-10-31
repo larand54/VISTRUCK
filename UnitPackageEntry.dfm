@@ -675,9 +675,6 @@ object frmPackageEntry: TfrmPackageEntry
         Width = 139
         Height = 21
         Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
         Caption = 'Kopiera stycketal'
         TabOrder = 2
         OnClick = cbCopyPcsClick
@@ -689,9 +686,6 @@ object frmPackageEntry: TfrmPackageEntry
       Width = 84
       Height = 80
       Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Align = alRight
       Constraints.MinWidth = 62
       TabOrder = 2
@@ -700,10 +694,6 @@ object frmPackageEntry: TfrmPackageEntry
         Top = 1
         Width = 82
         Height = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -1566,10 +1556,6 @@ object frmPackageEntry: TfrmPackageEntry
         DataType = ftInteger
       end
       item
-        Name = 'RegDate'
-        DataType = ftDateTime
-      end
-      item
         Name = 'CopyPcs'
         DataType = ftInteger
       end
@@ -1584,6 +1570,10 @@ object frmPackageEntry: TfrmPackageEntry
       item
         Name = 'AutoColWidth'
         DataType = ftInteger
+      end
+      item
+        Name = 'RegDate'
+        DataType = ftDateTime
       end
       item
         Name = 'SupplierCode'
@@ -1611,8 +1601,53 @@ object frmPackageEntry: TfrmPackageEntry
         DataType = ftInteger
       end
       item
+        Name = 'LengthGroup'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'LIPName'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'PIPNAME'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'REGPOINT'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'PRODUCER'
+        DataType = ftString
+        Size = 80
+      end
+      item
+        Name = 'OWNER'
+        DataType = ftString
+        Size = 80
+      end
+      item
+        Name = 'VERK'
+        DataType = ftString
+        Size = 80
+      end
+      item
         Name = 'RoleType'
         DataType = ftInteger
+      end
+      item
+        Name = 'Gradestamp'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Barcode'
+        DataType = ftString
+        Size = 20
       end
       item
         Name = 'ProductDescription'
@@ -1659,6 +1694,16 @@ object frmPackageEntry: TfrmPackageEntry
       item
         Name = 'GroupSummary'
         DataType = ftInteger
+      end
+      item
+        Name = 'TO_PIPNAME'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'TO_LIPNAME'
+        DataType = ftString
+        Size = 50
       end
       item
         Name = 'AgentNo'
@@ -1722,6 +1767,10 @@ object frmPackageEntry: TfrmPackageEntry
       end
       item
         Name = 'StartPeriod'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'EndPeriod'
         DataType = ftDateTime
       end>
     IndexDefs = <>
@@ -1990,6 +2039,18 @@ object frmPackageEntry: TfrmPackageEntry
       FieldKind = fkCalculated
       FieldName = 'EndPeriod'
       Calculated = True
+    end
+    object mtUserPropFilter1: TStringField
+      DisplayWidth = 50
+      FieldName = 'Filter1'
+    end
+    object mtUserPropFilter2: TStringField
+      DisplayWidth = 255
+      FieldName = 'Filter2'
+    end
+    object mtUserPropName: TStringField
+      FieldName = 'Name'
+      Size = 50
     end
   end
   object ds_LIP2: TDataSource
