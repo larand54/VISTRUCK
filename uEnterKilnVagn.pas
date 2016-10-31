@@ -76,6 +76,7 @@ type
     procedure acRemovePackageExecute(Sender: TObject);
     procedure acPickPackagesExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     RowNo : Integer ;
@@ -114,6 +115,33 @@ end;
 procedure TfEnterKilnVagn.FormCreate(Sender: TObject);
 begin
  RowNo  := 1 ;
+end;
+
+procedure TfEnterKilnVagn.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+// if AcceptInput then
+// Begin
+
+  if (Key = #13) and (Length(mePackageNo.Text) > 0) then
+  Begin
+     Try
+       GetpackageNoEntered(Sender, mePackageNo.Text) ;
+
+      mePackageNo.Text:= '' ;
+     Except
+      mePackageNo.Text:= '' ;
+     End ;
+  End
+  else
+   Begin
+     if key in ['S','0','1','2','3','4','5','6','7','8','9'] then
+      mePackageNo.Text:= mePackageNo.Text + Key ;
+   End ;
+
+   Self.SetFocus ;
+// End
+//  else
+//  ShowMessage('upptagen...') ;
 end;
 
 procedure TfEnterKilnVagn.FormShow(Sender: TObject);
@@ -346,80 +374,15 @@ var
   ErrorText,
   RegPointName      : String ;
 begin
- if Key <> VK_RETURN then Exit;
- if Length(mePackageNo.Text) > 0 then
- GetpackageNoEntered(Sender, mePackageNo.Text) ;
- Timer1.Enabled   := True ;
- mePackageNo.Text := '' ;
+{
+   if Key <> VK_RETURN then Exit;
+   if Length(mePackageNo.Text) > 0 then
+   GetpackageNoEntered(Sender, mePackageNo.Text) ;
+   Timer1.Enabled   := True ;
+   mePackageNo.Text := '' ;
 
- (*
+}
 
- if Key <> VK_RETURN then
-  Exit ;
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;
-
-
-  try
-  Error := False ;
-
-  NewValue := IntToStr(StrToIntDef(mePackageNo.Text,0)) ;
-
-
-
-   Action := IdentifyPackageSupplier(
-      StrToInt(NewValue),
-      PkgSupplierCode,
-      ProductNo,
-      Res_UserName );
-
-{  if Action = eaACCEPT then
-  Begin
-   RegPointName:= dmPkgs.IsPkgAvregistrerat (StrToInt(NewValue), mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
-   if RegPointName <> 'NO' then
-   Begin
-    Action:= eaAlreadyAvReg ;
-   End
-    else
-     Action := eaAccept ;
-  End ; }
-
-  if Action = eaACCEPT then
-  Begin
-   AddPkgsToVagn(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
-   //dmPkgs.mtLoadPackages.Insert ;
-   //AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
-   Error  := False ;
-  End
-   else
-   if Action = eaREJECT then
-    Begin
-     Error     := True ;
-     ErrorText  := 'Paketnr '+NewValue+' finns inte' ;
-    End
-    else
-     if Action = eaReserved then
-     Begin
-      Error     := True ;
-      ErrorText := 'Paketnr '+NewValue+' är reserverat av användare '+Res_UserName ;
-     End
-      else
-       if Action = eaAlreadyAvReg then
-       Begin
-        Error     := True ;
-        ErrorText := 'Paketnr ' + NewValue + '/' + PkgSupplierCode + ' är redan avregistrerat mot mätpunkt ' + RegPointName ;
-       End ;
-
-    if Error then
-    begin
-   //  if mtUserPropGroupByBox.AsInteger = 0 then
-      ShowMessage(ErrorText) ;
-    end;
-
-  finally
-    Screen.Cursor         := Save_Cursor;  { Always restore to normal }
-  //  TAvRegPkgNo.Enabled   := True ;
-  end;     *)
 end;
 
 procedure TfEnterKilnVagn.Timer1Timer(Sender: TObject);

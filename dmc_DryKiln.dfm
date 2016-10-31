@@ -50,7 +50,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.12.00 Standard Edition'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -996,5 +996,64 @@
     DataSet = cds_KilnChargeHeader
     Left = 120
     Top = 72
+  end
+  object cds_Kiln: TFDQuery
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select KP.*'
+      'FROM dbo.Kilns KP '
+      'WHERE KP.KilnNo = :KilnNo')
+    Left = 775
+    Top = 400
+    ParamData = <
+      item
+        Name = 'KILNNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_KilnClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnKilnNo: TIntegerField
+      FieldName = 'KilnNo'
+      Origin = 'KilnNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnKilnName: TStringField
+      FieldName = 'KilnName'
+      Origin = 'KilnName'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object cds_KilnNoOfVagnar: TIntegerField
+      FieldName = 'NoOfVagnar'
+      Origin = 'NoOfVagnar'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnTypeOfKiln: TIntegerField
+      FieldName = 'TypeOfKiln'
+      Origin = 'TypeOfKiln'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnNoOfVagnarBefore: TIntegerField
+      FieldName = 'NoOfVagnarBefore'
+      Origin = 'NoOfVagnarBefore'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnTypeOfLine: TIntegerField
+      FieldName = 'TypeOfLine'
+      Origin = 'TypeOfLine'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnIMPNo: TIntegerField
+      FieldName = 'IMPNo'
+      Origin = 'IMPNo'
+      ProviderFlags = [pfInUpdate]
+    end
   end
 end

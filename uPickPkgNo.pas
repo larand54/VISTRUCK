@@ -7,9 +7,9 @@ uses
   Dialogs, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, ExtCtrls, StdCtrls, Buttons, 
+  cxGridDBTableView, cxGrid, ExtCtrls, StdCtrls, Buttons,
   ActnList, DBActns, dxBar, dxBarExtItems, kbmMemTable, cxMaskEdit,
-  cxCheckBox, cxCalendar, cxContainer, 
+  cxCheckBox, cxCalendar, cxContainer,
   cxTextEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
   cxDBLookupComboBox, cxLabel, FMTBcd, DBClient, Provider, SqlExpr,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
@@ -28,7 +28,8 @@ uses
   dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter,
   dxSkinsdxBarPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  Vcl.Menus, cxButtons, siComp, siLngLnk, System.Actions;
+  Vcl.Menus, cxButtons, siComp, siLngLnk, System.Actions, cxGridCustomPopupMenu,
+  cxGridPopupMenu;
 
   const ProductAndLength = 1 ;
   MatchingProduct = 2 ;
@@ -36,6 +37,8 @@ uses
   ShowAllAddLOPkgs = 4 ;
   ShowTM = 5 ;
   ShowLIP = 6 ;
+  ShowLOPlusRef = 7 ;
+
 
 type
   TfPickPkgNo = class(TForm)
@@ -108,7 +111,6 @@ type
     cds_ProdInLager: TFDQuery;
     cds_ProdInLagerProductDisplayName: TStringField;
     cds_ProdInLagerProductNo: TIntegerField;
-    grdPickPkgNosDBTableView1HTFStatus: TcxGridDBColumn;
     sq_PaketListaStatusHTF: TStringField;
     cxStyleRepository1: TcxStyleRepository;
     cxStyleYellow: TcxStyle;
@@ -162,6 +164,10 @@ type
     cds_LIP2LIPName: TStringField;
     mtPropsLIP: TStringField;
     siLangLinked_fPickPkgNo: TsiLangLinked;
+    cxButton2: TcxButton;
+    cxGridPopupMenu1: TcxGridPopupMenu;
+    Label6: TLabel;
+    LabelReferens: TLabel;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ds_SelectedPkgNoDataChange(Sender: TObject; Field: TField);
@@ -180,6 +186,7 @@ type
     procedure acShowPkgsUsingSearchExecute(Sender: TObject);
     procedure acSelectMarkedRowsExecute(Sender: TObject);
     procedure acShowMatchingLIPExecute(Sender: TObject);
+    procedure cxButton2Click(Sender: TObject);
   private
     { Private declarations }
     ButtonDown : Integer ;
@@ -189,6 +196,7 @@ type
   public
     { Public declarations }
 
+   Referens : String ;
    ObjectType, LONo, ProductNo, ProductLengthNo, PIPNo : Integer ;
    ALMM : String ;
   end;
@@ -291,10 +299,6 @@ Begin
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
   Add('pn.Status = 1') ;
-
-
-
-
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pt.productno = '+IntToStr(ProductNo)) ;
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
@@ -309,21 +313,10 @@ Begin
    Add('ptd.packagetypeno = pn.packagetypeno') ;
    Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
    Add('and 1= (Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo)) ') ;
-
-{
-   Add('and '+inttostr(productlengthno)+' in (Select ptd.productlengthno from dbo.PackageTypeDetail ptd') ;
-   Add('inner join dbo.ProductLength pl on pl.productlengthno = ptd.productlengthno') ;
-   Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo') ;
-   Add('WHERE') ;
-   Add('ptd.packagetypeno = pn.packagetypeno') ;
-   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
-   Add('and 1= (Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo)) ') ;
-   }
   End ;
   End //lbShowMatchingProductAndLength
   else
- // if lbShowMatchingProduct.Down then
- if ButtonDown = MatchingProduct then
+  if ButtonDown = MatchingProduct then
   Begin
   cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_6' (* 'Urval produkt' *) ) ;
   Clear ;
@@ -409,8 +402,6 @@ Begin
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
   Add('pn.Status = 1') ;
-
-
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pt.productno = '+IntToStr(ProductNo)) ;
 
@@ -427,7 +418,7 @@ Begin
   Add('pgrm.SupplierCode = pn.SupplierCode)') ;
   End //lbShowAddLOPkgsWithMatchingProduct
   else
-//  if lbShowAllAddLOPkgs.Down then
+
   if ButtonDown = ShowAllAddLOPkgs then
   Begin
   cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_16' (* 'Urval add LO' *) ) ;
@@ -466,12 +457,7 @@ Begin
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
   Add('pn.Status = 1') ;
-
-
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
-//  Add('AND pt.productno = '+IntToStr(ProductNo)) ;
-
-//Visa bara paket som fanns på tillhörande ADD LO
   Add('AND pn.PackageNo in (Select LD.PackageNo FROM') ;
   Add('dbo.SupplierShippingPlan SSP') ;
   Add('Inner Join dbo.LoadShippingPlan LS ON 	LS.ShippingPlanNo = SSP.ShippingPlanNo') ;
@@ -484,7 +470,6 @@ Begin
   Add('pgrm.SupplierCode = pn.SupplierCode)') ;
   End
   else
-//  if lbShowTM.Down then
   if ButtonDown = ShowTM then
   Begin
   cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_21' (* 'Urval TM' *) ) ;
@@ -534,10 +519,10 @@ Begin
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
   Add('pgrm.SupplierCode = pn.SupplierCode)') ;
   End
-
-    else
-//  if lbShowTM.Down then
+  else
   if ButtonDown = ShowLIP then
+  Begin
+  if mtPropsLIPNo.AsInteger > 0 then
   Begin
   cxLabel_Val.Caption := siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_26' (* 'Urval Lagergrupp' *) ) ;
   Clear ;
@@ -576,13 +561,63 @@ Begin
   Add('WHERE') ;
   Add('pn.Status = 1') ;
   Add('AND LIP.LogicalInventoryPointNo = ' + mtPropsLIPNo.AsString) ;
-//  Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
+
+  Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
+  Add('pgrm.SupplierCode = pn.SupplierCode)') ;
+  End
+  else
+  showmessage('Select inventory group!') ;
+  End
+  else
+  if ButtonDown = ShowLOPlusRef then
+  Begin
+  cxLabel_Val.Caption := 'Urval LO&&Referens' ;
+  Clear ;
+  Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
+  Add('pt.productno,') ;
+  Add('ptl.PcsPerLength,') ;
+  Add('pt.Totalm3Actual AS AM3,') ;
+  Add('pt.TotalNoOfPieces AS STYCK,') ;
+  Add('pn.DateCreated,') ;
+  Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
+  Add('p.ProductDisplayName AS Produkt,') ;
+  Add('CASE') ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
+  Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
+  Add('End AS StatusHTF,') ;
+  Add('PN.REFERENCE,') ;
+  Add('PN.BL_NO,') ;
+  Add('PN.Info2,') ;
+
+  Add('ps.PackageSizeName AS Paketstorlek,') ;
+  Add('cw.CertShortName AS Certfiering') ;
+  Add('From dbo.packagenumber pn') ;
+  Add('Left Outer Join dbo.PackageSize ps on ps.PackageSizeNo = pn.Package_Size') ;
+  Add('and ps.LanguageCode = 1') ;
+  Add('Left Outer join dbo.CertificationWood cw on cw.CertNo = pn.CertNo') ;
+
+  Add('Inner Join dbo.packagetype pt on pt.packagetypeno = pn.packagetypeno') ;
+  Add('Inner Join dbo.product p on p.productno = pt.productno') ;
+  Add('Inner Join dbo.PackageTypeLengths ptl on ptl.packagetypeno = pn.packagetypeno') ;
+  Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo') ;
+  Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
+  Add('and htf.prefix = pn.suppliercode') ;
+  Add('WHERE') ;
+  Add('pn.Status = 1') ;
+  Add('AND LIP.PhysicalInventoryPointNo = ' + IntToStr(PIPNo)) ;
+  Add('AND pn.REFERENCE = ' + QuotedStr(IntToStr(LONo) + '/' + Referens)) ;
+
 {
-    Add('AND pg.ActualThicknessMM in (Select pg2.ActualThicknessMM ') ;
-    Add('FROM dbo.productGroup pg2') ;
-    Add('Inner Join dbo.product p2 on p2.productGroupno = pg2.productGroupno') ;
-    Add('WHERE p2.productno = ' + IntToStr(ProductNo)) ;
-    Add('AND pg2.ActualWidthMM = pg.ActualWidthMM)') ;
+    Add('AND pn.PackageNo in (Select LD.PackageNo FROM') ;
+    Add('dbo.SupplierShippingPlan SSP') ;
+    Add('Inner Join dbo.LoadShippingPlan LS ON 	LS.ShippingPlanNo = SSP.ShippingPlanNo') ;
+    Add('Inner Join dbo.LoadDetail LD             ON LD.LoadNo = LS.LoadNo') ;
+    Add('AND LD.ShippingPlanNo = LS.ShippingPlanNo') ;
+    Add('WHERE LD.SupplierCode = pn.SupplierCode') ;
+    Add('AND SSP.LO_No = '+IntToStr(LONo)+')') ;
 }
 
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
@@ -641,18 +676,12 @@ Begin
 
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
 
- { Add('AND pg.ActualThicknessMM in (Select pg2.ActualThicknessMM ') ;
-  Add('FROM dbo.productGroup pg2') ;
-  Add('Inner Join dbo.product p2 on p2.productGroupno = pg2.productGroupno') ;
-  Add('WHERE p2.productno = '+IntToStr(ProductNo)) ;
-  Add('AND pg2.ActualWidthMM = pg.ActualWidthMM)') ; }
-
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
   Add('pgrm.SupplierCode = pn.SupplierCode)') ;
   End ;
 
 
-//  if ThisUser.UserID = 8 then SaveToFile('sq_PaketLista.TXT') ;
+  if ThisUser.UserID = 258 then SaveToFile('sq_PaketLista.TXT') ;
  End ; //With
 End ;
 
@@ -835,6 +864,12 @@ begin
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
 // End ;//with
+end;
+
+procedure TfPickPkgNo.cxButton2Click(Sender: TObject);
+begin
+  ButtonDown  := ShowLOPlusRef ;
+  Refresh ;
 end;
 
 procedure TfPickPkgNo.acSelectMarkedRowsExecute(Sender: TObject);

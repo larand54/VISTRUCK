@@ -245,6 +245,9 @@ type
     mtUserPropCustomerNo: TIntegerField;
     mtUserPropShowProduct: TIntegerField;
     siLangLinked_fchgPkgVard: TsiLangLinked;
+    mtUserPropFilter1: TStringField;
+    mtUserPropFilter2: TStringField;
+    mtUserPropName: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure bcStdLenGrpChange(Sender: TObject);
@@ -290,6 +293,7 @@ type
     procedure grdPaketDBBandedTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; out AStyle: TcxStyle);
+    procedure mtUserPropOwnerNoChange(Sender: TField);
   private
     { Private declarations }
 
@@ -407,7 +411,8 @@ begin
 
   dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
   mtUserProp.Edit ;
-  mtUserPropVerkNo.AsInteger:= mtUserPropOwnerNo.AsInteger ;
+  mtUserPropVerkNo.AsInteger      := mtUserPropOwnerNo.AsInteger ;
+  mtUserPropProducerNo.AsInteger  := mtUserPropOwnerNo.AsInteger ;
   mtUserProp.Post ;
 
   fFirstLengthColumn:= 2 ;
@@ -1012,6 +1017,12 @@ begin
  mtUserPropProductDescription.AsString  := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
  mtUserPropLIPChange.AsInteger          := 0 ;
  mtUserPropVerkNo.AsInteger             := 0 ;
+end;
+
+procedure TfchgPkgVard.mtUserPropOwnerNoChange(Sender: TField);
+begin
+  mtUserPropVerkNo.AsInteger      := mtUserPropOwnerNo.AsInteger ;
+  mtUserPropProducerNo.AsInteger  := mtUserPropOwnerNo.AsInteger ;
 end;
 
 function TfchgPkgVard.PackagesValidToSave : Integer ;

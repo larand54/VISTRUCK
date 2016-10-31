@@ -10854,6 +10854,7 @@ object dmInventory: TdmInventory
     Top = 896
   end
   object sp_Positioner: TFDStoredProc
+    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Positioner'
     Left = 336
@@ -10935,7 +10936,6 @@ object dmInventory: TdmInventory
         ParamType = ptInput
       end>
   end
-<<<<<<< HEAD
   object mtScannedPkgs: TFDMemTable
     AfterPost = mtScannedPkgsAfterPost
     AfterDelete = mtScannedPkgsAfterDelete
@@ -11194,7 +11194,7 @@ object dmInventory: TdmInventory
       'WHERE ProductionUnitNo = :ProductionUnitNo')
     Left = 536
     Top = 952
-=======
+  end
   object sq_UserLipNoExists: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
@@ -11220,6 +11220,5 @@ object dmInventory: TdmInventory
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
->>>>>>> origin/master
   end
 end

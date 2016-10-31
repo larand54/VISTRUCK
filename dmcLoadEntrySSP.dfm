@@ -2,7 +2,7 @@
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 823
-  Width = 1026
+  Width = 1095
   object ds_LoadHead: TDataSource
     DataSet = cds_LoadHead
     Left = 32
@@ -509,7 +509,7 @@
       ''
       'WHERE'
       'LSP.LoadNo = :LoadNo'
-      '')
+      'and ssp.ObjectType < 3')
     Left = 120
     Top = 24
     ParamData = <
@@ -3293,7 +3293,6 @@
     end
   end
   object cds_Props: TFDQuery
-    Active = True
     AfterInsert = cds_PropsAfterInsert
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
@@ -3625,7 +3624,7 @@
       end>
   end
   object cds_SaveFormSettings: TFDQuery
-    AfterInsert = cds_PropsAfterInsert
+    AfterInsert = cds_SaveFormSettingsAfterInsert
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

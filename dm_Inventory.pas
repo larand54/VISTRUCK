@@ -1350,7 +1350,7 @@ type
     sp_UsersOutputProdunitsPosition: TStringField;
     dsUserOutput: TDataSource;
     sp_ChangeSelectedOutput: TFDStoredProc;
-<<<<<<< HEAD
+
     mtScannedPkgs: TFDMemTable;
     mtScannedPkgsPackageNo: TIntegerField;
     mtScannedPkgsPefix: TStringField;
@@ -1379,11 +1379,11 @@ type
     sp_UsersOutputProdunitsActive: TIntegerField;
     sp_CreateUsersOutputProdunits: TFDStoredProc;
     FDUpdateProductionUnit: TFDUpdateSQL;
-=======
+
     sq_UserLipNoExists: TFDQuery;
     sq_UserLipNoExistsUserID: TIntegerField;
     sq_UserLipNoExistsLIPNo: TIntegerField;
->>>>>>> origin/master
+
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
       var Action: TDataAction);
@@ -1433,7 +1433,7 @@ type
     KilnChargeNo,
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
-<<<<<<< HEAD
+
     procedure Set_mtUserUserID ;
     function  CheckIfColumnVisible(const DriftPlatsNamn : String) : Boolean ;
     procedure RefreshProductionUnits ;
@@ -1443,9 +1443,8 @@ type
     procedure SumPkgsPerMP(const UserID : Integer) ;
     procedure SetDataBaseRecord(const PkgNo, UserID : Integer;const SupplierCode : String) ;
     procedure ChangeClickedPackage(const NewPkgNo  : Integer;const NumberPrefix, ADisplayText,SupplierCode : String) ;
-=======
     Function  UserLipNoExists : Boolean ;
->>>>>>> origin/master
+
     procedure ChangeSelectedOutput(const ProductionUnitNo, UserID, Change, PositionID : Integer) ;
     procedure RefreshPositionerByVerkNo(const VerkNo : Integer) ;
     procedure RefreshUsersOutputProdunits (const UserID : Integer) ;

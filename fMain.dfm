@@ -52,19 +52,23 @@ object frmMain: TfrmMain
         TabOrder = 0
         object PanelBottom: TPanel
           Left = 1
-          Top = 66
+          Top = 67
           Width = 1391
-          Height = 777
+          Height = 776
           Align = alClient
           TabOrder = 0
+          Visible = False
+          ExplicitTop = 66
+          ExplicitHeight = 777
           object Panel2: TPanel
             Left = 1078
             Top = 1
             Width = 312
-            Height = 775
+            Height = 774
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
+            ExplicitHeight = 775
             object Panel3: TPanel
               Left = 1
               Top = 1
@@ -85,9 +89,10 @@ object frmMain: TfrmMain
               Left = 1
               Top = 57
               Width = 310
-              Height = 717
+              Height = 716
               Align = alClient
               TabOrder = 1
+              ExplicitHeight = 717
               object grdMatchingGridDBCardView1: TcxGridDBCardView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dmInventory.ds_Matching
@@ -232,24 +237,27 @@ object frmMain: TfrmMain
             Left = 1
             Top = 1
             Width = 1069
-            Height = 775
+            Height = 774
             Align = alClient
             TabOrder = 1
+            ExplicitHeight = 775
             object Panel4: TPanel
               Left = 1
-              Top = 720
+              Top = 719
               Width = 1067
               Height = 54
               Align = alBottom
               TabOrder = 0
+              ExplicitTop = 720
             end
             object grdPkgOutput: TcxGrid
               Left = 1
               Top = 1
               Width = 1067
-              Height = 719
+              Height = 718
               Align = alClient
               TabOrder = 1
+              ExplicitHeight = 719
               object grdPkgOutputDBTableView1: TcxGridDBTableView
                 OnMouseDown = grdPkgOutputDBTableView1MouseDown
                 Navigator.Buttons.CustomButtons = <>
@@ -343,21 +351,23 @@ object frmMain: TfrmMain
             Left = 1070
             Top = 1
             Width = 8
-            Height = 775
+            Height = 774
             HotZoneClassName = 'TcxMediaPlayer8Style'
             AlignSplitter = salRight
             Control = Panel2
             Color = clMaroon
             ParentColor = False
+            ExplicitHeight = 775
           end
         end
         object PanelTop: TPanel
           Left = 1
           Top = 1
           Width = 1391
-          Height = 65
+          Height = 66
           Align = alTop
           TabOrder = 1
+          Visible = False
           object cxButton1: TcxButton
             Left = 16
             Top = 6
@@ -600,7 +610,7 @@ object frmMain: TfrmMain
       ShortCut = 16453
     end
     object acFragaAvrop: TAction
-      Caption = 'Fr'#229'ga avrop'
+      Caption = 'Aviseringslista'
       ImageIndex = 22
     end
     object acEjFakturerat: TAction
@@ -745,6 +755,11 @@ object frmMain: TfrmMain
     object acShowAllOutput: TAction
       Caption = 'Visa alla uttag'
       OnExecute = acShowAllOutputExecute
+    end
+    object acAskAvrop: TAction
+      Caption = 'Aviseringslista'
+      ImageIndex = 32
+      OnExecute = acAskAvropExecute
     end
   end
   object imglOutbar_large: TImageList
@@ -3574,6 +3589,10 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
+          ItemName = 'dxBarLargeButton36'
+        end
+        item
+          Visible = True
           ItemName = 'dxBarLargeButton33'
         end
         item
@@ -3780,6 +3799,14 @@ object frmMain: TfrmMain
       Hint = 'Change to FastReport'
       Visible = ivAlways
       OnClick = cxbtnChangeReporterClick
+    end
+    object dxBarLargeButton35: TdxBarLargeButton
+      Action = acFragaAvrop
+      Category = 0
+    end
+    object dxBarLargeButton36: TdxBarLargeButton
+      Action = acAskAvrop
+      Category = 0
     end
     object dxBarButton1: TdxBarButton
       Action = atExit

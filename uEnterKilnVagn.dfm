@@ -10,10 +10,12 @@ object fEnterKilnVagn: TfEnterKilnVagn
   Font.Height = -14
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 120
   TextHeight = 17
@@ -36,6 +38,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
+      Enabled = False
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -44,7 +47,6 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 0
-      OnKeyDown = mePackageNoKeyDown
       Width = 325
     end
     object cxLabel1: TcxLabel
@@ -147,6 +149,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Margins.Right = 4
       Margins.Bottom = 4
       Action = acRemovePackage
+      SpeedButtonOptions.CanBeFocused = False
       TabOrder = 6
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -165,6 +168,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Margins.Right = 4
       Margins.Bottom = 4
       Action = acPickPackages
+      SpeedButtonOptions.CanBeFocused = False
       TabOrder = 7
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -196,6 +200,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Margins.Bottom = 4
       Caption = 'St'#228'ng'
       ModalResult = 1
+      SpeedButtonOptions.CanBeFocused = False
       TabOrder = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -216,6 +221,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
     Margins.Bottom = 4
     Align = alClient
     TabOrder = 2
+    TabStop = False
     object grdVagnPkgsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.First.Visible = True
@@ -240,6 +246,9 @@ object fEnterKilnVagn: TfEnterKilnVagn
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
       OptionsCustomize.DataRowSizing = True
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
       OptionsView.ColumnAutoWidth = True
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True

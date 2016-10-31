@@ -379,6 +379,7 @@ type
     cxButton8: TcxButton;
     acSaveProps: TAction;
     siLangLinked_fkilnHandling: TsiLangLinked;
+    mtUserPropName: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -703,7 +704,10 @@ begin
 //LARS Kolla upp det här peLengthFormat.ItemIndex:= 0 ;
 // OLD_peLengthFormat:= peLengthFormat.ItemIndex ;
 
-
+ if cds_Verk.Active then
+  cds_Verk.Active := False ;
+ cds_Verk.ParamByName('MainClientNo').AsInteger :=  ThisUser.CompanyNo ;
+ cds_Verk.Active := True ;
 
  SelectedVagnNo := -1 ;
 
@@ -733,7 +737,7 @@ end;
 
 procedure TfkilnHandling.FormShow(Sender: TObject);
 begin
-  ReportInProgress  := False ;
+ ReportInProgress  := False ;
  With dmInventory do
  Begin
   cds_KilnVagnar.Active := False ;
@@ -742,11 +746,9 @@ begin
 
   dmsSystem.LoadGridLayout_Special(ThisUser.UserID, Self.Name + '/' + cxGrid1DBBandedTableView1.Name, cxGrid1DBBandedTableView1.Name,
   cxGrid1DBBandedTableView1,'STD') ;
-
   dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
-
+  acPkgTypeTableExecute(Sender) ;
 end;
-
 
 //Move vagn tillbaka till i Tork
 procedure TfkilnHandling.acCancelMoveFromKilnExecute(Sender: TObject);
