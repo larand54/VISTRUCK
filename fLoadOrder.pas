@@ -459,6 +459,7 @@ type
     acPrintLO_All_Mills: TAction;
     acMailTO_Manually: TAction;
     acMailTOManually1: TMenuItem;
+    LOkontroll1: TMenuItem;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -3985,8 +3986,7 @@ Var
   FR: TFastReports;
 begin
   Lang := ThisUser.LanguageID;
-  Supplier := grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
-    .AsInteger;
+  Supplier := -1;
   LONo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
     .AsInteger;
   if LONo < 1 then
