@@ -753,14 +753,16 @@ begin
   bcLengthOption.Properties.OnChange:= Nil ;
 //  bcStdLenGrp.Enabled               := FALSE;
   lcLengthGroup.Enabled             := False ;
-  
+
   LoadAllLengths                    := False ;
   ChangeNoOfPcsEvent                := True ;
 //  mtProdSpecificLengths.Active      := True ;
   OldProductGroupNo                 := 0;
 
   mtUserProp.Edit ;
-  mtUserPropSupplierCode.AsString   := SupplierCode ;
+  if (mtUserPropSupplierCode.AsString = '') then mtUserPropSupplierCode.AsString   := SupplierCode
+  else SupplierCode := mtUserPropSupplierCode.AsString;
+  meSupplierCode.Text := SupplierCode;
 
 
    if dmsProduct.OrderType = c_Sales then
@@ -906,7 +908,7 @@ begin
   Finally
    bcLengthOption.Properties.OnChange:= bcLengthOptionPropertiesChange ;
   End ;
-  dmsProduct.SupplierCode           := mtUserPropSupplierCode.AsString ;
+ //LGA-2016-10-31 dmsProduct.SupplierCode           := mtUserPropSupplierCode.AsString ;
  End ;//with
 end;
 
@@ -1084,6 +1086,7 @@ begin
   mtUserProp.Fields.Fields[54].AsInteger  := grdPackagesDBBandedTableView1.Columns[cTOTALACTM3].Position.ColIndex ;
   mtUserProp.Fields.Fields[30].AsInteger  := grdPackagesDBBandedTableView1.Columns[cTOTALLPM].Position.ColIndex ;
   mtUserProp.Fields.Fields[31].AsInteger  := grdPackagesDBBandedTableView1.Columns[cTOTALM2].Position.ColIndex ;
+  mtUserProp.FieldByName('SupplierCode').AsString := meSupplierCode.Text;
   mtUserProp.Post ;
 
   dm_UserProps.SaveUserProps('TfrmPackageEntry', mtUserProp) ;

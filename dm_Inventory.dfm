@@ -10854,7 +10854,6 @@ object dmInventory: TdmInventory
     Top = 896
   end
   object sp_Positioner: TFDStoredProc
-    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Positioner'
     Left = 336
