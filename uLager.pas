@@ -1039,18 +1039,18 @@ begin
 
 
 
-  if cds_Props.State in [dsBrowse] then
-  cds_Props.Edit ;
+  if self.cds_Props.State in [dsBrowse] then
+    self.cds_Props.Edit ;
 
-  cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
+  self.cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
 
-  cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
+  self.cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
 
-  cds_Props.Post ;
-  if cds_Props.ChangeCount > 0 then
+  self.cds_Props.Post ;
+  if self.cds_Props.ChangeCount > 0 then
   Begin
-   cds_Props.ApplyUpdates(0) ;
-   cds_Props.CommitUpdates ;
+   self.cds_Props.ApplyUpdates(0) ;
+   self.cds_Props.CommitUpdates ;
   End ;
 
 
@@ -1249,18 +1249,18 @@ begin
   For x := grdDBBandedPerPaketNr.ColumnCount -1  downto cFirstLengthFieldNumberPaketnr do
     grdDBBandedPerPaketNr.Columns[x].Free ;
 
-  if cds_Props.State in [dsBrowse] then
-  cds_Props.Edit ;
+  if self.cds_Props.State in [dsBrowse] then
+  self.cds_Props.Edit ;
 
-  cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
+  self.cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
 
-  cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
+  self.cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
 
-  cds_Props.Post ;
-  if cds_Props.ChangeCount > 0 then
+  self.cds_Props.Post ;
+  if self.cds_Props.ChangeCount > 0 then
   Begin
-   cds_Props.ApplyUpdates(0) ;
-   cds_Props.CommitUpdates ;
+   self.cds_Props.ApplyUpdates(0) ;
+   self.cds_Props.CommitUpdates ;
   End ;
 
  // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
@@ -1284,18 +1284,18 @@ begin
   For x := grdDBBandedPerSortiment.ColumnCount -1  downto cFirstLengthFieldNumber do
     grdDBBandedPerSortiment.Columns[x].Free ;
 
-  if cds_Props.State in [dsBrowse] then
-  cds_Props.Edit ;
+  if self.cds_Props.State in [dsBrowse] then
+  self.cds_Props.Edit ;
 
-  cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
+  self.cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
 
-  cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
+  self.cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
 
-  cds_Props.Post ;
-  if cds_Props.ChangeCount > 0 then
+  self.cds_Props.Post ;
+  if self.cds_Props.ChangeCount > 0 then
   Begin
-   cds_Props.ApplyUpdates(0) ;
-   cds_Props.CommitUpdates ;
+   self.cds_Props.ApplyUpdates(0) ;
+   self.cds_Props.CommitUpdates ;
   End ;
 
  // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
@@ -1318,18 +1318,18 @@ begin
   For x := grdBoTDBBandedPerPosition.ColumnCount -1  downto cFirstLengthFieldNumber do
     grdBoTDBBandedPerPosition.Columns[x].Free ;
 
-  if cds_Props.State in [dsBrowse] then
-  cds_Props.Edit ;
+  if self.cds_Props.State in [dsBrowse] then
+  self.cds_Props.Edit ;
 
-  cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
+  self.cds_PropsSalesPersonNo.AsInteger  := cxStyleHeaderSortimentsVy.Font.Size ;
 
-  cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
+  self.cds_PropsAgentNo.AsInteger        := cxStyleContent.Font.Size ;
 
-  cds_Props.Post ;
-  if cds_Props.ChangeCount > 0 then
+  self.cds_Props.Post ;
+  if self.cds_Props.ChangeCount > 0 then
   Begin
-   cds_Props.ApplyUpdates(0) ;
-   cds_Props.CommitUpdates ;
+   self.cds_Props.ApplyUpdates(0) ;
+   self.cds_Props.CommitUpdates ;
   End ;
 
  // if grdDBBandedPerSortiment.DataController.DataSet.RecordCount > 0 then
@@ -1623,8 +1623,8 @@ Begin
   1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
+  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'KG PER SÄCK' ;
  End ;
-
 End ;
 
 procedure TfLager.SetHeadersCaptionPositionVy ;
@@ -1634,6 +1634,7 @@ Begin
   1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
+  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'KG PER SÄCK' ;
  End ;
 
 End ;
@@ -2371,7 +2372,6 @@ begin
    cds_PLIP.Next ;
   End ;
   cds_PLIP.Active:= False ;
-
 end;
 
 procedure TfLager.RefreshPkgNos(Sender: TObject;const ALMM : Integer) ;
@@ -2856,7 +2856,7 @@ Begin
   Begin
 
    For x:= cFirstLengthFieldNumberPkgDtl to sp_invpivPkgDtl.FieldCount - 1 do
-   if (cds_PropsLengthVolUnitNo.AsInteger = 0) or (cds_PropsLengthVolUnitNo.AsInteger = 3) then
+   if (self.cds_PropsLengthVolUnitNo.AsInteger = 0) or (self.cds_PropsLengthVolUnitNo.AsInteger = 3) then
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###'
     else
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###.0';
@@ -2888,7 +2888,7 @@ begin
  Try
  LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
  grdDBBandedPerPaketNr.ClearItems ;
- dmInventory.Refresh_sp_invpivPkg(LIPs, cds_PropsLengthVolUnitNo.AsInteger, cds_PropsOwnerNo.AsInteger,
+ dmInventory.Refresh_sp_invpivPkg(LIPs, self.cds_PropsLengthVolUnitNo.AsInteger, self.cds_PropsOwnerNo.AsInteger,
  StrToFloatDef(eAT.Text,0), StrToFloatDef(eAB.Text,0),
  eReference.Text, eBL.Text) ;
  Try
@@ -3480,7 +3480,7 @@ begin
     mtPkgNos.Insert ;
     mtPkgNosPackageNo.AsInteger := ADataSet.FieldByName('Paketnr').AsInteger ;
     mtPkgNosSupp_Code.AsString  := ADataSet.FieldByName('Prefix').AsString ;
-    mtPkgNosOwnerNo.AsInteger   := cds_PropsOwnerNo.AsInteger ;//ADataSet.FieldByName('OwnerNo').AsInteger ;
+    mtPkgNosOwnerNo.AsInteger   := self.cds_PropsOwnerNo.AsInteger ;//ADataSet.FieldByName('OwnerNo').AsInteger ;
     mtPkgNosPIPNo.AsInteger     := ADataSet.FieldByName('PIPNo').AsInteger ;
     mtPkgNosLIPNo.AsInteger     := ADataSet.FieldByName('LIPNo').AsInteger ;
     mtPkgNosStatus.AsInteger    := 1 ;// ADataSet.FieldByName('Status').AsInteger ;
@@ -3905,7 +3905,7 @@ Begin
   Begin
 
    For x:= cFirstLengthFieldNumberPosition to sp_Vis_LagerPOS_v1.FieldCount - 1 do
-   if (cds_PropsLengthVolUnitNo.AsInteger = 0) or (cds_PropsLengthVolUnitNo.AsInteger = 3) then
+   if (self.cds_PropsLengthVolUnitNo.AsInteger = 0) or (self.cds_PropsLengthVolUnitNo.AsInteger = 3) then
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###'
     else
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###.0';

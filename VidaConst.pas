@@ -178,6 +178,7 @@ const
   STATUS_PRODUCTION_COMPLETE = 6 ;
   STATUS_ANNULERAD   = 7 ;
   STATUS_ANNULERAD_BEKRAFTAD = 8 ;
+  STATUS_KLU = 9;
 
 //Skulle nog vara 2 statusar kanske ???
 // en som har 3 lägen : progress, complete och cancel

@@ -460,6 +460,7 @@ type
     acMailTO_Manually: TAction;
     acMailTOManually1: TMenuItem;
     LOkontroll1: TMenuItem;
+    dxBarButton35: TdxBarButton;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -580,6 +581,7 @@ type
     procedure acPrintLO_Your_MillExecute(Sender: TObject);
     procedure acPrintLO_All_MillsExecute(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
+    procedure dxBarButton35Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -3872,6 +3874,11 @@ begin
  //generera för alla laster
  Generate_AllLoads_samLastData(Sender) ;
  SPEC_ALLA_LASTER_MARKERADE(Sender) ;
+end;
+
+procedure TfrmVisTruckLoadOrder.dxBarButton35Click(Sender: TObject);
+begin
+  SetLOStatus(Sender, STATUS_KLU);
 end;
 
 procedure TfrmVisTruckLoadOrder.acCloseExecute(Sender: TObject);
