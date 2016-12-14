@@ -3,7 +3,7 @@
         <ProjectGuid>{8743B446-FAAE-4E65-93E0-6A05B554552C}</ProjectGuid>
         <MainSource>VISTRUCK.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>

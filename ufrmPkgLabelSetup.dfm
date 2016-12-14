@@ -32,25 +32,25 @@ object frmPkgLabelSetup: TfrmPkgLabelSetup
     Left = 24
     Top = 16
     Width = 81
-    Height = 105
+    Height = 81
     Caption = 'Dimension'
     ItemIndex = 0
     Items.Strings = (
       'mm'
-      'tum'
-      'fot')
+      'tum')
     TabOrder = 0
   end
   object rgbLength: TRadioGroup
     Left = 128
     Top = 16
     Width = 81
-    Height = 81
+    Height = 105
     Caption = 'L'#228'ngd'
     ItemIndex = 0
     Items.Strings = (
       'mm'
-      'tum')
+      'tum'
+      'fot')
     TabOrder = 1
   end
   object rgbLanguage: TRadioGroup
