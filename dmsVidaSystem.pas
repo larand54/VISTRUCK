@@ -1453,14 +1453,16 @@ Begin
       else if pFieldName = 'UserDir' then
           result := ExtractFilePath(ParamStr(0))
       else
-        result := dmsConnector.DriveLetter + 'VIS\TEMP\';
+        result :=  'c:\VIS\TEMP\';
       exit;
     end;
   {$ENDIF}
     if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
     begin
       if pFieldName = 'UserDir' then
-          result := ExtractFilePath(ParamStr(0));
+          result := ExtractFilePath(ParamStr(0))
+      else
+        result := 'C:\VIS\TEMP\';
       exit;
     end;
   cds_Props.Active := False;
@@ -1472,7 +1474,7 @@ Begin
     Result := cds_Props.FieldByName(pFieldName).AsString;
   End
   else
-    Result := 'C:\';
+    Result := 'C:\Temp\';
   cds_Props.Active := False;
 End ;
 

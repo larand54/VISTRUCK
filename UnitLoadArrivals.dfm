@@ -5,12 +5,12 @@ object frmLoadArrivals: TfrmLoadArrivals
   Align = alClient
   BorderStyle = bsNone
   Caption = 'frmLoadArrivals'
-  ClientHeight = 927
-  ClientWidth = 1486
+  ClientHeight = 753
+  ClientWidth = 1207
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -23,35 +23,24 @@ object frmLoadArrivals: TfrmLoadArrivals
   OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  ExplicitWidth = 320
-  ExplicitHeight = 240
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 612
-    Width = 1486
+    Top = 496
+    Width = 1207
     Height = 8
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salBottom
     Control = Panel5
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
-    Top = 145
-    Width = 1486
-    Height = 467
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 118
+    Width = 1207
+    Height = 378
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
@@ -300,73 +289,49 @@ object frmLoadArrivals: TfrmLoadArrivals
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1486
-    Height = 145
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Width = 1207
+    Height = 118
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
     object Panel2: TPanel
-      Left = 545
+      Left = 443
       Top = 0
-      Width = 863
-      Height = 145
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Width = 701
+      Height = 118
       Align = alClient
       TabOrder = 0
       object dxBarDockControl1: TdxBarDockControl
         Left = 1
         Top = 1
-        Width = 861
-        Height = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 699
+        Height = 45
         Align = dalTop
         BarManager = dxBarManager1
       end
       object Panel7: TPanel
         Left = 1
-        Top = 49
-        Width = 861
-        Height = 95
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Top = 46
+        Width = 699
+        Height = 71
         Align = alClient
         TabOrder = 1
         object cxLabel1: TcxLabel
-          Left = 4
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 3
+          Top = 6
           Caption = 'Mottagare:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
         end
         object lcVerk: TcxDBLookupComboBox
-          Left = 108
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 88
+          Top = 7
           TabStop = False
           DataBinding.DataField = 'Verk'
           DataBinding.DataSource = ds_Props
@@ -378,32 +343,24 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.OnCloseUp = lcVerkPropertiesCloseUp
           Style.TextStyle = [fsBold]
           TabOrder = 1
-          Width = 133
+          Width = 108
         end
         object cxLabel8: TcxLabel
-          Left = 4
-          Top = 48
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 3
+          Top = 39
           Caption = 'Leverera till:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
         end
         object lcDestination: TcxDBLookupComboBox
-          Left = 107
-          Top = 46
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 87
+          Top = 37
           TabStop = False
           DataBinding.DataField = 'Destination'
           DataBinding.DataSource = ds_Props
@@ -418,32 +375,24 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ListOptions.ShowHeader = False
           Style.TextStyle = [fsBold]
           TabOrder = 3
-          Width = 133
+          Width = 108
         end
         object cxLabel6: TcxLabel
-          Left = 249
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 202
+          Top = 7
           Caption = 'Leverant'#246'r:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
         end
         object lcInternKund: TcxDBLookupComboBox
-          Left = 367
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 298
+          Top = 6
           TabStop = False
           DataBinding.DataField = 'Kund'
           DataBinding.DataSource = ds_Props
@@ -455,32 +404,24 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ListOptions.ShowHeader = False
           Style.TextStyle = [fsBold]
           TabOrder = 5
-          Width = 152
+          Width = 124
         end
         object cxLabel7: TcxLabel
-          Left = 249
-          Top = 46
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 202
+          Top = 37
           Caption = 'Lastst'#228'lle:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
         end
         object lcLaststlle: TcxDBLookupComboBox
-          Left = 367
-          Top = 43
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 298
+          Top = 35
           TabStop = False
           DataBinding.DataField = 'Lastst'#228'lle'
           DataBinding.DataSource = ds_Props
@@ -495,15 +436,11 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ListOptions.ShowHeader = False
           Style.TextStyle = [fsBold]
           TabOrder = 7
-          Width = 152
+          Width = 124
         end
         object lcSlutKund: TcxDBLookupComboBox
-          Left = 644
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 523
+          Top = 7
           TabStop = False
           DataBinding.DataField = 'Slutkund'
           DataBinding.DataSource = ds_Props
@@ -516,38 +453,30 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ListOptions.ShowHeader = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 8
-          Width = 146
+          Width = 119
         end
         object cxLabel9: TcxLabel
-          Left = 530
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 431
+          Top = 7
           Caption = 'Kund extern:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
         end
         object cbShowOnlyVWLoads: TcxDBCheckBox
-          Left = 530
-          Top = 44
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 431
+          Top = 36
           TabStop = False
           Caption = 'Visa endast VW leveranser'
           DataBinding.DataField = 'NewItemRow'
@@ -558,54 +487,42 @@ object frmLoadArrivals: TfrmLoadArrivals
           Properties.ValueUnchecked = 0
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = 23
+          Style.Font.Height = 19
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 10
-          Width = 263
+          Width = 213
         end
       end
     end
     object Panel3: TPanel
-      Left = 1408
+      Left = 1144
       Top = 0
-      Width = 78
-      Height = 145
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Width = 63
+      Height = 118
       Align = alRight
       TabOrder = 1
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
-        Width = 76
-        Height = 48
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 61
+        Height = 45
         Align = dalTop
         BarManager = dxBarManager1
       end
       object btChangeStyle: TcxButton
-        Left = 6
-        Top = 65
-        Width = 65
-        Height = 53
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 5
+        Top = 53
+        Width = 53
+        Height = 43
         Caption = 'Styles'
         TabOrder = 1
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -18
+        Font.Height = -15
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
@@ -616,61 +533,45 @@ object frmLoadArrivals: TfrmLoadArrivals
     object Panel4: TPanel
       Left = 0
       Top = 0
-      Width = 545
-      Height = 145
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Width = 443
+      Height = 118
       Align = alLeft
       TabOrder = 2
       object cxLabel2: TcxLabel
-        Left = 14
-        Top = 94
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 11
+        Top = 76
         Caption = 'Visa:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
       end
       object cxLabel3: TcxLabel
-        Left = 14
-        Top = 20
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 11
+        Top = 16
         Caption = 'LO:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
       end
       object Edit1: TEdit
-        Left = 96
-        Top = 14
-        Width = 73
-        Height = 28
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 78
+        Top = 11
+        Width = 59
+        Height = 24
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = 23
+        Font.Height = 19
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
@@ -678,18 +579,14 @@ object frmLoadArrivals: TfrmLoadArrivals
         OnKeyDown = Edit1KeyDown
       end
       object Edit2: TEdit
-        Left = 96
-        Top = 43
-        Width = 73
-        Height = 28
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 78
+        Top = 35
+        Width = 59
+        Height = 24
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = 23
+        Font.Height = 19
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
@@ -697,46 +594,34 @@ object frmLoadArrivals: TfrmLoadArrivals
         OnKeyDown = Edit2KeyDown
       end
       object cxLabel4: TcxLabel
-        Left = 14
-        Top = 49
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 11
+        Top = 40
         Caption = 'Lastnr:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
       end
       object cxLabel5: TcxLabel
-        Left = 286
-        Top = 85
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 232
+        Top = 69
         Caption = 'Period:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
       end
       object deStartPeriod: TcxDBDateEdit
-        Left = 354
-        Top = 82
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 288
+        Top = 67
         TabStop = False
         DataBinding.DataField = 'StartPeriod'
         DataBinding.DataSource = ds_Props
@@ -745,21 +630,17 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ImmediatePost = True
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
         TabOrder = 2
-        Width = 188
+        Width = 152
       end
       object deEndPeriod: TcxDBDateEdit
-        Left = 354
-        Top = 111
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 288
+        Top = 90
         TabStop = False
         DataBinding.DataField = 'EndPeriod'
         DataBinding.DataSource = ds_Props
@@ -768,21 +649,17 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ImmediatePost = True
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
         TabOrder = 3
-        Width = 188
+        Width = 152
       end
       object cbAllaVerk: TcxDBCheckBox
-        Left = 198
-        Top = 15
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 161
+        Top = 12
         TabStop = False
         Caption = 'Alla verk'
         DataBinding.DataField = 'GradeStampNo'
@@ -793,41 +670,33 @@ object frmLoadArrivals: TfrmLoadArrivals
         Properties.ValueUnchecked = 0
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
         TabOrder = 4
         Visible = False
-        Width = 111
+        Width = 90
       end
       object btPrepareScan: TcxButton
-        Left = 354
+        Left = 288
         Top = 1
-        Width = 188
-        Height = 74
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 152
+        Height = 60
         Action = acPrepareScan
         TabOrder = 9
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = 25
+        Font.Height = 20
         Font.Name = 'MS Sans Serif'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object bcConfirmed: TcxComboBox
-        Left = 96
-        Top = 89
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 78
+        Top = 72
         TabStop = False
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
@@ -838,129 +707,101 @@ object frmLoadArrivals: TfrmLoadArrivals
           'My registered arrivals')
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clWindowText
-        Style.Font.Height = 23
+        Style.Font.Height = 19
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
         TabOrder = 10
         Text = 'New arrivals'
-        Width = 181
+        Width = 147
       end
     end
   end
   object Panel5: TPanel
     Left = 0
-    Top = 620
-    Width = 1486
-    Height = 307
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 504
+    Width = 1207
+    Height = 249
     Align = alBottom
     TabOrder = 3
     object Panel6: TPanel
       Left = 1
       Top = 1
-      Width = 1484
-      Height = 74
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Width = 1205
+      Height = 60
       Align = alTop
       TabOrder = 0
       object cxButton1: TcxButton
-        Left = 14
-        Top = 7
-        Width = 126
-        Height = 50
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 11
+        Top = 6
+        Width = 103
+        Height = 40
         Action = acSetInfo2Text
         TabOrder = 0
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
         WordWrap = True
       end
       object mePackageNo: TcxMaskEdit
-        Left = 594
-        Top = 7
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 483
+        Top = 6
         TabStop = False
         ParentFont = False
         Properties.ReadOnly = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clBlack
-        Style.Font.Height = -38
+        Style.Font.Height = -32
         Style.Font.Name = 'Verdana'
         Style.Font.Style = []
         Style.StyleController = cxEditStyleController1
         Style.IsFontAssigned = True
         TabOrder = 1
         OnKeyDown = mePackageNoKeyDown
-        Width = 570
+        Width = 463
       end
       object cxLabel10: TcxLabel
-        Left = 305
-        Top = 15
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 248
+        Top = 12
         Caption = 'Ange paketnr:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clNavy
-        Style.Font.Height = -38
+        Style.Font.Height = -32
         Style.Font.Name = 'Verdana'
         Style.Font.Style = []
         Style.IsFontAssigned = True
       end
       object cxLabelEntryMetod: TcxLabel
-        Left = 1172
-        Top = 20
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 952
+        Top = 16
       end
       object cxButton2: TcxButton
-        Left = 145
-        Top = 7
-        Width = 144
-        Height = 50
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 118
+        Top = 6
+        Width = 117
+        Height = 40
         Action = acSetPktStorlek
         TabOrder = 4
         TabStop = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
         WordWrap = True
       end
       object cxButton3: TcxButton
-        Left = 1346
+        Left = 1093
         Top = 1
-        Width = 137
-        Height = 72
+        Width = 111
+        Height = 58
         Margins.Left = 2
         Margins.Top = 2
         Margins.Right = 2
@@ -972,13 +813,9 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
     object grdPkgs: TcxGrid
       Left = 1
-      Top = 75
-      Width = 1484
-      Height = 231
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Top = 61
+      Width = 1205
+      Height = 187
       Align = alClient
       PopupMenu = pmPkgs
       TabOrder = 1
@@ -1202,23 +1039,20 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object lbLO_To_Invoice: TListBox
-    Left = 1178
-    Top = 203
-    Width = 208
-    Height = 238
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 957
+    Top = 165
+    Width = 169
+    Height = 193
+    ItemHeight = 13
     Sorted = True
     TabOrder = 5
     Visible = False
   end
   object tkNumPad: TTouchKeyboard
-    Left = 1152
-    Top = 281
-    Width = 318
-    Height = 229
+    Left = 936
+    Top = 228
+    Width = 258
+    Height = 186
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -1231,7 +1065,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (
@@ -3398,7 +3232,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object cxStyleRepository1: TcxStyleRepository
     Left = 512
     Top = 408
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyle_1: TcxStyle
       AssignedValues = [svColor, svFont]
       Color = 15138815
@@ -5899,12 +5733,12 @@ object frmLoadArrivals: TfrmLoadArrivals
     Style.Color = clInfoBk
     Left = 912
     Top = 240
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxStyleRepository2: TcxStyleRepository
     Left = 891
     Top = 184
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
       Color = clWhite

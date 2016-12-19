@@ -2,12 +2,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
   Left = 247
   Top = 145
   Caption = 'LAST (SSP)'
-  ClientHeight = 935
-  ClientWidth = 1522
+  ClientHeight = 760
+  ClientWidth = 1237
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -19,24 +19,24 @@ object fLoadEntrySSP: TfLoadEntrySSP
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object Panel3: TPanel
     Left = 0
     Top = 0
-    Width = 1522
-    Height = 935
+    Width = 1237
+    Height = 760
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
     Align = alClient
     TabOrder = 4
     object cxSplitter2: TcxSplitter
       Left = 1
-      Top = 368
-      Width = 1520
+      Top = 299
+      Width = 1235
       Height = 8
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       HotZoneClassName = 'TcxMediaPlayer8Style'
       AlignSplitter = salTop
       Control = dxPageControl1
@@ -46,9 +46,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object cxSplitter3: TcxSplitter
       Left = 1
-      Top = 568
-      Width = 1520
+      Top = 463
+      Width = 1235
       Height = 8
+      Margins.Left = 2
+      Margins.Top = 2
+      Margins.Right = 2
+      Margins.Bottom = 2
       HotZoneClassName = 'TcxMediaPlayer8Style'
       AlignSplitter = salTop
       Control = PanelLORows
@@ -57,13 +61,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object dxPageControl1: TcxPageControl
       Left = 1
-      Top = 102
-      Width = 1520
-      Height = 266
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Top = 83
+      Width = 1235
+      Height = 216
       Align = alTop
       TabOrder = 2
       Visible = False
@@ -71,34 +71,23 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Properties.CustomButtons.Buttons = <>
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.SkinName = ''
-      ClientRectBottom = 266
-      ClientRectRight = 1520
-      ClientRectTop = 27
+      ClientRectBottom = 212
+      ClientRectLeft = 4
+      ClientRectRight = 1231
+      ClientRectTop = 24
       object tsLoadData: TcxTabSheet
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
         Caption = 'Leveranshuvud'
         object pLoadHead: TPanel
           Left = 0
           Top = 0
-          Width = 1520
-          Height = 91
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 1227
+          Height = 74
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
           object detLoaded: TcxDBDateEdit
-            Left = 98
-            Top = 32
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 80
+            Top = 26
             DataBinding.DataField = 'LoadedDate'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -110,15 +99,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
             StyleFocused.LookAndFeel.Kind = lfFlat
             StyleHot.LookAndFeel.Kind = lfFlat
             TabOrder = 0
-            Width = 179
+            Width = 145
           end
           object imgcbStatus: TcxDBImageComboBox
-            Left = 98
-            Top = 62
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 80
+            Top = 50
             DataBinding.DataField = 'SenderLoadStatus'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -143,43 +128,31 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.ReadOnly = True
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 1
-            Width = 179
+            Width = 145
           end
           object teLoadID: TcxDBTextEdit
-            Left = 384
+            Left = 312
             Top = 2
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
             DataBinding.DataField = 'LoadID'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 2
-            Width = 149
+            Width = 121
           end
           object teFS: TcxDBTextEdit
-            Left = 384
-            Top = 32
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 312
+            Top = 26
             DataBinding.DataField = 'FS'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 3
-            Width = 149
+            Width = 121
           end
           object lcLocalShipper: TcxDBLookupComboBox
-            Left = 762
+            Left = 619
             Top = 2
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
             DataBinding.DataField = 'LocalShippingCompanyNo'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -193,15 +166,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.MaxLength = 0
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 4
-            Width = 178
+            Width = 145
           end
           object lcFrom: TcxDBLookupComboBox
-            Left = 762
-            Top = 32
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 619
+            Top = 26
             DataBinding.DataField = 'LocalLoadingLocation'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -215,15 +184,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.MaxLength = 0
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 5
-            Width = 178
+            Width = 145
           end
           object lcTo: TcxDBLookupComboBox
-            Left = 762
-            Top = 62
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 619
+            Top = 50
             DataBinding.DataField = 'LocalDestinationNo'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -237,158 +202,118 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.MaxLength = 0
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 6
-            Width = 178
+            Width = 145
           end
           object eLoadNo: TcxDBTextEdit
-            Left = 98
+            Left = 80
             Top = 2
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
             DataBinding.DataField = 'LoadNo'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             Enabled = False
             ParentFont = False
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 7
-            Width = 179
+            Width = 145
           end
           object cxLabel4: TcxLabel
-            Left = 10
-            Top = 7
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 8
+            Top = 6
             Caption = 'LastNr:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel5: TcxLabel
-            Left = 10
-            Top = 37
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 8
+            Top = 30
             Caption = 'Utlastad:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel6: TcxLabel
-            Left = 10
-            Top = 66
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 8
+            Top = 54
             Caption = 'Status:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel7: TcxLabel
-            Left = 305
-            Top = 10
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 248
+            Top = 8
             Caption = 'Last ID:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel8: TcxLabel
-            Left = 305
-            Top = 37
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 248
+            Top = 30
             Caption = 'FS:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel9: TcxLabel
-            Left = 594
-            Top = 7
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 483
+            Top = 6
             Caption = 'Lokalfraktf'#246'rare:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel10: TcxLabel
-            Left = 594
-            Top = 37
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 483
+            Top = 30
             Caption = 'Fr'#229'n:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel11: TcxLabel
-            Left = 594
-            Top = 66
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 483
+            Top = 54
             Caption = 'Till:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object lcLIP: TcxDBLookupComboBox
-            Left = 1113
-            Top = 32
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 904
+            Top = 26
             DataBinding.DataField = 'LIP'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -404,15 +329,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.ListOptions.ShowHeader = False
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 16
-            Width = 168
+            Width = 137
           end
           object lcPIP: TcxDBLookupComboBox
-            Left = 1113
+            Left = 904
             Top = 2
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
             DataBinding.DataField = 'PIP'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
             ParentFont = False
@@ -425,47 +346,35 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.ListOptions.ShowHeader = False
             Style.StyleController = cxEditStyleControllerEditControls
             TabOrder = 17
-            Width = 168
+            Width = 137
           end
           object cxLabel1: TcxLabel
-            Left = 948
-            Top = 7
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 770
+            Top = 6
             Caption = 'Lagerst'#228'lle:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cxLabel2: TcxLabel
-            Left = 948
-            Top = 37
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 770
+            Top = 30
             Caption = 'Lagergrupp:'
             ParentFont = False
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
           end
           object cbShowOriginalLO: TcxDBCheckBox
-            Left = 948
-            Top = 60
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 770
+            Top = 49
             Caption = 'Visa 0-LO rader'
             DataBinding.DataField = 'ShowOriginalLO'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
@@ -476,55 +385,51 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Properties.OnChange = cbShowOriginalLOPropertiesChange
             Style.Font.Charset = DEFAULT_CHARSET
             Style.Font.Color = clWindowText
-            Style.Font.Height = -18
+            Style.Font.Height = -15
             Style.Font.Name = 'Tahoma'
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
             TabOrder = 20
-            Width = 333
+            Width = 271
           end
           object btTextPad: TcxButton
-            Left = 528
-            Top = 6
-            Width = 66
-            Height = 31
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 429
+            Top = 5
+            Width = 54
+            Height = 25
             Action = acTextPad
             TabOrder = 21
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -10
+            Font.Height = -9
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
           end
           object btTextPadFS: TcxButton
-            Left = 528
-            Top = 42
-            Width = 66
-            Height = 31
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 429
+            Top = 34
+            Width = 54
+            Height = 25
             Action = acTextPadFS
             TabOrder = 22
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -15
+            Font.Height = -12
             Font.Name = 'MS Sans Serif'
             Font.Style = [fsBold]
             ParentFont = False
           end
           object BitBtn1: TBitBtn
-            Left = 1336
+            Left = 1086
             Top = 0
-            Width = 107
-            Height = 25
+            Width = 86
+            Height = 20
             Hint = #197'terst'#228'ller de flyttbara panelerna'
+            Margins.Left = 2
+            Margins.Top = 2
+            Margins.Right = 2
+            Margins.Bottom = 2
             Caption = #197'terst'#228'll formul'#228'r'
             ParentShowHint = False
             ShowHint = True
@@ -534,20 +439,20 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
         object pgrdLO: TPanel
           Left = 0
-          Top = 91
-          Width = 1520
-          Height = 50
+          Top = 74
+          Width = 1227
+          Height = 41
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Align = alTop
           TabOrder = 1
           object grdLO: TcxGrid
             Left = 1
             Top = 1
-            Width = 1518
-            Height = 48
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 1225
+            Height = 39
             Align = alClient
             TabOrder = 0
             object grdLODBTableView1: TcxGridDBTableView
@@ -734,20 +639,20 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
         object pgrdAddress: TPanel
           Left = 0
-          Top = 149
-          Width = 1520
-          Height = 60
+          Top = 123
+          Width = 1227
+          Height = 49
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Align = alTop
           TabOrder = 2
           object grdAddress: TcxGrid
             Left = 1
             Top = 1
-            Width = 1518
-            Height = 58
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 1225
+            Height = 47
             Align = alClient
             TabOrder = 0
             object grdAddressDBTableView1: TcxGridDBTableView
@@ -788,9 +693,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 141
-          Width = 1520
+          Top = 115
+          Width = 1227
           Height = 8
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           HotZoneClassName = 'TcxMediaPlayer8Style'
           AlignSplitter = salTop
           Control = pgrdLO
@@ -800,107 +709,77 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
       end
       object tsLoadNote: TcxTabSheet
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
         Caption = 'Notering'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           Align = alClient
           DataBinding.DataField = 'InternalNote'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           TabOrder = 0
-          Height = 239
-          Width = 1520
+          ExplicitWidth = 1235
+          ExplicitHeight = 194
+          Height = 188
+          Width = 1227
         end
       end
     end
     object Panel4: TPanel
       Left = 1
       Top = 1
-      Width = 1520
-      Height = 68
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Width = 1235
+      Height = 55
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 3
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 1405
-        Height = 68
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1142
+        Height = 55
         Align = alClient
         TabOrder = 0
         object dxBarDockControl1: TdxBarDockControl
           Left = 1
           Top = 1
-          Width = 1403
-          Height = 48
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 1140
+          Height = 45
           Align = dalTop
           BarManager = dxBarManager1
         end
       end
       object Panel6: TPanel
-        Left = 1405
+        Left = 1142
         Top = 0
-        Width = 35
-        Height = 68
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 28
+        Height = 55
         Align = alRight
         TabOrder = 1
         object Edit1: TEdit
-          Left = 10
-          Top = 10
+          Left = 8
+          Top = 8
           Width = 1
-          Height = 24
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Height = 21
           TabOrder = 0
           Text = 'Edit1'
         end
       end
       object Panel7: TPanel
-        Left = 1440
+        Left = 1170
         Top = 0
-        Width = 80
-        Height = 68
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 65
+        Height = 55
         Align = alRight
         TabOrder = 2
         object dxBarDockControl2: TdxBarDockControl
           Left = 1
           Top = 1
-          Width = 78
-          Height = 48
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 63
+          Height = 45
           Align = dalTop
           BarManager = dxBarManager1
         end
@@ -908,31 +787,23 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object PanelLORows: TPanel
       Left = 1
-      Top = 376
-      Width = 1520
-      Height = 192
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Top = 307
+      Width = 1235
+      Height = 156
       Align = alTop
       TabOrder = 4
       object Panel1: TPanel
         Left = 1
         Top = 1
-        Width = 1518
-        Height = 20
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1233
+        Height = 16
         Align = alTop
         BevelOuter = bvNone
         Caption = 'LASTORDERRADER'
         Color = clMaroon
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
@@ -940,13 +811,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object grdLORows: TcxGrid
         Left = 1
-        Top = 21
-        Width = 1518
-        Height = 170
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Top = 17
+        Width = 1233
+        Height = 138
         Align = alClient
         PopupMenu = ppmenuLO_Lines
         TabOrder = 1
@@ -1455,9 +1322,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object PanelNote: TPanel
       Left = 1
-      Top = 69
-      Width = 1520
-      Height = 33
+      Top = 56
+      Width = 1235
+      Height = 27
       Margins.Left = 2
       Margins.Top = 2
       Margins.Right = 2
@@ -1477,143 +1344,111 @@ object fLoadEntrySSP: TfLoadEntrySSP
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
         Style.Font.Color = clRed
-        Style.Font.Height = -18
+        Style.Font.Height = -15
         Style.Font.Name = 'MS Sans Serif'
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 0
-        Width = 1518
+        Width = 1233
       end
     end
     object PanelPackages: TPanel
       Left = 1
-      Top = 576
-      Width = 1520
-      Height = 358
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Top = 471
+      Width = 1235
+      Height = 288
       Align = alClient
       TabOrder = 6
       object Panel2: TPanel
         Left = 1
         Top = 1
-        Width = 1518
-        Height = 46
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1233
+        Height = 37
         Align = alTop
         BevelOuter = bvNone
         Color = clMaroon
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
         TabOrder = 0
         object mePackageNo: TcxMaskEdit
-          Left = 130
-          Top = 6
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 106
+          Top = 5
           ParentFont = False
           Properties.ReadOnly = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clBlack
-          Style.Font.Height = -20
+          Style.Font.Height = -16
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.IsFontAssigned = True
           TabOrder = 0
           OnKeyDown = mePackageNoKeyDown
-          Width = 268
+          Width = 217
         end
         object cxLabel3: TcxLabel
           Left = 2
-          Top = 14
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Top = 11
           Caption = 'Ange paketnr:'
           ParentFont = False
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWhite
-          Style.Font.Height = -18
+          Style.Font.Height = -15
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.IsFontAssigned = True
         end
         object cxButton1: TcxButton
-          Left = 404
-          Top = 4
-          Width = 119
-          Height = 38
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 328
+          Top = 3
+          Width = 97
+          Height = 31
           Action = acRaderaPaket
           SpeedButtonOptions.CanBeFocused = False
           TabOrder = 2
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
         end
         object cxButton2: TcxButton
-          Left = 532
-          Top = 4
-          Width = 119
-          Height = 38
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 432
+          Top = 3
+          Width = 97
+          Height = 31
           Action = acPickPkgNos
           SpeedButtonOptions.CanBeFocused = False
           TabOrder = 3
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
         end
         object cxButton3: TcxButton
-          Left = 659
-          Top = 3
-          Width = 118
-          Height = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 535
+          Top = 2
+          Width = 96
+          Height = 31
           Action = acKopplaPaketMotLOManuellt
           SpeedButtonOptions.CanBeFocused = False
           TabOrder = 4
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
         end
         object cbKopplaEjMotDublett: TcxCheckBox
-          Left = 1127
-          Top = 14
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 916
+          Top = 11
           Caption = 'Koppla ej om dublett'
           ParentBackground = False
           ParentColor = False
@@ -1621,37 +1456,33 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Style.Color = clMaroon
           Style.Font.Charset = DEFAULT_CHARSET
           Style.Font.Color = clWhite
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'MS Sans Serif'
           Style.Font.Style = []
           Style.IsFontAssigned = True
           TabOrder = 5
-          Width = 174
+          Width = 141
         end
         object btNumPad: TcxButton
-          Left = 1424
+          Left = 1157
           Top = 0
-          Width = 94
-          Height = 46
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 76
+          Height = 37
           Align = alRight
           Action = acNumPad
           TabOrder = 6
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -20
+          Font.Height = -16
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
         end
         object cxButton4: TcxButton
-          Left = 930
-          Top = 4
-          Width = 191
-          Height = 38
+          Left = 756
+          Top = 3
+          Width = 155
+          Height = 31
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -1660,16 +1491,20 @@ object fLoadEntrySSP: TfLoadEntrySSP
           TabOrder = 7
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -15
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
         end
         object cxBtnChgTreatmentInfo: TcxButton
-          Left = 1308
-          Top = 6
-          Width = 111
-          Height = 38
+          Left = 1063
+          Top = 5
+          Width = 90
+          Height = 31
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Action = acChgRef_and_Info
           TabOrder = 8
           WordWrap = True
@@ -1677,13 +1512,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object grdPkgs: TcxGrid
         Left = 1
-        Top = 47
-        Width = 1518
-        Height = 310
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Top = 38
+        Width = 1233
+        Height = 249
         Align = alClient
         TabOrder = 1
         object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
@@ -2193,28 +2024,20 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
       end
       object TouchKeyboard1: TTouchKeyboard
-        Left = 170
-        Top = 49
-        Width = 800
-        Height = 246
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 138
+        Top = 40
+        Width = 650
+        Height = 200
         GradientEnd = clSilver
         GradientStart = clGray
         Layout = 'Standard'
         Visible = False
       end
       object TouchKeyboard2: TTouchKeyboard
-        Left = 1024
-        Top = 39
-        Width = 308
-        Height = 283
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Left = 832
+        Top = 32
+        Width = 250
+        Height = 230
         GradientEnd = clSilver
         GradientStart = clGray
         Layout = 'NumPad'
@@ -2225,7 +2048,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     CanCustomize = False
@@ -4083,7 +3906,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxStyleRepository1: TcxStyleRepository
     Left = 289
     Top = 439
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyleYellow: TcxStyle
       AssignedValues = [svColor]
       Color = clYellow
@@ -4353,7 +4176,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxEditStyleControllerFileldLabels: TcxEditStyleController
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -21
+    Style.Font.Height = -17
     Style.Font.Name = 'Verdana'
     Style.Font.Style = []
     Style.LookAndFeel.Kind = lfFlat
@@ -4367,13 +4190,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
     StyleHot.LookAndFeel.Kind = lfFlat
     Left = 128
     Top = 440
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxEditStyleControllerEditControls: TcxEditStyleController
     Style.BorderStyle = ebsNone
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -20
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.ButtonStyle = btsOffice11
@@ -4383,7 +4206,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     StyleDisabled.TextColor = clNavy
     Left = 128
     Top = 392
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxGridPopupMenu1: TcxGridPopupMenu
     Grid = grdPkgs
