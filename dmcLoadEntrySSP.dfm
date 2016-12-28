@@ -183,8 +183,8 @@
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 304
-    Top = 144
+    Left = 456
+    Top = 136
     object mtLoadPackagesLONo: TIntegerField
       FieldName = 'LONo'
     end
@@ -3026,9 +3026,9 @@
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
-    StoredProcName = 'vis_chgManLoadPkgs'
+    StoredProcName = 'dbo.vis_chgManLoadPkgs'
     Left = 728
-    Top = 392
+    Top = 408
     ParamData = <
       item
         Position = 1
@@ -3233,7 +3233,7 @@
       'WHERE'
       'PL.LoadNo =:LoadNo')
     Left = 464
-    Top = 592
+    Top = 568
     ParamData = <
       item
         Name = 'LOADNO'
@@ -3267,8 +3267,8 @@
       'AND PN.SupplierCode = :SupplierCode'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
       'AND PN.Status = 1')
-    Left = 592
-    Top = 592
+    Left = 464
+    Top = 624
     ParamData = <
       item
         Name = 'PACKAGENO'
@@ -3301,8 +3301,8 @@
       'Select * FROM dbo.userprops'
       'WHERE UserID = :UserID'
       'AND Form = :Form')
-    Left = 584
-    Top = 480
+    Left = 464
+    Top = 456
     ParamData = <
       item
         Name = 'USERID'
@@ -3632,7 +3632,7 @@
       'Select UserID, Form, Filter1 FROM dbo.userprops'
       'WHERE UserID = :UserID'
       'AND Form = :Form')
-    Left = 480
+    Left = 464
     Top = 512
     ParamData = <
       item
@@ -3664,5 +3664,30 @@
       Origin = 'Filter1'
       Size = 50
     end
+  end
+  object sp_AdjustPkgArticleNoOnLoadPkgs: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_AdjustPkgArticleNoOnLoadPkgs'
+    Left = 728
+    Top = 608
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

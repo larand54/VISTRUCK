@@ -395,6 +395,7 @@ type
     cds_SaveFormSettingsFilter1: TStringField;
     cds_SaveFormSettingsUserID: TIntegerField;
     cds_SaveFormSettingsForm: TStringField;
+    sp_AdjustPkgArticleNoOnLoadPkgs: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -422,6 +423,7 @@ type
     { Private declarations }
    FOnAmbiguousPkgNo: TAmbiguityEvent;
 
+   procedure AdjustPkgArticleNoOnLoadPkgs(const LoadNo : Integer) ;
    Function  SetShowOriginalLO(const LONo : Integer) : Integer ;
    procedure LOBSetChanged (const PackageNo : Integer;Prefix : String3) ;
    procedure RemovePkgFromLoad_II(const Status, Operation : Integer) ;
@@ -611,6 +613,8 @@ begin
 
       SaveLoadPkgs  (WhenPosted, LoadNo);
 
+      //Check and change package size and articleno
+
       if cds_LoadPackages.ChangeCount > 0 then
       Begin
        cds_LoadPackages.ApplyUpdates(0) ;
@@ -619,7 +623,10 @@ begin
 
       //Om status = 2 then check and change manuell overriden packages
       if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
-      chgManLoadPkgs(LoadNo);
+      Begin
+        chgManLoadPkgs(LoadNo);
+        AdjustPkgArticleNoOnLoadPkgs(LoadNo);
+      End;
 
 //      CleanUpLoadpkgsGrid(Sender) ;
       dmsConnector.Commit ;
@@ -1730,6 +1737,23 @@ Begin
    End ;
   End;
 End;
+
+procedure TdmLoadEntrySSP.AdjustPkgArticleNoOnLoadPkgs(const LoadNo : Integer) ;
+Begin
+    Try
+    sp_AdjustPkgArticleNoOnLoadPkgs.ParamByName('@LoadNo').AsInteger := LoadNo ;
+    sp_AdjustPkgArticleNoOnLoadPkgs.ParamByName('@UserID').AsInteger := ThisUser.UserID ;
+    sp_AdjustPkgArticleNoOnLoadPkgs.ExecProc ;
+     except
+      On E: Exception do
+      Begin
+       dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+       Raise ;
+      End ;
+     end;
+End ;
+
 
 
 end.
