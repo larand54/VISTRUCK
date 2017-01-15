@@ -2,8 +2,6 @@ object dmPkgs: TdmPkgs
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Left = 289
-  Top = 132
   Height = 596
   Width = 1104
   object ds_LoadPackages: TDataSource
@@ -66,7 +64,7 @@ object dmPkgs: TdmPkgs
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -149,7 +147,7 @@ object dmPkgs: TdmPkgs
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -208,7 +206,7 @@ object dmPkgs: TdmPkgs
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2011,7 +2009,7 @@ object dmPkgs: TdmPkgs
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2310,7 +2308,7 @@ object dmPkgs: TdmPkgs
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '5.50'
+    Version = '7.63.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2563,9 +2561,9 @@ object dmPkgs: TdmPkgs
   end
   object FDsp_vida_ChgPkgVard: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'vida_ChgPkgVard'
-    Left = 824
-    Top = 24
+    StoredProcName = 'dbo.vida_ChgPkgVard_II'
+    Left = 680
+    Top = 80
     ParamData = <
       item
         Position = 1
@@ -2620,6 +2618,12 @@ object dmPkgs: TdmPkgs
         Position = 9
         Name = '@DateCreated'
         DataType = ftTimeStamp
+        ParamType = ptInput
+      end
+      item
+        Position = 10
+        Name = '@Package_Size'
+        DataType = ftInteger
         ParamType = ptInput
       end>
   end

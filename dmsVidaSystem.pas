@@ -569,6 +569,10 @@ type
     cds_PkgLayoutsPrintFileName: TStringField;
     ds_PkgLayouts: TDataSource;
     sp_UserPerm: TFDStoredProc;
+    ds_Package_Size: TDataSource;
+    cds_Package_Size: TFDQuery;
+    cds_Package_SizePackageSizeNo: TIntegerField;
+    cds_Package_SizePackageSizeName: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);

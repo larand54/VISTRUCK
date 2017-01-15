@@ -34,7 +34,7 @@ object fchgPkgVard: TfchgPkgVard
     Left = 0
     Top = 48
     Width = 1244
-    Height = 279
+    Height = 309
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
@@ -163,7 +163,7 @@ object fchgPkgVard: TfchgPkgVard
       Left = 414
       Top = 5
       Width = 788
-      Height = 161
+      Height = 189
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
@@ -380,7 +380,7 @@ object fchgPkgVard: TfchgPkgVard
     end
     object Panel1: TPanel
       Left = 1
-      Top = 171
+      Top = 201
       Width = 1242
       Height = 107
       Margins.Left = 4
@@ -390,6 +390,7 @@ object fchgPkgVard: TfchgPkgVard
       Align = alBottom
       Caption = 'Panel1'
       TabOrder = 13
+      ExplicitTop = 171
       object Panel3: TPanel
         Left = 1
         Top = 1
@@ -654,7 +655,7 @@ object fchgPkgVard: TfchgPkgVard
     end
     object cxButton2: TcxButton
       Left = 526
-      Top = 128
+      Top = 127
       Width = 92
       Height = 31
       Margins.Left = 4
@@ -664,29 +665,60 @@ object fchgPkgVard: TfchgPkgVard
       Action = acResetChangeValues
       TabOrder = 17
     end
+    object cxLabel6: TcxLabel
+      Left = 437
+      Top = 171
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Caption = 'Paketstorlek:'
+    end
+    object lcPackage_Size: TcxDBLookupComboBox
+      Left = 526
+      Top = 166
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      DataBinding.DataField = 'Package_Size'
+      DataBinding.DataSource = dsUserProp
+      Properties.ClearKey = 46
+      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownRows = 10
+      Properties.ImmediatePost = True
+      Properties.ListColumns = <>
+      Properties.ListOptions.ShowHeader = False
+      Properties.MaxLength = 0
+      TabOrder = 19
+      Width = 178
+    end
   end
   object Panel6: TPanel
     Left = 0
-    Top = 327
+    Top = 357
     Width = 1244
-    Height = 360
+    Height = 330
     Margins.Left = 4
     Margins.Top = 4
     Margins.Right = 4
     Margins.Bottom = 4
     Align = alClient
     TabOrder = 6
+    ExplicitTop = 327
+    ExplicitHeight = 360
     object grdPaket: TcxGrid
       Left = 1
       Top = 38
       Width = 1242
-      Height = 321
+      Height = 291
       Margins.Left = 4
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4
       Align = alClient
       TabOrder = 0
+      ExplicitHeight = 321
       object grdPaketDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
@@ -2526,6 +2558,16 @@ object fchgPkgVard: TfchgPkgVard
     object mtUserPropName: TStringField
       FieldName = 'Name'
       Size = 50
+    end
+    object mtUserPropPackage_Size: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Package_Size'
+      LookupDataSet = dmsSystem.cds_Package_Size
+      LookupKeyFields = 'PackageSizeNo'
+      LookupResultField = 'PackageSizeName'
+      KeyFields = 'NewItemRow'
+      Size = 50
+      Lookup = True
     end
   end
   object dsUserProp: TDataSource

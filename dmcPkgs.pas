@@ -925,6 +925,7 @@ Var
     FDsp_vida_ChgPkgVard.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
 //    FDsp_vida_ChgPkgVard.ParamByName('SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
     FDsp_vida_ChgPkgVard.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+    FDsp_vida_ChgPkgVard.ParamByName('@Package_Size'           ).AsInteger      := mtUserProp.FieldByName('NewItemRow').AsInteger ;
 //    FDsp_vida_ChgPkgVard.ParamByName('MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
 //    FDsp_vida_ChgPkgVard.ParamByName('RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
 

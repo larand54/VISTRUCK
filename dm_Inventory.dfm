@@ -9222,8 +9222,9 @@ object dmInventory: TdmInventory
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'Select KP.KilnName + '#39' - '#39' + KCH.Info + '#39'  ['#39' + CAST(ISNULL(KCH.' +
-        'KilnChargeNo,'#39'-'#39') AS varchar(6)) + '#39']'#39' AS KilnName , KCH.*, KP.*'
+        'Select KP.KilnName + '#39' - '#39' + isnull(KCH.Info,'#39#39') + '#39'  ['#39' + CAST(' +
+        'ISNULL(KCH.KilnChargeNo,'#39'-'#39') AS varchar(6)) + '#39']'#39' AS KilnName , ' +
+        'KCH.*, KP.*'
       'FROM dbo.KilnChargeHdr KCH'
       'Inner Join dbo.Kilns KP on KP.KilnNo = KCH.KilnNo'
       'WHERE KP.ClientNo = :ClientNo '
@@ -9258,60 +9259,6 @@ object dmInventory: TdmInventory
       Origin = 'KilnName'
       ReadOnly = True
       Size = 93
-    end
-  end
-  object cds_KilnVagn: TFDQuery
-    AfterInsert = cds_KilnVagnAfterInsert
-    BeforePost = cds_KilnVagnBeforePost
-    Connection = dmsConnector.FDConnection1
-    SQL.Strings = (
-      'Select * FROM dbo.KilnVagn'
-      'WHERE KilnChargeNo = :KilnChargeNo'
-      'AND VagnNo = :VagnNo')
-    Left = 1144
-    Top = 488
-    ParamData = <
-      item
-        Name = 'KILNCHARGENO'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Name = 'VAGNNO'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
-    object cds_KilnVagnKilnChargeNo: TIntegerField
-      FieldName = 'KilnChargeNo'
-      Origin = 'KilnChargeNo'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cds_KilnVagnVagnNo: TIntegerField
-      FieldName = 'VagnNo'
-      Origin = 'VagnNo'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object cds_KilnVagnInDate: TSQLTimeStampField
-      FieldName = 'InDate'
-      Origin = 'InDate'
-    end
-    object cds_KilnVagnOutDate: TSQLTimeStampField
-      FieldName = 'OutDate'
-      Origin = 'OutDate'
-    end
-    object cds_KilnVagnVagnStatus: TIntegerField
-      FieldName = 'VagnStatus'
-      Origin = 'VagnStatus'
-    end
-    object cds_KilnVagnCreatedUser: TIntegerField
-      FieldName = 'CreatedUser'
-      Origin = 'CreatedUser'
-    end
-    object cds_KilnVagnDateCreated: TSQLTimeStampField
-      FieldName = 'DateCreated'
-      Origin = 'DateCreated'
     end
   end
   object ds_KilnChargeHdr: TDataSource
@@ -9842,7 +9789,7 @@ object dmInventory: TdmInventory
   end
   object sp_MoveVagn: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_MoveVagn'
+    StoredProcName = 'dbo.vis_MoveVagn_v2'
     Left = 688
     Top = 848
     ParamData = <
@@ -9873,6 +9820,18 @@ object dmInventory: TdmInventory
       item
         Position = 5
         Name = '@NewVagnStatus'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@UserAction'
         DataType = ftInteger
         ParamType = ptInput
       end>
@@ -11218,6 +11177,341 @@ object dmInventory: TdmInventory
       Origin = 'LIPNo'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
+    end
+  end
+  object cds_imp: TFDQuery
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT [ProductCategoryNo]'
+      '      ,[ProductCategoryName]'
+      '      ,[ProductCategoryExternalCode]'
+      '      ,[SequenceNo]'
+      '      ,[CreatedUser]'
+      '      ,[ModifiedUser]'
+      '      ,[DateCreated]'
+      '      ,[Act]'
+      '      ,[ImpCode]'
+      '      ,[ImpregInProdName]'
+      '      ,[LanguageCode]'
+      '      ,[DKCode]'
+      '  FROM [dbo].[ProductCategory] pc'
+      '  Inner Join dbo.VerkIMP vi on vi.IMPNo = pc.[ProductCategoryNo]'
+      '  WHERE pc.[LanguageCode] = 1'
+      '  and pc.Act = 1'
+      '  AND vi.ClientNo = :ClientNo')
+    Left = 808
+    Top = 1088
+    ParamData = <
+      item
+        Name = 'CLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_impProductCategoryNo: TIntegerField
+      FieldName = 'ProductCategoryNo'
+      Origin = 'ProductCategoryNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_impProductCategoryName: TStringField
+      FieldName = 'ProductCategoryName'
+      Origin = 'ProductCategoryName'
+      Required = True
+      Size = 40
+    end
+  end
+  object cds_KilnVagn: TFDQuery
+    AfterInsert = cds_KilnVagnAfterInsert
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.KilnVagn'
+      'WHERE KilnChargeNo = :KilnChargeNo'
+      'AND VagnNo = :VagnNo')
+    Left = 1144
+    Top = 496
+    ParamData = <
+      item
+        Name = 'KILNCHARGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'VAGNNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_KilnVagnKilnChargeNo: TIntegerField
+      FieldName = 'KilnChargeNo'
+      Origin = 'KilnChargeNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnVagnVagnNo: TIntegerField
+      FieldName = 'VagnNo'
+      Origin = 'VagnNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnVagnInDate: TSQLTimeStampField
+      FieldName = 'InDate'
+      Origin = 'InDate'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnOutDate: TSQLTimeStampField
+      FieldName = 'OutDate'
+      Origin = 'OutDate'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnVagnStatus: TIntegerField
+      FieldName = 'VagnStatus'
+      Origin = 'VagnStatus'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnCreatedUser: TIntegerField
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnIMPNo: TIntegerField
+      FieldName = 'IMPNo'
+      Origin = 'IMPNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnVagnIMP: TStringField
+      FieldKind = fkLookup
+      FieldName = 'IMP'
+      LookupDataSet = cds_imp
+      LookupKeyFields = 'ProductCategoryNo'
+      LookupResultField = 'ProductCategoryName'
+      KeyFields = 'IMPNo'
+      ProviderFlags = []
+      Size = 40
+      Lookup = True
+    end
+    object cds_KilnVagnNotering: TStringField
+      FieldName = 'Notering'
+      Origin = 'Notering'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object cds_KilnVagnPlannedDuration: TFloatField
+      FieldName = 'PlannedDuration'
+      Origin = 'PlannedDuration'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object cds_GetTypeOfLine: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select KP.TypeOfLine'
+      'FROM dbo.KilnChargeHdr KCH'
+      'Inner Join dbo.Kilns KP on KP.KilnNo = KCH.KilnNo'
+      'WHERE KCH.KilnChargeNo = :KilnChargeNo ')
+    Left = 1048
+    Top = 1056
+    ParamData = <
+      item
+        Name = 'KILNCHARGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_GetTypeOfLineTypeOfLine: TIntegerField
+      FieldName = 'TypeOfLine'
+      Origin = 'TypeOfLine'
+    end
+  end
+  object cds_Kiln: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select KP.*'
+      'FROM dbo.Kilns KP '
+      'WHERE KP.KilnNo = :KilnNo')
+    Left = 1053
+    Top = 1112
+    ParamData = <
+      item
+        Name = 'KILNNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_KilnClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnKilnNo: TIntegerField
+      FieldName = 'KilnNo'
+      Origin = 'KilnNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnKilnName: TStringField
+      FieldName = 'KilnName'
+      Origin = 'KilnName'
+      ProviderFlags = [pfInUpdate]
+      Size = 30
+    end
+    object cds_KilnNoOfVagnar: TIntegerField
+      FieldName = 'NoOfVagnar'
+      Origin = 'NoOfVagnar'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnTypeOfKiln: TIntegerField
+      FieldName = 'TypeOfKiln'
+      Origin = 'TypeOfKiln'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnNoOfVagnarBefore: TIntegerField
+      FieldName = 'NoOfVagnarBefore'
+      Origin = 'NoOfVagnarBefore'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnTypeOfLine: TIntegerField
+      FieldName = 'TypeOfLine'
+      Origin = 'TypeOfLine'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnIMPNo: TIntegerField
+      FieldName = 'IMPNo'
+      Origin = 'IMPNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnKilnPropsID: TIntegerField
+      FieldName = 'KilnPropsID'
+      Origin = 'KilnPropsID'
+    end
+    object cds_KilnDefaultDuration: TFloatField
+      FieldName = 'DefaultDuration'
+      Origin = 'DefaultDuration'
+    end
+  end
+  object cds_KilnChargeRowsCheckIMP: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    UpdateOptions.UpdateTableName = 'dbo.KilnChargeRows'
+    SQL.Strings = (
+      'Select kcr.*, P.ProductDisplayName,'
+      
+        '[dbo].[vida_LengthDescription]( pt.PackageTypeNo ) AS PcsPerLeng' +
+        'th,'
+      ''
+      'isnull((Select '#39'Matching P/T OK'#39' FROM dbo.Product p2'
+      
+        #9#9#9#9'inner join dbo.ProductGroup pg2 on pg2.ProductGroupNo = p2.P' +
+        'roductGroupNo'
+      #9#9#9#9'WHERE pg2.ActualThicknessMM = pg.ActualThicknessMM'
+      #9#9#9#9'and pg2.ActualWidthMM = pg.ActualWidthMM'
+      #9#9#9#9'and pg2.SpeciesNo = pg.SpeciesNo'
+      #9#9#9#9'and pg2.SurfacingNo = pg.SurfacingNo'
+      #9#9#9#9'and pg2.ProductCategoryNo = kv.IMPNo'
+      #9#9#9#9'and p2.GradeNo = p.GradeNo),'#39'NO matching P/T'#39') AS MatchingPT'
+      ''
+      'FROM dbo.KilnChargeRows kcr'
+      'inner join dbo.PackageNumber pn on pn.PackageNo = kcr.PackageNo'
+      'and pn.SupplierCode = kcr.SupplierCode'
+      
+        'inner join dbo.PackageType pt on pt.PackageTypeNo = pn.PackageTy' +
+        'peNo'
+      'inner join dbo.Product P on P.ProductNo = pt.ProductNo'
+      
+        'inner join dbo.ProductGroup PG on PG.ProductGroupNo = P.ProductG' +
+        'roupNo'
+      'inner join dbo.KilnVagn kv on kv.KilnChargeNo = kcr.KilnChargeNo'
+      'and kv.VagnNo = kcr.VagnNo'
+      'WHERE kcr.KilnChargeNo = :KilnChargeNo'
+      'AND kcr.VagnNo = :VagnNo'
+      'Order By kcr.RowNo')
+    Left = 1144
+    Top = 656
+    ParamData = <
+      item
+        Name = 'KILNCHARGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'VAGNNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_KilnChargeRowsCheckIMPKilnChargeNo: TIntegerField
+      DisplayLabel = 'Torksatsnr'
+      FieldName = 'KilnChargeNo'
+      Origin = 'KilnChargeNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnChargeRowsCheckIMPPackageNo: TIntegerField
+      DisplayLabel = 'Paketnr'
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_KilnChargeRowsCheckIMPSupplierCode: TStringField
+      DisplayLabel = 'Prefix'
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object cds_KilnChargeRowsCheckIMPNoOfPkgs: TIntegerField
+      FieldName = 'NoOfPkgs'
+      Origin = 'NoOfPkgs'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnChargeRowsCheckIMPDateCreated: TSQLTimeStampField
+      DisplayLabel = 'Inmatad'
+      FieldName = 'DateCreated'
+      Origin = 'DateCreated'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnChargeRowsCheckIMPCreatedUser: TIntegerField
+      DisplayLabel = 'Inmatad av'
+      FieldName = 'CreatedUser'
+      Origin = 'CreatedUser'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnChargeRowsCheckIMPVagnNo: TIntegerField
+      DisplayLabel = 'Vagnnr'
+      FieldName = 'VagnNo'
+      Origin = 'VagnNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnChargeRowsCheckIMPRowNo: TIntegerField
+      DisplayLabel = 'Radnr'
+      FieldName = 'RowNo'
+      Origin = 'RowNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_KilnChargeRowsCheckIMPProductDisplayName: TStringField
+      DisplayLabel = 'Produkt'
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object cds_KilnChargeRowsCheckIMPPcsPerLength: TStringField
+      DisplayLabel = 'St/l'#228'ngd'
+      FieldName = 'PcsPerLength'
+      Origin = 'PcsPerLength'
+      ReadOnly = True
+      Size = 255
+    end
+    object cds_KilnChargeRowsCheckIMPMatchingPT: TStringField
+      FieldName = 'MatchingPT'
+      Origin = 'MatchingPT'
+      ProviderFlags = []
+      ReadOnly = True
+      Required = True
+      Size = 15
     end
   end
 end

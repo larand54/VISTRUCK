@@ -5267,4 +5267,36 @@ object dmsSystem: TdmsSystem
         ParamType = ptInput
       end>
   end
+  object ds_Package_Size: TDataSource
+    DataSet = cds_Package_Size
+    Left = 1000
+    Top = 952
+  end
+  object cds_Package_Size: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * from dbo.PackageSize'
+      'WHERE LanguageCode = :LanguageCode'
+      'AND Act = 1')
+    Left = 1000
+    Top = 896
+    ParamData = <
+      item
+        Name = 'LANGUAGECODE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_Package_SizePackageSizeNo: TIntegerField
+      FieldName = 'PackageSizeNo'
+      Origin = 'PackageSizeNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_Package_SizePackageSizeName: TStringField
+      FieldName = 'PackageSizeName'
+      Origin = 'PackageSizeName'
+      Size = 50
+    end
+  end
 end

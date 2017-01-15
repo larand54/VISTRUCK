@@ -22,7 +22,8 @@ uses
   cxGrid, Vcl.ExtCtrls, cxContainer, Vcl.Menus, Vcl.StdCtrls, cxButtons,
   cxLabel, cxTextEdit, VidaType, Vcl.ActnList, cxDBLabel, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, siComp, siLngLnk, System.Actions ;
+  dxSkinOffice2013White, siComp, siLngLnk, System.Actions, cxMaskEdit,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit ;
 
 type
   TfEnterKilnVagn = class(TForm)
@@ -68,6 +69,14 @@ type
     cxButton2: TcxButton;
     acPickPackages: TAction;
     siLangLinked_fEnterKilnVagn: TsiLangLinked;
+    lcImp: TcxDBLookupComboBox;
+    LabelIMP: TcxLabel;
+    ds_KilnVagn: TDataSource;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxLabel4: TcxLabel;
+    tePlannedDuration: TcxDBTextEdit;
+    cxLabel5: TcxLabel;
+    grdVagnPkgsDBTableView1MatchingPT: TcxGridDBColumn;
     procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Timer1Timer(Sender: TObject);
@@ -76,10 +85,11 @@ type
     procedure acRemovePackageExecute(Sender: TObject);
     procedure acPickPackagesExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure acRemovePackageUpdate(Sender: TObject);
   private
     { Private declarations }
     RowNo : Integer ;
+    procedure checkIMPProducts ;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
     procedure AddSelectedPkgsToVagn(Sender: TObject) ;
     procedure AddPkgsToVagn(Sender: TObject; const PackageNo : Integer; const PkgSupplierCode : String;const ProductNo : Integer) ;
@@ -90,6 +100,7 @@ type
     Var Res_UserName : String) : TEditAction;
   public
     { Public declarations }
+    TypeOfLine  : Integer ;
   end;
 
 //var fEnterKilnVagn: TfEnterKilnVagn;
@@ -108,41 +119,54 @@ procedure TfEnterKilnVagn.FormCloseQuery(Sender: TObject;
 begin
  With dmInventory do
  Begin
-   ControlVagn(cds_KilnVagnVagnNo.AsInteger) ;
+   if cds_KilnVagn.RecordCount > 0 then
+   Begin
+    if (TypeOfLine = 2) and (cds_KilnVagnIMPNo.AsInteger < 1) then
+    Begin
+     ShowMessage('Please select a pressure treated type!') ;
+     CanClose := False ;
+    End;
+   End;
+
+   if CanClose then
+    ControlVagn(cds_KilnVagnVagnNo.AsInteger) ;
+
+   if TypeOfLine = 2 then
+    CheckIMPProducts ;
  End;
 end;
+
+procedure TfEnterKilnVagn.checkIMPProducts ;
+Var Match : Boolean ;
+Begin
+ With dmInventory do
+ Begin
+  Match := True ;
+  if cds_KilnChargeRowsCheckIMP.Active then
+   cds_KilnChargeRowsCheckIMP.Active  :=  False ;
+  cds_KilnChargeRowsCheckIMP.ParamByName('KilnChargeNo').AsInteger  :=  cds_KilnVagnKilnChargeNo.AsInteger ;
+  cds_KilnChargeRowsCheckIMP.ParamByName('VagnNo').AsInteger        :=  cds_KilnVagnVagnNo.AsInteger ;
+  cds_KilnChargeRowsCheckIMP.Active := True ;
+  cds_KilnChargeRowsCheckIMP.First ;
+  while not cds_KilnChargeRowsCheckIMP.Eof do
+  Begin
+    if cds_KilnChargeRowsCheckIMPMatchingPT.AsString = 'NO matching P/T' then
+      Match := False ;
+
+    cds_KilnChargeRowsCheckIMP.Next ;
+  End;
+  if Match = False then
+   ShowMessage('Matchande impregneringsprodukt saknas för en eller flera produkter för vald impregnering, se kolumnen "Matching P/T" vilka som inte matchar.' +
+   ' Lägg upp de produkterna i produktregistret så snart som möjligt.') ;
+
+ End;//With
+End;
 
 procedure TfEnterKilnVagn.FormCreate(Sender: TObject);
 begin
  RowNo  := 1 ;
 end;
 
-procedure TfEnterKilnVagn.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-// if AcceptInput then
-// Begin
-
-  if (Key = #13) and (Length(mePackageNo.Text) > 0) then
-  Begin
-     Try
-       GetpackageNoEntered(Sender, mePackageNo.Text) ;
-
-      mePackageNo.Text:= '' ;
-     Except
-      mePackageNo.Text:= '' ;
-     End ;
-  End
-  else
-   Begin
-     if key in ['S','0','1','2','3','4','5','6','7','8','9'] then
-      mePackageNo.Text:= mePackageNo.Text + Key ;
-   End ;
-
-   Self.SetFocus ;
-// End
-//  else
-//  ShowMessage('upptagen...') ;
-end;
 
 procedure TfEnterKilnVagn.FormShow(Sender: TObject);
 begin
@@ -153,6 +177,20 @@ begin
     else
      RowNo  := 1 ;
  End;
+
+ if TypeOfLine = 1 then
+ Begin
+  lcIMP.Visible     := False ;
+  LabelIMP.Visible  := False ;
+ End
+  else
+   if TypeOfLine = 3 then
+   Begin
+    lcIMP.Visible     := False ;
+    LabelIMP.Visible  := False ;
+   End
+    else
+    lcImp.SetFocus ;
 end;
 
 function TfEnterKilnVagn.IdentifyPackageSupplier(
@@ -198,6 +236,8 @@ begin
  Begin
   fPickPkgNoTork  := TfPickPkgNoTork.Create(nil) ;
   Try
+   if dmInventory.cds_KilnVagn.State in [dsEdit, dsInsert] then
+    dmInventory.cds_KilnVagn.Post ;
    Open_cds_KilnChargeHdr ;
    fPickPkgNoTork.LIPNo := cds_KilnChargeHdrBeforeKiln_LIPNo.AsInteger ;
    fPickPkgNoTork.PIPNo := cds_KilnChargeHdrKiln_PIPNo.AsInteger ;
@@ -213,7 +253,7 @@ procedure TfEnterKilnVagn.AddSelectedPkgsToVagn(Sender: TObject) ;
 Begin
  With dmInventory do
  Begin
-  mtSelectedPkgNo.Filter    := 'Markerad = 1' ;
+  mtSelectedPkgNo.Filter    := siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* 'Markerad = 1' *) ) ;
   mtSelectedPkgNo.Filtered  := True ;
   Try
   mtSelectedPkgNo.First ;
@@ -233,6 +273,11 @@ begin
  dmInventory.cds_KilnChargeRows.Delete ;
 end;
 
+procedure TfEnterKilnVagn.acRemovePackageUpdate(Sender: TObject);
+begin
+  acRemovePackage.Enabled :=  (dmInventory.cds_KilnChargeRows.Active) and (dmInventory.cds_KilnChargeRows.RecordCount > 0) ;
+end;
+
 procedure TfEnterKilnVagn.AddPkgsToVagn(Sender: TObject; const PackageNo : Integer; const PkgSupplierCode : String;const ProductNo : Integer) ;
 Begin
  With dmInventory do
@@ -249,7 +294,7 @@ Begin
    On E: EDatabaseError do
    Begin
     cds_KilnChargeRows.Cancel ;
-    ShowMessage(E.Message + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* ' :Paketnr finns upptaget i en tork redan.' *) )) ;
+    ShowMessage(E.Message + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_1' (* ' :Paketnr finns upptaget i en tork redan.' *) )) ;
    End;
   End;
  End;
@@ -306,7 +351,7 @@ begin
        NewPkgNo:= StrToIntDef(PackageNo,0) ;
        if NewPkgNo = 0 then
        Begin
-        ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_1' (* 'Koden kunde inte översättas till ett Paketnr' *) )) ;
+        ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_2' (* 'Koden kunde inte översättas till ett Paketnr' *) )) ;
         Exit ;
        End ;
 
@@ -333,25 +378,25 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_3' (* ' finns inte i lager ' *) ) ) ;
+     ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_4' (* ' finns inte i lager ' *) ) ) ;
      Error      := True ;
     End
     else
      if Action = eaReserved then
       Begin
-       ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_5' (* ' är reserverat av ' *) ) + Res_UserName) ;
+       ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_6' (* ' är reserverat av ' *) ) + Res_UserName) ;
        Error      := True ;
       End
       else
        if Action = eaDuplicate then
         Begin
-         ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_2' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) +siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_7' (* ' är redan inmatat' *) )) ;
+         ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) ) + IntToStr(NewPkgNo) +siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_8' (* ' är redan inmatat' *) )) ;
          Error      := True ;
         End ;
     End
      else
       Begin
-       ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_8' (* 'Paketnr saknas.' *) )) ;
+       ShowMessage(siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_9' (* 'Paketnr saknas.' *) )) ;
        Error      := True ;
       End ;
   finally
@@ -374,15 +419,84 @@ var
   ErrorText,
   RegPointName      : String ;
 begin
-{
-   if Key <> VK_RETURN then Exit;
-   if Length(mePackageNo.Text) > 0 then
-   GetpackageNoEntered(Sender, mePackageNo.Text) ;
-   Timer1.Enabled   := True ;
-   mePackageNo.Text := '' ;
+ if Key <> VK_RETURN then Exit;
+ if Length(mePackageNo.Text) > 0 then
+ Begin
+  if dmInventory.cds_KilnVagn.State in [dsEdit, dsInsert] then
+   dmInventory.cds_KilnVagn.Post ;
+  GetpackageNoEntered(Sender, mePackageNo.Text) ;
+ End;
+ Timer1.Enabled   := True ;
+ mePackageNo.Text := '' ;
 
-}
+ (*
 
+ if Key <> VK_RETURN then
+  Exit ;
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+
+
+  try
+  Error := False ;
+
+  NewValue := IntToStr(StrToIntDef(mePackageNo.Text,0)) ;
+
+
+
+   Action := IdentifyPackageSupplier(
+      StrToInt(NewValue),
+      PkgSupplierCode,
+      ProductNo,
+      Res_UserName );
+
+{  if Action = eaACCEPT then
+  Begin
+   RegPointName:= dmPkgs.IsPkgAvregistrerat (StrToInt(NewValue), mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
+   if RegPointName <> 'NO' then
+   Begin
+    Action:= eaAlreadyAvReg ;
+   End
+    else
+     Action := eaAccept ;
+  End ; }
+
+  if Action = eaACCEPT then
+  Begin
+   AddPkgsToVagn(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
+   //dmPkgs.mtLoadPackages.Insert ;
+   //AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
+   Error  := False ;
+  End
+   else
+   if Action = eaREJECT then
+    Begin
+     Error     := True ;
+     ErrorText  := 'Paketnr '+NewValue+' finns inte' ;
+    End
+    else
+     if Action = eaReserved then
+     Begin
+      Error     := True ;
+      ErrorText := 'Paketnr '+NewValue+' är reserverat av användare '+Res_UserName ;
+     End
+      else
+       if Action = eaAlreadyAvReg then
+       Begin
+        Error     := True ;
+        ErrorText := 'Paketnr ' + NewValue + '/' + PkgSupplierCode + ' är redan avregistrerat mot mätpunkt ' + RegPointName ;
+       End ;
+
+    if Error then
+    begin
+   //  if mtUserPropGroupByBox.AsInteger = 0 then
+      ShowMessage(ErrorText) ;
+    end;
+
+  finally
+    Screen.Cursor         := Save_Cursor;  { Always restore to normal }
+  //  TAvRegPkgNo.Enabled   := True ;
+  end;     *)
 end;
 
 procedure TfEnterKilnVagn.Timer1Timer(Sender: TObject);

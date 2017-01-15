@@ -248,6 +248,9 @@ type
     mtUserPropFilter1: TStringField;
     mtUserPropFilter2: TStringField;
     mtUserPropName: TStringField;
+    cxLabel6: TcxLabel;
+    lcPackage_Size: TcxDBLookupComboBox;
+    mtUserPropPackage_Size: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure bcStdLenGrpChange(Sender: TObject);
@@ -413,6 +416,7 @@ begin
   mtUserProp.Edit ;
   mtUserPropVerkNo.AsInteger      := mtUserPropOwnerNo.AsInteger ;
   mtUserPropProducerNo.AsInteger  := mtUserPropOwnerNo.AsInteger ;
+  mtUserPropNewItemRow.AsInteger  := -1 ;
   mtUserProp.Post ;
 
   fFirstLengthColumn:= 2 ;
@@ -1017,6 +1021,7 @@ begin
  mtUserPropProductDescription.AsString  := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
  mtUserPropLIPChange.AsInteger          := 0 ;
  mtUserPropVerkNo.AsInteger             := 0 ;
+ mtUserPropNewItemRow.AsInteger         := -1 ;
 end;
 
 procedure TfchgPkgVard.mtUserPropOwnerNoChange(Sender: TField);
@@ -1387,6 +1392,7 @@ begin
  mtUserPropProductDescription.AsString  := siLangLinked_fchgPkgVard.GetTextOrDefault('IDS_8' (* 'Ingen ändring' *) ) ;
  mtUserPropProductNo.AsInteger          := -1 ;
  mtUserPropProductGroupNo.AsInteger     := -1 ;
+ mtUserPropNewItemRow.AsInteger         := -1 ;
  mtUserProp.Post ;
 end;
 
