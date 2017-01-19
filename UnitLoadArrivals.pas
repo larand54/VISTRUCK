@@ -5197,7 +5197,7 @@ begin
     if uReportController.useFR then
     begin
       try
-        FR := TFastReports.Create;
+        FR := TFastReports.CreateForPrint(False);
         if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
         begin
           ReportType := cFoljesedelIntern;

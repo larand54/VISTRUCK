@@ -57,9 +57,6 @@ object frmMain: TfrmMain
           Height = 776
           Align = alClient
           TabOrder = 0
-          Visible = False
-          ExplicitTop = 66
-          ExplicitHeight = 777
           object Panel2: TPanel
             Left = 1078
             Top = 1
@@ -68,7 +65,6 @@ object frmMain: TfrmMain
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
-            ExplicitHeight = 775
             object Panel3: TPanel
               Left = 1
               Top = 1
@@ -92,7 +88,6 @@ object frmMain: TfrmMain
               Height = 716
               Align = alClient
               TabOrder = 1
-              ExplicitHeight = 717
               object grdMatchingGridDBCardView1: TcxGridDBCardView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dmInventory.ds_Matching
@@ -240,7 +235,6 @@ object frmMain: TfrmMain
             Height = 774
             Align = alClient
             TabOrder = 1
-            ExplicitHeight = 775
             object Panel4: TPanel
               Left = 1
               Top = 719
@@ -248,7 +242,6 @@ object frmMain: TfrmMain
               Height = 54
               Align = alBottom
               TabOrder = 0
-              ExplicitTop = 720
             end
             object grdPkgOutput: TcxGrid
               Left = 1
@@ -257,7 +250,6 @@ object frmMain: TfrmMain
               Height = 718
               Align = alClient
               TabOrder = 1
-              ExplicitHeight = 719
               object grdPkgOutputDBTableView1: TcxGridDBTableView
                 OnMouseDown = grdPkgOutputDBTableView1MouseDown
                 Navigator.Buttons.CustomButtons = <>
@@ -357,7 +349,6 @@ object frmMain: TfrmMain
             Control = Panel2
             Color = clMaroon
             ParentColor = False
-            ExplicitHeight = 775
           end
         end
         object PanelTop: TPanel
@@ -367,7 +358,6 @@ object frmMain: TfrmMain
           Height = 66
           Align = alTop
           TabOrder = 1
-          Visible = False
           object cxButton1: TcxButton
             Left = 16
             Top = 6
