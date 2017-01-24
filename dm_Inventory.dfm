@@ -1,6 +1,6 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
-  Height = 1178
+  Height = 1252
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
@@ -8995,7 +8995,19 @@ object dmInventory: TdmInventory
       'Select kcr.*, P.ProductDisplayName,'
       
         '[dbo].[vida_LengthDescription]( pt.PackageTypeNo ) AS PcsPerLeng' +
-        'th'
+        'th,'
+      ''
+      'isnull((Select '#39'Matching P/T OK'#39' FROM dbo.Product p2'
+      
+        #9#9#9#9'inner join dbo.ProductGroup pg2 on pg2.ProductGroupNo = p2.P' +
+        'roductGroupNo'
+      #9#9#9#9'WHERE pg2.ActualThicknessMM = pg.ActualThicknessMM'
+      #9#9#9#9'and pg2.ActualWidthMM = pg.ActualWidthMM'
+      #9#9#9#9'and pg2.SpeciesNo = pg.SpeciesNo'
+      #9#9#9#9'and pg2.SurfacingNo = pg.SurfacingNo'
+      #9#9#9#9'and pg2.ProductCategoryNo = kv.IMPNo'
+      #9#9#9#9'and p2.GradeNo = p.GradeNo),'#39'NO matching P/T'#39') AS MatchingPT'
+      ''
       'FROM dbo.KilnChargeRows kcr'
       'inner join dbo.PackageNumber pn on pn.PackageNo = kcr.PackageNo'
       'and pn.SupplierCode = kcr.SupplierCode'
@@ -9003,8 +9015,13 @@ object dmInventory: TdmInventory
         'inner join dbo.PackageType pt on pt.PackageTypeNo = pn.PackageTy' +
         'peNo'
       'inner join dbo.Product P on P.ProductNo = pt.ProductNo'
-      'WHERE KilnChargeNo = :KilnChargeNo'
-      'AND VagnNo = :VagnNo'
+      
+        'inner join dbo.ProductGroup PG on PG.ProductGroupNo = P.ProductG' +
+        'roupNo'
+      'inner join dbo.KilnVagn kv on kv.KilnChargeNo = kcr.KilnChargeNo'
+      'and kv.VagnNo = kcr.VagnNo'
+      'WHERE kcr.KilnChargeNo = :KilnChargeNo'
+      'AND kcr.VagnNo = :VagnNo'
       'Order By kcr.RowNo')
     Left = 1032
     Top = 440
@@ -9085,6 +9102,14 @@ object dmInventory: TdmInventory
       ProviderFlags = []
       ReadOnly = True
       Size = 255
+    end
+    object cds_KilnChargeRowsMatchingPT: TStringField
+      FieldName = 'MatchingPT'
+      Origin = 'MatchingPT'
+      ProviderFlags = []
+      ReadOnly = True
+      Required = True
+      Size = 15
     end
   end
   object cds_KilnChargeHdr: TFDQuery
@@ -10991,7 +11016,7 @@ object dmInventory: TdmInventory
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Matching'
     Left = 536
-    Top = 1024
+    Top = 1016
     ParamData = <
       item
         Position = 1
@@ -11052,25 +11077,23 @@ object dmInventory: TdmInventory
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
     end
-    object sp_MatchingActualLengthMM: TFloatField
-      DisplayLabel = 'ALMM'
-      FieldName = 'ActualLengthMM'
-      Origin = 'ActualLengthMM'
-      Required = True
-    end
     object sp_MatchingPositionID: TIntegerField
       FieldName = 'PositionID'
       Origin = 'PositionID'
       Required = True
     end
-    object sp_MatchingPhysicalInventoryPointNo: TIntegerField
-      FieldName = 'PhysicalInventoryPointNo'
-      Origin = 'PhysicalInventoryPointNo'
-    end
     object sp_MatchingPosStatus: TIntegerField
       DisplayLabel = 'Status'
       FieldName = 'PosStatus'
       Origin = 'PosStatus'
+    end
+    object sp_MatchingALMM: TFloatField
+      FieldName = 'ALMM'
+      Origin = 'ALMM'
+    end
+    object sp_MatchingPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
     end
   end
   object ds_Matching: TDataSource
@@ -11180,7 +11203,6 @@ object dmInventory: TdmInventory
     end
   end
   object cds_imp: TFDQuery
-    Active = True
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT [ProductCategoryNo]'
@@ -11513,5 +11535,30 @@ object dmInventory: TdmInventory
       Required = True
       Size = 15
     end
+  end
+  object sp_PkgsToReposition: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_PkgsToReposition'
+    Left = 336
+    Top = 1136
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object ds_PkgsToReposition: TDataSource
+    DataSet = sp_PkgsToReposition
+    Left = 336
+    Top = 1192
   end
 end

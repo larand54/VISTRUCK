@@ -253,7 +253,7 @@ procedure TfEnterKilnVagn.AddSelectedPkgsToVagn(Sender: TObject) ;
 Begin
  With dmInventory do
  Begin
-  mtSelectedPkgNo.Filter    := siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* 'Markerad = 1' *) ) ;
+  mtSelectedPkgNo.Filter    := 'Markerad = 1' ;// siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* 'Markerad = 1' *) ) ;
   mtSelectedPkgNo.Filtered  := True ;
   Try
   mtSelectedPkgNo.First ;

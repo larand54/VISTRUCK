@@ -1360,9 +1360,7 @@ type
     sp_MatchingPosition: TStringField;
     sp_MatchingREFERENCE: TStringField;
     sp_MatchingProductNo: TIntegerField;
-    sp_MatchingActualLengthMM: TFloatField;
     sp_MatchingPositionID: TIntegerField;
-    sp_MatchingPhysicalInventoryPointNo: TIntegerField;
     sp_MatchingPosStatus: TIntegerField;
     ds_Matching: TDataSource;
     sp_UsersOutputProdunitsUserID: TIntegerField;
@@ -1415,6 +1413,11 @@ type
     cds_KilnChargeRowsCheckIMPProductDisplayName: TStringField;
     cds_KilnChargeRowsCheckIMPPcsPerLength: TStringField;
     cds_KilnChargeRowsCheckIMPMatchingPT: TStringField;
+    cds_KilnChargeRowsMatchingPT: TStringField;
+    sp_MatchingALMM: TFloatField;
+    sp_MatchingPIPNo: TIntegerField;
+    sp_PkgsToReposition: TFDStoredProc;
+    ds_PkgsToReposition: TDataSource;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -1466,6 +1469,7 @@ type
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
 
+    procedure Refresh_PkgsToReposition ;
     function  GetDefaultDurationByKiln(const KilnChargeNo : Integer) :  Double ; //Get default kiln duration
     function  GetKilnNo(const KilnChargeNo : Integer) :  Integer ; //Get KilnNo
     function  GetIMPNoByKiln(const KilnChargeNo : Integer) :  Integer ; //Get IMPNo
@@ -3191,6 +3195,18 @@ Begin
   mtUserOutput.Post ;
  end;
 End;
+
+procedure TdmInventory.Refresh_PkgsToReposition ;
+Begin
+ with dmInventory do
+ begin
+  if sp_PkgsToReposition.Active then
+   sp_PkgsToReposition.Active :=  False ;
+  sp_PkgsToReposition.ParamByName('@UserID').AsInteger :=  ThisUser.UserID ;
+  sp_PkgsToReposition.Active  := True ;
+ end;
+End;
+
 
 
 end.

@@ -257,6 +257,42 @@ type
     dxBarLargeButton35: TdxBarLargeButton;
     acAskAvrop: TAction;
     dxBarLargeButton36: TdxBarLargeButton;
+    PanelPositionPkgs: TPanel;
+    cxButton4: TcxButton;
+    acPositionPkgs: TAction;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    PanelPkgToPosition: TPanel;
+    cxButton5: TcxButton;
+    grdSelectedPkgsDBTableView1: TcxGridDBTableView;
+    grdSelectedPkgsLevel1: TcxGridLevel;
+    grdSelectedPkgs: TcxGrid;
+    grdSelectedPkgsDBTableView1PackageNo: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1suppliercode: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1Product: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1position: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1PositionID: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1PackageTypeNo: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1PCS: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1AM3: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn;
+    Panel7: TPanel;
+    grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn;
+    grdSelectedPkgsII: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridDBColumn1: TcxGridDBColumn;
+    cxGridDBColumn2: TcxGridDBColumn;
+    cxGridDBColumn3: TcxGridDBColumn;
+    cxGridDBColumn4: TcxGridDBColumn;
+    cxGridDBColumn5: TcxGridDBColumn;
+    cxGridDBColumn6: TcxGridDBColumn;
+    cxGridDBColumn7: TcxGridDBColumn;
+    cxGridDBColumn8: TcxGridDBColumn;
+    cxGridDBColumn9: TcxGridDBColumn;
+    cxGridDBColumn10: TcxGridDBColumn;
+    cxGridDBColumn11: TcxGridDBColumn;
+    cxGridLevel1: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -300,6 +336,7 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure acShowAllOutputExecute(Sender: TObject);
     procedure acAskAvropExecute(Sender: TObject);
+    procedure acPositionPkgsExecute(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -556,6 +593,7 @@ begin
 
 
 
+
  dmInventory.mtScannedPkgs.Active  := True ;
  ScanningEnabled  := True ;
  PanelPkgsPerLine.Align := alClient ;
@@ -649,8 +687,21 @@ begin
   Caption  := lCaption ;
 
  dmInventory.Set_mtUserUserID ;
-end;
 
+ if ThisUser.UserID <> 258 then
+ Begin
+   PanelMain.Visible    := False ;
+//   PanelBottom.Visible  := False ;
+//   PanelTop.Visible     := False ;
+ End
+ else
+ Begin
+   PanelMain.Visible    := True ;
+   PanelMain.Align      := alClient ;
+//   PanelBottom.Visible  := True ;
+//   PanelTop.Visible     := True ;
+ End;
+end;
 
 
 //Sparas centralt
@@ -1302,6 +1353,19 @@ begin
  End ;
 end;
 
+procedure TfrmMain.acPositionPkgsExecute(Sender: TObject);
+begin
+  if PanelPositionPkgs.Visible then
+   Begin
+    PanelPositionPkgs.Visible := False ;
+   End
+     else
+      Begin
+        PanelPositionPkgs.Visible := True ;
+        PanelPositionPkgs.Align   := alClient ;
+      End;
+end;
+
 procedure TfrmMain.acPositionViewExecute(Sender: TObject);
 begin
   if not assigned(uPositionView.fPositionView) then
@@ -1378,6 +1442,8 @@ begin
       //  LongPkgNo := AValue ;//inttoStr(NewPkgNo) + NumberPrefix ;
 
         ChangeClickedPackage(NewPkgNo, NumberPrefix, ADisplayText, sp_allPkgsatoutputSupplierCode.AsString);
+        dmInventory.Refresh_PkgsToReposition ;
+//        PanelPkgToPosition
       End
      Finally
       sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;

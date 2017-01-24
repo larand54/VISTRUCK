@@ -44,34 +44,37 @@ object frmMain: TfrmMain
       BevelOuter = bvNone
       TabOrder = 0
       object PanelMain: TPanel
-        Left = 0
-        Top = 0
-        Width = 1393
-        Height = 844
-        Align = alClient
+        Left = 72
+        Top = 208
+        Width = 1321
+        Height = 636
         TabOrder = 0
+        Visible = False
         object PanelBottom: TPanel
           Left = 1
-          Top = 67
-          Width = 1391
-          Height = 776
-          Align = alClient
+          Top = 192
+          Width = 1319
+          Height = 443
+          Align = alBottom
           TabOrder = 0
           object Panel2: TPanel
-            Left = 1078
+            Left = 1004
             Top = 1
-            Width = 312
-            Height = 774
+            Width = 314
+            Height = 441
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
+            ExplicitLeft = 1076
+            ExplicitHeight = 774
             object Panel3: TPanel
               Left = 1
               Top = 1
-              Width = 310
+              Width = 312
               Height = 56
               Align = alTop
               TabOrder = 0
+              ExplicitWidth = 310
               object cxButton3: TcxButton
                 Left = 8
                 Top = 3
@@ -84,10 +87,14 @@ object frmMain: TfrmMain
             object grdMatchingGrid: TcxGrid
               Left = 1
               Top = 57
-              Width = 310
-              Height = 716
+              Width = 312
+              Height = 383
               Align = alClient
               TabOrder = 1
+              ExplicitLeft = -2
+              ExplicitTop = 59
+              ExplicitWidth = 310
+              ExplicitHeight = 716
               object grdMatchingGridDBCardView1: TcxGridDBCardView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dmInventory.ds_Matching
@@ -192,7 +199,7 @@ object frmMain: TfrmMain
                   Position.RowIndex = 0
                 end
                 object grdMatchingGridDBBandedTableView1ActualLengthMM: TcxGridDBBandedColumn
-                  DataBinding.FieldName = 'ActualLengthMM'
+                  DataBinding.FieldName = 'ALMM'
                   Width = 68
                   Position.BandIndex = 0
                   Position.ColIndex = 5
@@ -206,7 +213,7 @@ object frmMain: TfrmMain
                   Position.RowIndex = 0
                 end
                 object grdMatchingGridDBBandedTableView1PhysicalInventoryPointNo: TcxGridDBBandedColumn
-                  DataBinding.FieldName = 'PhysicalInventoryPointNo'
+                  DataBinding.FieldName = 'PIPNo'
                   Visible = False
                   Position.BandIndex = 0
                   Position.ColIndex = 4
@@ -231,25 +238,32 @@ object frmMain: TfrmMain
           object Panelgrid: TPanel
             Left = 1
             Top = 1
-            Width = 1069
-            Height = 774
+            Width = 995
+            Height = 441
             Align = alClient
             TabOrder = 1
+            ExplicitWidth = 1069
+            ExplicitHeight = 774
             object Panel4: TPanel
               Left = 1
-              Top = 719
-              Width = 1067
+              Top = 386
+              Width = 993
               Height = 54
               Align = alBottom
               TabOrder = 0
+              ExplicitTop = 719
+              ExplicitWidth = 1067
             end
             object grdPkgOutput: TcxGrid
               Left = 1
               Top = 1
-              Width = 1067
-              Height = 718
+              Width = 993
+              Height = 385
               Align = alClient
               TabOrder = 1
+              ExplicitLeft = 4
+              ExplicitTop = -5
+              ExplicitHeight = 369
               object grdPkgOutputDBTableView1: TcxGridDBTableView
                 OnMouseDown = grdPkgOutputDBTableView1MouseDown
                 Navigator.Buttons.CustomButtons = <>
@@ -340,24 +354,29 @@ object frmMain: TfrmMain
             end
           end
           object cxSplitter1: TcxSplitter
-            Left = 1070
+            Left = 996
             Top = 1
             Width = 8
-            Height = 774
+            Height = 441
             HotZoneClassName = 'TcxMediaPlayer8Style'
             AlignSplitter = salRight
             Control = Panel2
             Color = clMaroon
             ParentColor = False
+            ExplicitLeft = 1070
+            ExplicitHeight = 774
           end
         end
         object PanelTop: TPanel
           Left = 1
           Top = 1
-          Width = 1391
+          Width = 1319
           Height = 66
           Align = alTop
           TabOrder = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 1391
           object cxButton1: TcxButton
             Left = 16
             Top = 6
@@ -376,7 +395,7 @@ object frmMain: TfrmMain
             Width = 681
           end
           object cxButton2: TcxButton
-            Left = 1238
+            Left = 1081
             Top = 6
             Width = 105
             Height = 49
@@ -394,6 +413,256 @@ object frmMain: TfrmMain
             SpeedButtonOptions.CanBeFocused = False
             TabOrder = 3
             TabStop = False
+          end
+          object cxButton4: TcxButton
+            Left = 1192
+            Top = 6
+            Width = 121
+            Height = 49
+            Action = acPositionPkgs
+            Caption = 'Positionera'
+            TabOrder = 4
+          end
+        end
+        object Panel7: TPanel
+          Left = 1
+          Top = 67
+          Width = 1319
+          Height = 125
+          Align = alClient
+          Caption = 'Panel7'
+          TabOrder = 2
+          ExplicitLeft = 8
+          ExplicitTop = 72
+          ExplicitWidth = 1001
+          ExplicitHeight = 129
+          object grdSelectedPkgsII: TcxGrid
+            Left = 1
+            Top = 1
+            Width = 1317
+            Height = 123
+            Align = alClient
+            TabOrder = 0
+            ExplicitLeft = 2
+            ExplicitTop = 2
+            object cxGridDBTableView1: TcxGridDBTableView
+              Navigator.Buttons.CustomButtons = <>
+              DataController.DataSource = dmInventory.ds_PkgsToReposition
+              DataController.KeyFieldNames = 'PackageNo;suppliercode'
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+              OptionsView.ColumnAutoWidth = True
+              OptionsView.GroupByBox = False
+              OptionsView.Indicator = True
+              Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
+              object cxGridDBColumn1: TcxGridDBColumn
+                Caption = 'Paketnr'
+                DataBinding.FieldName = 'PackageNo'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 82
+              end
+              object cxGridDBColumn2: TcxGridDBColumn
+                Caption = 'Prefix'
+                DataBinding.FieldName = 'suppliercode'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 42
+              end
+              object cxGridDBColumn3: TcxGridDBColumn
+                Caption = 'Referens'
+                DataBinding.FieldName = 'REFERENCE'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 130
+              end
+              object cxGridDBColumn4: TcxGridDBColumn
+                DataBinding.FieldName = 'Product'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 329
+              end
+              object cxGridDBColumn5: TcxGridDBColumn
+                Caption = 'Position'
+                DataBinding.FieldName = 'position'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 146
+              end
+              object cxGridDBColumn6: TcxGridDBColumn
+                DataBinding.FieldName = 'PositionID'
+                PropertiesClassName = 'TcxLabelProperties'
+                Visible = False
+              end
+              object cxGridDBColumn7: TcxGridDBColumn
+                DataBinding.FieldName = 'PackageTypeNo'
+                PropertiesClassName = 'TcxLabelProperties'
+                Visible = False
+              end
+              object cxGridDBColumn8: TcxGridDBColumn
+                DataBinding.FieldName = 'PCS'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 94
+              end
+              object cxGridDBColumn9: TcxGridDBColumn
+                DataBinding.FieldName = 'AM3'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 94
+              end
+              object cxGridDBColumn10: TcxGridDBColumn
+                DataBinding.FieldName = 'NM3'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 95
+              end
+              object cxGridDBColumn11: TcxGridDBColumn
+                DataBinding.FieldName = 'MaxLength'
+                PropertiesClassName = 'TcxLabelProperties'
+                Width = 94
+              end
+            end
+            object cxGridLevel1: TcxGridLevel
+              GridView = cxGridDBTableView1
+            end
+          end
+        end
+      end
+      object PanelPositionPkgs: TPanel
+        Left = 56
+        Top = 24
+        Width = 1305
+        Height = 113
+        Caption = 'PanelPositionPkgs'
+        TabOrder = 1
+        Visible = False
+        object Panel5: TPanel
+          Left = 1
+          Top = 1
+          Width = 1303
+          Height = 302
+          Align = alTop
+          BevelOuter = bvNone
+          Caption = 'PanelPosTop'
+          TabOrder = 0
+          object Panel6: TPanel
+            Left = 1110
+            Top = 0
+            Width = 193
+            Height = 302
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 0
+            ExplicitLeft = 1080
+            ExplicitTop = 8
+            ExplicitHeight = 81
+            object cxButton5: TcxButton
+              Left = 0
+              Top = 0
+              Width = 193
+              Height = 302
+              Align = alClient
+              Action = acPositionPkgs
+              TabOrder = 0
+              ExplicitLeft = 24
+              ExplicitTop = 6
+              ExplicitWidth = 121
+              ExplicitHeight = 49
+            end
+          end
+          object PanelPkgToPosition: TPanel
+            Left = 0
+            Top = 0
+            Width = 1110
+            Height = 302
+            Align = alClient
+            BevelOuter = bvNone
+            Caption = 'Panel6'
+            TabOrder = 1
+            ExplicitLeft = 768
+            ExplicitTop = 16
+            ExplicitWidth = 193
+            ExplicitHeight = 81
+            object grdSelectedPkgs: TcxGrid
+              Left = 0
+              Top = 0
+              Width = 1110
+              Height = 302
+              Align = alClient
+              TabOrder = 0
+              ExplicitLeft = 16
+              ExplicitTop = 24
+              ExplicitWidth = 993
+              ExplicitHeight = 265
+              object grdSelectedPkgsDBTableView1: TcxGridDBTableView
+                Navigator.Buttons.CustomButtons = <>
+                DataController.DataSource = dmInventory.ds_PkgsToReposition
+                DataController.KeyFieldNames = 'PackageNo;suppliercode'
+                DataController.Summary.DefaultGroupSummaryItems = <>
+                DataController.Summary.FooterSummaryItems = <>
+                DataController.Summary.SummaryGroups = <>
+                OptionsView.ColumnAutoWidth = True
+                OptionsView.GroupByBox = False
+                OptionsView.Indicator = True
+                Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
+                object grdSelectedPkgsDBTableView1PackageNo: TcxGridDBColumn
+                  Caption = 'Paketnr'
+                  DataBinding.FieldName = 'PackageNo'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 82
+                end
+                object grdSelectedPkgsDBTableView1suppliercode: TcxGridDBColumn
+                  Caption = 'Prefix'
+                  DataBinding.FieldName = 'suppliercode'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 42
+                end
+                object grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn
+                  Caption = 'Referens'
+                  DataBinding.FieldName = 'REFERENCE'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 130
+                end
+                object grdSelectedPkgsDBTableView1Product: TcxGridDBColumn
+                  DataBinding.FieldName = 'Product'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 329
+                end
+                object grdSelectedPkgsDBTableView1position: TcxGridDBColumn
+                  Caption = 'Position'
+                  DataBinding.FieldName = 'position'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 146
+                end
+                object grdSelectedPkgsDBTableView1PositionID: TcxGridDBColumn
+                  DataBinding.FieldName = 'PositionID'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Visible = False
+                end
+                object grdSelectedPkgsDBTableView1PackageTypeNo: TcxGridDBColumn
+                  DataBinding.FieldName = 'PackageTypeNo'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Visible = False
+                end
+                object grdSelectedPkgsDBTableView1PCS: TcxGridDBColumn
+                  DataBinding.FieldName = 'PCS'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 94
+                end
+                object grdSelectedPkgsDBTableView1AM3: TcxGridDBColumn
+                  DataBinding.FieldName = 'AM3'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 94
+                end
+                object grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn
+                  DataBinding.FieldName = 'NM3'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 95
+                end
+                object grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn
+                  DataBinding.FieldName = 'MaxLength'
+                  PropertiesClassName = 'TcxLabelProperties'
+                  Width = 94
+                end
+              end
+              object grdSelectedPkgsLevel1: TcxGridLevel
+                GridView = grdSelectedPkgsDBTableView1
+              end
+            end
           end
         end
       end
@@ -750,6 +1019,10 @@ object frmMain: TfrmMain
       Caption = 'Aviseringslista'
       ImageIndex = 32
       OnExecute = acAskAvropExecute
+    end
+    object acPositionPkgs: TAction
+      Caption = 'Tillbaka'
+      OnExecute = acPositionPkgsExecute
     end
   end
   object imglOutbar_large: TImageList
@@ -4098,8 +4371,8 @@ object frmMain: TfrmMain
     ExtraPane.Items = <>
     ItemLinks = <>
     UseOwnFont = False
-    Left = 728
-    Top = 368
+    Left = 840
+    Top = 320
   end
   object dxRibbonPopupMenu1: TdxRibbonPopupMenu
     BarManager = dxBarManager1
@@ -4107,7 +4380,7 @@ object frmMain: TfrmMain
     Ribbon = dxRibbon1
     UseOwnFont = False
     Left = 728
-    Top = 248
+    Top = 264
   end
   object dxRibbonDropDownGallery1: TdxRibbonDropDownGallery
     BarManager = dxBarManager1
@@ -4163,8 +4436,8 @@ object frmMain: TfrmMain
       'DataField'
       'KeyField'
       'ListField')
-    Left = 728
-    Top = 440
+    Left = 792
+    Top = 464
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A005400660072006D004D00610069006E000100560049005300
@@ -4483,8 +4756,8 @@ object frmMain: TfrmMain
       410055004C0054005F00430048004100520053004500540001000D000A00}
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 482
-    Top = 362
+    Left = 162
+    Top = 210
     PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
