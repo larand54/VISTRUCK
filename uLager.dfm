@@ -1420,7 +1420,6 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1442,14 +1441,12 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1469,7 +1466,6 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -4941,8 +4937,8 @@ object fLager: TfLager
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'SELECT Distinct isNull(LIP.InvCode,'#39#39')+'#39'/'#39'+RTRIM(LIP.LogicalInve' +
-        'ntoryName) AS PLIP,'
+        'SELECT Distinct CY.CityName + '#39'/'#39' + RTRIM(LIP.LogicalInventoryNa' +
+        'me) AS PLIP,'
       
         'LIP.LogicalInventoryPointNo AS LIPNo, PH.PhysicalInventoryPointN' +
         'o AS PIPNO, CY.CITYNAME,'
@@ -4962,7 +4958,7 @@ object fLager: TfLager
       'FROM dbo.PHYSICALINVENTORYPOINT PH2'
       'WHERE PH2.OwnerNo = :LegoOwnerNo)'
       ''
-      'Order By  LIP.InvCode, LIP.LogicalInventoryName, CY.CITYNAME')
+      'Order By  CY.CityName, LIP.LogicalInventoryName')
     Left = 776
     Top = 192
     ParamData = <

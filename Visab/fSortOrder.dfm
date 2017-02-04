@@ -4145,8 +4145,6 @@ object frmSortOrder: TfrmSortOrder
           Properties.ActivePage = tsAttest
           Properties.CustomButtons.Buttons = <>
           Properties.Images = ImageList1
-          ExplicitLeft = -4
-          ExplicitTop = -7
           ClientRectBottom = 799
           ClientRectLeft = 1
           ClientRectRight = 1421
@@ -13527,8 +13525,10 @@ object frmSortOrder: TfrmSortOrder
     Top = 972
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdWorkOrder
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -13546,6 +13546,7 @@ object frmSortOrder: TfrmSortOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40040.571801030090000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.FilterBar = False
       OptionsView.ExpandButtons = False
       OptionsView.FilterBar = False
@@ -13553,8 +13554,10 @@ object frmSortOrder: TfrmSortOrder
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdSortOrderRows
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -13572,6 +13575,7 @@ object frmSortOrder: TfrmSortOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40040.571801030090000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsOnEveryPage.FilterBar = False
       OptionsView.ExpandButtons = False
       OptionsView.FilterBar = False
@@ -13579,8 +13583,10 @@ object frmSortOrder: TfrmSortOrder
     end
     object dxComponentPrinter1Link3: TdxGridReportLink
       Component = grdNewPkgs
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -13597,12 +13603,15 @@ object frmSortOrder: TfrmSortOrder
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link4: TdxGridReportLink
       Component = grdUsedPkgs
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -13619,6 +13628,7 @@ object frmSortOrder: TfrmSortOrder
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

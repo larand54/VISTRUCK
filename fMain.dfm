@@ -65,8 +65,7 @@ object frmMain: TfrmMain
             Align = alRight
             Caption = 'Panelpositionering'
             TabOrder = 0
-            ExplicitLeft = 1076
-            ExplicitHeight = 774
+            Visible = False
             object Panel3: TPanel
               Left = 1
               Top = 1
@@ -74,7 +73,6 @@ object frmMain: TfrmMain
               Height = 56
               Align = alTop
               TabOrder = 0
-              ExplicitWidth = 310
               object cxButton3: TcxButton
                 Left = 8
                 Top = 3
@@ -91,10 +89,6 @@ object frmMain: TfrmMain
               Height = 383
               Align = alClient
               TabOrder = 1
-              ExplicitLeft = -2
-              ExplicitTop = 59
-              ExplicitWidth = 310
-              ExplicitHeight = 716
               object grdMatchingGridDBCardView1: TcxGridDBCardView
                 Navigator.Buttons.CustomButtons = <>
                 DataController.DataSource = dmInventory.ds_Matching
@@ -238,32 +232,25 @@ object frmMain: TfrmMain
           object Panelgrid: TPanel
             Left = 1
             Top = 1
-            Width = 995
+            Width = 1003
             Height = 441
             Align = alClient
             TabOrder = 1
-            ExplicitWidth = 1069
-            ExplicitHeight = 774
             object Panel4: TPanel
               Left = 1
               Top = 386
-              Width = 993
+              Width = 1001
               Height = 54
               Align = alBottom
               TabOrder = 0
-              ExplicitTop = 719
-              ExplicitWidth = 1067
             end
             object grdPkgOutput: TcxGrid
               Left = 1
               Top = 1
-              Width = 993
+              Width = 1001
               Height = 385
               Align = alClient
               TabOrder = 1
-              ExplicitLeft = 4
-              ExplicitTop = -5
-              ExplicitHeight = 369
               object grdPkgOutputDBTableView1: TcxGridDBTableView
                 OnMouseDown = grdPkgOutputDBTableView1MouseDown
                 Navigator.Buttons.CustomButtons = <>
@@ -353,19 +340,6 @@ object frmMain: TfrmMain
               end
             end
           end
-          object cxSplitter1: TcxSplitter
-            Left = 996
-            Top = 1
-            Width = 8
-            Height = 441
-            HotZoneClassName = 'TcxMediaPlayer8Style'
-            AlignSplitter = salRight
-            Control = Panel2
-            Color = clMaroon
-            ParentColor = False
-            ExplicitLeft = 1070
-            ExplicitHeight = 774
-          end
         end
         object PanelTop: TPanel
           Left = 1
@@ -374,9 +348,6 @@ object frmMain: TfrmMain
           Height = 66
           Align = alTop
           TabOrder = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 1391
           object cxButton1: TcxButton
             Left = 16
             Top = 6
@@ -432,20 +403,13 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Panel7'
           TabOrder = 2
-          ExplicitLeft = 8
-          ExplicitTop = 72
-          ExplicitWidth = 1001
-          ExplicitHeight = 129
-          object grdSelectedPkgsII: TcxGrid
-            Left = 1
-            Top = 1
-            Width = 1317
-            Height = 123
-            Align = alClient
+          object grdSelectedPkgs: TcxGrid
+            Left = 4
+            Top = -177
+            Width = 1110
+            Height = 302
             TabOrder = 0
-            ExplicitLeft = 2
-            ExplicitTop = 2
-            object cxGridDBTableView1: TcxGridDBTableView
+            object grdSelectedPkgsDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               DataController.DataSource = dmInventory.ds_PkgsToReposition
               DataController.KeyFieldNames = 'PackageNo;suppliercode'
@@ -456,214 +420,87 @@ object frmMain: TfrmMain
               OptionsView.GroupByBox = False
               OptionsView.Indicator = True
               Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
-              object cxGridDBColumn1: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1PackageNo: TcxGridDBColumn
                 Caption = 'Paketnr'
                 DataBinding.FieldName = 'PackageNo'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 82
               end
-              object cxGridDBColumn2: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1suppliercode: TcxGridDBColumn
                 Caption = 'Prefix'
                 DataBinding.FieldName = 'suppliercode'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 42
               end
-              object cxGridDBColumn3: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn
                 Caption = 'Referens'
                 DataBinding.FieldName = 'REFERENCE'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 130
               end
-              object cxGridDBColumn4: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1Product: TcxGridDBColumn
                 DataBinding.FieldName = 'Product'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 329
               end
-              object cxGridDBColumn5: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1position: TcxGridDBColumn
                 Caption = 'Position'
                 DataBinding.FieldName = 'position'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 146
               end
-              object cxGridDBColumn6: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1PositionID: TcxGridDBColumn
                 DataBinding.FieldName = 'PositionID'
                 PropertiesClassName = 'TcxLabelProperties'
                 Visible = False
               end
-              object cxGridDBColumn7: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1PackageTypeNo: TcxGridDBColumn
                 DataBinding.FieldName = 'PackageTypeNo'
                 PropertiesClassName = 'TcxLabelProperties'
                 Visible = False
               end
-              object cxGridDBColumn8: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1PCS: TcxGridDBColumn
                 DataBinding.FieldName = 'PCS'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 94
               end
-              object cxGridDBColumn9: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1AM3: TcxGridDBColumn
                 DataBinding.FieldName = 'AM3'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 94
               end
-              object cxGridDBColumn10: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn
                 DataBinding.FieldName = 'NM3'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 95
               end
-              object cxGridDBColumn11: TcxGridDBColumn
+              object grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn
                 DataBinding.FieldName = 'MaxLength'
                 PropertiesClassName = 'TcxLabelProperties'
                 Width = 94
               end
             end
-            object cxGridLevel1: TcxGridLevel
-              GridView = cxGridDBTableView1
+            object grdSelectedPkgsLevel1: TcxGridLevel
+              GridView = grdSelectedPkgsDBTableView1
             end
           end
         end
       end
       object PanelPositionPkgs: TPanel
-        Left = 56
-        Top = 24
-        Width = 1305
-        Height = 113
+        Left = 16
+        Top = 7
+        Width = 1345
+        Height = 195
         Caption = 'PanelPositionPkgs'
         TabOrder = 1
         Visible = False
         object Panel5: TPanel
-          Left = 1
-          Top = 1
-          Width = 1303
-          Height = 302
-          Align = alTop
-          BevelOuter = bvNone
-          Caption = 'PanelPosTop'
+          Left = 24
+          Top = 8
+          Width = 1057
+          Height = 73
+          Caption = 'Panel5'
           TabOrder = 0
-          object Panel6: TPanel
-            Left = 1110
-            Top = 0
-            Width = 193
-            Height = 302
-            Align = alRight
-            BevelOuter = bvNone
-            TabOrder = 0
-            ExplicitLeft = 1080
-            ExplicitTop = 8
-            ExplicitHeight = 81
-            object cxButton5: TcxButton
-              Left = 0
-              Top = 0
-              Width = 193
-              Height = 302
-              Align = alClient
-              Action = acPositionPkgs
-              TabOrder = 0
-              ExplicitLeft = 24
-              ExplicitTop = 6
-              ExplicitWidth = 121
-              ExplicitHeight = 49
-            end
-          end
-          object PanelPkgToPosition: TPanel
-            Left = 0
-            Top = 0
-            Width = 1110
-            Height = 302
-            Align = alClient
-            BevelOuter = bvNone
-            Caption = 'Panel6'
-            TabOrder = 1
-            ExplicitLeft = 768
-            ExplicitTop = 16
-            ExplicitWidth = 193
-            ExplicitHeight = 81
-            object grdSelectedPkgs: TcxGrid
-              Left = 0
-              Top = 0
-              Width = 1110
-              Height = 302
-              Align = alClient
-              TabOrder = 0
-              ExplicitLeft = 16
-              ExplicitTop = 24
-              ExplicitWidth = 993
-              ExplicitHeight = 265
-              object grdSelectedPkgsDBTableView1: TcxGridDBTableView
-                Navigator.Buttons.CustomButtons = <>
-                DataController.DataSource = dmInventory.ds_PkgsToReposition
-                DataController.KeyFieldNames = 'PackageNo;suppliercode'
-                DataController.Summary.DefaultGroupSummaryItems = <>
-                DataController.Summary.FooterSummaryItems = <>
-                DataController.Summary.SummaryGroups = <>
-                OptionsView.ColumnAutoWidth = True
-                OptionsView.GroupByBox = False
-                OptionsView.Indicator = True
-                Styles.StyleSheet = GridTableViewStyleSheetWindowsStandardlarge
-                object grdSelectedPkgsDBTableView1PackageNo: TcxGridDBColumn
-                  Caption = 'Paketnr'
-                  DataBinding.FieldName = 'PackageNo'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 82
-                end
-                object grdSelectedPkgsDBTableView1suppliercode: TcxGridDBColumn
-                  Caption = 'Prefix'
-                  DataBinding.FieldName = 'suppliercode'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 42
-                end
-                object grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn
-                  Caption = 'Referens'
-                  DataBinding.FieldName = 'REFERENCE'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 130
-                end
-                object grdSelectedPkgsDBTableView1Product: TcxGridDBColumn
-                  DataBinding.FieldName = 'Product'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 329
-                end
-                object grdSelectedPkgsDBTableView1position: TcxGridDBColumn
-                  Caption = 'Position'
-                  DataBinding.FieldName = 'position'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 146
-                end
-                object grdSelectedPkgsDBTableView1PositionID: TcxGridDBColumn
-                  DataBinding.FieldName = 'PositionID'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Visible = False
-                end
-                object grdSelectedPkgsDBTableView1PackageTypeNo: TcxGridDBColumn
-                  DataBinding.FieldName = 'PackageTypeNo'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Visible = False
-                end
-                object grdSelectedPkgsDBTableView1PCS: TcxGridDBColumn
-                  DataBinding.FieldName = 'PCS'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 94
-                end
-                object grdSelectedPkgsDBTableView1AM3: TcxGridDBColumn
-                  DataBinding.FieldName = 'AM3'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 94
-                end
-                object grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn
-                  DataBinding.FieldName = 'NM3'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 95
-                end
-                object grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn
-                  DataBinding.FieldName = 'MaxLength'
-                  PropertiesClassName = 'TcxLabelProperties'
-                  Width = 94
-                end
-              end
-              object grdSelectedPkgsLevel1: TcxGridLevel
-                GridView = grdSelectedPkgsDBTableView1
-              end
-            end
-          end
         end
       end
     end

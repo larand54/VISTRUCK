@@ -573,6 +573,7 @@ type
     cds_Package_Size: TFDQuery;
     cds_Package_SizePackageSizeNo: TIntegerField;
     cds_Package_SizePackageSizeName: TStringField;
+    mtSelectedPkgNoMaxLangd: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -1594,8 +1595,8 @@ procedure TdmsSystem.Delete_ReservedPkgs(const Modul : String) ;
 Begin
  Try
  sp_Delete_Res_Pkgs.Close ;
- sp_Delete_Res_Pkgs.ParamByName('@UserID').AsInteger:= ThisUser.UserID ;
- sp_Delete_Res_Pkgs.ParamByName('@Modul').AsString:= Modul ;
+ sp_Delete_Res_Pkgs.ParamByName('@UserID').AsInteger  := ThisUser.UserID ;
+ sp_Delete_Res_Pkgs.ParamByName('@Modul').AsString    := Modul ;
  sp_Delete_Res_Pkgs.ExecProc ;
      except
       On E: Exception do

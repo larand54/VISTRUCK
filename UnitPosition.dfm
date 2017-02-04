@@ -45,10 +45,6 @@ object Position: TPosition
       Margins.Right = 4
       Margins.Bottom = 4
       Caption = 'Alla Position'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object cxGrid_AllPosition: TcxGrid
         Left = 0
         Top = 0

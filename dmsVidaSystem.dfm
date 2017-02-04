@@ -137,6 +137,9 @@ object dmsSystem: TdmsSystem
     object mtSelectedPkgNoLIPNo: TIntegerField
       FieldName = 'LIPNo'
     end
+    object mtSelectedPkgNoMaxLangd: TFloatField
+      FieldName = 'MaxLangd'
+    end
   end
   object ds_LoadPlanDest: TDataSource
     DataSet = cds_LoadPlanDest

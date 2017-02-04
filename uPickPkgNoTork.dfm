@@ -298,7 +298,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
     end
     object Label2: TLabel
       Left = 590
-      Top = 50
+      Top = 49
       Width = 60
       Height = 24
       Margins.Left = 4
@@ -436,7 +436,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
   object ds_SelectedPkgNo: TDataSource
     DataSet = dmInventory.mtSelectedPkgNo
     OnDataChange = ds_SelectedPkgNoDataChange
-    Left = 256
+    Left = 232
     Top = 152
   end
   object ds_Products: TDataSource

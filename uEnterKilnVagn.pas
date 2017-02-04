@@ -133,6 +133,9 @@ begin
 
    if TypeOfLine = 2 then
     CheckIMPProducts ;
+
+   if CanClose then
+    dmsSystem.Delete_ReservedPkgs ('TfEnterKilnVagn') ;
  End;
 end;
 

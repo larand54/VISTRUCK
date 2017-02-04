@@ -2060,6 +2060,7 @@
       'AND PN.Status = 1'
       'AND    PI.OwnerNo   = :InvOwner'
       'AND PI.PhysicalInventoryPointNo = :PIPNo'
+      'AND LI.CanAddToLoad = 1'
       '')
     Left = 600
     Top = 16
@@ -3266,7 +3267,8 @@
       'WHERE PN.PackageNo = :PackageNo'
       'AND PN.SupplierCode = :SupplierCode'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
-      'AND PN.Status = 1')
+      'AND PN.Status = 1'
+      'AND LIP.CanAddToLoad = 1')
     Left = 464
     Top = 624
     ParamData = <

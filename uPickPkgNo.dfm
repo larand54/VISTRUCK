@@ -30,8 +30,6 @@ object fPickPkgNo: TfPickPkgNo
     Align = alClient
     PopupMenu = pmPickPkgNosGrid
     TabOrder = 0
-    ExplicitTop = 297
-    ExplicitHeight = 434
     object grdPickPkgNosDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.Cancel.Visible = True
@@ -228,8 +226,6 @@ object fPickPkgNo: TfPickPkgNo
     Margins.Bottom = 4
     Align = alTop
     TabOrder = 2
-    ExplicitLeft = -264
-    ExplicitTop = 143
     object LabelProduct: TLabel
       Left = 434
       Top = 31
@@ -1259,6 +1255,8 @@ object fPickPkgNo: TfPickPkgNo
       'WHERE'
       'PhysicalInventoryPointNo = :PIPNo'
       'AND SequenceNo = 1'
+      'AND dbo.LOGICALINVENTORYPOINT.CanAddToLoad = 1'
+      ''
       ''
       'Order By LogicalInventoryName ')
     Left = 464

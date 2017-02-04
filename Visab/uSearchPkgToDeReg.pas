@@ -26,7 +26,7 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, siComp, siLngLnk,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, cxDBEdit ;
 
 type
   TfSearchPkgToDeReg = class(TForm)
@@ -49,9 +49,7 @@ type
     mtProductProductNo: TIntegerField;
     mtProductProductDisplayName: TStringField;
     dsProduct: TDataSource;
-    Label72: TLabel;
     lcRawPIPNAME: TcxDBLookupComboBox;
-    Label73: TLabel;
     lcRawLIPName: TcxDBLookupComboBox;
     ActionList1: TActionList;
     acRefreshInventory: TAction;
@@ -98,6 +96,16 @@ type
     cds_RawLIPLAGERGRUPP: TStringField;
     cds_RawLIPPIPNo: TIntegerField;
     siLangLinked_fSearchPkgToDeReg: TsiLangLinked;
+    teALMM: TcxDBTextEdit;
+    cxLabel3: TcxLabel;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    mtProductALMM: TFloatField;
+    sq_ProdOnlyLMaxlangd: TFloatField;
+    grdPickPkgNosDBTableView1MaxLangd: TcxGridDBColumn;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyleContent: TcxStyle;
+    cxStyleHeading: TcxStyle;
     procedure acRefreshInventoryExecute(Sender: TObject);
     procedure acAvregistreraMarkeradePaketExecute(Sender: TObject);
     procedure mtProductProductNoChange(Sender: TField);
@@ -110,6 +118,7 @@ type
     procedure mtProductLIPNoChange(Sender: TField);
     procedure tePkgNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure mtProductALMMChange(Sender: TField);
   private
     { Private declarations }
     procedure RefreshLagerLista(const ProductNo : Integer) ;
@@ -181,6 +190,12 @@ begin
   sq_ProdOnlyL.ParamByName('ProductNo').AsInteger  := ProductNo ;
   sq_ProdOnlyL.ParamByName('PIPNo').AsInteger      := mtProductPIPNo.AsInteger ;
   sq_ProdOnlyL.ParamByName('LIPNo').AsInteger      := mtProductLIPNo.AsInteger ;
+
+  if mtProductALMM.AsFloat > 0 then
+   sq_ProdOnlyL.ParamByName('ALMM').AsFloat        := mtProductALMM.AsFloat
+    else
+     sq_ProdOnlyL.ParamByName('ALMM').AsFloat        := 0 ;
+
   sq_ProdOnlyL.Open ;
   sq_ProdOnlyL.First ;
  While not  sq_ProdOnlyL.Eof do
@@ -188,6 +203,7 @@ begin
   mtSelectedPkgNo.insert ;
   For x := 0 to 7 do
    mtSelectedPkgNo.Fields.Fields[x].AsVariant := sq_ProdOnlyL.Fields.Fields[x].AsVariant ;
+   mtSelectedPkgNoMaxLangd.AsFloat  := sq_ProdOnlyLMaxlangd.AsFloat ;
 
   mtSelectedPkgNoPackageTypeNo.AsInteger      := sq_ProdOnlyLpackagetypeno.AsInteger ;
   mtSelectedPkgNoLIPNo.AsInteger              := mtProductLIPNo.AsInteger ;
@@ -347,6 +363,14 @@ end;
 procedure TfSearchPkgToDeReg.lcRawLIPNameExit(Sender: TObject);
 begin
  cds_RawLIP.Filtered  := False ;
+end;
+
+procedure TfSearchPkgToDeReg.mtProductALMMChange(Sender: TField);
+begin
+ with dmsSortOrder, dmsSystem do
+ Begin
+  RefreshLagerLista(mtProductProductNo.AsInteger) ;
+ End ;//With
 end;
 
 procedure TfSearchPkgToDeReg.mtProductLIPNoChange(Sender: TField);

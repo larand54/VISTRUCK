@@ -228,7 +228,6 @@ type
     grdPkgsPerMPDBChartView1: TcxGridDBChartView;
     grdPkgsPerMPDBChartView1DataGroup1: TcxGridDBChartDataGroup;
     grdPkgsPerMPDBChartView1Series1: TcxGridDBChartSeries;
-    cxSplitter1: TcxSplitter;
     Panel3: TPanel;
     grdMatchingGridLevel1: TcxGridLevel;
     grdMatchingGrid: TcxGrid;
@@ -260,15 +259,12 @@ type
     PanelPositionPkgs: TPanel;
     cxButton4: TcxButton;
     acPositionPkgs: TAction;
-    Panel5: TPanel;
-    Panel6: TPanel;
-    PanelPkgToPosition: TPanel;
-    cxButton5: TcxButton;
-    grdSelectedPkgsDBTableView1: TcxGridDBTableView;
-    grdSelectedPkgsLevel1: TcxGridLevel;
+    Panel7: TPanel;
     grdSelectedPkgs: TcxGrid;
+    grdSelectedPkgsDBTableView1: TcxGridDBTableView;
     grdSelectedPkgsDBTableView1PackageNo: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1suppliercode: TcxGridDBColumn;
+    grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1Product: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1position: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1PositionID: TcxGridDBColumn;
@@ -277,22 +273,8 @@ type
     grdSelectedPkgsDBTableView1AM3: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn;
-    Panel7: TPanel;
-    grdSelectedPkgsDBTableView1REFERENCE: TcxGridDBColumn;
-    grdSelectedPkgsII: TcxGrid;
-    cxGridDBTableView1: TcxGridDBTableView;
-    cxGridDBColumn1: TcxGridDBColumn;
-    cxGridDBColumn2: TcxGridDBColumn;
-    cxGridDBColumn3: TcxGridDBColumn;
-    cxGridDBColumn4: TcxGridDBColumn;
-    cxGridDBColumn5: TcxGridDBColumn;
-    cxGridDBColumn6: TcxGridDBColumn;
-    cxGridDBColumn7: TcxGridDBColumn;
-    cxGridDBColumn8: TcxGridDBColumn;
-    cxGridDBColumn9: TcxGridDBColumn;
-    cxGridDBColumn10: TcxGridDBColumn;
-    cxGridDBColumn11: TcxGridDBColumn;
-    cxGridLevel1: TcxGridLevel;
+    grdSelectedPkgsLevel1: TcxGridLevel;
+    Panel5: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -701,6 +683,18 @@ begin
 //   PanelBottom.Visible  := True ;
 //   PanelTop.Visible     := True ;
  End;
+
+
+  if self.WindowState=wsNormal then
+       begin
+        self.WindowState:=wsMaximized;
+      //  self.SetBounds(0,0,screen.Width,screen.Height-getHeightOfTaskBar);
+       end
+       else
+       begin
+         self.WindowState:=wsNormal;
+       end;
+
 end;
 
 
@@ -788,6 +782,7 @@ begin
         if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
         Begin
           Action := eaAccept ;
+     //     ChangeClickedPackage(NewPkgNo, NumberPrefix, ADisplayText, sp_allPkgsatoutputSupplierCode.AsString);
           mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString]);
         End
          else
@@ -798,7 +793,7 @@ begin
     End
      else //Length < 11
       Begin
-       NewPkgNo:= StrToIntDef(PackageNo,0) ;
+         NewPkgNo:= StrToIntDef(PackageNo,0) ;
        if NewPkgNo = 0 then
        Begin
 //        Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) ) ;
@@ -813,7 +808,9 @@ begin
           NumberPrefix  := sp_allPkgsatoutputProductionUnitCode.AsString ;
           Action        := eaAccept ;
           LongPkgNo     := inttoStr(NewPkgNo) + NumberPrefix ;
-          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString]);
+          ChangeClickedPackage(NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString);
+
+//          mtScannedPkgs.InsertRecord([NewPkgNo, NumberPrefix, LongPkgNo, sp_allPkgsatoutputSupplierCode.AsString]);
         End
        Finally
         sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
@@ -892,6 +889,7 @@ begin
    Try
 //    ScanningPkgNo(Sender, mePackageNo.Text) ;
     GetpackageNoEntered(Sender, mePackageNo.Text) ;
+    dmInventory.Refresh_PkgsToReposition ;
     grdPkgOutputDBTableView1.Invalidate(false);
 //    grdPkgOutput.Invalidate();
 //    SaveLoad ;

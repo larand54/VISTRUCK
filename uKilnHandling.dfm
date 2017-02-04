@@ -77,9 +77,10 @@ object fkilnHandling: TfkilnHandling
         Align = alBottom
         TabOrder = 1
         Properties.CustomButtons.Buttons = <>
-        ClientRectBottom = 62
-        ClientRectRight = 1541
-        ClientRectTop = 0
+        ClientRectBottom = 61
+        ClientRectLeft = 1
+        ClientRectRight = 1540
+        ClientRectTop = 1
       end
       object cxSplitter1: TcxSplitter
         Left = 0
@@ -145,7 +146,7 @@ object fkilnHandling: TfkilnHandling
               FixedKind = fkLeft
               Options.HoldOwnColumnsOnly = True
               Options.Moving = False
-              Width = 137
+              Width = 153
             end
             item
               Caption = 'VAGNL'#196'GE'
@@ -602,9 +603,10 @@ object fkilnHandling: TfkilnHandling
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 84
-    ClientRectRight = 1541
-    ClientRectTop = 0
+    ClientRectBottom = 83
+    ClientRectLeft = 1
+    ClientRectRight = 1540
+    ClientRectTop = 1
     object tsLagret: TcxTabSheet
       Margins.Left = 4
       Margins.Top = 4
@@ -615,8 +617,8 @@ object fkilnHandling: TfkilnHandling
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1541
-        Height = 84
+        Width = 1539
+        Height = 82
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
@@ -625,8 +627,8 @@ object fkilnHandling: TfkilnHandling
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          1541
-          84)
+          1539
+          82)
         object cxLabel2: TcxLabel
           Left = 5
           Top = 16
@@ -825,7 +827,7 @@ object fkilnHandling: TfkilnHandling
           Width = 105
         end
         object cxButton9: TcxButton
-          Left = 1417
+          Left = 1415
           Top = 15
           Width = 109
           Height = 61
@@ -1579,7 +1581,6 @@ object fkilnHandling: TfkilnHandling
     Top = 457
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1596,13 +1597,11 @@ object fkilnHandling: TfkilnHandling
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1618,11 +1617,9 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link3: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1638,11 +1635,9 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link4: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1658,13 +1653,11 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link5: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1680,7 +1673,6 @@ object fkilnHandling: TfkilnHandling
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
