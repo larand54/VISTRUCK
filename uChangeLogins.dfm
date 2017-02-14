@@ -3,7 +3,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   Top = 193
   ActiveControl = EFD_Name
   Caption = 'Byt anv'#228'ndare'
-  ClientHeight = 254
+  ClientHeight = 290
   ClientWidth = 528
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -112,9 +112,15 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   end
   object cxLabel1: TcxLabel
     Left = 8
-    Top = 216
+    Top = 222
     Caption = 'Vida\alvetruck'
     OnDblClick = cxLabel1DblClick
+  end
+  object cxLabel2: TcxLabel
+    Left = 8
+    Top = 248
+    Caption = 'vida\hesttruck01'
+    OnDblClick = cxLabel2DblClick
   end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'

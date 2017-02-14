@@ -1,6 +1,6 @@
 object dmInventory: TdmInventory
   OldCreateOrder = False
-  Height = 1252
+  Height = 1366
   Width = 1269
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
@@ -11012,7 +11012,7 @@ object dmInventory: TdmInventory
     Left = 48
     Top = 984
   end
-  object sp_Matching: TFDStoredProc
+  object sp_Matchingtabort: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_Matching'
     Left = 536
@@ -11055,49 +11055,53 @@ object dmInventory: TdmInventory
         ParamType = ptInput
         Value = '10506'
       end>
-    object sp_MatchingVald: TIntegerField
+    object sp_MatchingtabortVald: TIntegerField
       FieldName = 'Vald'
       Origin = 'Vald'
       ReadOnly = True
       Required = True
     end
-    object sp_MatchingPosition: TStringField
+    object sp_MatchingtabortPosition: TStringField
       FieldName = 'Position'
       Origin = 'Position'
       ReadOnly = True
       Size = 101
     end
-    object sp_MatchingREFERENCE: TStringField
+    object sp_MatchingtabortREFERENCE: TStringField
       DisplayLabel = 'Referens'
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
       Size = 30
     end
-    object sp_MatchingProductNo: TIntegerField
+    object sp_MatchingtabortProductNo: TIntegerField
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
     end
-    object sp_MatchingPositionID: TIntegerField
+    object sp_MatchingtabortPositionID: TIntegerField
       FieldName = 'PositionID'
       Origin = 'PositionID'
       Required = True
     end
-    object sp_MatchingPosStatus: TIntegerField
+    object sp_MatchingtabortPosStatus: TIntegerField
       DisplayLabel = 'Status'
       FieldName = 'PosStatus'
       Origin = 'PosStatus'
     end
-    object sp_MatchingALMM: TFloatField
+    object sp_MatchingtabortALMM: TFloatField
       FieldName = 'ALMM'
       Origin = 'ALMM'
     end
-    object sp_MatchingPIPNo: TIntegerField
+    object sp_MatchingtabortStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+    end
+    object sp_MatchingtabortPIPNo: TIntegerField
       FieldName = 'PIPNo'
       Origin = 'PIPNo'
     end
   end
   object ds_Matching: TDataSource
-    DataSet = sp_Matching
+    DataSet = Mem_MatchaProduct
     Left = 536
     Top = 1080
   end
@@ -11223,7 +11227,7 @@ object dmInventory: TdmInventory
       '  and pc.Act = 1'
       '  AND vi.ClientNo = :ClientNo')
     Left = 808
-    Top = 1088
+    Top = 1048
     ParamData = <
       item
         Name = 'CLIENTNO'
@@ -11555,10 +11559,406 @@ object dmInventory: TdmInventory
         DataType = ftInteger
         ParamType = ptInput
       end>
+    object sp_PkgsToRepositionPackageNo: TIntegerField
+      FieldName = 'PackageNo'
+      Origin = 'PackageNo'
+      Required = True
+    end
+    object sp_PkgsToRepositionsuppliercode: TStringField
+      FieldName = 'suppliercode'
+      Origin = 'suppliercode'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object sp_PkgsToRepositionProduct: TStringField
+      FieldName = 'Product'
+      Origin = 'Product'
+      Size = 150
+    end
+    object sp_PkgsToRepositionposition: TStringField
+      FieldName = 'position'
+      Origin = 'position'
+      ReadOnly = True
+      Size = 103
+    end
+    object sp_PkgsToRepositionPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+    end
+    object sp_PkgsToRepositionPackageTypeNo: TIntegerField
+      FieldName = 'PackageTypeNo'
+      Origin = 'PackageTypeNo'
+    end
+    object sp_PkgsToRepositionPCS: TIntegerField
+      FieldName = 'PCS'
+      Origin = 'PCS'
+    end
+    object sp_PkgsToRepositionAM3: TFloatField
+      FieldName = 'AM3'
+      Origin = 'AM3'
+    end
+    object sp_PkgsToRepositionNM3: TFloatField
+      FieldName = 'NM3'
+      Origin = 'NM3'
+    end
+    object sp_PkgsToRepositionMaxLength: TFloatField
+      FieldName = 'MaxLength'
+      Origin = 'MaxLength'
+      ReadOnly = True
+    end
+    object sp_PkgsToRepositionREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      Size = 30
+    end
+    object sp_PkgsToRepositionProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+    end
+    object sp_PkgsToRepositionPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
   end
   object ds_PkgsToReposition: TDataSource
     DataSet = sp_PkgsToReposition
     Left = 336
     Top = 1192
+  end
+  object Mem_MatchaProduct: TFDMemTable
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'Vald'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PositionNamn'
+        DataType = ftString
+        Size = 25
+      end
+      item
+        Name = 'Reference'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'ProductNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PositionID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Fullt'
+        DataType = ftInteger
+      end
+      item
+        Name = 'MaxLength'
+        DataType = ftInteger
+      end
+      item
+        Name = 'StoredDate'
+        DataType = ftTimeStamp
+      end>
+    CachedUpdates = True
+    IndexDefs = <
+      item
+        Name = 'Index_PosID'
+        Fields = 'PositionID;ProductNo;MaxLength;Reference'
+      end>
+    Indexes = <
+      item
+        Active = True
+        Name = 'Index_PosID'
+        Fields = 'PositionID;ProductNo;MaxLength;Reference'
+      end>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    StoreDefs = True
+    Left = 536
+    Top = 1142
+    object Mem_MatchaProductVald: TIntegerField
+      FieldName = 'Vald'
+    end
+    object Mem_MatchaProductPositionNamn: TStringField
+      FieldName = 'PositionNamn'
+      Size = 25
+    end
+    object Mem_MatchaProductReference: TStringField
+      FieldName = 'Reference'
+    end
+    object Mem_MatchaProductProductNo: TIntegerField
+      FieldName = 'ProductNo'
+    end
+    object Mem_MatchaProductPositionID: TIntegerField
+      FieldName = 'PositionID'
+    end
+    object Mem_MatchaProductFullt: TIntegerField
+      FieldName = 'Fullt'
+    end
+    object Mem_MatchaProductMaxLength: TIntegerField
+      FieldName = 'MaxLength'
+    end
+    object Mem_MatchaProductStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+    end
+  end
+  object sp_allAreas: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_AllAreas]'
+    Left = 704
+    Top = 1128
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 10220
+      end>
+    object sp_allAreasAreaName: TStringField
+      FieldName = 'AreaName'
+      Origin = 'AreaName'
+      Size = 50
+    end
+    object sp_allAreasAreaID: TIntegerField
+      FieldName = 'AreaID'
+      Origin = 'AreaID'
+      Required = True
+    end
+  end
+  object sp_AllPositions: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_AllPositions]'
+    Left = 920
+    Top = 1128
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 10220
+      end>
+    object sp_AllPositionsPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      Size = 50
+    end
+    object sp_AllPositionsPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+      Required = True
+    end
+    object sp_AllPositionsPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object sp_AllPositionsAreaID: TIntegerField
+      FieldName = 'AreaID'
+      Origin = 'AreaID'
+    end
+  end
+  object ds_allAreas: TDataSource
+    DataSet = sp_allAreas
+    OnDataChange = ds_allAreasDataChange
+    Left = 704
+    Top = 1184
+  end
+  object ds_AllPositions: TDataSource
+    DataSet = sp_AllPositions
+    Left = 920
+    Top = 1184
+  end
+  object sp_MatchingProduct: TFDStoredProc
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_MatchingProductNo]'
+    Left = 704
+    Top = 1256
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Reference'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 20
+      end
+      item
+        Position = 4
+        Name = '@ALMM'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@LanguageID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_MatchingProductVald: TIntegerField
+      FieldName = 'Vald'
+      Origin = 'Vald'
+    end
+    object sp_MatchingProductPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      Size = 50
+    end
+    object sp_MatchingProductReference: TStringField
+      FieldName = 'Reference'
+      Origin = 'Reference'
+      Size = 30
+    end
+    object sp_MatchingProductProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+    end
+    object sp_MatchingProductALMM: TFloatField
+      FieldName = 'ALMM'
+      Origin = 'ALMM'
+    end
+    object sp_MatchingProductPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+    end
+    object sp_MatchingProductPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object sp_MatchingProductPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object sp_MatchingProductStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+    end
+  end
+  object sp_MatchingRef: TFDStoredProc
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_MatchingRef]'
+    Left = 920
+    Top = 1256
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@ProductNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Reference'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 20
+      end
+      item
+        Position = 4
+        Name = '@ALMM'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@PIPNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@LanguageID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sp_MatchingRefVald: TIntegerField
+      FieldName = 'Vald'
+      Origin = 'Vald'
+    end
+    object sp_MatchingRefPosition: TStringField
+      FieldName = 'Position'
+      Origin = 'Position'
+      Size = 50
+    end
+    object sp_MatchingRefReference: TStringField
+      FieldName = 'Reference'
+      Origin = 'Reference'
+      Size = 30
+    end
+    object sp_MatchingRefProductNo: TIntegerField
+      FieldName = 'ProductNo'
+      Origin = 'ProductNo'
+    end
+    object sp_MatchingRefALMM: TFloatField
+      FieldName = 'ALMM'
+      Origin = 'ALMM'
+    end
+    object sp_MatchingRefPositionID: TIntegerField
+      FieldName = 'PositionID'
+      Origin = 'PositionID'
+    end
+    object sp_MatchingRefPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+    end
+    object sp_MatchingRefPosStatus: TIntegerField
+      FieldName = 'PosStatus'
+      Origin = 'PosStatus'
+    end
+    object sp_MatchingRefStoredDate: TSQLTimeStampField
+      FieldName = 'StoredDate'
+      Origin = 'StoredDate'
+    end
   end
 end

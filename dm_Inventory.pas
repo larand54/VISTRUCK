@@ -1352,16 +1352,16 @@ type
     sp_SetMyResPkg: TFDStoredProc;
     sp_SumPkgsPerMP: TFDStoredProc;
     ds_SumPkgsPerMP: TDataSource;
-    sp_Matching: TFDStoredProc;
+    sp_Matchingtabort: TFDStoredProc;
     sp_allPkgsatoutputMaxLengthALMM: TFloatField;
     sp_allPkgsatoutputProductNo: TIntegerField;
     sp_allPkgsatoutputPIPNo: TIntegerField;
-    sp_MatchingVald: TIntegerField;
-    sp_MatchingPosition: TStringField;
-    sp_MatchingREFERENCE: TStringField;
-    sp_MatchingProductNo: TIntegerField;
-    sp_MatchingPositionID: TIntegerField;
-    sp_MatchingPosStatus: TIntegerField;
+    sp_MatchingtabortVald: TIntegerField;
+    sp_MatchingtabortPosition: TStringField;
+    sp_MatchingtabortREFERENCE: TStringField;
+    sp_MatchingtabortProductNo: TIntegerField;
+    sp_MatchingtabortPositionID: TIntegerField;
+    sp_MatchingtabortPosStatus: TIntegerField;
     ds_Matching: TDataSource;
     sp_UsersOutputProdunitsUserID: TIntegerField;
     sp_UsersOutputProdunitsCreatedUser: TIntegerField;
@@ -1414,10 +1414,63 @@ type
     cds_KilnChargeRowsCheckIMPPcsPerLength: TStringField;
     cds_KilnChargeRowsCheckIMPMatchingPT: TStringField;
     cds_KilnChargeRowsMatchingPT: TStringField;
-    sp_MatchingALMM: TFloatField;
-    sp_MatchingPIPNo: TIntegerField;
+    sp_MatchingtabortALMM: TFloatField;
+    sp_MatchingtabortPIPNo: TIntegerField;
     sp_PkgsToReposition: TFDStoredProc;
     ds_PkgsToReposition: TDataSource;
+    sp_MatchingtabortStoredDate: TSQLTimeStampField;
+    Mem_MatchaProduct: TFDMemTable;
+    Mem_MatchaProductVald: TIntegerField;
+    Mem_MatchaProductFullt: TIntegerField;
+    Mem_MatchaProductPositionNamn: TStringField;
+    Mem_MatchaProductProductNo: TIntegerField;
+    Mem_MatchaProductPositionID: TIntegerField;
+    Mem_MatchaProductReference: TStringField;
+    Mem_MatchaProductMaxLength: TIntegerField;
+    Mem_MatchaProductStoredDate: TSQLTimeStampField;
+    sp_PkgsToRepositionPackageNo: TIntegerField;
+    sp_PkgsToRepositionsuppliercode: TStringField;
+    sp_PkgsToRepositionProduct: TStringField;
+    sp_PkgsToRepositionposition: TStringField;
+    sp_PkgsToRepositionPositionID: TIntegerField;
+    sp_PkgsToRepositionPackageTypeNo: TIntegerField;
+    sp_PkgsToRepositionPCS: TIntegerField;
+    sp_PkgsToRepositionAM3: TFloatField;
+    sp_PkgsToRepositionNM3: TFloatField;
+    sp_PkgsToRepositionMaxLength: TFloatField;
+    sp_PkgsToRepositionREFERENCE: TStringField;
+    sp_PkgsToRepositionProductNo: TIntegerField;
+    sp_PkgsToRepositionPIPNo: TIntegerField;
+    sp_allAreas: TFDStoredProc;
+    sp_AllPositions: TFDStoredProc;
+    sp_allAreasAreaName: TStringField;
+    sp_allAreasAreaID: TIntegerField;
+    sp_AllPositionsPosition: TStringField;
+    sp_AllPositionsPositionID: TIntegerField;
+    sp_AllPositionsPosStatus: TIntegerField;
+    sp_AllPositionsAreaID: TIntegerField;
+    ds_allAreas: TDataSource;
+    ds_AllPositions: TDataSource;
+    sp_MatchingProduct: TFDStoredProc;
+    sp_MatchingRef: TFDStoredProc;
+    sp_MatchingProductVald: TIntegerField;
+    sp_MatchingProductPosition: TStringField;
+    sp_MatchingProductReference: TStringField;
+    sp_MatchingProductProductNo: TIntegerField;
+    sp_MatchingProductALMM: TFloatField;
+    sp_MatchingProductPositionID: TIntegerField;
+    sp_MatchingProductPIPNo: TIntegerField;
+    sp_MatchingProductPosStatus: TIntegerField;
+    sp_MatchingProductStoredDate: TSQLTimeStampField;
+    sp_MatchingRefVald: TIntegerField;
+    sp_MatchingRefPosition: TStringField;
+    sp_MatchingRefReference: TStringField;
+    sp_MatchingRefProductNo: TIntegerField;
+    sp_MatchingRefALMM: TFloatField;
+    sp_MatchingRefPositionID: TIntegerField;
+    sp_MatchingRefPIPNo: TIntegerField;
+    sp_MatchingRefPosStatus: TIntegerField;
+    sp_MatchingRefStoredDate: TSQLTimeStampField;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -1455,6 +1508,7 @@ type
     procedure sp_UsersOutputProdunitsUpdateRecord(ASender: TDataSet;
       ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
       AOptions: TFDUpdateRowOptions);
+    procedure ds_allAreasDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
     procedure LoadAllBookingHdrIntoTempTable ;
@@ -1469,6 +1523,8 @@ type
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
 
+    procedure Open_AreasAndPositions(const PIPNo  : Integer) ;
+    procedure FindMatchingPositionFromSelectedPkgs ;
     procedure Refresh_PkgsToReposition ;
     function  GetDefaultDurationByKiln(const KilnChargeNo : Integer) :  Double ; //Get default kiln duration
     function  GetKilnNo(const KilnChargeNo : Integer) :  Integer ; //Get KilnNo
@@ -2112,6 +2168,15 @@ end;
 procedure TdmInventory.cds_BookingHdrCalcFields(DataSet: TDataSet);
 begin
  cds_BookingHdrRestNM3.AsFloat  := cds_BookingHdrNM3.AsFloat  - cds_BookingHdrNM3PlanFardig.AsFloat ;
+end;
+
+procedure TdmInventory.ds_allAreasDataChange(Sender: TObject; Field: TField);
+begin
+ if sp_allAreasAreaID.AsInteger > 0 then 
+ Begin
+  sp_AllPositions.Filter    := 'AreaID = ' + sp_allAreasAreaID.AsString ;
+  sp_AllPositions.Filtered  :=  True ;
+ End;
 end;
 
 procedure TdmInventory.ds_BookingHdrDataChange(Sender: TObject;
@@ -3131,23 +3196,73 @@ End ;
 
 procedure TdmInventory.Matching(const LongPkgNo  : String) ;
 Begin
-  sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
-  if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
+{
+    sp_allPkgsatoutput.IndexName := 'allPkgsAtOutput_Index01' ;
+    if sp_allPkgsatoutput.FindKey([LongPkgNo]) then
+    Begin
+        if sp_Matching.Active then
+        sp_Matching.Active  := False ;
+      sp_Matching.ParamByName('@ProductNo').AsInteger :=  sp_allPkgsatoutputProductNo.AsInteger ;
+      sp_Matching.ParamByName('@PIPNo').AsInteger     :=  sp_allPkgsatoutputPIPNo.AsInteger ;
+      sp_Matching.ParamByName('@Reference').AsString  :=  sp_allPkgsatoutputReference.AsString ;
+      sp_Matching.ParamByName('@ALMM').AsFloat        :=  sp_allPkgsatoutputMaxLengthALMM.AsFloat ;
+      sp_Matching.Active  := True ;
+    End;  
+}
+End;
+
+procedure TdmInventory.FindMatchingPositionFromSelectedPkgs ;
+  procedure AddMatches ;
   Begin
-      if sp_Matching.Active then
-      sp_Matching.Active  := False ;
-    sp_Matching.ParamByName('@ProductNo').AsInteger :=  sp_allPkgsatoutputProductNo.AsInteger ;
-    sp_Matching.ParamByName('@PIPNo').AsInteger     :=  sp_allPkgsatoutputPIPNo.AsInteger ;
-    sp_Matching.ParamByName('@Reference').AsString  :=  sp_allPkgsatoutputReference.AsString ;
-    sp_Matching.ParamByName('@ALMM').AsFloat        :=  sp_allPkgsatoutputMaxLengthALMM.AsFloat ;
-    sp_Matching.Active  := True ;
+    sp_MatchingProduct.First ;
+    while not sp_MatchingProduct.Eof do
+    Begin
+      Mem_MatchaProduct.InsertRecord([sp_MatchingProductVald.AsInteger, sp_MatchingProductPosition.AsString,
+      sp_MatchingProductREFERENCE.AsString, sp_MatchingProductProductNo.AsInteger,
+      sp_MatchingProductPositionID.AsInteger, sp_MatchingProductPosStatus.AsInteger,
+      sp_MatchingProductALMM.AsInteger, SQLTimeStampToDateTime(sp_MatchingProductStoredDate.AsSQLTimeStamp)]);
+     sp_MatchingProduct.Next ;
+    End ;    
+  End ;
+  
+Begin
+ if Mem_MatchaProduct.Active then
+  Mem_MatchaProduct.Active  := False ;
+ Mem_MatchaProduct.Active  := True ;  
+ sp_PkgsToReposition.First ;
+ While not sp_PkgsToReposition.Eof do
+ Begin
+    if sp_MatchingProduct.Active then
+    sp_MatchingProduct.Active  := False ;
+    sp_MatchingProduct.ParamByName('@ProductNo').AsInteger  :=  sp_PkgsToRepositionProductNo.AsInteger ;
+    sp_MatchingProduct.ParamByName('@PIPNo').AsInteger      :=  sp_PkgsToRepositionPIPNo.AsInteger ;
+    sp_MatchingProduct.ParamByName('@Reference').AsString   :=  sp_PkgsToRepositionREFERENCE.AsString ;
+    sp_MatchingProduct.ParamByName('@ALMM').AsFloat         :=  sp_PkgsToRepositionMaxLength.AsFloat ;
+    sp_MatchingProduct.ParamByName('@LanguageID').AsInteger :=  ThisUser.LanguageID ;
+    sp_MatchingProduct.Active  := True ;
+
+    AddMatches ;
+   sp_PkgsToReposition.Next ;    
   End;
 End;
 
+procedure TdmInventory.Open_AreasAndPositions(const PIPNo  : Integer) ;
+Begin
+  if sp_allAreas.Active then
+   sp_allAreas.Active  := False ;
+  sp_allAreas.ParamByName('@PIPNo').AsInteger := PIPNo ;
+  sp_allAreas.Active  := True ;
+
+  if sp_AllPositions.Active then
+   sp_AllPositions.Active  := False ;  
+  sp_AllPositions.ParamByName('@PIPNo').AsInteger := PIPNo ;
+  sp_AllPositions.Active  := True ;
+End;
+
+
 procedure TdmInventory.CleanUpMatching ;
 Begin
-  if sp_Matching.Active then
-    sp_Matching.Active  := False ;
+//  if sp_Matching.Active then    sp_Matching.Active  := False ;
 End;
 
 procedure TdmInventory.CreateUsersOutputProdunits(Const VerkNo, UserID  : Integer) ;

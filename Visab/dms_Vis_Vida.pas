@@ -1167,6 +1167,8 @@ begin
     dmsSystem.FDoLog('# FDm_AvRegPkgsPrefix           = ' + FDm_AvRegPkgsPrefix.AsString) ;
     dmsSystem.FDoLog('# FDm_AvRegPkgsPaketnrAttAvReg  = ' + FDm_AvRegPkgsPaketnrAttAvReg.AsString) ;
     dmsSystem.FDoLog('# FDm_AvRegPkgsPrefixAttAvReg   = ' + FDm_AvRegPkgsPrefixAttAvReg.AsString) ;
+    dmsSystem.FDoLog('# FDm_AvRegPkgsSortingOrderNo   = ' + FDm_AvRegPkgsSortingOrderNo.AsString) ;
+    dmsSystem.FDoLog('# FDm_SettingsSortingOrderNo    = ' + FDm_SettingsSortingOrderNo.AsString) ;
 
 
     sp_AvregByRule.ParamByName('@PackageNo').AsInteger            := FDm_AvRegPkgsPaketnr.AsInteger ;//Paketnr att registrera mot körning

@@ -298,7 +298,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pt.productno = '+IntToStr(ProductNo)) ;
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
@@ -354,7 +354,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
 
 
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
@@ -401,7 +401,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pt.productno = '+IntToStr(ProductNo)) ;
 
@@ -456,7 +456,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pn.PackageNo in (Select LD.PackageNo FROM') ;
   Add('dbo.SupplierShippingPlan SSP') ;
@@ -507,7 +507,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
 
   Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
   Add('AND pg.ActualThicknessMM in (Select pg2.ActualThicknessMM ') ;
@@ -559,7 +559,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
   Add('AND LIP.LogicalInventoryPointNo = ' + mtPropsLIPNo.AsString) ;
 
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
@@ -606,7 +606,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
   Add('AND LIP.PhysicalInventoryPointNo = ' + IntToStr(PIPNo)) ;
   Add('AND pn.REFERENCE = ' + QuotedStr(IntToStr(LONo) + '/' + Referens)) ;
 
@@ -663,7 +663,7 @@ Begin
   Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
   Add('and htf.prefix = pn.suppliercode') ;
   Add('WHERE') ;
-  Add('pn.Status = 1') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
 
   if Length(teRef.Text) > 0 then
   Add('AND pn.REFERENCE = ' + QuotedStr(teRef.Text)) ;

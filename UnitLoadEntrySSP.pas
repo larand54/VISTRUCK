@@ -394,7 +394,7 @@ type
     grdLORowsDBBandedTableView1PkgDiff: TcxGridDBBandedColumn;
     grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn;
     grdLORowsLevel1: TcxGridLevel;
-    cxSplitter1: TcxSplitter;
+    Splitter1: TSplitter;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -518,6 +518,7 @@ type
     procedure cxSplitter2Moved(Sender: TObject);
     procedure cxSplitter1Moved(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
+    procedure PanelPackagesResize(Sender: TObject);
 
   private
     { Private declarations }
@@ -5814,6 +5815,13 @@ begin
     s := s + '|' + intToStr(aList[i]) + '| ';
   end;
   result := s;
+end;
+
+procedure TfLoadEntrySSP.PanelPackagesResize(Sender: TObject);
+begin
+// if PanelPackages then
+
+
 end;
 
 procedure TfLoadEntrySSP.pmPkgsPopup(Sender: TObject);

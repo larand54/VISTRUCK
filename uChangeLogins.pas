@@ -30,10 +30,12 @@ type
     BitBtn2: TBitBtn;
     siLangLinked_OKHelpBottomDlg: TsiLangLinked;
     cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
     procedure HelpBtnClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure cxLabel1DblClick(Sender: TObject);
+    procedure cxLabel2DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -68,6 +70,11 @@ end;
 procedure TOKHelpBottomDlg.cxLabel1DblClick(Sender: TObject);
 begin
   EFD_Name.Text :=  cxLabel1.Caption ;
+end;
+
+procedure TOKHelpBottomDlg.cxLabel2DblClick(Sender: TObject);
+begin
+  EFD_Name.Text :=  cxLabel2.Caption ;
 end;
 
 end.

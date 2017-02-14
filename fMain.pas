@@ -43,7 +43,7 @@ uses
   System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator,
   System.Variants, cxGridChartView, cxGridDBChartView, cxGridCardView,
   cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
-  cxGridDBBandedTableView ;
+  cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC ;
 
 
 
@@ -191,15 +191,7 @@ type
     dxBarLargeButton33: TdxBarLargeButton;
     dxBarLargeButton34: TdxBarLargeButton;
     cxbtnChangeReporter: TdxBarLargeButton;
-    PanelMain: TPanel;
     acRefresh_Usersmonpu_piv: TAction;
-    PanelBottom: TPanel;
-    Panel2: TPanel;
-    Panelgrid: TPanel;
-    Panel4: TPanel;
-    grdPkgOutput: TcxGrid;
-    grdPkgOutputDBTableView1: TcxGridDBTableView;
-    grdPkgOutputLevel1: TcxGridLevel;
     cxStyleRepository1: TcxStyleRepository;
     GridTableViewStyleSheetWindowsStandardlarge: TcxGridTableViewStyleSheet;
     cxStyle1: TcxStyle;
@@ -215,50 +207,13 @@ type
     cxStyle11: TcxStyle;
     cxStyleMarkedPkgs: TcxStyle;
     acSetupUserOutput: TAction;
-    PanelTop: TPanel;
-    cxButton1: TcxButton;
-    mePackageNo: TcxTextEdit;
-    cxButton2: TcxButton;
-    PanelPkgsPerLine: TPanel;
-    grdPkgsPerMPLevel1: TcxGridLevel;
-    grdPkgsPerMP: TcxGrid;
-    grdPkgsPerMPDBCardView1: TcxGridDBCardView;
-    grdPkgsPerMPDBCardView1RegPointName: TcxGridDBCardViewRow;
-    grdPkgsPerMPDBCardView1Packages: TcxGridDBCardViewRow;
-    grdPkgsPerMPDBChartView1: TcxGridDBChartView;
-    grdPkgsPerMPDBChartView1DataGroup1: TcxGridDBChartDataGroup;
-    grdPkgsPerMPDBChartView1Series1: TcxGridDBChartSeries;
-    Panel3: TPanel;
-    grdMatchingGridLevel1: TcxGridLevel;
-    grdMatchingGrid: TcxGrid;
-    grdMatchingGridDBCardView1: TcxGridDBCardView;
-    grdMatchingGridDBCardView1Vald: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1Position: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1REFERENCE: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1ProductNo: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1ActualLengthMM: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1PositionID: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1PhysicalInventoryPointNo: TcxGridDBCardViewRow;
-    grdMatchingGridDBCardView1PosStatus: TcxGridDBCardViewRow;
-    grdMatchingGridDBBandedTableView1: TcxGridDBBandedTableView;
-    grdMatchingGridDBBandedTableView1Vald: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1Position: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1ActualLengthMM: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1PositionID: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1PhysicalInventoryPointNo: TcxGridDBBandedColumn;
-    grdMatchingGridDBBandedTableView1PosStatus: TcxGridDBBandedColumn;
-    cxButton3: TcxButton;
     acSelectPosition: TAction;
-    bShowAllOutput: TcxButton;
     acShowAllOutput: TAction;
     dxBarLargeButton35: TdxBarLargeButton;
     acAskAvrop: TAction;
     dxBarLargeButton36: TdxBarLargeButton;
-    PanelPositionPkgs: TPanel;
-    cxButton4: TcxButton;
     acPositionPkgs: TAction;
+    PanelA: TPanel;
     Panel7: TPanel;
     grdSelectedPkgs: TcxGrid;
     grdSelectedPkgsDBTableView1: TcxGridDBTableView;
@@ -274,7 +229,81 @@ type
     grdSelectedPkgsDBTableView1NM3: TcxGridDBColumn;
     grdSelectedPkgsDBTableView1MaxLength: TcxGridDBColumn;
     grdSelectedPkgsLevel1: TcxGridLevel;
+    pcPositioning: TcxPageControl;
+    tsUttag: TcxTabSheet;
+    tsPositionPkgs: TcxTabSheet;
+    PanelMain: TPanel;
+    PanelBottom: TPanel;
+    Panelgrid: TPanel;
+    Panel4: TPanel;
+    grdPkgOutput: TcxGrid;
+    grdPkgOutputDBTableView1: TcxGridDBTableView;
+    grdPkgOutputLevel1: TcxGridLevel;
+    PanelPkgsPerLine: TPanel;
+    grdPkgsPerMP: TcxGrid;
+    grdPkgsPerMPDBCardView1: TcxGridDBCardView;
+    grdPkgsPerMPDBCardView1RegPointName: TcxGridDBCardViewRow;
+    grdPkgsPerMPDBCardView1Packages: TcxGridDBCardViewRow;
+    grdPkgsPerMPDBChartView1: TcxGridDBChartView;
+    grdPkgsPerMPDBChartView1DataGroup1: TcxGridDBChartDataGroup;
+    grdPkgsPerMPDBChartView1Series1: TcxGridDBChartSeries;
+    grdPkgsPerMPLevel1: TcxGridLevel;
+    PanelTop: TPanel;
+    cxButton1: TcxButton;
+    mePackageNo: TcxTextEdit;
+    cxButton2: TcxButton;
+    bShowAllOutput: TcxButton;
+    cxButton4: TcxButton;
+    Panel3: TPanel;
+    cxButton3: TcxButton;
+    Panel8: TPanel;
+    Panel2: TPanel;
     Panel5: TPanel;
+    Panel6: TPanel;
+    acGoToUttag: TAction;
+    cxButton5: TcxButton;
+    Panel9: TPanel;
+    Panel10: TPanel;
+    Panel11: TPanel;
+    grdMatchingGrid: TcxGrid;
+    grdMatchingGridDBCardView1: TcxGridDBCardView;
+    grdMatchingGridDBCardView1Vald: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1Position: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1REFERENCE: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1ProductNo: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1ActualLengthMM: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PositionID: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PhysicalInventoryPointNo: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PosStatus: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1ALMM: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1PIPNo: TcxGridDBCardViewRow;
+    grdMatchingGridDBCardView1StoredDate: TcxGridDBCardViewRow;
+    grdMatchingGridDBBandedTableView1: TcxGridDBBandedTableView;
+    grdMatchingGridDBBandedTableView1Vald: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1Position: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1REFERENCE: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1ActualLengthMM: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PositionID: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PhysicalInventoryPointNo: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1PosStatus: TcxGridDBBandedColumn;
+    grdMatchingGridDBBandedTableView1StoredDate: TcxGridDBBandedColumn;
+    grdMatchingGridLevel1: TcxGridLevel;
+    grdAreaDBTableView1: TcxGridDBTableView;
+    grdAreaLevel1: TcxGridLevel;
+    grdArea: TcxGrid;
+    grdPosition: TcxGrid;
+    cxPositionDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    grdAreaDBTableView1AreaName: TcxGridDBColumn;
+    grdAreaDBTableView1AreaID: TcxGridDBColumn;
+    cxPositionDBTableView1Position: TcxGridDBColumn;
+    cxPositionDBTableView1PositionID: TcxGridDBColumn;
+    cxPositionDBTableView1PosStatus: TcxGridDBColumn;
+    cxPositionDBTableView1AreaID: TcxGridDBColumn;
+    cxStyleContentOdd: TcxStyle;
+    cxStyleContentEven: TcxStyle;
+    dxBarLargeButton37: TdxBarLargeButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -319,6 +348,11 @@ type
     procedure acShowAllOutputExecute(Sender: TObject);
     procedure acAskAvropExecute(Sender: TObject);
     procedure acPositionPkgsExecute(Sender: TObject);
+    procedure acGoToUttagExecute(Sender: TObject);
+    procedure grdMatchingGridDBBandedTableView1CellClick(
+      Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
 
   private
     ShowAllOutput   : Boolean ;
@@ -382,7 +416,7 @@ uses
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput, UnitSokAvropFormular;
+  uSetupUserOutput, UnitSokAvropFormular ;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -672,14 +706,15 @@ begin
 
  if ThisUser.UserID <> 258 then
  Begin
-   PanelMain.Visible    := False ;
+   PanelA.Visible    := False ;
 //   PanelBottom.Visible  := False ;
 //   PanelTop.Visible     := False ;
  End
  else
  Begin
-   PanelMain.Visible    := True ;
-   PanelMain.Align      := alClient ;
+   dmInventory.Open_AreasAndPositions(10220) ;              //Get users PIPNo of verk, but more PIPs can exists in...
+   PanelA.Visible    := True ;
+   PanelA.Align      := alClient ;
 //   PanelBottom.Visible  := True ;
 //   PanelTop.Visible     := True ;
  End;
@@ -694,6 +729,9 @@ begin
        begin
          self.WindowState:=wsNormal;
        end;
+
+
+
 
 end;
 
@@ -1063,7 +1101,8 @@ begin
   else
    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_10' (* 'No access' *) ));
 
-dmInventory.Set_mtUserUserID ;
+  dmInventory.Set_mtUserUserID ;
+  dmInventory.Open_AreasAndPositions(10076) ;
 end;
 
 procedure TfrmMain.acChangeLanguageExecute(Sender: TObject);
@@ -1127,6 +1166,7 @@ Begin
   frmSortOrder              := TfrmSortOrder.Create(nil) ;
   Try
    Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+
 
    frmSortOrder.CreateCo(VerkNo);
    Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
@@ -1340,6 +1380,11 @@ begin
  End ;
 end;
 
+procedure TfrmMain.acGoToUttagExecute(Sender: TObject);
+begin
+  pcPositioning.ActivePage := tsUttag ;
+end;
+
 procedure TfrmMain.acPkgStdSizeIntervallExecute(Sender: TObject);
 var fSetStdPkgSizeIntervall: TfSetStdPkgSizeIntervall ;
 begin
@@ -1353,15 +1398,8 @@ end;
 
 procedure TfrmMain.acPositionPkgsExecute(Sender: TObject);
 begin
-  if PanelPositionPkgs.Visible then
-   Begin
-    PanelPositionPkgs.Visible := False ;
-   End
-     else
-      Begin
-        PanelPositionPkgs.Visible := True ;
-        PanelPositionPkgs.Align   := alClient ;
-      End;
+  pcPositioning.ActivePage := tsPositionPkgs ;
+  dmInventory.FindMatchingPositionFromSelectedPkgs ;
 end;
 
 procedure TfrmMain.acPositionViewExecute(Sender: TObject);
@@ -1412,6 +1450,40 @@ begin
 
  SetGridParamsFor_Usersmonpu_piv(Sender, ShowAllOutput);
 // PanelPkgsPerLine.Visible := True ;
+end;
+
+procedure TfrmMain.grdMatchingGridDBBandedTableView1CellClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+ with dmInventory do
+ Begin
+   Mem_MatchaProduct.DisableControls;
+   Try
+   if Mem_MatchaProductVald.AsInteger = 1 then
+    begin
+     with Mem_MatchaProduct do
+     begin
+       Edit;
+       FieldByName('Vald').AsInteger := 0;
+       Post;
+     end
+    end
+   else
+    begin
+     with Mem_MatchaProduct do
+      begin
+       Edit;
+       FieldByName('Vald').AsInteger := 1;
+       Post;
+      end;
+    end;
+   Finally
+     Mem_MatchaProduct.EnableControls;
+   End;
+ End;
+
+  AHandled := True;
 end;
 
 procedure TfrmMain.grdPkgOutputDBTableView1CellClick(

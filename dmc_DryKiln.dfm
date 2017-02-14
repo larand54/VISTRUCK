@@ -998,13 +998,12 @@
     Top = 72
   end
   object cds_Kiln: TFDQuery
-    Active = True
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'Select KP.*'
       'FROM dbo.Kilns KP '
       'WHERE KP.KilnNo = :KilnNo')
-    Left = 775
+    Left = 751
     Top = 400
     ParamData = <
       item

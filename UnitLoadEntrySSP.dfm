@@ -31,11 +31,12 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Margins.Right = 2
     Margins.Bottom = 2
     Align = alClient
+    BevelOuter = bvNone
     TabOrder = 4
     object dxPageControl1: TcxPageControl
-      Left = 1
-      Top = 102
-      Width = 1520
+      Left = 0
+      Top = 101
+      Width = 1522
       Height = 284
       Margins.Left = 4
       Margins.Top = 4
@@ -50,7 +51,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.SkinName = ''
       ClientRectBottom = 284
-      ClientRectRight = 1520
+      ClientRectRight = 1522
       ClientRectTop = 27
       object tsLoadData: TcxTabSheet
         Margins.Left = 4
@@ -61,7 +62,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pLoadHead: TPanel
           Left = 0
           Top = 0
-          Width = 1520
+          Width = 1522
           Height = 91
           Margins.Left = 4
           Margins.Top = 4
@@ -517,7 +518,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pgrdLO: TPanel
           Left = 0
           Top = 91
-          Width = 1520
+          Width = 1522
           Height = 87
           Margins.Left = 2
           Margins.Top = 2
@@ -529,7 +530,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           object grdLO: TcxGrid
             Left = 1
             Top = 1
-            Width = 1518
+            Width = 1520
             Height = 85
             Margins.Left = 4
             Margins.Top = 4
@@ -722,7 +723,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pgrdAddress: TPanel
           Left = 0
           Top = 178
-          Width = 1520
+          Width = 1522
           Height = 79
           Margins.Left = 2
           Margins.Top = 2
@@ -733,7 +734,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           object grdAddress: TcxGrid
             Left = 1
             Top = 1
-            Width = 1518
+            Width = 1520
             Height = 77
             Margins.Left = 4
             Margins.Top = 4
@@ -796,14 +797,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           TabOrder = 0
           Height = 257
-          Width = 1520
+          Width = 1522
         end
       end
     end
     object Panel4: TPanel
-      Left = 1
-      Top = 1
-      Width = 1520
+      Left = 0
+      Top = 0
+      Width = 1522
       Height = 68
       Margins.Left = 4
       Margins.Top = 4
@@ -815,7 +816,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 1406
+        Width = 1408
         Height = 68
         Margins.Left = 4
         Margins.Top = 4
@@ -826,7 +827,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object dxBarDockControl1: TdxBarDockControl
           Left = 1
           Top = 1
-          Width = 1404
+          Width = 1406
           Height = 48
           Margins.Left = 4
           Margins.Top = 4
@@ -837,7 +838,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
       end
       object Panel6: TPanel
-        Left = 1406
+        Left = 1408
         Top = 0
         Width = 34
         Height = 68
@@ -861,7 +862,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
       end
       object Panel7: TPanel
-        Left = 1440
+        Left = 1442
         Top = 0
         Width = 80
         Height = 68
@@ -886,9 +887,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
     end
     object PanelNote: TPanel
-      Left = 1
-      Top = 69
-      Width = 1520
+      Left = 0
+      Top = 68
+      Width = 1522
       Height = 33
       Margins.Left = 2
       Margins.Top = 2
@@ -914,32 +915,48 @@ object fLoadEntrySSP: TfLoadEntrySSP
         Style.Font.Style = []
         Style.IsFontAssigned = True
         TabOrder = 0
-        Width = 1518
+        Width = 1520
       end
     end
     object Panel8: TPanel
-      Left = 1
-      Top = 386
-      Width = 1520
-      Height = 580
+      Left = 0
+      Top = 385
+      Width = 1522
+      Height = 582
       Align = alClient
+      BevelOuter = bvNone
       Caption = 'Panel8'
       TabOrder = 3
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 187
+        Width = 1522
+        Height = 5
+        Cursor = crVSplit
+        Align = alBottom
+        Color = clYellow
+        ParentColor = False
+        ExplicitTop = 159
+      end
       object PanelPackages: TPanel
-        Left = 1
-        Top = 387
-        Width = 1518
-        Height = 192
+        Left = 0
+        Top = 192
+        Width = 1522
+        Height = 390
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alBottom
+        BevelOuter = bvNone
+        Constraints.MaxHeight = 500
+        Constraints.MinHeight = 125
         TabOrder = 0
+        OnResize = PanelPackagesResize
         object Panel2: TPanel
-          Left = 1
-          Top = 1
-          Width = 1516
+          Left = 0
+          Top = 0
+          Width = 1522
           Height = 46
           Margins.Left = 4
           Margins.Top = 4
@@ -1069,7 +1086,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Width = 174
           end
           object btNumPad: TcxButton
-            Left = 1422
+            Left = 1428
             Top = 0
             Width = 94
             Height = 46
@@ -1120,10 +1137,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
           end
         end
         object grdPkgs: TcxGrid
-          Left = 1
-          Top = 47
-          Width = 1516
-          Height = 144
+          Left = 0
+          Top = 46
+          Width = 1522
+          Height = 344
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -1666,20 +1683,22 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
       end
       object PanelLORows: TPanel
-        Left = 1
-        Top = 1
-        Width = 1518
-        Height = 378
+        Left = 0
+        Top = 0
+        Width = 1522
+        Height = 187
         Margins.Left = 4
         Margins.Top = 4
         Margins.Right = 4
         Margins.Bottom = 4
         Align = alClient
+        BevelOuter = bvNone
+        Constraints.MinHeight = 100
         TabOrder = 1
         object Panel1: TPanel
-          Left = 1
-          Top = 1
-          Width = 1516
+          Left = 0
+          Top = 0
+          Width = 1522
           Height = 20
           Margins.Left = 4
           Margins.Top = 4
@@ -1698,10 +1717,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
           TabOrder = 0
         end
         object grdLORows: TcxGrid
-          Left = 1
-          Top = 21
-          Width = 1516
-          Height = 356
+          Left = 0
+          Top = 20
+          Width = 1522
+          Height = 167
           Margins.Left = 4
           Margins.Top = 4
           Margins.Right = 4
@@ -2212,17 +2231,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           end
         end
       end
-      object cxSplitter1: TcxSplitter
-        Left = 1
-        Top = 379
-        Width = 1518
-        Height = 8
-        HotZoneClassName = 'TcxMediaPlayer8Style'
-        AlignSplitter = salBottom
-        Control = PanelPackages
-        Color = clMaroon
-        ParentColor = False
-      end
     end
   end
   object dxBarManager1: TdxBarManager
@@ -2263,7 +2271,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end>
     UseSystemFont = False
     Left = 928
-    Top = 480
+    Top = 440
     DockControlHeights = (
       0
       0
@@ -2736,14 +2744,14 @@ object fLoadEntrySSP: TfLoadEntrySSP
         ItemName = 'dxBarButton2'
       end>
     UseOwnFont = False
-    Left = 672
+    Left = 816
     Top = 336
   end
   object ImageList1: TImageList
     Height = 24
     Width = 24
     Left = 840
-    Top = 456
+    Top = 440
     Bitmap = {
       494C01010B000D00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
@@ -4080,8 +4088,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
-    Left = 120
-    Top = 610
+    Left = 112
+    Top = 674
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 289
@@ -4389,16 +4397,19 @@ object fLoadEntrySSP: TfLoadEntrySSP
     PixelsPerInch = 120
   end
   object cxGridPopupMenu1: TcxGridPopupMenu
+    Grid = grdPkgs
     PopupMenus = <>
     Left = 512
     Top = 465
   end
   object cxGridPopupMenu2: TcxGridPopupMenu
+    Grid = grdLORows
     PopupMenus = <>
-    Left = 608
-    Top = 433
+    Left = 672
+    Top = 409
   end
   object cxGridPopupMenu3: TcxGridPopupMenu
+    Grid = grdLORows
     PopupMenus = <>
     Left = 512
     Top = 408

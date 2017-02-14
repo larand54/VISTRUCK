@@ -2215,7 +2215,7 @@ object dmsConnector: TdmsConnector
     Connection = FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'vis_vida.dbo.vis_GetSOPkgNo'
-    Left = 440
+    Left = 464
     Top = 288
     ParamData = <
       item
@@ -2263,7 +2263,7 @@ object dmsConnector: TdmsConnector
       
         'WHERE TableName = :TableName AND PrimaryKeyValue = :PrimaryKeyVa' +
         'lue')
-    Left = 440
+    Left = 464
     Top = 352
     ParamData = <
       item

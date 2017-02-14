@@ -488,8 +488,8 @@ object Position: TPosition
   end
   object ds_MatchaProduct: TDataSource
     DataSet = Mem_MatchaProduct
-    Left = 760
-    Top = 222
+    Left = 896
+    Top = 270
   end
   object Mem_PackProdList: TFDMemTable
     FieldDefs = <>
@@ -547,8 +547,8 @@ object Position: TPosition
   end
   object DS_ProductNo: TDataSource
     DataSet = Mem_PackProdList
-    Left = 136
-    Top = 262
+    Left = 64
+    Top = 422
   end
   object FDQ_StorePosID: TFDQuery
     Connection = dmsConnector.FDConnection1
@@ -557,8 +557,8 @@ object Position: TPosition
         'Update dbo.PackageNumber Set PositionID = :PosID , StoredDate = ' +
         ':CurrentDate '
       'where SupplierCode = :Prefix AND PackageNo = :PkgNr')
-    Left = 120
-    Top = 134
+    Left = 352
+    Top = 110
     ParamData = <
       item
         Name = 'POSID'
@@ -594,8 +594,8 @@ object Position: TPosition
       'Inner Join [dbo].[Area] ar on ar.AreaID = po.AreaID'
       'WHERE'
       'ar.PIPNo = :PIPNo')
-    Left = 520
-    Top = 110
+    Left = 344
+    Top = 286
     ParamData = <
       item
         Name = 'PIPNO'
@@ -661,8 +661,8 @@ object Position: TPosition
   end
   object DS_StorePosition: TDataSource
     DataSet = Mem_StorePosition
-    Left = 376
-    Top = 254
+    Left = 424
+    Top = 398
   end
   object FDQ_ProdRefLength1: TFDQuery
     Indexes = <
@@ -827,8 +827,8 @@ object Position: TPosition
       'WHERE '
       'pn.PackageNo = :PaketNr'
       'and pn.SupplierCode = :SupplierCode')
-    Left = 33
-    Top = 198
+    Left = 49
+    Top = 190
     ParamData = <
       item
         Name = 'PAKETNR'
@@ -871,8 +871,8 @@ object Position: TPosition
         'oint PIP '
       'WHERE PIP.PhyInvPointNameNo = :PhyInvPointNameNo'
       'AND PIP.OwnerNo = :OWNERNo')
-    Left = 433
-    Top = 110
+    Left = 353
+    Top = 230
     ParamData = <
       item
         Name = 'PHYINVPOINTNAMENO'
@@ -948,7 +948,7 @@ object Position: TPosition
       ''
       'WHERE '
       'p.ProductNo = :ProductNo')
-    Left = 32
+    Left = 48
     Top = 130
     ParamData = <
       item
@@ -1004,8 +1004,8 @@ object Position: TPosition
     end
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 659
-    Top = 40
+    Left = 771
+    Top = 416
     PixelsPerInch = 120
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
@@ -2078,14 +2078,14 @@ object Position: TPosition
   object cxGridPopupMenu2: TcxGridPopupMenu
     Grid = grid_ProductList
     PopupMenus = <>
-    Left = 227
-    Top = 275
+    Left = 563
+    Top = 475
   end
   object cxGridPopupMenu3: TcxGridPopupMenu
     Grid = cxGrid_AllPosition
     PopupMenus = <>
-    Left = 683
-    Top = 275
+    Left = 771
+    Top = 355
   end
   object cxPropertiesStore1: TcxPropertiesStore
     Components = <
@@ -2106,8 +2106,8 @@ object Position: TPosition
       end>
     StorageName = 'cxPropertiesStore1'
     StorageType = stStream
-    Left = 539
-    Top = 43
+    Left = 771
+    Top = 467
   end
   object FDQ_ProdLength: TFDQuery
     Connection = dmsConnector.FDConnection1
@@ -2156,8 +2156,8 @@ object Position: TPosition
         '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
       'Po.PosStatus, pn.PackageTypeNo '
       'order by PosStatus, StoredDate')
-    Left = 368
-    Top = 112
+    Left = 352
+    Top = 176
     ParamData = <
       item
         Name = 'PRODUCTNO'
@@ -2252,8 +2252,8 @@ object Position: TPosition
         '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
       'Po.PosStatus'
       'order by PosStatus, StoredDate')
-    Left = 299
-    Top = 235
+    Left = 187
+    Top = 363
     ParamData = <
       item
         Name = 'PRODUCTNO'
@@ -2569,8 +2569,8 @@ object Position: TPosition
   end
   object DS_MatchaRef: TDataSource
     DataSet = Mem_MatchaRef
-    Left = 675
-    Top = 107
+    Left = 899
+    Top = 171
   end
   object Mem_MatchaRef: TFDMemTable
     FieldDefs = <>
@@ -2631,8 +2631,8 @@ object Position: TPosition
   object sp_insPkgInvStat: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_insPkgInvStat'
-    Left = 304
-    Top = 168
+    Left = 192
+    Top = 304
     ParamData = <
       item
         Position = 1
