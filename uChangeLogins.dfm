@@ -122,6 +122,12 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Caption = 'vida\hesttruck01'
     OnDblClick = cxLabel2DblClick
   end
+  object cxLabel3: TcxLabel
+    Left = 8
+    Top = 184
+    Caption = 'Vida\thelin'
+    OnDblClick = cxLabel3DblClick
+  end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'
     StringsTypes.Strings = (

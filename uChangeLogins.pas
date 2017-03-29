@@ -31,11 +31,13 @@ type
     siLangLinked_OKHelpBottomDlg: TsiLangLinked;
     cxLabel1: TcxLabel;
     cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
     procedure HelpBtnClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure cxLabel1DblClick(Sender: TObject);
     procedure cxLabel2DblClick(Sender: TObject);
+    procedure cxLabel3DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -75,6 +77,11 @@ end;
 procedure TOKHelpBottomDlg.cxLabel2DblClick(Sender: TObject);
 begin
   EFD_Name.Text :=  cxLabel2.Caption ;
+end;
+
+procedure TOKHelpBottomDlg.cxLabel3DblClick(Sender: TObject);
+begin
+  EFD_Name.Text :=  cxLabel3.Caption ;
 end;
 
 end.

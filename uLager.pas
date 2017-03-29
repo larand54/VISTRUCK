@@ -685,7 +685,7 @@ End ;
 
 procedure TfLager.LoadGridLayoutPkgNoDtl ;
 Begin
- //if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdPkgNosDBBandedTableView1.Name, grdPkgNosDBBandedTableView1) = False then ;
+ if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdPkgNosDBBandedTableView1.Name, grdPkgNosDBBandedTableView1) = False then ;
 End ;
 
 procedure TfLager.FormCreate(Sender: TObject);
@@ -1068,8 +1068,8 @@ begin
    End ; //Case
 
 
- // if grdPkgNosDBBandedTableView1.DataController.DataSet.RecordCount > 0 then
- //  dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdPkgNosDBBandedTableView1.Name, grdPkgNosDBBandedTableView1) ;
+  if grdPkgNosDBBandedTableView1.DataController.DataSet.RecordCount > 0 then
+   dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name + '/' + grdPkgNosDBBandedTableView1.Name, grdPkgNosDBBandedTableView1) ;
  End ;//With...
 end;
 
@@ -1623,7 +1623,7 @@ Begin
   1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
-  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'KG PER SÄCK' ;
+  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'ANTAL PALLAR / SÄCKTYP' ;
  End ;
 End ;
 
@@ -1634,7 +1634,7 @@ Begin
   1 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_4' (* 'AM3 PER LÄNGD' *) ) ;
   2 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) ) ;
   3 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= siLangLinked_fLager.GetTextOrDefault('IDS_6' (* 'PAKET PER LÄNGD' *) ) ;
-  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'KG PER SÄCK' ;
+  4 : grdDBBandedPerSortiment.Bands.Items[2].Caption:= 'KG PER SÄCK / SÄCKTYP' ;
  End ;
 
 End ;
@@ -1886,7 +1886,11 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
 
 // SetFilter ;
 
+ if cds_PropsOwnerNo.AsInteger = 30220 then
+ dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel              := 'PALL'
+ else
  dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel              := 'Paket' ;
+
  dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel                 := 'PT' ;
  dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel                := 'Ställe' ;
  dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel                := 'Grupp' ;
@@ -2226,6 +2230,7 @@ begin
   if Assigned(AFocusedItem) and Assigned(AFocusedRow) then
   SelectedLength  := System.Copy(AFocusedItem.Caption, 2, System.Length(AFocusedItem.Caption)-1) ;
 
+
   LabelPkgDtlProduct.Caption  := grdDBBandedPerSortiment.DataController.DataSet.FieldByName('ProductDisplayName').AsString
   + '  -  ' +
   grdDBBandedPerSortiment.DataController.DataSet.FieldByName('PIP').AsString
@@ -2392,7 +2397,12 @@ begin
    Package_Size := sp_invpiv.FieldByName('Package_Size').AsInteger ;
 // LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
 // LoadGridLayoutPkgNoDtl ;
- grdPkgNosDBBandedTableView1.Bands.Items[2].Caption := 'ANTAL STYCK PER LÄNGD' ;// grdDBBandedPerSortiment.Bands.Items[2].Caption ;
+  grdPkgNosDBBandedTableView1.Bands.Items[2].Caption := 'ANTAL STYCK PER LÄNGD' ;// grdDBBandedPerSortiment.Bands.Items[2].Caption ;
+
+ // if cds_PropsOwnerNo.AsInteger = 30220 then
+  grdPkgNosDBBandedTableView1.Bands[2].Caption  := 'SÄCK / PALL' ;
+
+
  grdPkgNosDBBandedTableView1.ClearItems ;
  dmInventory.Refresh_sp_invpivPkgDtl(sp_invpiv.FieldByName('LIPNo').AsInteger,
  sp_invpiv.FieldByName('InventorySource').AsInteger,
@@ -2448,7 +2458,13 @@ begin
    Package_Size := sp_Vis_LagerPOS_v1.FieldByName('Package_Size').AsInteger ;
 // LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
 // LoadGridLayoutPkgNoDtl ;
+ if True then
+
  grdPkgNosDBBandedTableView1.Bands.Items[2].Caption := 'ANTAL STYCK PER LÄNGD' ;// grdDBBandedPerSortiment.Bands.Items[2].Caption ;
+
+ if cds_PropsOwnerNo.AsInteger = 30220 then
+ grdPkgNosDBBandedTableView1.Bands[2].Caption  := 'PALLAR' ;
+
  grdPkgNosDBBandedTableView1.ClearItems ;
  dmInventory.Refresh_sp_invpivPkgDtl(sp_Vis_LagerPOS_v1.FieldByName('LIPNo').AsInteger,
  sp_Vis_LagerPOS_v1.FieldByName('InventorySource').AsInteger,
