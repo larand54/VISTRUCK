@@ -3,32 +3,27 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   Top = 123
   ActiveControl = lcProductDisplayName
   Caption = 'S'#246'k paket'
-  ClientHeight = 759
-  ClientWidth = 1206
+  ClientHeight = 617
+  ClientWidth = 1126
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object grdPickPkgNos: TcxGrid
     Left = 0
-    Top = 181
-    Width = 1206
-    Height = 578
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 147
+    Width = 1126
+    Height = 470
     Align = alClient
     TabOrder = 0
-    ExplicitTop = 150
-    ExplicitHeight = 609
+    ExplicitWidth = 980
     object grdPickPkgNosDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.Cancel.Visible = True
@@ -72,7 +67,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         Properties.ValueChecked = '1'
         Properties.ValueUnchecked = '0'
         Options.Filtering = False
-        Width = 97
+        Width = 47
       end
       object grdPickPkgNosDBTableView1PAKETNR: TcxGridDBColumn
         Caption = 'Paketnr'
@@ -80,7 +75,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 91
+        Width = 74
       end
       object grdPickPkgNosDBTableView1LEVKOD: TcxGridDBColumn
         Caption = 'Prefix'
@@ -88,14 +83,19 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 70
+        Width = 55
+      end
+      object grdPickPkgNosDBTableView1Produkt: TcxGridDBColumn
+        DataBinding.FieldName = 'Produkt'
+        PropertiesClassName = 'TcxLabelProperties'
+        Width = 384
       end
       object grdPickPkgNosDBTableView1AM3: TcxGridDBColumn
         DataBinding.FieldName = 'AM3'
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 91
+        Width = 69
       end
       object grdPickPkgNosDBTableView1STYCK: TcxGridDBColumn
         Caption = 'Styck'
@@ -103,7 +103,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 90
+        Width = 63
       end
       object grdPickPkgNosDBTableView1REGISTRERAT: TcxGridDBColumn
         Caption = 'Registrerad'
@@ -111,11 +111,11 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         PropertiesClassName = 'TcxDateEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 215
+        Width = 89
       end
       object grdPickPkgNosDBTableView1MaxLangd: TcxGridDBColumn
         DataBinding.FieldName = 'MaxLangd'
-        Width = 136
+        Width = 84
       end
       object grdPickPkgNosDBTableView1STYCKPERLNGD: TcxGridDBColumn
         Caption = 'Antal / l'#228'ngd'
@@ -123,7 +123,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         PropertiesClassName = 'TcxMaskEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        Width = 402
+        Width = 247
       end
     end
     object grdPickPkgNosLevel1: TcxGridLevel
@@ -133,75 +133,56 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   object Panel25: TPanel
     Left = 0
     Top = 0
-    Width = 1206
-    Height = 150
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Width = 1126
+    Height = 122
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 980
     object cxButton27: TcxButton
-      Left = 7
-      Top = 25
-      Width = 261
-      Height = 74
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 6
+      Top = 20
+      Width = 212
+      Height = 60
       Action = acAvregistreraMarkeradePaket
       OptionsImage.Layout = blGlyphBottom
       TabOrder = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object cxButton28: TcxButton
-      Left = 276
-      Top = 25
-      Width = 131
-      Height = 74
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 224
+      Top = 20
+      Width = 107
+      Height = 60
       Action = acRefreshInventory
       OptionsImage.Layout = blGlyphBottom
       TabOrder = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object cxLabel2: TcxLabel
-      Left = 415
-      Top = 50
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 337
+      Top = 41
       Caption = 'Produkter i lager:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
     end
     object lcProductDisplayName: TcxDBLookupComboBox
-      Left = 557
-      Top = 48
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 462
+      Top = 39
       DataBinding.DataField = 'ProductDisplayName'
       DataBinding.DataSource = dsProduct
       ParentFont = False
@@ -210,20 +191,16 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       Properties.ListOptions.ShowHeader = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 5
-      Width = 533
+      Width = 433
     end
     object lcRawPIPNAME: TcxDBLookupComboBox
-      Left = 557
-      Top = 8
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 462
+      Top = 7
       DataBinding.DataField = 'Ort'
       DataBinding.DataSource = dsProduct
       ParentFont = False
@@ -238,7 +215,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       Style.Color = clWindow
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = []
       Style.LookAndFeel.Kind = lfFlat
@@ -249,15 +226,11 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       TabOrder = 3
       OnEnter = lcRawPIPNAMEEnter
       OnExit = lcRawPIPNAMEExit
-      Width = 178
+      Width = 144
     end
     object lcRawLIPName: TcxDBLookupComboBox
-      Left = 853
-      Top = 8
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 702
+      Top = 7
       DataBinding.DataField = 'Lagergrupp'
       DataBinding.DataSource = dsProduct
       ParentFont = False
@@ -270,7 +243,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       Style.Color = clWindow
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = []
       Style.LookAndFeel.Kind = lfFlat
@@ -281,105 +254,81 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       TabOrder = 4
       OnEnter = lcRawLIPNameEnter
       OnExit = lcRawLIPNameExit
-      Width = 179
+      Width = 146
     end
     object tePkgNo: TcxTextEdit
-      Left = 556
-      Top = 114
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 461
+      Top = 93
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 7
       OnKeyDown = tePkgNoKeyDown
-      Width = 149
+      Width = 121
     end
     object cxLabel1: TcxLabel
-      Left = 450
-      Top = 115
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 366
+      Top = 93
       Caption = 'S'#246'k paketnr:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
     end
     object teALMM: TcxDBTextEdit
-      Left = 557
-      Top = 81
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 462
+      Top = 66
       DataBinding.DataField = 'ALMM'
       DataBinding.DataSource = dsProduct
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 6
-      Width = 148
+      Width = 120
     end
     object cxLabel3: TcxLabel
-      Left = 497
-      Top = 82
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 404
+      Top = 67
       Caption = 'ALMM:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
     end
     object cxLabel4: TcxLabel
-      Left = 458
-      Top = 12
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 372
+      Top = 10
       Caption = 'Lagerst'#228'lle:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
     end
     object cxLabel5: TcxLabel
-      Left = 743
-      Top = 12
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 613
+      Top = 10
       Caption = 'Lagergrupp:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -17
+      Style.Font.Height = -15
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
@@ -387,23 +336,50 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   end
   object Panel1: TPanel
     Left = 0
-    Top = 150
-    Width = 1206
-    Height = 31
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 122
+    Width = 1126
+    Height = 25
     Align = alTop
     Caption = 'Paketlista'
     TabOrder = 2
-    ExplicitTop = 119
+    ExplicitWidth = 980
   end
   object mtProduct: TkbmMemTable
     DesignActivation = True
     AttachedAutoRefresh = True
     AttachMaxCount = 1
-    FieldDefs = <>
+    FieldDefs = <
+      item
+        Name = 'ProductNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductDisplayName'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'PIPNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'LIPNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Ort'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'Lagergrupp'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'ALMM'
+        DataType = ftFloat
+      end>
     IndexName = 'mtProductIndex1'
     IndexDefs = <
       item
@@ -571,7 +547,14 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       
         '(Select Count(PackageTypeNo) From PackageTypeDetail WHERE Packag' +
         'eTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,'
-      'pn.packagetypeno'
+      'pn.packagetypeno,'
+      '(Select MAX(pl2.ActualLengthMM) FROM dbo.packagetypeDetail ptd2'
+      
+        'Inner Join dbo.ProductLength pl2 on pl2.ProductLengthNo = ptd2.P' +
+        'roductLengthNo'
+      'WHERE'
+      'ptd2.packagetypeno = pt.packagetypeno) AS Maxlangd,'
+      'p.ProductDisplayName as Produkt'
       'From dbo.packagenumber pn'
       
         'Inner Join dbo.packagetype pt on pt.packagetypeno = pn.packagety' +
@@ -582,6 +565,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       
         'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
         'PointNo = pn.LogicalInventoryPointNo'
+      'Inner join dbo.Product p on p.productno = pt.productno'
       'where'
       'pn.Status = 1'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
@@ -593,12 +577,6 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     ParamData = <
       item
         Name = 'PIPNO'
-        DataType = ftInteger
-        FDDataType = dtUInt32
-        ParamType = ptInput
-      end
-      item
-        Name = 'LIPNO'
         DataType = ftInteger
         FDDataType = dtUInt32
         ParamType = ptInput
@@ -658,6 +636,16 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       FieldName = 'packagetypeno'
       Origin = 'packagetypeno'
     end
+    object sq_SearchPkgNoMaxlangd: TFloatField
+      FieldName = 'Maxlangd'
+      Origin = 'Maxlangd'
+      ReadOnly = True
+    end
+    object sq_SearchPkgNoProdukt: TStringField
+      FieldName = 'Produkt'
+      Origin = 'Produkt'
+      Size = 150
+    end
   end
   object sq_ProdOnlyL: TFDQuery
     CachedUpdates = True
@@ -679,7 +667,8 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         'Inner Join dbo.ProductLength pl2 on pl2.ProductLengthNo = ptd2.P' +
         'roductLengthNo'
       'WHERE'
-      'ptd2.packagetypeno = pt.packagetypeno) AS Maxlangd'
+      'ptd2.packagetypeno = pt.packagetypeno) AS Maxlangd,'
+      'p.ProductDisplayName as Produkt'
       ''
       'From dbo.packagenumber pn'
       
@@ -697,6 +686,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       
         'Inner Join dbo.ProductLength pl on pl.ProductLengthNo = ptd.Prod' +
         'uctLengthNo'
+      'Inner join dbo.Product p on p.productno = pt.productno'
       'where'
       'pn.[Status] = 1'
       'AND pt.productno = :productno'
@@ -779,6 +769,11 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       FieldName = 'Maxlangd'
       Origin = 'Maxlangd'
       ReadOnly = True
+    end
+    object sq_ProdOnlyLProdukt: TStringField
+      FieldName = 'Produkt'
+      Origin = 'Produkt'
+      Size = 150
     end
   end
   object cds_RawLIP: TFDQuery
@@ -1178,7 +1173,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   object cxStyleRepository1: TcxStyleRepository
     Left = 536
     Top = 424
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyleContent: TcxStyle
       AssignedValues = [svFont]
       Font.Charset = DEFAULT_CHARSET

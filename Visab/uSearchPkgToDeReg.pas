@@ -106,6 +106,10 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyleContent: TcxStyle;
     cxStyleHeading: TcxStyle;
+    sq_SearchPkgNoMaxlangd: TFloatField;
+    sq_ProdOnlyLProdukt: TStringField;
+    sq_SearchPkgNoProdukt: TStringField;
+    grdPickPkgNosDBTableView1Produkt: TcxGridDBColumn;
     procedure acRefreshInventoryExecute(Sender: TObject);
     procedure acAvregistreraMarkeradePaketExecute(Sender: TObject);
     procedure mtProductProductNoChange(Sender: TField);
@@ -207,6 +211,7 @@ begin
 
   mtSelectedPkgNoPackageTypeNo.AsInteger      := sq_ProdOnlyLpackagetypeno.AsInteger ;
   mtSelectedPkgNoLIPNo.AsInteger              := mtProductLIPNo.AsInteger ;
+  mtSelectedPkgNoProdukt.AsString             := sq_ProdOnlyLProdukt.AsString ;
 
   mtSelectedPkgNo.post ;
   sq_ProdOnlyL.Next ;
@@ -418,7 +423,12 @@ begin
   For x := 0 to 7 do
    mtSelectedPkgNo.Fields.Fields[x].AsVariant := sq_SearchPkgNo.Fields.Fields[x].AsVariant ;
 
+   mtSelectedPkgNoMaxLangd.AsFloat  := sq_SearchPkgNoMaxlangd.AsFloat ;
+
   mtSelectedPkgNoPackageTypeNo.AsInteger      := sq_SearchPkgNopackagetypeno.AsInteger ;
+  mtSelectedPkgNoLIPNo.AsInteger              := mtProductLIPNo.AsInteger ;
+  mtSelectedPkgNoProdukt.AsString             := sq_SearchPkgNoProdukt.AsString ;
+
   mtSelectedPkgNo.post ;
   sq_SearchPkgNo.Next ;
  End ;
@@ -433,8 +443,14 @@ end;
 procedure TfSearchPkgToDeReg.tePkgNoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
- if Key <> VK_RETURN then Exit;
- RefreshLagerListaByPkgNo(StrToIntDef(Trim(tePkgNo.Text),0)) ;
+ with dmsSystem do
+ Begin
+   if Key <> VK_RETURN then Exit;
+   grdPickPkgNosDBTableView1.DataController.Filter.Clear ;
+   RefreshLagerListaByPkgNo(StrToIntDef(Trim(tePkgNo.Text),0)) ;
+   if mtSelectedPkgNo.Findkey([StrToIntDef(Trim(tePkgNo.Text),0)]) then
+    grdPickPkgNos.SetFocus
+ End;
 end;
 
 end.

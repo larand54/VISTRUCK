@@ -57,7 +57,12 @@ object dmsSystem: TdmsSystem
     AttachedAutoRefresh = True
     AttachMaxCount = 1
     FieldDefs = <>
-    IndexDefs = <>
+    IndexName = 'mtSelectedPkgNoIndex1'
+    IndexDefs = <
+      item
+        Name = 'mtSelectedPkgNoIndex1'
+        Fields = 'PAKETNR'
+      end>
     SortOptions = []
     PersistentBackup = False
     ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
