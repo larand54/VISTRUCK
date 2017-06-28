@@ -6378,6 +6378,7 @@ var
   PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
   ErrorText         : String ;
   NumberPrefix      : String ;
+  MsgInfo           : String ;
 begin
  With dmLoadEntrySSP do
  Begin
@@ -6443,17 +6444,32 @@ begin
 //Får inte använda post själv, det gör rutinen automatiskt
   if Action = eaACCEPT then
   Begin
-      AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
-  //Långsamt här
-      if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
-      Begin
-       Errortext := 'Paketnr ' + IntToStr(NewPkgNo) +  ' prefix:'  + PkgSupplierCode +  ' does not exist in inventory ' + Trim(lcPIP.Text) ;
-       Error      := True ;
-      End
-      else
-      Begin
-       Error:= False ;
-      End ;
+   MsgInfo  := dmLoadEntrySSP.CtrlCorrectMainLO(cds_LSPShippingPlanNo.AsInteger, NewPkgNo, PkgSupplierCode) ;
+   if MsgInfo <> 'Match' then
+   Begin
+    if MessageDlg(MsgInfo, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+    Begin
+     Action     :=  eaREJECT ;
+     Errortext  := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' + PkgSupplierCode + ' var mot fel huvudLO ' ;
+     Error      := True ;
+    End;
+
+   End;
+
+    if Action = eaACCEPT then
+    Begin
+        AddPkgTo_cds_LoadPackages(Sender, NewPkgNo, PkgSupplierCode) ;
+    //Långsamt här
+        if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo, ProductLengthNo, NoOfLengths ) <> eaACCEPT then
+        Begin
+         Errortext := 'Paketnr ' + IntToStr(NewPkgNo) +  ' prefix:'  + PkgSupplierCode +  ' does not exist in inventory ' + Trim(lcPIP.Text) ;
+         Error      := True ;
+        End
+        else
+        Begin
+         Error:= False ;
+        End ;
+    End;
   End
      else
      if Action = eaREJECT then

@@ -3692,4 +3692,43 @@
         ParamType = ptInput
       end>
   end
+  object sp_CtrlCorrectMainLO: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_CtrlCorrectMainLO'
+    Left = 888
+    Top = 24
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@RegLONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@Prefix'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 5
+        Name = '@CorrectLO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 100
+      end>
+  end
 end

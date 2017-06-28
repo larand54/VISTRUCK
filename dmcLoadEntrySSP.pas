@@ -396,6 +396,7 @@ type
     cds_SaveFormSettingsUserID: TIntegerField;
     cds_SaveFormSettingsForm: TStringField;
     sp_AdjustPkgArticleNoOnLoadPkgs: TFDStoredProc;
+    sp_CtrlCorrectMainLO: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -423,6 +424,7 @@ type
     { Private declarations }
    FOnAmbiguousPkgNo: TAmbiguityEvent;
 
+
    procedure AdjustPkgArticleNoOnLoadPkgs(const LoadNo : Integer) ;
    Function  SetShowOriginalLO(const LONo : Integer) : Integer ;
    procedure LOBSetChanged (const PackageNo : Integer;Prefix : String3) ;
@@ -445,6 +447,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
    function  OriginalFilter(const Add_AND : Boolean) : String ;
    procedure LoadUserProps (const Form : String) ;
@@ -1754,6 +1757,23 @@ Begin
      end;
 End ;
 
+function TdmLoadEntrySSP.CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
+Begin
+    Try
+    sp_CtrlCorrectMainLO.ParamByName('@RegLONo').AsInteger    := LONo ;
+    sp_CtrlCorrectMainLO.ParamByName('@PackageNo').AsInteger  := PackageNo ;
+    sp_CtrlCorrectMainLO.ParamByName('@Prefix').AsString      := Prefix ;
+    sp_CtrlCorrectMainLO.ExecProc ;
+    Result  := sp_CtrlCorrectMainLO.ParamByName('@CorrectLO').AsString  ;
+     except
+      On E: Exception do
+      Begin
+       dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+       Raise ;
+      End ;
+     end;
+End ;
 
 
 end.
