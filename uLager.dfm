@@ -4,14 +4,14 @@ object fLager: TfLager
   Align = alClient
   BorderStyle = bsNone
   Caption = 'fLager'
-  ClientHeight = 857
-  ClientWidth = 1578
+  ClientHeight = 696
+  ClientWidth = 1282
   Color = clBtnFace
   DragKind = dkDock
   DragMode = dmAutomatic
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -23,17 +23,13 @@ object fLager: TfLager
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 169
-    Width = 1578
-    Height = 688
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 139
+    Width = 1282
+    Height = 557
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tsTABELL
@@ -43,37 +39,25 @@ object fLager: TfLager
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 688
-    ClientRectRight = 1578
+    ClientRectBottom = 557
+    ClientRectRight = 1282
     ClientRectTop = 0
     object tsTABELL: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'PAKETTABELLER'
       ImageIndex = 2
       object Panel4: TPanel
         Left = 0
         Top = 0
-        Width = 1578
-        Height = 688
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1282
+        Height = 557
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object grdBoT: TcxGrid
           Left = 0
           Top = 0
-          Width = 1578
-          Height = 323
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 1282
+          Height = 259
           Align = alClient
           PopupMenu = pmSortimentsVy
           TabOrder = 0
@@ -246,240 +230,184 @@ object fLager: TfLager
         end
         object PanelPaketnr: TPanel
           Left = 0
-          Top = 331
-          Width = 1578
-          Height = 357
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Top = 267
+          Width = 1282
+          Height = 290
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
           object PanelMenyPaketnrFunktioner: TPanel
             Left = 0
             Top = 0
-            Width = 1578
-            Height = 98
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Width = 1282
+            Height = 80
             Align = alTop
             TabOrder = 0
             object cxButton1: TcxButton
-              Left = 8
-              Top = 7
-              Width = 107
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 7
+              Top = 6
+              Width = 86
+              Height = 49
               Caption = 'Skapa paket'
               TabOrder = 0
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               WordWrap = True
             end
             object cxButton2: TcxButton
-              Left = 119
-              Top = 7
-              Width = 107
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 97
+              Top = 6
+              Width = 87
+              Height = 49
               Action = acChangePkg
               TabOrder = 1
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object cxButton3: TcxButton
-              Left = 229
-              Top = 7
-              Width = 113
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 186
+              Top = 6
+              Width = 92
+              Height = 49
               Caption = 'Ta bort paket'
               TabOrder = 2
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object cxButton4: TcxButton
-              Left = 346
-              Top = 7
-              Width = 107
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 281
+              Top = 6
+              Width = 87
+              Height = 49
               Caption = 'Flytta paket'
               TabOrder = 3
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object cxButton8: TcxButton
-              Left = 457
-              Top = 7
-              Width = 107
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 371
+              Top = 6
+              Width = 87
+              Height = 49
               Action = acPrintPkgDtl
               TabOrder = 4
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object LabelPkgDtlProduct: TcxLabel
               Left = 1
-              Top = 75
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Top = 59
               Align = alBottom
               Caption = '__________________________________'
               ParentFont = False
               Style.StyleController = cxEditStyleControllerFileldLabels
               Properties.Alignment.Horz = taCenter
-              AnchorX = 789
+              AnchorX = 641
             end
             object cxButton6: TcxButton
-              Left = 694
-              Top = 7
-              Width = 151
-              Height = 74
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 564
+              Top = 6
+              Width = 123
+              Height = 60
               Action = acSetPktStorlek
               TabOrder = 7
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               WordWrap = True
             end
             object cxButton9: TcxButton
-              Left = 852
-              Top = 7
-              Width = 150
-              Height = 74
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 692
+              Top = 6
+              Width = 122
+              Height = 60
               Action = acSetCertification
               TabOrder = 8
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               WordWrap = True
             end
             object cxButton10: TcxButton
-              Left = 1009
-              Top = 7
-              Width = 140
-              Height = 74
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 820
+              Top = 6
+              Width = 114
+              Height = 60
               Action = acSetInfo2Text
               Caption = #196'ndra paketposition '
               TabOrder = 9
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
               WordWrap = True
             end
             object cxButton5: TcxButton
-              Left = 1157
-              Top = 7
-              Width = 107
-              Height = 74
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 940
+              Top = 6
+              Width = 87
+              Height = 60
               Action = acClosePkgDtlVy
               TabOrder = 5
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object cxButton12: TcxButton
-              Left = 568
-              Top = 7
-              Width = 107
-              Height = 61
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 462
+              Top = 6
+              Width = 86
+              Height = 49
               Action = acPrintPKGLabels
               TabOrder = 10
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
             end
             object cxbtnIMPinfo: TcxButton
-              Left = 1272
-              Top = 8
-              Width = 153
-              Height = 74
-              Margins.Left = 4
-              Margins.Top = 4
-              Margins.Right = 4
-              Margins.Bottom = 4
+              Left = 1034
+              Top = 7
+              Width = 124
+              Height = 60
               Action = acSetRef_and_Info
               TabOrder = 11
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
-              Font.Height = -18
+              Font.Height = -15
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
@@ -488,13 +416,9 @@ object fLager: TfLager
           end
           object grdPkgNos: TcxGrid
             Left = 0
-            Top = 98
-            Width = 1578
-            Height = 259
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Top = 80
+            Width = 1282
+            Height = 210
             Align = alClient
             PopupMenu = pmPkgNos
             TabOrder = 1
@@ -552,13 +476,9 @@ object fLager: TfLager
         end
         object cxSplitter1: TcxSplitter
           Left = 0
-          Top = 323
-          Width = 1578
+          Top = 259
+          Width = 1282
           Height = 8
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
           HotZoneClassName = 'TcxMediaPlayer8Style'
           AlignSplitter = salBottom
           Control = PanelPaketnr
@@ -571,163 +491,119 @@ object fLager: TfLager
   object dxBarDockControl1: TdxBarDockControl
     Left = 0
     Top = 0
-    Width = 1578
-    Height = 22
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Width = 1282
+    Height = 20
     Align = dalTop
     BarManager = dxBarManager1
   end
   object Panel3: TPanel
     Left = 0
-    Top = 22
-    Width = 1578
-    Height = 147
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 20
+    Width = 1282
+    Height = 119
     Align = alTop
     TabOrder = 6
     DesignSize = (
-      1578
-      147)
+      1282
+      119)
     object cxLabel1: TcxLabel
-      Left = 12
-      Top = 39
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 10
+      Top = 32
       AutoSize = False
       Caption = 'Tjocklek:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
-      Height = 25
-      Width = 88
+      Height = 20
+      Width = 71
     end
     object cxLabel6: TcxLabel
-      Left = 274
-      Top = 38
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 223
+      Top = 31
       Caption = 'Bredd:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object bUpdate: TcxButton
-      Left = 1025
-      Top = 8
-      Width = 94
-      Height = 100
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 833
+      Top = 7
+      Width = 76
+      Height = 81
       Action = acPkgTypeTable
       TabOrder = 10
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
       WordWrap = True
     end
     object bClearFilter: TcxButton
-      Left = 560
-      Top = 78
-      Width = 94
-      Height = 50
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 455
+      Top = 63
+      Width = 76
+      Height = 41
       Action = acClearFilter
       TabOrder = 13
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
       WordWrap = True
     end
     object bClose: TcxButton
-      Left = 1245
-      Top = 8
-      Width = 96
-      Height = 100
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 1012
+      Top = 7
+      Width = 78
+      Height = 81
       Action = acClose
       TabOrder = 14
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object cxButtonSparaVyer: TcxButton
-      Left = 658
-      Top = 78
-      Width = 94
-      Height = 50
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 535
+      Top = 63
+      Width = 76
+      Height = 41
       Action = acSaveGridLayout
       TabOrder = 12
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
       WordWrap = True
     end
     object eFocusDummy: TEdit
-      Left = 1568
-      Top = 12
+      Left = 1274
+      Top = 10
       Width = 1
-      Height = 24
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Height = 21
       Anchors = [akTop, akRight]
       TabOrder = 17
     end
     object cbHideZeroColumns: TcxCheckBox
-      Left = 1023
-      Top = 116
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 831
+      Top = 94
       Caption = 'G'#246'm noll kolumner'
       ParentFont = False
       State = cbsChecked
       Style.StyleController = cxEditStyleControllerFileldLabels
       TabOrder = 9
       Visible = False
-      Width = 198
+      Width = 161
     end
     object lcLengthVolUnit: TcxDBLookupComboBox
-      Left = 658
-      Top = 37
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 535
+      Top = 30
       DataBinding.DataField = 'LengthVolUnitName'
       DataBinding.DataSource = ds_Props
       ParentFont = False
@@ -742,15 +618,11 @@ object fLager: TfLager
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 5
-      Width = 201
+      Width = 163
     end
     object cbLIP: TcxCheckComboBox
-      Left = 393
-      Top = 5
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 319
+      Top = 4
       ParentFont = False
       Properties.EmptySelectionText = 'Alla'
       Properties.ClearKey = 46
@@ -761,15 +633,11 @@ object fLager: TfLager
       Properties.Items = <>
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 1
-      Width = 466
+      Width = 379
     end
     object lcOWNER: TcxDBLookupComboBox
-      Left = 103
-      Top = 5
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 84
+      Top = 4
       DataBinding.DataField = 'OWNER'
       DataBinding.DataSource = ds_Props
       ParentFont = False
@@ -782,164 +650,120 @@ object fLager: TfLager
       Properties.ListOptions.ShowHeader = False
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 0
-      Width = 159
+      Width = 129
     end
     object cxLabel2: TcxLabel
-      Left = 12
-      Top = 10
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 10
+      Top = 8
       AutoSize = False
       Caption = #196'gare:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
-      Height = 24
-      Width = 75
+      Height = 20
+      Width = 61
     end
     object cxLabel3: TcxLabel
-      Left = 274
-      Top = 10
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 223
+      Top = 8
       Caption = 'Lagergrupp:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object cxLabel4: TcxLabel
-      Left = 560
-      Top = 38
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 455
+      Top = 31
       Caption = 'Vol.enhet:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object eBL: TcxMaskEdit
-      Left = 393
-      Top = 65
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 319
+      Top = 53
       ParentFont = False
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 7
-      Width = 149
+      Width = 121
     end
     object cxLabel5: TcxLabel
-      Left = 274
-      Top = 70
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 223
+      Top = 57
       AutoSize = False
       Caption = 'Info 1:'
       FocusControl = eBL
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
-      Height = 25
-      Width = 88
+      Height = 20
+      Width = 71
     end
     object eReference: TcxMaskEdit
-      Left = 103
-      Top = 65
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 84
+      Top = 53
       ParentFont = False
       Properties.MaskKind = emkRegExpr
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 6
-      Width = 159
+      Width = 129
     end
     object cxLabel7: TcxLabel
-      Left = 12
-      Top = 70
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 10
+      Top = 57
       AutoSize = False
       Caption = 'Referens:'
       FocusControl = eReference
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
-      Height = 25
-      Width = 88
+      Height = 20
+      Width = 71
     end
     object eAT: TcxMaskEdit
-      Left = 103
-      Top = 34
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 84
+      Top = 28
       ParentFont = False
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 3
       Text = '   '
       OnExit = eATExit
-      Width = 159
+      Width = 129
     end
     object eAB: TcxMaskEdit
-      Left = 393
-      Top = 34
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 319
+      Top = 28
       ParentFont = False
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 4
       Text = '   '
-      Width = 149
+      Width = 121
     end
     object bPrint: TcxButton
-      Left = 760
-      Top = 78
-      Width = 99
-      Height = 50
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 618
+      Top = 63
+      Width = 80
+      Height = 41
       Action = acPrintPkgTable
       TabOrder = 11
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
       WordWrap = True
     end
     object cxButton7: TcxButton
-      Left = 1376
-      Top = 67
-      Width = 99
-      Height = 28
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 1118
+      Top = 54
+      Width = 80
+      Height = 23
       Caption = 'Skriv &ut'
       PopupMenu = pmPrint
       TabOrder = 23
       Visible = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
@@ -947,12 +771,8 @@ object fLager: TfLager
       OnClick = acPrintPkgTableExecute
     end
     object cbInklEjFakt: TcxComboBox
-      Left = 393
-      Top = 96
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 319
+      Top = 78
       ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.Items.Strings = (
@@ -964,62 +784,46 @@ object fLager: TfLager
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 2
       Text = 'Lager'
-      Width = 149
+      Width = 121
     end
     object cxLabel8: TcxLabel
-      Left = 274
-      Top = 103
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 223
+      Top = 84
       Caption = 'K'#228'lla:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
     end
     object eInfo2: TcxMaskEdit
-      Left = 103
-      Top = 98
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 84
+      Top = 80
       ParentFont = False
       Properties.MaskKind = emkRegExpr
       Properties.MaxLength = 0
       Style.StyleController = cxEditStyleControllerEditControls
       TabOrder = 8
-      Width = 159
+      Width = 129
     end
     object cxLabel9: TcxLabel
-      Left = 12
-      Top = 102
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 10
+      Top = 83
       AutoSize = False
       Caption = 'Info2:'
       FocusControl = eInfo2
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
-      Height = 25
-      Width = 88
+      Height = 20
+      Width = 71
     end
     object cxButton11: TcxButton
-      Left = 1127
-      Top = 8
-      Width = 110
-      Height = 100
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 916
+      Top = 7
+      Width = 89
+      Height = 81
       Action = acSetStdGridLayout
       TabOrder = 26
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
@@ -1029,7 +833,7 @@ object fLager: TfLager
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -1420,6 +1224,7 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1441,12 +1246,14 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1466,6 +1273,7 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
@@ -1479,7 +1287,7 @@ object fLager: TfLager
   object cxStyleRepository1: TcxStyleRepository
     Left = 120
     Top = 201
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
       Color = clMaroon
@@ -2561,12 +2369,12 @@ object fLager: TfLager
     Style.TextStyle = [fsBold]
     Left = 288
     Top = 272
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxEditStyleControllerFileldLabels: TcxEditStyleController
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -16
+    Style.Font.Height = -13
     Style.Font.Name = 'Verdana'
     Style.Font.Style = []
     Style.LookAndFeel.Kind = lfFlat
@@ -2580,13 +2388,13 @@ object fLager: TfLager
     StyleHot.LookAndFeel.Kind = lfFlat
     Left = 288
     Top = 328
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxEditStyleControllerEditControls: TcxEditStyleController
     Style.BorderStyle = ebsNone
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -20
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.ButtonStyle = btsOffice11
@@ -2594,7 +2402,7 @@ object fLager: TfLager
     Style.IsFontAssigned = True
     Left = 288
     Top = 384
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxImageList1: TcxImageList
     Height = 32

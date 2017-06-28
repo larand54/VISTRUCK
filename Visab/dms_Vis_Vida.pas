@@ -351,16 +351,6 @@ type
     mtPcsPerLengthUserID: TIntegerField;
     mtPcsPerLengthALMM: TFloatField;
     sp_PackageTypesPackageTypeNo: TIntegerField;
-    cds_PksByInventoryPlaceIIII: TFDQuery;
-    IntegerField1: TIntegerField;
-    StringField1: TStringField;
-    IntegerField2: TIntegerField;
-    StringField2: TStringField;
-    StringField3: TStringField;
-    IntegerField3: TIntegerField;
-    cds_PksByInventoryPlaceIIIIStatus: TIntegerField;
-    cds_PksByInventoryPlaceIIIILager: TStringField;
-    cds_PksByInventoryPlaceIIIILIPNo: TIntegerField;
     ds_PksByInventoryPlaceIIII: TDataSource;
     FDm_AvRegPkgsPackageTypeNoAttAvReg: TIntegerField;
     sp_AngraSplitPkg: TFDStoredProc;
@@ -369,10 +359,7 @@ type
     FDm_SettingsSupplierNo: TIntegerField;
     FDm_SettingsSortingOrderNo: TIntegerField;
     FDm_SettingsProductInRun: TIntegerField;
-    cds_PksByInventoryPlaceIIIIIncludedInRun: TStringField;
-    cds_PksByInventoryPlaceIIIIInInventory: TIntegerField;
     FDm_SettingsOwnInventory: TIntegerField;
-    cds_PksByInventoryPlaceIIIIOwnerNo: TIntegerField;
     sp_Pkg_Res: TFDStoredProc;
     sp_Delete_Res_Pkgs: TFDStoredProc;
     sp_lencolpcspkgtypeno: TFDStoredProc;
@@ -433,7 +420,6 @@ type
     FDm_SettingsPIPNo: TIntegerField;
     cds_SortOrderListPIPNo: TIntegerField;
     FD_SortingOrderPIPNo: TIntegerField;
-    cds_PksByInventoryPlaceIIIIPIPNo: TIntegerField;
     FDm_SettingsVisaAllaAvRegPkt: TIntegerField;
     FDm_AvRegPkgsRegistrerad: TDateTimeField;
     cds_SORawBookedNM3: TBCDField;
@@ -460,6 +446,20 @@ type
     FDm_AvRegPkgsShiftTeamNo: TIntegerField;
     siLangLinked_dm_Vis_Vida: TsiLangLinked;
     sp_AvregByRule: TFDStoredProc;
+    cds_PksByInventoryPlaceIIII: TFDStoredProc;
+    cds_PksByInventoryPlaceIIIIPackageNo: TIntegerField;
+    cds_PksByInventoryPlaceIIIISupplierCode: TStringField;
+    cds_PksByInventoryPlaceIIIISupplierNo: TIntegerField;
+    cds_PksByInventoryPlaceIIIILengthDescription: TStringField;
+    cds_PksByInventoryPlaceIIIIProductDisplayName: TStringField;
+    cds_PksByInventoryPlaceIIIIProductNo: TIntegerField;
+    cds_PksByInventoryPlaceIIIIStatus: TIntegerField;
+    cds_PksByInventoryPlaceIIIILager: TStringField;
+    cds_PksByInventoryPlaceIIIILIPNo: TIntegerField;
+    cds_PksByInventoryPlaceIIIIIncludedInRun: TStringField;
+    cds_PksByInventoryPlaceIIIIInInventory: TIntegerField;
+    cds_PksByInventoryPlaceIIIIOwnerNo: TIntegerField;
+    cds_PksByInventoryPlaceIIIIPIPNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure FDm_SettingsSortingOrderNoChange(Sender: TField);
     procedure FDm_SettingsOwnInventoryChange(Sender: TField);
@@ -1414,11 +1414,11 @@ begin
   cds_PksByInventoryPlaceIIII.Filtered := False ;
   cds_PksByInventoryPlaceIIII.Filter   := '' ;
 
-  cds_PksByInventoryPlaceIIII.ParamByName('PkgNo').AsInteger              := PkgNo ;
-  cds_PksByInventoryPlaceIIII.ParamByName('InvOwner').AsInteger           := InventoryOwner;
-  cds_PksByInventoryPlaceIIII.ParamByName('SupplierCode').AsString        := Prefix ;
-  cds_PksByInventoryPlaceIIII.ParamByName('SortingOrderNo').AsInteger     := FDm_SettingsSortingOrderNo.AsInteger ;
-  cds_PksByInventoryPlaceIIII.ParamByName('PIPNo').AsInteger              := FDm_SettingsPIPNo.AsInteger ;
+  cds_PksByInventoryPlaceIIII.ParamByName('@PkgNo').AsInteger              := PkgNo ;
+  cds_PksByInventoryPlaceIIII.ParamByName('@InvOwner').AsInteger           := InventoryOwner;
+  cds_PksByInventoryPlaceIIII.ParamByName('@SupplierCode').AsString        := Prefix ;
+  cds_PksByInventoryPlaceIIII.ParamByName('@SortingOrderNo').AsInteger     := FDm_SettingsSortingOrderNo.AsInteger ;
+  cds_PksByInventoryPlaceIIII.ParamByName('@PIPNo').AsInteger              := FDm_SettingsPIPNo.AsInteger ;
 
   if FDm_SettingsProductInRun.AsInteger = 1 then
   Begin

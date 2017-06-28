@@ -2399,7 +2399,7 @@ begin
 // LoadGridLayoutPkgNoDtl ;
   grdPkgNosDBBandedTableView1.Bands.Items[2].Caption := 'ANTAL STYCK PER LÄNGD' ;// grdDBBandedPerSortiment.Bands.Items[2].Caption ;
 
- // if cds_PropsOwnerNo.AsInteger = 30220 then
+  if cds_PropsOwnerNo.AsInteger = 30220 then
   grdPkgNosDBBandedTableView1.Bands[2].Caption  := 'SÄCK / PALL' ;
 
 
