@@ -154,6 +154,7 @@ type
     cxStyleContent: TcxStyle;
     cxStyleContentOdd: TcxStyle;
     siLangLinked_fLastLista: TsiLangLinked;
+    grdLastListaDBTableView1ShippingPlanNo: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure PackageInfo1Click(Sender: TObject);
@@ -514,7 +515,8 @@ Begin
   Add('SUM(P.Totalm3Actual)	AS 	AM3,') ;
   Add('SUM(P.Totalm3Nominal)		AS 	NM3,') ;
   Add('SUM(P.TotalNoOfPieces)		AS	Styck,') ;
-  Add('Count(LD.LoadDetailNo) AS Paket') ;
+  Add('Count(LD.LoadDetailNo) AS Paket,') ;
+  Add('LSP.ShippingPlanNo AS LONo') ;
 
 
   Add('FROM dbo.LoadShippingPlan LSP') ;
@@ -543,7 +545,7 @@ Begin
   Add('ShipTo.CityName,') ;
   Add('Loading.CityName,') ;
   Add('SUPP.ClientName,') ;
-  Add('CUST.ClientName') ;
+  Add('CUST.ClientName, LSP.ShippingPlanNo') ;
 
 //  if ThisUser.UserID = 8 then SaveToFile('sq_VerkLaster.txt') ;
  End ;

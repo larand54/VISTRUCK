@@ -119,6 +119,9 @@ procedure TfEnterKilnVagn.FormCloseQuery(Sender: TObject;
 begin
  With dmInventory do
  Begin
+   if dmInventory.cds_KilnVagn.State in [dsEdit, dsInsert] then
+    dmInventory.cds_KilnVagn.Post ;
+
    if cds_KilnVagn.RecordCount > 0 then
    Begin
     if (TypeOfLine = 2) and (cds_KilnVagnIMPNo.AsInteger < 1) then
@@ -135,7 +138,7 @@ begin
     CheckIMPProducts ;
 
    if CanClose then
-    dmsSystem.Delete_ReservedPkgs ('TfEnterKilnVagn') ;
+    dmsSystem.Delete_ReservedPkgs ('fEnterKilnVagn') ;
  End;
 end;
 

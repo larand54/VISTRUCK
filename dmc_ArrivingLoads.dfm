@@ -1382,6 +1382,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cds_verkLaster: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -1402,7 +1403,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'SUM(P.Totalm3Actual)'#9'AS '#9'AM3,'
       'SUM(P.Totalm3Nominal)'#9#9'AS '#9'NM3,'
       'SUM(P.TotalNoOfPieces)'#9#9'AS'#9'Styck,'
-      'Count(LD.LoadDetailNo) AS Paket'
+      'Count(LD.LoadDetailNo) AS Paket,'
+      'LSP.ShippingPlanNo AS LONo'
       ''
       'FROM'
       'dbo.LoadShippingPlan LSP'
@@ -1441,7 +1443,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'ShipTo.CityName,'
       'Loading.CityName,'
       'SUPP.ClientName,'
-      'CUST.ClientName'
+      'CUST.ClientName,'
+      'LSP.ShippingPlanNo'
       '')
     Left = 368
     Top = 32
@@ -1517,6 +1520,11 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'Paket'
       Origin = 'Paket'
       ReadOnly = True
+    end
+    object cds_verkLasterLONo: TIntegerField
+      FieldName = 'LONo'
+      Origin = 'LONo'
+      Required = True
     end
   end
   object cds_VerkLastPkgs: TFDQuery

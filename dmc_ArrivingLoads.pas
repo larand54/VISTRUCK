@@ -577,6 +577,7 @@ type
     cdsArrivingLoadsOriginalLoadNo: TIntegerField;
     cdsArrivingPackagesScanned: TIntegerField;
     cdsArrivingLoadsOriginalInvoiceNo: TIntegerField;
+    cds_verkLasterLONo: TIntegerField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
