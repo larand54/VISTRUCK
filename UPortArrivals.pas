@@ -2141,7 +2141,7 @@ begin
   dmFR.SaveCursor;
   try
     ClientNo := dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger;
-    Lang := dmsContact.Client_Language(ClientNo);
+    Lang := dmsContact.getCustomerLanguage(ClientNo);
     loadNo := dmArrivingLoads.cdsPortArrivingLoadsLoadNo.AsInteger;
     if LoadNo < 1 then
       Exit;

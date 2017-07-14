@@ -2438,4 +2438,28 @@ object dmsContact: TdmsContact
       Origin = 'SalesRegionNo'
     end
   end
+  object sq_GetCustomerLanguage: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    SQL.Strings = (
+      'SELECT distinct'
+      'LanguageCode'
+      'FROM dbo.ClientPreference'
+      'WHERE ClientNo = :ClientNo'
+      'AND Roletype=1')
+    Left = 48
+    Top = 120
+    ParamData = <
+      item
+        Name = 'CLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 409
+      end>
+    object LanguageCode: TIntegerField
+      FieldName = 'LanguageCode'
+      Origin = 'LanguageCode'
+    end
+  end
 end

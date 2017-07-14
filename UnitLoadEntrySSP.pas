@@ -3954,7 +3954,7 @@ var
   Language: integer;
 begin
   // Check language
-  Language :=  dmsContact.Client_Language
+  Language :=  dmsContact.getCustomerLanguage
     (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
   ReportType := cTrporder;
   // Get trp order no
@@ -3997,7 +3997,7 @@ begin
 
 
   // Check language
-  Lang :=  dmsContact.Client_Language
+  Lang :=  dmsContact.getCustomerLanguage
     (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
   if uReportController.useFR then
   begin
@@ -4225,7 +4225,7 @@ begin
     if uReportController.useFR then
       try
         // Check language
-        Language := dmsContact.Client_Language
+        Language := dmsContact.getCustomerLanguage
           (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
         fr := TFastReports.createForPrint(False);
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
@@ -4309,7 +4309,7 @@ begin
     if uReportController.useFR then
     begin
       // Check language
-      Language := dmsContact.Client_Language
+      Language := dmsContact.GetCustomerLanguage
         (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
       try
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
@@ -4410,7 +4410,7 @@ begin
   if uReportController.useFR then
   begin
     // Check language
-    Language := dmsContact.Client_Language
+    Language := dmsContact.getCustomerLanguage
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     ReportType := cLastorder;
     // Get trp order no
@@ -4457,7 +4457,7 @@ begin
   if uReportController.useFR then
   begin
     // Check language
-    Language := dmsContact.Client_Language
+    Language := dmsContact.getCustomerLanguage
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     ReportType := cLastorder;
     // Get trp order no
@@ -6038,7 +6038,7 @@ begin
   LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
   if uReportController.useFR then
   begin
-    Language := dmsContact.Client_Language
+    Language := dmsContact.getCustomerLanguage
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
       ReportType := cFoljesedel_no_matching_pkg;
     try
@@ -6145,7 +6145,7 @@ begin
   if Length(MailToAddress) > 0 then
   begin
     LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
-    language := dmsContact.Client_Language
+    language := dmsContact.getCustomerLanguage
               (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     if uReportController.useFR then
     begin

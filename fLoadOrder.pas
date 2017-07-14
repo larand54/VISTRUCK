@@ -2804,7 +2804,7 @@ begin
   try
     loadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger;
     ClientNo := dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger;
-    Lang := dmsContact.Client_Language(ClientNo);
+    Lang := dmsContact.getCustomerLanguage(ClientNo);
     if LoadNo < 1 then
       Exit;
     if useFR then
@@ -4573,10 +4573,7 @@ begin
       if grdLODBTableView1.DataController.DataSet.FieldByName('OrderType')
         .AsInteger = c_Sales then
       begin
-        if Lang = cSwedish then
-          ReportType := cTrporder
-        else
-          ReportType := cTrpOrder_eng;
+        ReportType := cTrporder
       end
       else
         ReportType := cTrporderInkop;
@@ -4621,7 +4618,7 @@ begin
   then
     Exit;
 
-  Lang := dmsContact.Client_Language
+  Lang := dmsContact.getCustomerLanguage
     (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
   if uReportController.useFR then
   begin
@@ -4857,7 +4854,7 @@ begin
       if LoadNo < 1
       then
         Exit;
-      Lang := dmsContact.Client_Language
+      Lang := dmsContact.getCustomerLanguage
         (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
       if uReportController.useFR then
       begin
@@ -5294,7 +5291,7 @@ begin
       Exit;
 
     // Try get client language, use swedish if fail.
-    Lang := dmsContact.Client_Language
+    Lang := dmsContact.getCustomerLanguage
       (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
     if Lang = -1 then
       Lang := cSwedish;

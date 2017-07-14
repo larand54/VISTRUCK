@@ -3425,7 +3425,7 @@ begin
     CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
     if CustomerNo < 1 then
       CustomerNo := dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger;
-    Lang := dmsContact.Client_Language(CustomerNo);
+    Lang := dmsContact.getCustomerLanguage(CustomerNo);
     LoadNo := dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
     if LoadNo < 1 then
       Exit;
@@ -5189,7 +5189,7 @@ begin
     CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
     if CustomerNo < 1 then
       CustomerNo := dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger;
-    Lang := dmsContact.Client_Language(CustomerNo);
+    Lang := dmsContact.getCustomerLanguage(CustomerNo);
     LoadNo := dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
     if LoadNo < 1 then
       Exit;

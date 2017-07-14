@@ -330,6 +330,8 @@ type
     cds_TypeOfRunDefault: TIntegerField;
     sq_GetSRNo: TFDQuery;
     sq_GetSRNoSalesRegionNo: TIntegerField;
+    sq_GetCustomerLanguage: TFDQuery;
+    LanguageCode: TIntegerField;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;
@@ -374,6 +376,7 @@ type
 
 
     function  Client_Language (const ClientNo : Integer ) : Integer ;
+    function  getCustomerLanguage(const ClientNo : Integer): Integer;
     function  IsClientLego(const ClientNo : Integer) : Integer ;
     function  IsClientVerk(const ClientNo : Integer) : Integer ;
     procedure InsertUserIssueReport(const UserId, InternalInvoiceNo : Integer) ;
@@ -389,7 +392,8 @@ var
 
 implementation
 
-uses Vcl.Controls, Vcl.Forms, dmsDataConn, VidaConst, VidaUser, dmsVidaSystem;
+uses Vcl.Controls, Vcl.Forms, dmsDataConn, VidaConst, VidaUser, dmsVidaSystem,
+  udmFR;
 
 {$R *.dfm}
 
@@ -674,6 +678,19 @@ Begin
  End ;
  sqClientPrefDocs.Close ;
 End ;
+
+function TdmsContact.getCustomerLanguage(const ClientNo: Integer): Integer;
+Begin
+  dmFR.SaveCursor;
+  Result := -1;
+  sq_GetCustomerLanguage.Close;
+  sq_GetCustomerLanguage.ParamByName('ClientNo').AsInteger := ClientNo;
+  sq_GetCustomerLanguage.Open;
+  if not sq_GetCustomerLanguage.Eof then
+    Result := sq_GetCustomerLanguage.FieldByName('LanguageCode').AsInteger;
+  sq_GetCustomerLanguage.Close;
+  dmFR.RestoreCursor;
+end;
 
 function TdmsContact.GetPIPNo (const LIPNo : Integer) : Integer ;
 Begin
