@@ -1898,7 +1898,7 @@ begin
    LEGO     := True ;
   End
   else
-  if (dmsContact.ClientInterVerk(ThisUser.CompanyNo) ) or (ThisUser.CompanyNo = 741) then
+  if (dmsContact.ClientInterVerk(ThisUser.CompanyNo) ) or (ThisUser.CompanyNo = 741) or (ThisUser.CompanyNo = 2846) then
   ClientNo  := dmcOrder.cds_PropsVerkNo.AsInteger ;
 
   cdsSawmillLoadOrders.SQL.Clear ;
@@ -2322,7 +2322,7 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
   cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
 
 
-// if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
+// if ThisUser.UserID = 8 then  cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
   OrderTypeChanged := False ;
  End ;
   Finally
