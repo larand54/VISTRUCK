@@ -14,6 +14,8 @@ type
     bbtnCancel: TBitBtn;
     lblcboLang: TLabel;
     siLangLinked1: TsiLangLinked;
+    Label1: TLabel;
+    cboLanguageLibrary: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure bbtnCancelClick(Sender: TObject);
     procedure bbtnOkClick(Sender: TObject);
@@ -40,6 +42,7 @@ end;
 procedure TfrmChangeLanguage.bbtnOkClick(Sender: TObject);
 begin
   dmLanguage.siLangDispatcher1.ActiveLanguage := cboSelectLanguage.ItemIndex + 1;
+  dmLanguage.setFilename(cboLanguageLibrary.Text);
   ModalResult := mrOK;
 end;
 
@@ -49,12 +52,18 @@ var
   language: string;
 begin
   cboSelectLanguage.Items.Clear;
+  cboLanguageLibrary.Items.Clear;
   for i := 0 to dmLanguage.siLangDispatcher1.NumOfLanguages-1 do begin
     language := dmLanguage.siLangDispatcher1.LangNames[i];
     cboSelectLanguage.Items.Add(language);
   end;
   i := dmLanguage.siLangDispatcher1.ActiveLanguage - 1;
   cboSelectLanguage.ItemIndex := i;
+
+  cboLanguageLibrary.Items.Add('Produktion');
+  cboLanguageLibrary.Items.Add('Utveckling');
+  cboLanguageLibrary.ItemIndex := 0;
+
 end;
 
 end.
