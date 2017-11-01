@@ -33,7 +33,7 @@ Uses
   VidaUtils, dmsVidaContact , dmsVidaSystem;
 
 procedure TFormCRPrintOneReport.CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
-  var HostName, Database, UserName, Password, spath: String ;
+  var HostName, Database, UserName, Password, spath, ServiceUrl : String ;
       I : Integer ;
       startPageN, stopPageN : OleVariant ;
       Save_Cursor     : TCursor;
@@ -45,7 +45,7 @@ begin
 // startPageN   := 0 ;
 // stopPageN    := 0 ;
 // ThisUser.GetLogonValues (HostName, Database, UserName, Password, spath) ;
-  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath) = False then
+  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath, ServiceUrl) = False then
   Begin
    ShowMessage('Rapport inställningar saknas, kontakta admin.') ;
    Exit ;

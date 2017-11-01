@@ -41,7 +41,7 @@ Uses
 
 
 procedure TFormCRPrintReport.CreateCo(const OverRideNoOfCopies, ClientNo, RoleType, DocTyp : Integer;const A: array of variant);
-  var  ReportName, HostName, Database, UserName, Password, spath: String ;
+  var  ReportName, HostName, Database, UserName, Password, spath, ServiceUrl : String ;
       promptUser: OleVariant; numberOfCopy: OleVariant; collated: OleVariant;
       startPageN: OleVariant; stopPageN: OleVariant ;
       I, PrinterSetup : Integer ;
@@ -71,7 +71,7 @@ begin
 
 //  ThisUser.GetLogonValues (HostName, Database, UserName, Password, spath) ;
 
-  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath) = False then
+  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath, ServiceUrl) = False then
   Begin
    ShowMessage('Rapport inställningar saknas, kontakta admin.') ;
    Exit ;
@@ -119,7 +119,7 @@ end;
 
 
 procedure TFormCRPrintReport.CreateCoForPrintMany(const OverRideNoOfCopies, ClientNo, RoleType, DocTyp : Integer;const IntInvNo, Client: array of variant) ;
-  var  ReportName, HostName, Database, UserName, Password, spath: String ;
+  var  ReportName, HostName, Database, UserName, Password, spath, ServiceUrl  : String ;
       promptUser: OleVariant; numberOfCopy: OleVariant; collated: OleVariant;
       startPageN: OleVariant; stopPageN: OleVariant ;
       I, PrinterSetup : Integer ;
@@ -131,7 +131,7 @@ begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
  Try
-  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath) = False then
+  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath, ServiceUrl) = False then
   Begin
    ShowMessage('Rapport inställningar saknas, kontakta admin.') ;
    Exit ;

@@ -4,14 +4,22 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, uRwMapiSession,
-  uRwMapiInterfaces ,
-  fRwMapiFolderDialog, uRwMapiBase, siComp, uRwEasyMAPI, siLngLnk ;
+  StdCtrls,
+  siComp, siLngLnk,
+  uRwEWSBase, VCL.uRwEWSSession, uRwEWSInterfaces,
+  VCL.uRwFormScaler, uRwEWS ;
+
+
+//   uRwEWS,
+//  uRwEWSBase, VCL.uRwEWSSession, uRwEWSBase, uRwEWSInterfaces,
+//  VCL.uRwFormScaler, uRwEWS, uRwEWSTypes ;
 
 type
   Tdm_SendMapiMail = class(TDataModule)
-    MapiSession: TRwMapiSession;
     siLangLinked1: TsiLangLinked;
+    EWSSession: TRwEWSSession;
+    dlgAttachment: TOpenDialog;
+    FormScaler: TRwFormScaler;
     procedure MapiSessionAfterLogon(Sender: TObject);
     procedure MapiSessionBeforeLogoff(Sender: TObject);
   private
@@ -34,144 +42,97 @@ implementation
 
 uses
     //fLogon
-  {$IFDEF VARIANTS}
+//  {$IFDEF VARIANTS}
    Variants
-  {$ENDIF VARIANTS}
-   uRwBoxes
+//  {$ENDIF VARIANTS}
+  , uRwBoxes
   //, uRwMapiTagsH
-  , uRwMapiUtils
-  , uRwMapiMessage
+//  , uRwMapiUtils
+//  , uRwMapiMessage
   , uRwClasses
-  , fRwMapiFields
+
+//  , uRwClasses
+  , uRwSysUtils
+  , uRwEWSTypes
+//  , VCL.uRwBoxes
+
   , dmsDataConn
-  , udmLanguage;
+  , udmLanguage, VidaUser, dmsVidaSystem;
 
 procedure Tdm_SendMapiMail.SendMail(const Subject, MessageText, MailFromAddress,
   MailToAddress: String; const Attachments: array of String);
 var
-  MsgStore    : IRwMapiMsgStore;
-  Folder      : IRwMapiFolder;
-  NewMessage  : IRwMapiMailMessage;
-  Submitted   : Boolean;
-  i           : Integer;
-begin
- if MapiSession.Active = False Then
- Self.MapiSession.Active := True ;
- //ShowLogonDlg(Self.MapiSession, True);
-
-  if Trim(MailToAddress) = '' then
-   raise Exception.Create(siLangLinked1.GetTextOrDefault('IDS_0' (* 'No recipients specified' *) ));
-
-  if Trim(Subject) = '' then
-   raise EAbort.Create(siLangLinked1.GetTextOrDefault('IDS_1' (* 'There is no subject.' *) ));
-
-    // Logon, create and send the message
-  MapiSession.Logon;
-  try
-    // create a new message of class IPM.Note in the drafts folder of the default messagestore
-    NewMessage := MapiSession.CreateMessage(ftDraft) as IRwMapiMailMessage;
-
-    NewMessage.RecipTo := MailToAddress ;
-    NewMessage.Subject := Subject;
-    NewMessage.Body    := MessageText;
-  // Add the selected attachments
-    for I := Low(Attachments) to High(Attachments) do
-    NewMessage.AddFileAttachment(Attachments[I]);
-
-
-  // save the message
-  NewMessage.SaveChanges(smKeepOpenReadOnly);
-
-//    NewMessage.SubmitMessage(astLeaveInOutbox);     //astLeaveInOutbox
-
-  finally
-    MapiSession.Logoff;
-  end;
-
-
-
-
-  if Submitted then
-  begin
-    RwMsgBoxInfo(siLangLinked1.GetTextOrDefault('IDS_2' (* 'The message is submitted.' *) ));
-    //ClearMessage;
-  end;
-end;
-
-
-(*
-
-procedure Tdm_SendMapiMail.SendMail(const Subject, MessageText, MailFromAddress,
-  MailToAddress: String; const Attachments: array of String);
-var
-  MsgStore: IRwMapiMsgStore;
-  Folder: IRwMapiFolder;
-  NewMessage: IRwMapiMessage;
+  NewMessage: IRwEWSEMail;
   i: Integer;
+  HostName, Database, UserName, Password, spath, ServiceUrl : String ;
+  LocalMailToAddress  : String ;
 begin
- if MapiSession.Active = False Then
- Self.MapiSession.Active := True ; 
-//  ShowLogonDlg(Self.MapiSession, True);
-
-   if Trim(MailToAddress) = '' then
+  if Trim(MailToAddress) = '' then
     raise Exception.Create('No recipients specified');
 
   if Trim(Subject) = '' then
-//    if BoxYesNo('There is no subject. Do you want to send the message anyway?') = mrNO then
-      raise EAbort.Create('There is no subject.');
+    if RwMsgBoxYesNo('There is no subject. Do you want to send the message anyway?') = mrNO then
+      raise EAbort.Create('');
 
-  // open the default messagestore
-  MsgStore := MapiSession.GetDefaultMsgStore(alReadWrite);
- // get the drafts folder
-  Folder := MsgStore.OpenFolderByType(ftDraft, alReadWrite);
-  // create a new message in the drafts folder
-  NewMessage := Folder.CreateMessage('IPM.Note');
+  // Setup the session so that it will ask the user for a profile
+  EWSSession.ProfileName := '';
+  EWSSession.ProfileRequired := False ;
+  EWSSession.LogonDialog := False ;
 
-//  NewMessage := MapiSession.CreateMessage;
+  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath, ServiceUrl) = False then
+  Begin
+   ShowMessage('Rapport inställningar saknas, kontakta admin.') ;
+   Exit ;
+  End  ;
 
-  NewMessage.AddRecipients(MailToAddress, rtTo, False);
-  NewMessage.PropByName(PR_SUBJECT).AsString := Subject ;
-  NewMessage.SetMessageText(MessageText, mtfPlainText);
+  LocalMailToAddress  :=  MailToAddress;
 
-
-  for I := Low(Attachments) to High(Attachments) do
-//    Mail.Attachments.Add(Attachments[I]);
-  NewMessage.AddFileAttachment(Attachments[I]);
-
-  // save the message
-  NewMessage.SaveChanges(smKeepOpenReadOnly);
-
-//  NewMessage.SubmitMessage(astMoveToSentItems); //astLeaveInOutbox astMoveToSentItems
+  if Thisuser.UserID = 8 then
+   LocalMailToAddress  :=  'lars.makiaho@gmail.com' ;
 
 
-  // first resolve the recipienttable
-  // ShowFields(FRecipTable); <-- you can use the ShowFields to display the contents of a table
-{  FAddressbook.ResolveNames(FRecipTable, False, True, Application.Title);
 
-  // create a new message in the outbox of the default messagestore
-  MsgStore := MapiSession.GetDefaultMsgStore(alReadWrite);
-  Folder := MsgStore.OpenFolderByType(ftOutbox, alReadWrite, False);
-  NewMessage := Folder.CreateMessage('IPM.Note');
 
-    NewMessage.AddRecipients(EdtTo.Text, rtTo, False);
+  EWSSession.ServiceUrl           := ServiceUrl ;//'https://outlook.office365.com/ews/exchange.asmx' ;
+  EWSSession.Credentials.UserName := ThisUser.UserEmail ;// 'lars.makiaho@vida.se' ;
+  EWSSession.Credentials.Password := ThisUser.UserPswd ;// 'Ketola77!' ;
 
-  NewMessage.ModifyRecipients(moReplaceAll, FRecipTable);
-  NewMessage.PropByName(PR_SUBJECT).AsString := Subject;
-  NewMessage.SetMessageText(MessageText, mtfPlainText); }
+  // Logon, create and send the message
+  EWSSession.Active := True;
+  try
+    Screen.Cursor := crHourGlass;
+    // create a new message of class IPM.Note in the drafts folder of the default messagestore
+    NewMessage := EWSSession.CreateMessage(dfinDrafts) as IRwEWSEMail;
 
-  // add the attachments
-//  for I := Low(Attachments) to High(Attachments) do
-//  NewMessage.AddFileAttachment(Attachments[I]);
+    NewMessage.ToRecipients.AsString := LocalMailToAddress ;
+    NewMessage.Subject               := Subject;
+    NewMessage.BodyText              := MessageText;
+    NewMessage.Importance            := icNormal;
 
-//  for i := 0 to lvAttachments.Items.Count - 1 do
-//    NewMessage.AddFileAttachment(TAttachmentData(lvAttachments.Items[i].Data).FileName);
+    // Add the selected attachments
+//    for i := 0 to lvAttachments.Items.Count-1 do
+//      NewMessage.Attachments.AddAttachment(lvAttachments.Items[i].Caption);
 
-//  NewMessage.SubmitMessage(astMoveToSentItems);
+    for I := Low(Attachments) to High(Attachments) do
+    NewMessage.Attachments.AddAttachment(Attachments[I]);
+
+    NewMessage.SaveChanges();
+    RwMsgBoxInfo('The message is in draft folder.');
+
+    // Submit the message
+//    NewMessage.SubmitMessage(True);
+//    RwMsgBoxInfo('The message is submitted.');
+  finally
+    Screen.Cursor := crDefault;
+    EWSSession.Active := False;
+  end;
+
+ // RwMsgBoxInfo('The message is in draft folder.');
 
 //  ClearMessage;
-  ShowMessage('Meddelandet är sparat till utkast.');
 end;
-  *)
+
+
 
 procedure Tdm_SendMapiMail.MapiSessionAfterLogon(Sender: TObject);
 begin

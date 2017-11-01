@@ -36,7 +36,7 @@ Uses
   dmsVidaSystem;
 
 constructor TFormCRViewReport.CreateCo(const ReportName: String);
-Var HostName, Database, UserName, Password, spath : String ;
+Var HostName, Database, UserName, Password, spath, ServiceUrl : String ;
     Save_Cursor : TCursor;
     Handle  : integer ;
 begin
@@ -45,7 +45,7 @@ begin
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
  Try
   ReportFound:= True ;
-  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath) = False then
+  if dmsSystem.GetLogonParams (HostName, Database, UserName, Password, spath, ServiceUrl) = False then
   Begin
    ShowMessage('Rapport inställningar saknas, kontakta admin.') ;
    Exit ;

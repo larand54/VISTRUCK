@@ -2559,6 +2559,7 @@ object dmsSystem: TdmsSystem
     end
   end
   object sq_dbProps: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -2599,6 +2600,11 @@ object dmsSystem: TdmsSystem
     object sq_dbPropsFastPath: TStringField
       FieldName = 'FastPath'
       Origin = 'FastPath'
+      Size = 255
+    end
+    object sq_dbPropsServiceUrl: TStringField
+      FieldName = 'ServiceUrl'
+      Origin = 'ServiceUrl'
       Size = 255
     end
   end

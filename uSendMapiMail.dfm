@@ -1,38 +1,21 @@
 object dm_SendMapiMail: Tdm_SendMapiMail
   OldCreateOrder = False
-  Height = 249
-  Width = 410
-  object MapiSession: TRwMAPISession
-    LogonInfo.UseExtendedMAPI = True
-    LogonInfo.Shared = False
-    LogonInfo.ProfileRequired = False
-    LogonInfo.ForceDownload = False
-    LogonInfo.ShowLogonDialog = True
-    LogonInfo.NewSession = True
-    LogonInfo.NoMail = False
-    LogonInfo.NTService = False
-    LogonInfo.ShowPasswordDialog = False
-    LogonInfo.ShowServiceDialog = False
-    LogonInfo.ShortTimeOut = True
-    LogonInfo.MultiThreadedNotifications = False
-    LogoffInfo.Shared = False
-    LogoffInfo.ShowLogoffDialog = False
-    Left = 72
-    Top = 40
-  end
+  Height = 300
+  Width = 565
   object siLangLinked1: TsiLangLinked
     Version = '7.2'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
     UseDefaultLanguage = True
-    NumOfLanguages = 3
+    NumOfLanguages = 4
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Origin'
       'Swedish'
-      'English')
+      'English'
+      'VE_Svenska')
     Language = 'Origin'
     CommonContainer = dmLanguage.siLang1
     ExcludedProperties.Strings = (
@@ -113,8 +96,8 @@ object dm_SendMapiMail: Tdm_SendMapiMail
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 264
-    Top = 80
+    Left = 40
+    Top = 24
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A0073007400480069006E00740073005F0055006E0069006300
@@ -125,14 +108,39 @@ object dm_SendMapiMail: Tdm_SendMapiMail
       6F00640065000D000A007300740053007400720069006E00670073005F005500
       6E00690063006F00640065000D000A004900440053005F00300001004E006F00
       200072006500630069007000690065006E007400730020007300700065006300
-      690066006900650064000100010001000D000A004900440053005F0031000100
-      5400680065007200650020006900730020006E006F0020007300750062006A00
-      6500630074002E000100010001000D000A004900440053005F00320001005400
-      6800650020006D00650073007300610067006500200069007300200073007500
-      62006D00690074007400650064002E000100010001000D000A00730074004F00
-      740068006500720053007400720069006E00670073005F0055006E0069006300
-      6F00640065000D000A007300740043006F006C006C0065006300740069006F00
-      6E0073005F0055006E00690063006F00640065000D000A007300740043006800
-      6100720053006500740073005F0055006E00690063006F00640065000D000A00}
+      6900660069006500640001000100010001000D000A004900440053005F003100
+      01005400680065007200650020006900730020006E006F002000730075006200
+      6A006500630074002E0001000100010001000D000A004900440053005F003200
+      010054006800650020006D006500730073006100670065002000690073002000
+      7300750062006D00690074007400650064002E0001000100010001000D000A00
+      730074004F00740068006500720053007400720069006E00670073005F005500
+      6E00690063006F00640065000D000A007300740043006F006C006C0065006300
+      740069006F006E0073005F0055006E00690063006F00640065000D000A007300
+      7400430068006100720053006500740073005F0055006E00690063006F006400
+      65000D000A00}
+  end
+  object EWSSession: TRwEWSSession
+    UserAgent = 'RAPWare EWS Client'
+    AccessType = atDefault
+    SecurityFlags = []
+    ProfileRequired = True
+    ServiceUrl = ''
+    ConnectingSIDType = csSmtpAddress
+    NTService = False
+    LogonDialog = True
+    PasswordDialog = True
+    Left = 130
+    Top = 82
+  end
+  object dlgAttachment: TOpenDialog
+    Filter = 'All files (*.*)|*.*'
+    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Title = 'Select a file to attach...'
+    Left = 226
+    Top = 28
+  end
+  object FormScaler: TRwFormScaler
+    Left = 125
+    Top = 148
   end
 end
