@@ -304,6 +304,7 @@ type
     cxStyleContentOdd: TcxStyle;
     cxStyleContentEven: TcxStyle;
     dxBarLargeButton37: TdxBarLargeButton;
+    dxBarLargeButton38: TdxBarLargeButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -353,6 +354,7 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
+    procedure dxBarLargeButton38Click(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -416,7 +418,7 @@ uses
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput, UnitSokAvropFormular ;
+  uSetupUserOutput, UnitSokAvropFormular , uSendMapiMail;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -620,8 +622,8 @@ begin
 // CheckMappar ;
 
 // ThisUser.Database:= 'carmak-faster\sqlexpress:vis_vida' ;
- //ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
- ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
+ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
+// ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 // ThisUser.Database:= 'alvesql03:vis_vida' ;
 
 // ThisUser.Database:= 'alvesqltest01:vis_vida' ;
@@ -631,15 +633,16 @@ begin
 {$IFDEF DEBUG}
   if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
     dmsConnector.DriveLetter := 'C:\';
-    ThisUser.Database:= 'alvesql03:vis_vida' ;
+    ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ; //ThisUser.Database:= 'alvesql03:vis_vida' ;
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
+        Params.Add('carmak-speed\sqlexpress:vis_vida') ;
         Params.Add('Server=alvesql03');
         Params.Add('Database=vis_vida');
         Params.Add('OSAuthent=No');
         Params.add('MetaDefCatalog=vis_vida');
         Params.Add('MetaDefSchema=dbo');
-        Params.Add('User_Name=Lars');
+        Params.Add('User_Name=sa');
         Params.Add('Password=woods2011');
         Params.Add('DriverID=MSSQL');
         Params.Add('ApplicationName=VIS_LAGER');
@@ -743,6 +746,36 @@ begin
  Begin
   TFormSetup.Execute ;
  End ;
+end;
+
+procedure TfrmMain.dxBarLargeButton38Click(Sender: TObject);
+const
+  LF = #10;
+Var
+  A: array of Variant;
+  dm_SendMapiMail: Tdm_SendMapiMail;
+  Attach: array of String;
+  MailToAddress: String;
+  ReportType: integer;
+  LoadNo: integer;
+  Lang: integer;
+
+  NoOfCopies: integer;
+begin
+        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
+        Try
+          dm_SendMapiMail.SendMail('Följesedel. FSnr: ' ,
+            'Följesedel bifogad. '
+            + LF + ''
+            + LF + 'MVH/Best Regards, '
+            + LF + ''
+            + 'lars.makiaho@vida.se',
+            dmsSystem.Get_Dir('MyEmailAddress'),
+            'lars.makiaho@gmail.com',
+            Attach);
+        Finally
+          FreeAndNil(dm_SendMapiMail);
+        End;
 end;
 
 procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);

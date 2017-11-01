@@ -47,6 +47,7 @@ type
     sp_GetUserStartHost: TFDStoredProc;
     sp_GetSOPkgNo: TFDStoredProc;
     FD_DeleteSecondNo: TFDQuery;
+    sq_GetUserNameDescription: TStringField;
     procedure DataModuleCreate           (Sender: TObject);
     procedure DataModuleDestroy          (Sender: TObject);
   private
@@ -72,7 +73,7 @@ type
     procedure InitProcedure(Proc: TFDStoredProc);
     function  NextSecondMaxNo(const TableName: String; const PrimaryKeyValue: Integer): Integer ;
     function  Get_AD_Name : String ;
-    procedure GetUserNameLoggedIn(Var UserName, UserPswd : String;Const PFD_Name : String) ;
+    procedure GetUserNameLoggedIn(Var UserName, UserPswd, Email : String;Const PFD_Name : String) ;
 
     function  GetCurrentPkgNo(const ClientNo, NoOfPkgNo : Integer): Integer;
     function  GetCompanyName (CompanyNo : Integer) : String ;
@@ -249,7 +250,7 @@ Begin
  sq_GetLoggedInUser.Close ;
 End ;
 
-procedure TdmsConnector.GetUserNameLoggedIn(Var UserName, UserPswd : String;Const PFD_Name : String) ;
+procedure TdmsConnector.GetUserNameLoggedIn(Var UserName, UserPswd, Email : String;Const PFD_Name : String) ;
 Var AD_Name : String ;
 Begin
  sq_GetLoggedInUser.Open ;
@@ -267,8 +268,9 @@ Begin
   sq_GetUserName.Open ;
   if not sq_GetUserName.Eof Then
   Begin
-   UserName:= sq_GetUserNameUserName.AsString ;
-   UserPswd:= sq_GetUserNamePassWord.AsString ;
+   UserName := sq_GetUserNameUserName.AsString ;
+   UserPswd := sq_GetUserNamePassWord.AsString ;
+   Email    := sq_GetUserNameDescription.AsString ;
   End
    else
     Begin

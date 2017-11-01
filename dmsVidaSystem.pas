@@ -574,6 +574,7 @@ type
     cds_Package_SizePackageSizeNo: TIntegerField;
     cds_Package_SizePackageSizeName: TStringField;
     mtSelectedPkgNoMaxLangd: TFloatField;
+    sq_dbPropsServiceUrl: TStringField;
     sq_dbProps_v2: TFDQuery;
     sq_dbProps_v2HostName: TStringField;
     sq_dbProps_v2Databas: TStringField;
@@ -699,7 +700,7 @@ type
     function  DoesLOHaveNonInvoicedLoads(const LONo : Integer): Boolean;
     Function  GetReportNameByReportNo(const ReportNo : Integer) : String ;
     function  GetReportNameByDocTyp (const DocTyp : Integer) : String ;
-    function  GetLogonParams(var HostName, Database, UserName, Password, CRpath : String) : Boolean ;
+    function  GetLogonParams(var HostName, Database, UserName, Password, CRpath, ServiceUrl : String) : Boolean ;
     procedure SaveDir (const Value, Field : String) ;
     procedure GetLastUsedLoadNo(Strings: TStrings) ;
     procedure SaveLastUsedLoadNo(Strings: TStrings) ;
@@ -1306,16 +1307,17 @@ Begin
   End ;
 End ;
 
-function TdmsSystem.GetLogonParams(var HostName, Database, UserName, Password, CRpath : String) : Boolean ;
+function TdmsSystem.GetLogonParams(var HostName, Database, UserName, Password, CRpath, ServiceUrl : String) : Boolean ;
 Begin
  sq_dbProps.Open ;
  if not sq_dbProps.Eof then
  Begin
-  HostName  := sq_dbPropsHostName.AsString ;
-  DataBase  := sq_dbPropsDatabas.AsString ;
-  UserName  := sq_dbPropsUserName.AsString ;
-  Password  := sq_dbPropsPassWord.AsString ;
-  CRPath    := sq_dbPropsCRPath.AsString ;
+  HostName    := sq_dbPropsHostName.AsString ;
+  DataBase    := sq_dbPropsDatabas.AsString ;
+  UserName    := sq_dbPropsUserName.AsString ;
+  Password    := sq_dbPropsPassWord.AsString ;
+  CRPath      := sq_dbPropsCRPath.AsString ;
+  ServiceUrl  := sq_dbPropsServiceUrl.AsString ;
   Result:= True ;
  End
  else
