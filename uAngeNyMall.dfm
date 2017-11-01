@@ -3,101 +3,81 @@ object fAngeNyMall: TfAngeNyMall
   Top = 0
   ActiveControl = teMall
   Caption = 'Ny mall'
-  ClientHeight = 199
-  ClientWidth = 429
+  ClientHeight = 152
+  ClientWidth = 328
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
-  PixelsPerInch = 120
-  TextHeight = 17
+  PixelsPerInch = 96
+  TextHeight = 13
   object teMall: TcxTextEdit
-    Left = 114
-    Top = 49
+    Left = 87
+    Top = 37
     Hint = 'Max 50 tecken!'
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
     ParentFont = False
     ParentShowHint = False
     Properties.MaxLength = 50
     ShowHint = True
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -23
+    Style.Font.Height = -17
     Style.Font.Name = 'Tahoma'
     Style.Font.Style = []
     Style.IsFontAssigned = True
     TabOrder = 0
-    Width = 199
+    Width = 152
   end
   object cxLabel1: TcxLabel
-    Left = 51
-    Top = 50
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 39
+    Top = 38
     Caption = 'Mall:'
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -23
+    Style.Font.Height = -17
     Style.Font.Name = 'Tahoma'
     Style.Font.Style = []
     Style.IsFontAssigned = True
   end
   object Panel1: TPanel
     Left = 0
-    Top = 114
-    Width = 429
-    Height = 85
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 87
+    Width = 328
+    Height = 65
     Align = alBottom
     TabOrder = 2
     object cxButton1: TcxButton
-      Left = 55
-      Top = 21
-      Width = 127
-      Height = 54
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 42
+      Top = 16
+      Width = 97
+      Height = 41
       Caption = 'OK'
       Default = True
       ModalResult = 1
       TabOrder = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
     end
     object cxButton2: TcxButton
-      Left = 252
-      Top = 21
-      Width = 117
-      Height = 54
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
+      Left = 193
+      Top = 16
+      Width = 89
+      Height = 41
       Caption = #197'ngra'
       ModalResult = 2
       TabOrder = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -20
+      Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
@@ -109,13 +89,14 @@ object fAngeNyMall: TfAngeNyMall
       'TIB_STRINGLIST'
       'TSTRINGLIST')
     UseDefaultLanguage = True
-    NumOfLanguages = 3
+    NumOfLanguages = 4
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Origin'
       'Swedish'
-      'English')
+      'English'
+      'VE_Svenska')
     Language = 'Origin'
     CommonContainer = dmLanguage.siLang1
     ExcludedProperties.Strings = (

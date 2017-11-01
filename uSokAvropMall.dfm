@@ -147,13 +147,14 @@ object fSokAvropMall: TfSokAvropMall
       'TIB_STRINGLIST'
       'TSTRINGLIST')
     UseDefaultLanguage = True
-    NumOfLanguages = 3
+    NumOfLanguages = 4
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Origin'
       'Swedish'
-      'English')
+      'English'
+      'VE_Svenska')
     Language = 'Origin'
     CommonContainer = dmLanguage.siLang1
     ExcludedProperties.Strings = (

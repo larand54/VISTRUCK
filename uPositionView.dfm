@@ -4,14 +4,14 @@ object fPositionView: TfPositionView
   Align = alClient
   BorderStyle = bsNone
   Caption = 'LAGERRAPPORT'
-  ClientHeight = 779
-  ClientWidth = 1550
+  ClientHeight = 633
+  ClientWidth = 1259
   Color = clBtnFace
   DragKind = dkDock
   DragMode = dmAutomatic
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -14
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -21,17 +21,13 @@ object fPositionView: TfPositionView
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  PixelsPerInch = 120
-  TextHeight = 16
+  PixelsPerInch = 96
+  TextHeight = 13
   object pcInventory: TcxPageControl
     Left = 0
-    Top = 153
-    Width = 1550
-    Height = 626
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Top = 126
+    Width = 1259
+    Height = 507
     Align = alClient
     TabOrder = 0
     Properties.ActivePage = tsProduktionProduktSummary
@@ -41,26 +37,18 @@ object fPositionView: TfPositionView
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
     TabSlants.Kind = skCutCorner
-    ClientRectBottom = 626
-    ClientRectRight = 1550
+    ClientRectBottom = 507
+    ClientRectRight = 1259
     ClientRectTop = 0
     object tsProduktionProduktSummary: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Produktion (produktsummering)'
       ImageIndex = 5
       TabVisible = False
       object grdPosition: TcxGrid
         Left = 0
         Top = 0
-        Width = 1550
-        Height = 626
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1259
+        Height = 507
         Align = alClient
         TabOrder = 0
         object grdPositionDBTableView1: TcxGridDBTableView
@@ -246,13 +234,9 @@ object fPositionView: TfPositionView
   end
   object cxSplitter2: TcxSplitter
     Left = 0
-    Top = 145
-    Width = 1550
+    Top = 118
+    Width = 1259
     Height = 8
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salTop
     Control = pgInventory
@@ -262,48 +246,33 @@ object fPositionView: TfPositionView
   object pgInventory: TcxPageControl
     Left = 0
     Top = 0
-    Width = 1550
-    Height = 145
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Width = 1259
+    Height = 118
     Align = alTop
     TabOrder = 6
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 145
-    ClientRectRight = 1550
-    ClientRectTop = 0
+    ClientRectBottom = 114
+    ClientRectLeft = 4
+    ClientRectRight = 1255
+    ClientRectTop = 4
     object tsLagret: TcxTabSheet
-      Margins.Left = 4
-      Margins.Top = 4
-      Margins.Right = 4
-      Margins.Bottom = 4
       Caption = 'Lager'
       ImageIndex = 2
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1550
-        Height = 145
-        Margins.Left = 4
-        Margins.Top = 4
-        Margins.Right = 4
-        Margins.Bottom = 4
+        Width = 1251
+        Height = 110
         Align = alClient
         BevelOuter = bvNone
         Color = clSilver
         ParentBackground = False
         TabOrder = 0
         object lcPIPNAME: TcxDBLookupComboBox
-          Left = 1583
-          Top = 91
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 1286
+          Top = 74
           DataBinding.DataField = 'PIPNAME'
           DataBinding.DataSource = dsUserProp
           Properties.DropDownWidth = 200
@@ -318,52 +287,40 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           TabOrder = 21
           Visible = False
-          Width = 23
+          Width = 19
         end
         object cxLabel2: TcxLabel
-          Left = 160
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 130
+          Top = 7
           Caption = 'Verk:'
           Style.StyleController = cxEditStyleController1
         end
         object cxLabel1: TcxLabel
           Left = 1
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Top = 30
           AutoSize = False
           Caption = 'Tjocklek'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 30
-          Width = 76
+          Height = 24
+          Width = 62
         end
         object cxLabel6: TcxLabel
-          Left = 77
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 63
+          Top = 30
           Caption = 'Bredd'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -372,17 +329,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel7: TcxLabel
-          Left = 291
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 236
+          Top = 30
           Caption = 'L'#228'ngd'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -391,17 +344,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel8: TcxLabel
-          Left = 359
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 292
+          Top = 30
           Caption = 'Tr'#228'slag'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -410,17 +359,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel9: TcxLabel
-          Left = 429
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 349
+          Top = 30
           Caption = 'Kvalitet'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -429,17 +374,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel10: TcxLabel
-          Left = 499
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 405
+          Top = 30
           Caption = 'Utf'#246'rande'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -448,17 +389,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel11: TcxLabel
-          Left = 579
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 470
+          Top = 30
           Caption = 'Impregnering'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -467,12 +404,8 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object ccbAT: TcxCheckComboBox
-          Left = 5
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 4
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -487,15 +420,11 @@ object fPositionView: TfPositionView
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 10
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 70
+          Width = 57
         end
         object ccbAB: TcxCheckComboBox
-          Left = 77
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 63
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -508,15 +437,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 11
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 70
+          Width = 56
         end
         object ccbAL: TcxCheckComboBox
-          Left = 291
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 236
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -529,15 +454,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 12
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 65
+          Width = 53
         end
         object ccbTS2: TcxCheckComboBox
-          Left = 359
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 292
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -550,15 +471,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 5
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 67
+          Width = 54
         end
         object ccbKV2: TcxCheckComboBox
-          Left = 429
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 349
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -571,15 +488,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 6
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 67
+          Width = 54
         end
         object ccbSU2: TcxCheckComboBox
-          Left = 499
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 405
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -592,15 +505,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 7
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 77
+          Width = 63
         end
         object ccbIMP: TcxCheckComboBox
-          Left = 579
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 470
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -613,15 +522,11 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 8
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 105
+          Width = 86
         end
         object cbOwner: TcxCheckComboBox
-          Left = 199
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 162
+          Top = 6
           Properties.DropDownRows = 25
           Properties.DropDownWidth = 80
           Properties.EditValueFormat = cvfIndices
@@ -633,15 +538,11 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = bts3D
           TabOrder = 1
-          Width = 60
+          Width = 48
         end
         object ccVarugrupp: TcxCheckComboBox
-          Left = 687
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 558
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -654,20 +555,16 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 9
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 82
+          Width = 67
         end
         object cxLabel29: TcxLabel
-          Left = 687
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 558
+          Top = 30
           Caption = 'Varugrupp'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -676,78 +573,62 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel30: TcxLabel
-          Left = 772
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 627
+          Top = 30
           AutoSize = False
           Caption = 'Referens'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 18
-          Width = 75
+          Height = 15
+          Width = 61
         end
         object cxLabel31: TcxLabel
           Left = 2
-          Top = 85
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Top = 69
           AutoSize = False
           Caption = 'Lager datum >='
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 21
-          Width = 117
+          Height = 17
+          Width = 95
         end
         object cxLabel32: TcxLabel
-          Left = 127
-          Top = 85
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 103
+          Top = 69
           AutoSize = False
           Caption = 'Lager datum <='
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 21
-          Width = 117
+          Height = 17
+          Width = 95
         end
         object ccbNT: TcxCheckComboBox
-          Left = 150
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 122
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -762,15 +643,11 @@ object fPositionView: TfPositionView
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 26
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 70
+          Width = 57
         end
         object ccbNB: TcxCheckComboBox
-          Left = 223
-          Top = 56
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 181
+          Top = 46
           Properties.EmptySelectionText = 'Alla'
           Properties.ClearKey = 46
           Properties.DropDownRows = 30
@@ -785,20 +662,16 @@ object fPositionView: TfPositionView
           Style.ButtonTransparency = ebtHideUnselected
           TabOrder = 27
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 65
+          Width = 53
         end
         object cxLabel35: TcxLabel
-          Left = 145
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 118
+          Top = 30
           Caption = 'Tjkl, nom'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -807,17 +680,13 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxLabel36: TcxLabel
-          Left = 223
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 181
+          Top = 30
           Caption = 'Br, nom'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
@@ -826,98 +695,74 @@ object fPositionView: TfPositionView
           Style.IsFontAssigned = True
         end
         object cxbtnCloseForm: TcxButton
-          Left = 1153
+          Left = 937
           Top = 1
-          Width = 74
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 60
+          Height = 25
           Caption = 'St'#228'ng'
           TabOrder = 30
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -14
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
           OnClick = cxbtnCloseFormClick
         end
         object cxbtnClearFilter: TcxButton
-          Left = 1058
+          Left = 860
           Top = 1
-          Width = 87
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 70
+          Height = 25
           Caption = 'Rensa filter'
           TabOrder = 31
           OnClick = cxbtnClearFilterClick
         end
         object cxLabel14: TcxLabel
-          Left = 854
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 694
+          Top = 30
           AutoSize = False
           Caption = 'Info1'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 19
-          Width = 49
+          Height = 16
+          Width = 40
         end
         object cxLabel15: TcxLabel
-          Left = 932
-          Top = 37
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 757
+          Top = 30
           AutoSize = False
           Caption = 'Info2'
           ParentFont = False
           Style.Font.Charset = ANSI_CHARSET
           Style.Font.Color = clWindowText
-          Style.Font.Height = -15
+          Style.Font.Height = -12
           Style.Font.Name = 'Arial Rounded MT Bold'
           Style.Font.Style = []
           Style.StyleController = cxEditStyleController2
           Style.TextColor = clMaroon
           Style.TextStyle = []
           Style.IsFontAssigned = True
-          Height = 19
-          Width = 50
+          Height = 16
+          Width = 41
         end
         object cxLabel3: TcxLabel
-          Left = 5
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 4
+          Top = 7
           Caption = 'F'#246'rs.region:'
           Style.StyleController = cxEditStyleController1
         end
         object cbSalesRegion: TcxCheckComboBox
-          Left = 92
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 75
+          Top = 6
           Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfIndices
           Properties.Items = <>
@@ -928,15 +773,11 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = bts3D
           TabOrder = 0
-          Width = 60
+          Width = 49
         end
         object cbStorageArea: TcxCheckComboBox
-          Left = 516
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 419
+          Top = 6
           Properties.EmptySelectionText = 'Alla'
           Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfCaptions
@@ -948,25 +789,17 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = bts3D
           TabOrder = 3
-          Width = 60
+          Width = 49
         end
         object cxLabel4: TcxLabel
-          Left = 434
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 353
+          Top = 7
           Caption = 'Lagerarea:'
           Style.StyleController = cxEditStyleController1
         end
         object cbStoragePos: TcxCheckComboBox
-          Left = 661
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 537
+          Top = 6
           Properties.EmptySelectionText = 'Alla'
           Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfCaptions
@@ -978,25 +811,17 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = bts3D
           TabOrder = 4
-          Width = 60
+          Width = 49
         end
         object cxLabel5: TcxLabel
-          Left = 584
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 475
+          Top = 7
           Caption = 'Lagerpos:'
           Style.StyleController = cxEditStyleController1
         end
         object cbStorageGroup: TcxCheckComboBox
-          Left = 366
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 297
+          Top = 6
           Properties.EmptySelectionText = 'Alla'
           Properties.DropDownRows = 35
           Properties.EditValueFormat = cvfIndices
@@ -1008,25 +833,17 @@ object fPositionView: TfPositionView
           Style.StyleController = cxEditStyleController3
           Style.ButtonStyle = bts3D
           TabOrder = 2
-          Width = 60
+          Width = 49
         end
         object cxLabel12: TcxLabel
-          Left = 275
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 223
+          Top = 7
           Caption = 'Lagergrupp:'
           Style.StyleController = cxEditStyleController1
         end
         object cbInklEjFakt: TcxComboBox
-          Left = 775
-          Top = 7
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 630
+          Top = 6
           ParentFont = False
           Properties.DropDownListStyle = lsFixedList
           Properties.Items.Strings = (
@@ -1039,11 +856,15 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 38
           Text = 'Lager'
-          Width = 76
+          Width = 61
         end
         object ccbReference: TcxCheckComboBox
-          Left = 772
-          Top = 56
+          Left = 627
+          Top = 46
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
@@ -1052,11 +873,15 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 39
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 79
+          Width = 64
         end
         object ccbInfo2: TcxCheckComboBox
-          Left = 932
-          Top = 56
+          Left = 757
+          Top = 46
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
@@ -1065,11 +890,15 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 40
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 69
+          Width = 56
         end
         object ccbInfo1: TcxCheckComboBox
-          Left = 854
-          Top = 56
+          Left = 694
+          Top = 46
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Properties.EmptySelectionText = 'Alla'
           Properties.EditValueFormat = cvfCaptions
           Properties.Items = <>
@@ -1078,56 +907,64 @@ object fPositionView: TfPositionView
           Style.ButtonStyle = bts3D
           TabOrder = 41
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 75
+          Width = 61
         end
         object cbInkTimeInDateFilter: TcxCheckBox
-          Left = 248
-          Top = 102
+          Left = 202
+          Top = 83
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Caption = 'Inkludera tid i datumfilter'
           Properties.OnChange = cbInkTimeInDateFilterPropertiesChange
           TabOrder = 42
-          Width = 213
+          Width = 173
         end
         object cxBtnUpdFilter: TcxButton
-          Left = 953
+          Left = 774
           Top = 1
-          Width = 97
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 79
+          Height = 25
           Caption = 'Uppdatera filter'
           TabOrder = 43
           OnClick = UpdateDataFilterCombos
         end
         object deStartPeriod: TcxDateEdit
-          Left = 4
-          Top = 104
+          Left = 3
+          Top = 85
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           TabOrder = 44
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 116
+          Width = 95
         end
         object deEndPeriod: TcxDateEdit
-          Left = 126
-          Top = 104
+          Left = 102
+          Top = 85
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           TabOrder = 45
           OnEnter = acOnEnterFilterCombosExecute
-          Width = 116
+          Width = 95
         end
         object cxLabel16: TcxLabel
-          Left = 729
-          Top = 9
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 592
+          Top = 7
           Caption = 'K'#228'lla:'
           Style.StyleController = cxEditStyleController1
         end
         object cbReportSelection: TcxComboBox
-          Left = 426
-          Top = 103
+          Left = 346
+          Top = 84
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Properties.DropDownRows = 30
           Properties.DropDownWidth = 80
           Properties.Items.Strings = (
@@ -1141,128 +978,108 @@ object fPositionView: TfPositionView
           Properties.OnChange = cbReportSelectionPropertiesChange
           TabOrder = 47
           Text = 'Area-Ref'
-          Width = 106
+          Width = 86
         end
         object cxButton1: TcxButton
-          Left = 536
-          Top = 102
-          Width = 110
-          Height = 26
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 436
+          Top = 83
+          Width = 89
+          Height = 21
           Action = acExpandAllGridView
           TabOrder = 48
         end
         object cxButton2: TcxButton
-          Left = 988
-          Top = 102
-          Width = 110
-          Height = 26
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 803
+          Top = 83
+          Width = 89
+          Height = 21
           Action = acSaveTemplate
           TabOrder = 49
         end
         object cxbtnDeleteTemplate: TcxButton
-          Left = 875
-          Top = 102
-          Width = 110
-          Height = 26
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 711
+          Top = 83
+          Width = 89
+          Height = 21
           Action = acDeleteTemplate
           TabOrder = 50
         end
         object cxButton3: TcxButton
-          Left = 762
-          Top = 102
-          Width = 110
-          Height = 26
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 619
+          Top = 83
+          Width = 90
+          Height = 21
           Action = acNewTemplate
           TabOrder = 51
         end
         object cxButton4: TcxButton
-          Left = 649
-          Top = 102
-          Width = 110
-          Height = 26
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 527
+          Top = 83
+          Width = 90
+          Height = 21
           Action = acCollapseAllGridView
           TabOrder = 52
         end
         object cxButton5: TcxButton
-          Left = 1101
-          Top = 90
-          Width = 126
-          Height = 38
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Left = 895
+          Top = 73
+          Width = 102
+          Height = 31
           Action = acRefreshReport
           Caption = 'Uppdatera F10'
           TabOrder = 53
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
+          Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
         end
         object GroupBox1: TGroupBox
-          Left = 1007
-          Top = 33
-          Width = 220
-          Height = 52
+          Left = 818
+          Top = 27
+          Width = 179
+          Height = 42
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Caption = 'Exportera till EXCEL'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -14
+          Font.Height = -12
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 54
           object btnExportToExcel: TcxButton
-            Left = 4
-            Top = 22
-            Width = 77
-            Height = 26
-            Margins.Left = 4
-            Margins.Top = 4
-            Margins.Right = 4
-            Margins.Bottom = 4
+            Left = 3
+            Top = 18
+            Width = 63
+            Height = 21
             Action = acExportGridToExcel
             Caption = 'Exportera'
             TabOrder = 0
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -14
+            Font.Height = -12
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
           end
           object ckbSelectedLines: TCheckBox
-            Left = 88
-            Top = 27
-            Width = 113
-            Height = 17
+            Left = 72
+            Top = 22
+            Width = 91
+            Height = 14
+            Margins.Left = 2
+            Margins.Top = 2
+            Margins.Right = 2
+            Margins.Bottom = 2
             Caption = 'Valda rader'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -14
+            Font.Height = -12
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
@@ -1270,23 +1087,23 @@ object fPositionView: TfPositionView
           end
         end
         object cxButton6: TcxButton
-          Left = 857
+          Left = 696
           Top = 1
-          Width = 91
-          Height = 31
-          Margins.Left = 4
-          Margins.Top = 4
-          Margins.Right = 4
-          Margins.Bottom = 4
+          Width = 74
+          Height = 25
           Action = acPrintPositionView
           OptionsImage.Images = cxImageListPrinting
           TabOrder = 55
         end
         object cxBtnChgTreatmentInfo: TcxButton
-          Left = 1234
+          Left = 1003
           Top = 1
-          Width = 159
-          Height = 84
+          Width = 129
+          Height = 68
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
           Action = acChgRef_and_Info
           ParentShowHint = False
           ShowHint = True
@@ -1297,19 +1114,15 @@ object fPositionView: TfPositionView
     end
   end
   object cxLabel13: TcxLabel
-    Left = 429
-    Top = 84
-    Margins.Left = 4
-    Margins.Top = 4
-    Margins.Right = 4
-    Margins.Bottom = 4
+    Left = 349
+    Top = 68
     Caption = 'V'#228'lj Mall'
     ParentColor = False
     ParentFont = False
     Style.Color = clSilver
     Style.Font.Charset = ANSI_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -15
+    Style.Font.Height = -12
     Style.Font.Name = 'Arial Rounded MT Bold'
     Style.Font.Style = []
     Style.StyleController = cxEditStyleController2
@@ -1320,7 +1133,7 @@ object fPositionView: TfPositionView
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -14
+    Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
     Categories.Strings = (
@@ -2226,7 +2039,7 @@ object fPositionView: TfPositionView
   object cxStyleRepository1: TcxStyleRepository
     Left = 608
     Top = 553
-    PixelsPerInch = 120
+    PixelsPerInch = 96
     object cxStyle1: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
       Color = clMaroon
@@ -2310,12 +2123,12 @@ object fPositionView: TfPositionView
     Style.TextStyle = [fsBold]
     Left = 312
     Top = 296
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxEditStyleController2: TcxEditStyleController
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -14
+    Style.Font.Height = -11
     Style.Font.Name = 'Verdana'
     Style.Font.Style = []
     Style.LookAndFeel.Kind = lfFlat
@@ -2329,7 +2142,7 @@ object fPositionView: TfPositionView
     StyleHot.LookAndFeel.Kind = lfFlat
     Left = 312
     Top = 336
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxEditStyleController3: TcxEditStyleController
     Style.BorderColor = cl3DLight
@@ -2339,7 +2152,7 @@ object fPositionView: TfPositionView
     Style.ButtonTransparency = ebtHideUnselected
     Left = 304
     Top = 392
-    PixelsPerInch = 120
+    PixelsPerInch = 96
   end
   object cxImageList1: TcxImageList
     Height = 32
@@ -4926,13 +4739,14 @@ object fPositionView: TfPositionView
       'TIB_STRINGLIST'
       'TSTRINGLIST')
     UseDefaultLanguage = True
-    NumOfLanguages = 3
+    NumOfLanguages = 4
     LangDispatcher = dmLanguage.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Origin'
       'Swedish'
-      'English')
+      'English'
+      'VE_Svenska')
     Language = 'Origin'
     CommonContainer = dmLanguage.siLang1
     ExcludedProperties.Strings = (
