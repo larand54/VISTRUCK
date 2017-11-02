@@ -771,7 +771,7 @@ begin
             + LF + ''
             + 'lars.makiaho@vida.se',
             dmsSystem.Get_Dir('MyEmailAddress'),
-            'lars.makiaho@gmail.com',
+            'larand54@gmail.com',
             Attach);
         Finally
           FreeAndNil(dm_SendMapiMail);

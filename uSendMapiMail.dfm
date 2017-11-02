@@ -143,4 +143,22 @@ object dm_SendMapiMail: Tdm_SendMapiMail
     Left = 125
     Top = 148
   end
+  object RwMAPISession: TRwMAPISession
+    LogonInfo.UseExtendedMAPI = False
+    LogonInfo.Shared = False
+    LogonInfo.ProfileRequired = False
+    LogonInfo.ForceDownload = False
+    LogonInfo.ShowLogonDialog = False
+    LogonInfo.NewSession = False
+    LogonInfo.NoMail = False
+    LogonInfo.NTService = False
+    LogonInfo.ShowPasswordDialog = False
+    LogonInfo.ShowServiceDialog = False
+    LogonInfo.ShortTimeOut = False
+    LogonInfo.MultiThreadedNotifications = False
+    LogoffInfo.Shared = False
+    LogoffInfo.ShowLogoffDialog = False
+    Left = 248
+    Top = 160
+  end
 end

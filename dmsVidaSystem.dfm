@@ -2559,7 +2559,6 @@ object dmsSystem: TdmsSystem
     end
   end
   object sq_dbProps: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -5359,6 +5358,24 @@ object dmsSystem: TdmsSystem
       FieldName = 'LangPathUtv'
       Origin = 'LangPathUtv'
       Size = 255
+    end
+  end
+  object sq_useMapi: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT useMAPI FROM dbo.Users WHERE UserID = :UserID')
+    Left = 1120
+    Top = 904
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 258
+      end>
+    object sq_useMapiuseMAPI: TIntegerField
+      FieldName = 'useMAPI'
+      Origin = 'useMAPI'
     end
   end
 end
