@@ -2559,7 +2559,6 @@ object dmsSystem: TdmsSystem
     end
   end
   object sq_dbProps: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -5311,6 +5310,72 @@ object dmsSystem: TdmsSystem
       FieldName = 'PackageSizeName'
       Origin = 'PackageSizeName'
       Size = 50
+    end
+  end
+  object sq_dbProps_v2: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select * FROM dbo.dbProps_v2')
+    Left = 584
+    Top = 400
+    object sq_dbProps_v2HostName: TStringField
+      FieldName = 'HostName'
+      Origin = 'HostName'
+      Size = 50
+    end
+    object sq_dbProps_v2Databas: TStringField
+      FieldName = 'Databas'
+      Origin = 'Databas'
+      Size = 50
+    end
+    object sq_dbProps_v2UserName: TStringField
+      FieldName = 'UserName'
+      Origin = 'UserName'
+      Size = 50
+    end
+    object sq_dbProps_v2Password: TStringField
+      FieldName = 'Password'
+      Origin = 'Password'
+      Size = 50
+    end
+    object sq_dbProps_v2CRPath: TStringField
+      FieldName = 'CRPath'
+      Origin = 'CRPath'
+      Size = 255
+    end
+    object sq_dbProps_v2intsec: TIntegerField
+      FieldName = 'intsec'
+      Origin = 'intsec'
+    end
+    object sq_dbProps_v2LangPath: TStringField
+      FieldName = 'LangPath'
+      Origin = 'LangPath'
+      Size = 255
+    end
+    object sq_dbProps_v2LangPathUtv: TStringField
+      FieldName = 'LangPathUtv'
+      Origin = 'LangPathUtv'
+      Size = 255
+    end
+  end
+  object sq_useMapi: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT useMAPI FROM dbo.Users WHERE UserID = :UserID')
+    Left = 1120
+    Top = 904
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 258
+      end>
+    object sq_useMapiuseMAPI: TIntegerField
+      FieldName = 'useMAPI'
+      Origin = 'useMAPI'
     end
   end
 end

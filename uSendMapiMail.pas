@@ -7,7 +7,7 @@ uses
   StdCtrls,
   siComp, siLngLnk,
   uRwEWSBase, VCL.uRwEWSSession, uRwEWSInterfaces,
-  VCL.uRwFormScaler, uRwEWS ;
+  VCL.uRwFormScaler, uRwEWS, uRwEasyMAPI, uRwMapiInterfaces, VCL.uRwMAPISession ;
 
 
 //   uRwEWS,
@@ -20,6 +20,7 @@ type
     EWSSession: TRwEWSSession;
     dlgAttachment: TOpenDialog;
     FormScaler: TRwFormScaler;
+    RwMAPISession: TRwMAPISession;
     procedure MapiSessionAfterLogon(Sender: TObject);
     procedure MapiSessionBeforeLogoff(Sender: TObject);
   private
@@ -28,6 +29,9 @@ type
 //    FRecipTable  : IRwMapiRecipientTable;
 //    FRecipTableChanged: Boolean;
 //    procedure AddressBookBeforeDisplayAddressBookDlg(var AddrBookDlgParams: TFDdrBookDlgParams);
+    function mailSwitch: boolean;
+    procedure SendMailByEWS(const Subject, MessageText, MailFromAddress, MailToAddress: String; const Attachments: array of String);
+    procedure SendMailByMAPI(const Subject, MessageText, MailFromAddress, MailToAddress: String; const Attachments: array of String);
   public
     { Public declarations }
     procedure SendMail(const Subject, MessageText, MailFromAddress, MailToAddress: String; const Attachments: array of String) overload;
@@ -57,9 +61,26 @@ uses
 //  , VCL.uRwBoxes
 
   , dmsDataConn
-  , udmLanguage, VidaUser, dmsVidaSystem;
+  , udmLanguage, VidaUser, dmsVidaSystem
+  , udmFR;// SaveCursor
 
-procedure Tdm_SendMapiMail.SendMail(const Subject, MessageText, MailFromAddress,
+
+  procedure Tdm_SendMapiMail.SendMail(const Subject, MessageText, MailFromAddress,
+  MailToAddress: String; const Attachments: array of String);
+  Begin
+    dmFR.SaveCursor;
+    try
+      if MailSwitch then
+        SendMailByEWS(Subject, MessageText, MailFromAddress, MailToAddress, Attachments)
+      else
+        SendMailByMAPI(Subject, MessageText, MailFromAddress, MailToAddress, Attachments);
+    finally
+      dmFR.RestoreCursor;
+    end;
+  End;
+
+
+procedure Tdm_SendMapiMail.SendMailByEWS(const Subject, MessageText, MailFromAddress,
   MailToAddress: String; const Attachments: array of String);
 var
   NewMessage: IRwEWSEMail;
@@ -132,7 +153,58 @@ begin
 //  ClearMessage;
 end;
 
+procedure Tdm_SendMapiMail.SendMailByMAPI(const Subject, MessageText,
+  MailFromAddress, MailToAddress: String; const Attachments: array of String);
+var
+  MsgStore: IRwMapiMsgStore;
+  Folder: IRwMapiFolder;
+  NewMessage: IRwMapiMailMessage;
+  Submitted: Boolean;
+  i: Integer;
+begin
+  if RwMapiSession.Active = False Then
+    Self.RwMapiSession.Active := True;
+  // ShowLogonDlg(Self.MapiSession, True);
 
+  if Trim(MailToAddress) = '' then
+    raise Exception.Create('No recipients specified');
+
+  if Trim(Subject) = '' then
+    raise EAbort.Create('There is no subject.');
+
+  // Logon, create and send the message
+  RwMapiSession.Logon;
+  try
+    // create a new message of class IPM.Note in the drafts folder of the default messagestore
+    NewMessage := RwMapiSession.CreateMessage(ftDraft) as IRwMapiMailMessage;
+
+    NewMessage.RecipTo := MailToAddress;
+    NewMessage.Subject := Subject;
+    NewMessage.Body := MessageText;
+    // NewMessage.RecipBCC := '' ;
+    // Add the selected attachments
+    for i := Low(Attachments) to High(Attachments) do
+    Begin
+      if thisuser.userid = 8 then
+       dmsSystem.FDoLog('Attachment= ' + Attachments[i]);
+      NewMessage.AddFileAttachment(Attachments[i]);
+    End;
+
+    // save the message
+    NewMessage.SaveChanges(smKeepOpenReadOnly);
+
+  finally
+    RwMapiSession.Logoff;
+  end;
+
+end;
+
+
+
+function Tdm_SendMapiMail.mailSwitch: boolean;
+begin
+  result :=  not dmsSystem.useMapi(thisUser.UserID);
+end;
 
 procedure Tdm_SendMapiMail.MapiSessionAfterLogon(Sender: TObject);
 begin

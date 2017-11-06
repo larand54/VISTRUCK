@@ -575,6 +575,17 @@ type
     cds_Package_SizePackageSizeName: TStringField;
     mtSelectedPkgNoMaxLangd: TFloatField;
     sq_dbPropsServiceUrl: TStringField;
+    sq_dbProps_v2: TFDQuery;
+    sq_dbProps_v2HostName: TStringField;
+    sq_dbProps_v2Databas: TStringField;
+    sq_dbProps_v2UserName: TStringField;
+    sq_dbProps_v2Password: TStringField;
+    sq_dbProps_v2CRPath: TStringField;
+    sq_dbProps_v2intsec: TIntegerField;
+    sq_dbProps_v2LangPath: TStringField;
+    sq_dbProps_v2LangPathUtv: TStringField;
+    sq_useMapi: TFDQuery;
+    sq_useMapiuseMAPI: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -744,12 +755,14 @@ type
     function  GetUserExportDir(const ExportDir : Integer;const UserID : Integer;const Form : String) : String ;
     function  Get_Dir(const pFieldName : String) : String ;
     function  Get_SystemDir(const Form, pFieldName : String) : String ;
-    function  GetLangPath(): String;
+    function  GetLangPath(const aLangLib: string): String;
 
         function LoadStyles(const UserID: Integer; const ViewName: String;
       PropertiesStore: TcxPropertiesStore): Boolean;
     procedure StoreStyles(const UserID: Integer; const ViewName: String;
       PropertiesStore: TcxPropertiesStore);
+
+    function useMapi(aUserID: integer): boolean;
 
 
     property  OnAmbiguousPkgNo : TAmbiguityEvent read  FOnAmbiguousPkgNo write FOnAmbiguousPkgNo;
@@ -1153,17 +1166,21 @@ begin
  End;
 end;
 
-function TdmsSystem.GetLangPath: String;
+function TdmsSystem.GetLangPath(const aLangLib: string): String;
 begin
- sq_dbProps.Open;
+  sq_dbProps_v2.Open;
   Try
-    if not sq_dbProps.Eof then Begin
-      Result := sq_dbPropsLangPath.AsString;
+    if not sq_dbProps_v2.Eof then
+    Begin
+      if (aLangLib = 'Utveckling') then
+        Result := sq_dbProps_v2LangPathUtv.AsString
+      else
+        Result := sq_dbProps_v2LangPath.AsString;
     End
     else
       Result := '';
   Finally
-    sq_dbProps.Close;
+    sq_dbProps_v2.Close;
   End;
 end;
 
@@ -2327,6 +2344,16 @@ begin
   end;
   FDQ_StyleSettings.Active:= False ;
  End ;
+end;
+
+function TdmsSystem.useMapi(aUserID: integer): boolean;
+begin
+  sq_useMapi.Close;
+  sq_useMapi.ParamByName('userID').AsInteger := aUserID;
+  sq_useMapi.open;
+  sq_useMapi.first;
+  result := (1 = sq_useMapi.fieldByName('useMapi').AsInteger);
+  sq_useMapi.Close;
 end;
 
 function TdmsSystem.LoadStyles(const UserID : Integer; const ViewName : String ; PropertiesStore : TcxPropertiesStore) : Boolean ;

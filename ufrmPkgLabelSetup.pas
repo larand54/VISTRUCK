@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, siComp;
 
 type
   TfrmPkgLabelSetup = class(TForm)
@@ -20,6 +20,7 @@ type
     BitBtn2: TBitBtn;
     cboReportName: TComboBox;
     Label2: TLabel;
+    siLang_frmPkgLabelSetup: TsiLang;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -38,7 +39,7 @@ implementation
 
 {$R *.dfm}
 
-uses udmFR;
+uses udmFR, udmLanguage;
 
 { TfrmPkgLabelSetup }
 

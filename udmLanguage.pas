@@ -13,11 +13,14 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
+    FlangLib: string;
   public
     { Public declarations }
     function getProgramName(ExeFileWithPath: string): string;
     function getFileWithPath(ExeFileWithPath, ext, path: string): string;
     function includePrefixToExtension(ext: string): string;
+    procedure setFilename(const alangLib: string);
+    property langLib: string read FlangLib write FLangLib;
   end;
 
 var
@@ -31,20 +34,8 @@ implementation
 uses dmsVidaSystem, dialogs;
 
 procedure TdmLanguage.DataModuleCreate(Sender: TObject);
-var
-  Path : String;
 begin
-{$IFDEF DEBUG}
-  path := ExtractFilePath(ParamStr(0));
-{$ELSE}
-  path := dmsSystem.GetLangPath();
-{$ENDIF}
-  if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
-    path := ExtractFilePath(ParamStr(0));
-  end;
-  path := getFileWithPath(ParamStr(0),'sib', path);
-  assert(path <> '','Path to languagefiles not defined in database');
-  siLangDispatcher1.FileName := Path;
+  setFilename('Produktion');
 end;
 
 function TdmLanguage.getFileWithPath(ExeFileWithPath, ext, path: string): string;
@@ -79,6 +70,22 @@ begin
     result := '.' + ext
   else
     result := ext;
+end;
+
+procedure TdmLanguage.setFilename(const alangLib: string);
+var
+  Path : String;
+begin
+{$IFDEF DEBUG}
+  path := ExtractFilePath(ParamStr(0));
+{$ELSE}
+  path := dmsSystem.GetLangPath(alangLib);
+  if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+    path := ExtractFilePath(ParamStr(0));
+{$ENDIF}
+  path := getFileWithPath(ParamStr(0),'sib', path);
+  assert(path <> '','Path to languagefiles not defined in database');
+  siLangDispatcher1.FileName := Path;
 end;
 
 procedure TdmLanguage.siLangDispatcher1LanguageChanged(Sender: TObject);
