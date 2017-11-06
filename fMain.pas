@@ -622,7 +622,7 @@ begin
 // CheckMappar ;
 
 // ThisUser.Database:= 'carmak-faster\sqlexpress:vis_vida' ;
-ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
+//ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
 // ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 // ThisUser.Database:= 'alvesql03:vis_vida' ;
 
@@ -633,7 +633,7 @@ ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
 {$IFDEF DEBUG}
   if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
     dmsConnector.DriveLetter := 'C:\';
-    ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ; //ThisUser.Database:= 'alvesql03:vis_vida' ;
+    ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ; //ThisUser.Database:= 'alvesql03:vis_vida' ;
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
         Params.Add('carmak-speed\sqlexpress:vis_vida') ;

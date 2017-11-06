@@ -160,10 +160,9 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 554
-          ClientRectLeft = 1
-          ClientRectRight = 1131
-          ClientRectTop = 21
+          ClientRectBottom = 555
+          ClientRectRight = 1132
+          ClientRectTop = 24
           object tsUttag: TcxTabSheet
             Margins.Left = 2
             Margins.Top = 2
@@ -171,15 +170,11 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
-            ExplicitLeft = 0
-            ExplicitTop = 24
-            ExplicitWidth = 1132
-            ExplicitHeight = 531
             object PanelMain: TPanel
               Left = 0
               Top = 0
-              Width = 1130
-              Height = 533
+              Width = 1132
+              Height = 531
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -187,13 +182,11 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 1132
-              ExplicitHeight = 531
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
-                Width = 1130
-                Height = 474
+                Width = 1132
+                Height = 472
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -201,13 +194,11 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
-                ExplicitWidth = 1132
-                ExplicitHeight = 472
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1130
-                  Height = 474
+                  Width = 1132
+                  Height = 472
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -215,12 +206,10 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
-                  ExplicitWidth = 1132
-                  ExplicitHeight = 472
                   object Panel4: TPanel
                     Left = 0
-                    Top = 430
-                    Width = 1130
+                    Top = 428
+                    Width = 1132
                     Height = 44
                     Margins.Left = 2
                     Margins.Top = 2
@@ -229,22 +218,18 @@ object frmMain: TfrmMain
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitTop = 428
-                    ExplicitWidth = 1132
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
-                    Width = 1130
-                    Height = 430
+                    Width = 1132
+                    Height = 428
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
-                    ExplicitWidth = 1132
-                    ExplicitHeight = 428
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
                       Navigator.Buttons.CustomButtons = <>
@@ -346,7 +331,7 @@ object frmMain: TfrmMain
               object PanelTop: TPanel
                 Left = 0
                 Top = 0
-                Width = 1130
+                Width = 1132
                 Height = 59
                 Margins.Left = 2
                 Margins.Top = 2
@@ -355,7 +340,6 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitWidth = 1132
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -431,7 +415,6 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitLeft = 0
             ExplicitTop = 0
             ExplicitWidth = 1223
             ExplicitHeight = 232

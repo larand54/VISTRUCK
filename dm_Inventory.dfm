@@ -8372,6 +8372,7 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
