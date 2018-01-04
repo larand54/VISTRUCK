@@ -624,7 +624,7 @@ begin
 // ThisUser.Database:= 'carmak-faster\sqlexpress:vis_vida' ;
 //ThisUser.Database:= 'carmak-speed\sqlexpress:vis_vida' ;
 // ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
-// ThisUser.Database:= 'alvesql03:vis_vida' ;
+
 
 // ThisUser.Database:= 'alvesqltest01:vis_vida' ;
 
@@ -637,7 +637,7 @@ begin
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
         Params.Add('carmak-speed\sqlexpress:vis_vida') ;
-        Params.Add('Server=alvesql03');
+        Params.Add('Server=vistestsql.vida.se');
         Params.Add('Database=vis_vida');
         Params.Add('OSAuthent=No');
         Params.add('MetaDefCatalog=vis_vida');
@@ -659,7 +659,6 @@ begin
 // -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
 
-//ThisUser.Database:= 'alvesql03:vis_vida' ;
 
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then

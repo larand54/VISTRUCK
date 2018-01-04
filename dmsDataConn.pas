@@ -181,7 +181,7 @@ begin
 {$IFDEF DEBUG}
   if copy(GetEnvironmentVariable('COMPUTERNAME'),0,6) = 'CARMAK' then
   begin
-    result := 'alvesql03:vis_vida';
+    result := 'visprodsql.vida.se:vis_vida';
     exit;
   end;
 {$ENDIF}
@@ -305,7 +305,7 @@ begin
     dmsConnector.DriveLetter := 'C:\';
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
-        Params.Add('Server=alvesql03');
+        Params.Add('Server=vistestsql.vida.se');
         Params.Add('Database=vis_vida');
         Params.Add('OSAuthent=No');
         Params.add('MetaDefCatalog=vis_vida');
@@ -323,7 +323,7 @@ begin
     dmsConnector.DriveLetter := 'C:\';
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
-        Params.Add('Server=alvesql01');
+        Params.Add('Server=visprodsql.vida.se');
         Params.Add('Database=vis_vida');
         Params.Add('OSAuthent=No');
         Params.add('MetaDefCatalog=vis_vida');
@@ -336,7 +336,7 @@ begin
   end else
   with dmsConnector.FDConnection1 do begin
       Params.Clear;
-      Params.Add('Server=alvesql01');
+      Params.Add('Server=visprodsql.vida.se');
       Params.Add('Database=vis_vida');
       Params.Add('OSAuthent=yes');
       Params.add('MetaDefCatalog=vis_vida');
