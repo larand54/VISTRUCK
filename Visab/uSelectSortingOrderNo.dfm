@@ -73,8 +73,8 @@ object fSelectSortingOrderNo: TfSelectSortingOrderNo
   end
   object meRunNo: TEdit
     Left = 126
-    Top = 98
-    Width = 115
+    Top = 95
+    Width = 123
     Height = 21
     Anchors = [akTop, akRight]
     Enabled = False
@@ -127,8 +127,8 @@ object fSelectSortingOrderNo: TfSelectSortingOrderNo
       'DataField'
       'KeyField'
       'ListField')
-    Left = 160
-    Top = 72
+    Left = 176
+    Top = 136
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A0054006600530065006C0065006300740053006F0072007400
