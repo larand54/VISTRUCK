@@ -21,9 +21,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 124
+    Top = 126
     Width = 1132
-    Height = 671
+    Height = 669
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
@@ -31,7 +31,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 1132
-      Height = 671
+      Height = 669
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
@@ -39,7 +39,7 @@ object frmMain: TfrmMain
         Left = 0
         Top = 0
         Width = 1132
-        Height = 671
+        Height = 669
         Margins.Left = 2
         Margins.Top = 2
         Margins.Right = 2
@@ -151,7 +151,7 @@ object frmMain: TfrmMain
           Left = 0
           Top = 116
           Width = 1132
-          Height = 555
+          Height = 553
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -160,10 +160,10 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 554
-          ClientRectLeft = 1
-          ClientRectRight = 1131
-          ClientRectTop = 21
+          ClientRectBottom = 549
+          ClientRectLeft = 4
+          ClientRectRight = 1128
+          ClientRectTop = 24
           object tsUttag: TcxTabSheet
             Margins.Left = 2
             Margins.Top = 2
@@ -171,15 +171,11 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
-            ExplicitLeft = 0
-            ExplicitTop = 24
-            ExplicitWidth = 1132
-            ExplicitHeight = 531
             object PanelMain: TPanel
               Left = 0
               Top = 0
-              Width = 1130
-              Height = 533
+              Width = 1124
+              Height = 525
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -187,13 +183,11 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 1132
-              ExplicitHeight = 531
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
-                Width = 1130
-                Height = 474
+                Width = 1124
+                Height = 466
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -201,13 +195,11 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
-                ExplicitWidth = 1132
-                ExplicitHeight = 472
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1130
-                  Height = 474
+                  Width = 1124
+                  Height = 466
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -215,12 +207,10 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
-                  ExplicitWidth = 1132
-                  ExplicitHeight = 472
                   object Panel4: TPanel
                     Left = 0
-                    Top = 430
-                    Width = 1130
+                    Top = 422
+                    Width = 1124
                     Height = 44
                     Margins.Left = 2
                     Margins.Top = 2
@@ -229,22 +219,18 @@ object frmMain: TfrmMain
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitTop = 428
-                    ExplicitWidth = 1132
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
-                    Width = 1130
-                    Height = 430
+                    Width = 1124
+                    Height = 422
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
-                    ExplicitWidth = 1132
-                    ExplicitHeight = 428
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
                       Navigator.Buttons.CustomButtons = <>
@@ -346,7 +332,7 @@ object frmMain: TfrmMain
               object PanelTop: TPanel
                 Left = 0
                 Top = 0
-                Width = 1130
+                Width = 1124
                 Height = 59
                 Margins.Left = 2
                 Margins.Top = 2
@@ -355,7 +341,6 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitWidth = 1132
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -830,7 +815,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1132
-    Height = 124
+    Height = 126
     ApplicationButton.Glyph.Data = {
       36090000424D3609000000000000360000002800000018000000180000000100
       2000000000000009000000000000000000000000000000000000000000000000
@@ -3872,7 +3857,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -4243,7 +4228,7 @@ object frmMain: TfrmMain
       Caption = 'Mail test'
       Category = 0
       Hint = 'Mail test'
-      Visible = ivAlways
+      Visible = ivNever
       OnClick = dxBarLargeButton38Click
     end
     object dxBarButton1: TdxBarButton

@@ -20,7 +20,7 @@ type
     function getFileWithPath(ExeFileWithPath, ext, path: string): string;
     function includePrefixToExtension(ext: string): string;
     procedure setFilename(const alangLib: string);
-    property langLib: string read FlangLib write FLangLib;
+    property langLib: string read FlangLib;
   end;
 
 var
@@ -76,6 +76,7 @@ procedure TdmLanguage.setFilename(const alangLib: string);
 var
   Path : String;
 begin
+  FlangLib := aLangLib;
 {$IFDEF DEBUG}
   path := ExtractFilePath(ParamStr(0));
 {$ELSE}

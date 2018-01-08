@@ -140,13 +140,19 @@ uses
   UnitSokAvropFormular in 'UnitSokAvropFormular.pas' {frmSokAvropFormular},
   UnitBookingFormOrg in 'UnitBookingFormOrg.pas' {FormBookingFormOrg},
   uSokAvropMall in 'uSokAvropMall.pas' {fSokAvropMall},
-  dmSokFormular in 'dmSokFormular.pas' {dm_SokFormular: TDataModule};
+  dmSokFormular in 'dmSokFormular.pas' {dm_SokFormular: TDataModule},
+  uIdmFR in '..\CommonSources\FastReport\uIdmFR.pas',
+  uNewUserDataInterface in '..\CommonSources\UserAdmin\uNewUserDataInterface.pas',
+  ufrmEnterPolicyData in '..\CommonSources\UserAdmin\ufrmEnterPolicyData.pas' {frmEnterPolicyData},
+  upolicySelection in '..\CommonSources\UserAdmin\upolicySelection.pas',
+  dmsUserAdm in '..\CommonSources\UserAdmin\dmsUserAdm.pas' {dmUserAdm: TDataModule};
 
 {$R *.res}
 begin
   Application.Initialize;
   Application.Title := 'VISTRUCK';
   Application.CreateForm(TdmsConnector, dmsConnector);
+  Application.CreateForm(TdmUserAdm, dmUserAdm);
   Application.CreateForm(TFrmMain, FrmMain);
   Application.CreateForm(TdmsSystem, dmsSystem);
   Application.CreateForm(TdmsContact, dmsContact);

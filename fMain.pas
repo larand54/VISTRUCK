@@ -418,7 +418,8 @@ uses
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput, UnitSokAvropFormular , uSendMapiMail;
+  uSetupUserOutput, UnitSokAvropFormular , uSendMapiMail
+  , dmsUserAdm;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -731,6 +732,9 @@ begin
        begin
          self.WindowState:=wsNormal;
        end;
+
+  // Setup connection for policycontrol
+  dmUserAdm.SetUpConnection(dmsConnector.FDConnection1);
 
 
 

@@ -62,7 +62,9 @@ begin
 
   cboLanguageLibrary.Items.Add('Produktion');
   cboLanguageLibrary.Items.Add('Utveckling');
-  cboLanguageLibrary.ItemIndex := 0;
+
+  i := cboLanguageLibrary.Items.IndexOf(dmLanguage.langLib);
+  cboLanguageLibrary.ItemIndex := i;
 
 end;
 
