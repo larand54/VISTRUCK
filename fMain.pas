@@ -735,6 +735,7 @@ begin
 
   // Setup connection for policycontrol
   dmUserAdm.SetUpConnection(dmsConnector.FDConnection1);
+  dmUserAdm.ApplyRestrictionsOnForm(thisUser.UserID, self);
 
 
 
