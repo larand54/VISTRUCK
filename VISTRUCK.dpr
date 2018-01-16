@@ -145,7 +145,8 @@ uses
   uNewUserDataInterface in '..\CommonSources\UserAdmin\uNewUserDataInterface.pas',
   ufrmEnterPolicyData in '..\CommonSources\UserAdmin\ufrmEnterPolicyData.pas' {frmEnterPolicyData},
   upolicySelection in '..\CommonSources\UserAdmin\upolicySelection.pas',
-  dmsUserAdm in '..\CommonSources\UserAdmin\dmsUserAdm.pas' {dmUserAdm: TDataModule};
+  dmsUserAdm in '..\CommonSources\UserAdmin\dmsUserAdm.pas' {dmUserAdm: TDataModule},
+  uVIS_UTILS in '..\CommonSources\uVIS_UTILS.pas';
 
 {$R *.res}
 begin
