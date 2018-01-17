@@ -1803,7 +1803,7 @@ CheckIfChangesUnSaved ;
 
 
 
-// if ThisUser.UserID = 8 then  cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.txt');
+// if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.txt');
     OrderTypeChanged := False ;
    Finally
     FreeAndNil(LOs) ;
@@ -1869,6 +1869,7 @@ end;
 
    with dmcOrder do
    Begin
+    sq_GetLONos.SQL.Clear ;
     sq_GetLONos.SQL.Add('SELECT distinct SP.ShippingPlanNo') ;
     sq_GetLONos.SQL.Add('FROM dbo.Client_LoadingLocation     CLL') ;
     if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
