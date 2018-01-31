@@ -462,6 +462,7 @@ type
     LOkontroll1: TMenuItem;
     dxBarButton35: TdxBarButton;
     sq_GetLONos: TFDQuery;
+    grdFSDBTableView1LocalShippingCompany: TcxGridDBColumn;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);

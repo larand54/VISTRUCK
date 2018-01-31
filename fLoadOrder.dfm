@@ -1284,6 +1284,10 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
             PropertiesClassName = 'TcxTextEditProperties'
             Width = 200
           end
+          object grdFSDBTableView1LocalShippingCompany: TcxGridDBColumn
+            Caption = 'Lokal befraktare'
+            DataBinding.FieldName = 'LocalShippingCompany'
+          end
         end
         object grdFSLevel1: TcxGridLevel
           GridView = grdFSDBTableView1
@@ -1743,7 +1747,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Left = 0
         Top = 0
         Width = 971
-        Height = 45
+        Height = 46
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -1769,7 +1773,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Left = 0
         Top = 0
         Width = 63
-        Height = 45
+        Height = 46
         Align = dalTop
         BarManager = dxBarManager1
       end
@@ -1810,7 +1814,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
@@ -6911,6 +6915,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6925,6 +6930,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

@@ -2583,7 +2583,7 @@ object dmcOrder: TdmcOrder
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateObject = updLoadsForLO
-    StoredProcName = 'dbo.vida_LoadsForLO_XI'
+    StoredProcName = 'vida_LoadsForLO_XII'
     Left = 320
     Top = 24
     ParamData = <
@@ -2727,6 +2727,11 @@ object dmcOrder: TdmcOrder
       FieldName = 'ShortNote'
       Origin = 'ShortNote'
       Size = 150
+    end
+    object cdsLoadsForLOLocalShippingCompany: TStringField
+      FieldName = 'LocalShippingCompany'
+      Origin = 'LocalShippingCompany'
+      Size = 80
     end
   end
   object sp_Populate_One_PkgTypeLengths: TFDStoredProc
