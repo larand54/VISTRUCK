@@ -397,6 +397,9 @@ type
     cds_SaveFormSettingsForm: TStringField;
     sp_AdjustPkgArticleNoOnLoadPkgs: TFDStoredProc;
     sp_CtrlCorrectMainLO: TFDStoredProc;
+    cds_getPkgArticleNo: TFDQuery;
+    cds_GetActivePackage: TFDQuery;
+    cds_DeActivatePackage: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -447,6 +450,9 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
+   procedure inactivatePackage(const aPkgNo: integer);
+   function getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
    function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
    function  OriginalFilter(const Add_AND : Boolean) : String ;
@@ -551,6 +557,18 @@ Procedure TdmLoadEntrySSP.Get_LO_LinesMatched (const PackageNo : Integer;const S
   End ;
  End ;//if...
 End ;
+
+procedure TdmLoadEntrySSP.inactivatePackage(const aPkgNo: integer);
+begin
+  cds_DeActivatePackage.paramByName('PkgNo').AsInteger := aPkgNo;
+  try
+    cds_DeActivatePackage.ExecSQL;
+  except
+    ON e: Exception do begin
+      showMessage('Paket: ' + intToStr(aPkgNo) + ' kunde ej inaktiveras! se felmeddelande: '+e.message);
+    end;
+  end;
+end;
 
 function TdmLoadEntrySSP.CheckIfLoadNoIsOK(const LoadNo : Integer) : Boolean ;
 Begin
@@ -937,6 +955,27 @@ begin
   Result := SuppCode;
 end;
 
+function TdmLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
+begin
+  try
+    cds_getPkgArticleNo.Active := False;
+    cds_getPkgArticleNo.paramByName('PackageNo').AsInteger := aPkgNo;
+    cds_getPkgArticleNo.paramByName('PIPNo').AsInteger := aPIPNo;
+//    cds_getPkgArticleNo.paramByName('SupplierCode').AsString := aSupplierCode;
+    cds_getPkgArticleNo.Active := True;
+    cds_getPkgArticleNo.First;
+    if not cds_getPkgArticleNo.Eof then
+    begin
+      Result := cds_getPkgArticleNo.FieldByName('pkgArticleNo').AsInteger;
+      aSupplierCode := cds_getPkgArticleNo.FieldByName('SupplierCode').AsString
+    end
+    else
+      raise Exception.Create('Package (' + intToStr(aPkgNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
+  finally
+    cds_getPkgArticleNo.Active := False;
+  end;
+end;
+
 procedure TdmLoadEntrySSP.getPkgsByInvOwner(const PkgNo, InventoryOwner, PIPNo : Integer);
 begin
 //  sp_PksByInvOwner.Close;
@@ -1096,7 +1135,7 @@ begin
        Raise ;
       End ;
      end;
-    Screen.Cursor := crHourGlass;    { Show hourglass cursor }    
+    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
     dmsConnector.Commit ;
   except
     dmsConnector.Rollback ;
@@ -1239,7 +1278,7 @@ end;
 procedure TdmLoadEntrySSP.dsp_LoadPackagesGetTableName(Sender: TObject;
   DataSet: TDataSet; var TableName: String);
 begin
- TableName:= 'LoadDetail' ; 
+ TableName:= 'LoadDetail' ;
 end;
 
 procedure TdmLoadEntrySSP.cds_LoadPackages1PostError(DataSet: TDataSet;
@@ -1570,6 +1609,20 @@ Begin
   TempDataSet.Free; { free the temporary data set }
  end;
 End ;
+
+function TdmLoadEntrySSP.getActivePackage(const aPkgArticleNo, aPIPNo: integer;
+  const aSupplierCode: string): integer;
+begin
+  cds_getActivePackage.Active := false;
+  cds_getActivePackage.ParamByName('PkgArticleNo').AsInteger := aPkgArticleNo;
+  cds_getActivePackage.ParamByName('SupplierCode').AsString := aSupplierCode;
+  cds_getActivePackage.ParamByName('PIPNo').AsInteger := aPIPNo;
+  cds_getActivePackage.Active := true;
+  if not cds_getActivePackage.Eof then
+    result :=   cds_getActivePackage.FieldByName('PackageNo').AsInteger
+  else
+    raise Exception.Create('Active Package  for articleNo (' + intToStr(aPkgArticleNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
+end;
 
 function TdmLoadEntrySSP.IsLoadOpen(const LoadNo : Integer) : Boolean ;
 Begin

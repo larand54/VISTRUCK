@@ -305,6 +305,7 @@ type
     cxStyleContentEven: TcxStyle;
     dxBarLargeButton37: TdxBarLargeButton;
     dxBarLargeButton38: TdxBarLargeButton;
+    sp_GetGroupClientRegionNo: TFDStoredProc;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -362,6 +363,7 @@ type
     TempEditString  : String ;
     OriginalUserID  : Integer ;
     a : String ;
+    Function  GetGroupClientRegionNo(VerkNo, SalesRegionNo  : Integer) : Boolean ;
     function  ScannedPkg(const AViewInfo  : String) : Boolean ;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
     procedure SetGridParamsFor_Usersmonpu_piv(Sender: TObject;const ShowAll : Boolean);
@@ -1192,6 +1194,22 @@ Begin
  End ;
 End ;
 
+Function TfrmMain.GetGroupClientRegionNo(VerkNo, SalesRegionNo  : Integer) : Boolean ;
+Begin
+  sp_GetGroupClientRegionNo.paramByName('@VerkNo').AsInteger        := VerkNo ;
+  sp_GetGroupClientRegionNo.paramByName('@SalesRegionNo').AsInteger := SalesRegionNo ;
+  sp_GetGroupClientRegionNo.Active  := True ;
+  Try
+  if not sp_GetGroupClientRegionNo.Eof then
+   Result := True
+    else
+     Result := False ;
+  Finally
+    sp_GetGroupClientRegionNo.Active  := False ;
+  End;
+
+End;
+
 procedure TfrmMain.AvregistreraPaket ;
 var frmSortOrder        : TfrmSortOrder;
     Default_SortingOrderNo,
@@ -1199,50 +1217,55 @@ var frmSortOrder        : TfrmSortOrder;
     Save_Cursor         : TCursor;
     VerkNo              : Integer ;
 Begin
- Save_Cursor    := Screen.Cursor;
- Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
- Try
- Default_SortingOrderNo   := SelectSortingOrderNo ;// dmc_DB.sq_ProdSumPktKrNr.AsInteger ;
- Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
- VerkNo         := dmsSystem.GetVerkNoForSortingOrderServer (Default_SortingOrderNo) ;
+  Save_Cursor    := Screen.Cursor;
+  Screen.Cursor := crSQLWait; { Show hourglass cursor }
+  Try
+    Default_SortingOrderNo := SelectSortingOrderNo;
+    // dmc_DB.sq_ProdSumPktKrNr.AsInteger ;
+    Screen.Cursor := crSQLWait; { Show hourglass cursor }
+    VerkNo := dmsSystem.GetVerkNoForSortingOrderServer(Default_SortingOrderNo);
 
- if VerkNo = ThisUser.CompanyNo then
- Begin
-   if (Default_SortingOrderNo > 0) and (VerkNo > -1) then
-   Begin
-    Default_RegPointNo        := -1 ;//dmc_DB.cds_MainParamsStandardMatPunkt.AsInteger ;
-    frmSortOrder              := TfrmSortOrder.Create(nil) ;
-    Try
-     Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+    if GetGroupClientRegionNo(VerkNo, ThisUser.CompanyNo) then
 
+    // if VerkNo = ThisUser.CompanyNo then
+    Begin
+      if (Default_SortingOrderNo > 0) and (VerkNo > -1) then
+      Begin
+        Default_RegPointNo := -1;
+        // dmc_DB.cds_MainParamsStandardMatPunkt.AsInteger ;
+        frmSortOrder := TfrmSortOrder.Create(nil);
+        Try
+          Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-     frmSortOrder.CreateCo(VerkNo);
-     Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+          frmSortOrder.CreateCo(VerkNo);
+          Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-     frmSortOrder.LOpenWorkOrder(Default_SortingOrderNo, -1) ;
-     Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
+          frmSortOrder.LOpenWorkOrder(Default_SortingOrderNo, -1);
+          Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-     frmSortOrder.ShowModal ;
+          frmSortOrder.ShowModal;
 
-    Finally
-     FreeAndNil(frmSortOrder) ;
-    End ;
-   End
+        Finally
+          FreeAndNil(frmSortOrder);
+        End;
+      End
+      else
+      begin
+        // if Default_SortingOrderNo < 1 then
+        // Showmessage('Fel körordernr');
+        if VerkNo = -1 then
+          ShowMessage('Körordernr ' + IntToStr(Default_SortingOrderNo) +
+            ' saknas');
+      end;
+    End
     else
-     begin
-   //   if Default_SortingOrderNo < 1 then
-   //    Showmessage('Fel körordernr');
-       if VerkNo = -1 then
-        ShowMessage('Körordernr ' + inttostr(Default_SortingOrderNo) + ' saknas') ;
-     end;
- End
-  else
-    ShowMessage('Körordernr ' + inttostr(Default_SortingOrderNo) + ' producent stämmer inte med inloggad användare') ;
+      ShowMessage('Körordernr ' + IntToStr(Default_SortingOrderNo) +
+        ' producent stämmer inte med inloggad användare');
 
- Finally
-  Screen.Cursor := Save_Cursor;  { Always restore to normal }
- End ;
-End ;
+  Finally
+    Screen.Cursor := Save_Cursor; { Always restore to normal }
+  End;
+End;
 
 procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);
 begin
@@ -1389,7 +1412,7 @@ begin
      fLager.Show;
 //     fLager.lcAgent.SetFocus ;
     end ;
- dxRibbon1.ShowTabGroups  := False ;    
+ dxRibbon1.ShowTabGroups  := False ;
 end;
 
 procedure TfrmMain.acLevereradeLasterExecute(Sender: TObject);

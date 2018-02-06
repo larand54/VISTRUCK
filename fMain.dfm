@@ -416,14 +416,10 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Panel3: TPanel
               Left = 0
               Top = 0
-              Width = 1130
+              Width = 1124
               Height = 61
               Margins.Left = 2
               Margins.Top = 2
@@ -459,8 +455,8 @@ object frmMain: TfrmMain
             object Panel8: TPanel
               Left = 0
               Top = 61
-              Width = 1130
-              Height = 488
+              Width = 1124
+              Height = 464
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -472,7 +468,7 @@ object frmMain: TfrmMain
                 Left = 0
                 Top = 0
                 Width = 390
-                Height = 488
+                Height = 464
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -497,7 +493,7 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 388
-                  Height = 434
+                  Height = 409
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -670,8 +666,8 @@ object frmMain: TfrmMain
               object Panel5: TPanel
                 Left = 390
                 Top = 0
-                Width = 273
-                Height = 488
+                Width = 267
+                Height = 464
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -682,7 +678,7 @@ object frmMain: TfrmMain
                 object Panel10: TPanel
                   Left = 1
                   Top = 1
-                  Width = 271
+                  Width = 265
                   Height = 53
                   Margins.Left = 2
                   Margins.Top = 2
@@ -694,10 +690,10 @@ object frmMain: TfrmMain
                 end
               end
               object Panel6: TPanel
-                Left = 663
+                Left = 657
                 Top = 0
                 Width = 467
-                Height = 488
+                Height = 464
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -721,7 +717,7 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 195
-                  Height = 434
+                  Height = 409
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -762,7 +758,7 @@ object frmMain: TfrmMain
                   Left = 196
                   Top = 54
                   Width = 270
-                  Height = 434
+                  Height = 409
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -5617,5 +5613,32 @@ object frmMain: TfrmMain
       Styles.Preview = cxStyle10
       BuiltIn = True
     end
+  end
+  object sp_GetGroupClientRegionNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    SchemaName = 'dbo'
+    StoredProcName = 'vis_GetGroupClientRegionNo'
+    Left = 492
+    Top = 477
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@VerkNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SalesRegionNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

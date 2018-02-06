@@ -3731,4 +3731,85 @@
         Size = 100
       end>
   end
+  object cds_getPkgArticleNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT PkgArticleNo, PN.SupplierCode FROM dbo.PackageNumber PN'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = PN.LogicalInventoryPointNo'
+      'WHERE PN.PackageNo = :PackageNo'
+      '--AND PN.SupplierCode = :SupplierCode'
+      'AND LIP.PhysicalInventoryPointNo = :PIPNo'
+      ''
+      '')
+    Left = 320
+    Top = 160
+    ParamData = <
+      item
+        Name = 'PACKAGENO'
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object cds_GetActivePackage: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT TOP 1 PackageNo FROM dbo.PackageNumber PN'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = PN.LogicalInventoryPointNo'
+      'WHERE PN.PkgArticleNo = :PkgArticleNo'
+      'AND PN.SupplierCode = :SupplierCode'
+      'AND LIP.PhysicalInventoryPointNo = :PIPNo'
+      'AND PN.Status = 1'
+      'AND LIP.CanAddToLoad = 1'
+      'ORDER BY PackageNo '
+      ''
+      '')
+    Left = 320
+    Top = 208
+    ParamData = <
+      item
+        Name = 'PKGARTICLENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'PIPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object cds_DeActivatePackage: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'UPDATE dbo.PackageNumber SET status = 0 WHERE PackageNo = :PkgNo' +
+        ' '
+      ''
+      '')
+    Left = 320
+    Top = 256
+    ParamData = <
+      item
+        Name = 'PKGNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
 end
