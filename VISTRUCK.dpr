@@ -146,7 +146,8 @@ uses
   ufrmEnterPolicyData in '..\CommonSources\UserAdmin\ufrmEnterPolicyData.pas' {frmEnterPolicyData},
   upolicySelection in '..\CommonSources\UserAdmin\upolicySelection.pas',
   dmsUserAdm in '..\CommonSources\UserAdmin\dmsUserAdm.pas' {dmUserAdm: TDataModule},
-  uVIS_UTILS in '..\CommonSources\uVIS_UTILS.pas';
+  uVIS_UTILS in '..\CommonSources\uVIS_UTILS.pas',
+  uLGLogg in '..\CommonSources\UserAdmin\uLGLogg.pas' {frmLGLogg};
 
 {$R *.res}
 begin

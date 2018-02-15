@@ -524,8 +524,9 @@ type
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
-     function RemoveLikVardigtPaket(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
-     function getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
+     function AfterAdded_VE_Pkg(const aPkgNo, aArtikelNo : Integer): TEditAction;
+     function GetLikVardigtPaket(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
+     function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
      function  GetPositionID : Integer ;
      function  DiffOK : Boolean ;
      Procedure GetLO_Records ;
@@ -565,7 +566,8 @@ type
           Var Res_UserName : String;
           Var ProductLengthNo, NoOfLengths : Integer) : TEditAction;
 
-
+     function Validate_VE_Pkg(const aPkgNo, aArticleNo: integer): integer;
+     function Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;
      function  ValidatePkg(const PkgNo : Integer;const PkgSupplierCode : String3;
                              const ProductNo, ProductLengthNo, NoOfLengths  : Integer) : Integer ;
      Procedure GetLO_Records_AfterAddingLO_Number(LO_Number : Integer) ;
@@ -678,7 +680,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
   uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports, dm_Inventory,
-  uDlgReferensAndInfo, udmFR;
+  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg;
 
 {$R *.dfm}
 
@@ -884,9 +886,9 @@ Begin
    End ;
 End ;
 
-function TfLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
+function TfLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
 begin
-  result := dmLoadEntrySSP.getPkgArticleNo(aPkgNo, aPIPNo, aSupplierCode)
+  result := dmLoadEntrySSP.getPkgArticleNo(aPkgNo, aPIPNo, aLONo, aSupplierCode, aLagerStatus)
 end;
 
 procedure TfLoadEntrySSP.CreateWithExistingLoad(
@@ -1632,8 +1634,9 @@ begin
     //    +' AND ProductLengthNo = '+IntToStr(ProductLengthNo);
 
 
+        if assigned(uLGLogg.frmLGLogg) then frmLGLogg.addText(self.Name,'MainGrade',cdsLORows.Filter);
 
-        //TRy match on MainGrade Only
+        //TRy match on MainGrade Only   -- VidaEnergi ger 2 träffar på denna '00373401724811001505'
         if cdsLORows.RecordCount = 0 then
          cdsLORows.Filter:= 'ACT_THICK = ' + ReplaceCommas(cds_LoadPackagesActualThicknessMM.AsString)
          +' AND ACT_WIDTH = ' + ReplaceCommas(cds_LoadPackagesActualWidthMM.AsString)
@@ -1641,6 +1644,7 @@ begin
     //     +' AND SurfacingNo = ' + cds_LoadPackagesSurfacingNo.AsString
          +' AND ProductCategoryNo = ' + cds_LoadPackagesProductCategoryNo.AsString
     //     +' AND SpeciesNo = '+cds_LoadPackagesSpeciesNo.AsString
+        +' AND ProductNo = ' + IntToStr(ProductNo) //Ändrad
          +' AND ACT_LENGTH = ' + cds_LoadPackagesALMM.AsString
          + dmLoadEntrySSP.OriginalFilter(True) ;
 
@@ -2047,7 +2051,7 @@ begin
 // LoadFormSettings;
 end;
 
-function TfLoadEntrySSP.RemoveLikVardigtPaket(const aPkgArticleNo,
+function TfLoadEntrySSP.GetLikVardigtPaket(const aPkgArticleNo,
   aPIPNo: integer; const aSupplierCode: string): integer;
 var
   pkgNoToInactivate: integer;
@@ -2055,8 +2059,6 @@ begin
   result := -1;
   // Hämta ett likvärdigt paket
   pkgNoToInactivate := dmLoadEntrySSP.getActivePackage(aPkgArticleNo, aPIPNo, aSupplierCode);
-  // Inaktivera detta paket
-  dmLoadEntrySSP.inactivatePackage(pkgNoToInactivate);
   result := pkgNoToInactivate;
 end;
 
@@ -2428,217 +2430,228 @@ begin
 end;
 
 function TfLoadEntrySSP.ValidatePackage_ver2(
-  Var CustcdsNo   : Integer;
-  PkgSupplier : string3;
-  PkgNo       : Integer;
-  var SuppShipPlanObjectNo      : Integer;
-  var PkgLog        : String;
-  var LO_Number, OverrideRL    : Integer;
-  const ProductNo, ProductLengthNo, NoOfLengths  : Integer) : integer ;
+  Var CustcdsNo: integer;
+  PkgSupplier: string3;
+  PkgNo: integer;
+  var SuppShipPlanObjectNo: integer;
+  var PkgLog: String;
+  var LO_Number, OverrideRL: integer;
+  const ProductNo, ProductLengthNo, NoOfLengths: integer): integer;
 var
-  BadLength : Real;
+  BadLength: Real;
   LOLineKey,
-  CustcdsNoKey : Integer;
+    CustcdsNoKey: integer;
 
-//build list of references to SupplierShipPlanObjectNo to validate package against
+  // build list of references to SupplierShipPlanObjectNo to validate package against
   procedure BuildListOfLOLines;
   begin
-   With dmLoadEntrySSP do
-   Begin
-//if no match then add by productno automatically
-    if not cdsLORows.FindKey([cds_LoadPackagesDefsspno.AsInteger]) then
+    With dmLoadEntrySSP do
     Begin
-    //Koppla paket mot LO rader
-     LOLineKey  := AddLoadDetailMatchByProductNo(CustcdsNoKey, PkgNo, PkgSupplier, ProductNo, ProductLengthNo, NoOfLengths);
-    End //if
-    else
-    Begin
-     LOLineKey      := cds_LoadPackagesDefsspno.AsInteger ;
-     CustcdsNoKey   := cds_LoadPackagesDefaultCustShipObjectNo.AsInteger ;
-    End ;
-   End ;
+      // if no match then add by productno automatically
+      if not cdsLORows.FindKey([cds_LoadPackagesDefsspno.AsInteger]) then
+      Begin
+        // Koppla paket mot LO rader
+        LOLineKey := AddLoadDetailMatchByProductNo(CustcdsNoKey, PkgNo,
+          PkgSupplier, ProductNo, ProductLengthNo, NoOfLengths);
+      End // if
+      else
+      Begin
+        LOLineKey := cds_LoadPackagesDefsspno.AsInteger;
+        CustcdsNoKey := cds_LoadPackagesDefaultCustShipObjectNo.AsInteger;
+      End;
+    End;
   end;
 
-function ValideraLength : Integer ;
-Begin
- Result:= BAD_LENGTH ;
-  With dmLoadEntrySSP do
+  function ValideraLength: integer;
   Begin
-   if cdsLORowsACT_LENGTH.AsInteger = 0 then
-     Begin
-      SuppShipPlanObjectNo  := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
-      LO_Number             := cdsLORowsShippingPlanNo.AsInteger ;
-      CustcdsNo             := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
-      OverrideRL            := cdsLORowsOverrideRL.AsInteger ;
-
-      if dmsSystem.All_PkgLengths_In_LengthGroup (cds_LoadPackagesPACKAGETYPENO.AsInteger, cdsLORowsProductLengthGroupNo.AsInteger) then
-      Result                := ALL_OK
-      else
-      Result:= VP_LengthNotInLengthGroup ;
-     End
-     else
-     if cds_LoadPackagesNoOfLengths.AsInteger = 1 then
-     Begin
-      if cdsLORowsACT_LENGTH.AsString = cds_LoadPackagesALMM.AsString then
-//      if cds_LoadPackagesProductLengthNo.AsInteger = cdsLORowsProductLengthNo.AsInteger then
+    Result := BAD_LENGTH;
+    With dmLoadEntrySSP do
+    Begin
+      if cdsLORowsACT_LENGTH.AsInteger = 0 then
       Begin
-       SuppShipPlanObjectNo   := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
-       LO_Number              := cdsLORowsShippingPlanNo.AsInteger ;
-       CustcdsNo              := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
-       Result                 := ALL_OK ;
-       OverrideRL             := cdsLORowsOverrideRL.AsInteger ;
+        SuppShipPlanObjectNo := cdsLORowsSupplierShipPlanObjectNo.AsInteger;
+        LO_Number := cdsLORowsShippingPlanNo.AsInteger;
+        CustcdsNo := cdsLORowsSupplierShipPlanObjectNo.AsInteger;
+        OverrideRL := cdsLORowsOverrideRL.AsInteger;
+
+        if dmsSystem.All_PkgLengths_In_LengthGroup
+          (cds_LoadPackagesPackageTypeNo.AsInteger,
+          cdsLORowsProductLengthGroupNo.AsInteger) then
+          Result := ALL_OK
+        else
+          Result := VP_LengthNotInLengthGroup;
       End
-       else
-       Begin
-        PkgLog  := Format(rs_BAD_LENGTH,[BadLength]);
-        Result  := BAD_LENGTH ;
-        OverrideRL            := 0 ;
-       End ;
-     End//if cds_LoadPackagesNoOfLengths.AsInteger = 1 then
-     else
-     if cds_LoadPackagesNoOfLengths.AsInteger > 1 then
-     Begin
-      PkgLog      := Format(rs_BAD_LENGTH,[BadLength]);
-      Result      := BAD_LENGTH ;
-      OverrideRL  := 0 ;
-     End
-  End ; //With
-End ;
+      else
+        if cds_LoadPackagesNoOfLengths.AsInteger = 1 then
+      Begin
+        if cdsLORowsACT_LENGTH.AsString = cds_LoadPackagesALMM.AsString then
+        // if cds_LoadPackagesProductLengthNo.AsInteger = cdsLORowsProductLengthNo.AsInteger then
+        Begin
+          SuppShipPlanObjectNo := cdsLORowsSupplierShipPlanObjectNo.AsInteger;
+          LO_Number := cdsLORowsShippingPlanNo.AsInteger;
+          CustcdsNo := cdsLORowsSupplierShipPlanObjectNo.AsInteger;
+          Result := ALL_OK;
+          OverrideRL := cdsLORowsOverrideRL.AsInteger;
+        End
+        else
+        Begin
+          PkgLog := Format(rs_BAD_LENGTH, [BadLength]);
+          Result := BAD_LENGTH;
+          OverrideRL := 0;
+        End;
+      End // if cds_LoadPackagesNoOfLengths.AsInteger = 1 then
+      else
+        if cds_LoadPackagesNoOfLengths.AsInteger > 1 then
+      Begin
+        PkgLog := Format(rs_BAD_LENGTH, [BadLength]);
+        Result := BAD_LENGTH;
+        OverrideRL := 0;
+      End
+    End; // With
+  End;
 
-function ValideraProduktAttribut : Integer ;
-Begin
-//August 27 Matching LO to Pkgs
-  With dmLoadEntrySSP do
+  function ValideraProduktAttribut: integer;
   Begin
-   if cds_LoadPackagesActualThicknessMM.AsFloat <> cdsLORowsACT_THICK.AsFloat then
-   Begin
-    PkgLog  := Format(rs_NO_Thick,[cds_LoadPackagesActualThicknessMM.AsFloat]) ;
-    Result  := VP_BadThickness ;
-    Exit ;
-   End
-   else
-   if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat then
-   Begin
-    PkgLog  := Format(rs_NO_Width, [cds_LoadPackagesActualWidthMM.AsFloat]) ;
-    Result  := VP_BadWidth ;
-    Exit ;
-   End
-   else
-   if cds_LoadPackagesMainGradeNo.AsInteger <> cdsLORowsGradeNo.AsInteger then
-   Begin
-    Result  := VP_BadGrade ;
-    PkgLog  := rs_NO_Grade ;
-    Exit ;
-   End
+    // August 27 Matching LO to Pkgs
+    With dmLoadEntrySSP do
+    Begin
+      if cds_LoadPackagesActualThicknessMM.AsFloat <> cdsLORowsACT_THICK.AsFloat
+      then
+      Begin
+        PkgLog := Format(rs_NO_Thick,
+          [cds_LoadPackagesActualThicknessMM.AsFloat]);
+        Result := VP_BadThickness;
+        exit;
+      End
+      else
+        if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat
+      then
+      Begin
+        PkgLog := Format(rs_NO_Width, [cds_LoadPackagesActualWidthMM.AsFloat]);
+        Result := VP_BadWidth;
+        exit;
+      End
+      else
+        if cds_LoadPackagesMainGradeNo.AsInteger <> cdsLORowsGradeNo.AsInteger
+      then
+      Begin
+        Result := VP_BadGrade;
+        PkgLog := rs_NO_Grade;
+        exit;
+      End
 
+      { Validera utförande
+        else
+        if cds_LoadPackagesSurfacingNo.AsInteger <> cdsLORowsSurfacingNo.AsInteger then
+        Begin
+        Result  := VP_BadSurfacing ;
+        PkgLog  := rs_NO_Surfacing ;
+        Exit ;
+        End }
 
-{Validera utförande
-else
-   if cds_LoadPackagesSurfacingNo.AsInteger <> cdsLORowsSurfacingNo.AsInteger then
-   Begin
-    Result  := VP_BadSurfacing ;
-    PkgLog  := rs_NO_Surfacing ;
-    Exit ;
-   End }
+      else
+        if (cds_LoadPackagesSpeciesNo.AsInteger <> cdsLORowsSpeciesNo.AsInteger)
+        and ((cds_LoadPackagesSpeciesNo.AsInteger <> FuruGran) and
+        (cdsLORowsSpeciesNo.AsInteger <> FuruGran))
+      then
+      Begin
+        Result := VP_BadSpecies;
+        PkgLog := rs_NO_Species;
+        exit;
+      End
+      // LM måste fixas till med impregnerings kontrollen.
+      else
+        if cds_LoadPackagesProductCategoryNo.AsInteger <>
+        cdsLORowsProductCategoryNo.AsInteger then
+      Begin
+        Result := VP_BadIMP;
+        PkgLog := rs_NO_IMP;
+        exit;
+      End;
+      // if we get to here all attributes are OK.
+      Result := ALL_OK;
+    End; // With
+  End;
 
-
-   else
-   if (cds_LoadPackagesSpeciesNo.AsInteger <> cdsLORowsSpeciesNo.AsInteger)
-   and ((cds_LoadPackagesSpeciesNo.AsInteger <> FuruGran) and (cdsLORowsSpeciesNo.AsInteger <> FuruGran))
-   then
-   Begin
-    Result  := VP_BadSpecies ;
-    PkgLog  := rs_NO_Species ;
-    Exit ;
-   End
-//LM måste fixas till med impregnerings kontrollen.
-  else
-   if cds_LoadPackagesProductCategoryNo.AsInteger <> cdsLORowsProductCategoryNo.AsInteger then
-   Begin
-    Result  := VP_BadIMP ;
-    PkgLog  := rs_NO_IMP ;
-    Exit ;
-   End ;
-//if we get to here all attributes are OK.
-   Result:= ALL_OK ;
-  End ; //With
-End ;
-
-
-function ValideraDimension : Integer ;
-Begin
-//August 27 Matching LO to Pkgs
-  With dmLoadEntrySSP do
+  function ValideraDimension: integer;
   Begin
-   if cds_LoadPackagesActualThicknessMM.AsFloat <> cdsLORowsACT_THICK.AsFloat then
-   Begin
-    PkgLog  := Format(rs_NO_Thick,[cds_LoadPackagesActualThicknessMM.AsFloat]) ;
-    Result  := VP_BadThickness ;
-    Exit ;
-   End
-   else
-   if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat then
-   Begin
-    PkgLog  := Format(rs_NO_Width, [cds_LoadPackagesActualWidthMM.AsFloat]) ;
-    Result  := VP_BadWidth ;
-    Exit ;
-   End ;
-//if we get to here all attributes are OK.
-   Result:= ALL_OK ;
-  End ; //With
-End ;
+    // August 27 Matching LO to Pkgs
+    With dmLoadEntrySSP do
+    Begin
+      if cds_LoadPackagesActualThicknessMM.AsFloat <> cdsLORowsACT_THICK.AsFloat
+      then
+      Begin
+        PkgLog := Format(rs_NO_Thick,
+          [cds_LoadPackagesActualThicknessMM.AsFloat]);
+        Result := VP_BadThickness;
+        exit;
+      End
+      else
+        if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat
+      then
+      Begin
+        PkgLog := Format(rs_NO_Width, [cds_LoadPackagesActualWidthMM.AsFloat]);
+        Result := VP_BadWidth;
+        exit;
+      End;
+      // if we get to here all attributes are OK.
+      Result := ALL_OK;
+    End; // With
+  End;
 
 begin
-//procedure ValidatePackage_ver2
-  CustcdsNo             := NO_MATCH;  // Changed below if validation succeeds.
-  BadLength             := 0;
-  SuppShipPlanObjectNo  := NO_MATCH;  // Changed below if validation succeeds.
+  // procedure ValidatePackage_ver2
+  CustcdsNo := NO_MATCH; // Changed below if validation succeeds.
+  BadLength := 0;
+  SuppShipPlanObjectNo := NO_MATCH; // Changed below if validation succeeds.
   BuildListOfLOLines;
-  SuppShipPlanObjectNo  := LOLineKey ;
-  CustcdsNo             := CustcdsNoKey ;
+  SuppShipPlanObjectNo := LOLineKey;
+  CustcdsNo := CustcdsNoKey;
 
   With dmLoadEntrySSP do
   Begin
-   Try
-   if SuppShipPlanObjectNo > 0 then
-   Begin
-//Filtrera fram LO records på current LoadDetailMatch
-    cdsLORows.Filter   := 'SupplierShipPlanObjectNo = ' + inttostr(SuppShipPlanObjectNo) + dmLoadEntrySSP.OriginalFilter(True) ; //mtLoadDetailMatchSupplierShipPlanObjectNo.AsString ;
-    cdsLORows.Filtered := True ;
+    Try
+      if SuppShipPlanObjectNo > 0 then
+      Begin
+        // Filtrera fram LO records på current LoadDetailMatch
+        cdsLORows.Filter := 'SupplierShipPlanObjectNo = ' +
+          IntToStr(SuppShipPlanObjectNo) + dmLoadEntrySSP.OriginalFilter(True);
+        // mtLoadDetailMatchSupplierShipPlanObjectNo.AsString ;
+        cdsLORows.Filtered := True;
 
-    if cds_LoadPackagesOverrideMatch.AsInteger = 0 then
-    Begin
-     Result := ValideraProduktAttribut ;
-     if Result = ALL_OK then
-      Result  := ValideraLength ;
-    End
-    else
-    Begin
-     Result := ValideraDimension ;
-     if Result = ALL_OK then
-      Result  := ValideraLength ;
-    End ;
-   End
-    else
-     Begin
-      Result  := VP_NoLOConnection ;
-      PkgLog  := rs_NO_LO_Connection ;
-     End ;
+        if cds_LoadPackagesOverrideMatch.AsInteger = 0 then
+        Begin
+          Result := ValideraProduktAttribut;
+          if Result = ALL_OK then
+            Result := ValideraLength;
+        End
+        else
+        Begin
+          Result := ValideraDimension;
+          if Result = ALL_OK then
+            Result := ValideraLength;
+        End;
+      End
+      else
+      Begin
+        Result := VP_NoLOConnection;
+        PkgLog := rs_NO_LO_Connection;
+      End;
 
-//Kolla om det finns en match på Dimension, träslag, utförande och huvudkvalitet mellan
-//LO och paket.
-//Om det inte matchar skall det rapporteras tillbaka till användaren vilken parameter
-//som inte matchade
+      // Kolla om det finns en match på Dimension, träslag, utförande och huvudkvalitet mellan
+      // LO och paket.
+      // Om det inte matchar skall det rapporteras tillbaka till användaren vilken parameter
+      // som inte matchade
 
-//Är det en successfull match på produkten skall paketlängden matchas mot LO längden.
+      // Är det en successfull match på produkten skall paketlängden matchas mot LO längden.
 
-   Finally
-    cdsLORows.Filter  := dmLoadEntrySSP.OriginalFilter(False) ;
+    Finally
+      cdsLORows.Filter := dmLoadEntrySSP.OriginalFilter(False);
 
-   // cdsLORows.Filtered  := False ;
-   End ;
-  End ; //With
-end;
+      // cdsLORows.Filtered  := False ;
+    End;
+  End; // With
+end; // end procedure ValidatePackage_ver2
 
 function TfLoadEntrySSP.AddPkgTo_cds_LoadPackages(Sender: TObject;
 const PkgNo : Integer;
@@ -3185,30 +3198,37 @@ procedure TfLoadEntrySSP.acValidatePkgExecute(Sender: TObject);
 var
   Save_Cursor:TCursor;
 begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crHourGlass;
- Try
-  if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
-  Begin
-   dmLoadEntrySSP.cds_LoadPackages.Edit ;
-   Try
-    ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
-    dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
-     dmLoadEntrySSP.cds_LoadPackagesProductLengthNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesNoOfLengths.AsInteger) ;
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;
+  Try
+    if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
+    Begin
+      dmLoadEntrySSP.cds_LoadPackages.Edit;
+      Try
+        if VidaEnergi then
+          Validate_VE_Pkg1(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger, -1)
+        else begin
+          ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPackageNo.AsInteger,
+            dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString,
+            dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
+            dmLoadEntrySSP.cds_LoadPackagesProductLengthNo.AsInteger,
+            dmLoadEntrySSP.cds_LoadPackagesNoOfLengths.AsInteger);
+        end;
+        dmLoadEntrySSP.cds_LoadPackages.Post;
+      Except
+        on eDatabaseError do
+          Raise;
+      End;
 
-    dmLoadEntrySSP.cds_LoadPackages.Post ;
-   Except
-    on eDatabaseError do
-    Raise ;
-   End ;
+    End
+    else
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault
+        ('IDS_47' (* 'Raden ligger i ändringsläge, spara raden genom pil upp eller ner först.' *) )
+        );
 
-  End
-  else
-   ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_47' (* 'Raden ligger i ändringsläge, spara raden genom pil upp eller ner först.' *) )) ;
-
- finally
-  Screen.Cursor := Save_Cursor;  { Always restore to normal }
- end;
+  finally
+    Screen.Cursor := Save_Cursor; { Always restore to normal }
+  end;
 end;
 
 procedure TfLoadEntrySSP.acValidateAllPkgsExecute(Sender: TObject);
@@ -3236,10 +3256,15 @@ begin
 //     Begin
       cds_LoadPackages.Edit ;
       Try
-      ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
-      dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
-      dmLoadEntrySSP.cds_LoadPackagesProductLengthNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesNoOfLengths.AsInteger) ;
-      cds_LoadPackages.Post ;
+        if VidaEnergi then
+          Validate_VE_Pkg1(cds_LoadPackagesPACKAGENO.AsInteger, -1)
+        else begin
+          ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
+                      dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
+                      dmLoadEntrySSP.cds_LoadPackagesProductLengthNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesNoOfLengths.AsInteger) ;
+
+        end;
+        cds_LoadPackages.Post ;
       Except
        on eDatabaseError do
        Raise ;
@@ -5560,6 +5585,59 @@ begin
   end;
 end;
 
+function TfLoadEntrySSP.Validate_VE_Pkg(const aPkgNo,
+  aArticleNo: integer): integer;
+begin
+  if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
+    dmLoadEntrySSP.cds_LoadPackages.Edit;
+  result := Validate_VE_Pkg1(aPkgNo, aArticleNo);
+  //if dmLoadEntrySSP.cds_LoadPackages.State in [dsEdit, dsInsert] then
+  // dmLoadEntrySSP.cds_LoadPackages.Post;
+end;
+
+function TfLoadEntrySSP.Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;
+var
+  loadDetail: integer;
+  LO_Number: integer;
+  artikelNr: integer;
+  PkgSupplierCode: string3;
+  lagerStatus: integer;
+begin
+  With dmLoadEntrySSP do
+  Begin
+    if aArticleNo = -1 then begin
+      artikelNr := getPkgArticleNo(aPkgNo,
+                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
+                    dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger,
+                    PkgSupplierCode,
+                    lagerStatus);
+    end
+    else
+      artikelNr := aArticleNo;
+
+    loadDetail := dmLoadEntrySSP.TestLOrow(artikelNr);
+    LO_Number := cdsLORowsShippingPlanNo.AsInteger;
+    if loadDetail <> -1 then begin
+      cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
+      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
+      cds_LoadPackagesDefsspno.AsInteger                 := loadDetail ;
+      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
+      cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
+    End
+    else
+    Begin
+     if LO_Number > 0 then
+      cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
+      cds_LoadPackagesDefsspno.AsInteger                 := -1 ;
+      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
+      cds_LoadPackagesOverrideRL.AsInteger               := 0 ;
+      cds_LoadPackagesPackageOK.AsInteger:= -1 ;
+      cds_LoadPackagesProblemPackageLog.AsString:= 'Hittar ej artikel nummer.';
+    end;
+  end;
+  result := loadDetail;
+end;
+
 function TfLoadEntrySSP.AfterAddedPkgNo_WhenPickPkgNo(Sender: TObject;
 const PkgNo : Integer;
 const PkgSupplierCode : String3;
@@ -5690,25 +5768,50 @@ Begin
  End ; //with
 end;
 
-procedure TfLoadEntrySSP.acCreateInternLOExecute(Sender: TObject);
-Var LONo : Integer ;
+function TfLoadEntrySSP.AfterAdded_VE_Pkg(const aPkgNo,
+  aArtikelNo: Integer): TEditAction;
 begin
- With dmLoadEntrySSP do
- Begin
-  if (cds_LSP.Active) and (cds_LSPShippingPlanNo.AsInteger = 1) then
-   CreateInternLO
-    else
-     if (cds_LSP.Active) then
-      UpdateInternLO ;
-  acValidateAllPkgsExecute(Sender) ;
-  acSaveLoadExecute(Sender) ;
- End ;
+  With dmLoadEntrySSP do
+  Begin
+    cds_LoadPackages.DisableControls;
+    Try
+      Result := eaACCEPT;
+      if cds_LoadPackages.State = dsBrowse then
+        cds_LoadPackages.Edit;
 
- if mePackageNo.Enabled then
-  mePackageNo.SetFocus ;
+      // Default LO number in case there is no match the LoadDetail must get a value
+//      dmLoadEntrySSP.cdsLORows.First;
+//      LO_Number := dmLoadEntrySSP.cdsLORowsShippingPlanNo.AsInteger;
+
+        // LOLine is SuppShipPlanObjectNo
+       if Validate_VE_Pkg(aPkgNo, aArtikelNo) <> -1 then result := eaACCEPT
+       else result := eaREJECT;
+    Finally
+      cds_LoadPackages.EnableControls;
+    End;
+  End;
 end;
 
-procedure TfLoadEntrySSP.UpdateInternLO ;
+procedure TfLoadEntrySSP.acCreateInternLOExecute(Sender: TObject);
+Var
+  LONo: Integer;
+begin
+  With dmLoadEntrySSP do
+  Begin
+    if (cds_LSP.Active) and (cds_LSPShippingPlanNo.AsInteger = 1) then
+      CreateInternLO
+    else
+    if (cds_LSP.Active) then
+      UpdateInternLO;
+    acValidateAllPkgsExecute(Sender);
+    acSaveLoadExecute(Sender);
+  End;
+
+  if mePackageNo.Enabled then
+    mePackageNo.SetFocus;
+end;
+
+procedure TfLoadEntrySSP.UpdateInternLO;
 begin
  With dmLoadEntrySSP do
  Begin
@@ -6407,6 +6510,43 @@ var
   NumberPrefix      : String ;
   MsgInfo           : String ;
   artikelNr: integer;
+  lagerStatus: integer; // 1: Aktiv i lager 0: Ej aktiv i lager
+
+  function handleAcceptOf_VE_packages: TEditAction;
+  begin
+ //check that package is available in inventory and Get supplier code
+    Action := eaACCEPT;
+    artikelNr := getPkgArticleNo(NewPkgNo,
+                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
+                    dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger,
+                    PkgSupplierCode,
+                    lagerStatus);
+
+    if (lagerStatus <> 1) and (artikelNr <> -1) then  // Package not available in inventory
+    begin
+      try
+        NewPkgNo := GetLikVardigtPaket(artikelNr,
+                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
+                    PkgSupplierCode);
+
+
+          // Inaktivera detta paket
+        dmLoadEntrySSP.inactivatePackage(NewPkgNo);
+      except
+        ON E: Exception do
+        begin
+//          ShowMessage(E.Message);
+          Action := eaREJECT;
+        end;
+      end;
+      result := Action;
+    end
+    else if artikelNr = -1 then
+      result := eaREJECT
+    else
+      result := Action;
+  end;
+
 begin
  With dmLoadEntrySSP do
  Begin
@@ -6441,27 +6581,7 @@ begin
           if Action = eaACCEPT then
           Begin
             if VidaEnergi then
-            begin
-              if not dmLoadEntrySSP.PkgExistInInventory(NewPkgNo,
-                dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode)
-              then
-              begin
-                try
-                  artikelNr := getPkgArticleNo(NewPkgNo,
-                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                    PkgSupplierCode);
-                  NewPkgNo := RemoveLikVardigtPaket(artikelNr,
-                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                    PkgSupplierCode);
-                except
-                  ON E: Exception do
-                  begin
-                    ShowMessage(E.Message);
-                    Action := eaREJECT;
-                  end;
-                end;
-              end;
-            End // end VidaEnergi
+              Action := handleAcceptOf_VE_Packages
             else
             Begin
               if dmLoadEntrySSP.PkgExistInInventory(NewPkgNo,
@@ -6485,37 +6605,15 @@ begin
             exit;
           End;
 
-          Action := IdentifyPackageSupplier(
-            NewPkgNo,
-            dmLoadEntrySSP.FSupplierNo,
-            PkgSupplierCode,
-            PkgSupplierNo, ProductNo, Res_UserName, ProductLengthNo,
-            NoOfLengths);
-
           if VidaEnergi then
-          Begin
-            if not dmLoadEntrySSP.PkgExistInInventory(NewPkgNo,
-              dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode)
-            then
-            begin
-              try
-                artikelNr := getPkgArticleNo(NewPkgNo,
-                  dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                  PkgSupplierCode);
-                NewPkgNo := RemoveLikVardigtPaket(artikelNr,
-                  dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                  PkgSupplierCode);
-                Action := eaACCEPT;
-              except
-                ON E: Exception do
-                begin
-                  ShowMessage(E.Message);
-                  Action := eaREJECT;
-                end;
-              end;
-            end;
-          End; // End VidaEnergi
-
+            Action := handleAcceptOf_VE_packages
+          else
+            Action := IdentifyPackageSupplier(
+              NewPkgNo,
+              dmLoadEntrySSP.FSupplierNo,
+              PkgSupplierCode,
+              PkgSupplierNo, ProductNo, Res_UserName, ProductLengthNo,
+              NoOfLengths);
         End;
       End; // if StrToInt(Trim(PackageNo)) > 0 then
 
@@ -6525,25 +6623,38 @@ begin
         // Får inte använda post själv, det gör rutinen automatiskt
         if Action = eaACCEPT then
         Begin
-          MsgInfo := dmLoadEntrySSP.CtrlCorrectMainLO
-            (cds_LSPShippingPlanNo.AsInteger, NewPkgNo, PkgSupplierCode);
-          if MsgInfo <> 'Match' then
-          Begin
-            if MessageDlg(MsgInfo, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+          if VidaEnergi then
+          else
+          begin
+            MsgInfo := dmLoadEntrySSP.CtrlCorrectMainLO
+              (cds_LSPShippingPlanNo.AsInteger, NewPkgNo, PkgSupplierCode);
+            if MsgInfo <> 'Match' then
             Begin
-              Action := eaREJECT;
-              Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' +
-                PkgSupplierCode + ' var mot fel huvudLO ';
-              Error := True;
-            End;
-
+              if MessageDlg(MsgInfo, mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+              Begin
+                Action := eaREJECT;
+                Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' +
+                  PkgSupplierCode + ' var mot fel huvudLO ';
+                Error := True;
+              End;
+            end;
           End;
 
           if Action = eaACCEPT then
           Begin
             AddPkgTo_cds_LoadPackages(Sender, NewPkgNo, PkgSupplierCode);
+            if VidaEnergi then
+            begin
+              if AfterAdded_VE_Pkg(NewPkgNo, artikelNr) <> eaACCEPT then
+              begin
+                Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' +
+                PkgSupplierCode + ' does not exist in inventory ' +
+                Trim(lcPIP.Text);
+                Error := True;
+              end
+            end
             // Långsamt här
-            if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo,
+            else if AfterAddedPkgNo(Sender, NewPkgNo, PkgSupplierCode, ProductNo,
               ProductLengthNo, NoOfLengths) <> eaACCEPT then
             Begin
               Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' +

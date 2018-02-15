@@ -400,6 +400,7 @@ type
     cds_getPkgArticleNo: TFDQuery;
     cds_GetActivePackage: TFDQuery;
     cds_DeActivatePackage: TFDQuery;
+    cdsLORowsPkgArticleNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -450,9 +451,10 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
    procedure inactivatePackage(const aPkgNo: integer);
-   function getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
+   function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
    function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
    function  OriginalFilter(const Add_AND : Boolean) : String ;
@@ -955,22 +957,26 @@ begin
   Result := SuppCode;
 end;
 
-function TdmLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo: integer; VAR aSupplierCode: string3): integer;
+function TdmLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
 begin
+  result := -1;
   try
     cds_getPkgArticleNo.Active := False;
     cds_getPkgArticleNo.paramByName('PackageNo').AsInteger := aPkgNo;
     cds_getPkgArticleNo.paramByName('PIPNo').AsInteger := aPIPNo;
+    cds_getPkgArticleNo.paramByName('LONo').AsInteger := aLONo;
 //    cds_getPkgArticleNo.paramByName('SupplierCode').AsString := aSupplierCode;
     cds_getPkgArticleNo.Active := True;
     cds_getPkgArticleNo.First;
     if not cds_getPkgArticleNo.Eof then
     begin
       Result := cds_getPkgArticleNo.FieldByName('pkgArticleNo').AsInteger;
-      aSupplierCode := cds_getPkgArticleNo.FieldByName('SupplierCode').AsString
+      aSupplierCode := cds_getPkgArticleNo.FieldByName('SupplierCode').AsString;
+      aLagerStatus := cds_getPkgArticleNo.FieldByName('LagerStatus').AsInteger
     end
     else
-      raise Exception.Create('Package (' + intToStr(aPkgNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
+
+      //raise Exception.Create('Package (' + intToStr(aPkgNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
   finally
     cds_getPkgArticleNo.Active := False;
   end;
@@ -1809,6 +1815,14 @@ Begin
       End ;
      end;
 End ;
+
+function TdmLoadEntrySSP.TestLOrow(const ArticleNo  : Integer) : integer ;
+Begin
+  if cdsLORows.Locate('PkgArticleNo', ArticleNo, []) then
+    Result := cdsLORowsCustShipPlanDetailObjectNo.asinteger
+  else
+    Result := -1;
+end;
 
 function TdmLoadEntrySSP.CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
 Begin

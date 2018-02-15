@@ -796,7 +796,8 @@
       'AND LD.Defsspno = SSP.SupplierShipPlanObjectNo ) AS LoadedPkgs,'
       'ps.PackageSizeName AS Paketstorlek,'
       'SSP.ObjectType,'
-      'SSP.InternRowNote AS Internnotering'
+      'SSP.InternRowNote AS Internnotering,'
+      'SSP.PkgArticleNo'
       ''
       'FROM  '#9'dbo.Loads L'
       #9'Inner Join dbo.LoadShippingPlan LS ON LS.LoadNo = L.LoadNo'
@@ -1124,6 +1125,10 @@
       FieldName = 'Internnotering'
       Origin = 'Internnotering'
       Size = 100
+    end
+    object cdsLORowsPkgArticleNo: TIntegerField
+      FieldName = 'PkgArticleNo'
+      Origin = 'PkgArticleNo'
     end
   end
   object sq_GetLO_Records: TFDQuery
@@ -3734,27 +3739,39 @@
   object cds_getPkgArticleNo: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
-      'SELECT PkgArticleNo, PN.SupplierCode FROM dbo.PackageNumber PN'
+      
+        'SELECT PN.PkgArticleNo, PN.SupplierCode, PN.Status AS LagerStatu' +
+        's FROM dbo.PackageNumber PN'
       
         'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
         'PointNo = PN.LogicalInventoryPointNo'
-      'WHERE PN.PackageNo = :PackageNo'
-      '--AND PN.SupplierCode = :SupplierCode'
+      
+        'Inner join dbo.SupplierShippingPlan ssp on ssp.PkgArticleNo=PN.P' +
+        'kgArticleNo'
+      '--inner join dbo.LoadDetail LD ON LD.PackageNo = pn.PackageNo'
+      'WHERE PN.PackageNo = :PackageNo AND SSP.ShippingPlanNo = :LONo'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
-      ''
       '')
     Left = 320
     Top = 160
     ParamData = <
       item
         Name = 'PACKAGENO'
+        DataType = ftString
         ParamType = ptInput
+        Value = '999000'
+      end
+      item
+        Name = 'LONO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 184911
       end
       item
         Name = 'PIPNO'
         DataType = ftInteger
         ParamType = ptInput
-        Value = Null
+        Value = 10592
       end>
   end
   object cds_GetActivePackage: TFDQuery
@@ -3764,6 +3781,13 @@
       
         'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
         'PointNo = PN.LogicalInventoryPointNo'
+      
+        '--inner join dbo.SupplierShippingPlan sp on sp.SupplierShipPlanO' +
+        'bjectNo = LD.Defsspno'
+      
+        '--'#9'                               and LD.SupplierCode = :Supplie' +
+        'rCode '
+      '--'#9#9#9'               and sp.ShippingPlanNo = :LONo'
       'WHERE PN.PkgArticleNo = :PkgArticleNo'
       'AND PN.SupplierCode = :SupplierCode'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
