@@ -686,7 +686,7 @@ uses
   uLoadOrderSearch, UnitCRExportOneReport, uSendMapiMail,
   //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
-  uLagerPos, uFastReports;
+  uLagerPos, uFastReports, dmsUserAdm;
 
 procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
 Begin
@@ -997,6 +997,7 @@ begin
   //ClearLOTab ;
 
   ProtectTheData;
+  dmUserAdm.ApplyRestrictionsOnForm(ThisUser.UserID, self);
 end;
 
 procedure TfrmVisTruckLoadOrder.atSetToONHOLDExecute(Sender: TObject);

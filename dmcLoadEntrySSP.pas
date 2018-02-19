@@ -964,7 +964,7 @@ begin
     cds_getPkgArticleNo.Active := False;
     cds_getPkgArticleNo.paramByName('PackageNo').AsInteger := aPkgNo;
     cds_getPkgArticleNo.paramByName('PIPNo').AsInteger := aPIPNo;
-    cds_getPkgArticleNo.paramByName('LONo').AsInteger := aLONo;
+//    cds_getPkgArticleNo.paramByName('LONo').AsInteger := aLONo;
 //    cds_getPkgArticleNo.paramByName('SupplierCode').AsString := aSupplierCode;
     cds_getPkgArticleNo.Active := True;
     cds_getPkgArticleNo.First;
@@ -1819,7 +1819,7 @@ End ;
 function TdmLoadEntrySSP.TestLOrow(const ArticleNo  : Integer) : integer ;
 Begin
   if cdsLORows.Locate('PkgArticleNo', ArticleNo, []) then
-    Result := cdsLORowsCustShipPlanDetailObjectNo.asinteger
+    Result := cdsLORowsSupplierShipPlanObjectNo.asinteger
   else
     Result := -1;
 end;

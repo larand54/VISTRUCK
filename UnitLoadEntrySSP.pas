@@ -5330,10 +5330,10 @@ procedure TfLoadEntrySSP.grdPkgsDBBandedTableView1Editing(
   Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
   var AAllow: Boolean);
 begin
- if grdPkgsDBBandedTableView1.OptionsView.NewItemRow then
- AAllow := grdPkgsDBBandedTableView1.Controller.NewItemRecordFocused
- else
- AAllow:= True ;
+  if grdPkgsDBBandedTableView1.OptionsView.NewItemRow then
+    AAllow := grdPkgsDBBandedTableView1.Controller.NewItemRecordFocused
+  else
+    AAllow:= True ;
 end;
 
 procedure TfLoadEntrySSP.grdPkgsDBBandedTableView1KeyDown(Sender: TObject;
@@ -5597,7 +5597,7 @@ end;
 
 function TfLoadEntrySSP.Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;
 var
-  loadDetail: integer;
+  defSSPNo: integer;
   LO_Number: integer;
   artikelNr: integer;
   PkgSupplierCode: string3;
@@ -5615,12 +5615,12 @@ begin
     else
       artikelNr := aArticleNo;
 
-    loadDetail := dmLoadEntrySSP.TestLOrow(artikelNr);
+    defSSPNo := dmLoadEntrySSP.TestLOrow(artikelNr);
     LO_Number := cdsLORowsShippingPlanNo.AsInteger;
-    if loadDetail <> -1 then begin
+    if defSSPNo <> -1 then begin
       cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
       cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
-      cds_LoadPackagesDefsspno.AsInteger                 := loadDetail ;
+      cds_LoadPackagesDefsspno.AsInteger                 := defSSPNo ;
       cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
       cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
     End
@@ -5631,11 +5631,11 @@ begin
       cds_LoadPackagesDefsspno.AsInteger                 := -1 ;
       cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
       cds_LoadPackagesOverrideRL.AsInteger               := 0 ;
-      cds_LoadPackagesPackageOK.AsInteger:= -1 ;
-      cds_LoadPackagesProblemPackageLog.AsString:= 'Hittar ej artikel nummer.';
+      cds_LoadPackagesPackageOK.AsInteger                := BAD_PKG ;
+      cds_LoadPackagesProblemPackageLog.AsString:= 'Artikelnummer matchar ej';
     end;
   end;
-  result := loadDetail;
+  result := defSSPNo;
 end;
 
 function TfLoadEntrySSP.AfterAddedPkgNo_WhenPickPkgNo(Sender: TObject;
@@ -5784,10 +5784,10 @@ begin
 //      LO_Number := dmLoadEntrySSP.cdsLORowsShippingPlanNo.AsInteger;
 
         // LOLine is SuppShipPlanObjectNo
-       if Validate_VE_Pkg(aPkgNo, aArtikelNo) <> -1 then result := eaACCEPT
-       else result := eaREJECT;
+       Validate_VE_Pkg(aPkgNo, aArtikelNo);
     Finally
       cds_LoadPackages.EnableControls;
+      if cds_LoadPackages.State = dsEdit then cds_LoadPackages.Post;
     End;
   End;
 end;

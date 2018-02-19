@@ -3746,10 +3746,10 @@
         'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
         'PointNo = PN.LogicalInventoryPointNo'
       
-        'Inner join dbo.SupplierShippingPlan ssp on ssp.PkgArticleNo=PN.P' +
-        'kgArticleNo'
+        '--Inner join dbo.SupplierShippingPlan ssp on ssp.PkgArticleNo=PN' +
+        '.PkgArticleNo'
       '--inner join dbo.LoadDetail LD ON LD.PackageNo = pn.PackageNo'
-      'WHERE PN.PackageNo = :PackageNo AND SSP.ShippingPlanNo = :LONo'
+      'WHERE PN.PackageNo = :PackageNo-- AND SSP.ShippingPlanNo = :LONo'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
       '')
     Left = 320
@@ -3760,12 +3760,6 @@
         DataType = ftString
         ParamType = ptInput
         Value = '999000'
-      end
-      item
-        Name = 'LONO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 184911
       end
       item
         Name = 'PIPNO'
