@@ -2581,7 +2581,7 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
 
 
 // if ThisUser.UserID = 8 then  cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
-cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
+//cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
   OrderTypeChanged := False ;
  End ;
   Finally

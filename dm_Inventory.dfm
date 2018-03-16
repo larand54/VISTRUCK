@@ -8363,7 +8363,7 @@ object dmInventory: TdmInventory
     FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
-    StoredProcName = 'dbo.Vis_Lager_v8'
+    StoredProcName = 'dbo.Vis_Lager_v13'
     Left = 216
     Top = 536
     ParamData = <
@@ -8372,7 +8372,6 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
-        Value = 0
       end
       item
         Position = 2
