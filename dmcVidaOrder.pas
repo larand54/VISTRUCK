@@ -641,7 +641,6 @@ begin
   cdsSawmillLoadOrders.close;
   IsolateLoads;
   try
-//   cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
    cdsSawmillLoadOrders.Open;
    cdsSawmillLoadOrders.First;
   finally

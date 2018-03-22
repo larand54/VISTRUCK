@@ -8360,7 +8360,6 @@ object dmInventory: TdmInventory
   object sp_invpiv: TFDStoredProc
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.Vis_Lager_v13'
