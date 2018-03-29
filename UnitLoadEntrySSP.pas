@@ -4661,6 +4661,7 @@ begin
     dmsProduct.mtLO_RecordsINCH_THICK.AsFloat           := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINCH_THICK.AsString,0) ;
     dmsProduct.mtLO_RecordsINCH_WIDTH.AsFloat           := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINVCH_WIDTH.AsString,0) ;
     dmsProduct.mtLO_RecordsOverrideRL.AsInteger         := dmLoadEntrySSP.cdsLORowsOverrideRL.AsInteger ;
+    dmsProduct.mtLO_RecordsPackage_Size.AsInteger       := dmLoadEntrySSP.cdsLORowsPackageSizeNo.AsInteger ;
     dmsProduct.mtLO_Records.Post ;
   Except
    on eDatabaseError do
@@ -4896,7 +4897,11 @@ Begin
   Add('SSP.OBJECTTYPE,') ;
   Add('CSH.CustomerNo            AS AVROP_CUSTOMERNO,') ;
   Add('SSP.LoadingLocationNo,') ;
-  Add('SSP.ShipToInvPointNo, SSP.LIPNo, PIP.PhysicalInventoryPointNo AS PIPNo') ;
+  Add('SSP.ShipToInvPointNo,') ;
+  Add('(Select TOP 1 LIP.LogicalInventoryPointNo FROM dbo.LogicalInventoryPoint LIP') ;
+  Add('WHERE LIP.PhysicalInventoryPointNo = PIP.PhysicalInventoryPointNo) AS LIPNo,') ;
+
+  Add('PIP.PhysicalInventoryPointNo AS PIPNo') ;
 
   Add('FROM dbo.SupplierShippingPlan SSP') ;
   Add('	Left Outer Join dbo.PhysicalInventoryPoint PIP		ON PIP.PhyInvPointNameNo = SSP.LoadingLocationNo') ;

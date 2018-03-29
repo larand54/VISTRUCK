@@ -401,6 +401,7 @@ type
     cds_GetActivePackage: TFDQuery;
     cds_DeActivatePackage: TFDQuery;
     cdsLORowsPkgArticleNo: TIntegerField;
+    cdsLORowsPackageSizeNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);

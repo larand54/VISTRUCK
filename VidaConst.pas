@@ -318,10 +318,11 @@ const
   cSurfacingNo        = 22 ;
   cOverrideRL         = 23 ;
   cDefsspno           = 24 ;
-  cVaruslag           = 25 ;  
+  cVaruslag           = 25 ;
+  cPackage_Size       = 26 ;
 
   FirstLengthColumn = 25 ;
-  FirstLengthColumnInmatningViaLast = 26 ;
+  FirstLengthColumnInmatningViaLast = 27 ;
 //INPUT OPTIONS
   INPUT_PIECES                  = 0 ;
   INPUT_LOPM_TOTAL_LOPM         = 1 ;

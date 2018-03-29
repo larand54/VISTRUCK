@@ -205,6 +205,7 @@ type
     mtUserPropFilter1: TStringField;
     mtUserPropFilter2: TStringField;
     mtUserPropName: TStringField;
+    grdLORowsDBTableView1Package_Size: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure grdPkgsTaBortChangeNodeEx(Sender: TObject);
 
@@ -487,6 +488,11 @@ Begin
    mtPackages.FieldDefs.Add('Varuslag',ftInteger,0,False) ;
    mtPackages.FieldDefs[cVaruslag].CreateField(nil);
    mtPackages.FieldByName('Varuslag').Visible:= False ;
+
+//26
+   mtPackages.FieldDefs.Add('Package_Size',ftInteger,0,False) ;
+   mtPackages.FieldDefs[cPackage_Size].CreateField(nil);
+   mtPackages.FieldByName('Package_Size').Visible:= False ;
 
    X:= FirstLengthColumnInmatningViaLast  ;
 

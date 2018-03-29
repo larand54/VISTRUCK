@@ -701,6 +701,7 @@
     end
   end
   object cdsLORows: TFDQuery
+    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -797,7 +798,8 @@
       'ps.PackageSizeName AS Paketstorlek,'
       'SSP.ObjectType,'
       'SSP.InternRowNote AS Internnotering,'
-      'SSP.PkgArticleNo'
+      'SSP.PkgArticleNo,'
+      'ps.PackageSizeNo'
       ''
       'FROM  '#9'dbo.Loads L'
       #9'Inner Join dbo.LoadShippingPlan LS ON LS.LoadNo = L.LoadNo'
@@ -1129,6 +1131,10 @@
     object cdsLORowsPkgArticleNo: TIntegerField
       FieldName = 'PkgArticleNo'
       Origin = 'PkgArticleNo'
+    end
+    object cdsLORowsPackageSizeNo: TIntegerField
+      FieldName = 'PackageSizeNo'
+      Origin = 'PackageSizeNo'
     end
   end
   object sq_GetLO_Records: TFDQuery

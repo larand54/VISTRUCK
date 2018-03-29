@@ -140,6 +140,9 @@ type
     sq_DelTempPkgs: TFDQuery;
     sp_NewPkgNo_Price_NoPP: TFDStoredProc;
     siLang_dmsProduct: TsiLang;
+    mtLO_RecordsPackage_Size: TIntegerField;
+    sp_NewPackageNov2: TFDStoredProc;
+    sp_NewPkgNoNoProdLoggv2: TFDStoredProc;
     procedure mtPackagesAfterPost(DataSet: TDataSet);
     procedure mtPackagesAfterInsert(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
@@ -573,19 +576,20 @@ End ;  //GetLengthsEntered
    if SaveToProdLogg = 1 then
    Begin
     Try
-    sp_NewPackageNo.ParamByName('@PackageNo'              ).AsInteger  := mtPackages.Fields[cPACKAGENO].AsInteger ;
-    sp_NewPackageNo.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
-    sp_NewPackageNo.ParamByName('@SupplierCode'           ).AsString   := Trim(mtPackages.Fields[cSUPPLIERCODE].AsString);
-    sp_NewPackageNo.ParamByName('@LogicalInventoryPointNo').AsInteger  := LogicalInventoryPointNo ;
-    sp_NewPackageNo.ParamByName('@SupplierNo'             ).AsInteger  := SupplierNo;
-    sp_NewPackageNo.ParamByName('@RegistrationPointNo'    ).AsInteger  := RegPointNo ;
-    sp_NewPackageNo.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
-    sp_NewPackageNo.ParamByName('@CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
-    sp_NewPackageNo.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated);
-    sp_NewPackageNo.ParamByName('@OwnerNo'                ).AsInteger  := InventoryOwnerNo ;
-    sp_NewPackageNo.ParamByName('@ProducerNo'             ).AsInteger  := ProducerNo ;
-    sp_NewPackageNo.ParamByName('@RunNo'                  ).AsInteger  := RunNo ;
-    sp_NewPackageNo.ExecProc;
+    sp_NewPackageNov2.ParamByName('@PackageNo'              ).AsInteger  := mtPackages.Fields[cPACKAGENO].AsInteger ;
+    sp_NewPackageNov2.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+    sp_NewPackageNov2.ParamByName('@SupplierCode'           ).AsString   := Trim(mtPackages.Fields[cSUPPLIERCODE].AsString);
+    sp_NewPackageNov2.ParamByName('@LogicalInventoryPointNo').AsInteger  := LogicalInventoryPointNo ;
+    sp_NewPackageNov2.ParamByName('@SupplierNo'             ).AsInteger  := SupplierNo;
+    sp_NewPackageNov2.ParamByName('@RegistrationPointNo'    ).AsInteger  := RegPointNo ;
+    sp_NewPackageNov2.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+    sp_NewPackageNov2.ParamByName('@CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
+    sp_NewPackageNov2.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated);
+    sp_NewPackageNov2.ParamByName('@OwnerNo'                ).AsInteger  := InventoryOwnerNo ;
+    sp_NewPackageNov2.ParamByName('@ProducerNo'             ).AsInteger  := ProducerNo ;
+    sp_NewPackageNov2.ParamByName('@RunNo'                  ).AsInteger  := RunNo ;
+    sp_NewPackageNov2.ParamByName('@Package_Size'           ).AsInteger  := mtPackages.Fields[cPackage_Size].AsInteger ;
+    sp_NewPackageNov2.ExecProc;
      except
       On E: Exception do
       Begin
@@ -598,16 +602,17 @@ End ;  //GetLengthsEntered
    else
    Begin
      Try
-     sp_NewPkgNoNoProdLogg.ParamByName('@PackageNo'              ).AsInteger  := mtPackages.Fields[cPACKAGENO].AsInteger ;
-     sp_NewPkgNoNoProdLogg.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
-     sp_NewPkgNoNoProdLogg.ParamByName('@SupplierCode'           ).AsString   := Trim(mtPackages.Fields[cSUPPLIERCODE].AsString);
-     sp_NewPkgNoNoProdLogg.ParamByName('@LogicalInventoryPointNo').AsInteger  := LogicalInventoryPointNo ;
-     sp_NewPkgNoNoProdLogg.ParamByName('@SupplierNo'             ).AsInteger  := SupplierNo ;
-     sp_NewPkgNoNoProdLogg.ParamByName('@RegistrationPointNo'    ).AsInteger  := RegPointNo ;
-     sp_NewPkgNoNoProdLogg.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
-     sp_NewPkgNoNoProdLogg.ParamByName('@CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
-     sp_NewPkgNoNoProdLogg.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated);
-     sp_NewPkgNoNoProdLogg.ExecProc;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@PackageNo'              ).AsInteger  := mtPackages.Fields[cPACKAGENO].AsInteger ;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@SupplierCode'           ).AsString   := Trim(mtPackages.Fields[cSUPPLIERCODE].AsString);
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@LogicalInventoryPointNo').AsInteger  := LogicalInventoryPointNo ;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@SupplierNo'             ).AsInteger  := SupplierNo ;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@RegistrationPointNo'    ).AsInteger  := RegPointNo ;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated);
+     sp_NewPkgNoNoProdLoggv2.ParamByName('@Package_Size'           ).AsInteger  := mtPackages.Fields[cPackage_Size].AsInteger ;
+     sp_NewPkgNoNoProdLoggv2.ExecProc;
      except
       On E: Exception do
       Begin
@@ -1130,6 +1135,7 @@ begin
   mtPackages.FieldByName('OverrideRL').AsInteger      := mtLO_RecordsOverrideRL.AsInteger ;
   mtPackages.FieldByName('Defsspno').AsInteger        := mtLO_RecordsSupplierShipPlanObjectNo.AsInteger ;
   mtPackages.FieldByName('Varuslag').AsInteger        := mtLO_RecordsVaruSlag.AsInteger ;
+  mtPackages.FieldByName('Package_Size').AsInteger    := mtLO_RecordsPackage_Size.AsInteger ;
 
   if (Self.InputOption = INPUT_ARTICLES) and (mtLO_RecordsVaruSlag.AsInteger = 1) then
   Begin
