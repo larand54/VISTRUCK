@@ -108,6 +108,16 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Caption = 'Vida\thelin'
     OnDblClick = cxLabel3DblClick
   end
+  object cxlblTestDB: TcxLabel
+    Left = 7
+    Top = 129
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'vistestsql.vida.se'
+    OnDblClick = cxlblTestDBDblClick
+  end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'
     StringsTypes.Strings = (

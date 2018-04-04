@@ -4594,119 +4594,120 @@ begin
 end;
 
 procedure TfLoadEntrySSP.acPkgEntryExecute(Sender: TObject);
-Var x               : Integer ;
-    frmPackageEntry : TfrmPackageEntry ;
+var
+  x: Integer;
+  frmPackageEntry: TfrmPackageEntry;
 begin
- if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger > 0 then
- Begin
- if (Length(lcPIP.Text) > 0) and (Length(lcLIP.Text) > 0) then
- Begin
- if (dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LoadHeadLIPNo.IsNull = False) then
- Begin
- if dmLoadEntrySSP.cdsLORows.RecordCount > 0 then
- Begin
- Try
- dmsProduct:= TdmsProduct.Create(NIL) ;
- dmsProduct.CSD:= 2 ;
+  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger > 0 then
+  begin
+    if (Length(lcPIP.Text) > 0) and (Length(lcLIP.Text) > 0) then
+    begin
+      if (dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LoadHeadLIPNo.IsNull = False) then
+      begin
+        if dmLoadEntrySSP.cdsLORows.RecordCount > 0 then
+        begin
+          try
+            dmsProduct := TdmsProduct.Create(NIL);
+            dmsProduct.CSD := 2;
 
 
 // if dmLoadEntrySSP.FAvrop_CustomerNo <> -1 then
- if FShipping = 1 then
- Begin //Purchase packages get external supplier SupplierCode
-  dmsProduct.SupplierNo     := FOrderClientNo ;//dmLoadEntrySSP.FAvrop_CustomerNo ;
-  dmsProduct.SupplierCode   := //dmsContact.GetSupplierCode(dmLoadEntrySSP.mtLoadShippingPlanLoadingLocationNo.AsInteger) ;
-  dmsContact.GetClientCode(FOrderClientNo) ;//dmLoadEntrySSP.FAvrop_CustomerNo) ;
+            if FShipping = 1 then
+            begin //Purchase packages get external supplier SupplierCode
+              dmsProduct.SupplierNo := FOrderClientNo; //dmLoadEntrySSP.FAvrop_CustomerNo ;
+              dmsProduct.SupplierCode := //dmsContact.GetSupplierCode(dmLoadEntrySSP.mtLoadShippingPlanLoadingLocationNo.AsInteger) ;
+                dmsContact.GetClientCode(FOrderClientNo); //dmLoadEntrySSP.FAvrop_CustomerNo) ;
 
-  dmsProduct.OrderType          := c_Purchase ;
-  dmsProduct.InventoryOwnerNo   := dmLoadEntrySSP.FCustomerNo ;//dmLoadEntrySSP.FSupplierNo ;
+              dmsProduct.OrderType := c_Purchase;
+              dmsProduct.InventoryOwnerNo := dmLoadEntrySSP.FCustomerNo; //dmLoadEntrySSP.FSupplierNo ;
 
-  if dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger > 0 then
-  dmsProduct.InventoryNo        := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger ;
+              if dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger > 0 then
+                dmsProduct.InventoryNo := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger;
 
-  if dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0 then
-  dmsProduct.LIPNo        := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger ;
- End
- else
- Begin
-  dmsProduct.OrderType        := c_Sales ;
-  dmsProduct.InventoryNo      := dmLoadEntrySSP.cds_LSPShipToInvPointNo.AsInteger ;
+              if dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0 then
+                dmsProduct.LIPNo := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger;
+            end
+            else
+            begin
+              dmsProduct.OrderType := c_Sales;
+              dmsProduct.InventoryNo := dmLoadEntrySSP.cds_LSPShipToInvPointNo.AsInteger;
 
-  if dmsContact.IsClientLego(ThisUser.CompanyNo) = 6 then //6 = Lego
-   dmsProduct.SupplierNo  :=  ThisUser.CompanyNo
-    else
-      dmsProduct.SupplierNo       := dmLoadEntrySSP.FSupplierNo ;
+              if dmsContact.IsClientLego(ThisUser.CompanyNo) = 6 then //6 = Lego
+                dmsProduct.SupplierNo := ThisUser.CompanyNo
+              else
+                dmsProduct.SupplierNo := dmLoadEntrySSP.FSupplierNo;
 
  // dmsProduct.SupplierNo       := dmLoadEntrySSP.FSupplierNo ;
 //  dmsProduct.SupplierCode:= dmsContact.GetClientCode(dmLoadEntrySSP.FSupplierNo) ;
-  dmsProduct.SupplierCode     := dmsContact.GetSupplierCode(dmLoadEntrySSP.cds_LSPLoadingLocationNo.AsInteger) ;
+              dmsProduct.SupplierCode := dmsContact.GetSupplierCode(dmLoadEntrySSP.cds_LSPLoadingLocationNo.AsInteger);
 
-  dmsProduct.InventoryOwnerNo := dmLoadEntrySSP.FSupplierNo ;
+              dmsProduct.InventoryOwnerNo := dmLoadEntrySSP.FSupplierNo;
 
-  if dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger > 0 then
-  dmsProduct.InventoryNo        := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger ;
+              if dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger > 0 then
+                dmsProduct.InventoryNo := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger;
 
-  if dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0 then
-  dmsProduct.LIPNo        := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger ;
- End ;
+              if dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0 then
+                dmsProduct.LIPNo := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger;
+            end;
 
- dmsProduct.mtLO_Records.Active:= True ;
- dmLoadEntrySSP.cdsLORows.First ;
- While not dmLoadEntrySSP.cdsLORows.Eof do
- Begin
-  dmsProduct.mtLO_Records.Insert ;
-  Try
-  For x := 0 to 27 do
-    dmsProduct.mtLO_Records.Fields.Fields[x].AsVariant  := dmLoadEntrySSP.cdsLORows.Fields.Fields[x].AsVariant ;
-    dmsProduct.mtLO_RecordsMATCH.AsInteger              := 0 ;
-    dmsProduct.mtLO_RecordsINCH_THICK.AsFloat           := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINCH_THICK.AsString,0) ;
-    dmsProduct.mtLO_RecordsINCH_WIDTH.AsFloat           := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINVCH_WIDTH.AsString,0) ;
-    dmsProduct.mtLO_RecordsOverrideRL.AsInteger         := dmLoadEntrySSP.cdsLORowsOverrideRL.AsInteger ;
-    dmsProduct.mtLO_RecordsPackage_Size.AsInteger       := dmLoadEntrySSP.cdsLORowsPackageSizeNo.AsInteger ;
-    dmsProduct.mtLO_Records.Post ;
-  Except
-   on eDatabaseError do
-   Raise ;
-  End ;
-  dmLoadEntrySSP.cdsLORows.Next ;
- End ; //while
+            dmsProduct.mtLO_Records.Active := True;
+            dmLoadEntrySSP.cdsLORows.First;
+            while not dmLoadEntrySSP.cdsLORows.Eof do
+            begin
+              dmsProduct.mtLO_Records.Insert;
+              try
+                for x := 0 to 27 do
+                  dmsProduct.mtLO_Records.Fields.Fields[x].AsVariant := dmLoadEntrySSP.cdsLORows.Fields.Fields[x].AsVariant;
+                dmsProduct.mtLO_RecordsMATCH.AsInteger := 0;
+                dmsProduct.mtLO_RecordsINCH_THICK.AsFloat := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINCH_THICK.AsString, 0);
+                dmsProduct.mtLO_RecordsINCH_WIDTH.AsFloat := StrToFloatDef(dmLoadEntrySSP.cdsLORowsINVCH_WIDTH.AsString, 0);
+                dmsProduct.mtLO_RecordsOverrideRL.AsInteger := dmLoadEntrySSP.cdsLORowsOverrideRL.AsInteger;
+                dmsProduct.mtLO_RecordsPackage_Size.AsInteger := dmLoadEntrySSP.cdsLORowsPackageSizeNo.AsInteger;
+                dmsProduct.mtLO_Records.Post;
+              except
+                on eDatabaseError do
+                  raise;
+              end;
+              dmLoadEntrySSP.cdsLORows.Next;
+            end; //while
 
 
- frmPackageEntry:= TfrmPackageEntry.Create(Nil);
- Try
- if dmLoadEntrySSP.cds_LoadHeadSupplierNo.AsInteger = dmLoadEntrySSP.cds_LoadHeadCustomerNo.AsInteger then
-  frmPackageEntry.cbSaveToProdLogg.Checked  := True ;
-  frmPackageEntry.ShowModal ;
+            frmPackageEntry := TfrmPackageEntry.Create(Nil);
+            try
+              if dmLoadEntrySSP.cds_LoadHeadSupplierNo.AsInteger = dmLoadEntrySSP.cds_LoadHeadCustomerNo.AsInteger then
+                frmPackageEntry.cbSaveToProdLogg.Checked := True;
+              frmPackageEntry.ShowModal;
 
-  if frmPackageEntry.SavePkgs = True then
-   acValidateAllPkgsExecute(Sender) ;
+              if frmPackageEntry.SavePkgs = True then
+                acValidateAllPkgsExecute(Sender);
 
-  SaveLoad ;
+              SaveLoad;
 
- Finally
-  dmsProduct.mtpackages.Active:= False ;
-  FreeAndNil(frmPackageEntry) ; //.Free ;// .FreeANDNIL ;
- End ;
+            finally
+              dmsProduct.mtpackages.Active := False;
+              FreeAndNil(frmPackageEntry); //.Free ;// .FreeANDNIL ;
+            end;
 
- Finally
-  FreeAndNil(dmsProduct) ;//.Free ;
- End ;
+          finally
+            FreeAndNil(dmsProduct); //.Free ;
+          end;
 
- End
- else
-  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_64' (* 'Lägg till en LO först.' *) )) ;
- End//if (dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LoadHeadLIPNo.IsNull = False) then
- else
- ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_65' (* 'Välj en Lagergrupp först.' *) )) ;
- End //
- else
-  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_66' (* 'Välj lager först.' *) )) ;
+        end
+        else
+          ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_64' (* 'Lägg till en LO först.' *) ));
+      end//if (dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger > 0) and (dmLoadEntrySSP.cds_LoadHeadLIPNo.IsNull = False) then
+      else
+        ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_65' (* 'Välj en Lagergrupp först.' *) ));
+    end //
+    else
+      ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_66' (* 'Välj lager först.' *) ));
 
- End
- else
-  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
+  end
+  else
+    ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) ));
 
- if mePackageNo.Enabled then
-  mePackageNo.SetFocus ;
+  if mePackageNo.Enabled then
+    mePackageNo.SetFocus;
 end;
 
 procedure TfLoadEntrySSP.acPkgEntryUpdate(Sender: TObject);

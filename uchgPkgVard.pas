@@ -346,7 +346,7 @@ uses dmcPkgs, VidaConst, dlgPickPkg_II,
   UnitPkgNoSeries, dmcVidaSystem, //UnitGetProduct,
   dmsVidaSystem,
   dmsDataConn , uSearchRunNo, dmc_UserProps,
-  uAddSpecialLengths, UnitGetProd_II;
+  uAddSpecialLengths, UnitGetProd_III;
 
 {$R *.dfm}
 
@@ -948,15 +948,15 @@ End ;
 
 procedure TfchgPkgVard.AddProduct(Sender: TObject) ;
 //Var frmGetProduct : TfrmGetProduct ;
-var frmGetProd_II: TfrmGetProd_II ;
+var frmGetProd_III: TfrmGetProd_III ;
 begin
  //Add product
  With dmPkgs do
  Begin
-   frmGetProd_II:= TfrmGetProd_II.Create(Nil);
+   frmGetProd_III:= TfrmGetProd_III.Create(Nil);
    Try
-   frmGetProd_II.PageControl.HideTabs := True ;
-   if frmGetProd_II.ShowModal = mrOk then
+   frmGetProd_III.PageControl.HideTabs := True ;
+   if frmGetProd_III.ShowModal = mrOk then
    Begin
     mtUserProp.Edit ;
     mtUserPropProductDescription.AsString := dmsSystem.mtMarkedProdPRODUKTDESC.AsString ;
@@ -971,7 +971,7 @@ begin
    End ;
    Finally
     dmsSystem.mtMarkedProd.Active:= False ;
-    FreeAndNil(frmGetProd_II) ;
+    FreeAndNil(frmGetProd_III) ;
    End ;
  End ;//with
 end;

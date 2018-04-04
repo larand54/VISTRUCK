@@ -75,7 +75,7 @@ uses
   uEnterLoadWeight in 'uEnterLoadWeight.pas' {fEnterLoadWeight},
   uchgPkgVard in 'uchgPkgVard.pas' {fchgPkgVard},
   dmcPkgs in 'dmcPkgs.pas' {dmPkgs: TDataModule},
-  UnitGetProd_II in 'UnitGetProd_II.pas' {frmGetProd_II},
+  UnitGetProd_III in 'UnitGetProd_III.pas' {frmGetProd_III},
   uSelectLORowInLoad in 'uSelectLORowInLoad.pas' {fSelectLORowInLoad},
   uPackageSize in 'uPackageSize.pas' {fPackageSize},
   uCert in 'uCert.pas' {fCert},
@@ -147,7 +147,12 @@ uses
   upolicySelection in '..\CommonSources\UserAdmin\upolicySelection.pas',
   dmsUserAdm in '..\CommonSources\UserAdmin\dmsUserAdm.pas' {dmUserAdm: TDataModule},
   uVIS_UTILS in '..\CommonSources\uVIS_UTILS.pas',
-  uLGLogg in '..\CommonSources\UserAdmin\uLGLogg.pas' {frmLGLogg};
+  uLGLogg in '..\CommonSources\UserAdmin\uLGLogg.pas' {frmLGLogg},
+  UnitPkgEntry in 'UnitPkgEntry.pas' {frmPkgEntry},
+  dmsVidaPkg in 'dmsVidaPkg.pas' {dmsPkg: TDataModule},
+  uVardaBortPkt in 'uVardaBortPkt.pas' {fVardaBortPkt},
+  UnitMovePkgs in 'UnitMovePkgs.pas' {frmMovePkgs},
+  UnitGetProd_II in 'UnitGetProd_II.pas' {frmGetProd_II};
 
 {$R *.res}
 begin
@@ -165,6 +170,9 @@ begin
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
+  Application.CreateForm(TdmsPkg, dmsPkg);
+  Application.CreateForm(TfVardaBortPkt, fVardaBortPkt);
+  Application.CreateForm(TfrmMovePkgs, frmMovePkgs);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

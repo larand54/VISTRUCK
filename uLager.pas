@@ -270,7 +270,7 @@ type
     PanelMenyPaketnrFunktioner: TPanel;
     cxButton1: TcxButton;
     cxButton2: TcxButton;
-    cxButton3: TcxButton;
+    cxbtnUnRegistratePkgs: TcxButton;
     cds_PropsSR: TStringField;
     cds_PLIPLIPNo: TIntegerField;
     cxStyleHeader: TcxStyle;
@@ -314,7 +314,7 @@ type
     acClosePkgDtlVy: TAction;
     eAT: TcxMaskEdit;
     eAB: TcxMaskEdit;
-    acCreatePkgs: TAction;
+    acRegistratePkgs: TAction;
     acChangePkg: TAction;
     bPrint: TcxButton;
     cxButton7: TcxButton;
@@ -357,6 +357,8 @@ type
     dxBarButton8: TdxBarButton;
     dxBarButton9: TdxBarButton;
     dxBarButton10: TdxBarButton;
+    acMovePkgsInternal: TAction;
+    acUnRegistratePkgs: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acCloseExecute(Sender: TObject);
@@ -409,6 +411,9 @@ type
     procedure grdBoTDBBandedPerPositionDblClick(Sender: TObject);
     procedure acPrintPKGLabelsExecute(Sender: TObject);
     procedure acSetRef_and_InfoExecute(Sender: TObject);
+    procedure acRegistratePkgsExecute(Sender: TObject);
+    procedure acUnRegistratePkgsExecute(Sender: TObject);
+    procedure acMovePkgsInternalExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -469,6 +474,7 @@ type
     procedure PrintPackageLabel(const aPrefix: string;
       const aPkgNo, aLanguage, aDimFmt, aLengthFmt, aNoOfCopies, aRepNo: integer;
       const aPrintDlg: boolean);
+    procedure RefteshAfterChanges;
 
   public
     { Public declarations }
@@ -499,7 +505,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup,  uDlgReferensAndInfo; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -1238,6 +1244,28 @@ begin
    End ; //Case
 end;
 
+procedure TfLager.acUnRegistratePkgsExecute(Sender: TObject);
+begin
+ mtPkgNos.Active:= True ;
+ Try
+ SelectedPkgsOfPkgNosTable ;
+ if ThisUser.CanView[dcAdd_packagesSec] then
+ Begin
+  frmRemovePkg:= TfrmRemovePkg.Create(Nil);
+  Try
+   frmRemovePkg.RemotePkgEntry(mtPkgNos) ;
+   frmRemovePkg.CreateCo ;
+   frmRemovePkg.ShowModal ;
+   RefreshAfterChanges ;
+  Finally
+   FreeAndNil(frmRemovePkg) ;
+  End ;
+ End ;
+ Finally
+  mtPkgNos.Active:= False ;
+ End ;
+end;
+
 procedure TfLager.SetSTDLayoutPaketnr(Sender: TObject);
 Var x : Integer ;
 begin
@@ -1358,6 +1386,28 @@ begin
   End ;
  End ;
 
+end;
+
+procedure TfLager.acMovePkgsInternalExecute(Sender: TObject);
+begin
+  mtPkgNos.Active := True;
+  try
+    SelectedPkgsOfPkgNosTable;
+    if ThisUser.CanView[dcAdd_packagesSec] then
+    begin
+      frmMovePkgs := TfrmMovePkgs.Create(Nil);
+      try
+        frmMovePkgs.RemotePkgEntry(mtPkgNos);
+        frmMovePkgs.CreateCo(False);
+        frmMovePkgs.ShowModal;
+        RefreshAfterChanges;
+      finally
+        FreeAndNil(frmMovePkgs);
+      end;
+    end;
+  finally
+    mtPkgNos.Active := False;
+  end;
 end;
 
 procedure TfLager.cds_PropsAfterInsert(DataSet: TDataSet);
@@ -2502,6 +2552,25 @@ begin
  End ;//With dmInventory do
 end;
 
+procedure TfLager.RefteshAfterChanges;
+var
+  Save_Cursor : TCursor;
+begin
+ Save_Cursor := Screen.Cursor;
+ Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+ Try
+   With dmInventory do
+   Begin
+    sp_invpiv.Active  := False ;
+    sp_invpiv.Active  := True ;
+    sp_invpivPkgDtl.Active    := False ;
+    sp_invpivPkgDtl.Active    := True ;
+   End ;
+ Finally
+  Screen.Cursor := Save_Cursor ;
+ End ;
+end;
+
 procedure TfLager.SetSummary_grdPkgNosDBBandedTableView1(Sender: TObject) ;
 var x           : Integer ;
     Save_Cursor : TCursor;
@@ -3378,6 +3447,23 @@ begin
   sp_invpivPkgDtl.Active  := False ;
   PanelPaketnr.Visible    := False ;
   cxSplitter1.Visible     := False ;
+ End ;
+end;
+
+procedure TfLager.acRegistratePkgsExecute(Sender: TObject);
+Var frmPkgEntry : TfrmPkgEntry ;
+begin
+ if ThisUser.CanView[dcAdd_packagesSec] then
+ Begin
+  dmsPkg:= TdmsPkg.Create(Nil) ;
+  frmPkgEntry:= TfrmPkgEntry.Create(Nil);
+  Try
+   frmPkgEntry.ShowModal ;
+  Finally
+   dmsPkg.mtpackages.Active:= False ;
+   FreeAndNil(frmPkgEntry) ;
+   FreeAndNil(dmsPkg) ;
+  End ;
  End ;
 end;
 

@@ -1,5 +1,5 @@
 {$IFDEF PROFILE} {$WARNINGS OFF} {$ENDIF }
-unit UnitGetProd_II;
+unit UnitGetProd_III;
 
 interface
 
@@ -13,26 +13,27 @@ uses
   cxSplitter, cxPC, cxLookAndFeels, cxLabel, cxMaskEdit, cxDropDownEdit,
   cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, Menus,
   cxLookAndFeelPainters, ActnList, cxButtons, cxGroupBox, cxRadioGroup,
-  cxDBEdit, cxGridCustomPopupMenu, cxGridPopupMenu, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
-  FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  cxImageComboBox, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dxSkinsCore, dxSkinBlack,
-  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom,
-  dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
-  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
-  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  cxDBEdit, cxGridCustomPopupMenu, cxGridPopupMenu, FMTBcd, SqlExpr,
+  Provider, DBClient, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
   dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
   dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
   dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
   dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu, cxNavigator,
-  dxSkinsdxBarPainter, dxSkinMetropolis, dxSkinMetropolisDark,
-  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  dxBarBuiltInMenu, siComp, siLngLnk, System.Actions {$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxBarBuiltInMenu, cxNavigator,
+  dxSkinsdxBarPainter, siComp, siLngLnk, System.Actions {$IFNDEF PROFILE};{$ELSE}{},Profint;{$ENDIF}
 
 type
-  TfrmGetProd_II = class(TForm)
+  TfrmGetProd_III = class(TForm)
     Panel2: TPanel;
     bbOK: TBitBtn;
     bbCancel: TBitBtn;
@@ -165,6 +166,7 @@ type
     acClearFilter: TAction;
     bbClearFilter: TBitBtn;
     cxSplitter1: TcxSplitter;
+    rgSequenceNo: TcxDBRadioGroup;
     mtProductVaruSlag: TIntegerField;
     PopupMenu1: TPopupMenu;
     GtillATfltet1: TMenuItem;
@@ -182,22 +184,9 @@ type
     ds_ProdList: TDataSource;
     cds_ProdList: TFDQuery;
     cds_Species: TFDQuery;
-    cds_Grade: TFDQuery;
+    cds_grade: TFDQuery;
     cds_Surfacing: TFDQuery;
     cds_ProdCatg: TFDQuery;
-    cds_GradeGradeNo: TIntegerField;
-    cds_GradeGradeName: TStringField;
-    cds_GradeGradeCode: TStringField;
-    cds_GradeGradeCodeName: TStringField;
-    cds_SurfacingSurfacingNo: TIntegerField;
-    cds_SurfacingSurfacingName: TStringField;
-    cds_SurfacingSurfacingCodeName: TStringField;
-    cds_ProdCatgProductCategoryNo: TIntegerField;
-    cds_ProdCatgProductCategoryName: TStringField;
-    cds_ProdCatgImpCodeName: TStringField;
-    cds_SpeciesSpeciesNo: TIntegerField;
-    cds_SpeciesSpeciesName: TStringField;
-    cds_SpeciesSpeciesCodeName: TStringField;
     cds_ProdListSequenceNo: TIntegerField;
     cds_ProdListProductNo: TIntegerField;
     cds_ProdListProductGroupNo: TIntegerField;
@@ -222,12 +211,56 @@ type
     cds_ProdListSurfacingAct: TIntegerField;
     cds_ProdListImpAct: TIntegerField;
     cds_ProdListGradeAct: TIntegerField;
-    Label7: TLabel;
-    icVaruslag: TcxDBImageComboBox;
+    cds_SpeciesSpeciesNo: TIntegerField;
+    cds_SpeciesSpeciesName: TStringField;
+    cds_SpeciesLanguageCode: TIntegerField;
+    cds_SpeciesSequenceNo: TIntegerField;
+    cds_SpeciesCreatedUser: TSmallintField;
+    cds_SpeciesModifiedUser: TSmallintField;
+    cds_SpeciesDateCreated: TSQLTimeStampField;
+    cds_SpeciesAct: TIntegerField;
+    cds_SpeciesSpeciesCode: TStringField;
+    cds_SpeciesSpeciesShortName: TStringField;
+    cds_SpeciesDKCode: TStringField;
+    cds_SpeciesSpeciesCodeName: TStringField;
+    cds_gradeGradeNo: TIntegerField;
+    cds_gradeGradeName: TStringField;
+    cds_gradeLanguageCode: TIntegerField;
+    cds_gradeSequenceNo: TIntegerField;
+    cds_gradeCreatedUser: TSmallintField;
+    cds_gradeModifiedUser: TSmallintField;
+    cds_gradeDateCreated: TSQLTimeStampField;
+    cds_gradeMainGradeNo: TIntegerField;
+    cds_gradeAct: TIntegerField;
+    cds_gradeGradeCode: TStringField;
+    cds_gradeDKCode: TStringField;
+    cds_gradeGradeCodeName: TStringField;
+    cds_SurfacingSurfacingNo: TIntegerField;
+    cds_SurfacingSurfacingName: TStringField;
+    cds_SurfacingLanguageCode: TIntegerField;
+    cds_SurfacingSequenceNo: TIntegerField;
+    cds_SurfacingCreatedUser: TSmallintField;
+    cds_SurfacingModifiedUser: TSmallintField;
+    cds_SurfacingDateCreated: TSQLTimeStampField;
+    cds_SurfacingAct: TIntegerField;
+    cds_SurfacingSurfacingCode: TStringField;
+    cds_SurfacingDKCode: TStringField;
+    cds_SurfacingKortNamn: TStringField;
+    cds_SurfacingSurfacingCodeName: TStringField;
+    cds_ProdCatgProductCategoryNo: TIntegerField;
+    cds_ProdCatgProductCategoryName: TStringField;
+    cds_ProdCatgProductCategoryExternalCode: TIntegerField;
+    cds_ProdCatgSequenceNo: TIntegerField;
+    cds_ProdCatgCreatedUser: TIntegerField;
+    cds_ProdCatgModifiedUser: TIntegerField;
+    cds_ProdCatgDateCreated: TSQLTimeStampField;
+    cds_ProdCatgAct: TIntegerField;
+    cds_ProdCatgImpCode: TStringField;
+    cds_ProdCatgImpregInProdName: TIntegerField;
+    cds_ProdCatgLanguageCode: TIntegerField;
+    cds_ProdCatgDKCode: TStringField;
+    cds_ProdCatgImpCodeName: TStringField;
     siLangLinked_frmGetProd_II: TsiLangLinked;
-    cds_GetVaruSlagNo: TFDQuery;
-    cds_GetVaruSlagNoSalesRegionNo: TIntegerField;
-    cds_GetVaruSlagNoVaruslagNo: TIntegerField;
     procedure grdProductListDblClick(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -243,17 +276,15 @@ type
       var Key: Word; Shift: TShiftState);
     procedure acOKUpdate(Sender: TObject);
     procedure bbOKClick(Sender: TObject);
+    procedure rgSequenceNoPropertiesChange(Sender: TObject);
     procedure GtillATfltet1Click(Sender: TObject);
     procedure acCreateProductExecute(Sender: TObject);
     procedure acCreateProductUpdate(Sender: TObject);
     procedure acProductRegisterUpdate(Sender: TObject);
     procedure acEditProduktExecute(Sender: TObject);
     procedure acEditProduktUpdate(Sender: TObject);
-    procedure icVaruslagPropertiesChange(Sender: TObject);
   private
     { Private declarations }
-    LanguageCode  : String ;
-    function  GetVaruSlagNo (const SalesRegionNo : Integer) : Integer ;
     procedure BuildSQL(Sender: TObject);
     procedure InsertToSelectedProducts(const ProductNo, ProductGroupNo : Integer;
               const AT,AB, NT, NB : Double;
@@ -272,7 +303,7 @@ type
 implementation
 
 uses VidaUtils, VidaConst, VidaUser, dmsDataConn ,
-     dmsVidaSystem , dmsVidaContact;//, uProductForm;
+     dmsVidaSystem ;//, uProductForm;
 
 {$R *.dfm}
 
@@ -291,14 +322,14 @@ begin
 end;
 
 
-procedure TfrmGetProd_II.grdProductListDblClick(Sender: TObject);
+procedure TfrmGetProd_III.grdProductListDblClick(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1829 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  ModalResult:= mrOk;
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1829; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.BuildSQL(Sender: TObject);
+procedure TfrmGetProd_III.BuildSQL(Sender: TObject);
 Var AT, AB : Double ;
  TS, kv, ut : String ;
  sAND : Boolean ;
@@ -337,34 +368,32 @@ begin
   cds_ProdList.SQL.Add('SELECT pd.ProductNo, pg.ProductGroupNo, gd.GradeName,') ;
   cds_ProdList.SQL.Add('sc.SpeciesName, sf.SurfacingName, pc.ProductCategoryName,') ;
   cds_ProdList.SQL.Add('pg.ActualThicknessMM, pg.ActualWidthMM, pg.NominalThicknessMM, pg.NominalWidthMM,') ;
-  cds_ProdList.SQL.Add('pde.ProductDisplayName, pd.GradeNo, pg.SpeciesNo, pg.ProductCategoryNo,') ;
+  cds_ProdList.SQL.Add('pd.ProductDisplayName, pd.GradeNo, pg.SpeciesNo, pg.ProductCategoryNo,') ;
   cds_ProdList.SQL.Add('pg.SurfacingNo, pg.NominalThicknessINCH, pg.NominalWidthINCH, pg.SequenceNo,') ;
   cds_ProdList.SQL.Add('pd.Act AS ProductAct, pg.Act AS ProductGroupAct, sc.Act AS SpeciesAct,') ;
   cds_ProdList.SQL.Add('sf.Act AS SurfacingAct, pc.Act AS ImpAct, gd.Act AS GradeAct') ;
 
   cds_ProdList.SQL.Add('FROM dbo.ProductGroup pg') ;
   cds_ProdList.SQL.Add('Left Outer JOIN  dbo.Product pd ON pd.ProductGroupNo = pg.ProductGroupNo') ;
-  cds_ProdList.SQL.Add('Left Outer JOIN  dbo.ProductDesc pde ON pde.ProductNo = pd.ProductNo') ;
-  cds_ProdList.SQL.Add('AND pde.LanguageID = ' + LanguageCode) ;
 //  cds_ProdList.SQL.Add('Left Outer JOIN  dbo.Grade gd2 ON gd2.GradeNo = pd.GradeNo') ;
 //  cds_ProdList.SQL.Add('AND gd2.LanguageCode = 1 AND gd2.Act = 1') ;
   cds_ProdList.SQL.Add('Inner Join dbo.Grade gd ON gd.GradeNo = pd.GradeNo') ;
-  cds_ProdList.SQL.Add('AND gd.LanguageCode = ' + LanguageCode) ;// AND gd.Act = 1 ') ;
+  cds_ProdList.SQL.Add('AND gd.LanguageCode = 1 AND gd.Act = 1 ') ;
   if mtProductGradeNo.AsInteger > 0 then
    cds_ProdList.SQL.Add('AND gd.GradeNo = ' + mtProductGradeNo.AsString) ;
 
   cds_ProdList.SQL.Add('INNER JOIN      dbo.ProductCategory pc ON       pg.ProductCategoryNo = pc.ProductCategoryNo') ;
-  cds_ProdList.SQL.Add('AND pc.LanguageCode = ' + LanguageCode) ;
+  cds_ProdList.SQL.Add('AND pc.LanguageCode = 1') ;
   cds_ProdList.SQL.Add('INNER JOIN      dbo.Species sc ON pg.SpeciesNo = sc.SpeciesNo') ;
-  cds_ProdList.SQL.Add('AND sc.LanguageCode = ' + LanguageCode) ;
+  cds_ProdList.SQL.Add('AND sc.LanguageCode = 1') ;
 
   cds_ProdList.SQL.Add('INNER JOIN      dbo.Surfacing sf ON pg.SurfacingNo = sf.SurfacingNo') ;
-  cds_ProdList.SQL.Add('AND sf.LanguageCode = ' + LanguageCode) ;
+  cds_ProdList.SQL.Add('AND sf.LanguageCode = 1') ;
 
 
   cds_ProdList.SQL.Add('WHERE ') ;
   cds_ProdList.SQL.Add('pg.SequenceNo = ' + mtProductVaruSlag.AsString) ;
-  cds_ProdList.SQL.Add('AND pd.Act = 1 AND pg.Act = 1 AND sc.Act = 1 AND sf.Act = 1 AND pc.Act = 1 AND gd.Act = 1') ;
+  cds_ProdList.SQL.Add('AND pd.Act = 1 AND pg.Act = 1 AND sc.Act = 1 AND sf.Act = 1 AND pc.Act = 1') ;
 //  cds_ProdList.SQL.Add('AND ((pd.ProductNo=:ProductNo) OR (0 =:ProductNo))') ;
 //  cds_ProdList.SQL.Add('AND sf.LanguageCode=:LanguageCode') ;
 
@@ -383,7 +412,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1830; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End ;
 
-procedure TfrmGetProd_II.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TfrmGetProd_III.FormKeyPress(Sender: TObject; var Key: Char);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1831 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 if Key = #13 then begin
@@ -396,13 +425,11 @@ if Key = #13 then begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1831; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.FormCreate(Sender: TObject);
+procedure TfrmGetProd_III.FormCreate(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1832 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
-
- LanguageCode := inttostr(ThisUser.LanguageID) ;
  EnableProductRegisterButton  := True ;
- Try
+ Try                                                          
   dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdProdListDBTableView1.Name, grdProdListDBTableView1) ;
   dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdCustDimProdDBTableView1.Name, grdCustDimProdDBTableView1) ;
  Except
@@ -410,50 +437,26 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1832; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-function TfrmGetProd_II.GetVaruSlagNo (const SalesRegionNo : Integer) : Integer ;
-Begin
-  cds_GetVaruSlagNo.ParamByName('SalesRegionNo').AsInteger  := SalesRegionNo ;
-  cds_GetVaruSlagNo.Active  := True ;
-  Try
-  if not cds_GetVaruSlagNo.Eof then
-   Result := cds_GetVaruSlagNoVaruslagNo.AsInteger
-    else
-     Result := -1 ;
-  Finally
-    cds_GetVaruSlagNo.Active  := False ;
-  End;
-End;
-
-procedure TfrmGetProd_II.FormShow(Sender: TObject);
-Var VaruSlagNo : integer ;
+procedure TfrmGetProd_III.FormShow(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1833 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 
- VaruSlagNo := GetVaruSlagNo(dmsContact.GetSalesRegionNo(ThisUser.CompanyNo)) ;
-
  mtProduct.Active := True ;
  mtProduct.Insert ;
- if VaruSlagNo > -1 then
-  mtProductVaruSlag.AsInteger  := VaruSlagNo
-   else
-    mtProductVaruSlag.AsInteger  := 0 ;
+ mtProductVaruSlag.AsInteger  := 0 ;
  mtProduct.Post ;
 // With dmProduct do
 // Begin
   cds_grade.Active      := False ;
-  cds_grade.ParamByName('LanguageCode').AsInteger  :=  ThisUser.LanguageID ;
   cds_grade.Active      := True ;
 
   cds_Species.Active      := False ;
-  cds_Species.ParamByName('LanguageCode').AsInteger  :=  ThisUser.LanguageID ;
   cds_Species.Active      := True ;
 
   cds_Surfacing.Active      := False ;
-  cds_Surfacing.ParamByName('LanguageCode').AsInteger  :=  ThisUser.LanguageID ;
   cds_Surfacing.Active      := True ;
 
   cds_ProdCatg.Active      := False ;
-  cds_ProdCatg.ParamByName('LanguageCode').AsInteger  :=  ThisUser.LanguageID ;
   cds_ProdCatg.Active      := True ;
 
   dmsSystem.mtMarkedProd.Active   := False ;
@@ -467,7 +470,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1833; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.grdProdListDBTableView1DblClick(Sender: TObject);
+procedure TfrmGetProd_III.grdProdListDBTableView1DblClick(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1834 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -502,7 +505,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1834; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.FormCloseQuery(Sender: TObject;
+procedure TfrmGetProd_III.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1837 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
@@ -518,7 +521,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1837; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.RefreshSok(Sender: TObject);
+procedure TfrmGetProd_III.RefreshSok(Sender: TObject);
 Var
  Save_Cursor : TCursor;
 begin
@@ -538,7 +541,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1840; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acDeleteSelectedProductExecute(Sender: TObject);
+procedure TfrmGetProd_III.acDeleteSelectedProductExecute(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1841 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -548,7 +551,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1841; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acDeleteSelectedProductUpdate(Sender: TObject);
+procedure TfrmGetProd_III.acDeleteSelectedProductUpdate(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1842 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -558,7 +561,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1842; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.InsertToSelectedProducts(const ProductNo, ProductGroupNo : Integer;
+procedure TfrmGetProd_III.InsertToSelectedProducts(const ProductNo, ProductGroupNo : Integer;
 const AT, AB, NT, NB  : Double;
 const Produkt : String;
 const SequenceNo, CheckAktiv : Integer;
@@ -624,12 +627,7 @@ begin
    mtMarkedProdNIT.AsFloat                := StrToFloatDef(NIT,0) ;
    mtMarkedProdNIW.AsFloat                := StrToFloatDef(NIW,0) ;
    mtMarkedProdPRODUKTDESC.AsString       := Produkt ;
-
-   mtMarkedProdSequenceNo.AsInteger       := SequenceNo ;
-
-   mtMarkedProdVaruSlagNo.AsInteger       := mtProductVaruSlag.AsInteger ;
-
-//   if SequenceNo = 0 then
+   if SequenceNo = 0 then
 //   mtMarkedProdLengthDesc.AsString        := LengthDesc ;
 //   mtMarkedProdNL.AsFloat                 := NL ;
    mtMarkedProd.Post ;
@@ -640,7 +638,7 @@ begin
 End ;
 
 
-procedure TfrmGetProd_II.acSearchExecute(Sender: TObject);
+procedure TfrmGetProd_III.acSearchExecute(Sender: TObject);
 Var
  Save_Cursor : TCursor;
  SQL : AnsiString ;
@@ -680,7 +678,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1844; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acProductRegisterExecute(Sender: TObject);
+procedure TfrmGetProd_III.acProductRegisterExecute(Sender: TObject);
 //var fProductForm    : TfProductForm ;
 //    ProductGroupNo  : Integer ;
 //    NT, NB          : Double;
@@ -777,11 +775,11 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1845; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End;
 
-procedure TfrmGetProd_II.acClearFilterExecute(Sender: TObject);
+procedure TfrmGetProd_III.acClearFilterExecute(Sender: TObject);
 Var Varuslag : Integer ;
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1846 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
- icvaruslag.Properties.OnChange:= nil ;
+ rgSequenceNo.Properties.OnChange:= nil ;
  Try
  Varuslag         := mtProductVaruSlag.AsInteger ;
 
@@ -795,12 +793,12 @@ begin
  meAT.Text        := '' ;
  meAB.Text        := '' ;
  Finally
-  icvaruslag.Properties.OnChange:= icVaruSlagPropertiesChange ;
+  rgSequenceNo.Properties.OnChange:= rgSequenceNoPropertiesChange ;
  End ;
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1846; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.grdProdListDBTableView1KeyDown(Sender: TObject;
+procedure TfrmGetProd_III.grdProdListDBTableView1KeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1847 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
@@ -836,7 +834,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1847; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acOKUpdate(Sender: TObject);
+procedure TfrmGetProd_III.acOKUpdate(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1848 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -846,7 +844,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1848; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.bbOKClick(Sender: TObject);
+procedure TfrmGetProd_III.bbOKClick(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1849 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -877,17 +875,11 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1849; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.GtillATfltet1Click(Sender: TObject);
+procedure TfrmGetProd_III.rgSequenceNoPropertiesChange(Sender: TObject);
 begin
-{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1851 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
- meAT.SetFocus ;
-{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1851; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
-end;
-
-procedure TfrmGetProd_II.icVaruslagPropertiesChange(Sender: TObject);
-begin
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1850 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
  Case mtProductVaruSlag.AsInteger of
-  0,3,4 : Begin
+  0 : Begin
        grdProdListDBTableView1ActualThicknessMM.Caption     := 'AT' ;
        grdProdListDBTableView1ActualWidthMM.Caption         := 'AB' ;
        grdProdListDBTableView1NominalThicknessMM.Visible    := True ;
@@ -895,7 +887,7 @@ begin
        grdProdListDBTableView1NominalThicknessINCH.Visible  := True ;
        grdProdListDBTableView1NominalWidthINCH.Visible      := True ;
        grdProdListDBTableView1ActualThicknessMM.Visible     := True ;
-       grdProdListDBTableView1ActualWidthMM.Visible         := True ;
+       grdProdListDBTableView1ActualWidthMM.Visible         := True ;       
       End ;
   1 : Begin
        grdProdListDBTableView1ActualThicknessMM.Caption     := siLangLinked_frmGetProd_II.GetTextOrDefault('IDS_7' (* 'Diameter(cm)' *) ) ;
@@ -920,10 +912,17 @@ begin
       End ;
  End ;
  acSearchExecute(Sender) ;
-
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1850; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acCreateProductExecute(Sender: TObject);
+procedure TfrmGetProd_III.GtillATfltet1Click(Sender: TObject);
+begin
+{$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1851 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
+ meAT.SetFocus ;
+{$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1851; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
+end;
+
+procedure TfrmGetProd_III.acCreateProductExecute(Sender: TObject);
 //var //fProductForm    : TfProductForm ;
 //    ProductGroupNo  : Integer ;
 //    NT, NB          : Double;
@@ -983,7 +982,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1852; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End;
 
-procedure TfrmGetProd_II.acCreateProductUpdate(Sender: TObject);
+procedure TfrmGetProd_III.acCreateProductUpdate(Sender: TObject);
 begin
 {$IFDEF PROFILE}asm DW 310FH; call Profint.ProfStop; end; Try; asm mov edx,1853 or $6ECA0000; mov eax,self; call Profint.ProfEnter; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; {$ENDIF}
 // With dmProduct do
@@ -993,12 +992,12 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1853; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 end;
 
-procedure TfrmGetProd_II.acProductRegisterUpdate(Sender: TObject);
+procedure TfrmGetProd_III.acProductRegisterUpdate(Sender: TObject);
 begin
  acProductRegister.Enabled  := EnableProductRegisterButton ;
 end;
 
-procedure TfrmGetProd_II.acEditProduktExecute(Sender: TObject);
+procedure TfrmGetProd_III.acEditProduktExecute(Sender: TObject);
 //var fProductForm    : TfProductForm ;
 //    ProductGroupNo  : Integer ;
 begin
@@ -1034,7 +1033,7 @@ begin
 {$IFDEF PROFILE}finally; asm DW 310FH; mov ecx,1845; call Profint.ProfExit; mov ecx,eax; DW 310FH; add[ecx].0,eax; FDc[ecx].4,edx; end; end; {$ENDIF}
 End;
 
-procedure TfrmGetProd_II.acEditProduktUpdate(Sender: TObject);
+procedure TfrmGetProd_III.acEditProduktUpdate(Sender: TObject);
 begin
 { With dmProduct do
  Begin

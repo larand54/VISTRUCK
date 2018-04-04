@@ -330,8 +330,8 @@
             <Form>dmPkgs</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="UnitGetProd_II.pas">
-            <Form>frmGetProd_II</Form>
+        <DCCReference Include="UnitGetProd_III.pas">
+            <Form>frmGetProd_III</Form>
         </DCCReference>
         <DCCReference Include="uSelectLORowInLoad.pas">
             <Form>fSelectLORowInLoad</Form>
@@ -525,6 +525,27 @@
         <DCCReference Include="..\CommonSources\uVIS_UTILS.pas"/>
         <DCCReference Include="..\CommonSources\UserAdmin\uLGLogg.pas">
             <Form>frmLGLogg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitPkgEntry.pas">
+            <Form>frmPkgEntry</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="dmsVidaPkg.pas">
+            <Form>dmsPkg</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uVardaBortPkt.pas">
+            <Form>fVardaBortPkt</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitMovePkgs.pas">
+            <Form>frmMovePkgs</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitGetProd_II.pas">
+            <Form>frmGetProd_II</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <None Include="VISTRUCK.todo"/>

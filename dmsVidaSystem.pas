@@ -418,22 +418,22 @@ type
     cds_LoadWeigthLoadNo: TIntegerField;
     cds_LoadWeigthLoadWeightKG: TFloatField;
     ds_LoadWeigth: TDataSource;
-    mtMarkedProd: TkbmMemTable;
-    mtMarkedProdProductNo: TIntegerField;
-    mtMarkedProdProductLengthNo: TIntegerField;
-    mtMarkedProdTab: TIntegerField;
-    mtMarkedProdProductGroupNo: TIntegerField;
-    mtMarkedProdNT: TFloatField;
-    mtMarkedProdNB: TFloatField;
-    mtMarkedProdPRODUKTDESC: TStringField;
-    mtMarkedProdLengthDesc: TStringField;
-    mtMarkedProdNL: TFloatField;
-    mtMarkedProdRowNr: TIntegerField;
-    mtMarkedProdAT: TFloatField;
-    mtMarkedProdAW: TFloatField;
-    mtMarkedProdSurfacingNo: TIntegerField;
-    mtMarkedProdNIT: TFloatField;
-    mtMarkedProdNIW: TFloatField;
+    mtMarkedProd_OLD: TkbmMemTable;
+    mtMarkedProd_OLDProductNo: TIntegerField;
+    mtMarkedProd_OLDProductLengthNo: TIntegerField;
+    mtMarkedProd_OLDTab: TIntegerField;
+    mtMarkedProd_OLDProductGroupNo: TIntegerField;
+    mtMarkedProd_OLDNT: TFloatField;
+    mtMarkedProd_OLDNB: TFloatField;
+    mtMarkedProd_OLDPRODUKTDESC: TStringField;
+    mtMarkedProd_OLDLengthDesc: TStringField;
+    mtMarkedProd_OLDNL: TFloatField;
+    mtMarkedProd_OLDRowNr: TIntegerField;
+    mtMarkedProd_OLDAT: TFloatField;
+    mtMarkedProd_OLDAW: TFloatField;
+    mtMarkedProd_OLDSurfacingNo: TIntegerField;
+    mtMarkedProd_OLDNIT: TFloatField;
+    mtMarkedProd_OLDNIW: TFloatField;
     cds_LoadWeigthReference: TStringField;
     mtSelectedPkgNoReferens: TStringField;
     mtSelectedPkgNoInfo1: TStringField;
@@ -586,6 +586,35 @@ type
     sq_dbProps_v2LangPathUtv: TStringField;
     sq_useMapi: TFDQuery;
     sq_useMapiuseMAPI: TIntegerField;
+    sqBarCode: TFDQuery;
+    sqBarCodeBarCodeNo: TIntegerField;
+    sqBarCodeBarCode: TStringField;
+    sqBarCodeSequenceNo: TIntegerField;
+    sqBarCodeCreatedUser: TSmallintField;
+    sqBarCodeModifiedUser: TSmallintField;
+    sqBarCodeDateCreated: TSQLTimeStampField;
+    sqBarCodeBarCodeID: TStringField;
+    sqBarCodeAct: TIntegerField;
+    sqBarCodeBarcodeCodeName: TStringField;
+    mtMarkedProd: TkbmMemTable;
+    mtMarkedProdProductNo: TIntegerField;
+    mtMarkedProdProductLengthNo: TIntegerField;
+    mtMarkedProdTab: TIntegerField;
+    mtMarkedProdProductGroupNo: TIntegerField;
+    mtMarkedProdNT: TFloatField;
+    mtMarkedProdNB: TFloatField;
+    mtMarkedProdPRODUKTDESC: TStringField;
+    mtMarkedProdLengthDesc: TStringField;
+    mtMarkedProdNL: TFloatField;
+    mtMarkedProdRowNr: TIntegerField;
+    mtMarkedProdAT: TFloatField;
+    mtMarkedProdAW: TFloatField;
+    mtMarkedProdSurfacingNo: TIntegerField;
+    mtMarkedProdNIT: TFloatField;
+    mtMarkedProdNIW: TFloatField;
+    mtMarkedProdSequenceNo: TIntegerField;
+    mtMarkedProdALMM: TFloatField;
+    mtMarkedProdVaruSlagNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -869,7 +898,10 @@ Begin
  Try
   Result:= -1 ;
   cds_ProductLength.Close ;
-  cds_ProductLength.SQL.Clear ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetProductLengthNoByALMM_II.sql');
+  {$ENDIF}
+cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 
   cds_ProductLength.SQL.Add('FROM dbo.ProductLength PL') ;
@@ -883,6 +915,9 @@ Begin
      Result:= -1 ;
  Finally
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetProductLengthNoByALMM_II.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
   cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
@@ -896,6 +931,9 @@ Begin
  Try
   Result:= -1 ;
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetProductLengthNoByFeet.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 
@@ -910,7 +948,10 @@ Begin
      Result:= -1 ;
  Finally
   cds_ProductLength.Close ;
-  cds_ProductLength.SQL.Clear ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetProductLengthNoByFeet.sql');
+  {$ENDIF}
+ cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
   cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
   cds_ProductLength.SQL.Add('where PL.ProductLengthNo = -1') ;
@@ -923,6 +964,9 @@ Begin
  Try
   Result:= -1 ;
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetProductLengthNoByInch.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 
@@ -937,6 +981,9 @@ Begin
      Result:= -1 ;
  Finally
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetProductLengthNoByInch.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
   cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
@@ -950,6 +997,9 @@ Begin
  Try
   Result:= -1 ;
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetProductLengthNoByGroup.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 
@@ -965,6 +1015,9 @@ Begin
      Result:= -1 ;
  Finally
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetProductLengthNoByGroup.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
   cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
@@ -1076,6 +1129,9 @@ Begin
  Try
   Result:= -1 ;
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetALMMByProductLengthNo.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 
@@ -1090,6 +1146,9 @@ Begin
      Result:= -1 ;
  Finally
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetALMMByProductLengthNo.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('select Distinct PL.*, Plg.GroupName from dbo.ProductLength pl') ;
   cds_ProductLength.SQL.Add('Left Outer Join productlengthgroupname plg on plg.groupNO = pl.productlengthgroupno') ;
@@ -2177,6 +2236,9 @@ end;
 function TdmsSystem.GetProductLengthNoByALMMandNLMM(const ALMM, NLMM : Double) : Integer ;
 Begin
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('BEFORE--GetProductLengthNoByALMMandNLMM.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select distinct * ') ;
 //  cds_ProductLength.SQL.Add('PL.NominalLengthFEET, PL.ActualLengthINCH, PL.PET, PL.FingerJoint') ;
@@ -2193,6 +2255,9 @@ Begin
     else
      Result:= -1 ;
   cds_ProductLength.Close ;
+  {$IF TEST}
+  cds_ProductLength.SQL.SaveToFile('GetProductLengthNoByALMMandNLMM.sql');
+  {$ENDIF}
   cds_ProductLength.SQL.Clear ;
   cds_ProductLength.SQL.Add('Select * FROM dbo.ProductLength where ProductLengthNo = -1') ;
 End ;

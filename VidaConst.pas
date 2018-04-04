@@ -327,9 +327,13 @@ const
   INPUT_PIECES                  = 0 ;
   INPUT_LOPM_TOTAL_LOPM         = 1 ;
   INPUT_LOPM_AVERAGE_LENGTH     = 2 ;
-//  INPUT_SPECIAL_LENGTH          = 3 ;
+  INPUT_SPECIAL_LENGTH          = -1 ;
   INPUT_ARTICLES                = 3 ;
   INPUT_IMPORTEDPACKAGES        = 4 ;
+
+  INPUT_AM3_TOTALPCS            = 5 ;  // I VISLAGER = 3
+  INPUT_AM3_LENGTH              = 6 ;  // I VISLAGER = 4
+  INPUT_RAMAR                   = 7 ;  // I VISLAGER = 5
 
 
 

@@ -4139,11 +4139,73 @@ object dmsSystem: TdmsSystem
     Left = 408
     Top = 768
   end
-  object mtMarkedProd: TkbmMemTable
+  object mtMarkedProd_OLD: TkbmMemTable
     DesignActivation = True
     AttachedAutoRefresh = True
     AttachMaxCount = 1
-    FieldDefs = <>
+    FieldDefs = <
+      item
+        Name = 'ProductNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductLengthNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Tab'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ProductGroupNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NB'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PRODUKTDESC'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'LengthDesc'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'NL'
+        DataType = ftFloat
+      end
+      item
+        Name = 'RowNr'
+        DataType = ftInteger
+      end
+      item
+        Name = 'AT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'AW'
+        DataType = ftFloat
+      end
+      item
+        Name = 'SurfacingNo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NIT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NIW'
+        DataType = ftFloat
+      end>
     IndexName = 'mtMarkedProdIndex1'
     IndexDefs = <
       item
@@ -4163,53 +4225,53 @@ object dmsSystem: TdmsSystem
     LocaleID = 1024
     Left = 864
     Top = 760
-    object mtMarkedProdProductNo: TIntegerField
+    object mtMarkedProd_OLDProductNo: TIntegerField
       FieldName = 'ProductNo'
     end
-    object mtMarkedProdProductLengthNo: TIntegerField
+    object mtMarkedProd_OLDProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
     end
-    object mtMarkedProdTab: TIntegerField
+    object mtMarkedProd_OLDTab: TIntegerField
       FieldName = 'Tab'
     end
-    object mtMarkedProdProductGroupNo: TIntegerField
+    object mtMarkedProd_OLDProductGroupNo: TIntegerField
       FieldName = 'ProductGroupNo'
     end
-    object mtMarkedProdNT: TFloatField
+    object mtMarkedProd_OLDNT: TFloatField
       FieldName = 'NT'
     end
-    object mtMarkedProdNB: TFloatField
+    object mtMarkedProd_OLDNB: TFloatField
       FieldName = 'NB'
     end
-    object mtMarkedProdPRODUKTDESC: TStringField
+    object mtMarkedProd_OLDPRODUKTDESC: TStringField
       DisplayLabel = 'Produkt'
       FieldName = 'PRODUKTDESC'
       Size = 100
     end
-    object mtMarkedProdLengthDesc: TStringField
+    object mtMarkedProd_OLDLengthDesc: TStringField
       DisplayLabel = 'L'#228'ngd'
       FieldName = 'LengthDesc'
       Size = 100
     end
-    object mtMarkedProdNL: TFloatField
+    object mtMarkedProd_OLDNL: TFloatField
       FieldName = 'NL'
     end
-    object mtMarkedProdRowNr: TIntegerField
+    object mtMarkedProd_OLDRowNr: TIntegerField
       FieldName = 'RowNr'
     end
-    object mtMarkedProdAT: TFloatField
+    object mtMarkedProd_OLDAT: TFloatField
       FieldName = 'AT'
     end
-    object mtMarkedProdAW: TFloatField
+    object mtMarkedProd_OLDAW: TFloatField
       FieldName = 'AW'
     end
-    object mtMarkedProdSurfacingNo: TIntegerField
+    object mtMarkedProd_OLDSurfacingNo: TIntegerField
       FieldName = 'SurfacingNo'
     end
-    object mtMarkedProdNIT: TFloatField
+    object mtMarkedProd_OLDNIT: TFloatField
       FieldName = 'NIT'
     end
-    object mtMarkedProdNIW: TFloatField
+    object mtMarkedProd_OLDNIW: TFloatField
       FieldName = 'NIW'
     end
   end
@@ -5376,6 +5438,140 @@ object dmsSystem: TdmsSystem
     object sq_useMapiuseMAPI: TIntegerField
       FieldName = 'useMAPI'
       Origin = 'useMAPI'
+    end
+  end
+  object sqBarCode: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select bc.*,'
+      'CASE WHEN bc.BarCodeID is null then'
+      'bc.Barcode'
+      'ELSE'
+      'bc.BarCodeID+'#39' - '#39'+bc.BarCode'
+      'END AS BarcodeCodeName'
+      'FROM dbo.BarCode bc')
+    Left = 840
+    Top = 968
+    object sqBarCodeBarCodeNo: TIntegerField
+      FieldName = 'BarCodeNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object sqBarCodeBarCode: TStringField
+      DisplayLabel = 'BARCODE'
+      FieldName = 'BarCode'
+      ProviderFlags = [pfInUpdate]
+      FixedChar = True
+    end
+    object sqBarCodeSequenceNo: TIntegerField
+      FieldName = 'SequenceNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sqBarCodeCreatedUser: TSmallintField
+      FieldName = 'CreatedUser'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sqBarCodeModifiedUser: TSmallintField
+      FieldName = 'ModifiedUser'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sqBarCodeDateCreated: TSQLTimeStampField
+      FieldName = 'DateCreated'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sqBarCodeBarCodeID: TStringField
+      FieldName = 'BarCodeID'
+      ProviderFlags = [pfInUpdate]
+      Size = 2
+    end
+    object sqBarCodeAct: TIntegerField
+      DisplayLabel = 'AKTIV'
+      FieldName = 'Act'
+      ProviderFlags = [pfInUpdate]
+    end
+    object sqBarCodeBarcodeCodeName: TStringField
+      FieldName = 'BarcodeCodeName'
+      ProviderFlags = []
+      FixedChar = True
+      Size = 25
+    end
+  end
+  object mtMarkedProd: TkbmMemTable
+    DesignActivation = True
+    AttachedAutoRefresh = True
+    AttachMaxCount = 1
+    FieldDefs = <>
+    IndexName = 'mtMarkedProdIndex1'
+    IndexDefs = <>
+    SortOptions = []
+    PersistentBackup = False
+    ProgressFlags = [mtpcLoad, mtpcSave, mtpcCopy]
+    LoadedCompletely = False
+    SavedCompletely = False
+    FilterOptions = []
+    Version = '7.63.00 Standard Edition'
+    LanguageID = 0
+    SortID = 0
+    SubLanguageID = 1
+    LocaleID = 1024
+    Left = 496
+    Top = 560
+    object mtMarkedProdProductNo: TIntegerField
+      FieldName = 'ProductNo'
+    end
+    object mtMarkedProdProductLengthNo: TIntegerField
+      FieldName = 'ProductLengthNo'
+    end
+    object mtMarkedProdTab: TIntegerField
+      FieldName = 'Tab'
+    end
+    object mtMarkedProdProductGroupNo: TIntegerField
+      FieldName = 'ProductGroupNo'
+    end
+    object mtMarkedProdNT: TFloatField
+      FieldName = 'NT'
+    end
+    object mtMarkedProdNB: TFloatField
+      FieldName = 'NB'
+    end
+    object mtMarkedProdPRODUKTDESC: TStringField
+      DisplayLabel = 'Produkt'
+      FieldName = 'PRODUKTDESC'
+      Size = 100
+    end
+    object mtMarkedProdLengthDesc: TStringField
+      DisplayLabel = 'L'#228'ngd'
+      FieldName = 'LengthDesc'
+      Size = 100
+    end
+    object mtMarkedProdNL: TFloatField
+      FieldName = 'NL'
+    end
+    object mtMarkedProdRowNr: TIntegerField
+      FieldName = 'RowNr'
+    end
+    object mtMarkedProdAT: TFloatField
+      FieldName = 'AT'
+    end
+    object mtMarkedProdAW: TFloatField
+      FieldName = 'AW'
+    end
+    object mtMarkedProdSurfacingNo: TIntegerField
+      FieldName = 'SurfacingNo'
+    end
+    object mtMarkedProdNIT: TFloatField
+      FieldName = 'NIT'
+    end
+    object mtMarkedProdNIW: TFloatField
+      FieldName = 'NIW'
+    end
+    object mtMarkedProdSequenceNo: TIntegerField
+      FieldName = 'SequenceNo'
+    end
+    object mtMarkedProdALMM: TFloatField
+      FieldName = 'ALMM'
+    end
+    object mtMarkedProdVaruSlagNo: TIntegerField
+      FieldName = 'VaruSlagNo'
     end
   end
 end
