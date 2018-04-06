@@ -660,6 +660,7 @@ type
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
 
    // function  GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
+    function UserIsAllowedToMovePkgs(const aUserID: integer): integer;
     procedure StoreGridLayout_Specialv2(const UserID: Integer;
       const Form, ViewName: String; AGridView: TcxGridTableView);
     function  LoadGridLayout_Specialv2(const UserID: Integer;
@@ -3268,6 +3269,22 @@ Begin
   sp_parsePkgID.Active :=  False ;
  End;
 End ;
+
+function TdmsSystem.UserIsAllowedToMovePkgs(const aUserID: integer): integer;
+begin
+  sp_UserPerm.ParamByName('@UserID').AsInteger :=  aUserID  ;
+  sp_UserPerm.Active := True ;
+  Try
+  if not sp_UserPerm.Eof then
+  Begin
+   Result := sp_UserPerm.FieldByName('PermitLevelMovePkgs').AsInteger ;
+  End
+    else
+     Result := 0 ;
+  Finally
+    sp_UserPerm.Active := False ;
+  End;
+end;
 
 function TdmsSystem.UserIsAllowedToSetStatusToActive(const LONo : Integer) : Boolean ;
 Begin

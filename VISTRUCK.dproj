@@ -548,6 +548,10 @@
             <Form>frmGetProd_II</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnitRemovePkg.pas">
+            <Form>frmRemovePkg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">

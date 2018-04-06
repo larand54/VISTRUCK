@@ -152,7 +152,8 @@ uses
   dmsVidaPkg in 'dmsVidaPkg.pas' {dmsPkg: TDataModule},
   uVardaBortPkt in 'uVardaBortPkt.pas' {fVardaBortPkt},
   UnitMovePkgs in 'UnitMovePkgs.pas' {frmMovePkgs},
-  UnitGetProd_II in 'UnitGetProd_II.pas' {frmGetProd_II};
+  UnitGetProd_II in 'UnitGetProd_II.pas' {frmGetProd_II},
+  UnitRemovePkg in 'UnitRemovePkg.pas' {frmRemovePkg};
 
 {$R *.res}
 begin
@@ -173,6 +174,7 @@ begin
   Application.CreateForm(TdmsPkg, dmsPkg);
   Application.CreateForm(TfVardaBortPkt, fVardaBortPkt);
   Application.CreateForm(TfrmMovePkgs, frmMovePkgs);
+  Application.CreateForm(TfrmRemovePkg, frmRemovePkg);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

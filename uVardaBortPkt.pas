@@ -919,8 +919,8 @@ begin
   End
   else
   Begin
-   cds_PIP.ParamByName('UserID').AsInteger:= -1 ;
-  End ;  
+   cds_PIP.ParamByName('UserID').AsInteger:= -1 ;         // ToDo Parametern saknas
+  End ;
 
   cds_PIP.Active:= True ;
   cds_PIP.First ;

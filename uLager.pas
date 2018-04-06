@@ -424,6 +424,7 @@ type
 //    CurrentNoOfPkgs,
     SelectedProductNo     : Integer ;
     SelectedLength        : String ;
+    procedure RefreshAfterChanges;
     procedure RefreshPkgNosByPosition(Sender: TObject;const ALMM : Integer) ;
     procedure FormatLengthColumnsPosition ;
     procedure SetHeadersCaptionPositionVy ;
@@ -505,7 +506,8 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
-  ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs,
+  UnitRemovePkg; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -2962,6 +2964,25 @@ Begin
 // grdDBBandedPerSortiment.ApplyBestFit();
 End ;
 
+procedure TfLager.RefreshAfterChanges;
+var
+  Save_Cursor : TCursor;
+begin
+ Save_Cursor := Screen.Cursor;
+ Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+ Try
+   With dmInventory do
+   Begin
+    sp_invpiv.Active  := False ;
+    sp_invpiv.Active  := True ;
+    sp_invpivPkgDtl.Active    := False ;
+    sp_invpivPkgDtl.Active    := True ;
+   End ;
+ Finally
+  Screen.Cursor := Save_Cursor ;
+ End ;
+end;
+
 procedure TfLager.RefreshPerPaketNr(Sender: TObject);
 Var Save_Cursor : TCursor;
     aColumn     : TcxCustomGridTableItem;
@@ -3551,7 +3572,7 @@ begin
    fchgPkgVard.CreateCo ;
    fchgPkgVard.RemotePkgEntry(mtPkgNos) ;
    fchgPkgVard.ShowModal ;
-//   RefreshAfterChanges ;
+   RefreshAfterChanges ;
   Finally
    FreeAndNil(fchgPkgVard) ;
   End ;

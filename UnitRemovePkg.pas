@@ -4,27 +4,37 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, dxBar, dxCntner, dxTL, dxDBCtrl,
-  dxDBGrid, dxBarExtItems, dxEditor, dxEdLib, dxDBELib, dxExEdtr, dxDBTLCl,
-  dxGrClms, VidaType, db, dxGrClEx, dxLayout,
-  kbmMemTable, dxDBEdtr, StdCtrls, ImgList, SqlTimSt, Buttons, ComCtrls,
-  cxPC, cxControls, ExceptionLog, ECore, ETypes, cxContainer,
+  Dialogs, ExtCtrls, VidaType, db,
+  kbmMemTable, StdCtrls, ImgList, SqlTimSt, Buttons, ComCtrls,
+  cxPC, cxControls, cxContainer,
   cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar, cxSpinEdit,
-  dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev,
-  dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSCore,
-  dxPSdxTLLnk, dxPSdxDBCtrlLnk, dxPSdxDBGrLnk, cxClasses; // The required units...
+  cxGraphics, cxDBEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxDBData,
+  ActnList, cxGridBandedTableView, cxGridDBBandedTableView, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, dxBar, dxBarExtItems, cxGridCustomPopupMenu,
+  cxGridPopupMenu, cxLabel, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinOffice2010Black, dxSkinOffice2010Blue, dxSkinOffice2010Silver,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter,
+  dxSkinsdxBarPainter, cxCheckBox, dxCore, cxNavigator, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, siComp, siLngLnk, System.Actions ;
 
 type
   TfrmRemovePkg = class(TForm)
     dxBarDockControl1: TdxBarDockControl;
     dxBarManager1: TdxBarManager;
-    dxPageControl1: TcxPageControl;
-    tsLoadData: TcxTabSheet;
-    pLoadHead: TPanel;
-    grdPackages: TdxDBGrid;
     lbRemovePkgsFromInventory: TdxBarLargeButton;
     lbClose: TdxBarLargeButton;
-    Panel2: TPanel;
     pmPkgs: TdxBarPopupMenu;
     lbAddPackage: TdxBarLargeButton;
     ImageList1: TImageList;
@@ -32,253 +42,241 @@ type
     lbPkgNoSerie: TdxBarLargeButton;
     bbCustomPkgGrid: TdxBarButton;
     lbDeletePkgsFromSystem: TdxBarLargeButton;
-    grdPackagesPRODUCT: TdxDBGridMaskColumn;
-    grdPackagesPACKAGENO: TdxDBGridMaskColumn;
-    grdPackagesSUPP_CODE: TdxDBGridMaskColumn;
-    grdPackagesM3_NET: TdxDBGridMaskColumn;
-    grdPackagesPCS: TdxDBGridMaskColumn;
-    grdPackagesM3_NOM: TdxDBGridMaskColumn;
-    grdPackagesKVM: TdxDBGridMaskColumn;
-    grdPackagesLOPM: TdxDBGridMaskColumn;
-    grdPackagesINVENTORY: TdxDBGridMaskColumn;
-    grdPackagesPCS_PER_LENGTH: TdxDBGridMaskColumn;
-    grdPackagesOWNER: TdxDBGridMaskColumn;
-    grdPackagesBAR_CODE: TdxDBGridMaskColumn;
-    grdPackagesGRADE_STAMP: TdxDBGridMaskColumn;
-    grdPackagesLoadDetailNo: TdxDBGridMaskColumn;
     bbRemoveAllRows: TdxBarButton;
     bbRemoveRow: TdxBarButton;
-    peRegPoint: TdxPickEdit;
-    Label8: TLabel;
-    Label1: TLabel;
-    peOwner: TdxPickEdit;
-    bbClearPkgGrid: TBitBtn;
-    Label2: TLabel;
-    peMatPunktAgare: TdxPickEdit;
-    Label3: TLabel;
-    grdPackagesStatusText: TdxDBGridMaskColumn;
-    ePktNr: TEdit;
     lbInitBarCodeScanning: TdxBarLargeButton;
-    BitBtn2: TBitBtn;
     bbScanOnlyMySuppCode: TdxBarLargeButton;
     bbArkiv: TdxBarSubItem;
     bbRemovePkgFromSystem: TdxBarButton;
-    dxDateEdit1: TcxDateEdit;
+    mtUserProp: TkbmMemTable;
+    mtUserPropVerkNo: TIntegerField;
+    mtUserPropOwnerNo: TIntegerField;
+    mtUserPropPIPNo: TIntegerField;
+    mtUserPropLIPNo: TIntegerField;
+    mtUserPropInputOption: TIntegerField;
+    mtUserPropRegPointNo: TIntegerField;
+    mtUserPropRegDate: TDateTimeField;
+    mtUserPropCopyPcs: TIntegerField;
+    mtUserPropRunNo: TIntegerField;
+    mtUserPropProducerNo: TIntegerField;
+    mtUserPropAutoColWidth: TIntegerField;
+    mtUserPropSupplierCode: TStringField;
+    mtUserPropLengthOption: TIntegerField;
+    mtUserPropLengthGroupNo: TIntegerField;
+    mtUserPropNewItemRow: TIntegerField;
+    mtUserPropGradeStampNo: TIntegerField;
+    mtUserPropBarCodeNo: TIntegerField;
+    mtUserPropLengthGroup: TStringField;
+    mtUserPropLIPName: TStringField;
+    mtUserPropPIPNAME: TStringField;
+    mtUserPropREGPOINT: TStringField;
+    mtUserPropPRODUCER: TStringField;
+    mtUserPropOWNER: TStringField;
+    mtUserPropVERK: TStringField;
+    mtUserPropRoleType: TIntegerField;
+    mtUserPropGradestamp: TStringField;
+    mtUserPropBarcode: TStringField;
+    mtUserPropProductDescription: TStringField;
+    mtUserPropProductNo: TIntegerField;
+    mtUserPropProductGroupNo: TIntegerField;
+    dsUserProp: TDataSource;
+    ActionList1: TActionList;
+    acAvregistreraPaket: TAction;
+    Panel1: TPanel;
+    grdPkgs: TcxGrid;
+    grdPkgsDBBandedTableView1: TcxGridDBBandedTableView;
+    grdPkgsDBBandedTableView1PACKAGENO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1SUPP_CODE: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1ROWNO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1PRODUCT: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1BAR_CODE: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1GRADE_STAMP: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1M3_NET: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1PCS: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1M3_NOM: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1KVM: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1LOPM: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1INVENTORY: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1PCS_PER_LENGTH: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1OWNER: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1OWNERNO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1LOG_INVENTORY_NO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1BARCODE_ID: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1GRADESTAMPNO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1SUPPLIERNO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1Old_PackageTypeNo: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1PIP: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1LoadDetailNo: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1PACKAGETYPENO: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1ACTTHICK: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1ACTWIDTH: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1NOMTHICK: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1NOMWIDTH: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1Status: TcxGridDBBandedColumn;
+    grdPkgsDBBandedTableView1StatusText: TcxGridDBBandedColumn;
+    grdPkgsLevel1: TcxGridLevel;
+    Panel2: TPanel;
+    bbClearPkgGrid: TBitBtn;
+    BitBtn2: TBitBtn;
+    acPkgNoSerie: TAction;
+    acStartBarCodeScanning: TAction;
+    acClose: TAction;
+    acAddRow: TAction;
+    acRemoveRow: TAction;
+    acDeletePkgFromSystem: TAction;
+    Panel3: TPanel;
+    Label11: TLabel;
+    Label15: TLabel;
+    Label5: TLabel;
     Label4: TLabel;
-    BitBtn1: TBitBtn;
+    Label14: TLabel;
+    lcOWNER: TcxDBLookupComboBox;
+    lcPRODUCER: TcxDBLookupComboBox;
+    lcREGPOINT: TcxDBLookupComboBox;
     seRunNr: TcxSpinEdit;
+    deRegDate: TcxDBDateEdit;
+    BitBtn1: TBitBtn;
+    cxGridPopupMenu1: TcxGridPopupMenu;
+    mtUserPropSalesRegionNo: TIntegerField;
+    mtUserPropVolumeUnitNo: TIntegerField;
+    mtUserPropLengthFormatNo: TIntegerField;
+    mtUserPropForm: TStringField;
+    mtUserPropUserID: TIntegerField;
+    mtUserPropLengthVolUnitNo: TIntegerField;
+    acSearchRunNo: TAction;
+    mtUserPropGroupByBox: TIntegerField;
+    mtUserPropGroupSummary: TIntegerField;
+    Label2: TLabel;
+    lcPIPNAME: TcxDBLookupComboBox;
+    acRemoveAllRows: TAction;
     BitBtn3: TBitBtn;
-    dxComponentPrinter1: TdxComponentPrinter;
-    dxComponentPrinter1Link1: TdxDBGridReportLink;
+    cxLabel4: TcxLabel;
+    Bevel1: TBevel;
+    cxLabel3: TcxLabel;
+    Bevel3: TBevel;
+    mtUserPropAgentNo: TIntegerField;
+    mtUserPropShipperNo: TIntegerField;
+    mtUserPropStartPeriod: TDateTimeField;
+    mtUserPropEndPeriod: TDateTimeField;
+    lcLIP: TcxDBLookupComboBox;
+    Label1: TLabel;
+    grdPkgsDBBandedTableView1InvNr: TcxGridDBBandedColumn;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyleRedBg: TcxStyle;
+    Label12: TLabel;
+    lcSkiftLag: TcxDBLookupComboBox;
+    mtUserPropSkiftLag: TStringField;
+    teAvRegPkgNo: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    TAvRegPkgNo: TTimer;
+    cxDBCheckBox1: TcxDBCheckBox;
+    mtUserPropFilter1: TStringField;
+    mtUserPropFilter2: TStringField;
+    siLangLinked_frmRemovePkg: TsiLangLinked;
     procedure lbCloseClick(Sender: TObject);
-    procedure lbAddPackageClick(Sender: TObject);
-    procedure grdPackagesPACKAGENOValidate(Sender: TObject;
-      var ErrorText: String; var Accept: Boolean);
     procedure FormCreate(Sender: TObject);
-    procedure lbRemovePkgsFromInventoryClick(Sender: TObject);
-    procedure dxDBDateEdit1Change(Sender: TObject);
-    procedure dxDBImageEdit1Change(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure lbPkgInfoClick(Sender: TObject);
-    procedure lbPkgNoSerieClick(Sender: TObject);
-    procedure bbCustomPkgGridClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure lbDeletePkgsFromSystemClick(Sender: TObject);
     procedure bbRemoveAllRowsClick(Sender: TObject);
-    procedure bbRemoveRowClick(Sender: TObject);
-    procedure peOwnerChange(Sender: TObject);
     procedure bbClearPkgGridClick(Sender: TObject);
-    procedure peMatPunktAgareChange(Sender: TObject);
-    procedure grdPackagesCustomDrawCell(Sender: TObject; ACanvas: TCanvas;
-      ARect: TRect; ANode: TdxTreeListNode; AColumn: TdxTreeListColumn;
-      ASelected, AFocused, ANewItemRow: Boolean; var AText: String;
-      var AColor: TColor; AFont: TFont; var AAlignment: TAlignment;
-      var ADone: Boolean);
-    procedure lbInitBarCodeScanningClick(Sender: TObject);
-    procedure ePktNrKeyPress(Sender: TObject; var Key: Char);
-    procedure bbRemovePkgFromSystemClick(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn3Click(Sender: TObject);
+    procedure mtUserPropOwnerNoChange(Sender: TField);
+    procedure mtUserPropPIPNoChange(Sender: TField);
+    procedure mtUserPropProducerNoChange(Sender: TField);
+    procedure mtUserPropAfterInsert(DataSet: TDataSet);
+    procedure acAvregistreraPaketExecute(Sender: TObject);
+    procedure acPkgNoSerieExecute(Sender: TObject);
+    procedure acStartBarCodeScanningExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acAddRowExecute(Sender: TObject);
+    procedure acRemoveRowExecute(Sender: TObject);
+    procedure acDeletePkgFromSystemExecute(Sender: TObject);
+    procedure acRemoveRowUpdate(Sender: TObject);
+    procedure acAddRowUpdate(Sender: TObject);
+    procedure acAvregistreraPaketUpdate(Sender: TObject);
+    procedure acSearchRunNoExecute(Sender: TObject);
+    procedure acRemoveAllRowsExecute(Sender: TObject);
+    procedure acRemoveAllRowsUpdate(Sender: TObject);
+    procedure grdPkgsDBBandedTableView1StylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure teAvRegPkgNoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure TAvRegPkgNoTimer(Sender: TObject);
   private
     { Private declarations }
      EgenPkgSupplierCode :  String ;
-//     PkgNoStartPos, PkgNoAntalPos,
-//     LevKodStartPos, LevKodLengthPos : Integer ;
      Unique_No : Integer ;
-     StartStreckkodslasning,
-     AddingPkgsFromPkgEntry : Boolean ;
-     FIsModified : Boolean ;
-     StreckKodPkgNo : String ;
+//     StreckKodPkgNo : String ;
      function  ControlInvDate(Sender: TObject) : Boolean ;
      procedure CloseDataSets;
-     procedure SomethingChanged(Sender: TObject);
-     function IdentifyPackageSupplier(
-          const PkgNo,
-          FSupplierNo: Integer;
-          var PkgSupplierCode: String3;
-          var PkgSupplierNo: Integer;
-          Var ProductNo : Integer;
-          Var Res_UserName : String) : TEditAction;
+     function  IdentifyPackageSupplier(
+                const PkgNo : Integer;
+                var PkgSupplierCode: String3;
+                Var ProductNo : Integer;
+                Var Res_UserName : String) : TEditAction;
      procedure InsertPkgSerie(Sender: TObject) ;
      procedure AddPkgToGrid(Sender: TObject;PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer) ;
      procedure RemoveAllSuccespkgs(Sender: TObject);
-     function  AddPkgTo_mtPackage(Sender: TObject;const LIP, PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer)  : TEditAction ;
+//     function  AddPkgTo_mtPackage(Sender: TObject;const LIP, PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer)  : TEditAction ;
 
   public
     { Public declarations }
      procedure CreateCo ;
      procedure ScanningPkgNo(Sender: TObject; PkgNo : String) ;
-     procedure ScanningEgnaPkgNo(Sender: TObject; PkgNo : String) ;     
-     function  RemoteEntryPkgNo(Sender: TObject; const LIP, PkgNo : Integer;const
-                Current_OwnerNo : Integer; Const PkgSupplierCode: String3) : TEditAction;
+     procedure ScanningEgnaPkgNo(Sender: TObject; PkgNo : String) ;
+     procedure RemotePkgEntry (PkgNos : TkbmMemTable) ;
   end;
 
 var frmRemovePkg: TfrmRemovePkg;
 
 implementation
 
-uses dmLM1, VidaConst, 
+uses dmLM1, VidaConst,
   dmsVidaContact, dmsVidaProduct,
   VidaUser, UnitPkgInfo,
   UnitPkgNoSeries, dmcVidaOrder, dmsVidaSystem, dmcPkgs, dmcVidaSystem,
-  uScanPkgNo, dmsDataConn , uSearchRunNo;
+  uScanPkgNo, dmsDataConn , uSearchRunNo, dmc_UserProps;
 
 {$R *.dfm}
 
 procedure TfrmRemovePkg.CreateCo ;
 var
   Save_Cursor:TCursor;
-  MatPunktAgare,
-  OwnerNo,
-  PhysInventory,
-  RegPoint, x : Integer ;
 begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
  Try
+  dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name+'/'+grdPkgs.Name, grdPkgsDBBandedTableView1) ;
+  grdPkgsDBBandedTableView1ROWNO.SortOrder:= soAscending ;
 
-  With dmPkgs do
+  if mtUserPropRoleType.AsInteger = cLego then
   Begin
-
-//Load Inventory Owner
-  dmsContact.Load_InvOwner(peOwner.Items, ThisUser.CompanyNo, RoleType) ;
-
-  if peOwner.Items.Count > 1 then
-  Begin
-   peOwner.ItemIndex:= 0 ;
-   For x:= 0 to peOwner.Items.Count -1 do
-   if ThisUser.CompanyNo = integer(peOwner.Items.Objects[x]) then
-    Begin
-     peOwner.ItemIndex:= x ;
-    End ;
-  End
-    else
-     Begin
-      if peOwner.Items.Count > 0 then
-      peOwner.ItemIndex:= 0 ;
-     End ;
-
-  if RoleType = cLego then
-   Begin
-    peOwner.Enabled:= False ;
-   End
-    else
-    Begin
-    peOwner.Enabled:= True ;
-    End ;
-
-
-   if peOwner.Items.Count > 0 then
-   dmPkgs.SupplierNo:= integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
-
-
-   //Load Matpunktsägare
-  dmsContact.LoadMatPunktsAgare(peMatPunktAgare.Items) ;
-  if peMatPunktAgare.Items.Count > 1 then
-  Begin
-   peMatPunktAgare.ItemIndex:= 0 ;
-   For x:= 0 to peMatPunktAgare.Items.Count -1 do
-   if ThisUser.CompanyNo = integer(peMatPunktAgare.Items.Objects[x]) then
-   Begin
-    peMatPunktAgare.ItemIndex:= x ;
-   End ;
-  End
-  else
-   Begin
-    if peMatPunktAgare.Items.Count > 0 then
-    peMatPunktAgare.ItemIndex:= 0 ;
-   End ;
-
-  if dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego then
-   peMatPunktAgare.Enabled := False
-    else
-     peMatPunktAgare.Enabled := True ;
-
-  if RoleType = cLego then
-  Begin
-    dmcSystem.LoadRegPoint(peRegPoint.Items, integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex]) ) ;//ThisUser.CompanyNo) ;
-    if peRegPoint.Items.Count > 0 then
-     peRegPoint.ItemIndex:= 0 ;
-  End
-  else
-  Begin
-   if peMatPunktAgare.Items.Count > 0 then
-   Begin
-    dmcSystem.LoadRegPoint(peRegPoint.Items, integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex])) ;
-    if peRegPoint.Items.Count > 0 then
-     peRegPoint.ItemIndex:= 0 ;
-   End ;
+   lcPRODUCER.Enabled := False ;
+   lcOWNER.Enabled    := False ;
+   lcPIPNAME.Enabled  := False ;
+   acDeletePkgFromSystem.Enabled:= False ;
   End ;
 
-   lbAddPackage.Enabled:= True ;
-   lbDeletePkgsFromSystem.Enabled:= False ;
-   bbRemovePkgFromSystem.Enabled:= False ;
-   lbRemovePkgsFromInventory.Enabled:= False ;
-   mtLoadPackages.ReadOnly:= False ;
+  if (mtUserPropRoleType.AsInteger = cInternal_Mill) then
+  Begin
+   lcOwner.Enabled    := False ;
+   lcPRODUCER.Enabled := False ;
+  End ;
 
-   dmsContact.sp_Cities.Open ;
-   dmsContact.cdsCities.Active:= True ;
-   dmsContact.sp_Shippers.Open ;
-   dmsContact.cdsShippers.Active:= True ;
-   mtLoadPackages.Active:= True ;
+  if mtUserPropRoleType.AsInteger = cSalesRegion then
+  Begin
+   lcPRODUCER.Enabled             := True ;
+   lcOWNER.Enabled                := True ;
+   lcPIPNAME.Enabled              := True ;
+   acDeletePkgFromSystem.Enabled  := True ;
+  End ;
 
-
-{  with TIniFile.Create(dmsConnector.InifilesMap+'VisRemovePkg'+'.'+ThisUser.UserName) do
-  try
-   if (peOwner.Items.Count > 0) and (peOwner.Enabled) then
-   Begin
-    OwnerNo:= ReadInteger ('RemovePkg', 'Owner', 0) ;
-    if OwnerNo > 0 then
-    For x := 0 to peOwner.Items.Count - 1 do
-    if OwnerNo = integer(peOwner.Items.Objects[x]) then
-     peOwner.ItemIndex:= x ;
-   End ;
-
-   if peMatPunktAgare.Items.Count > 0 then
-   Begin
-    PhysInventory:= ReadInteger ('RemovePkg', 'MatPunktAgare', 0);
-    if MatPunktAgare > 0 then
-    For x := 0 to peMatPunktAgare.Items.Count - 1 do
-    if MatPunktAgare = integer(peMatPunktAgare.Items.Objects[x]) then
-     peMatPunktAgare.ItemIndex:= x ;
-   End ;
+  grdPkgsDBBandedTableView1.Bands[2].Visible:= False ;
 
 
-   if peRegPoint.Items.Count > 0 then
-   Begin
-    RegPoint:= ReadInteger ('RemovePkg', 'RegPoint', 0);
-    if RegPoint > 0 then
-    For x := 0 to peRegPoint.Items.Count - 1 do
-    if RegPoint = integer(peRegPoint.Items.Objects[x]) then
-     peRegPoint.ItemIndex:= x ;
-   End ;
-
-
-  Finally
-   Free ;
-  End ; }
-
- End ; //with
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
@@ -289,46 +287,12 @@ begin
    With dmPkgs do
    Begin
     mtLoadPackages.Active:= False ;
-
-
-    dmsContact.sp_Cities.Close ;
-    dmsContact.cdsCities.Active:= False ;
-    dmsContact.cdsShippers.Active:= False ;
-    dmsContact.sp_Shippers.Close ;
    End ;
 end;
 
 procedure TfrmRemovePkg.lbCloseClick(Sender: TObject);
 begin
  Close ;
-end;
-
-procedure TfrmRemovePkg.SomethingChanged(Sender: TObject);
-begin
-  With dmPkgs do
-   Begin
-    if (mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0) then
-    Begin
-     if RoleType <> cLego then
-     lbDeletePkgsFromSystem.Enabled:= True ;
-     bbRemovePkgFromSystem.Enabled:= True ;
-     lbRemovePkgsFromInventory.Enabled:= True ;
-     FIsModified := True ;
-    End
-    else
-    Begin
-     lbDeletePkgsFromSystem.Enabled:= False ;
-     bbRemovePkgFromSystem.Enabled:= False ;
-     lbRemovePkgsFromInventory.Enabled:= False ;
-     FIsModified := False ;
-    End ;
-   End ;
-end;
-
-procedure TfrmRemovePkg.lbAddPackageClick(Sender: TObject);
-begin
- dmPkgs.mtLoadPackages.Append ;
-//Set Package column in focus
 end;
 
 procedure TfrmRemovePkg.AddPkgToGrid(Sender: TObject;PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer)  ;
@@ -338,13 +302,16 @@ var
 Begin
  With dmPkgs do
  Begin
-  Try
+  if dmPkgs.mtLoadPackages.Active = False then
+   dmPkgs.mtLoadPackages.Active:= True ;
+
      sq_OneUniquePkg.Close ;
      sq_OneUniquePkg.ParamByName('PackageNo').AsInteger           := PkgNo ;
      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgSupplierCode ;
-     sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := SupplierNo ;
+     sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := mtUserPropOwnerNo.AsInteger ;
      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
      sq_OneUniquePkg.ParamByName('Status').AsInteger              := 0 ;
+     sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
      sq_OneUniquePkg.Open ;
      if not sq_OneUniquePkg.Eof then
      Begin
@@ -356,9 +323,9 @@ Begin
 
       Try
       For x := 0 to 21 do
-       mtLoadPackages.Fields.Fields[x].AsVariant:= sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
-      mtLoadPackagesLoadDetailNo.AsInteger:= Unique_No ;
-      mtLoadPackages.Post ;
+       mtLoadPackages.Fields.Fields[x].AsVariant  := sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
+      mtLoadPackagesLoadDetailNo.AsInteger        := Unique_No ;
+//      mtLoadPackages.Post ;
       Unique_No:= Succ(Unique_No) ;
       Except
        on eDatabaseError do
@@ -371,21 +338,16 @@ Begin
       End  //if..
       else
       Begin
-       if StartStreckkodslasning = False then
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+' är reserverat av användare '+Res_UserName) ;
+       ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_1' (* ' är reserverat av användare ' *) )+Res_UserName) ;
       End ;
      End  //if not...
      else
       Begin
        mtLoadPackages.Cancel ;
-       if StartStreckkodslasning = False then
-       ShowMessage('Paketnr '+IntToStr(PkgNo)+'/'+PkgSupplierCode+' finns inte') ;
+       ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(PkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_3' (* ' finns inte' *) )) ;
       End ;
 
      sq_OneUniquePkg.Close ;
-  Finally
-   SomethingChanged(Sender) ;
-  End ;
  End ; //with
 end;
 
@@ -445,18 +407,18 @@ Begin
 end; *)
 
 function TfrmRemovePkg.IdentifyPackageSupplier(
-  const PkgNo,
-  FSupplierNo: Integer;
+  const PkgNo : Integer;
   var PkgSupplierCode: String3;
-  var PkgSupplierNo: Integer;
   Var ProductNo : Integer;
   Var Res_UserName : String) : TEditAction;
 const
   NO_USER_HAS_THIS_PACKAGE_RESERVED = '0' ;
   PACKAGE_NOT_IN_INVENTORY = 0 ;
+Var SupplierNo : Integer;
 begin
  //check that package is available in inventory and Get supplier code
-    PkgSupplierCode := dmsSystem.PkgNoToSuppCode(PkgNo, FSupplierNo, ThisUser.CompanyNo, PkgSupplierNo, ProductNo);
+//                        ShowMessage('ThisUser.UserName+Self.Name ' + ThisUser.UserName+'/'+Self.Name);
+    PkgSupplierCode := dmsSystem.PkgNoToSuppCode_III(PkgNo, mtUserPropPIPNo.AsInteger, mtUserPropOwnerNo.AsInteger, SupplierNo, ProductNo);
     if PkgSupplierCode = '' then
     Begin
       Result := eaREJECT;
@@ -466,199 +428,37 @@ begin
         if dmsSystem.Pkg_Reserved(
           PkgNo,
           PkgSupplierCode, Self.Name, Res_UserName
-          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then begin
-          Result := eaACCEPT ;
+          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
+          begin
+           Result := eaACCEPT ;
           end
         else
-
-        begin
+         begin
           MessageBeep(MB_ICONEXCLAMATION);
           Result := eaReserved ; //eaREJECT;
         end;
+// ShowMessage('dmsSystem.Pkg_Reserved = '+dmsSystem.Pkg_Reserved(PkgNo, PkgSupplierCode, Self.Name, Res_UserName)) ;
+// ShowMessage('Length dmsSystem.Pkg_Reserved = '+ inttostr(Length(dmsSystem.Pkg_Reserved(PkgNo, PkgSupplierCode, Self.Name, Res_UserName)))) ;
+
+// ShowMessage('ThisUser.UserName+/+Self.Name = '+ ThisUser.UserName+'/'+Self.Name) ;
+// ShowMessage('Length ThisUser.UserName+/+Self.Name = '+ inttostr(Length(ThisUser.UserName+'/'+Self.Name))) ;
+// ShowMessage('Res_UserName = ' + Res_UserName) ;
 end;
 
 //After adding a package manually
-procedure TfrmRemovePkg.grdPackagesPACKAGENOValidate(Sender: TObject;
-  var ErrorText: String; var Accept: Boolean);
-var
-  NewValue          : String;
-  PkgSupplierCode   : String3;
-  PkgSupplierNo     : Integer ;
-  Action            : TEditAction;
-  ProductNo         : Integer ;
-  Save_Cursor       : TCursor;
-  Res_UserName      : String ;
-  RegPointName      : String ;
-begin
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
-
-  try
-    { Do some lengthy operation }
-   NewValue := TdxTreeList((Sender as TdxTreeListColumn).TreeList).EditingText;
-
-
-   Action := IdentifyPackageSupplier(
-      StrToInt(NewValue),
-      dmPkgs.SupplierNo,
-      PkgSupplierCode,
-      PkgSupplierNo, ProductNo, Res_UserName );
-
-{  if Action = eaACCEPT then
-  Begin
-   RegPointName:= dmPkgs.IsPkgAvregistrerat (StrToInt(NewValue), PkgSupplierCode) ;
-   if RegPointName <> 'NO' then
-   Begin
-    Action:= eaAlreadyAvReg ;
-   End
-    else
-     Action := eaAccept ;
-  End ; //  if Action = eaACCEPT then
-  }
-
-  if Action = eaACCEPT then
-  Begin
-   AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
-   Accept:= True ;
-  End
-   else
-   if Action = eaREJECT then
-    Begin
-//     if StartStreckkodslasning = False then
-     ErrorText:= 'Paketnr '+NewValue+' finns inte' ;
-     Accept:= False ;
-    End
-    else
-     if Action = eaReserved then
-     Begin
-//      if StartStreckkodslasning = False then
-      ErrorText:= 'Paketnr '+NewValue+' är reserverat av användare '+Res_UserName ;
-      Accept:= False ;
-     End ;
-{      else
-       if Action = eaAlreadyAvReg then
-       Begin
-        if StartStreckkodslasning = False then
-        ShowMessage('Paketnr '+NewValue+'/'+PkgSupplierCode+' är redan avregistrerat mot mätpunkt '+RegPointName) ;
-       End ; }
-  finally
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  end;
-end;
-
 procedure TfrmRemovePkg.FormCreate(Sender: TObject);
 begin
-  dmPkgs                          := TdmPkgs.Create(Nil);
-  Unique_No                       := 1 ;
-  dxDateEdit1.Date                := Now ;
-  AddingPkgsFromPkgEntry          := False ;
-  grdPackagesLoadDetailNo.Sorted  := csUp ;
-  StartStreckkodslasning          := False ;
+ dmPkgs     := TdmPkgs.Create(Nil);
+ Unique_No  := 1 ;
+ dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
+ dmPkgs.mtLoadPackages.Active := True ;
 end;
 
-function TfrmRemovePkg.ControlInvDate(Sender: TObject) : Boolean ;
-const
-  LF = #10;
-Var
-    LastInvNr   : Integer ;
-    InvDate     : TDateTime ;
-    MaxDateMsg  : String ;
-Begin
- With dmPkgs do
- Begin
-  mtLoadPackages.DisableControls ;
-  Try
-  if mtLoadPackages.State in [dsEdit, dsInsert] then
-  mtLoadPackages.Post ;
-  Result  := True ;
-  mtLoadPackages.First ;
-  While not mtLoadPackages.Eof do
-  Begin
-   LastInvNr  := dmsSystem.IsRegDateBeforeInvDate(mtLoadPackagesLOG_INVENTORY_NO.AsInteger, Self.dxDateEdit1.Date, InvDate, MaxDateMsg) ;
-   if LastInvNr > -1 then
-   Begin
-    mtLoadPackages.Edit ;
-    mtLoadPackagesInvNr.AsInteger := LastInvNr ;
-    mtLoadPackages.Post ;
-    Result  := False ;
-   End ;
-   mtLoadPackages.Next ;
-  End ;
-  Finally
-   mtLoadPackages.EnableControls ;
-  End ;
- End ;//With
-end;
-
-procedure TfrmRemovePkg.lbRemovePkgsFromInventoryClick(Sender: TObject);
-const
-  LF = #10;
-Begin
- if dxDateEdit1.Date > Now then
- Begin
-  ShowMessage('Avregistreringsdatum får inte vara större än aktuellt datum');
-  Exit ;
- End ;
-
- if ControlInvDate(Sender) then
- Begin
-  if MessageDlg('Vill du avregistrera paket mot mätpunkt: '
-  +Trim(peMatPunktAgare.Items[peMatPunktAgare.itemindex])
-  +'/'+Trim(peRegPoint.Items[peRegPoint.itemindex])
-  +LF+'Datum: '+DateToStr(dxDateEdit1.Date)
-  ,    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-  Begin
-   if dmPkgs.RemovePkgsFromInventory(
-   integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex]),
-   integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex]),
-   dxDateEdit1.Date,
-   seRunNr.Value) then
-   RemoveAllSuccespkgs(Sender) ;
-  End ; //if
- End
- else
- ShowMessage('Paket kan inte avregistreras pga att avregistreringsdatum är före inventerings eller maxdatum i en inventering där lagergruppen ingår') ;
-end;
-
-procedure TfrmRemovePkg.dxDBDateEdit1Change(Sender: TObject);
+procedure TfrmRemovePkg.FormCloseQuery(Sender: TObject;var CanClose: Boolean);
 begin
- SomethingChanged(Sender);
-end;
-
-procedure TfrmRemovePkg.dxDBImageEdit1Change(Sender: TObject);
-begin
- SomethingChanged(Sender);
-end;
-
-procedure TfrmRemovePkg.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-Var dResult: Integer ;
-//    OvcIniFileStore1 : TIniFile ;
-begin
-  if FIsModified = True then
-   Begin
-   dResult:= MessageDlg('Valda paket är inte avregistrerade, vill du avsluta?',
-    mtConfirmation, [mbYes, mbNo], 0) ;
-   End
-    else
-    dResult:= mrYes ;
-
-    if dResult = mrYes then
-     CanClose := True
-    else
-    if dResult = mrNo then
-      CanClose := False ;
-
+ CanClose:= True ;
  if CanClose = True then
  begin
-{  OvcIniFileStore1 := TIniFile.Create( dmsConnector.InifilesMap+'VisRemovePkg'+'.'+ThisUser.UserName );
-  Try
-   OvcIniFileStore1.WriteInteger ('RemovePkg', 'Owner', integer(peOwner.Items.Objects[peOwner.ItemIndex])) ;
-   OvcIniFileStore1.WriteInteger ('RemovePkg', 'MatPunktAgare', integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex])) ;
-   OvcIniFileStore1.WriteInteger ('RemovePkg', 'RegPoint', integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex])) ;
-  Finally
-   OvcIniFileStore1.Free ;
-  End ; }
 
    //Remove entries in Pkgs_Res
   With dmsSystem do
@@ -668,6 +468,9 @@ begin
 
   CloseDataSets;
  end;
+
+ dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name+'/'+grdPkgs.Name, grdPkgsDBBandedTableView1) ;
+ dm_UserProps.SaveUserProps (Self.Name, mtUserProp) ;
 end;
 
 procedure TfrmRemovePkg.lbPkgInfoClick(Sender: TObject);
@@ -689,25 +492,6 @@ begin
  End ; //with
 end;
 
-procedure TfrmRemovePkg.lbPkgNoSerieClick(Sender: TObject);
-begin
- With dmPkgs do
- Begin
-  if mtLoadPackages.State <> dsBrowse then
-   Try
-   mtLoadPackages.Post ;
-   Except
-    on eDatabaseError do
-    Begin
-     Raise ;
-    End ;
-   End ;
-
-  InsertPkgSerie(Sender) ;
-  SomethingChanged(Sender) ;
- End ;
-end;
-
 procedure TfrmRemovePkg.InsertPkgSerie(Sender: TObject) ;
 Var     NoOfPkgsInSerie, x : Integer ;
         ResultButton : word ;
@@ -727,7 +511,7 @@ begin
     StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
 
     if NoOfPkgsInSerie > 100 then
-    ResultButton:= MessageDlg('Upp till '+IntToStr(NoOfPkgsInSerie)+' paket kanske hämtas, är det korrekt?',
+    ResultButton:= MessageDlg(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_4' (* 'Upp till ' *) )+IntToStr(NoOfPkgsInSerie)+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_5' (* ' paket kanske hämtas, är det korrekt?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -738,10 +522,10 @@ begin
      mtLoadPackages.Active:= False ;
      mtLoadPackages.Active:= True ;
      sq_OnePkgDetailData.Close ;
-     sq_OnePkgDetailData.ParamByName('First_PackageNo').AsInteger:= StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
-     sq_OnePkgDetailData.ParamByName('Last_PackageNo').AsInteger:= StrToInt(Trim(frmPkgNoSeries.eToPkgNo.Text)) ;
-     sq_OnePkgDetailData.ParamByName('OwnerNo').AsInteger:= SupplierNo ;
-     sq_OnePkgDetailData.ParamByName('UserCompanyLoggedIn').AsInteger:= ThisUser.CompanyNo ;
+     sq_OnePkgDetailData.ParamByName('First_PackageNo').AsInteger     := StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
+     sq_OnePkgDetailData.ParamByName('Last_PackageNo').AsInteger      := StrToInt(Trim(frmPkgNoSeries.eToPkgNo.Text)) ;
+     sq_OnePkgDetailData.ParamByName('OwnerNo').AsInteger             := mtUserPropOwnerNo.AsInteger ;
+     sq_OnePkgDetailData.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
      sq_OnePkgDetailData.Open ;
      While not sq_OnePkgDetailData.Eof do
      Begin
@@ -768,8 +552,7 @@ begin
       End  //if..
       else
       Begin
-       if StartStreckkodslasning = False then
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+' är reserverat av användare '+Res_UserName) ;
+       ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_1' (* ' är reserverat av användare ' *) )+Res_UserName) ;
       End ;
       sq_OnePkgDetailData.Next ;
      End ;
@@ -786,32 +569,9 @@ begin
  End ; // with
 End ;
 
-procedure TfrmRemovePkg.bbCustomPkgGridClick(Sender: TObject);
-begin
- grdPackages.ColumnsCustomizing;
-end;
-
 procedure TfrmRemovePkg.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(dmPkgs) ; //Free ;
-end;
-
-procedure TfrmRemovePkg.lbDeletePkgsFromSystemClick(Sender: TObject);
- //Delete pkgs from SYSTEM
-Begin
- if MessageDlg('Obs! paketen kommer att rensas bort från databasen, Fortsätta?',
- mtConfirmation, [mbYes, mbNo], 0) = mrYes then
- Begin
- if MessageDlg('Obs! paketen kan inte återställas till lagret, Fortsätta?',
- mtConfirmation, [mbYes, mbNo], 0) = mrYes then
- Begin
-  if dmPkgs.DeletePackagesFromSystem (
-  integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex])) then
-  Begin
-   RemoveAllSuccespkgs(Sender) ;
-  End ;
- End ; //if
- End ;//if
+ FreeAndNil(dmPkgs) ; //Free ;
 end;
 
 procedure TfrmRemovePkg.bbRemoveAllRowsClick(Sender: TObject);
@@ -819,31 +579,12 @@ begin
  //Remove all rows
  With dmPkgs do
  Begin
-  if (mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0) then
+ if ((mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0))
+ or ((mtLoadPackages.Active) AND (mtLoadPackages.State in [dsEdit, dsInsert])) then
   Begin
    mtLoadPackages.Active:= False ;
    mtLoadPackages.Active:= True ;
-   SomethingChanged(Sender) ;
   End ;
- End ;
-end;
-
-procedure TfrmRemovePkg.bbRemoveRowClick(Sender: TObject);
-begin
- // remove one row
- With dmPkgs do
- if (mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0) then
- Begin
-  mtLoadPackages.Delete ;
- End ;
- SomethingChanged(Sender) ;
-end;
-
-procedure TfrmRemovePkg.peOwnerChange(Sender: TObject);
-begin
- if peOwner.Items.Count > 0 then
- Begin
-  dmPkgs.SupplierNo:= integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
  End ;
 end;
 
@@ -852,23 +593,13 @@ begin
  bbRemoveAllRowsClick(Sender) ;
 end;
 
-procedure TfrmRemovePkg.peMatPunktAgareChange(Sender: TObject);
-begin
- if peMatPunktAgare.Items.Count > 0 then
- Begin
-  peRegPoint.Text:= 'N/A' ;
-  peRegPoint.Items.Clear ;
-  dmcSystem.LoadRegPoint(peRegPoint.Items, integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex])) ;
-  if peRegPoint.Items.Count > 0 then
-   peRegPoint.ItemIndex:= 0 ;
- End ;
-end;
-
 procedure TfrmRemovePkg.RemoveAllSuccespkgs(Sender: TObject);
 begin
  //Remove all rows
  With dmPkgs do
  Begin
+  mtLoadPackages.DisableControls ;
+  Try
   if (mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0) then
   Begin
    mtLoadPackages.Filter:= 'Status = 0' ;
@@ -880,75 +611,11 @@ begin
    Finally
     mtLoadPackages.Filtered:= False ;
    End ;
-   SomethingChanged(Sender) ;
   End ;
- End ;
-end;
-
-procedure TfrmRemovePkg.grdPackagesCustomDrawCell(Sender: TObject;
-  ACanvas: TCanvas; ARect: TRect; ANode: TdxTreeListNode;
-  AColumn: TdxTreeListColumn; ASelected, AFocused, ANewItemRow: Boolean;
-  var AText: String; var AColor: TColor; AFont: TFont;
-  var AAlignment: TAlignment; var ADone: Boolean);
-// var
-//  iObjectType: integer;
-//  iObjectTypeColumn2: integer;
-//  iObjectType2: String ;
-//  iSupplierNo, iCustomerNo : Integer ;
-begin
-//  if ColumnIsGrouped(AColumn, grdSokAvrop) then     Exit;
-
-  // get the status of this LO
-(*
-  iObjectTypeColumn2 := grdPackages.ColumnByName('grdPackagesStatusText').Index;
-  iObjectType2 := ANode.Values[iObjectTypeColumn2];
-
-
-  // Set the color for this row, based on LO status
-  if iObjectType2 > '' then
-  Begin
-   AColor := $00C1FFFF ; //BackgroundColor(iObjectType);
-   AFont.Color:= clBlack ;
+  Finally
+   mtLoadPackages.EnableControls ;
   End ;
-
- if AFocused = True then
- Begin
-  AColor := clSilver ;
- End ; *)
-end;
-
-procedure TfrmRemovePkg.lbInitBarCodeScanningClick(Sender: TObject);
-begin
-//Proc GetPkgPos läser in paketnr posistioner och längder
- StartStreckkodslasning         := True ;
- grdPackagesLoadDetailNo.Sorted := csUp ;
- EgenPkgSupplierCode            := dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
- fScanPkgNo                     := TfScanPkgNo.Create(Self);
- Try
-  fScanPkgNo.cbEgenLevKod.Caption:= 'Scanna endast in paket med leverantörskod '+EgenPkgSupplierCode ;
-  fScanPkgNo.ShowModal ;
- Finally
-  StartStreckkodslasning:= False ;
-  fScanPkgNo.Free ;
- End ;
-end;
-
-procedure TfrmRemovePkg.ePktNrKeyPress(Sender: TObject; var Key: Char);
-begin
- With dmPkgs do
- Begin
-  if Key = #13 then
-  Begin
-   ScanningPkgNo(Sender, StreckKodPkgNo) ;
-   StreckKodPkgNo:= '' ;
-   ePktNr.Text:= '' ;
-  End
-  else
-   Begin
-    if key in ['0','1','2','3','4','5','6','7','8','9'] then
-    StreckKodPkgNo:= StreckKodPkgNo + Key ;
-   End ;
- End ; //with
+ End ;//with
 end;
 
 procedure TfrmRemovePkg.ScanningPkgNo(Sender: TObject; PkgNo : String) ;
@@ -962,8 +629,8 @@ var
   ProductNo       : Integer ;
   Save_Cursor     : TCursor;
   Res_UserName    : String ;
-  PkgSupplierNo   : Integer ;
   RegPointName    : String ;
+  ClientID        : String ;
 begin
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -973,7 +640,8 @@ begin
   Begin
 //Notera att i den långa koden skall supplier koden finnas!
    Try
-   NewPkgNo:= StrToInt(Trim(Copy(PkgNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr))) ;
+   ClientID := Copy(PkgNo, 1, 11) ;
+   NewPkgNo := StrToInt(Trim(Copy(PkgNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr))) ;
     Except
      on E: EConvertError do
       ShowMessage(E.ClassName + LF + E.Message);
@@ -983,31 +651,25 @@ begin
     PktNrLevKod                     := Copy(PkgNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
     PkgSupplierCode                 := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
     dmPkgs.mtLoadPackages.IndexName := 'mtLoadPackagesIndex5' ;
-
-   if Length(PkgSupplierCode) > 0 then
-   Begin
-    Action:= eaAccept ;
-   End ;
   End
   else //Length < 11
   Begin
    NewPkgNo:= StrToIntDef(PkgNo,0) ;
    if NewPkgNo = 0 then
    Begin
-    if StartStreckkodslasning = False then
-    ShowMessage('Streckkoden kunde inte översättas till ett Paketnr') ;
+    ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_8' (* 'Streckkoden kunde inte översättas till ett Paketnr' *) )) ;
     Exit ;
    End ;
 
    Action := IdentifyPackageSupplier(
       NewPkgNo,
-      dmPkgs.SupplierNo,
       PkgSupplierCode,
-      PkgSupplierNo, ProductNo, Res_UserName );
+      ProductNo,
+      Res_UserName );
    if Length(Trim(PkgSupplierCode)) = 0 then
    Begin
-    if StartStreckkodslasning = False then
-    ShowMessage('Inget paket kunde identifieras') ;
+    if mtUserPropGroupByBox.AsInteger = 0 then
+     ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_9' (* 'Inget paket kunde identifieras' *) )) ;
     Exit ;
    End ;
 
@@ -1016,13 +678,17 @@ begin
   End ;
 
   //Ett paket kan inte avregistreras flera ggr mot en produktionsmätpunkt
-{  RegPointName:= dmPkgs.IsPkgAvregistrerat (NewPkgNo, PkgSupplierCode) ;
-  if RegPointName <> 'NO' then
+  RegPointName:= dmPkgs.IsPkgAvregistrerat (NewPkgNo, mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
+  if RegPointName <>
+{TSI:IGNORE ON}
+	'NO'
+{TSI:IGNORE OFF}
+ then
   Begin
    Action:= eaAlreadyAvReg ;
   End
    else
-    Action := eaAccept ; }
+    Action := eaAccept ;
 
   if Action = eaAccept then
   if dmPkgs.mtLoadPackages.Locate('PACKAGENO;SUPP_CODE', VarArrayOf([NewPkgNo, PkgSupplierCode]), []) then
@@ -1046,7 +712,7 @@ begin
   Begin
    dmPkgs.mtLoadPackages.Insert ;
    Try
-   AddPkgToGrid(Sender, NewPkgNo,PkgSupplierCode, ProductNo) ;
+   AddPkgToGrid(Sender, NewPkgNo, PkgSupplierCode, ProductNo) ;
    Except
        on eDatabaseError do
        Begin
@@ -1058,20 +724,20 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     if StartStreckkodslasning = False then
-     ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' finns inte') ;
+     if mtUserPropGroupByBox.AsInteger = 0 then
+     ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_3' (* ' finns inte' *) )) ;
     End
     else
      if Action = eaReserved then
       Begin
-       if StartStreckkodslasning = False then
-       ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' är reserverat av användare '+Res_UserName) ;
+       if mtUserPropGroupByBox.AsInteger = 0 then
+        ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_1' (* ' är reserverat av användare ' *) )+Res_UserName) ;
       End
       else
        if Action = eaAlreadyAvReg then
        Begin
-        if StartStreckkodslasning = False then
-        ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' är redan avregistrerat mot mätpunkt '+RegPointName) ;
+        if mtUserPropGroupByBox.AsInteger = 0 then
+         ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_16' (* ' är redan avregistrerat mot mätpunkt ' *) )+RegPointName) ;
        End ;
 
 {    else
@@ -1084,82 +750,104 @@ begin
   end;
 end;
 
-function TfrmRemovePkg.RemoteEntryPkgNo(Sender: TObject; const LIP, PkgNo : Integer;const
-Current_OwnerNo : Integer; Const PkgSupplierCode: String3) : TEditAction;
-const
-  LF = #10;
-var
-  Action       : TEditAction;
-  ProductNo    : Integer ;
-  Save_Cursor  : TCursor;
-  Res_UserName : String ;
+procedure TfrmRemovePkg.TAvRegPkgNoTimer(Sender: TObject);
 begin
+ teAvRegPkgNo.SetFocus ;
+ teAvRegPkgNo.SelectAll ;
+ TAvRegPkgNo.Enabled  := False ;
+end;
+
+procedure TfrmRemovePkg.teAvRegPkgNoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  Error             : Boolean ;
+  NewValue          : String;
+  PkgSupplierCode   : String3;
+  Action            : TEditAction;
+  ProductNo         : Integer ;
+  Save_Cursor       : TCursor;
+  Res_UserName      : String ;
+  ErrorText,
+  RegPointName      : String ;
+begin
+ if Key <> VK_RETURN then
+  Exit ;
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
-  Action := eaREJECT ;  
-  Try
-  dmPkgs.SupplierNo:= Current_OwnerNo ;
-  if PkgNo < 1 then
-   Exit ;
-        if dmsSystem.Pkg_Reserved(
-          PkgNo,
-          PkgSupplierCode, Self.Name, Res_UserName
-          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
-          begin
-           Action := eaACCEPT ;
-          end
-          else
-           Action := eaReserved ;
+
+
+  try
+  Error := False ;
+    { Do some lengthy operation }
+//   NewValue := DisplayValue ;//TdxTreeList((Sender as TdxTreeListColumn).TreeList).EditingText;
+
+   NewValue := IntToStr(StrToIntDef(teAvRegPkgNo.Text,0)) ;
+
+   Action := IdentifyPackageSupplier(
+      StrToInt(NewValue),
+      PkgSupplierCode,
+      ProductNo,
+      Res_UserName );
+
+{  if Action = eaACCEPT then
+  Begin
+   RegPointName:= dmPkgs.IsPkgAvregistrerat (StrToInt(NewValue), mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
+   if RegPointName <> 'NO' then
+   Begin
+    Action:= eaAlreadyAvReg ;
+   End
+    else
+     Action := eaAccept ;
+  End ; }
 
   if Action = eaACCEPT then
   Begin
    dmPkgs.mtLoadPackages.Insert ;
-   Try
-    Action:= AddPkgTo_mtPackage(Sender, LIP, PkgNo,PkgSupplierCode, ProductNo) ;
-   Except
-       on eDatabaseError do
-       Begin
-        Raise ;
-        dmPkgs.mtLoadPackages.Cancel ;
-       End ;
-   End ;
+   AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
+   Error  := False ;
   End
    else
    if Action = eaREJECT then
     Begin
-     if StartStreckkodslasning = False then
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+'/'+PkgSupplierCode+' finns inte') ;
+     Error     := True ;
+     ErrorText  := siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+NewValue+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_3' (* ' finns inte' *) ) ;
     End
     else
-   if Action = eaReserved then
-    Begin
-     if StartStreckkodslasning = False then
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+'/'+PkgSupplierCode+' är reserverat av användare '+Res_UserName) ;
-    End
-    else
-    if Action = eaDuplicate then
-    Begin
-     if StartStreckkodslasning = False then
-     ShowMessage('Paketnr '+IntToStr(PkgNo)+'/'+PkgSupplierCode+' är redan inmatat') ;
-    End ; 
+     if Action = eaReserved then
+     Begin
+      Error     := True ;
+      ErrorText := siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+NewValue+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_1' (* ' är reserverat av användare ' *) )+Res_UserName ;
+     End
+      else
+       if Action = eaAlreadyAvReg then
+       Begin
+        Error     := True ;
+        ErrorText := siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) ) + NewValue + '/' + PkgSupplierCode + siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_16' (* ' är redan avregistrerat mot mätpunkt ' *) ) + RegPointName ;
+       End ;
+
+    if Error then
+    begin
+     if mtUserPropGroupByBox.AsInteger = 0 then
+      ShowMessage(ErrorText) ;
+    end;
+
   finally
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-    Result:= Action ;
+    Screen.Cursor         := Save_Cursor;  { Always restore to normal }
+    TAvRegPkgNo.Enabled   := True ;
   end;
 end;
 
-function TfrmRemovePkg.AddPkgTo_mtPackage(Sender: TObject;const LIP, PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer) : TEditAction ;
+{function TfrmRemovePkg.AddPkgTo_mtPackage(Sender: TObject;const LIP, PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer) : TEditAction ;
 var
  x : Integer ;
 // Res_UserName : String ;
 Begin
  With dmPkgs do
  Begin
-  Try
      sq_OnePkg.Close ;
      sq_OnePkg.ParamByName('PackageNo').AsInteger:= PkgNo ;
      sq_OnePkg.ParamByName('SupplierCode').AsString:= PkgSupplierCode ;
-     sq_OnePkg.ParamByName('OwnerNo').AsInteger:= SupplierNo ;
+     sq_OnePkg.ParamByName('OwnerNo').AsInteger:= mtUserPropOwnerNo.AsInteger ;
      sq_OnePkg.ParamByName('UserCompanyLoggedIn').AsInteger:= ThisUser.CompanyNo ;
      sq_OnePkg.Open ;
      if not sq_OnePkg.Eof then
@@ -1185,18 +873,13 @@ Begin
      else
       Begin
        mtLoadPackages.Cancel ;
-       if StartStreckkodslasning = False then
        ShowMessage('Paketnr '+IntToStr(PkgNo)+'/'+PkgSupplierCode+' finns inte') ;
        Result:= eaREJECT ;
       End ;
 
-     sq_OnePkg.Close ;      
-
-  Finally
-   SomethingChanged(Sender) ;
-  End ;
+     sq_OnePkg.Close ;
  End ; //with
-end;
+end; }
 
 procedure TfrmRemovePkg.ScanningEgnaPkgNo(Sender: TObject; PkgNo : String) ;
 const
@@ -1210,7 +893,7 @@ var
   Save_Cursor       : TCursor;
   Res_UserName      : String ;
   RegPointName      : String ;
-
+  ClientID          : String ;
 begin
   Save_Cursor := Screen.Cursor;
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -1220,13 +903,15 @@ begin
   if Length(Trim(PkgNo)) > 10 then
   Begin
    Try
-   NewPkgNo:= StrToInt(Trim(Copy(PkgNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr))) ;
+   ClientID := Copy(PkgNo, 1, 11) ;
+   NewPkgNo := StrToInt(Trim(Copy(PkgNo, dmsSystem.PktNrPos, dmsSystem.AntPosPktNr))) ;
    Except
     on E: EConvertError do
        ShowMessage(E.ClassName + LF + E.Message);
    End ;
    if NewPkgNo < 1 then
     Exit ;
+//lars jobbar här...
    PktNrLevKod      := Copy(PkgNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
    PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
 //   dmPkgs.mtLoadPackages.IndexName:= 'mtLoadPackagesIndex5' ;
@@ -1237,21 +922,24 @@ begin
    PkgSupplierCode:= EgenPkgSupplierCode ;
    if NewPkgNo = 0 then
    Begin
-    if StartStreckkodslasning = False then
-    ShowMessage('Koden kunde inte översättas till ett Paketnr') ;
+    ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_23' (* 'Koden kunde inte översättas till ett Paketnr' *) )) ;
     Exit ;
    End ;
   End ;
 
 
   //Ett paket kan inte avregistreras flera ggr mot en produktionsmätpunkt
-{  RegPointName:= dmPkgs.IsPkgAvregistrerat (NewPkgNo, PkgSupplierCode) ;
-  if RegPointName <> 'NO' then
+  RegPointName:= dmPkgs.IsPkgAvregistrerat (NewPkgNo, mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
+  if RegPointName <>
+{TSI:IGNORE ON}
+	'NO'
+{TSI:IGNORE OFF}
+ then
   Begin
    Action:= eaAlreadyAvReg ;
   End
    else
-    Action := eaAccept ; }
+    Action := eaAccept ;
 
   if Action = eaAccept then
   if dmPkgs.mtLoadPackages.Locate('PACKAGENO;SUPP_CODE', VarArrayOf([NewPkgNo, PkgSupplierCode]), []) then
@@ -1287,20 +975,17 @@ begin
    else
    if Action = eaREJECT then
     Begin
-     if StartStreckkodslasning = False then
-     ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' finns inte') ;
+     ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_3' (* ' finns inte' *) )) ;
     End
     else
      if Action = eaReserved then
      Begin
-      if StartStreckkodslasning = False then
-      ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' är reserverat av användare '+Res_UserName) ;
+      ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_1' (* ' är reserverat av användare ' *) )+Res_UserName) ;
      End
       else
        if Action = eaAlreadyAvReg then
        Begin
-        if StartStreckkodslasning = False then
-        ShowMessage('Paketnr '+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+' är redan avregistrerat mot mätpunkt '+RegPointName) ;
+        ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_0' (* 'Paketnr ' *) )+IntToStr(NewPkgNo)+'/'+PkgSupplierCode+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_16' (* ' är redan avregistrerat mot mätpunkt ' *) )+RegPointName) ;
        End ;
 
 {    else
@@ -1313,56 +998,371 @@ begin
   end;
 end;
 
-procedure TfrmRemovePkg.bbRemovePkgFromSystemClick(Sender: TObject);
+procedure TfrmRemovePkg.mtUserPropOwnerNoChange(Sender: TField);
 begin
- if MessageDlg('Obs! paketen kommer att rensas bort från databasen, Fortsätta?',
- mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ With dm_UserProps do
  Begin
- if MessageDlg('Obs! paketen kan inte återställas till lagret, Fortsätta?',
- mtConfirmation, [mbYes, mbNo], 0) = mrYes then
- Begin
-  if dmPkgs.DeletePackagesFromSystem (
-  integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex])) then
+  cds_PIP.Active:= False ;
+  cds_PIP.ParamByName('OwnerNo').AsInteger:= mtUserPropOwnerNo.AsInteger ;
+  if mtUserPropRoleType.AsInteger = cLego then
+  cds_PIP.ParamByName('LegoOwnerNo').AsInteger:= mtUserPropVerkNo.AsInteger
+  else
+  cds_PIP.ParamByName('LegoOwnerNo').AsInteger:= mtUserPropOwnerNo.AsInteger ;
+
+ if (ThisUser.CompanyNo = cVidaPackaging) or
+ (ThisUser.CompanyNo = cOsterlovsta) then
   Begin
-   RemoveAllSuccespkgs(Sender) ;
-  End ;
- End ; //if
- End ;//if
+   cds_PIP.ParamByName('UserID').AsInteger:= ThisUser.UserID ;
+  End
+  else
+  Begin
+   cds_PIP.ParamByName('UserID').AsInteger:= -1 ;
+  End ;  
+
+  cds_PIP.Active:= True ;
+  cds_PIP.First ;
+  mtUserPropPIPNo.AsInteger:= cds_PIPPIPNO.AsInteger ;
+ End ;
 end;
 
-procedure TfrmRemovePkg.BitBtn1Click(Sender: TObject);
+procedure TfrmRemovePkg.mtUserPropPIPNoChange(Sender: TField);
+begin
+ With dm_UserProps do
+ Begin
+  cds_LIP.Active:= False ;
+  cds_LIP.ParamByName('PIPNo').AsInteger:= mtUserPropPIPNo.AsInteger ;
+  cds_LIP.Active:= True ;
+  cds_LIP.First ;
+  mtUserPropLIPNo.AsInteger:= cds_LIPLIPNo.AsInteger ;
+  acRemoveAllRowsExecute(Sender) ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.mtUserPropProducerNoChange(Sender: TField);
+begin
+ With dm_UserProps do
+ Begin
+  mtUserPropSupplierCode.AsString:= dmsContact.GetClientCode(mtUserPropProducerNo.AsInteger) ;
+
+  cds_RegPoint.Active:= False ;
+  cds_RegPoint.ParamByName('ClientNo').AsInteger:= mtUserPropProducerNo.AsInteger ;
+  cds_RegPoint.Active:= True ;
+  cds_RegPoint.First ;
+  mtUserPropRegPointNo.AsInteger:= cds_RegPointRegistrationPointNo.AsInteger ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.mtUserPropAfterInsert(DataSet: TDataSet);
+begin
+ mtUserPropRegDate.AsDateTime           := Now ;
+ mtUserPropProductGroupNo.AsInteger     := -1 ;
+ mtUserPropProductNo.AsInteger          := -1 ;
+ mtUserPropProductDescription.AsString  := siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_31' (* 'Ingen ändring' *) ) ;
+end;
+
+procedure TfrmRemovePkg.acAvregistreraPaketExecute(Sender: TObject);
+const
+  LF = #10;
+Begin
+ if mtUserPropRegDate.AsDateTime > Now then
+ Begin
+  ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_32' (* 'Avregistreringsdatum får inte vara större än aktuellt datum' *) ));
+  Exit ;
+ End ;
+
+ With dmPkgs do
+ Begin
+  if mtLoadPackages.State in [dsEdit, dsInsert] then
+  mtLoadPackages.Post ;
+ End ;
+
+ if ControlInvDate(Sender) then
+ Begin
+  if mtUserProp.State in [dsEdit, dsInsert] then
+   mtUserProp.Post ;
+  if MessageDlg(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_33' (* 'Vill du avregistrera paket mot mätpunkt: ' *) )
+  +Trim(lcPRODUCER.Text)
+  +'/'+Trim(lcREGPOINT.Text)
+  +LF+siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_34' (* 'Datum: ' *) )+deRegDate.Text
+  ,    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  Begin
+   if dmPkgs.RemovePkgsFromInventory(mtUserProp) then
+    RemoveAllSuccespkgs(Sender) ;
+  End ; //if
+ End
+ else
+ ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_35' (* 'Paket, markerade med röd färg, kan inte avregistreras pga att avregistreringsdatum är före inventerings eller maxdatum i en inventering där lagergruppen ingår' *) )) ;
+end;
+
+procedure TfrmRemovePkg.acPkgNoSerieExecute(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  if mtLoadPackages.State <> dsBrowse then
+   Try
+   mtLoadPackages.Post ;
+   Except
+    on eDatabaseError do
+    Begin
+     Raise ;
+    End ;
+   End ;
+
+  InsertPkgSerie(Sender) ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.acStartBarCodeScanningExecute(Sender: TObject);
+begin
+//Proc GetPkgPos läser in paketnr posistioner och längder
+ grdPkgsDBBandedTableView1ROWNO.SortOrder:= soAscending ;
+ EgenPkgSupplierCode            := dmsSystem.GetPkgPos (ThisUser.CompanyNo) ;
+ fScanPkgNo                     := TfScanPkgNo.Create(Self);
+ Try
+  fScanPkgNo.cbEgenLevKod.Caption:= siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_36' (* 'Scanna endast in paket med leverantörskod ' *) ) + EgenPkgSupplierCode ;
+  fScanPkgNo.ShowModal ;
+ Finally
+  fScanPkgNo.Free ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.acCloseExecute(Sender: TObject);
+begin
+ Close ;
+end;
+
+procedure TfrmRemovePkg.acAddRowExecute(Sender: TObject);
+begin
+ dmPkgs.mtLoadPackages.Append ;
+ grdPkgs.SetFocus ;
+end;
+
+procedure TfrmRemovePkg.acRemoveRowExecute(Sender: TObject);
+begin
+ // remove one row
+ With dmPkgs do
+ if ((mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0))
+ or ((mtLoadPackages.Active) AND (mtLoadPackages.State in [dsEdit, dsInsert])) then
+ Begin
+  mtLoadPackages.Delete ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.acDeletePkgFromSystemExecute(Sender: TObject);
+begin
+ if mtUserPropRegDate.AsDateTime > Now then
+ Begin
+  ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_32' (* 'Avregistreringsdatum får inte vara större än aktuellt datum' *) ));
+  Exit ;
+ End ;
+ if ControlInvDate(Sender) then
+ Begin
+  if mtUserProp.State in [dsEdit, dsInsert] then
+   mtUserProp.Post ;
+  if MessageDlg(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_38' (* 'Obs! paketen kommer att rensas bort från databasen, Fortsätta?' *) ),
+  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  Begin
+   if MessageDlg(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_39' (* 'Obs! paketen kan inte återställas till lagret, Fortsätta?' *) ),
+   mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+   Begin
+    if dmPkgs.DeletePackagesFromSystem (mtUserProp) then
+     Begin
+      RemoveAllSuccespkgs(Sender) ;
+     End ;
+   End ; //if
+  End ;//if
+ End //if ControlInvDate(Sender) then
+  else
+   ShowMessage(siLangLinked_frmRemovePkg.GetTextOrDefault('IDS_40' (* 'Paket, markerade med röd färg, kan inte avregistreras pga att avregistreringsdatum är mindre än inventerings eller maxdatum i inventering' *) )) ;
+end;
+
+procedure TfrmRemovePkg.acRemoveRowUpdate(Sender: TObject);
+begin
+ // remove one row
+ With dmPkgs do
+  acRemoveRow.Enabled:= (mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
+end;
+
+procedure TfrmRemovePkg.acAddRowUpdate(Sender: TObject);
+begin
+ acAddRow.Enabled:= (mtUserProp.Active) and (mtUserPropOwnerNo.AsInteger > 0)
+ and (mtUserPropProducerNo.AsInteger > 0) and (mtUserPropRegPointNo.AsInteger > 0) ;
+end;
+
+procedure TfrmRemovePkg.acAvregistreraPaketUpdate(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  acAvregistreraPaket.Enabled:= ((mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert]))) ;
+ End ;
+end;
+
+procedure TfrmRemovePkg.RemotePkgEntry (PkgNos : TkbmMemTable) ;
+Var     //NoOfPkgsInSerie,
+        x                   : Integer ;
+        ResultButton        : word ;
+        Save_Cursor         : TCursor;
+        Res_UserName        : String ;
+begin
+ ResultButton:= mrYes ;
+ With dmPkgs do
+ Begin
+  mtUserProp.Edit ;
+  mtUserPropOwnerNo.AsInteger := PkgNos.FieldByName('OwnerNo').AsInteger ;
+  mtUserPropPIPNo.AsInteger   := PkgNos.FieldByName('PIPNo').AsInteger ;
+  mtUserProp.Post ;
+  mtLoadPackages.IndexName    := 'mtLoadPackagesIndex5' ;
+  mtLoadPackages.DisableControls ;
+  Try
+   Save_Cursor := Screen.Cursor;
+   Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+   Try
+
+   PkgNos.First ;
+   While not PkgNos.Eof do
+   Begin
+    if dmsSystem.Pkg_Reserved(
+          PkgNos.FieldByName('PACKAGENO').AsInteger,
+          PkgNos.FieldByName('SUPP_CODE').AsString, Self.Name, Res_UserName
+          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
+    Begin
+     if not mtLoadPackages.FindKey([PkgNos.FieldByName('PACKAGENO').AsInteger, PkgNos.FieldByName('SUPP_CODE').AsString]) then
+     Begin
+      Try
+
+      sq_OneUniquePkg.Close ;
+      sq_OneUniquePkg.ParamByName('PackageNo').AsInteger           := PkgNos.FieldByName('PACKAGENO').AsInteger ;
+      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgNos.FieldByName('SUPP_CODE').AsString ;
+      sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := PkgNos.FieldByName('OwnerNo').AsInteger ;
+      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
+      sq_OneUniquePkg.ParamByName('Status').AsInteger              := 1 ;
+      sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
+      sq_OneUniquePkg.Open ;
+      mtLoadPackages.Insert ;
+      For x := 0 to 21 do
+       mtLoadPackages.Fields.Fields[x].AsVariant  := sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
+      mtLoadPackagesLoadDetailNo.AsInteger        := Unique_No ;
+      mtLoadPackages.Post ;
+      Unique_No:= Succ(Unique_No) ;
+      Except
+       on eDatabaseError do
+       Begin
+        Raise ;
+        mtLoadPackages.Cancel ;
+       End ;
+      End ;
+
+     End ; //if mtLoadPackages.FindKey(
+
+    End  //if dmsSystem.Pkg_Reserved(
+     else
+     Begin
+      ShowMessage('Paketnr '  + PkgNos.FieldByName('PACKAGENO').AsString  + '/' + PkgNos.FieldByName('SUPP_CODE').AsString+' är reserverad av ' + Res_UserName) ;
+     End ;
+
+    PkgNos.Next ; 
+   End ;//While
+   Finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+   End ;
+
+  Finally
+   mtLoadPackages.IndexName:= 'mtLoadPackagesIndex6' ;
+   mtLoadPackages.EnableControls ;
+  End ;
+ End ; // with
+End ;
+
+procedure TfrmRemovePkg.acSearchRunNoExecute(Sender: TObject);
 var fSearchRunNo: TfSearchRunNo;
 begin
  fSearchRunNo:= TfSearchRunNo.Create(nil);
  Try
  fSearchRunNo.mtProps.Edit ;
- fSearchRunNo.mtPropsRegPointNo.AsInteger:= integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex]) ;
- fSearchRunNo.mtPropsSupplierNo.AsInteger:= integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
+ fSearchRunNo.mtPropsRegPointNo.AsInteger := mtUserPropRegPointNo.AsInteger ;
+ fSearchRunNo.mtPropsSupplierNo.AsInteger := mtUserPropProducerNo.AsInteger ;
  fSearchRunNo.mtProps.Post ;
  if fSearchRunNo.ShowModal = mrOK then
  Begin
-//  dmsPkg.mtProps.Edit ;
+//  dmsPkg.mtUserProp.Edit ;
   seRunNr.Value := fSearchRunNo.cds_RunNosKrnr.AsInteger ;
-//  dmsPkg.mtProps.Post ;
+//  dmsPkg.mtUserProp.Post ;
  End ;
  Finally
   FreeAndNil(fSearchRunNo) ;
  End ;
 end;
 
-procedure TfrmRemovePkg.BitBtn3Click(Sender: TObject);
+procedure TfrmRemovePkg.acRemoveAllRowsExecute(Sender: TObject);
 begin
-// dxComponentPrinter1.PrintTitle:= 'AvräkningNr: '+cds_LoadFreightCostHeader2AvrakningsNo.AsString ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Clear ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Clear ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add('Avregistrerade paket ') ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add('Verk: ' + peMatPunktAgare.Text) ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add('Mätpunkt: ' + peRegPoint.Text) ;
-  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add('Avregistrerat ' + DateTimeToStr(dxDateEdit1.Date)) ;
-  dxComponentPrinter1Link1.ShrinkToPageWidth ;
-  dxComponentPrinter1Link1.PrinterPage.ApplyToPrintDevice ;
+ // remove one row
+ With dmPkgs do
+ if ((mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0))
+ or ((mtLoadPackages.Active) AND (mtLoadPackages.State in [dsEdit, dsInsert])) then
+ Begin
+  mtLoadPackages.Active:= False ;
+  mtLoadPackages.Active:= True ;
+ End ;
+end;
 
-  dxComponentPrinter1.Preview(True, dxComponentPrinter1Link1);
+procedure TfrmRemovePkg.acRemoveAllRowsUpdate(Sender: TObject);
+begin
+ With dmPkgs do
+  acRemoveAllRows.Enabled:= (mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
+end;
+
+function TfrmRemovePkg.ControlInvDate(Sender: TObject) : Boolean ;
+const
+  LF = #10;
+Var
+    LastInvNr   : Integer ;
+    InvDate     : TDateTime ;
+    MaxDateMsg  : String ;
+Begin
+ With dmPkgs do
+ Begin
+  mtLoadPackages.DisableControls ;
+  Try
+  if mtLoadPackages.State in [dsEdit, dsInsert] then
+  mtLoadPackages.Post ;
+  Result  := True ;
+  mtLoadPackages.First ;
+  While not mtLoadPackages.Eof do
+  Begin
+   LastInvNr  := dmsSystem.IsRegDateBeforeInvDate(mtLoadPackagesLOG_INVENTORY_NO.AsInteger, Self.mtUserPropRegDate.AsDateTime, InvDate, MaxDateMsg) ;
+   if LastInvNr > -1 then
+   Begin
+    mtLoadPackages.Edit ;
+    mtLoadPackagesInvNr.AsInteger := LastInvNr ;
+    mtLoadPackages.Post ;
+    Result  := False ;
+   End ;
+   mtLoadPackages.Next ;
+  End ;
+  Finally
+   mtLoadPackages.EnableControls ;
+  End ;
+ End ;//With
+end;
+
+procedure TfrmRemovePkg.grdPkgsDBBandedTableView1StylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+var
+  aColumn : TcxCustomGridTableItem;
+  aValue  : Variant;
+begin
+ aColumn :=(Sender as TcxGridDBBandedTableView).GetColumnByFieldName('InvNr');
+ if (ARecord.Values[aColumn.Index] <> null) and (AItem <> nil) then
+ Begin
+  aValue := ARecord.Values[aColumn.Index];
+
+  if (aValue > 0)  then
+  AStyle:= cxStyleRedBg ;
+ End ;
 end;
 
 end.
