@@ -171,10 +171,6 @@ begin
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
-  Application.CreateForm(TdmsPkg, dmsPkg);
-  Application.CreateForm(TfVardaBortPkt, fVardaBortPkt);
-  Application.CreateForm(TfrmMovePkgs, frmMovePkgs);
-  Application.CreateForm(TfrmRemovePkg, frmRemovePkg);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

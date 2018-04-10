@@ -615,6 +615,12 @@ type
     mtMarkedProdSequenceNo: TIntegerField;
     mtMarkedProdALMM: TFloatField;
     mtMarkedProdVaruSlagNo: TIntegerField;
+    cds_ShiftLag: TFDQuery;
+    cds_ShiftLagShiftTeamNo: TIntegerField;
+    cds_ShiftLagShiftTeamName: TStringField;
+    cds_ShiftLagDateModified: TSQLTimeStampField;
+    cds_ShiftLagModifiedUser: TIntegerField;
+    cds_ShiftLagClientNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);

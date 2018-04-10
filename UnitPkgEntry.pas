@@ -258,12 +258,17 @@ Begin
 
  mtPackages.FieldDefs.Clear ;
 
-   mtPackages.FieldDefs.Add('RecId',ftInteger,0,False) ;
+    mtPackages.FieldDefs.Add('PackageNo',ftLargeInt,0,False) ;
+   mtPackages.FieldDefs[cPACKAGENO].CreateField(nil);
+   mtPackages.FieldByName('PackageNo').DisplayLabel:= siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_12' (* 'Pktnr' *) ) ;
+
+//1
+  mtPackages.FieldDefs.Add('RecId',ftInteger,0,False) ;
    mtPackages.FieldDefs[cRECID].CreateField(nil);
    mtPackages.FieldByName('RecId').DisplayLabel:= siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_4' (* 'Radnr' *) ) ;
    mtPackages.FieldByName('RecId').Visible:= True ;
 
-//1
+//2
    mtPackages.FieldDefs.Add(
 {TSI:IGNORE ON}
 	'Description'
@@ -280,11 +285,6 @@ Begin
 	'Description'
 {TSI:IGNORE OFF}
 ).Visible:= False ;
-//2
-   mtPackages.FieldDefs.Add('PackageNo',ftLargeInt,0,False) ;
-   mtPackages.FieldDefs[cPACKAGENO].CreateField(nil);
-   mtPackages.FieldByName('PackageNo').DisplayLabel:= siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_12' (* 'Pktnr' *) ) ;
-
 //3
    mtPackages.FieldDefs.Add('SupplierCode',ftString,3,False) ;
    mtPackages.FieldDefs[cSUPPLIERCODE].CreateField(nil);
@@ -405,6 +405,19 @@ Begin
    mtPackages.FieldDefs[cSurfacingNo].CreateField(nil);
    mtPackages.FieldByName('SurfacingNo').Visible:= False ;
 
+//23
+   mtPackages.FieldDefs.Add('OverrideRL',ftInteger,0,False) ;
+   mtPackages.FieldDefs[cOverrideRL].CreateField(nil);
+   mtPackages.FieldByName('OverrideRL').Visible:= False ;
+
+//24
+   mtPackages.FieldDefs.Add('Defsspno',ftInteger,0,False) ;
+   mtPackages.FieldDefs[cDefsspno].CreateField(nil);
+   mtPackages.FieldByName('Defsspno').Visible:= False ;
+
+//25
+
+
    X:= FirstLengthColumn  ;
    if dmsPkg.mtUserPropInputOption.AsInteger = INPUT_PIECES then
    Begin
@@ -432,20 +445,8 @@ Begin
    mtPackages.FieldDefs[x].CreateField(nil);
    LengthTitle:= Trim(sq_ProductLengthsActualLengthMM.AsString) ;
 
-//   if sq_ProductLengthsNominalLengthMM.AsString <> sq_ProductLengthsActualLengthMM.AsString then
-//   LengthTitle:= LengthTitle + ' ('+sq_ProductLengthsNominalLengthMM.AsString+') ' ;
-{   if sq_ProductLengthsPET.AsInteger = 1 then
-   LengthTitle:= LengthTitle + 'P' ;
-   if sq_ProductLengthsFingerJoint.AsInteger = 1 then
-   LengthTitle:= LengthTitle + 'F' ; }
-
-//   ActualLengthMMArray[x]:= sq_ProductLengthsActualLengthMM.AsFloat ;
-//   NominalLengthMMArray[x]:= sq_ProductLengthsNominalLengthMM.AsFloat ;
-//   FEET_Array[x]:= sq_ProductLengthsNominalLengthFEET.AsFloat ;
-
    mtPackages.FieldByName(sq_ProductLengthsActualLengthMM.AsString).DisplayLabel:= LengthTitle ;
 
-//   ActualLengthMMArray[x]:= sq_ProductLengthsActualLengthMM.AsFloat ;
    X:= Succ(x) ;
 
    sq_ProductLengths.Next ;
@@ -456,12 +457,6 @@ Begin
  if dmsPkg.mtUserPropInputOption.AsInteger = INPUT_LOPM_TOTAL_LOPM then
   Begin
    grdPackagesDBBandedTableView1.Bands[2].Visible:= False ;
-//   mtPackages.FieldDefs.Add('1',ftInteger,0,False) ;
-//   mtPackages.FieldDefs[x].CreateField(nil);
-//   mtPackages.FieldByName('1').DisplayLabel:= 'Pcs' ;
-//   ActualLengthMMArray[x]:= 1 ;
-//   NominalLengthMMArray[x]:= 1 ;
-//   FEET_Array[x]:= 1 ;
   End
   else
   if dmsPkg.mtUserPropInputOption.AsInteger = INPUT_LOPM_AVERAGE_LENGTH then
@@ -508,6 +503,7 @@ Begin
    grdPackagesDBBandedTableView1.Columns[x].Options.Filtering := False ;
    grdPackagesDBBandedTableView1.Columns[x].Position.BandIndex:= 2 ;
    grdPackagesDBBandedTableView1.Columns[x].PropertiesClass   :=  TcxTextEditProperties;
+
    Properties := grdPackagesDBBandedTableView1.Columns[x].Properties AS TcxTextEditProperties;
    Properties.ReadOnly:= True ;
   End ;

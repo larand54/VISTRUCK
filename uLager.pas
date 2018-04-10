@@ -2976,7 +2976,7 @@ begin
     sp_invpiv.Active  := False ;
     sp_invpiv.Active  := True ;
     sp_invpivPkgDtl.Active    := False ;
-    sp_invpivPkgDtl.Active    := True ;
+    sp_invpivPkgDtl.execute ;
    End ;
  Finally
   Screen.Cursor := Save_Cursor ;

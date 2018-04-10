@@ -44,37 +44,6 @@ type
     bbRemoveAllRows: TdxBarButton;
     bbRemoveRow: TdxBarButton;
     lbInitBarCodeScanning: TdxBarLargeButton;
-    mtUserProp: TkbmMemTable;
-    mtUserPropVerkNo: TIntegerField;
-    mtUserPropOwnerNo: TIntegerField;
-    mtUserPropPIPNo: TIntegerField;
-    mtUserPropLIPNo: TIntegerField;
-    mtUserPropInputOption: TIntegerField;
-    mtUserPropRegPointNo: TIntegerField;
-    mtUserPropRegDate: TDateTimeField;
-    mtUserPropCopyPcs: TIntegerField;
-    mtUserPropRunNo: TIntegerField;
-    mtUserPropProducerNo: TIntegerField;
-    mtUserPropAutoColWidth: TIntegerField;
-    mtUserPropSupplierCode: TStringField;
-    mtUserPropLengthOption: TIntegerField;
-    mtUserPropLengthGroupNo: TIntegerField;
-    mtUserPropNewItemRow: TIntegerField;
-    mtUserPropGradeStampNo: TIntegerField;
-    mtUserPropBarCodeNo: TIntegerField;
-    mtUserPropLengthGroup: TStringField;
-    mtUserPropLIPName: TStringField;
-    mtUserPropPIPNAME: TStringField;
-    mtUserPropREGPOINT: TStringField;
-    mtUserPropPRODUCER: TStringField;
-    mtUserPropOWNER: TStringField;
-    mtUserPropVERK: TStringField;
-    mtUserPropRoleType: TIntegerField;
-    mtUserPropGradestamp: TStringField;
-    mtUserPropBarcode: TStringField;
-    mtUserPropProductDescription: TStringField;
-    mtUserPropProductNo: TIntegerField;
-    mtUserPropProductGroupNo: TIntegerField;
     dsUserProp: TDataSource;
     ActionList1: TActionList;
     acFlyttaPaket: TAction;
@@ -131,15 +100,7 @@ type
     deRegDate: TcxDBDateEdit;
     ePktNr: TEdit;
     cxGridPopupMenu1: TcxGridPopupMenu;
-    mtUserPropSalesRegionNo: TIntegerField;
-    mtUserPropVolumeUnitNo: TIntegerField;
-    mtUserPropLengthFormatNo: TIntegerField;
-    mtUserPropForm: TStringField;
-    mtUserPropUserID: TIntegerField;
-    mtUserPropLengthVolUnitNo: TIntegerField;
     acSearchRunNo: TAction;
-    mtUserPropGroupByBox: TIntegerField;
-    mtUserPropGroupSummary: TIntegerField;
     Label2: TLabel;
     lcPIPNAME: TcxDBLookupComboBox;
     cxLabel3: TcxLabel;
@@ -155,28 +116,77 @@ type
     lcTO_PIPNAME: TcxDBLookupComboBox;
     Label3: TLabel;
     Label4: TLabel;
-    mtUserPropTO_PIPNAME: TStringField;
-    mtUserPropTO_LIPNAME: TStringField;
     Bevel2: TBevel;
-    mtUserPropAgentNo: TIntegerField;
-    mtUserPropShipperNo: TIntegerField;
-    mtUserPropStartPeriod: TDateTimeField;
-    mtUserPropEndPeriod: TDateTimeField;
     cxStyleRepository1: TcxStyleRepository;
     cxStyleRedBg: TcxStyle;
     grdPkgsDBBandedTableView1InvNr: TcxGridDBBandedColumn;
+    siLangLinked_frmMovePkgs: TsiLangLinked;
+    mtUserProp: TkbmMemTable;
+    mtUserPropVerkNo: TIntegerField;
+    mtUserPropOwnerNo: TIntegerField;
+    mtUserPropPIPNo: TIntegerField;
+    mtUserPropLIPNo: TIntegerField;
+    mtUserPropInputOption: TIntegerField;
+    mtUserPropRegPointNo: TIntegerField;
+    mtUserPropCopyPcs: TIntegerField;
+    mtUserPropRunNo: TIntegerField;
+    mtUserPropProducerNo: TIntegerField;
+    mtUserPropAutoColWidth: TIntegerField;
+    mtUserPropRegDate: TDateTimeField;
+    mtUserPropSupplierCode: TStringField;
+    mtUserPropLengthOption: TIntegerField;
+    mtUserPropLengthGroupNo: TIntegerField;
+    mtUserPropNewItemRow: TIntegerField;
+    mtUserPropGradeStampNo: TIntegerField;
+    mtUserPropBarCodeNo: TIntegerField;
+    mtUserPropLengthGroup: TStringField;
+    mtUserPropLIPName: TStringField;
+    mtUserPropPIPNAME: TStringField;
+    mtUserPropREGPOINT: TStringField;
+    mtUserPropPRODUCER: TStringField;
+    mtUserPropOWNER: TStringField;
+    mtUserPropVERK: TStringField;
+    mtUserPropRoleType: TIntegerField;
+    mtUserPropGradestamp: TStringField;
+    mtUserPropBarcode: TStringField;
+    mtUserPropProductDescription: TStringField;
+    mtUserPropProductNo: TIntegerField;
+    mtUserPropProductGroupNo: TIntegerField;
+    mtUserPropSalesRegionNo: TIntegerField;
+    mtUserPropVolumeUnitNo: TIntegerField;
+    mtUserPropLengthFormatNo: TIntegerField;
+    mtUserPropForm: TStringField;
+    mtUserPropUserID: TIntegerField;
+    mtUserPropLengthVolUnitNo: TIntegerField;
+    mtUserPropGroupByBox: TIntegerField;
+    mtUserPropGroupSummary: TIntegerField;
+    mtUserPropTO_PIPNAME: TStringField;
+    mtUserPropTO_LIPNAME: TStringField;
+    mtUserPropAgentNo: TIntegerField;
+    mtUserPropMarketRegionNo: TIntegerField;
+    mtUserPropOrderTypeNo: TIntegerField;
+    mtUserPropStatus: TIntegerField;
+    mtUserPropFilterOrderDate: TIntegerField;
+    mtUserPropClientNo: TIntegerField;
+    mtUserPropSalesPersonNo: TIntegerField;
+    mtUserPropVerkSupplierNo: TIntegerField;
+    mtUserPropVerkKundNo: TIntegerField;
+    mtUserPropLOObjectType: TIntegerField;
+    mtUserPropLoadingLocationNo: TIntegerField;
+    mtUserPropShipperNo: TIntegerField;
+    mtUserPropBookingTypeNo: TIntegerField;
+    mtUserPropCustomerNo: TIntegerField;
+    mtUserPropShowProduct: TIntegerField;
+    mtUserPropStartPeriod: TDateTimeField;
+    mtUserPropEndPeriod: TDateTimeField;
     mtUserPropFilter1: TStringField;
     mtUserPropFilter2: TStringField;
-    siLangLinked_frmMovePkgs: TsiLangLinked;
+    mtUserPropName: TStringField;
     procedure lbCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure ePktNrKeyPress(Sender: TObject; var Key: Char);
-    procedure mtUserPropOwnerNoChange(Sender: TField);
-    procedure mtUserPropPIPNoChange(Sender: TField);
-    procedure mtUserPropProducerNoChange(Sender: TField);
-    procedure mtUserPropAfterInsert(DataSet: TDataSet);
     procedure grdPkgsDBBandedTableView1PACKAGENOPropertiesValidate(
       Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
@@ -192,11 +202,14 @@ type
     procedure acPkgInfoExecute(Sender: TObject);
     procedure acRemoveAllRowsExecute(Sender: TObject);
     procedure acRemoveAllRowsUpdate(Sender: TObject);
-    procedure mtUserPropVerkNoChange(Sender: TField);
-    procedure mtUserPropSalesRegionNoChange(Sender: TField);
+    procedure mtUserProp_oldVerkNoChange(Sender: TField);
+    procedure mtUserProp_oldSalesRegionNoChange(Sender: TField);
     procedure grdPkgsDBBandedTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure mtUserPropAfterInsert(DataSet: TDataSet);
+    procedure mtUserPropOwnerNoChange(Sender: TField);
+    procedure mtUserPropPIPNoChange(Sender: TField);
   private
     { Private declarations }
      pUserIsAllowedToMovePkgs  : Integer ;
@@ -910,6 +923,7 @@ begin
  End ;
 end;
 
+
 procedure TfrmMovePkgs.mtUserPropPIPNoChange(Sender: TField);
 begin
 // if FExternMove = False then
@@ -927,19 +941,6 @@ begin
  End ;
 end;
 
-procedure TfrmMovePkgs.mtUserPropProducerNoChange(Sender: TField);
-begin
-{ With dm_UserProps do
- Begin
-  mtUserPropSupplierCode.AsString:= dmsContact.GetClientCode(mtUserPropProducerNo.AsInteger) ;
-
-  cds_RegPoint.Active:= False ;
-  sq_RegPoint.ParamByName('ClientNo').AsInteger:= mtUserPropProducerNo.AsInteger ;
-  cds_RegPoint.Active:= True ;
-  cds_RegPoint.First ;
-  mtUserPropRegPointNo.AsInteger:= cds_RegPointRegistrationPointNo.AsInteger ;
- End ; }
-end;
 
 procedure TfrmMovePkgs.mtUserPropAfterInsert(DataSet: TDataSet);
 begin
@@ -948,6 +949,7 @@ begin
  mtUserPropProductNo.AsInteger          := -1 ;
  mtUserPropProductDescription.AsString  := siLangLinked_frmMovePkgs.GetTextOrDefault('IDS_45' (* 'Ingen ändring' *) ) ;
 end;
+
 
 procedure TfrmMovePkgs.grdPkgsDBBandedTableView1PACKAGENOPropertiesValidate(
   Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
@@ -1138,81 +1140,76 @@ begin
  End ;
 end;
 
-procedure TfrmMovePkgs.RemotePkgEntry (PkgNos : TkbmMemTable) ;
-Var     //NoOfPkgsInSerie,
-        x                   : Integer ;
-        ResultButton        : word ;
-        Save_Cursor         : TCursor;
-        Res_UserName        : String ;
+procedure TfrmMovePkgs.RemotePkgEntry(PkgNos: TkbmMemTable);
+var     //NoOfPkgsInSerie,
+  x: Integer;
+  Save_Cursor: TCursor;
+  Res_UserName: string;
 begin
- ResultButton:= mrYes ;
- With dmPkgs do
- Begin
-  mtUserProp.Edit ;
-  mtUserPropOwnerNo.AsInteger := PkgNos.FieldByName('OwnerNo').AsInteger ;
-  mtUserPropPIPNo.AsInteger   := PkgNos.FieldByName('PIPNo').AsInteger ;
-  mtUserProp.Post ;
-  mtLoadPackages.IndexName:= 'mtLoadPackagesIndex5' ;
-  mtLoadPackages.DisableControls ;
-  Try
-   Save_Cursor := Screen.Cursor;
-   Screen.Cursor := crSQLWait;    { Show hourglass cursor }
-   Try
+  with dmPkgs do
+  begin
+    mtUserProp.Edit;
+    mtUserPropOwnerNo.AsInteger := PkgNos.FieldByName('OwnerNo').AsInteger;
+    mtUserPropPIPNo.AsInteger := PkgNos.FieldByName('PIPNo').AsInteger;
+    mtUserProp.Post;
+    mtLoadPackages.IndexName := 'mtLoadPackagesIndex5';
+    mtLoadPackages.DisableControls;
+    try
+      Save_Cursor := Screen.Cursor;
+      Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+      try
 
-   PkgNos.First ;
-   While not PkgNos.Eof do
-   Begin
-    if dmsSystem.Pkg_Reserved(
-          PkgNos.FieldByName('PACKAGENO').AsInteger,
-          PkgNos.FieldByName('SUPP_CODE').AsString, Self.Name, Res_UserName
-          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
-    Begin
-     if not mtLoadPackages.FindKey([PkgNos.FieldByName('PACKAGENO').AsInteger, PkgNos.FieldByName('SUPP_CODE').AsString]) then
-     Begin
-      Try
+        PkgNos.First;
+        while not PkgNos.Eof do
+        begin
+          if dmsSystem.Pkg_Reserved(PkgNos.FieldByName('PACKAGENO').AsInteger, PkgNos.FieldByName('SUPP_CODE').AsString, Self.Name, Res_UserName) = ThisUser.UserName + '/' + Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED } then
+          begin
+            if not mtLoadPackages.FindKey([PkgNos.FieldByName('PACKAGENO').AsInteger, PkgNos.FieldByName('SUPP_CODE').AsString]) then
+            begin
+              try
 
-      sq_OneUniquePkg.Close ;
-      sq_OneUniquePkg.ParamByName('PackageNo').AsInteger           := PkgNos.FieldByName('PACKAGENO').AsInteger ;
-      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgNos.FieldByName('SUPP_CODE').AsString ;
-      sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := PkgNos.FieldByName('OwnerNo').AsInteger ;
-      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
-      sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
-      sq_OneUniquePkg.ParamByName('Status').AsInteger              := 1 ;
-      sq_OneUniquePkg.Open ;
-      mtLoadPackages.Insert ;
-      For x := 0 to 21 do
-       mtLoadPackages.Fields.Fields[x].AsVariant:= sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
-      mtLoadPackagesLoadDetailNo.AsInteger:= Unique_No ;
-      mtLoadPackages.Post ;
-      Unique_No:= Succ(Unique_No) ;
-      Except
-       on eDatabaseError do
-       Begin
-        Raise ;
-        mtLoadPackages.Cancel ;
-       End ;
-      End ;
+                sq_OneUniquePkg.Close;
+                sq_OneUniquePkg.ParamByName('PackageNo').AsInteger := PkgNos.FieldByName('PACKAGENO').AsInteger;
+                sq_OneUniquePkg.ParamByName('SupplierCode').AsString := PkgNos.FieldByName('SUPP_CODE').AsString;
+                sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger := PkgNos.FieldByName('OwnerNo').AsInteger;
+                sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo;
+                sq_OneUniquePkg.ParamByName('LanguageID').AsInteger := ThisUser.LanguageID;
+                sq_OneUniquePkg.ParamByName('Status').AsInteger := 1;
+                sq_OneUniquePkg.Open;
+                mtLoadPackages.Insert;
+                for x := 0 to 21 do
+                  mtLoadPackages.Fields.Fields[x].AsVariant := sq_OneUniquePkg.Fields.Fields[x].AsVariant;
+                mtLoadPackagesLoadDetailNo.AsInteger := Unique_No;
+                mtLoadPackages.Post;
+                Unique_No := Succ(Unique_No);
+              except
+                on eDatabaseError do
+                begin
+                  raise;
+                  mtLoadPackages.Cancel;
+                end;
+              end;
 
-     End ; //if mtLoadPackages.FindKey(
+            end; //if mtLoadPackages.FindKey(
 
-    End  //if dmsSystem.Pkg_Reserved(
-     else
-     Begin
-      ShowMessage(siLangLinked_frmMovePkgs.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) )+PkgNos.FieldByName('PACKAGENO').AsString+'/'+PkgNos.FieldByName('SUPP_CODE').AsString+siLangLinked_frmMovePkgs.GetTextOrDefault('IDS_71' (* ' är reserverad av ' *) )+Res_UserName) ;
-     End ;
+          end  //if dmsSystem.Pkg_Reserved(
+          else
+          begin
+            ShowMessage(siLangLinked_frmMovePkgs.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) ) + PkgNos.FieldByName('PACKAGENO').AsString + '/' + PkgNos.FieldByName('SUPP_CODE').AsString + siLangLinked_frmMovePkgs.GetTextOrDefault('IDS_71' (* ' är reserverad av ' *) ) + Res_UserName);
+          end;
 
-    PkgNos.Next ; 
-   End ;//While
-   Finally
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-   End ;
+          PkgNos.Next;
+        end; //While
+      finally
+        Screen.Cursor := Save_Cursor;  { Always restore to normal }
+      end;
 
-  Finally
-   mtLoadPackages.IndexName:= 'mtLoadPackagesIndex6' ;
-   mtLoadPackages.EnableControls ;
-  End ;
- End ; // with
-End ;
+    finally
+      mtLoadPackages.IndexName := 'mtLoadPackagesIndex6';
+      mtLoadPackages.EnableControls;
+    end;
+  end; // with
+end;
 
 procedure TfrmMovePkgs.acPkgInfoExecute(Sender: TObject);
 Var frmPkgInfo : TfrmPkgInfo ;
@@ -1255,7 +1252,7 @@ begin
   or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
 end;
 
-procedure TfrmMovePkgs.mtUserPropVerkNoChange(Sender: TField);
+procedure TfrmMovePkgs.mtUserProp_oldVerkNoChange(Sender: TField);
 begin
  With dm_UserProps do
  Begin
@@ -1272,7 +1269,7 @@ begin
  End ;
 end;
 
-procedure TfrmMovePkgs.mtUserPropSalesRegionNoChange(Sender: TField);
+procedure TfrmMovePkgs.mtUserProp_oldSalesRegionNoChange(Sender: TField);
 begin
  With dm_UserProps do
  Begin

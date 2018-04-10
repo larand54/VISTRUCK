@@ -5574,4 +5574,34 @@ object dmsSystem: TdmsSystem
       FieldName = 'VaruSlagNo'
     end
   end
+  object cds_ShiftLag: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select * FROM dbo.ShiftTeam')
+    Left = 1120
+    Top = 960
+    object cds_ShiftLagShiftTeamNo: TIntegerField
+      FieldName = 'ShiftTeamNo'
+      Origin = 'ShiftTeamNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_ShiftLagShiftTeamName: TStringField
+      FieldName = 'ShiftTeamName'
+      Origin = 'ShiftTeamName'
+      Size = 35
+    end
+    object cds_ShiftLagDateModified: TSQLTimeStampField
+      FieldName = 'DateModified'
+      Origin = 'DateModified'
+    end
+    object cds_ShiftLagModifiedUser: TIntegerField
+      FieldName = 'ModifiedUser'
+      Origin = 'ModifiedUser'
+    end
+    object cds_ShiftLagClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+    end
+  end
 end

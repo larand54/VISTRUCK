@@ -383,8 +383,53 @@ object dmsPkg: TdmsPkg
         DataType = ftInteger
       end
       item
+        Name = 'LengthGroup'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'LIPName'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'PIPNAME'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'REGPOINT'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'PRODUCER'
+        DataType = ftString
+        Size = 80
+      end
+      item
+        Name = 'OWNER'
+        DataType = ftString
+        Size = 80
+      end
+      item
+        Name = 'VERK'
+        DataType = ftString
+        Size = 80
+      end
+      item
         Name = 'RoleType'
         DataType = ftInteger
+      end
+      item
+        Name = 'Gradestamp'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Barcode'
+        DataType = ftString
+        Size = 20
       end
       item
         Name = 'ProductDescription'
@@ -471,6 +516,34 @@ object dmsPkg: TdmsPkg
       item
         Name = 'Pris'
         DataType = ftFloat
+      end
+      item
+        Name = 'SkiftLag'
+        DataType = ftString
+        Size = 35
+      end
+      item
+        Name = 'ALMM'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NOM_WIDTH'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Package_Size'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'Filter1'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'Filter2'
+        DataType = ftString
+        Size = 255
       end>
     IndexDefs = <>
     SortOptions = []
@@ -656,6 +729,9 @@ object dmsPkg: TdmsPkg
     object mtUserPropSurfacingNo: TIntegerField
       FieldName = 'SurfacingNo'
     end
+    object mtUserPropMarketRegionNo: TIntegerField
+      FieldName = 'MarketRegionNo'
+    end
     object mtUserPropSalesRegionNo: TIntegerField
       FieldName = 'SalesRegionNo'
     end
@@ -699,6 +775,7 @@ object dmsPkg: TdmsPkg
     object mtUserPropSkiftLag: TStringField
       FieldKind = fkLookup
       FieldName = 'SkiftLag'
+      LookupDataSet = dmsSystem.cds_ShiftLag
       LookupKeyFields = 'ShiftTeamNo'
       LookupResultField = 'ShiftTeamName'
       KeyFields = 'GroupByBox'
@@ -728,6 +805,45 @@ object dmsPkg: TdmsPkg
     object mtUserPropFilter2: TStringField
       FieldName = 'Filter2'
       Size = 255
+    end
+    object mtUserPropOrderTypeNo: TIntegerField
+      FieldName = 'OrderTypeNo'
+    end
+    object mtUserPropStatus: TIntegerField
+      FieldName = 'Status'
+    end
+    object mtUserPropFilterOrderDate: TIntegerField
+      FieldName = 'FilterOrderDate'
+    end
+    object mtUserPropClientNo: TIntegerField
+      FieldName = 'ClientNo'
+    end
+    object mtUserPropSalesPersonNo: TIntegerField
+      FieldName = 'SalesPersonNo'
+    end
+    object mtUserPropVerkSupplierNo: TIntegerField
+      FieldName = 'VerkSupplierNo'
+    end
+    object mtUserPropVerkKundNo: TIntegerField
+      FieldName = 'VerkKundNo'
+    end
+    object mtUserPropLOObjectType: TIntegerField
+      FieldName = 'LOObjectType'
+    end
+    object mtUserPropLoadingLocationNo: TIntegerField
+      FieldName = 'LoadingLocationNo'
+    end
+    object mtUserPropBookingTypeNo: TIntegerField
+      FieldName = 'BookingTypeNo'
+    end
+    object mtUserPropCustomerNo: TIntegerField
+      FieldName = 'CustomerNo'
+    end
+    object mtUserPropShowProduct: TIntegerField
+      FieldName = 'ShowProduct'
+    end
+    object mtUserPropName: TStringField
+      FieldName = 'Name'
     end
   end
   object dsUserProp: TDataSource

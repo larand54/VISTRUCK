@@ -39,9 +39,9 @@ type
     cds_producerClientNo: TIntegerField;
     cds_producerClientName: TStringField;
     cds_producerSearchName: TStringField;
-    cds_PIP: TFDQuery;
-    cds_PIPPIPNO: TIntegerField;
-    cds_PIPPIPNAME: TStringField;
+    cds_PIP_old: TFDQuery;
+    cds_PIP_oldPIPNO: TIntegerField;
+    cds_PIP_oldPIPNAME: TStringField;
     cds_LIP: TFDQuery;
     cds_LIPLIPNo: TIntegerField;
     cds_LIPLIPName: TStringField;
@@ -134,6 +134,9 @@ type
     cds_UserDirDeliveryMessageWood_XSD: TStringField;
     cds_PropsFilter1: TStringField;
     cds_PropsFilter2: TStringField;
+    cds_PIP: TFDQuery;
+    cds_PIPPIPNO: TIntegerField;
+    cds_PIPPIPNAME: TStringField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

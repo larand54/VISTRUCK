@@ -115,7 +115,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Top = 2
     Margins.Right = 2
     Margins.Bottom = 2
-    Caption = 'vistestsql.vida.se'
+    Caption = 'vistestsql.vida.se:vis_vida'
     OnDblClick = cxlblTestDBDblClick
   end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked

@@ -186,6 +186,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cds_Verk: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -226,6 +227,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cds_producer: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -258,7 +260,7 @@ object dm_UserProps: Tdm_UserProps
       Size = 80
     end
   end
-  object cds_PIP: TFDQuery
+  object cds_PIP_old: TFDQuery
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -292,18 +294,19 @@ object dm_UserProps: Tdm_UserProps
         DataType = ftInteger
         ParamType = ptInput
       end>
-    object cds_PIPPIPNO: TIntegerField
+    object cds_PIP_oldPIPNO: TIntegerField
       FieldName = 'PIPNO'
       Origin = 'PIPNO'
       Required = True
     end
-    object cds_PIPPIPNAME: TStringField
+    object cds_PIP_oldPIPNAME: TStringField
       FieldName = 'PIPNAME'
       Origin = 'PIPNAME'
       Size = 50
     end
   end
   object cds_LIP: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -337,6 +340,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cds_RegPoint: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -370,6 +374,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cds_LengthGroup: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -392,6 +397,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cdsBarCodes: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -452,6 +458,7 @@ object dm_UserProps: Tdm_UserProps
     end
   end
   object cdsGradeStamps: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -869,6 +876,64 @@ object dm_UserProps: Tdm_UserProps
       FieldName = 'ClientName'
       Origin = 'ClientName'
       Size = 80
+    end
+  end
+  object cds_PIP: TFDQuery
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'SELECT Distinct PH.PhysicalInventoryPointNo AS PIPNO, CY.CITYNAM' +
+        'E AS PIPNAME'
+      'FROM'
+      'dbo.PHYSICALINVENTORYPOINT PH'
+      'Inner Join dbo.CITY CY on CY.CITYNO = PH.PhyInvPointNameNo'
+      'Inner Join dbo.ClientRole CR on CR.ClientNo = PH.OwnerNo'
+      'WHERE'
+      'PH.OwnerNo = :OwnerNo'
+      ''
+      'AND CY.CITYNAME <> '#39'Transfer'#39
+      ''
+      'AND PH.SequenceNo = 1'
+      'AND PH.PhyInvPointNameNo in (Select PH2.PhyInvPointNameNo'
+      'FROM dbo.PHYSICALINVENTORYPOINT PH2'
+      'WHERE PH2.OwnerNo = :LegoOwnerNo)'
+      ''
+      'AND (PH.PhyInvPointNameNo in (Select uap.PhyInvPointNameNo'
+      'FROM dbo.UserArrivalPoint uap'
+      'WHERE uap.UserID = :UserID)'
+      'OR'
+      '(-1 = :UserID))'
+      ''
+      'Order By  CY.CITYNAME'
+      '')
+    Left = 184
+    Top = 56
+    ParamData = <
+      item
+        Name = 'OWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'LEGOOWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_PIPPIPNO: TIntegerField
+      FieldName = 'PIPNO'
+      Origin = 'PIPNO'
+      Required = True
+    end
+    object cds_PIPPIPNAME: TStringField
+      FieldName = 'PIPNAME'
+      Origin = 'PIPNAME'
+      Size = 50
     end
   end
 end

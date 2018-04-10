@@ -177,8 +177,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
     StoredProcName = 'VIDA_ProdLeng'
-    Left = 480
-    Top = 384
+    Left = 472
+    Top = 456
     object sp_ProdLengProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
       Required = True
@@ -233,190 +233,11 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
     StoredProcName = 'vida_StandardLengths'
-    Left = 480
-    Top = 432
+    Left = 472
+    Top = 504
     object sp_StandardLengthsProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
       Required = True
-    end
-  end
-  object sq_OnePkgDetailData: TSQLQuery
-    MaxBlobSize = -1
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'First_PackageNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'Last_PackageNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'OwnerNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'UserCompanyLoggedIn'
-        ParamType = ptInput
-      end>
-    SQL.Strings = (
-      'SELECT distinct'
-      '        PR.ProductDisplayName           AS PRODUCT,'
-      '        PN.PackageNo'#9#9'        AS PACKAGENO,'
-      '        PN.PackageTypeNo'#9'        AS PACKAGETYPENO,'
-      '        PN.SupplierCode'#9'                AS SUPP_CODE,'
-      '        PT.Totalm3Actual                AS  M3_NET,'
-      '        PT.TotalNoOfPieces              AS  PCS,'
-      '        PT.Totalm3Nominal'#9#9'AS M3_NOM,'
-      #9'PT.TotalSQMofActualWidth'#9'AS KVM,'
-      #9'PT.TotalLinealMeterActualLength AS LOPM,'
-      '        PT.ProductNo                    AS PRODUCTNO,'
-      
-        '        Cy.CityName+'#39'/'#39'+LIP.LogicalInventoryName                ' +
-        '     AS INVENTORY,'
-      '        PT.OnSticks                     AS ONSTICKS,'
-      '        PTL.PcsPerLength                AS PCS_PER_LENGTH,'
-      '        C.ClientName                    AS OWNER,'
-      '        PIP.OwnerNo                     AS OWNERNO,'
-      '        PN.LogicalInventoryPointNo      AS LOG_INVENTORY_NO,'
-      '        BC.BARCODE                      AS BAR_CODE,'
-      '        PT.BarCodeID                    AS BARCODE_ID,'
-      '        GS.GradeStamp                   AS GRADE_STAMP,'
-      '        PT.GradeStamp                   AS GRADESTAMPNO,'
-      '        PT.PackageHeight                AS PKG_HEIGHT,'
-      '        PT.PackageWidth                 AS PKGWIDTH,'
-      '        PT.MiniBundled                  AS MINI_BUNDLE,'
-      '        PT.ShrinkWrap                   AS SHRINK_WRAP,'
-      '        WT.WrapType                     AS WRAP_TYPE,'
-      '        PT.WrapType                     AS WRAPTYPENO,'
-      '        PN.SupplierNo                   AS SUPPLIERNO,'
-      '        PN.PackageTypeNo'#9'        AS OLD_PACKAGETYPENO,'
-      '        PG.SurfacingNo'
-      ''
-      ''
-      ''
-      ''
-      'FROM       dbo.PackageNumber             PN'
-      
-        '        INNER JOIN dbo.PackageType  PT ON   PT.PackageTypeNo = P' +
-        'N.PackageTypeNo'
-      
-        '        Inner Join dbo.PackageTypeLengths PTL ON PTL.PackageType' +
-        'No = PT.PackageTypeNo'
-      
-        '        INNER JOIN dbo.Product      Pr  ON Pr.ProductNo     = Pt' +
-        '.ProductNo'
-      
-        '        INNER JOIN dbo.ProductGroup PG  ON PG.ProductGroupNo    ' +
-        ' = Pr.ProductGroupNo'
-      
-        '        Inner Join dbo.LogicalInventoryPoint LIP ON LIP.LogicalI' +
-        'nventoryPointNo = PN.LogicalInventoryPointNo'
-      
-        '        Inner Join dbo.PhysicalInventoryPoint PIP ON PIP.Physica' +
-        'lInventoryPointNo = LIP.PhysicalInventoryPointNo'
-      
-        '        Inner Join dbo.City Cy  ON Cy.CityNo = PIP.PhyInvPointNa' +
-        'meNo'
-      '        Inner Join dbo.Client C ON C.ClientNo = PIP.OwnerNo'
-      
-        '        LEFT OUTER JOIN DBO.BARCODE BC ON BC.BarCodeNo = PT.BarC' +
-        'odeID'
-      
-        '        LEFT OUTER JOIN DBO.GRADESTAMP GS ON GS.GradeStampNo = P' +
-        'T.GradeStamp'
-      
-        '        LEFT OUTER JOIN DBO.WrapType WT ON WT.WrapTypeNo = PT.Wr' +
-        'apType'
-      ''
-      'WHERE     PN.PackageNo >= :First_PackageNo'
-      'AND PN.PackageNo <= :Last_PackageNo'
-      'AND PN.Status = 1'
-      'AND PIP.OwnerNo = :OwnerNo'
-      ''
-      'AND PIP.PhyInvPointNameNo in'
-      '(Select PhyInvPointNameNo from'
-      'PHYSICALINVENTORYPOINT'
-      'where OwnerNo = :UserCompanyLoggedIn)'
-      'Order by PN.PackageNo'
-      ' '
-      ' ')
-    Left = 48
-    Top = 192
-    object sq_OnePkgDetailDataPRODUCT: TStringField
-      FieldName = 'PRODUCT'
-      Size = 100
-    end
-    object sq_OnePkgDetailDataPACKAGENO: TIntegerField
-      FieldName = 'PACKAGENO'
-    end
-    object sq_OnePkgDetailDataPACKAGETYPENO: TIntegerField
-      FieldName = 'PACKAGETYPENO'
-    end
-    object sq_OnePkgDetailDataSUPP_CODE: TStringField
-      FieldName = 'SUPP_CODE'
-      Size = 3
-    end
-    object sq_OnePkgDetailDataM3_NET: TFloatField
-      FieldName = 'M3_NET'
-    end
-    object sq_OnePkgDetailDataPCS: TIntegerField
-      FieldName = 'PCS'
-    end
-    object sq_OnePkgDetailDataM3_NOM: TFloatField
-      FieldName = 'M3_NOM'
-    end
-    object sq_OnePkgDetailDataKVM: TFloatField
-      FieldName = 'KVM'
-    end
-    object sq_OnePkgDetailDataLOPM: TFloatField
-      FieldName = 'LOPM'
-    end
-    object sq_OnePkgDetailDataPRODUCTNO: TIntegerField
-      FieldName = 'PRODUCTNO'
-    end
-    object sq_OnePkgDetailDataINVENTORY: TStringField
-      FieldName = 'INVENTORY'
-      Size = 50
-    end
-    object sq_OnePkgDetailDataPCS_PER_LENGTH: TStringField
-      FieldName = 'PCS_PER_LENGTH'
-      Size = 255
-    end
-    object sq_OnePkgDetailDataOWNER: TStringField
-      FieldName = 'OWNER'
-      Size = 80
-    end
-    object sq_OnePkgDetailDataOWNERNO: TIntegerField
-      FieldName = 'OWNERNO'
-    end
-    object sq_OnePkgDetailDataLOG_INVENTORY_NO: TIntegerField
-      FieldName = 'LOG_INVENTORY_NO'
-    end
-    object sq_OnePkgDetailDataBAR_CODE: TStringField
-      FieldName = 'BAR_CODE'
-    end
-    object sq_OnePkgDetailDataBARCODE_ID: TIntegerField
-      FieldName = 'BARCODE_ID'
-    end
-    object sq_OnePkgDetailDataGRADE_STAMP: TStringField
-      FieldName = 'GRADE_STAMP'
-    end
-    object sq_OnePkgDetailDataGRADESTAMPNO: TIntegerField
-      FieldName = 'GRADESTAMPNO'
-    end
-    object sq_OnePkgDetailDataSUPPLIERNO: TIntegerField
-      FieldName = 'SUPPLIERNO'
-    end
-    object sq_OnePkgDetailDataOLD_PACKAGETYPENO: TIntegerField
-      FieldName = 'OLD_PACKAGETYPENO'
-    end
-    object sq_OnePkgDetailDataSurfacingNo: TIntegerField
-      FieldName = 'SurfacingNo'
     end
   end
   object sp_PkgInfo: TSQLStoredProc
@@ -440,8 +261,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
     StoredProcName = 'vida_OnePackage_Info'
-    Left = 480
-    Top = 320
+    Left = 472
+    Top = 392
     object sp_PkgInfoCREATED: TSQLTimeStampField
       FieldName = 'CREATED'
       Required = True
@@ -950,64 +771,6 @@ object dmPkgs: TdmPkgs
       FieldName = 'Status'
     end
   end
-  object sp_RemovePackageFromInventory: TSQLStoredProc
-    MaxBlobSize = -1
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'RETURN_VALUE'
-        ParamType = ptResult
-        Size = 4
-      end
-      item
-        DataType = ftInteger
-        Name = 'PackageNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftString
-        Name = 'SupplierCode'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'RegistrationPointNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'UserID'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftTimeStamp
-        Name = 'DateCreated'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'MatPunktAgareNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'RunNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'TerminalNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'LogicalInventoryPointNo'
-        ParamType = ptInput
-      end>
-    StoredProcName = 'vida_RemovePkgFromInventory_VI'
-    Left = 192
-    Top = 368
-  end
   object sq_Prod_In_LO: TSQLQuery
     MaxBlobSize = -1
     Params = <
@@ -1258,7 +1021,7 @@ object dmPkgs: TdmPkgs
     Left = 616
     Top = 256
   end
-  object sp_MovePkg: TSQLStoredProc
+  object sp_MovePkg_old: TSQLStoredProc
     MaxBlobSize = -1
     Params = <
       item
@@ -1335,8 +1098,8 @@ object dmPkgs: TdmPkgs
       'dbo.Loaddetail LD '
       'where LD.PackageNo = :PackageNo'
       'AND LD.SupplierCode = :SupplierCode')
-    Left = 48
-    Top = 328
+    Left = 40
+    Top = 376
     object sq_PkgInLoadLastNr: TIntegerField
       FieldName = 'LastNr'
     end
@@ -1492,8 +1255,8 @@ object dmPkgs: TdmPkgs
       '(Select PhyInvPointNameNo from '
       'PHYSICALINVENTORYPOINT'
       'where OwnerNo = :UserCompanyLoggedIn)')
-    Left = 48
-    Top = 384
+    Left = 40
+    Top = 432
     object sq_OnePkgPRODUCT: TStringField
       FieldName = 'PRODUCT'
       Size = 100
@@ -1626,7 +1389,7 @@ object dmPkgs: TdmPkgs
     Left = 616
     Top = 376
   end
-  object sp_NewPackageNo: TSQLStoredProc
+  object sp_NewPackageNo_old: TSQLStoredProc
     MaxBlobSize = -1
     Params = <
       item
@@ -1714,8 +1477,8 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
     StoredProcName = 'vida_OnePackageNo'
-    Left = 48
-    Top = 448
+    Left = 40
+    Top = 496
   end
   object sq_PkgNoAvail: TSQLQuery
     MaxBlobSize = -1
@@ -2137,100 +1900,6 @@ object dmPkgs: TdmPkgs
     end
     object mtLoadPackagesInvNr: TIntegerField
       FieldName = 'InvNr'
-    end
-  end
-  object sq_PkgStatus: TSQLQuery
-    MaxBlobSize = -1
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'ClientNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'PackageNo'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftString
-        Name = 'SupplierCode'
-        ParamType = ptInput
-      end>
-    SQL.Strings = (
-      
-        'SELECT  pn.SupplierCode, LIPGH.LIPGroupNo, LIPGH.InvenType, LIPG' +
-        '.LIPNo,'
-      '(Select LIPG2.LIPNo from dbo.LIPGroup LIPG2'
-      'WHERE'
-      ' LIPG2.LIPGroupNo = LIPGH.LIPGroupNo'
-      'AND LIPG2.AvReg = 1 ) AS AvReg,'
-      'pn.LogicalInventoryPointNo AS PkgRealLIPNo'
-      ''
-      'FROM  dbo.PackageNumber pn'
-      
-        'Left Outer Join dbo.LIPGroup LIPG on LIPG.LIPNo = PN.LogicalInve' +
-        'ntoryPointNo'
-      
-        'Left Outer Join dbo.LIPGroupHdr LIPGH on LIPGH.LIPGroupNo = LIPG' +
-        '.LIPGroupNo'
-      'AND LIPGH.ClientNo = :ClientNo'
-      'WHERE PN.PackageNo = :PackageNo'
-      'AND PN.SupplierCode = :SupplierCode'
-      '')
-    Left = 344
-    Top = 216
-    object sq_PkgStatusSupplierCode: TStringField
-      FieldName = 'SupplierCode'
-      FixedChar = True
-      Size = 3
-    end
-    object sq_PkgStatusLIPGroupNo: TIntegerField
-      FieldName = 'LIPGroupNo'
-    end
-    object sq_PkgStatusInvenType: TIntegerField
-      FieldName = 'InvenType'
-    end
-    object sq_PkgStatusLIPNo: TIntegerField
-      FieldName = 'LIPNo'
-    end
-    object sq_PkgStatusAvReg: TIntegerField
-      FieldName = 'AvReg'
-    end
-    object sq_PkgStatusPkgRealLIPNo: TIntegerField
-      FieldName = 'PkgRealLIPNo'
-    end
-  end
-  object dsp_PkgStatus: TDataSetProvider
-    DataSet = sq_PkgStatus
-    Left = 344
-    Top = 264
-  end
-  object cds_PkgStatus: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dsp_PkgStatus'
-    Left = 344
-    Top = 312
-    object cds_PkgStatusSupplierCode: TStringField
-      FieldName = 'SupplierCode'
-      FixedChar = True
-      Size = 3
-    end
-    object cds_PkgStatusLIPGroupNo: TIntegerField
-      FieldName = 'LIPGroupNo'
-    end
-    object cds_PkgStatusInvenType: TIntegerField
-      FieldName = 'InvenType'
-    end
-    object cds_PkgStatusLIPNo: TIntegerField
-      FieldName = 'LIPNo'
-    end
-    object cds_PkgStatusAvReg: TIntegerField
-      FieldName = 'AvReg'
-    end
-    object cds_PkgStatusPkgRealLIPNo: TIntegerField
-      FieldName = 'PkgRealLIPNo'
     end
   end
   object sp_VardaBortPaket: TSQLStoredProc
@@ -2801,7 +2470,7 @@ object dmPkgs: TdmPkgs
         ParamType = ptInput
       end>
   end
-  object sq_OneUniquePkg: TFDQuery
+  object sq_OneUniquePkg_old: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'SELECT distinct'
@@ -2906,6 +2575,341 @@ object dmPkgs: TdmPkgs
         Name = 'OWNERNO'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Name = 'USERCOMPANYLOGGEDIN'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_OneUniquePkg_oldPRODUCT: TStringField
+      FieldName = 'PRODUCT'
+      Origin = 'PRODUCT'
+      Size = 150
+    end
+    object sq_OneUniquePkg_oldPACKAGENO: TIntegerField
+      FieldName = 'PACKAGENO'
+      Origin = 'PACKAGENO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sq_OneUniquePkg_oldPACKAGETYPENO: TIntegerField
+      FieldName = 'PACKAGETYPENO'
+      Origin = 'PACKAGETYPENO'
+    end
+    object sq_OneUniquePkg_oldSUPP_CODE: TStringField
+      FieldName = 'SUPP_CODE'
+      Origin = 'SUPP_CODE'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object sq_OneUniquePkg_oldM3_NET: TFloatField
+      FieldName = 'M3_NET'
+      Origin = 'M3_NET'
+    end
+    object sq_OneUniquePkg_oldPCS: TIntegerField
+      FieldName = 'PCS'
+      Origin = 'PCS'
+    end
+    object sq_OneUniquePkg_oldM3_NOM: TFloatField
+      FieldName = 'M3_NOM'
+      Origin = 'M3_NOM'
+    end
+    object sq_OneUniquePkg_oldKVM: TFloatField
+      FieldName = 'KVM'
+      Origin = 'KVM'
+    end
+    object sq_OneUniquePkg_oldLOPM: TFloatField
+      FieldName = 'LOPM'
+      Origin = 'LOPM'
+    end
+    object sq_OneUniquePkg_oldPRODUCTNO: TIntegerField
+      FieldName = 'PRODUCTNO'
+      Origin = 'PRODUCTNO'
+    end
+    object sq_OneUniquePkg_oldINVENTORY: TStringField
+      FieldName = 'INVENTORY'
+      Origin = 'INVENTORY'
+      ReadOnly = True
+      Size = 101
+    end
+    object sq_OneUniquePkg_oldPCS_PER_LENGTH: TStringField
+      FieldName = 'PCS_PER_LENGTH'
+      Origin = 'PCS_PER_LENGTH'
+      Size = 255
+    end
+    object sq_OneUniquePkg_oldOWNER: TStringField
+      FieldName = 'OWNER'
+      Origin = 'OWNER'
+      Size = 80
+    end
+    object sq_OneUniquePkg_oldOWNERNO: TIntegerField
+      FieldName = 'OWNERNO'
+      Origin = 'OWNERNO'
+    end
+    object sq_OneUniquePkg_oldLOG_INVENTORY_NO: TIntegerField
+      FieldName = 'LOG_INVENTORY_NO'
+      Origin = 'LOG_INVENTORY_NO'
+    end
+    object sq_OneUniquePkg_oldBAR_CODE: TStringField
+      FieldName = 'BAR_CODE'
+      Origin = 'BAR_CODE'
+      FixedChar = True
+    end
+    object sq_OneUniquePkg_oldBARCODE_ID: TIntegerField
+      FieldName = 'BARCODE_ID'
+      Origin = 'BARCODE_ID'
+    end
+    object sq_OneUniquePkg_oldGRADE_STAMP: TStringField
+      FieldName = 'GRADE_STAMP'
+      Origin = 'GRADE_STAMP'
+      FixedChar = True
+    end
+    object sq_OneUniquePkg_oldGRADESTAMPNO: TIntegerField
+      FieldName = 'GRADESTAMPNO'
+      Origin = 'GRADESTAMPNO'
+    end
+    object sq_OneUniquePkg_oldSUPPLIERNO: TIntegerField
+      FieldName = 'SUPPLIERNO'
+      Origin = 'SUPPLIERNO'
+    end
+    object sq_OneUniquePkg_oldOLD_PACKAGETYPENO: TIntegerField
+      FieldName = 'OLD_PACKAGETYPENO'
+      Origin = 'OLD_PACKAGETYPENO'
+    end
+    object sq_OneUniquePkg_oldSurfacingNo: TIntegerField
+      FieldName = 'SurfacingNo'
+      Origin = 'SurfacingNo'
+    end
+    object sq_OneUniquePkg_oldPIP: TIntegerField
+      FieldName = 'PIP'
+      Origin = 'PIP'
+      Required = True
+    end
+    object sq_OneUniquePkg_oldPKG_HEIGHT: TIntegerField
+      FieldName = 'PKG_HEIGHT'
+      Origin = 'PKG_HEIGHT'
+    end
+    object sq_OneUniquePkg_oldPKGWIDTH: TIntegerField
+      FieldName = 'PKGWIDTH'
+      Origin = 'PKGWIDTH'
+    end
+    object sq_OneUniquePkg_oldMINI_BUNDLE: TIntegerField
+      FieldName = 'MINI_BUNDLE'
+      Origin = 'MINI_BUNDLE'
+    end
+    object sq_OneUniquePkg_oldSHRINK_WRAP: TIntegerField
+      FieldName = 'SHRINK_WRAP'
+      Origin = 'SHRINK_WRAP'
+    end
+    object sq_OneUniquePkg_oldWRAP_TYPE: TStringField
+      FieldName = 'WRAP_TYPE'
+      Origin = 'WRAP_TYPE'
+      FixedChar = True
+      Size = 15
+    end
+    object sq_OneUniquePkg_oldWRAPTYPENO: TIntegerField
+      FieldName = 'WRAPTYPENO'
+      Origin = 'WRAPTYPENO'
+    end
+    object sq_OneUniquePkg_oldStatus: TIntegerField
+      FieldName = 'Status'
+      Origin = 'Status'
+    end
+    object sq_OneUniquePkg_oldONSTICKS: TIntegerField
+      FieldName = 'ONSTICKS'
+      Origin = 'ONSTICKS'
+    end
+  end
+  object sq_ProductLengths: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'SELECT Distinct PL.ProductLengthNo, PL.ActualLengthMM, PL.Nomina' +
+        'lLengthMM, PL.NominalLengthFEET ,'
+      'PL.ActualLengthINCH , PL.PET , PL.FingerJoint'
+      
+        'FROM   dbo.ProductGroupLengths PGL INNER JOIN ProductLength PL O' +
+        'N PL.ProductLengthNo = PGL.ProductLengthNo'
+      ''
+      ''
+      'Where PL.ActualLengthMM < 20000')
+    Left = 816
+    Top = 416
+    object sq_ProductLengthsProductLengthNo: TIntegerField
+      FieldName = 'ProductLengthNo'
+      Origin = 'ProductLengthNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sq_ProductLengthsActualLengthMM: TFloatField
+      FieldName = 'ActualLengthMM'
+      Origin = 'ActualLengthMM'
+      Required = True
+    end
+    object sq_ProductLengthsNominalLengthMM: TFloatField
+      FieldName = 'NominalLengthMM'
+      Origin = 'NominalLengthMM'
+      Required = True
+    end
+    object sq_ProductLengthsNominalLengthFEET: TFloatField
+      FieldName = 'NominalLengthFEET'
+      Origin = 'NominalLengthFEET'
+    end
+    object sq_ProductLengthsActualLengthINCH: TStringField
+      FieldName = 'ActualLengthINCH'
+      Origin = 'ActualLengthINCH'
+      FixedChar = True
+      Size = 15
+    end
+    object sq_ProductLengthsPET: TIntegerField
+      FieldName = 'PET'
+      Origin = 'PET'
+    end
+    object sq_ProductLengthsFingerJoint: TIntegerField
+      FieldName = 'FingerJoint'
+      Origin = 'FingerJoint'
+    end
+  end
+  object FDsp_vida_PackageTypeDetail: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'vida_PackageTypeDetail'
+    Left = 680
+    Top = 24
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageTypeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sq_OneUniquePkg: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT distinct'
+      '        PDE.ProductDisplayName           AS PRODUCT,'
+      '        PN.PackageNo'#9#9'        AS PACKAGENO,'
+      '        PN.PackageTypeNo'#9'        AS PACKAGETYPENO,'
+      '        PN.SupplierCode'#9'                AS SUPP_CODE,'
+      '        PT.Totalm3Actual                AS  M3_NET,'
+      '        PT.TotalNoOfPieces              AS  PCS,'
+      '        PT.Totalm3Nominal'#9#9'AS M3_NOM,'
+      #9'PT.TotalSQMofActualWidth'#9'AS KVM,'
+      #9'PT.TotalLinealMeterActualLength AS LOPM,'
+      '        PT.ProductNo                    AS PRODUCTNO,'
+      
+        '        Cy.CityName+'#39'/'#39'+LIP.LogicalInventoryName                ' +
+        '     AS INVENTORY,'
+      '        PT.OnSticks                     AS ONSTICKS,'
+      '        PTL.PcsPerLength                AS PCS_PER_LENGTH,'
+      '        C.ClientName                    AS OWNER,'
+      '        PIP.OwnerNo                     AS OWNERNO,'
+      '        PN.LogicalInventoryPointNo      AS LOG_INVENTORY_NO,'
+      '        BC.BARCODE                      AS BAR_CODE,'
+      '        PT.BarCodeID                    AS BARCODE_ID,'
+      '        GS.GradeStamp                   AS GRADE_STAMP,'
+      '        PT.GradeStamp                   AS GRADESTAMPNO,'
+      '        PT.PackageHeight                AS PKG_HEIGHT,'
+      '        PT.PackageWidth                 AS PKGWIDTH,'
+      '        PT.MiniBundled                  AS MINI_BUNDLE,'
+      '        PT.ShrinkWrap                   AS SHRINK_WRAP,'
+      '        WT.WrapType                     AS WRAP_TYPE,'
+      '        PT.WrapType                     AS WRAPTYPENO,'
+      '        PIP.OwnerNo                     AS SUPPLIERNO,'
+      '        PN.PackageTypeNo'#9'        AS OLD_PACKAGETYPENO,'
+      '        PIP.PhysicalInventoryPointNo    AS PIP,'
+      '        PN.Status,'
+      '        PG.SurfacingNo,'
+      '        PG.ActualThicknessMM,'
+      '        PG.ActualWidthMM,'
+      '        PG.NominalThicknessMM,'
+      '        PG.NominalWidthMM'
+      ''
+      ''
+      ''
+      ''
+      ''
+      'FROM       dbo.PackageNumber             PN'
+      
+        '        INNER JOIN dbo.PackageType  PT ON   PT.PackageTypeNo = P' +
+        'N.PackageTypeNo'
+      
+        '        Inner Join dbo.PackageTypeLengths PTL ON PTL.PackageType' +
+        'No = PT.PackageTypeNo'
+      
+        '        INNER JOIN dbo.Product      Pr  ON Pr.ProductNo     = Pt' +
+        '.ProductNo'
+      
+        '        LEFT JOIN dbo.ProductDesc      PDE  ON PDE.ProductNo    ' +
+        ' = Pt.ProductNo'
+      
+        '        INNER JOIN dbo.ProductGroup PG  ON PG.ProductGroupNo    ' +
+        ' = Pr.ProductGroupNo'
+      
+        '        Inner Join dbo.LogicalInventoryPoint LIP ON LIP.LogicalI' +
+        'nventoryPointNo = PN.LogicalInventoryPointNo'
+      
+        '        Inner Join dbo.PhysicalInventoryPoint PIP ON PIP.Physica' +
+        'lInventoryPointNo = LIP.PhysicalInventoryPointNo'
+      
+        '        Inner Join dbo.City Cy  ON Cy.CityNo = PIP.PhyInvPointNa' +
+        'meNo'
+      '        Inner Join dbo.Client C ON C.ClientNo = PIP.OwnerNo'
+      
+        '        LEFT OUTER JOIN DBO.BARCODE BC ON BC.BarCodeNo = PT.BarC' +
+        'odeID'
+      
+        '        LEFT OUTER JOIN DBO.GRADESTAMP GS ON GS.GradeStampNo = P' +
+        'T.GradeStamp'
+      
+        '        LEFT OUTER JOIN DBO.WrapType WT ON WT.WrapTypeNo = PT.Wr' +
+        'apType'
+      ''
+      'WHERE     PN.PackageNo = :PackageNo'
+      'AND PN.SupplierCode = :SupplierCode'
+      'AND ((PN.Status = 1) or (PN.Status = :Status))'
+      'AND PIP.OwnerNo = :OwnerNo'
+      'AND PDE.LanguageID = :LanguageID'
+      ''
+      'AND PIP.PhyInvPointNameNo in'
+      '(Select PhyInvPointNameNo from'
+      'dbo.PHYSICALINVENTORYPOINT'
+      'where OwnerNo = :UserCompanyLoggedIn)')
+    Left = 48
+    Top = 248
+    ParamData = <
+      item
+        Name = 'PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'STATUS'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'OWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'LANGUAGEID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
       end
       item
         Name = 'USERCOMPANYLOGGEDIN'
@@ -3051,62 +3055,100 @@ object dmPkgs: TdmPkgs
       FieldName = 'ONSTICKS'
       Origin = 'ONSTICKS'
     end
+    object sq_OneUniquePkgActualThicknessMM: TFloatField
+      FieldName = 'ActualThicknessMM'
+      Origin = 'ActualThicknessMM'
+    end
+    object sq_OneUniquePkgActualWidthMM: TFloatField
+      FieldName = 'ActualWidthMM'
+      Origin = 'ActualWidthMM'
+    end
+    object sq_OneUniquePkgNominalThicknessMM: TFloatField
+      FieldName = 'NominalThicknessMM'
+      Origin = 'NominalThicknessMM'
+    end
+    object sq_OneUniquePkgNominalWidthMM: TFloatField
+      FieldName = 'NominalWidthMM'
+      Origin = 'NominalWidthMM'
+    end
   end
-  object sq_ProductLengths: TFDQuery
+  object cds_PkgStatus: TFDQuery
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       
-        'SELECT Distinct PL.ProductLengthNo, PL.ActualLengthMM, PL.Nomina' +
-        'lLengthMM, PL.NominalLengthFEET ,'
-      'PL.ActualLengthINCH , PL.PET , PL.FingerJoint'
+        'SELECT distinct TOP 1 pn.SupplierCode, LIPGH.LIPGroupNo, LIPGH.I' +
+        'nvenType, LIPG.LIPNo,'
+      '(Select LIPG2.LIPNo from dbo.LIPGroup LIPG2'
+      'WHERE'
+      ' LIPG2.LIPGroupNo = LIPGH.LIPGroupNo'
+      'AND LIPG2.AvReg = 1 ) AS AvReg,'
+      'pn.LogicalInventoryPointNo AS PkgRealLIPNo'
+      ''
+      'FROM  dbo.PackageNumber pn'
       
-        'FROM   dbo.ProductGroupLengths PGL INNER JOIN ProductLength PL O' +
-        'N PL.ProductLengthNo = PGL.ProductLengthNo'
+        'Left Outer Join dbo.LIPGroup LIPG on LIPG.LIPNo = PN.LogicalInve' +
+        'ntoryPointNo'
+      
+        'Left Outer Join dbo.LIPGroupHdr LIPGH on LIPGH.LIPGroupNo = LIPG' +
+        '.LIPGroupNo'
+      'AND LIPGH.ClientNo = :ClientNo'
+      'WHERE PN.PackageNo = :PackageNo'
+      'AND PN.SupplierCode = :SupplierCode'
       ''
-      ''
-      'Where PL.ActualLengthMM < 20000')
-    Left = 816
-    Top = 416
-    object sq_ProductLengthsProductLengthNo: TIntegerField
-      FieldName = 'ProductLengthNo'
-      Origin = 'ProductLengthNo'
+      '')
+    Left = 280
+    Top = 248
+    ParamData = <
+      item
+        Name = 'CLIENTNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object cds_PkgStatusSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
-    end
-    object sq_ProductLengthsActualLengthMM: TFloatField
-      FieldName = 'ActualLengthMM'
-      Origin = 'ActualLengthMM'
-      Required = True
-    end
-    object sq_ProductLengthsNominalLengthMM: TFloatField
-      FieldName = 'NominalLengthMM'
-      Origin = 'NominalLengthMM'
-      Required = True
-    end
-    object sq_ProductLengthsNominalLengthFEET: TFloatField
-      FieldName = 'NominalLengthFEET'
-      Origin = 'NominalLengthFEET'
-    end
-    object sq_ProductLengthsActualLengthINCH: TStringField
-      FieldName = 'ActualLengthINCH'
-      Origin = 'ActualLengthINCH'
       FixedChar = True
-      Size = 15
+      Size = 3
     end
-    object sq_ProductLengthsPET: TIntegerField
-      FieldName = 'PET'
-      Origin = 'PET'
+    object cds_PkgStatusLIPGroupNo: TIntegerField
+      FieldName = 'LIPGroupNo'
+      Origin = 'LIPGroupNo'
     end
-    object sq_ProductLengthsFingerJoint: TIntegerField
-      FieldName = 'FingerJoint'
-      Origin = 'FingerJoint'
+    object cds_PkgStatusInvenType: TIntegerField
+      FieldName = 'InvenType'
+      Origin = 'InvenType'
+    end
+    object cds_PkgStatusLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+    end
+    object cds_PkgStatusAvReg: TIntegerField
+      FieldName = 'AvReg'
+      Origin = 'AvReg'
+      ReadOnly = True
+    end
+    object cds_PkgStatusPkgRealLIPNo: TIntegerField
+      FieldName = 'PkgRealLIPNo'
+      Origin = 'PkgRealLIPNo'
     end
   end
-  object FDsp_vida_PackageTypeDetail: TFDStoredProc
+  object sp_RemovePackageFromInventory: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'vida_PackageTypeDetail'
-    Left = 680
-    Top = 24
+    StoredProcName = 'vida_RemovePkgFromInventory_VI'
+    Left = 280
+    Top = 296
     ParamData = <
       item
         Position = 1
@@ -3116,9 +3158,454 @@ object dmPkgs: TdmPkgs
       end
       item
         Position = 2
-        Name = '@PackageTypeNo'
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@RegistrationPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@DateCreated'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@MatPunktAgareNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@RunNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 9
+        Name = '@TerminalNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 10
+        Name = '@LogicalInventoryPointNo'
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object sp_NewPackageNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    SchemaName = 'dbo'
+    StoredProcName = 'vida_NewPackageNo_II'
+    Left = 472
+    Top = 88
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@PackageTypeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 5
+        Name = '@LogicalInventoryPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@SupplierNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@RegistrationPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 9
+        Name = '@CreatedOfPkgStr'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 10
+        Name = '@DateCreated'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end
+      item
+        Position = 11
+        Name = '@OwnerNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 12
+        Name = '@ProducerNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 13
+        Name = '@RunNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_MovePkg: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    SchemaName = 'dbo'
+    StoredProcName = 'vida_MovePkg'
+    Left = 472
+    Top = 264
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@PackageTypeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 5
+        Name = '@LogicalInventoryPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@RegistrationPointNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 7
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@OLD_PackageTypeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 9
+        Name = '@SupplierNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 10
+        Name = '@DateCreated'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end>
+  end
+  object sq_OnePkgDetailData: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT distinct'
+      '        PR.ProductDisplayName           AS PRODUCT,'
+      '        PN.PackageNo'#9#9'        AS PACKAGENO,'
+      '        PN.PackageTypeNo'#9'        AS PACKAGETYPENO,'
+      '        PN.SupplierCode'#9'                AS SUPP_CODE,'
+      '        PT.Totalm3Actual                AS  M3_NET,'
+      '        PT.TotalNoOfPieces              AS  PCS,'
+      '        PT.Totalm3Nominal'#9#9'AS M3_NOM,'
+      #9'PT.TotalSQMofActualWidth'#9'AS KVM,'
+      #9'PT.TotalLinealMeterActualLength AS LOPM,'
+      '        PT.ProductNo                    AS PRODUCTNO,'
+      
+        '        Cy.CityName+'#39'/'#39'+LIP.LogicalInventoryName                ' +
+        '     AS INVENTORY,'
+      '        PT.OnSticks                     AS ONSTICKS,'
+      '        PTL.PcsPerLength                AS PCS_PER_LENGTH,'
+      '        C.ClientName                    AS OWNER,'
+      '        PIP.OwnerNo                     AS OWNERNO,'
+      '        PN.LogicalInventoryPointNo      AS LOG_INVENTORY_NO,'
+      '        BC.BARCODE                      AS BAR_CODE,'
+      '        PT.BarCodeID                    AS BARCODE_ID,'
+      '        GS.GradeStamp                   AS GRADE_STAMP,'
+      '        PT.GradeStamp                   AS GRADESTAMPNO,'
+      '        PT.PackageHeight                AS PKG_HEIGHT,'
+      '        PT.PackageWidth                 AS PKGWIDTH,'
+      '        PT.MiniBundled                  AS MINI_BUNDLE,'
+      '        PT.ShrinkWrap                   AS SHRINK_WRAP,'
+      '        WT.WrapType                     AS WRAP_TYPE,'
+      '        PT.WrapType                     AS WRAPTYPENO,'
+      '        PN.SupplierNo                   AS SUPPLIERNO,'
+      '        PN.PackageTypeNo'#9'        AS OLD_PACKAGETYPENO,'
+      '        PG.SurfacingNo'
+      ''
+      ''
+      ''
+      ''
+      'FROM       dbo.PackageNumber             PN'
+      
+        '        INNER JOIN dbo.PackageType  PT ON   PT.PackageTypeNo = P' +
+        'N.PackageTypeNo'
+      
+        '        Inner Join dbo.PackageTypeLengths PTL ON PTL.PackageType' +
+        'No = PT.PackageTypeNo'
+      
+        '        INNER JOIN dbo.Product      Pr  ON Pr.ProductNo     = Pt' +
+        '.ProductNo'
+      
+        '        INNER JOIN dbo.ProductGroup PG  ON PG.ProductGroupNo    ' +
+        ' = Pr.ProductGroupNo'
+      
+        '        Inner Join dbo.LogicalInventoryPoint LIP ON LIP.LogicalI' +
+        'nventoryPointNo = PN.LogicalInventoryPointNo'
+      
+        '        Inner Join dbo.PhysicalInventoryPoint PIP ON PIP.Physica' +
+        'lInventoryPointNo = LIP.PhysicalInventoryPointNo'
+      
+        '        Inner Join dbo.City Cy  ON Cy.CityNo = PIP.PhyInvPointNa' +
+        'meNo'
+      '        Inner Join dbo.Client C ON C.ClientNo = PIP.OwnerNo'
+      
+        '        LEFT OUTER JOIN DBO.BARCODE BC ON BC.BarCodeNo = PT.BarC' +
+        'odeID'
+      
+        '        LEFT OUTER JOIN DBO.GRADESTAMP GS ON GS.GradeStampNo = P' +
+        'T.GradeStamp'
+      
+        '        LEFT OUTER JOIN DBO.WrapType WT ON WT.WrapTypeNo = PT.Wr' +
+        'apType'
+      ''
+      'WHERE     PN.PackageNo >= :First_PackageNo'
+      'AND PN.PackageNo <= :Last_PackageNo'
+      'AND PN.Status = 1'
+      'AND PIP.OwnerNo = :OwnerNo'
+      ''
+      'AND PIP.PhyInvPointNameNo in'
+      '(Select PhyInvPointNameNo from'
+      'PHYSICALINVENTORYPOINT'
+      'where OwnerNo = :UserCompanyLoggedIn)'
+      'Order by PN.PackageNo')
+    Left = 40
+    Top = 304
+    ParamData = <
+      item
+        Name = 'FIRST_PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'LAST_PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'OWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'USERCOMPANYLOGGEDIN'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object sq_OnePkgDetailDataPRODUCT: TStringField
+      FieldName = 'PRODUCT'
+      Origin = 'PRODUCT'
+      Size = 150
+    end
+    object sq_OnePkgDetailDataPACKAGENO: TIntegerField
+      FieldName = 'PACKAGENO'
+      Origin = 'PACKAGENO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object sq_OnePkgDetailDataPACKAGETYPENO: TIntegerField
+      FieldName = 'PACKAGETYPENO'
+      Origin = 'PACKAGETYPENO'
+    end
+    object sq_OnePkgDetailDataSUPP_CODE: TStringField
+      FieldName = 'SUPP_CODE'
+      Origin = 'SUPP_CODE'
+      Required = True
+      FixedChar = True
+      Size = 3
+    end
+    object sq_OnePkgDetailDataM3_NET: TFloatField
+      FieldName = 'M3_NET'
+      Origin = 'M3_NET'
+    end
+    object sq_OnePkgDetailDataPCS: TIntegerField
+      FieldName = 'PCS'
+      Origin = 'PCS'
+    end
+    object sq_OnePkgDetailDataM3_NOM: TFloatField
+      FieldName = 'M3_NOM'
+      Origin = 'M3_NOM'
+    end
+    object sq_OnePkgDetailDataKVM: TFloatField
+      FieldName = 'KVM'
+      Origin = 'KVM'
+    end
+    object sq_OnePkgDetailDataLOPM: TFloatField
+      FieldName = 'LOPM'
+      Origin = 'LOPM'
+    end
+    object sq_OnePkgDetailDataPRODUCTNO: TIntegerField
+      FieldName = 'PRODUCTNO'
+      Origin = 'PRODUCTNO'
+    end
+    object sq_OnePkgDetailDataINVENTORY: TStringField
+      FieldName = 'INVENTORY'
+      Origin = 'INVENTORY'
+      ReadOnly = True
+      Size = 101
+    end
+    object sq_OnePkgDetailDataONSTICKS: TIntegerField
+      FieldName = 'ONSTICKS'
+      Origin = 'ONSTICKS'
+    end
+    object sq_OnePkgDetailDataPCS_PER_LENGTH: TStringField
+      FieldName = 'PCS_PER_LENGTH'
+      Origin = 'PCS_PER_LENGTH'
+      Size = 255
+    end
+    object sq_OnePkgDetailDataOWNER: TStringField
+      FieldName = 'OWNER'
+      Origin = 'OWNER'
+      Size = 80
+    end
+    object sq_OnePkgDetailDataOWNERNO: TIntegerField
+      FieldName = 'OWNERNO'
+      Origin = 'OWNERNO'
+    end
+    object sq_OnePkgDetailDataLOG_INVENTORY_NO: TIntegerField
+      FieldName = 'LOG_INVENTORY_NO'
+      Origin = 'LOG_INVENTORY_NO'
+    end
+    object sq_OnePkgDetailDataBAR_CODE: TStringField
+      FieldName = 'BAR_CODE'
+      Origin = 'BAR_CODE'
+      FixedChar = True
+    end
+    object sq_OnePkgDetailDataBARCODE_ID: TIntegerField
+      FieldName = 'BARCODE_ID'
+      Origin = 'BARCODE_ID'
+    end
+    object sq_OnePkgDetailDataGRADE_STAMP: TStringField
+      FieldName = 'GRADE_STAMP'
+      Origin = 'GRADE_STAMP'
+      FixedChar = True
+    end
+    object sq_OnePkgDetailDataGRADESTAMPNO: TIntegerField
+      FieldName = 'GRADESTAMPNO'
+      Origin = 'GRADESTAMPNO'
+    end
+    object sq_OnePkgDetailDataPKG_HEIGHT: TIntegerField
+      FieldName = 'PKG_HEIGHT'
+      Origin = 'PKG_HEIGHT'
+    end
+    object sq_OnePkgDetailDataPKGWIDTH: TIntegerField
+      FieldName = 'PKGWIDTH'
+      Origin = 'PKGWIDTH'
+    end
+    object sq_OnePkgDetailDataMINI_BUNDLE: TIntegerField
+      FieldName = 'MINI_BUNDLE'
+      Origin = 'MINI_BUNDLE'
+    end
+    object sq_OnePkgDetailDataSHRINK_WRAP: TIntegerField
+      FieldName = 'SHRINK_WRAP'
+      Origin = 'SHRINK_WRAP'
+    end
+    object sq_OnePkgDetailDataWRAP_TYPE: TStringField
+      FieldName = 'WRAP_TYPE'
+      Origin = 'WRAP_TYPE'
+      FixedChar = True
+      Size = 15
+    end
+    object sq_OnePkgDetailDataWRAPTYPENO: TIntegerField
+      FieldName = 'WRAPTYPENO'
+      Origin = 'WRAPTYPENO'
+    end
+    object sq_OnePkgDetailDataSUPPLIERNO: TIntegerField
+      FieldName = 'SUPPLIERNO'
+      Origin = 'SUPPLIERNO'
+    end
+    object sq_OnePkgDetailDataOLD_PACKAGETYPENO: TIntegerField
+      FieldName = 'OLD_PACKAGETYPENO'
+      Origin = 'OLD_PACKAGETYPENO'
+    end
+    object sq_OnePkgDetailDataSurfacingNo: TIntegerField
+      FieldName = 'SurfacingNo'
+      Origin = 'SurfacingNo'
+    end
   end
 end
