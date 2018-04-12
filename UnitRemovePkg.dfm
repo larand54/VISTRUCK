@@ -559,11 +559,7 @@ object frmRemovePkg: TfrmRemovePkg
       DataBinding.DataField = 'OWNER'
       DataBinding.DataSource = dsUserProp
       Properties.DropDownListStyle = lsFixedList
-      Properties.KeyFieldNames = 'ClientNo'
-      Properties.ListColumns = <
-        item
-          FieldName = 'ClientName'
-        end>
+      Properties.ListColumns = <>
       Properties.ListOptions.ShowHeader = False
       Properties.MaxLength = 0
       TabOrder = 0
@@ -635,7 +631,6 @@ object frmRemovePkg: TfrmRemovePkg
       DataBinding.DataSource = dsUserProp
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
-      Properties.KeyFieldNames = 'PIPNO'
       Properties.ListColumns = <
         item
           FieldName = 'PIPNAME'
@@ -2680,7 +2675,13 @@ object frmRemovePkg: TfrmRemovePkg
       FieldName = 'LengthOption'
     end
     object mtUserPropLengthGroupNo: TIntegerField
+      FieldKind = fkLookup
       FieldName = 'LengthGroupNo'
+      LookupDataSet = dm_UserProps.cds_LengthGroup
+      LookupKeyFields = 'GroupNo'
+      LookupResultField = 'GroupName'
+      KeyFields = 'LengthGroupNo'
+      Lookup = True
     end
     object mtUserPropNewItemRow: TIntegerField
       FieldName = 'NewItemRow'
@@ -2695,24 +2696,54 @@ object frmRemovePkg: TfrmRemovePkg
       FieldName = 'LengthGroup'
     end
     object mtUserPropLIPName: TStringField
+      FieldKind = fkLookup
       FieldName = 'LIPName'
+      LookupDataSet = dm_UserProps.cds_LIP
+      LookupKeyFields = 'LIPNo'
+      LookupResultField = 'LIPName'
+      KeyFields = 'LIPNo'
       Size = 50
+      Lookup = True
     end
     object mtUserPropPIPNAME: TStringField
+      FieldKind = fkLookup
       FieldName = 'PIPNAME'
+      LookupDataSet = dm_UserProps.cds_PIP
+      LookupKeyFields = 'PIPNO'
+      LookupResultField = 'PIPNAME'
+      KeyFields = 'PIPNo'
       Size = 50
+      Lookup = True
     end
     object mtUserPropREGPOINT: TStringField
+      FieldKind = fkLookup
       FieldName = 'REGPOINT'
+      LookupDataSet = dm_UserProps.cds_RegPoint
+      LookupKeyFields = 'RegistrationPointNo'
+      LookupResultField = 'ProductionUnitName'
+      KeyFields = 'RegPointNo'
       Size = 30
+      Lookup = True
     end
     object mtUserPropPRODUCER: TStringField
+      FieldKind = fkLookup
       FieldName = 'PRODUCER'
+      LookupDataSet = dm_UserProps.cds_producer
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'ProducerNo'
       Size = 80
+      Lookup = True
     end
     object mtUserPropOWNER: TStringField
+      FieldKind = fkLookup
       FieldName = 'OWNER'
+      LookupDataSet = dm_UserProps.cds_Verk
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'OwnerNo'
       Size = 80
+      Lookup = True
     end
     object mtUserPropVERK: TStringField
       FieldName = 'VERK'
@@ -2830,6 +2861,16 @@ object frmRemovePkg: TfrmRemovePkg
     object mtUserPropName: TStringField
       FieldName = 'Name'
       Size = 50
+    end
+    object mtUserPropSkiftlag: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Skiftlag'
+      LookupDataSet = dmsSystem.cds_ShiftLag
+      LookupKeyFields = 'ShiftTeamNo'
+      LookupResultField = 'ShiftTeamName'
+      KeyFields = 'GroupByBox'
+      Size = 35
+      Lookup = True
     end
   end
 end

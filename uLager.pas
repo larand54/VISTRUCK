@@ -507,7 +507,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
   ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs,
-  UnitRemovePkg; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  UnitRemovePkg, UfelRegPkg; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -3560,21 +3560,21 @@ begin
 end;
 
 procedure TfLager.acChangePkgExecute(Sender: TObject);
-Var fchgPkgVard : TfchgPkgVard ;
+Var ffelRegPkg : TffelRegPkg ;
 begin
  mtPkgNos.Active:= True ;
  Try
  SelectedPkgsOfPkgNosTable ;
  if mtPkgNos.RecordCount > 0 then
  Begin
-  fchgPkgVard:= TfchgPkgVard.Create(Nil);
+  ffelRegPkg:= TffelRegPkg.Create(Nil);
   Try
-   fchgPkgVard.CreateCo ;
-   fchgPkgVard.RemotePkgEntry(mtPkgNos) ;
-   fchgPkgVard.ShowModal ;
+   ffelRegPkg.CreateCo ;
+   ffelRegPkg.RemotePkgEntry(mtPkgNos) ;
+   ffelRegPkg.ShowModal ;
    RefreshAfterChanges ;
   Finally
-   FreeAndNil(fchgPkgVard) ;
+   FreeAndNil(ffelRegPkg) ;
   End ;
  End ;
  Finally

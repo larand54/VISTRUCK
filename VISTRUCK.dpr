@@ -153,7 +153,9 @@ uses
   uVardaBortPkt in 'uVardaBortPkt.pas' {fVardaBortPkt},
   UnitMovePkgs in 'UnitMovePkgs.pas' {frmMovePkgs},
   UnitGetProd_II in 'UnitGetProd_II.pas' {frmGetProd_II},
-  UnitRemovePkg in 'UnitRemovePkg.pas' {frmRemovePkg};
+  UnitRemovePkg in 'UnitRemovePkg.pas' {frmRemovePkg},
+  UfelRegPkg in 'UfelRegPkg.pas' {ffelRegPkg},
+  UnitLONumber in 'UnitLONumber.pas' {fLONumber};
 
 {$R *.res}
 begin

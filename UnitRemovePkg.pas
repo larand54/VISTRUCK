@@ -190,6 +190,7 @@ type
     mtUserPropFilter1: TStringField;
     mtUserPropFilter2: TStringField;
     mtUserPropName: TStringField;
+    mtUserPropSkiftlag: TStringField;
     procedure lbCloseClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);

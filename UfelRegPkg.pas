@@ -4,25 +4,41 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, dxBar, dxCntner, dxTL, dxDBCtrl,
-  dxDBGrid, dxBarExtItems, dxEditor, dxEdLib, dxDBELib, dxExEdtr, dxDBTLCl,
-  dxGrClms, VidaType, db, dxGrClEx, dxLayout, 
-  kbmMemTable, dxDBEdtr, StdCtrls, ImgList, SqlTimSt, Buttons, ComCtrls,
+  Dialogs, ExtCtrls, VidaType, db, 
+  kbmMemTable, StdCtrls, ImgList, SqlTimSt, Buttons, ComCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxCalendar, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
-  ActnList ;
+  ActnList, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxButtonEdit,
+  cxDBEdit, cxLabel, cxGridBandedTableView, cxGridDBBandedTableView,
+  dxStatusBar, dxBar, dxBarExtItems, Menus, cxLookAndFeelPainters,
+  cxButtons, cxGridCustomPopupMenu, cxGridPopupMenu, cxCheckBox, FMTBcd,
+  SqlExpr, cxLookAndFeels, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxStatusBarPainter,
+  dxSkinsdxBarPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  siComp, siLngLnk, System.Actions ;
+
+  Const
+    CM_MOVEIT = WM_USER + 1;
 
 type
   TffelRegPkg = class(TForm)
     dxBarDockControl1: TdxBarDockControl;
     dxBarManager1: TdxBarManager;
-    Splitter3: TSplitter;
-    grdPackages: TdxDBGrid;
     lbSaveLoad: TdxBarLargeButton;
     lbClose: TdxBarLargeButton;
-    Panel2: TPanel;
     pmPkgs: TdxBarPopupMenu;
     lbAddPackage: TdxBarLargeButton;
     lbRemovePackage: TdxBarLargeButton;
@@ -31,102 +47,290 @@ type
     lbPkgInfo: TdxBarLargeButton;
     lbPkgNoSerie: TdxBarLargeButton;
     bbCustomPkgGrid: TdxBarButton;
-    grdPackagesPRODUCT: TdxDBGridMaskColumn;
-    grdPackagesPACKAGENO: TdxDBGridMaskColumn;
-    grdPackagesSUPP_CODE: TdxDBGridMaskColumn;
-    grdPackagesM3_NET: TdxDBGridMaskColumn;
-    grdPackagesPCS: TdxDBGridMaskColumn;
-    grdPackagesM3_NOM: TdxDBGridMaskColumn;
-    grdPackagesKVM: TdxDBGridMaskColumn;
-    grdPackagesLOPM: TdxDBGridMaskColumn;
-    grdPackagesINVENTORY: TdxDBGridMaskColumn;
-    grdPackagesPCS_PER_LENGTH: TdxDBGridMaskColumn;
-    grdPackagesOWNER: TdxDBGridMaskColumn;
-    grdPackagesBAR_CODE: TdxDBGridMaskColumn;
-    grdPackagesGRADE_STAMP: TdxDBGridMaskColumn;
-    bcLengthOption: TdxBarCombo;
-    bcStdLenGrp: TdxBarCombo;
     pLoadHead: TPanel;
     Label1: TLabel;
     Label2: TLabel;
     Label7: TLabel;
     Label8: TLabel;
-    Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
-    beProductName: TdxButtonEdit;
-    peGradeStamp: TdxPickEdit;
-    peBarCode: TdxPickEdit;
-    peRegPoint: TdxPickEdit;
-    peOwner: TdxPickEdit;
-    pePhysInventory: TdxPickEdit;
-    peLogicalInventory: TdxPickEdit;
-    Panel1: TPanel;
-    grdPkgs: TdxDBGrid;
-    dxBarDockControl2: TdxBarDockControl;
     bbClearLengths: TdxBarButton;
     bbPkgNoByLO: TdxBarLargeButton;
-    bbClearPkgGrid: TBitBtn;
-    grdPackagesROWNO: TdxDBGridMaskColumn;
     Label14: TLabel;
     Label15: TLabel;
-    peMatPunktAgare: TdxPickEdit;
-    BitBtn1: TBitBtn;
-    dxDateEdit1: TcxDateEdit;
     Label3: TLabel;
     eRunNr: TcxTextEdit;
     BitBtn2: TBitBtn;
     ActionList1: TActionList;
     acSearchRunNo: TAction;
-    procedure lbCloseClick(Sender: TObject);
+    mtUserProp: TkbmMemTable;
+    mtUserPropVerkNo: TIntegerField;
+    mtUserPropOwnerNo: TIntegerField;
+    mtUserPropPIPNo: TIntegerField;
+    mtUserPropLIPNo: TIntegerField;
+    mtUserPropInputOption: TIntegerField;
+    mtUserPropRegPointNo: TIntegerField;
+    mtUserPropRegDate: TDateTimeField;
+    mtUserPropCopyPcs: TIntegerField;
+    mtUserPropRunNo: TIntegerField;
+    mtUserPropProducerNo: TIntegerField;
+    mtUserPropAutoColWidth: TIntegerField;
+    mtUserPropSupplierCode: TStringField;
+    mtUserPropLengthOption: TIntegerField;
+    mtUserPropLengthGroupNo: TIntegerField;
+    mtUserPropNewItemRow: TIntegerField;
+    mtUserPropLengthGroup: TStringField;
+    mtUserPropLIPName: TStringField;
+    mtUserPropPIPNAME: TStringField;
+    mtUserPropREGPOINT: TStringField;
+    mtUserPropPRODUCER: TStringField;
+    mtUserPropOWNER: TStringField;
+    mtUserPropVERK: TStringField;
+    mtUserPropRoleType: TIntegerField;
+    lcOWNER: TcxDBLookupComboBox;
+    dsUserProp: TDataSource;
+    lcPIPNAME: TcxDBLookupComboBox;
+    lcLIPName: TcxDBLookupComboBox;
+    lcPRODUCER: TcxDBLookupComboBox;
+    lcREGPOINT: TcxDBLookupComboBox;
+    lcGradestamp: TcxDBLookupComboBox;
+    lcBarcode: TcxDBLookupComboBox;
+    mtUserPropGradeStampNo: TIntegerField;
+    mtUserPropBarCodeNo: TIntegerField;
+    mtUserPropGradestamp: TStringField;
+    mtUserPropBarcode: TStringField;
+    deRegDate: TcxDBDateEdit;
+    beProduct: TcxDBButtonEdit;
+    mtUserPropProductDescription: TStringField;
+    mtUserPropProductNo: TIntegerField;
+    mtUserPropProductGroupNo: TIntegerField;
+    acSave: TAction;
+    acPkgNoSerie: TAction;
+    acPkgNoFrom_LO: TAction;
+    acClose: TAction;
+    acAppendPkg: TAction;
+    acCleanPkgs: TAction;
+    Panel6: TPanel;
+    grdPaket: TcxGrid;
+    grdPaketDBTableView1: TcxGridDBTableView;
+    grdPaketDBTableView1PACKAGENO: TcxGridDBColumn;
+    grdPaketDBTableView1PRODUCT: TcxGridDBColumn;
+    grdPaketDBTableView1PACKAGETYPENO: TcxGridDBColumn;
+    grdPaketDBTableView1SUPP_CODE: TcxGridDBColumn;
+    grdPaketDBTableView1M3_NET: TcxGridDBColumn;
+    grdPaketDBTableView1PCS: TcxGridDBColumn;
+    grdPaketDBTableView1M3_NOM: TcxGridDBColumn;
+    grdPaketDBTableView1KVM: TcxGridDBColumn;
+    grdPaketDBTableView1LOPM: TcxGridDBColumn;
+    grdPaketDBTableView1ProductNo: TcxGridDBColumn;
+    grdPaketDBTableView1INVENTORY: TcxGridDBColumn;
+    grdPaketDBTableView1PCS_PER_LENGTH: TcxGridDBColumn;
+    grdPaketDBTableView1OWNER: TcxGridDBColumn;
+    grdPaketDBTableView1OWNERNO: TcxGridDBColumn;
+    grdPaketDBTableView1LOG_INVENTORY_NO: TcxGridDBColumn;
+    grdPaketDBTableView1BAR_CODE: TcxGridDBColumn;
+    grdPaketDBTableView1BARCODE_ID: TcxGridDBColumn;
+    grdPaketDBTableView1GRADE_STAMP: TcxGridDBColumn;
+    grdPaketDBTableView1GRADESTAMPNO: TcxGridDBColumn;
+    grdPaketDBTableView1SUPPLIERNO: TcxGridDBColumn;
+    grdPaketDBTableView1Old_PackageTypeNo: TcxGridDBColumn;
+    grdPaketDBTableView1SurfacingNo: TcxGridDBColumn;
+    grdPaketDBTableView1PIP: TcxGridDBColumn;
+    grdPaketDBTableView1LoadDetailNo: TcxGridDBColumn;
+    grdPaketDBTableView1ACTTHICK: TcxGridDBColumn;
+    grdPaketDBTableView1ACTWIDTH: TcxGridDBColumn;
+    grdPaketDBTableView1NOMTHICK: TcxGridDBColumn;
+    grdPaketDBTableView1NOMWIDTH: TcxGridDBColumn;
+    grdPaketDBTableView1ROWNO: TcxGridDBColumn;
+    grdPaketDBTableView1Status: TcxGridDBColumn;
+    grdPaketDBTableView1StatusText: TcxGridDBColumn;
+    grdPaketDBBandedTableView1: TcxGridDBBandedTableView;
+    grdPaketDBBandedTableView1PACKAGENO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1SUPP_CODE: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1ROWNO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1PRODUCT: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1PCS_PER_LENGTH: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1BAR_CODE: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1GRADE_STAMP: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1M3_NET: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1PCS: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1M3_NOM: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1KVM: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1LOPM: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1Status: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1INVENTORY: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1OWNER: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1PACKAGETYPENO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1ProductNo: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1OWNERNO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1LOG_INVENTORY_NO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1BARCODE_ID: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1GRADESTAMPNO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1SUPPLIERNO: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1Old_PackageTypeNo: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1SurfacingNo: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1PIP: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1LoadDetailNo: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1ACTTHICK: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1ACTWIDTH: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1NOMTHICK: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1NOMWIDTH: TcxGridDBBandedColumn;
+    grdPaketDBBandedTableView1StatusText: TcxGridDBBandedColumn;
+    grdPaketLevel1: TcxGridLevel;
+    dxStatusBar1: TdxStatusBar;
+    Panel2: TPanel;
+    bbClearPkgGrid: TBitBtn;
+    BitBtn1: TBitBtn;
+    Panel1: TPanel;
+    Panel3: TPanel;
+    Panel5: TPanel;
+    bcLengthOption: TcxComboBox;
+    lcLengthGroup: TcxDBLookupComboBox;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    grdLengths: TcxGrid;
+    grdLengthsDBTableView1: TcxGridDBTableView;
+    grdLengthsDBBandedTableView1: TcxGridDBBandedTableView;
+    grdLengthsLevel1: TcxGridLevel;
+    cxGridPopupMenu1: TcxGridPopupMenu;
+    cxButton1: TcxButton;
+    acCleanPcs: TAction;
+    acRemoveRow: TAction;
+    acPkgInfo: TAction;
+    mtUserPropLIPChange: TIntegerField;
+    cbLIPChange: TcxDBCheckBox;
+    lcVERK: TcxDBLookupComboBox;
+    Label4: TLabel;
+    cxLabel3: TcxLabel;
+    cxLabel4: TcxLabel;
+    Bevel1: TBevel;
+    cxLabel5: TcxLabel;
+    Bevel2: TBevel;
+    Bevel3: TBevel;
+    acResetChangeValues: TAction;
+    cxButton2: TcxButton;
+    mtUserPropSalesRegionNo: TIntegerField;
+    mtUserPropVolumeUnitNo: TIntegerField;
+    mtUserPropLengthFormatNo: TIntegerField;
+    mtUserPropForm: TStringField;
+    mtUserPropUserID: TIntegerField;
+    mtUserPropLengthVolUnitNo: TIntegerField;
+    cdAutoColWidth: TcxDBCheckBox;
+    acGetDefaultProduct: TAction;
+    mtUserPropSurfacingNo: TIntegerField;
+    mtUserPropNOMTHICK: TFloatField;
+    mtUserPropGroupByBox: TIntegerField;
+    mtUserPropGroupSummary: TIntegerField;
+    BitBtn3: TBitBtn;
+    acAddLengthColumn: TAction;
+    Bevel4: TBevel;
+    mtUserPropAgentNo: TIntegerField;
+    mtUserPropShipperNo: TIntegerField;
+    cxButton3: TcxButton;
+    mtUserPropStartPeriod: TDateTimeField;
+    mtUserPropEndPeriod: TDateTimeField;
+    grdPaketDBBandedTableView1InvNr: TcxGridDBBandedColumn;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyleRedBg: TcxStyle;
+    mtUserPropALMM: TFloatField;
+    Label5: TLabel;
+    lcSkiftLag: TcxDBLookupComboBox;
+    cbRegpoint: TcxDBCheckBox;
+    cbRegDate: TcxDBCheckBox;
+    cbSkiftLag: TcxDBCheckBox;
+    mtUserPropSkiftLag: TStringField;
+    cbNotUseRule: TcxDBCheckBox;
+    cbUpdateProductionStatistics: TcxDBCheckBox;
+    cxLabel6: TcxLabel;
+    lcPackage_Size: TcxDBLookupComboBox;
+    mtUserPropPackage_Size: TStringField;
+    mtUserPropFilter1: TStringField;
+    mtUserPropFilter2: TStringField;
+    siLangLinked_ffelRegPkg: TsiLangLinked;
+    mtUserPropMarketRegionNo: TIntegerField;
+    mtUserPropOrdertypeNo: TIntegerField;
+    mtUserPropStatus: TIntegerField;
+    mtUserPropfilterOrderdate: TIntegerField;
+    mtUserPropClientNo: TIntegerField;
+    mtUserPropSalesPersonNo: TIntegerField;
+    mtUserPropVerkSupplierNo: TIntegerField;
+    mtUserPropVerkKundNo: TIntegerField;
+    mtUserPropLOObjectType: TIntegerField;
+    mtUserPropLoadingLocationNo: TIntegerField;
+    mtUserPropBookingTypeNo: TIntegerField;
+    mtUserPropCustomerNo: TIntegerField;
+    mtUserPropShowproduct: TIntegerField;
+    mtUserPropName: TStringField;
     procedure FormCreate(Sender: TObject);
-    procedure lbSaveLoadClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure lbPkgInfoClick(Sender: TObject);
-    procedure lbPkgNoSerieClick(Sender: TObject);
-    procedure bbCustomPkgGridClick(Sender: TObject);
-    procedure beProductNameButtonClick(Sender: TObject;
-      AbsoluteIndex: Integer);
-    procedure bcLengthOptionChange(Sender: TObject);
     procedure bcStdLenGrpChange(Sender: TObject);
-    procedure peBarCodeChange(Sender: TObject);
-    procedure peGradeStampChange(Sender: TObject);
-    procedure peOwnerChange(Sender: TObject);
-    procedure pePhysInventoryChange(Sender: TObject);
-    procedure grdPkgsEdited(Sender: TObject; Node: TdxTreeListNode);
-    procedure bbClearLengthsClick(Sender: TObject);
-    procedure bbPkgNoByLOClick(Sender: TObject);
-    procedure bbClearPkgGridClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure lbRemovePackageClick(Sender: TObject);
-    procedure lbAddPackageClick(Sender: TObject);
-    procedure grdPackagesPACKAGENOValidate(Sender: TObject;
-      var ErrorText: String; var Accept: Boolean);
-    procedure peMatPunktAgareChange(Sender: TObject);
     procedure acSearchRunNoExecute(Sender: TObject);
+    procedure mtUserPropPIPNoChange(Sender: TField);
+    procedure mtUserPropProducerNoChange(Sender: TField);
+    procedure beProductPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure mtUserPropAfterInsert(DataSet: TDataSet);
+    procedure acSaveExecute(Sender: TObject);
+    procedure acPkgNoSerieExecute(Sender: TObject);
+    procedure acPkgNoFrom_LOExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acAppendPkgExecute(Sender: TObject);
+    procedure acCleanPkgsExecute(Sender: TObject);
+    procedure lcLengthGroupPropertiesChange(Sender: TObject);
+    procedure grdPaketDBBandedTableView1PACKAGENOPropertiesValidate(
+      Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure grdLengthsDBBandedTableView1EditKeyDown(
+      Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+      AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+    procedure acSaveUpdate(Sender: TObject);
+    procedure acCleanPkgsUpdate(Sender: TObject);
+    procedure grdLengthsDBBandedTableView1Editing(
+      Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+      var AAllow: Boolean);
+    procedure acCleanPcsExecute(Sender: TObject);
+    procedure acRemoveRowExecute(Sender: TObject);
+    procedure acPkgInfoExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure acAppendPkgUpdate(Sender: TObject);
+    procedure cbLIPChangePropertiesChange(Sender: TObject);
+    procedure mtUserPropVerkNoChange(Sender: TField);
+    procedure acResetChangeValuesExecute(Sender: TObject);
+    procedure lcOWNERPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cdAutoColWidthPropertiesChange(Sender: TObject);
+    procedure acRemoveRowUpdate(Sender: TObject);
+    procedure acAddLengthColumnExecute(Sender: TObject);
+    procedure grdPaketDBBandedTableView1StylesGetContentStyle(
+      Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+      AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure cxDBCheckBox1PropertiesChange(Sender: TObject);
+    procedure cbRegDatePropertiesChange(Sender: TObject);
+    procedure cbSkiftLagPropertiesChange(Sender: TObject);
   private
     { Private declarations }
 
-     Unique_No : Integer ;
-     fFirstLengthColumn : Integer ;
-     AddingPkgsFromPkgEntry : Boolean ;
-     FIsModified : Boolean ;
+     fFirstLengthColumn, ManuellLengthColumn : Integer ;
+     Unique_No : Integer ; //Used as unique key for package grid
+     function  ControlInvDate(Sender: TObject) : Boolean ;
+     Function  LengthExistInGrid (const ManLength : String) : Boolean ;
+     procedure AddDefaultProduct(Sender: TObject) ;
+     procedure AddProduct(Sender: TObject) ;
+     procedure RemoveProduct(Sender: TObject) ;
      procedure ReLoadPackageColumnsWithAllLengths(Sender: TObject);
-//     function  SomethingHasChanged : Boolean ;
      procedure CloseDataSets;
      procedure InsertPkgSerie(Sender: TObject) ;
      Procedure CreateFieldsInmtPackagesTable(Sender : TObject) ;
-     procedure ShowALL_LengthColumns(Sender: TObject);
-     procedure Show_STD_LengthColumns(Sender: TObject);
      procedure AddPkgsByLONumber (Sender: TObject; const ProductNo, LONo : Integer ) ;
      function IdentifyPackageSupplier(
-          const PkgNo,
-          FSupplierNo: Integer;
+          const PkgNo : Integer ;
           var PkgSupplierCode: String3;
-          var PkgSupplierNo: Integer;
           Var ProductNo : Integer;
           Var Res_UserName : String) : TEditAction;
     procedure AddPkgToGrid(Sender: TObject;PkgNo : Integer;PkgSupplierCode : String3;ProductNo : Integer) ;
+    procedure CMMoveIt(var Msg: TMessage); message CM_MOVEIT;
   Protected
       procedure ResolvePkgNoAmbiguity(
       Sender : TObject;
@@ -138,7 +342,8 @@ type
 
   public
     { Public declarations }
-    procedure   CreateCo ;
+    procedure  CreateCo ;
+    procedure  RemotePkgEntry (PkgNos : TkbmMemTable) ;
   end;
 
 //var  ffelRegPkg: TffelRegPkg;
@@ -146,117 +351,65 @@ type
 implementation
 
 uses dmcPkgs, VidaConst, dlgPickPkg_II,
-  dmsVidaContact, UnitPackageEntry, dmsVidaProduct, UnitSelectLO_NumberSSP,
+  dmsVidaContact, dmsVidaProduct, 
   VidaUser, UnitCRViewReport, UnitPkgInfo,
-  UnitPkgNoSeries, dmcVidaSystem, UnitGetProduct, dmsVidaSystem,
-  UnitLONumber, dmsDataConn , uSearchRunNo;
+  UnitPkgNoSeries, dmcVidaSystem, //UnitGetProduct,
+  dmsVidaSystem
+  //,  UnitLONumber
+  , dmsDataConn , uSearchRunNo, dmc_UserProps,
+  uAddSpecialLengths, UnitGetProd_II, UnitLONumber;
 
 {$R *.dfm}
 
-procedure TffelRegPkg.CreateCo ;
-Var x : Integer ;
+procedure TffelRegPkg.CMMoveIt(var Msg: TMessage);
+var AGoForward: Boolean;
 begin
- With dmPkgs do
- Begin
-  fProductNo := -1 ;
-  fBarCodeID:= -1 ;
-  fGradeStampNo:= -1 ;
-  fLogicalInventoryNo:=  0;
-  dmsSystem.cdsBarCodes.Active:= True ;
-  mtProdSpecificLengths.Active:= True ;
+   AGoForward := Boolean(Msg.WParam);
+   grdLengthsDBBandedTableView1.Controller.EditingController.HideEdit(True);
+   grdLengthsDBBandedTableView1.Controller.FocusNextCell(AGoForward)
+end;
 
+procedure TffelRegPkg.CreateCo ;
+begin
+// With dmPkgs do
+// Begin
+//  mtProdSpecificLengths.Active:= True ;
+// End ; //with
 
-  //Load Gradestamps
-  dmcSystem.LoadGradeStamps(peGradeStamp.Items) ;
-  peGradeStamp.Items.Insert(0,'No Change') ;
-  peGradeStamp.ItemIndex:= 0 ;
-
-  //Load Barcode ID
-  dmcSystem.LoadBarCodes(peBarCode.Items) ;
-  peBarCode.Items.Insert(0,'No Change') ;
-  peBarCode.ItemIndex:= 0 ;
-
-//Load Length groups
-  dmcSystem.LoadLengthGroup(bcStdLenGrp.Items) ;
-  if bcStdLenGrp.Items.Count > 0 then
-    bcStdLenGrp.ItemIndex:= 0 ;
-
-//Load Owners
-  dmsContact.Load_InvOwner(peOwner.Items, ThisUser.CompanyNo, RoleType) ;
-  if peOwner.Items.Count > 1 then
-  Begin
-   For x:= 0 to peOwner.Items.Count -1 do
-   if ThisUser.CompanyNo = integer(peOwner.Items.Objects[x]) then
-   Begin
-    peOwner.ItemIndex:= x ;
-   End ;
-  End
+  if ThisUser.CompanyNo = 741 then
+   cbLIPChange.Enabled  := True
    else
-   Begin
-    if peOwner.Items.Count > 0 then
-    peOwner.ItemIndex:= 0 ;
-   End ;
+   cbLIPChange.Enabled  := False ;
 
-  if peOwner.Items.Count > 0 then
-  dmPkgs.SupplierNo:=    integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
-
-  if RoleType = cLego then
-   peOwner.Enabled:= False
-    else
-     peOwner.Enabled:= True ;
-
-
-//Load MätpunktÄgare
-  dmsContact.LoadMatPunktsAgare(peMatPunktAgare.Items) ;
-  if peMatPunktAgare.Items.Count > 1 then
+  if mtUserPropRoleType.AsInteger = cLego then
   Begin
-   For x:= 0 to peMatPunktAgare.Items.Count -1 do
-   if ThisUser.CompanyNo = integer(peMatPunktAgare.Items.Objects[x]) then
-   Begin
-    peMatPunktAgare.ItemIndex:= x ;
-   End ;
-  End
-   else
-   Begin
-    if peMatPunktAgare.Items.Count > 0 then
-    peMatPunktAgare.ItemIndex:= 0 ;
-   End ;
-
-  if dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego then
-   peMatPunktAgare.Enabled:= False
-    else
-     peMatPunktAgare.Enabled:= True ;
-
-
-  //Load Registration points
-  if peMatPunktAgare.Items.Count > 0 then
-  Begin
-   dmcSystem.LoadRegPoint(peRegPoint.Items, integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex])) ;
-   if peRegPoint.Items.Count > 0 then
-    peRegPoint.ItemIndex:= 0 ;
+   lcOwner.Enabled    := False ;
+   lcPRODUCER.Enabled := False ;
+   lcVerk.Enabled     := False ;
+   lcPIPNAME.Enabled  := False ;
+   lcLIPNAME.Enabled  := False ;
   End ;
 
-  peOwner.OnChange:= NIL ;
-  pePhysInventory.OnChange:= NIL ;
-  Try
-//Load PhysInv
-  dmsContact.LoadPhysInventory(pePhysInventory.Items, integer(peOwner.Items.Objects[peOwner.ItemIndex]) ,ThisUser.CompanyNo) ;
-  if pePhysInventory.Items.Count > 0 then
-  pePhysInventory.ItemIndex:= 0 ;
-
-//Load Logical Inv
-  if pePhysInventory.Items.Count > 0 then
-  dmsContact.LoadLogicalInventory( peLogicalInventory.Items, integer(pePhysInventory.Items.Objects[pePhysInventory.ItemIndex]) );
-  if peLogicalInventory.Items.Count > 0 then
-  peLogicalInventory.ItemIndex:= 0 ;
-  Finally
-   pePhysInventory.OnChange:= pePhysInventoryChange ;
-   peOwner.OnChange:= peOwnerChange ;
+  if mtUserPropRoleType.AsInteger = cInternal_Mill then
+  Begin
+   lcOwner.Enabled    := False ;
+   lcPRODUCER.Enabled := False ;
+   lcVerk.Enabled     := False ;
+   lcPIPNAME.Enabled  := False ;
+   lcLIPNAME.Enabled  := False ;
   End ;
- End ; //with
 
-  AddingPkgsFromPkgEntry:= False ;
-  bcLengthOption.ItemIndex:= 1 ;
+  if mtUserPropRoleType.AsInteger = cSalesRegion then
+  Begin
+   lcOwner.Enabled    := True ;
+   lcPRODUCER.Enabled := True ;
+   lcVerk.Enabled     := False ;
+   lcPIPNAME.Enabled  := False ;
+   lcLIPNAME.Enabled  := False ;
+  End ;
+
+
+ bcLengthOption.ItemIndex:= 1 ;
 end;
 
 procedure TffelRegPkg.CloseDataSets;
@@ -267,22 +420,50 @@ begin
    End ;
 end;
 
-procedure TffelRegPkg.lbCloseClick(Sender: TObject);
-begin
- Close ;
-end;
-
 procedure TffelRegPkg.FormCreate(Sender: TObject);
 begin
   dmPkgs:= TdmPkgs.Create(Nil);
   With dmPkgs do
   Begin
-   dxDateEdit1.Date:= Now ;
    mtLoadPackages.Active:= True ;
-   fProductGroupNo:= -1 ;
   End ; //with
 
-  bcLengthOption.ItemIndex:= 1 ;
+  dmsSystem.cds_Package_Size.Active := False ;
+  dmsSystem.cds_Package_Size.ParamByName('LANGUAGECODE').AsInteger  :=  ThisUser.LanguageID ;
+  dmsSystem.cds_Package_Size.Active := True ;
+  dmsSystem.cds_Package_Size.Insert ;
+  dmsSystem.cds_Package_SizePackageSizeName.AsString  := siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_0' (* 'Ingen ändring' *) ) ;
+  dmsSystem.cds_Package_SizePackageSizeNo.AsInteger   := -1 ;
+  dmsSystem.cds_Package_Size.Post ;
+
+  dm_UserProps.LoadUserProps (Self.Name, mtuserprop) ;
+  mtUserProp.Edit ;
+  mtUserPropVerkNo.AsInteger  := mtUserPropOwnerNo.AsInteger ;
+
+  if mtUserPropVolumeUnitNo.AsInteger = 0 then
+  Begin
+   mtUserPropRegPointNo.Clear ;
+   lcREGPOINT.Enabled := False ;
+  End;
+
+  if mtUserPropLengthFormatNo.AsInteger = 0 then
+  Begin
+   mtUserPropRegDate.Clear ;
+   deRegDate.Enabled  := False;
+  End;
+
+  if mtUserPropAgentNo.AsInteger = 0 then
+  Begin
+   mtUserPropGroupByBox.Clear ;
+   lcSkiftLag.Enabled := False ;
+  End;
+
+  // mtUserPropNewItemRow.Clear ;
+  mtUserPropNewItemRow.AsInteger  := -1 ;
+
+  mtUserProp.Post ;
+
+  fFirstLengthColumn:= 2 ;
 end ;
 
 
@@ -314,87 +495,12 @@ begin
     end;
 end;
 
-procedure TffelRegPkg.lbSaveLoadClick(Sender: TObject);
-const
-  LF = #10;
-var
-  Save_Cursor:TCursor;
-Begin
- if MessageDlg('Ändra paket mot mätpunkt: '
- +Trim(peMatPunktAgare.Items[peMatPunktAgare.itemindex])
- +'/'+Trim(peRegPoint.Items[peRegPoint.itemindex])
- +LF+'Ägare:'+Trim(peOwner.Items[peOwner.itemindex])
-
- +LF+'Lagerplats: '+Trim(pePhysInventory.Items[pePhysInventory.itemindex])
- +'/'+ Trim(peLogicalInventory.Items[peLogicalInventory.ItemIndex])
- +LF+'Datum: '+DateToStr(dxDateEdit1.Date)
- ,    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
- Begin
-
- if (peRegPoint.Items.Count > 0) and (peRegPoint.ItemIndex <> -1) then
- Begin
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
-
-  try
-   With dmPkgs do
-    Begin
-     if ((mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0)) then
-     Begin
-     if mtPackages.State in [dsEdit, dsInsert] then
-      mtPackages.Post ;
-      if SaveFelRegPkgs(
-      integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex]),
-      integer(peLogicalInventory.Items.Objects[peLogicalInventory.ItemIndex]),
-      integer(peOwner.Items.Objects[peOwner.ItemIndex]),
-      integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex]),
-      StrToIntDef(eRunNr.Text,-1),
-      dxDateEdit1.Date) then
-      Begin
-       ShowMessage('Paket ändrade.') ;
-       bbClearPkgGridClick(Sender) ;
-      End
-      else
-      ShowMessage('Problem ändra paket.') ;
-     End
-     else
-     ShowMessage('Välj paketnr.') ;
-
-    End ; //with
-  finally
-   FIsModified := False ;
-   Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  end;
- End
- else
- ShowMessage('Välj en mätpunkt att registrera händelsen mot.') ;
-
- End ; //if...
-end;
-
-{function TffelRegPkg.SomethingHasChanged : Boolean ;
-Begin
- if (pePhysInventory.ItemIndex <> 0)
- OR (peLogicalInventory.ItemIndex <> 0)
- OR (beProductName.Text <> 'No Change')
- OR (peGradeStamp.Text <> 'No Change')
- OR (peBarCode.Text <> 'No Change')
- OR (peWrapType.Text <> 'No Change')
- OR (peMiniBundled.Text <> 'No Change')
- OR (peShrinkWrap.Text <> 'No Change')
- OR (peOnSticks.Text <> 'No Change')
- OR (ceChangePkgSize.Checked)
- OR ((dmPkgs.mtpackages.Active) AND (dmPkgs.mtpackages.Fields[1].AsInteger > 0)) then
- Result:= True
- else
- Result:= False ;
-End ; }
-
 procedure TffelRegPkg.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
-Var dResult: Integer ;
+//Var dResult: Integer ;
 begin
-  if FIsModified = True then
+
+(*  if FIsModified = True then
    dResult:= MessageDlg('Ändringar är inte sparade, vill du spara nu?',
     mtConfirmation, [mbYes, mbNo,mbCancel], 0)
     else
@@ -410,49 +516,18 @@ begin
      CanClose := True
      else
       CanClose := False ;
-
- if CanClose then
- Begin
+  *)
+// if CanClose then
+// Begin
    //Remove entries in Pkgs_Res
   With dmsSystem do
   Begin
    Delete_ReservedPkgs (Self.Name) ;
   End ;
   CloseDataSets;
- End ;
-
-end;
-
-procedure TffelRegPkg.lbPkgInfoClick(Sender: TObject);
-Var frmPkgInfo : TfrmPkgInfo ;
-begin
- frmPkgInfo:= TfrmPkgInfo.Create(Nil);
- Try
-  frmPkgInfo.PackageNo:= dmPkgs.mtLoadPackagesPackageNo.AsInteger ;
-  frmPkgInfo.SupplierCode:= dmPkgs.mtLoadPackagesSUPP_CODE.AsString ;
-  frmPkgInfo.ShowModal ;
- Finally
-  FreeAndNil(frmPkgInfo) ;
- End ;
-end;
-
-procedure TffelRegPkg.lbPkgNoSerieClick(Sender: TObject);
-begin
- With dmPkgs do
- Begin
-  Begin
-  if mtLoadPackages.State <> dsBrowse then
-   Try
-   mtLoadPackages.Post ;
-   Except
-    on eDatabaseError do
-    Begin
-     Raise ;
-    End ;
-   End ;
-   InsertPkgSerie(Sender) ;
-  End ;
- End ;
+// End ;
+ dmsSystem.StoreGridLayout(ThisUser.UserID, Self.Name+'/'+grdPaket.Name, grdPaketDBBandedTableView1) ;
+ dm_UserProps.SaveUserProps (Self.Name, mtUserProp) ;
 end;
 
 procedure TffelRegPkg.InsertPkgSerie(Sender: TObject) ;
@@ -476,7 +551,7 @@ begin
     StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
 
     if NoOfPkgsInSerie > 100 then
-    ResultButton:= MessageDlg('Upp till '+IntToStr(NoOfPkgsInSerie)+' paket kanske hämtas, är det korrekt?',
+    ResultButton:= MessageDlg(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_1' (* 'Upp till ' *) )+IntToStr(NoOfPkgsInSerie)+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_2' (* ' paket kanske hämtas, är det korrekt?' *) ),
     mtConfirmation, [mbYes, mbNo, mbCancel], 0) ;
 
     if ResultButton = mrYes then
@@ -487,7 +562,7 @@ begin
      sq_OnePkgDetailData.Close ;
      sq_OnePkgDetailData.ParamByName('First_PackageNo').AsInteger:= StrToInt(Trim(frmPkgNoSeries.eFromPkgNo.Text)) ;
      sq_OnePkgDetailData.ParamByName('Last_PackageNo').AsInteger:= StrToInt(Trim(frmPkgNoSeries.eToPkgNo.Text)) ;
-     sq_OnePkgDetailData.ParamByName('OwnerNo').AsInteger:= integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
+     sq_OnePkgDetailData.ParamByName('OwnerNo').AsInteger:= mtUserPropOwnerNo.AsInteger ;
      sq_OnePkgDetailData.ParamByName('UserCompanyLoggedIn').AsInteger:= ThisUser.CompanyNo ;
 
      sq_OnePkgDetailData.Open ;
@@ -522,7 +597,7 @@ begin
       End  //if dmsSystem.Pkg_Reserved(
       else
       Begin
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+' är reserverat av '+Res_UserName) ;
+       ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_4' (* ' är reserverat av ' *) )+Res_UserName) ;
       End ;
 
       sq_OnePkgDetailData.Next ;
@@ -541,99 +616,57 @@ begin
  End ; // with
 End ;
 
-procedure TffelRegPkg.bbCustomPkgGridClick(Sender: TObject);
-begin
- grdPackages.ColumnsCustomizing;
-end;
-
-procedure TffelRegPkg.beProductNameButtonClick(Sender: TObject;AbsoluteIndex: Integer);
-Var frmGetProduct : TfrmGetProduct ;
-begin
- //Add product
- With dmPkgs do
- Begin
-  if AbsoluteIndex = 0 then
-  Begin
-   frmGetProduct:= TfrmGetProduct.Create(Nil);
-   Try
-   if frmGetProduct.ShowModal = mrOk then
-   Begin
-    beProductName.Text  := dmcSystem.cds_ProductsProductDisplayName.AsString ;
-    fProductNo          := dmcSystem.cds_ProductsProductNo.AsInteger ;
-    fProductGroupNo     := dmcSystem.cds_ProductsProductGroupNo.AsInteger ;
-    CreateFieldsInmtPackagesTable(Sender) ;
-   End ;
-   Finally
-    dmcSystem.cds_Products.Active:= False ;
-    FreeAndNil(frmGetProduct) ;
-   End ;
-  End
-  else
-   Begin
-    beProductName.Text:= 'No Change' ;
-    fProductNo:= -1 ;
-    fProductGroupNo:= -1 ;
-   End ;
- End ;//with
-end;
-
 Procedure TffelRegPkg.CreateFieldsInmtPackagesTable(Sender : TObject) ;
-Var x           : Integer ;
-    LengthTitle : String ;
-    Save_Cursor : TCursor;
-//    OvcIniFileStore1 : TIniFile ;
+Var x                 : Integer ;
+    LengthTitle       : String ;
+    Save_Cursor       : TCursor;
+    Properties        : TcxTextEditProperties;
 Begin
+ grdLengthsDBBandedTableView1.BeginUpdate ;
+ Try
  With dmPkgs do
  Begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
 
- if mtPackages.Active then
+  if mtPackages.Active then
   mtPackages.Active:= False ;
-
-//  OvcIniFileStore1 := TIniFile.Create( dmsConnector.InifilesMap+'VisFelRegPkg'+'.'+ThisUser.UserName );
- Try
-   dsmtPackages.DataSet:= Nil ;
+  Try
    mtPackages.DeleteIndex('IndexRecId') ;
-
    mtPackages.DeleteIndex('PkgID') ;
 
- For x:= mtPackages.Fields.Count - 1 downto 0 do
- Begin
-  mtPackages.Fields.Remove(mtPackages.Fields.Fields[x]) ;
- End ;
+   For x:= mtPackages.Fields.Count - 1 downto 0 do
+   Begin
+    mtPackages.Fields.Remove(mtPackages.Fields.Fields[x]) ;
+   End ;
 
- mtPackages.FieldDefs.Clear ;
+   mtPackages.FieldDefs.Clear ;
 
-   mtPackages.FieldDefs.Add('RecId',ftInteger,0,False) ;
-   mtPackages.FieldDefs[cRECID].CreateField(nil);
-   mtPackages.FieldByName('RecId').DisplayLabel:= 'ROWNO' ;
+//#0
+   mtPackages.FieldDefs.Add('TotalPcs',ftInteger,0,False) ;
+   mtPackages.FieldDefs[0].CreateField(nil);
+   mtPackages.FieldByName('TotalPcs').DisplayLabel:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_6' (* 'STYCKETAL' *) ) ;
 
 //1
-   mtPackages.FieldDefs.Add('TotalPcs',ftInteger,0,False) ;
-   mtPackages.FieldDefs[1].CreateField(nil);
-   mtPackages.FieldByName('TotalPcs').DisplayLabel:= 'STYCKETAL' ;
+   mtPackages.FieldDefs.Add('RecId',ftInteger,0,False) ;
+   mtPackages.FieldDefs[cRECID].CreateField(nil);
+   mtPackages.FieldByName('RecId').DisplayLabel:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_5' (* 'ROWNO' *) ) ;
 
-   fFirstLengthColumn:= 2 ;
-   X:= fFirstLengthColumn  ;
+   X:= 2 ;//fFirstLengthColumn  ;
+   grdLengthsDBBandedTableView1.Bands[0].Visible:= True ;
 
-//New section
-//  if //(IsLOOnlyFixedLengths) and
-//   (bcLengthOption.ItemIndex = 0) then
-//    MakeLengthQuery_II
-//     else
-//        if (bcLengthOption.ItemIndex = 1) and
-        if (fProductGroupNo <> -1) then
-         Begin
-          if bcStdLenGrp.Items.Count > 0 then
-           MakeLengthQuery_STD_Lengths (integer(bcStdLenGrp.Items.Objects[bcStdLenGrp.ItemIndex]))
+
+//        if (mtUserPropProductGroupNo.AsInteger <> -1) then
+//         Begin
+          if mtUserPropLengthGroupNo.AsInteger > 0 then
+           MakeLengthQuery_STD_Lengths (mtUserPropLengthGroupNo.AsInteger)
             else
              Begin
               Exit ;
              End ;
-         End
-          else
-           exit ;
+//         End
+//          else
+//           exit ;
   sq_ProductLengths.Open ;
 
   While not sq_ProductLengths.Eof do
@@ -641,15 +674,7 @@ Begin
    mtPackages.FieldDefs.Add(sq_ProductLengthsActualLengthMM.AsString,ftInteger,0,False) ;
    mtPackages.FieldDefs[x].CreateField(nil);
    LengthTitle:= Trim(sq_ProductLengthsActualLengthMM.AsString) ;
-//   if sq_ProductLengthsNominalLengthMM.AsString <> sq_ProductLengthsActualLengthMM.AsString then
-//   LengthTitle:= LengthTitle + ' ('+sq_ProductLengthsNominalLengthMM.AsString+') ' ;
-
-//   ActualLengthMMArray[x]:= sq_ProductLengthsActualLengthMM.AsFloat ;
-//   NominalLengthMMArray[x]:= sq_ProductLengthsNominalLengthMM.AsFloat ;
-
    mtPackages.FieldByName(sq_ProductLengthsActualLengthMM.AsString).DisplayLabel:= LengthTitle ;
-
-//   ActualLengthMMArray[x]:= sq_ProductLengthsActualLengthMM.AsFloat ;
    X:= Succ(x) ;
 
    sq_ProductLengths.Next ;
@@ -660,21 +685,47 @@ Begin
   mtPackages.IndexName:= 'IndexRecId' ;
 
  //Create columns in the grid
-  grdPkgs.DestroyColumns ;
-  grdPkgs.KeyField:= 'RecId' ;
+  grdLengthsDBBandedTableView1.ClearItems ;
+  grdLengthsDBBandedTableView1.DataController.CreateAllItems ;
 
-  grdPkgs.CreateDefaultColumns(mtPackages, Self) ;
 
-  grdPkgs.OptionsDB:=   [edgoCancelOnExit,edgoCanDelete,edgoCanNavigation,edgoConfirmDelete,edgoUseBookmarks, edgoLoadAllRecords] ;
+  For x := 0 to grdLengthsDBBandedTableView1.ColumnCount - 1 do
+  Begin
+   grdLengthsDBBandedTableView1.Columns[x].Options.Filtering  := False ;
+   grdLengthsDBBandedTableView1.Columns[x].Position.BandIndex := 0 ;
+   grdLengthsDBBandedTableView1.Columns[x].Width              := 50 ;
+   grdLengthsDBBandedTableView1.Columns[x].PropertiesClass    :=  TcxTextEditProperties;
+   Properties := grdLengthsDBBandedTableView1.Columns[x].Properties AS TcxTextEditProperties;
+   Properties.ReadOnly:= False ;
+  End ;
+  grdLengthsDBBandedTableView1.Columns[0].Visible:= False ;
 
- For x:= 0 to grdPkgs.ColumnCount - 1 do
+  grdLengthsDBBandedTableView1.OptionsView.ColumnAutoWidth:= mtUserPropAutoColWidth.AsInteger = 1 ;
+
+  //Set length column props
+(*  For x := 0 to grdLengthsDBBandedTableView1.ColumnCount - 1 do
+  Begin
+//   grdLengthsDBBandedTableView1.Columns[x].PropertiesClass:=  TcxTextEditProperties;
+   Properties := grdLengthsDBBandedTableView1.Columns[x].Properties AS TcxTextEditProperties;
+   Properties.ReadOnly:= False ;
+   grdLengthsDBBandedTableView1.Columns[x].Width:= 40 ;
+  End ; *)
+
+//  grdPkgs.DestroyColumns ;
+//  grdPkgs.KeyField:= 'RecId' ;
+
+//  grdPkgs.CreateDefaultColumns(mtPackages, Self) ;
+
+//  grdPkgs.OptionsDB:=   [edgoCancelOnExit,edgoCanDelete,edgoCanNavigation,edgoConfirmDelete,edgoUseBookmarks, edgoLoadAllRecords] ;
+
+{ For x:= 0 to grdPkgs.ColumnCount - 1 do
  Begin
   grdPkgs.Columns[x].ReadOnly:= False ;
-  grdPkgs.Columns[x].Width:= 45 ;//OvcIniFileStore1.ReadInteger('grdPkgs',IntToStr(x), 45) ;
+  grdPkgs.Columns[x].Width:= OvcIniFileStore1.ReadInteger('grdPkgs',IntToStr(x), 45) ;
  End ;
 
  grdPkgs.Columns[cRECID].Visible:= True ;
- grdPkgs.Columns[cRECID].ReadOnly:= True ;
+ grdPkgs.Columns[cRECID].ReadOnly:= True ; }
 
   mtPackages.Active:= True ;
   mtPackages.Insert ;
@@ -683,157 +734,29 @@ Begin
 
  Finally
   dsmtPackages.DataSet:= mtPackages ;
-//  OvcIniFileStore1.Free ;
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
  End ; //with
+ Finally
+  grdLengthsDBBandedTableView1.EndUpdate ;
+ End ;
 End ;
 
-procedure TffelRegPkg.bcLengthOptionChange(Sender: TObject);
+procedure TffelRegPkg.cxDBCheckBox1PropertiesChange(Sender: TObject);
 begin
-{  if ((bcLengthOption.ItemIndex=0) or (bcLengthOption.ItemIndex=1)) then
-   ReLoadPackageColumnsWithAllLengths(Sender) ;
-
-  case bcLengthOption.ItemIndex of
-
-    SHOW_ALL_LENGTHS-1 : begin
-                         ShowALL_LengthColumns(Sender) ;
-                         bcStdLenGrp.Enabled := FALSE;
-                       end;
-
-    SHOW_STD_LENGTHS-1 : begin
-                         bcStdLenGrp.Enabled := TRUE;
-                         if bcStdLenGrp.ItemIndex <> NO_SELECTION then
-                          Show_STD_LengthColumns(Sender) ;
-                       end;
-
-    end; }
+ if mtUserPropVolumeUnitNo.AsInteger = 0 then
+ Begin
+  mtUserPropRegPointNo.Clear ;
+  lcREGPOINT.Enabled := False ;
+ End
+ else
+ lcREGPOINT.Enabled := True ;
 end;
 
 procedure TffelRegPkg.bcStdLenGrpChange(Sender: TObject);
 begin
-// if bcStdLenGrp.ItemIndex <> -1 then
-// Begin
-  dmPkgs.LoadGroupLengths(integer(bcStdLenGrp.Items.Objects[bcStdLenGrp.ItemIndex]));
+  dmPkgs.LoadGroupLengths(mtUserPropLengthGroupNo.AsInteger);
   ReLoadPackageColumnsWithAllLengths (Sender) ;
-// End ;
-end;
-
-procedure TffelRegPkg.ShowALL_LengthColumns(Sender: TObject);
-Var x : Integer ;
-    Save_Cursor:TCursor;
-begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crSQLWait;    { Show hourglass cursor }
- Try
- With dmPkgs do
- Begin
-  dsmtPackages.DataSet:= Nil ;
-  Try
-   For x := fFirstLengthColumn to mtPackages.Fields.Count -1 do
-   grdPkgs.Columns[x].Visible:= True
-  Finally
-   dsmtPackages.DataSet:= mtPackages ;
-  End ;
- End ;
- Finally
-   Screen.Cursor := Save_Cursor;  { Always restore to normal }
- End ;
-End ;
-
-procedure TffelRegPkg.Show_STD_LengthColumns(Sender: TObject);
-Var x : Integer ;
-    Save_Cursor:TCursor;
-begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crSQLWait;    { Show hourglass cursor }
- Try
- With dmPkgs do
- Begin
-  dsmtPackages.DataSet:= Nil ;
-  Try
-  For x := fFirstLengthColumn to mtPackages.Fields.Count -1 do
-  if mtStandardLengths.FindKey([StrToInt(mtPackages.FieldDefs.Items[x].Name)]) then
-   grdPkgs.Columns[x].Visible:= True
-  else
-   grdPkgs.Columns[x].Visible:= False ;
-   Finally
-    dsmtPackages.DataSet:= mtPackages ;
-   End ;
- End ;
- Finally
-   Screen.Cursor := Save_Cursor;  { Always restore to normal }
- End ;
-End ;
-
-procedure TffelRegPkg.peBarCodeChange(Sender: TObject);
-begin
- dmPkgs.fBarCodeID:= integer(peBarCode.Items.Objects[peBarCode.ItemIndex]) ;
-end;
-
-procedure TffelRegPkg.peGradeStampChange(Sender: TObject);
-begin
- dmPkgs.fGradeStampNo:= integer(peGradeStamp.Items.Objects[peGradeStamp.ItemIndex]) ;
-end;
-
-procedure TffelRegPkg.peOwnerChange(Sender: TObject);
-begin
- if peOwner.Items.Count > 0 then
- Begin
-  dmPkgs.SupplierNo:=    integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
- End ;
- dmsContact.LoadPhysInventory(pePhysInventory.Items, integer(peOwner.Items.Objects[peOwner.ItemIndex]) , ThisUser.CompanyNo) ;
- if pePhysInventory.Items.Count > 0 then
- pePhysInventory.ItemIndex:= 0 ;
-end;
-
-procedure TffelRegPkg.pePhysInventoryChange(Sender: TObject);
-begin
- if pePhysInventory.Items.Count > 0 then
- dmsContact.LoadLogicalInventory(peLogicalInventory.Items,
- integer(pePhysInventory.Items.Objects[pePhysInventory.ItemIndex]) );
- if peLogicalInventory.Items.Count > 0 then
-  peLogicalInventory.ItemIndex:= 0 ;
-end;
-
-procedure TffelRegPkg.grdPkgsEdited(Sender: TObject;
-  Node: TdxTreeListNode);
-begin
- dmPkgs.SummarizePkg ;
-end;
-
-procedure TffelRegPkg.bbClearLengthsClick(Sender: TObject);
-begin
- With dmPkgs do
- Begin
-  if mtPackages.Active then
-  Begin
-   mtPackages.Active:= False ;
-   mtPackages.Active:= True ;
-  End
-  else
-  mtPackages.Active:= True ;
-
-  mtPackages.Insert ;
-  mtPackages.FieldByName('RecId').AsInteger:= 1 ;
-  mtPackages.Post ;
- End ;
-end;
-
-procedure TffelRegPkg.bbPkgNoByLOClick(Sender: TObject);
-Var ProductNo : Integer ;
-    fLONumber: TfLONumber;
-begin
- fLONumber:= TfLONumber.Create(Nil);
- Try
- if fLONumber.ShowModal = mrOK then
- Begin
-  ProductNo := dmPkgs.cds_Prod_In_LOPRODUCTNO.AsInteger ;
-  AddPkgsByLONumber (Sender, ProductNo, StrToIntDef(Trim(fLONumber.eLONo.Text),0) ) ;
- End ;
- Finally
-  FreeAndNil(fLONumber) ;
- End ;
 end;
 
 procedure TffelRegPkg.AddPkgsByLONumber (Sender: TObject;const ProductNo, LONo : Integer ) ;
@@ -845,13 +768,15 @@ Begin
   Screen.Cursor := crHourGlass;    { Show hourglass cursor }
  With dmPkgs do
  Begin
+  if mtLoadPackages.State in [dsEdit, dsInsert] then
+  mtLoadPackages.Post ;
 
  Try
   mtLoadPackages.IndexName:= 'mtLoadPackagesIndex5' ;
   sq_GetPkgsByLONo.Close ;
-  sq_GetPkgsByLONo.ParamByName('LONo').AsInteger:= LONo ;
-  sq_GetPkgsByLONo.ParamByName('OwnerNo').AsInteger:= integer(peOwner.Items.Objects[peOwner.ItemIndex]) ;
-  sq_GetPkgsByLONo.ParamByName('ProductNo').AsInteger:= ProductNo ;
+  sq_GetPkgsByLONo.ParamByName('LONo').AsInteger      := LONo ;
+  sq_GetPkgsByLONo.ParamByName('OwnerNo').AsInteger   := mtUserPropOwnerNo.AsInteger ;
+  sq_GetPkgsByLONo.ParamByName('ProductNo').AsInteger := ProductNo ;
   sq_GetPkgsByLONo.Open ;
   While not sq_GetPkgsByLONo.Eof do
   Begin
@@ -881,7 +806,7 @@ Begin
    End ; //   if not mtLoadPackages.FindKey(
    End  //if
    else
-    ShowMessage('Paketnr '+sq_GetPkgsByLONoPACKAGENO.AsString+'/'+sq_GetPkgsByLONoSUPP_CODE.AsString+'  är reserverat av '+Res_UserName) ;
+    ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) )+sq_GetPkgsByLONoPACKAGENO.AsString+'/'+sq_GetPkgsByLONoSUPP_CODE.AsString+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_9' (* '  är reserverat av ' *) )+Res_UserName) ;
    sq_GetPkgsByLONo.Next ;
   End ; //While
   sq_GetPkgsByLONo.Close ;
@@ -895,103 +820,24 @@ Begin
  End ; //With 
 End ;
 
-procedure TffelRegPkg.bbClearPkgGridClick(Sender: TObject);
-begin
- With dmPkgs do
- Begin
-  mtLoadPackages.Active:= False ;
-  mtLoadPackages.Active:= True ;
-  ROWNO:= 1 ;
- End ;
-end;
-
 procedure TffelRegPkg.FormDestroy(Sender: TObject);
 begin
-  FreeAndNil(dmPkgs) ;
-end;
-
-procedure TffelRegPkg.lbRemovePackageClick(Sender: TObject);
-begin
- With dmPkgs do
- Begin
-  if (mtLoadPackages.Active) and (mtLoadPackages.RecordCount > 0) then
-  mtLoadPackages.Delete ;
- End ;
-end;
-
-procedure TffelRegPkg.lbAddPackageClick(Sender: TObject);
-begin
- dmPkgs.mtLoadPackages.Append ;
-end;
-
-procedure TffelRegPkg.grdPackagesPACKAGENOValidate(Sender: TObject;
-  var ErrorText: String; var Accept: Boolean);
-var
-  NewValue: string;
-  PkgSupplierCode: String3;
-  PkgSupplierNo: Integer ;
-  Action: TEditAction;
-  ProductNo : Integer ;
-  Save_Cursor:TCursor;
-  Res_UserName : String ;
-begin
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
-  try
-    { Do some lengthy operation }
-   NewValue := TdxTreeList((Sender as TdxTreeListColumn).TreeList).EditingText;
-
-   Action := IdentifyPackageSupplier(
-      StrToInt(NewValue),
-      dmPkgs.SupplierNo,
-      PkgSupplierCode,
-      PkgSupplierNo, ProductNo, Res_UserName );
-
-
-  if Action = eaACCEPT then
-  Begin
-   AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
-   Accept:= True ;
-   if dmPkgs.fProductNo = -1 then
-   Begin
-    beProductName.Text  := dmcSystem.GetProductDescProductDisplayName (dmPkgs.mtLoadPackagesProductNo.AsInteger, dmPkgs.fProductGroupNo) ;
-    dmPkgs.fProductNo   := dmcSystem.cds_ProductsProductNo.AsInteger ;
-    CreateFieldsInmtPackagesTable(Sender) ;
-//    fProductGroupNo     :=
-   End ;
-  End
-   else
-   if Action = eaREJECT then
-    Begin
-     ErrorText:= 'Package number '+NewValue+' does not exist' ;
-     Accept:= False ;
-    End
-    else
-   if Action = eaReserved then
-    Begin
-     ErrorText:= 'Package number '+NewValue+' is reserved by '+Res_UserName ;
-     Accept:= False ;
-    End ;
-
-  finally
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  end;
-
+ FreeAndNil(dmPkgs) ;
 end;
 
 function TffelRegPkg.IdentifyPackageSupplier(
-  const PkgNo,
-  FSupplierNo: Integer;
+  const PkgNo : Integer;
   var PkgSupplierCode: String3;
-  var PkgSupplierNo: Integer;
   Var ProductNo : Integer;
   Var Res_UserName : String) : TEditAction;
 const
   NO_USER_HAS_THIS_PACKAGE_RESERVED = '0' ;
   PACKAGE_NOT_IN_INVENTORY = 0 ;
+var
+  SupplierNo: Integer;
 begin
  //check that package is available in inventory and Get supplier code
-    PkgSupplierCode := dmsSystem.PkgNoToSuppCode(PkgNo, FSupplierNo, ThisUser.CompanyNo, PkgSupplierNo, ProductNo);
+    PkgSupplierCode := dmsSystem.PkgNoToSuppCode(PkgNo, mtUserPropOwnerNo.AsInteger, ThisUser.CompanyNo, SupplierNo,ProductNo);
     if PkgSupplierCode = '' then
     Begin
       Result := eaREJECT;
@@ -1022,8 +868,9 @@ Begin
      sq_OneUniquePkg.Close ;
      sq_OneUniquePkg.ParamByName('PackageNo').AsInteger           := PkgNo ;
      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgSupplierCode ;
-     sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := SupplierNo ;
+     sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := mtUserPropOwnerNo.AsInteger ;
      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
+     sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
      sq_OneUniquePkg.ParamByName('Status').AsInteger              := 1 ;
      sq_OneUniquePkg.Open ;
      if not sq_OneUniquePkg.Eof then
@@ -1036,9 +883,9 @@ Begin
 
       Try
       For x := 0 to 21 do
-       mtLoadPackages.Fields.Fields[x].AsVariant:= sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
-      mtLoadPackagesLoadDetailNo.AsInteger:= Unique_No ;
-      mtLoadPackages.Post ;
+       mtLoadPackages.Fields.Fields[x].AsVariant  := sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
+      mtLoadPackagesLoadDetailNo.AsInteger        := Unique_No ;
+//      mtLoadPackages.Post ;
       Unique_No:= Succ(Unique_No) ;
       Except
        on eDatabaseError do
@@ -1051,7 +898,7 @@ Begin
       End  //if..
       else
       Begin
-       ShowMessage('Paketnr '+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+'  är reserverat av '+Res_UserName) ;
+       ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) )+sq_OnePkgDetailDataPACKAGENO.AsString+'/'+sq_OnePkgDetailDataSUPP_CODE.AsString+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_9' (* '  är reserverat av ' *) )+Res_UserName) ;
       End ;
      End ; //if not...
      sq_OneUniquePkg.Close ;
@@ -1062,18 +909,6 @@ Begin
  End ; //with
 end;
 
-procedure TffelRegPkg.peMatPunktAgareChange(Sender: TObject);
-begin
- if peMatPunktAgare.Items.Count > 0 then
- Begin
-  peRegPoint.Text := 'N/A' ;
-  peRegPoint.Items.Clear ;
-  dmcSystem.LoadRegPoint(peRegPoint.Items, integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex])) ;
-  if peRegPoint.Items.Count > 0 then
-   peRegPoint.ItemIndex:= 0 ;
- End ;
-end;
-
 procedure TffelRegPkg.ReLoadPackageColumnsWithAllLengths(Sender: TObject);
 Begin
    if dmPkgs.mtPackages.Active then
@@ -1082,7 +917,7 @@ Begin
     End ;
    CreateFieldsInmtPackagesTable(Sender) ;
    bcLengthOption.Enabled:= True ;
-   bcStdLenGrp.Enabled:= True ;
+   lcLengthGroup.Enabled:= True ;
 End ;
 
 procedure TffelRegPkg.acSearchRunNoExecute(Sender: TObject);
@@ -1091,8 +926,8 @@ begin
  fSearchRunNo:= TfSearchRunNo.Create(nil);
  Try
  fSearchRunNo.mtProps.Edit ;
- fSearchRunNo.mtPropsRegPointNo.AsInteger:= integer(peRegPoint.Items.Objects[peRegPoint.ItemIndex]) ;
- fSearchRunNo.mtPropsSupplierNo.AsInteger:= integer(peMatPunktAgare.Items.Objects[peMatPunktAgare.ItemIndex]) ;
+ fSearchRunNo.mtPropsRegPointNo.AsInteger := mtUserPropRegPointNo.AsInteger ;
+ fSearchRunNo.mtPropsSupplierNo.AsInteger := mtUserPropProducerNo.AsInteger ;
  fSearchRunNo.mtProps.Post ;
  if fSearchRunNo.ShowModal = mrOK then
  Begin
@@ -1103,6 +938,820 @@ begin
  End ;
  Finally
   FreeAndNil(fSearchRunNo) ;
+ End ;
+end;
+
+procedure TffelRegPkg.mtUserPropPIPNoChange(Sender: TField);
+begin
+ With dm_UserProps do
+ Begin
+  cds_LIP.Active:= False ;
+  cds_LIP.ParamByName('PIPNo').AsInteger:= mtUserPropPIPNo.AsInteger ;
+  cds_LIP.Active:= True ;
+  cds_LIP.First ;
+  mtUserPropLIPNo.AsInteger:= cds_LIPLIPNo.AsInteger ;
+ End ;
+end;
+
+procedure TffelRegPkg.mtUserPropProducerNoChange(Sender: TField);
+begin
+ With dm_UserProps do
+ Begin
+  mtUserPropSupplierCode.AsString:= dmsContact.GetClientCode(mtUserPropProducerNo.AsInteger) ;
+
+  cds_RegPoint.Active:= False ;
+  cds_RegPoint.ParamByName('ClientNo').AsInteger:= mtUserPropProducerNo.AsInteger ;
+  cds_RegPoint.Active:= True ;
+  cds_RegPoint.First ;
+  mtUserPropRegPointNo.AsInteger:= cds_RegPointRegistrationPointNo.AsInteger ;
+ End ;
+end;
+
+procedure TffelRegPkg.beProductPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+ if AButtonIndex = 0 then
+  AddProduct(Sender)
+   else
+    if AButtonIndex = 1 then
+     RemoveProduct(Sender)
+      else
+       AddDefaultProduct(Sender) ;
+end;
+
+procedure TffelRegPkg.AddDefaultProduct(Sender: TObject) ;
+Begin
+ With dmPkgs do
+ Begin
+    mtUserProp.Edit ;
+    mtUserPropProductDescription.AsString := mtLoadPackagesPRODUCT.AsString ;
+    mtUserPropProductNo.AsInteger         := mtLoadPackagesProductNo.AsInteger ;
+//    mtUserPropProductGroupNo.AsInteger    := dmcSystem.cds_ProductsProductGroupNo.AsInteger ;
+    mtUserPropSurfacingNo.AsInteger       := mtLoadPackagesSurfacingNo.AsInteger ;
+    mtUserProp.Post ;
+//    if mtUserPropProductNo.AsInteger > 0 then     CreateFieldsInmtPackagesTable(Sender) ;
+ End ;//with
+End ;
+
+procedure TffelRegPkg.AddProduct(Sender: TObject) ;
+//Var frmGetProduct : TfrmGetProduct ;
+    var frmGetProd_II: TfrmGetProd_II;
+begin
+ //Get product
+ With dmPkgs do
+ Begin
+   frmGetProd_II:= TfrmGetProd_II.Create(Nil);
+   Try
+   frmGetProd_II.PageControl.HideTabs := True ;
+   if frmGetProd_II.ShowModal = mrOk then
+   Begin
+    if mtUserProp.State in [dsBrowse] then
+     mtUserProp.Edit ;
+    Try
+    mtUserPropProductNo.AsInteger          := dmsSystem.mtMarkedProdProductNo.AsInteger ;
+    mtUserPropProductDescription.AsString  := dmsSystem.mtMarkedProdPRODUKTDESC.AsString ;
+    mtUserPropProductGroupNo.AsInteger     := dmsSystem.mtMarkedProdProductGroupNo.AsInteger ;
+
+    if dmsSystem.mtMarkedProdSequenceNo.AsInteger = 3 {Ramar} then
+    Begin
+     mtUserPropInputOption.AsInteger  := INPUT_RAMAR ;
+     mtUserPropALMM.AsFloat           := dmsSystem.mtMarkedProdAT.AsFloat * 2 + dmsSystem.mtMarkedProdAW.AsFloat ;
+     grdLengths.Enabled := False ;
+//     mtLoadPackagesALMM.AsFloat
+    End
+    else
+    Begin
+     if mtUserPropInputOption.AsInteger = INPUT_RAMAR then
+      mtUserPropInputOption.AsInteger := INPUT_PIECES ;
+     mtUserPropALMM.AsFloat := 0 ;
+     grdLengths.Enabled := True ;
+    End ;
+
+    mtUserProp.Post ;
+
+    Except
+      on eDatabaseError do
+      Raise ;
+    End ;
+   End ;
+   Finally
+    dmsSystem.mtMarkedProd.Active:= False ;
+    FreeAndNil(frmGetProd_II) ;
+   End ;
+ End ;//with
+end;
+
+(*
+ //Add product
+ With dmPkgs do
+ Begin
+   frmGetProduct:= TfrmGetProduct.Create(Nil);
+   Try
+   if frmGetProduct.ShowModal = mrOk then
+   Begin
+    mtUserProp.Edit ;
+    mtUserPropProductDescription.AsString := dmcSystem.cds_ProductsProductDisplayName.AsString ;
+    mtUserPropProductNo.AsInteger         := dmcSystem.cds_ProductsProductNo.AsInteger ;
+    mtUserPropProductGroupNo.AsInteger    := dmcSystem.cds_ProductsProductGroupNo.AsInteger ;
+    mtUserProp.Post ;
+//    CreateFieldsInmtPackagesTable(Sender) ;
+   End ;
+   Finally
+    dmcSystem.cds_Products.Active:= False ;
+    FreeAndNil(frmGetProduct) ;
+   End ;
+ End ;//with
+end;
+*)
+
+procedure TffelRegPkg.RemoveProduct(Sender: TObject) ;
+begin
+ With dmPkgs do
+ Begin
+  mtUserProp.Edit ;
+  mtUserPropProductDescription.AsString := siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_0' (* 'Ingen ändring' *) ) ;
+  mtUserPropProductNo.AsInteger         := -1 ;
+  mtUserPropProductGroupNo.AsInteger    := -1 ;
+  mtUserProp.Post ;
+ End ;//with
+end;
+
+procedure TffelRegPkg.mtUserPropAfterInsert(DataSet: TDataSet);
+begin
+ mtUserPropRegDate.AsDateTime           := Now ;
+ mtUserPropProductGroupNo.AsInteger     := -1 ;
+ mtUserPropProductNo.AsInteger          := -1 ;
+ mtUserPropProductDescription.AsString  := siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_0' (* 'Ingen ändring' *) ) ;
+ mtUserPropLIPChange.AsInteger          := 0 ;
+ mtUserPropVerkNo.AsInteger             := 0 ;
+ mtUserPropNewItemRow.AsInteger         := -1 ;
+end;
+
+procedure TffelRegPkg.acSaveExecute(Sender: TObject);
+const
+  LF = #10;
+var
+  Save_Cursor : TCursor;
+  MsgString   : String ;
+Begin
+ if mtUserPropLengthGroupNo.AsInteger = -1 then
+ Begin
+  ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_14' (* 'Du måste välja en längdgrupp (även om inte längder eller antal ändras)' *) ));
+  Exit ;
+ End ;
+
+ if mtUserPropRegDate.AsDateTime > Now then
+ Begin
+  ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_15' (* 'Registreringsdatum får inte vara större än aktuellt datum' *) ));
+  Exit ;
+ End ;
+
+ if ControlInvDate(Sender) then
+ Begin
+  if mtUserProp.State in [dsEdit, dsInsert] then
+   mtUserProp.Post ;
+  MsgString:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_16' (* 'Ändra paket mot mätpunkt: ' *) )
+  +Trim(lcPRODUCER.Text)
+  +'/'+Trim(mtUserPropREGPOINT.AsString) ;
+
+  if mtUserPropLIPChange.AsInteger = 1 then
+  MsgString:= MsgString + LF + siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_17' (* 'Ägare:' *) ) + Trim(lcVERK.Text)
+  + LF + siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_18' (* 'Lagerplats: ' *) ) + Trim(lcPIPNAME.Text) + '/' + Trim(lcLIPName.Text) ;
+
+  MsgString:= MsgString +LF+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_19' (* 'Datum: ' *) )+deRegDate.Text ;
+
+ if MessageDlg(MsgString,    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+ Begin
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+
+  try
+   With dmPkgs do
+    Begin
+     if mtLoadPackages.State in [dsEdit, dsInsert] then
+      mtLoadPackages.Post ;
+     if ((mtLoadPackages.Active) AND (mtLoadPackages.RecordCount > 0)) then
+     Begin
+     if mtPackages.State in [dsEdit, dsInsert] then
+      mtPackages.Post ;
+      if SaveFelRegPkgs(mtUserProp) then
+      Begin
+       ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_20' (* 'Paket ändrade.' *) )) ;
+       acCleanPkgsExecute(Sender) ;
+      End
+      else
+      ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_21' (* 'Problem ändra paket.' *) )) ;
+     End
+     else
+     ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_22' (* 'Välj paketnr.' *) )) ;
+
+    End ; //with
+  finally
+   Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  end;
+ End ; //if...
+
+ End //if ControlInvDate(Sender) then
+  else
+   ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_23' (* 'Paket, markerade med röd färg, kan inte ändras pga att registreringsdatum är före inventerings eller maxdatum i en inventering där lagergruppen ingår.' *) )) ;
+end;
+
+procedure TffelRegPkg.acPkgNoSerieExecute(Sender: TObject);
+Begin
+ With dmPkgs do
+ Begin
+  Begin
+  if mtLoadPackages.State <> dsBrowse then
+   Try
+   mtLoadPackages.Post ;
+   Except
+    on eDatabaseError do
+    Begin
+     Raise ;
+    End ;
+   End ;
+   InsertPkgSerie(Sender) ;
+  End ;
+ End ;
+End ;
+
+procedure TffelRegPkg.acPkgNoFrom_LOExecute(Sender: TObject);
+Var ProductNo : Integer ;
+    fLONumber: TfLONumber;
+begin
+ fLONumber:= TfLONumber.Create(Nil);
+ Try
+ if fLONumber.ShowModal = mrOK then
+ Begin
+  ProductNo := dmPkgs.cds_Prod_In_LOPRODUCTNO.AsInteger ;
+  AddPkgsByLONumber (Sender, ProductNo, StrToIntDef(Trim(fLONumber.eLONo.Text),0) ) ;
+ End ;
+ Finally
+  FreeAndNil(fLONumber) ;
+ End ;
+end;
+
+procedure TffelRegPkg.acCloseExecute(Sender: TObject);
+begin
+ Close ;
+end;
+
+procedure TffelRegPkg.acAppendPkgExecute(Sender: TObject);
+begin
+ dmPkgs.mtLoadPackages.Append ;
+ grdPaket.SetFocus ;
+end;
+
+procedure TffelRegPkg.acCleanPkgsExecute(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  mtLoadPackages.Active:= False ;
+  mtLoadPackages.Active:= True ;
+  ROWNO:= 1 ;
+ End ;
+end;
+
+procedure TffelRegPkg.lcLengthGroupPropertiesChange(Sender: TObject);
+begin
+ CreateFieldsInmtPackagesTable(Sender) ;
+end;
+
+procedure TffelRegPkg.grdPaketDBBandedTableView1PACKAGENOPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  NewValue: string;
+  PkgSupplierCode: String3;
+  Action: TEditAction;
+  ProductNo : Integer ;
+  Save_Cursor:TCursor;
+  Res_UserName : String ;
+begin
+
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+  try
+    { Do some lengthy operation }
+   NewValue := DisplayValue ;// TdxTreeList((Sender as TdxTreeListColumn).TreeList).EditingText;
+
+   Action := IdentifyPackageSupplier(
+      StrToInt(NewValue),
+      PkgSupplierCode,
+      ProductNo, Res_UserName );
+
+
+  if Action = eaACCEPT then
+  Begin
+   AddPkgToGrid(Sender, StrToInt(NewValue),PkgSupplierCode, ProductNo) ;
+   Error:= False ;
+{   if mtUserPropProductNo.AsInteger = -1 then
+   Begin
+    mtUserProp.Edit ;
+    mtUserPropProductDescription.AsString := dmcSystem.GetProductDescProductDisplayName (dmPkgs.mtLoadPackagesProductNo.AsInteger, dmPkgs.fProductGroupNo) ;
+    mtUserPropProductNo.AsInteger         := dmcSystem.cds_ProductsProductNo.AsInteger ;
+    mtUserPropProductGroupNo.AsInteger    := dmcSystem.cds_ProductsProductGroupNo.AsInteger ;
+    mtUserProp.Post ;
+
+    CreateFieldsInmtPackagesTable(Sender) ;
+   End ; }
+  End
+   else
+   if Action = eaREJECT then
+    Begin
+     ErrorText:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_24' (* 'Package number ' *) )+NewValue+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_25' (* ' does not exist' *) ) ;
+     Error:= True ;
+    End
+    else
+   if Action = eaReserved then
+    Begin
+     ErrorText:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_24' (* 'Package number ' *) )+NewValue+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_27' (* ' is reserved by ' *) )+Res_UserName ;
+     Error:= True ;
+    End ;
+
+  finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+   end; 
+end;
+
+procedure TffelRegPkg.grdLengthsDBBandedTableView1EditKeyDown(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+begin
+ Try
+  if AEdit is TcxCustomTextEdit then
+    with TcxCustomTextEdit(AEdit) do begin
+      if (Key = VK_RIGHT) and (CursorPos=Length(TcxCustomTextEdit(AEdit).Text)) then
+        PostMessage(Self.Handle,CM_MOVEIT, Integer(True), 0)
+      else if (Key = VK_LEFT) and (CursorPos=0) then
+        PostMessage(Self.Handle,CM_MOVEIT, Integer(False), 0);
+    end;
+ Except
+ End ;
+end;
+
+procedure TffelRegPkg.acSaveUpdate(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  acSave.Enabled:= (mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
+ End ;
+end;
+
+procedure TffelRegPkg.acCleanPkgsUpdate(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  acCleanPkgs.Enabled:= (mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
+ End ;
+end;
+
+procedure TffelRegPkg.grdLengthsDBBandedTableView1Editing(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  var AAllow: Boolean);
+begin
+ dmPkgs.SummarizePkg ;
+end;
+
+procedure TffelRegPkg.acCleanPcsExecute(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  if mtPackages.Active then
+  Begin
+   mtPackages.Active:= False ;
+   mtPackages.Active:= True ;
+  End
+  else
+  mtPackages.Active:= True ;
+
+  mtPackages.Insert ;
+  mtPackages.FieldByName('RecId').AsInteger := 1 ;
+  mtPackages.Post ;
+ End ;
+end;
+
+procedure TffelRegPkg.acRemoveRowExecute(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  if (mtLoadPackages.Active) and (mtLoadPackages.RecordCount > 0) then
+  mtLoadPackages.Delete ;
+ End ;
+end;
+
+procedure TffelRegPkg.acPkgInfoExecute(Sender: TObject);
+Var frmPkgInfo : TfrmPkgInfo ;
+begin
+ frmPkgInfo:= TfrmPkgInfo.Create(Nil);
+ Try
+  frmPkgInfo.PackageNo:= dmPkgs.mtLoadPackagesPackageNo.AsInteger ;
+  frmPkgInfo.SupplierCode:= dmPkgs.mtLoadPackagesSUPP_CODE.AsString ;
+  frmPkgInfo.ShowModal ;
+ Finally
+  FreeAndNil(frmPkgInfo) ;
+ End ;
+end;
+
+procedure TffelRegPkg.FormShow(Sender: TObject);
+begin
+ dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name+'/'+grdPaket.Name, grdPaketDBBandedTableView1) ;
+ CreateFieldsInmtPackagesTable(Sender) ;
+end;
+
+procedure TffelRegPkg.acAppendPkgUpdate(Sender: TObject);
+begin
+ acAppendPkg.Enabled:= (mtUserProp.Active) and (mtUserPropOwnerNo.AsInteger > 0)
+ and (mtUserPropProducerNo.AsInteger > 0) ;// and (mtUserPropRegPointNo.AsInteger > 0) ;
+end;
+
+procedure TffelRegPkg.cbLIPChangePropertiesChange(Sender: TObject);
+begin
+ if cbLIPChange.Checked then
+ Begin
+  if mtUserPropRoleType.AsInteger = cLego then
+  Begin
+   lcVerk.Enabled     := False ;
+   lcPIPNAME.Enabled  := False ;
+   lcLIPNAME.Enabled  := True ;
+  End
+  else
+  Begin
+   lcPIPNAME.Enabled := True ;
+   lcLIPName.Enabled := True ;
+   lcVERK.Enabled    := True ;
+  End ;
+ End
+ else
+ Begin
+  lcPIPNAME.Enabled := False ;
+  lcLIPName.Enabled := False ;
+  lcVERK.Enabled    := False ;
+ End ;
+end;
+
+procedure TffelRegPkg.cbRegDatePropertiesChange(Sender: TObject);
+begin
+ if mtUserPropLengthFormatNo.AsInteger = 0 then
+ Begin
+  mtUserPropRegDate.Clear ;
+  deRegDate.Enabled  := False ;
+ End
+ else
+ deRegDate.Enabled  := True ;
+end;
+
+procedure TffelRegPkg.cbSkiftLagPropertiesChange(Sender: TObject);
+begin
+ if mtUserPropAgentNo.AsInteger = 0 then
+ Begin
+  mtUserPropGroupByBox.Clear ;
+  lcSkiftLag.Enabled := False ;
+ End
+  else
+   lcSkiftLag.Enabled := True ;
+end;
+
+procedure TffelRegPkg.mtUserPropVerkNoChange(Sender: TField);
+begin
+{ if mtUserPropVerkNo.AsInteger <> mtUserPropOwnerNo.AsInteger  then
+ Begin
+  cbLIPChange.Checked:= True ;
+ End ; }
+
+ With dm_UserProps do
+ Begin
+  cds_PIP.Active:= False ;
+  cds_PIP.ParamByName('OwnerNo').AsInteger:= mtUserPropVerkNo.AsInteger ;
+  if mtUserPropRoleType.AsInteger = cLego then
+  cds_PIP.ParamByName('LegoOwnerNo').AsInteger:= mtUserPropVerkNo.AsInteger
+  else
+  cds_PIP.ParamByName('LegoOwnerNo').AsInteger:= mtUserPropVerkNo.AsInteger ;
+
+ if (ThisUser.CompanyNo = cVidaPackaging) or
+ (ThisUser.CompanyNo = cOsterlovsta) then
+  Begin
+   cds_PIP.ParamByName('UserID').AsInteger:= ThisUser.UserID ;
+  End
+  else
+  Begin
+   cds_PIP.ParamByName('UserID').AsInteger:= -1 ;
+  End ;
+
+  cds_PIP.Active:= True ;
+  cds_PIP.First ;
+  mtUserPropPIPNo.AsInteger:= cds_PIPPIPNO.AsInteger ;
+ End ;
+end;
+
+procedure TffelRegPkg.acResetChangeValuesExecute(Sender: TObject);
+begin
+ if mtUserProp.State in [dsBrowse] then
+ mtUserProp.Edit ;
+ mtUserPropVerkNo.AsInteger             := mtUserPropOwnerNo.AsInteger ;
+ mtUserPropGradeStampNo.AsInteger       := 0 ;
+ mtUserPropBarCodeNo.AsInteger          := 0 ;
+ mtUserPropLIPChange.AsInteger          := 0 ;
+ mtUserPropProductDescription.AsString  := siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_0' (* 'Ingen ändring' *) ) ;
+ mtUserPropProductNo.AsInteger          := -1 ;
+ mtUserPropProductGroupNo.AsInteger     := -1 ;
+ mtUserPropNewItemRow.AsInteger         := -1 ;
+ mtUserProp.Post ;
+end;
+
+procedure TffelRegPkg.lcOWNERPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+ With dmPkgs do
+ Begin
+  if (mtLoadPackages.Active) and (mtLoadPackages.RecordCount > 0) then
+  Begin
+   Error := True ;
+   ErrorText:= siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_29' (* 'Får inte ändra ägare om paket finns i tabellen' *) ) ;
+  End
+   else
+    Error := False ;
+ End ;
+end;
+
+procedure TffelRegPkg.RemotePkgEntry (PkgNos : TkbmMemTable) ;
+Var     //NoOfPkgsInSerie,
+        x                   : Integer ;
+        ResultButton        : word ;
+        Save_Cursor         : TCursor;
+        Res_UserName        : String ;
+begin
+ ResultButton:= mrYes ;
+ With dmPkgs do
+ Begin
+  mtUserProp.Edit ;
+  mtUserPropOwnerNo.AsInteger     := PkgNos.FieldByName('OwnerNo').AsInteger ;
+//  mtUserPropProducerNo.AsInteger  := PkgNos.FieldByName('OwnerNo').AsInteger ;
+//  mtUserPropPIPNo.AsInteger:= PkgNos.FieldByName('PIPNo').AsInteger ;
+  mtUserProp.Post ;
+  mtLoadPackages.IndexName    := 'mtLoadPackagesIndex5' ;
+  mtLoadPackages.DisableControls ;
+  Try
+   Save_Cursor := Screen.Cursor;
+   Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+   Try
+
+   PkgNos.First ;
+   While not PkgNos.Eof do
+   Begin
+    if dmsSystem.Pkg_Reserved(
+          PkgNos.FieldByName('PACKAGENO').AsInteger,
+          PkgNos.FieldByName('SUPP_CODE').AsString, Self.Name, Res_UserName
+          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
+    Begin
+     if not mtLoadPackages.FindKey([PkgNos.FieldByName('PACKAGENO').AsInteger, PkgNos.FieldByName('SUPP_CODE').AsString]) then
+     Begin
+      Try
+
+      sq_OneUniquePkg.Close ;
+      sq_OneUniquePkg.ParamByName('PackageNo').AsInteger           := PkgNos.FieldByName('PACKAGENO').AsInteger ;
+      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgNos.FieldByName('SUPP_CODE').AsString ;
+      sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := PkgNos.FieldByName('OwnerNo').AsInteger ;
+      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
+      sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
+      sq_OneUniquePkg.ParamByName('Status').AsInteger              := PkgNos.FieldByName('Status').AsInteger ;
+      sq_OneUniquePkg.Open ;
+      if not sq_OneUniquePkg.Eof then
+      Begin
+        mtLoadPackages.Insert ;
+        For x := 0 to 21 do
+         mtLoadPackages.Fields.Fields[x].AsVariant  := sq_OneUniquePkg.Fields.Fields[x].AsVariant ;
+        mtLoadPackagesLoadDetailNo.AsInteger        := Unique_No ;
+        mtLoadPackages.Post ;
+      End;
+      Unique_No := Succ(Unique_No) ;
+      Except
+       on eDatabaseError do
+       Begin
+        Raise ;
+        mtLoadPackages.Cancel ;
+       End ;
+      End ;
+
+     End ; //if mtLoadPackages.FindKey(
+
+    End  //if dmsSystem.Pkg_Reserved(
+     else
+     Begin
+      ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_3' (* 'Paketnr ' *) )+PkgNos.FieldByName('PACKAGENO').AsString+'/'+PkgNos.FieldByName('SUPP_CODE').AsString+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_31' (* ' är reserverad av ' *) )+Res_UserName) ;
+     End ;
+
+    PkgNos.Next ;
+   End ;//While
+   Finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+   End ;
+
+  Finally
+   mtLoadPackages.IndexName:= 'mtLoadPackagesIndex6' ;
+   mtLoadPackages.EnableControls ;
+  End ;
+ End ; // with
+End ;
+
+procedure TffelRegPkg.cdAutoColWidthPropertiesChange(Sender: TObject);
+begin
+ grdLengthsDBBandedTableView1.OptionsView.ColumnAutoWidth:= mtUserPropAutoColWidth.AsInteger = 1 ;
+end;
+
+procedure TffelRegPkg.acRemoveRowUpdate(Sender: TObject);
+begin
+ With dmPkgs do
+ Begin
+  acRemoveRow.Enabled:= (mtLoadPackages.Active) and ((mtLoadPackages.RecordCount > 0)
+  or (mtLoadPackages.State in [dsEdit, dsInsert])) ;
+ End ;
+end;
+
+Function TffelRegPkg.LengthExistInGrid (const ManLength : String) : Boolean ;
+Var x : Integer ;
+Begin
+ Result:= False ;
+ With dmPkgs do
+ Begin For x := fFirstLengthColumn to mtPackages.FieldCount - 1 do
+  Begin
+   if mtPackages.Fields.Fields[x].DisplayLabel = ManLength then
+    Result:= True ;
+  End ;
+ End ;//With
+End ;
+
+procedure TffelRegPkg.acAddLengthColumnExecute(Sender: TObject);
+Var AColumn             : TcxGridDBBandedColumn;
+    fAddSpecialLengths  : TfAddSpecialLengths;
+    x                   : Byte ;
+    s                   : String ;
+    CurrentLengths      : TStringList ;
+
+
+function Pad(const s : String) : String ;
+Var Dec : Byte ;
+Begin
+ //1234.4
+ //999
+ Dec:= Pos(',',S) ;
+ if Pos(',',S) > 0 then
+ Begin
+  if Length(Copy(S,1,Dec-1)) < 4 then
+  Result:= '0'+S
+  else
+  Result:= S ;
+ End
+ else
+ Begin
+  if Length(S) < 4 then
+  Result:= '0'+S
+  else
+  Result:= S ;
+ End ;
+
+End ;
+
+begin
+// With dmsPkg do
+ With dmPkgs do
+ Begin
+  CurrentLengths:= TStringList.Create ;
+  Try
+
+  fAddSpecialLengths:= TfAddSpecialLengths.Create(nil);
+
+  For x := fFirstLengthColumn to mtPackages.FieldCount - 1 do
+   fAddSpecialLengths.lbSpecialLengths.Items.Add(Pad(mtPackages.Fields.Fields[x].DisplayLabel)) ;
+
+  For x := fFirstLengthColumn to mtPackages.FieldCount - 1 do
+   CurrentLengths.Add(Pad(mtPackages.Fields.Fields[x].DisplayLabel)) ;
+
+  CreateFieldsInmtPackagesTable(Sender) ;
+
+  For x := mtPackages.FieldCount - 1 downto fFirstLengthColumn do
+  Begin
+   mtPackages.Fields.Remove(mtPackages.Fields.Fields[x]) ;
+   mtPackages.FieldDefs[x].Free ;
+
+   grdLengthsDBBandedTableView1.Columns[x].Free ;
+  End ;
+
+
+  mtPackages.Active:= False ;
+  ManuellLengthColumn:= fFirstLengthColumn ;
+  Try
+   if fAddSpecialLengths.ShowModal = mrOK then
+   Begin
+    For x := 0 to fAddSpecialLengths.lbSpecialLengths.Items.Count - 1 do
+    Begin
+     s := fAddSpecialLengths.lbSpecialLengths.Items[x] ;
+     if not LengthExistInGrid (s {fAddSpecialLengths.lbSpecialLengths.Items[x]}) then
+     Begin
+      mtPackages.FieldDefs.Add(S,ftInteger,0,False) ;
+      mtPackages.FieldDefs[ManuellLengthColumn+x].CreateField(nil);
+
+      AColumn                       := grdLengthsDBBandedTableView1.CreateColumn ;
+      AColumn.Options.Filtering     := False ;
+      AColumn.DataBinding.FieldName := S ;
+      AColumn.Position.BandIndex    := 0 ;
+     End
+      else
+       ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_32' (* 'Längd ' *) )+fAddSpecialLengths.lbSpecialLengths.Items[x]+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_33' (* ' finns redan i tabellen.' *) )) ;
+    End ;//x
+   End //if fAddSpecialLengths
+   else
+   Begin
+    For x := 0 to CurrentLengths.Count - 1 do
+    Begin
+     s := CurrentLengths.Strings[x] ;
+     if not LengthExistInGrid (s {fAddSpecialLengths.lbSpecialLengths.Items[x]}) then
+     Begin
+      mtPackages.FieldDefs.Add(S,ftInteger,0,False) ;
+      mtPackages.FieldDefs[ManuellLengthColumn+x].CreateField(nil);
+
+      AColumn                       := grdLengthsDBBandedTableView1.CreateColumn ;
+      AColumn.Options.Filtering     := False ;
+      AColumn.DataBinding.FieldName := S ;
+      AColumn.Position.BandIndex    := 0 ;
+     End
+      else
+       ShowMessage(siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_32' (* 'Längd ' *) )+CurrentLengths.Strings[x]+siLangLinked_ffelRegPkg.GetTextOrDefault('IDS_33' (* ' finns redan i tabellen.' *) )) ;
+    End ;//x
+   End ;//else
+
+
+  Finally
+   FreeAndNil(fAddSpecialLengths) ;
+  End ;
+
+  mtPackages.Active:= True ;
+  mtPackages.Insert ;
+  mtPackages.FieldByName('RecId').AsInteger:= 1 ;
+  mtPackages.Post ;  
+
+  Finally
+   CurrentLengths.Free ;
+  End ;
+ End ;//With
+end;
+
+function TffelRegPkg.ControlInvDate(Sender: TObject) : Boolean ;
+const
+  LF = #10;
+Var
+    LastInvNr   : Integer ;
+    InvDate     : TDateTime ;
+    MaxDateMsg  : String ;
+Begin
+ With dmPkgs do
+ Begin
+  mtLoadPackages.DisableControls ;
+  Try
+  if mtLoadPackages.State in [dsEdit, dsInsert] then
+  mtLoadPackages.Post ;
+
+  Result  := True ;
+
+  if mtUserPropShipperNo.AsInteger = 1 then
+  Begin
+    mtLoadPackages.First ;
+    While not mtLoadPackages.Eof do
+    Begin
+     LastInvNr  := dmsSystem.IsRegDateBeforeInvDate(mtLoadPackagesLOG_INVENTORY_NO.AsInteger, Self.mtUserPropRegDate.AsDateTime, InvDate, MaxDateMsg) ;
+     if LastInvNr > -1 then
+     Begin
+      mtLoadPackages.Edit ;
+      mtLoadPackagesInvNr.AsInteger := LastInvNr ;
+      mtLoadPackages.Post ;
+      Result  := False ;
+     End ;
+     mtLoadPackages.Next ;
+    End ;
+  End;
+
+  Finally
+   mtLoadPackages.EnableControls ;
+  End ;
+ End ;//With
+end;
+
+procedure TffelRegPkg.grdPaketDBBandedTableView1StylesGetContentStyle(
+  Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
+  AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+var
+  aColumn : TcxCustomGridTableItem;
+  aValue  : Variant;
+begin
+ aColumn :=(Sender as TcxGridDBBandedTableView).GetColumnByFieldName('InvNr');
+ if (ARecord.Values[aColumn.Index] <> null) and (AItem <> nil) then
+ Begin
+  aValue := ARecord.Values[aColumn.Index];
+
+  if (aValue > 0)  then
+  AStyle:= cxStyleRedBg ;
  End ;
 end;
 

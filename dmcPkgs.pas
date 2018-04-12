@@ -3,134 +3,23 @@ unit dmcPkgs;
 interface
 
 uses
-  SysUtils, Classes, FMTBcd, DB, SqlExpr, Provider, DBClient, kbmMemTable, SqlTimSt, Dialogs,
+  SysUtils, Classes, DB, kbmMemTable, Dialogs,
   VidaType, Controls, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
-  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
-  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client ;
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.Stan.Async, FireDAC.DApt, SQLtimst ;
 
 type
 
   TdmPkgs = class(TDataModule)
     ds_LoadPackages: TDataSource;
-    sp_DeletePackage: TSQLStoredProc;
     mtPackages: TkbmMemTable;
     dsmtPackages: TDataSource;
-    sq_ProductLengths2: TSQLQuery;
-    sq_ProductLengths2ProductLengthNo: TIntegerField;
-    sq_ProductLengths2ActualLengthMM: TFloatField;
-    sq_ProductLengths2NominalLengthMM: TFloatField;
-    sq_ProductLengths2NominalLengthFEET: TFloatField;
-    sq_ProductLengths2ActualLengthINCH: TStringField;
-    sq_ProductLengths2PET: TIntegerField;
-    sq_ProductLengths2FingerJoint: TIntegerField;
     mtProdSpecificLengths: TkbmMemTable;
     mtProdSpecificLengthsProductGroupNo: TIntegerField;
     mtProdSpecificLengthsProductLengthNo: TIntegerField;
-    sp_ProdLeng: TSQLStoredProc;
-    sp_ProdLengProductLengthNo: TIntegerField;
     mtStandardLengths: TkbmMemTable;
     mtStandardLengthsProductLengthNo: TIntegerField;
-    sp_StandardLengths: TSQLStoredProc;
-    sp_StandardLengthsProductLengthNo: TIntegerField;
-    sp_PkgInfo: TSQLStoredProc;
-    sp_PkgInfoCREATED: TSQLTimeStampField;
-    sp_PkgInfoCREATED_BY: TStringField;
-    sp_PkgInfoOWNER: TStringField;
-    sp_PkgInfoPKG_STATUS: TIntegerField;
-    sp_PkgInfoINVENTORY: TStringField;
-    sp_ChangePkg: TSQLStoredProc;
-    sq_GetPkgsByLONo: TSQLQuery;
-    sq_GetPkgsByLONoPRODUCT: TStringField;
-    sq_GetPkgsByLONoPACKAGENO: TIntegerField;
-    sq_GetPkgsByLONoPACKAGETYPENO: TIntegerField;
-    sq_GetPkgsByLONoSUPP_CODE: TStringField;
-    sq_GetPkgsByLONoM3_NET: TFloatField;
-    sq_GetPkgsByLONoPCS: TIntegerField;
-    sq_GetPkgsByLONoM3_NOM: TFloatField;
-    sq_GetPkgsByLONoKVM: TFloatField;
-    sq_GetPkgsByLONoLOPM: TFloatField;
-    sq_GetPkgsByLONoPRODUCTNO: TIntegerField;
-    sq_GetPkgsByLONoINVENTORY: TStringField;
-    sq_GetPkgsByLONoPCS_PER_LENGTH: TStringField;
-    sq_GetPkgsByLONoOWNER: TStringField;
-    sq_GetPkgsByLONoOWNERNO: TIntegerField;
-    sq_GetPkgsByLONoLOG_INVENTORY_NO: TIntegerField;
-    sq_GetPkgsByLONoBAR_CODE: TStringField;
-    sq_GetPkgsByLONoBARCODE_ID: TIntegerField;
-    sq_GetPkgsByLONoGRADE_STAMP: TStringField;
-    sq_GetPkgsByLONoGRADESTAMPNO: TIntegerField;
-    sq_GetPkgsByLONoSUPPLIERNO: TIntegerField;
-    sq_GetPkgsByLONoOLD_PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkg1: TSQLQuery;
-    sq_OneUniquePkg1PRODUCT: TStringField;
-    sq_OneUniquePkg1PACKAGENO: TIntegerField;
-    sq_OneUniquePkg1PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkg1SUPP_CODE: TStringField;
-    sq_OneUniquePkg1M3_NET: TFloatField;
-    sq_OneUniquePkg1PCS: TIntegerField;
-    sq_OneUniquePkg1M3_NOM: TFloatField;
-    sq_OneUniquePkg1KVM: TFloatField;
-    sq_OneUniquePkg1LOPM: TFloatField;
-    sq_OneUniquePkg1PRODUCTNO: TIntegerField;
-    sq_OneUniquePkg1INVENTORY: TStringField;
-    sq_OneUniquePkg1PCS_PER_LENGTH: TStringField;
-    sq_OneUniquePkg1OWNER: TStringField;
-    sq_OneUniquePkg1OWNERNO: TIntegerField;
-    sq_OneUniquePkg1LOG_INVENTORY_NO: TIntegerField;
-    sq_OneUniquePkg1BAR_CODE: TStringField;
-    sq_OneUniquePkg1BARCODE_ID: TIntegerField;
-    sq_OneUniquePkg1GRADE_STAMP: TStringField;
-    sq_OneUniquePkg1GRADESTAMPNO: TIntegerField;
-    sq_OneUniquePkg1SUPPLIERNO: TIntegerField;
-    sq_OneUniquePkg1OLD_PACKAGETYPENO: TIntegerField;
-    sq_Prod_In_LO: TSQLQuery;
-    dsp_Prod_In_LO: TDataSetProvider;
-    cds_Prod_In_LO: TClientDataSet;
     ds_Prod_In_LO: TDataSource;
-    cds_Prod_In_LOPRODUCT: TStringField;
-    cds_Prod_In_LOPRODUCTNO: TIntegerField;
-    sp_Del_PkgProd: TSQLStoredProc;
-    sp_updateFelReg: TSQLStoredProc;
-    sp_MovePkg_old: TSQLStoredProc;
-    sq_PkgInLoad: TSQLQuery;
-    sq_PkgInLoadLastNr: TIntegerField;
-    sq_PkgInLoadLO: TIntegerField;
-    sp_PaRegPaket: TSQLStoredProc;
-    sq_OnePkg: TSQLQuery;
-    sq_OnePkgPRODUCT: TStringField;
-    sq_OnePkgPACKAGENO: TIntegerField;
-    sq_OnePkgPACKAGETYPENO: TIntegerField;
-    sq_OnePkgSUPP_CODE: TStringField;
-    sq_OnePkgM3_NET: TFloatField;
-    sq_OnePkgPCS: TIntegerField;
-    sq_OnePkgM3_NOM: TFloatField;
-    sq_OnePkgKVM: TFloatField;
-    sq_OnePkgLOPM: TFloatField;
-    sq_OnePkgPRODUCTNO: TIntegerField;
-    sq_OnePkgINVENTORY: TStringField;
-    sq_OnePkgPCS_PER_LENGTH: TStringField;
-    sq_OnePkgOWNER: TStringField;
-    sq_OnePkgOWNERNO: TIntegerField;
-    sq_OnePkgLOG_INVENTORY_NO: TIntegerField;
-    sq_OnePkgBAR_CODE: TStringField;
-    sq_OnePkgBARCODE_ID: TIntegerField;
-    sq_OnePkgGRADE_STAMP: TStringField;
-    sq_OnePkgGRADESTAMPNO: TIntegerField;
-    sq_OnePkgSUPPLIERNO: TIntegerField;
-    sq_OnePkgOLD_PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkg1PIP: TIntegerField;
-    sp_changePkgInventering: TSQLStoredProc;
-    sp_NewPackageNo_old: TSQLStoredProc;
-    sp_OnePackageNo: TSQLStoredProc;
-    sq_PkgNoAvail: TSQLQuery;
-    sq_PkgNoAvailPackageNo: TIntegerField;
-    sq_PkgNoAvailSupplierCode: TStringField;
-    sq_PkgNoAvailPackageTypeNo: TIntegerField;
-    sp_ExtMovePkg: TSQLStoredProc;
-    sq_OneUniquePkg1Status: TIntegerField;
-    sq_PkgAvReg: TSQLQuery;
-    sq_PkgAvRegRegPointName: TStringField;
-    sq_PkgAvRegProductionDate: TSQLTimeStampField;
     mtLoadPackages: TkbmMemTable;
     mtLoadPackagesPRODUCT: TStringField;
     mtLoadPackagesPACKAGENO: TIntegerField;
@@ -163,9 +52,6 @@ type
     mtLoadPackagesROWNO: TIntegerField;
     mtLoadPackagesStatus: TIntegerField;
     mtLoadPackagesStatusText: TStringField;
-    sq_GetPkgsByLONoSurfacingNo: TIntegerField;
-    sq_OneUniquePkg1SurfacingNo: TIntegerField;
-    sp_VardaBortPaket: TSQLStoredProc;
     mtPcsPerLength: TkbmMemTable;
     mtPcsPerLengthProductLengthNo: TIntegerField;
     mtPcsPerLengthProductNo: TIntegerField;
@@ -173,7 +59,7 @@ type
     mtPcsPerLengthUserID: TIntegerField;
     mtPcsPerLengthALMM: TFloatField;
     mtLoadPackagesInvNr: TIntegerField;
-    sq_OneUniquePkgExt: TSQLQuery;
+    sq_OneUniquePkgExt: TFDQuery;
     sq_OneUniquePkgExtPRODUCT: TStringField;
     sq_OneUniquePkgExtPACKAGENO: TIntegerField;
     sq_OneUniquePkgExtPACKAGETYPENO: TIntegerField;
@@ -185,6 +71,7 @@ type
     sq_OneUniquePkgExtLOPM: TFloatField;
     sq_OneUniquePkgExtPRODUCTNO: TIntegerField;
     sq_OneUniquePkgExtINVENTORY: TStringField;
+    sq_OneUniquePkgExtONSTICKS: TIntegerField;
     sq_OneUniquePkgExtPCS_PER_LENGTH: TStringField;
     sq_OneUniquePkgExtOWNER: TStringField;
     sq_OneUniquePkgExtOWNERNO: TIntegerField;
@@ -193,50 +80,34 @@ type
     sq_OneUniquePkgExtBARCODE_ID: TIntegerField;
     sq_OneUniquePkgExtGRADE_STAMP: TStringField;
     sq_OneUniquePkgExtGRADESTAMPNO: TIntegerField;
+    sq_OneUniquePkgExtPKG_HEIGHT: TIntegerField;
+    sq_OneUniquePkgExtPKGWIDTH: TIntegerField;
+    sq_OneUniquePkgExtMINI_BUNDLE: TIntegerField;
+    sq_OneUniquePkgExtSHRINK_WRAP: TIntegerField;
+    sq_OneUniquePkgExtWRAP_TYPE: TStringField;
+    sq_OneUniquePkgExtWRAPTYPENO: TIntegerField;
     sq_OneUniquePkgExtSUPPLIERNO: TIntegerField;
     sq_OneUniquePkgExtOLD_PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkgExtSurfacingNo: TIntegerField;
     sq_OneUniquePkgExtPIP: TIntegerField;
     sq_OneUniquePkgExtStatus: TIntegerField;
-    sp_AktiveraPktExt: TSQLStoredProc;
-    FDsp_vida_ChgPkgVard: TFDStoredProc;
-    FDsp_vis_PkgType_II: TFDStoredProc;
-    FDsp_vis_NewPkgType: TFDStoredProc;
-    FDsp_vida_NewPackageDetail: TFDStoredProc;
-    FDsp_vida_Populate_One_PackageTypeLengths: TFDStoredProc;
-    FDsp_vida_PackageTotals: TFDStoredProc;
-    sq_OneUniquePkg_old: TFDQuery;
-    sq_OneUniquePkg_oldPRODUCT: TStringField;
-    sq_OneUniquePkg_oldPACKAGENO: TIntegerField;
-    sq_OneUniquePkg_oldPACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkg_oldSUPP_CODE: TStringField;
-    sq_OneUniquePkg_oldM3_NET: TFloatField;
-    sq_OneUniquePkg_oldPCS: TIntegerField;
-    sq_OneUniquePkg_oldM3_NOM: TFloatField;
-    sq_OneUniquePkg_oldKVM: TFloatField;
-    sq_OneUniquePkg_oldLOPM: TFloatField;
-    sq_OneUniquePkg_oldPRODUCTNO: TIntegerField;
-    sq_OneUniquePkg_oldINVENTORY: TStringField;
-    sq_OneUniquePkg_oldONSTICKS: TIntegerField;
-    sq_OneUniquePkg_oldPCS_PER_LENGTH: TStringField;
-    sq_OneUniquePkg_oldOWNER: TStringField;
-    sq_OneUniquePkg_oldOWNERNO: TIntegerField;
-    sq_OneUniquePkg_oldLOG_INVENTORY_NO: TIntegerField;
-    sq_OneUniquePkg_oldBAR_CODE: TStringField;
-    sq_OneUniquePkg_oldBARCODE_ID: TIntegerField;
-    sq_OneUniquePkg_oldGRADE_STAMP: TStringField;
-    sq_OneUniquePkg_oldGRADESTAMPNO: TIntegerField;
-    sq_OneUniquePkg_oldPKG_HEIGHT: TIntegerField;
-    sq_OneUniquePkg_oldPKGWIDTH: TIntegerField;
-    sq_OneUniquePkg_oldMINI_BUNDLE: TIntegerField;
-    sq_OneUniquePkg_oldSHRINK_WRAP: TIntegerField;
-    sq_OneUniquePkg_oldWRAP_TYPE: TStringField;
-    sq_OneUniquePkg_oldWRAPTYPENO: TIntegerField;
-    sq_OneUniquePkg_oldSUPPLIERNO: TIntegerField;
-    sq_OneUniquePkg_oldOLD_PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkg_oldPIP: TIntegerField;
-    sq_OneUniquePkg_oldStatus: TIntegerField;
-    sq_OneUniquePkg_oldSurfacingNo: TIntegerField;
+    sq_OneUniquePkgExtSurfacingNo: TIntegerField;
+    cds_PkgStatus: TFDQuery;
+    cds_PkgStatusSupplierCode: TStringField;
+    cds_PkgStatusLIPGroupNo: TIntegerField;
+    cds_PkgStatusInvenType: TIntegerField;
+    cds_PkgStatusLIPNo: TIntegerField;
+    cds_PkgStatusAvReg: TIntegerField;
+    cds_PkgStatusPkgRealLIPNo: TIntegerField;
+    cds_Prod_In_LO: TFDQuery;
+    cds_Prod_In_LOPRODUCT: TStringField;
+    cds_Prod_In_LOPRODUCTNO: TIntegerField;
+    sq_PkgAvReg: TFDQuery;
+    sq_PkgAvRegRegPointName: TStringField;
+    sq_PkgAvRegProductionDate: TSQLTimeStampField;
+    sq_PkgNoAvail: TFDQuery;
+    sq_PkgNoAvailPackageNo: TIntegerField;
+    sq_PkgNoAvailSupplierCode: TStringField;
+    sq_PkgNoAvailPackageTypeNo: TIntegerField;
     sq_ProductLengths: TFDQuery;
     sq_ProductLengthsProductLengthNo: TIntegerField;
     sq_ProductLengthsActualLengthMM: TFloatField;
@@ -245,53 +116,50 @@ type
     sq_ProductLengthsActualLengthINCH: TStringField;
     sq_ProductLengthsPET: TIntegerField;
     sq_ProductLengthsFingerJoint: TIntegerField;
-    FDsp_vida_PackageTypeDetail: TFDStoredProc;
-    sq_OneUniquePkg: TFDQuery;
-    sq_OneUniquePkgPRODUCT: TStringField;
-    sq_OneUniquePkgPACKAGENO: TIntegerField;
-    sq_OneUniquePkgPACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkgSUPP_CODE: TStringField;
-    sq_OneUniquePkgM3_NET: TFloatField;
-    sq_OneUniquePkgPCS: TIntegerField;
-    sq_OneUniquePkgM3_NOM: TFloatField;
-    sq_OneUniquePkgKVM: TFloatField;
-    sq_OneUniquePkgLOPM: TFloatField;
-    sq_OneUniquePkgPRODUCTNO: TIntegerField;
-    sq_OneUniquePkgINVENTORY: TStringField;
-    sq_OneUniquePkgPCS_PER_LENGTH: TStringField;
-    sq_OneUniquePkgOWNER: TStringField;
-    sq_OneUniquePkgOWNERNO: TIntegerField;
-    sq_OneUniquePkgLOG_INVENTORY_NO: TIntegerField;
-    sq_OneUniquePkgBAR_CODE: TStringField;
-    sq_OneUniquePkgBARCODE_ID: TIntegerField;
-    sq_OneUniquePkgGRADE_STAMP: TStringField;
-    sq_OneUniquePkgGRADESTAMPNO: TIntegerField;
-    sq_OneUniquePkgSUPPLIERNO: TIntegerField;
-    sq_OneUniquePkgOLD_PACKAGETYPENO: TIntegerField;
-    sq_OneUniquePkgSurfacingNo: TIntegerField;
-    sq_OneUniquePkgPIP: TIntegerField;
-    sq_OneUniquePkgPKG_HEIGHT: TIntegerField;
-    sq_OneUniquePkgPKGWIDTH: TIntegerField;
-    sq_OneUniquePkgMINI_BUNDLE: TIntegerField;
-    sq_OneUniquePkgSHRINK_WRAP: TIntegerField;
-    sq_OneUniquePkgWRAP_TYPE: TStringField;
-    sq_OneUniquePkgWRAPTYPENO: TIntegerField;
-    sq_OneUniquePkgStatus: TIntegerField;
-    sq_OneUniquePkgONSTICKS: TIntegerField;
-    sq_OneUniquePkgActualThicknessMM: TFloatField;
-    sq_OneUniquePkgActualWidthMM: TFloatField;
-    sq_OneUniquePkgNominalThicknessMM: TFloatField;
-    sq_OneUniquePkgNominalWidthMM: TFloatField;
-    cds_PkgStatus: TFDQuery;
-    cds_PkgStatusSupplierCode: TStringField;
-    cds_PkgStatusLIPGroupNo: TIntegerField;
-    cds_PkgStatusInvenType: TIntegerField;
-    cds_PkgStatusLIPNo: TIntegerField;
-    cds_PkgStatusAvReg: TIntegerField;
-    cds_PkgStatusPkgRealLIPNo: TIntegerField;
-    sp_RemovePackageFromInventory: TFDStoredProc;
-    sp_NewPackageNo: TFDStoredProc;
-    sp_MovePkg: TFDStoredProc;
+    sq_GetPkgsByLONo: TFDQuery;
+    sq_GetPkgsByLONoPRODUCT: TStringField;
+    sq_GetPkgsByLONoPACKAGENO: TIntegerField;
+    sq_GetPkgsByLONoPACKAGETYPENO: TIntegerField;
+    sq_GetPkgsByLONoSUPP_CODE: TStringField;
+    sq_GetPkgsByLONoM3_NET: TFloatField;
+    sq_GetPkgsByLONoPCS: TIntegerField;
+    sq_GetPkgsByLONoM3_NOM: TFloatField;
+    sq_GetPkgsByLONoKVM: TFloatField;
+    sq_GetPkgsByLONoLOPM: TFloatField;
+    sq_GetPkgsByLONoPRODUCTNO: TIntegerField;
+    sq_GetPkgsByLONoINVENTORY: TStringField;
+    sq_GetPkgsByLONoONSTICKS: TIntegerField;
+    sq_GetPkgsByLONoPCS_PER_LENGTH: TStringField;
+    sq_GetPkgsByLONoOWNER: TStringField;
+    sq_GetPkgsByLONoOWNERNO: TIntegerField;
+    sq_GetPkgsByLONoLOG_INVENTORY_NO: TIntegerField;
+    sq_GetPkgsByLONoBAR_CODE: TStringField;
+    sq_GetPkgsByLONoBARCODE_ID: TIntegerField;
+    sq_GetPkgsByLONoGRADE_STAMP: TStringField;
+    sq_GetPkgsByLONoGRADESTAMPNO: TIntegerField;
+    sq_GetPkgsByLONoPKG_HEIGHT: TIntegerField;
+    sq_GetPkgsByLONoPKGWIDTH: TIntegerField;
+    sq_GetPkgsByLONoMINI_BUNDLE: TIntegerField;
+    sq_GetPkgsByLONoSHRINK_WRAP: TIntegerField;
+    sq_GetPkgsByLONoWRAP_TYPE: TStringField;
+    sq_GetPkgsByLONoWRAPTYPENO: TIntegerField;
+    sq_GetPkgsByLONoSUPPLIERNO: TIntegerField;
+    sq_GetPkgsByLONoOLD_PACKAGETYPENO: TIntegerField;
+    sq_GetPkgsByLONoLoadNo: TIntegerField;
+    sq_GetPkgsByLONoSupplierNo_1: TIntegerField;
+    sq_GetPkgsByLONoShippingPlanNo: TIntegerField;
+    sq_GetPkgsByLONoPackageNo_1: TIntegerField;
+    sq_GetPkgsByLONoSupplierCode: TStringField;
+    sq_GetPkgsByLONoCustomerNo: TIntegerField;
+    sq_GetPkgsByLONoSUPPLIER: TStringField;
+    sq_GetPkgsByLONoLOC_CUST: TStringField;
+    sq_GetPkgsByLONoObjectType: TIntegerField;
+    sq_GetPkgsByLONoAvrop_CustomerNo: TIntegerField;
+    sq_GetPkgsByLONoLoadingLocationNo: TIntegerField;
+    sq_GetPkgsByLONoShipToInvPointNo: TIntegerField;
+    sq_GetPkgsByLONoLOADING_LOCATION: TStringField;
+    sq_GetPkgsByLONoSHIP_TO: TStringField;
+    sq_GetPkgsByLONoSurfacingNo: TIntegerField;
     sq_OnePkgDetailData: TFDQuery;
     sq_OnePkgDetailDataPRODUCT: TStringField;
     sq_OnePkgDetailDataPACKAGENO: TIntegerField;
@@ -322,6 +190,110 @@ type
     sq_OnePkgDetailDataSUPPLIERNO: TIntegerField;
     sq_OnePkgDetailDataOLD_PACKAGETYPENO: TIntegerField;
     sq_OnePkgDetailDataSurfacingNo: TIntegerField;
+    sq_OneUniquePkg: TFDQuery;
+    sq_OneUniquePkgPRODUCT: TStringField;
+    sq_OneUniquePkgPACKAGENO: TIntegerField;
+    sq_OneUniquePkgPACKAGETYPENO: TIntegerField;
+    sq_OneUniquePkgSUPP_CODE: TStringField;
+    sq_OneUniquePkgM3_NET: TFloatField;
+    sq_OneUniquePkgPCS: TIntegerField;
+    sq_OneUniquePkgM3_NOM: TFloatField;
+    sq_OneUniquePkgKVM: TFloatField;
+    sq_OneUniquePkgLOPM: TFloatField;
+    sq_OneUniquePkgPRODUCTNO: TIntegerField;
+    sq_OneUniquePkgINVENTORY: TStringField;
+    sq_OneUniquePkgONSTICKS: TIntegerField;
+    sq_OneUniquePkgPCS_PER_LENGTH: TStringField;
+    sq_OneUniquePkgOWNER: TStringField;
+    sq_OneUniquePkgOWNERNO: TIntegerField;
+    sq_OneUniquePkgLOG_INVENTORY_NO: TIntegerField;
+    sq_OneUniquePkgBAR_CODE: TStringField;
+    sq_OneUniquePkgBARCODE_ID: TIntegerField;
+    sq_OneUniquePkgGRADE_STAMP: TStringField;
+    sq_OneUniquePkgGRADESTAMPNO: TIntegerField;
+    sq_OneUniquePkgPKG_HEIGHT: TIntegerField;
+    sq_OneUniquePkgPKGWIDTH: TIntegerField;
+    sq_OneUniquePkgMINI_BUNDLE: TIntegerField;
+    sq_OneUniquePkgSHRINK_WRAP: TIntegerField;
+    sq_OneUniquePkgWRAP_TYPE: TStringField;
+    sq_OneUniquePkgWRAPTYPENO: TIntegerField;
+    sq_OneUniquePkgSUPPLIERNO: TIntegerField;
+    sq_OneUniquePkgOLD_PACKAGETYPENO: TIntegerField;
+    sq_OneUniquePkgPIP: TIntegerField;
+    sq_OneUniquePkgStatus: TIntegerField;
+    sq_OneUniquePkgSurfacingNo: TIntegerField;
+    sq_PkgInLoad: TFDQuery;
+    sq_PkgInLoadLastNr: TIntegerField;
+    sq_PkgInLoadLO: TIntegerField;
+    sq_OnePkg: TFDQuery;
+    sq_OnePkgPRODUCT: TStringField;
+    sq_OnePkgPACKAGENO: TIntegerField;
+    sq_OnePkgPACKAGETYPENO: TIntegerField;
+    sq_OnePkgSUPP_CODE: TStringField;
+    sq_OnePkgM3_NET: TFloatField;
+    sq_OnePkgPCS: TIntegerField;
+    sq_OnePkgM3_NOM: TFloatField;
+    sq_OnePkgKVM: TFloatField;
+    sq_OnePkgLOPM: TFloatField;
+    sq_OnePkgPRODUCTNO: TIntegerField;
+    sq_OnePkgINVENTORY: TStringField;
+    sq_OnePkgONSTICKS: TIntegerField;
+    sq_OnePkgPCS_PER_LENGTH: TStringField;
+    sq_OnePkgOWNER: TStringField;
+    sq_OnePkgOWNERNO: TIntegerField;
+    sq_OnePkgLOG_INVENTORY_NO: TIntegerField;
+    sq_OnePkgBAR_CODE: TStringField;
+    sq_OnePkgBARCODE_ID: TIntegerField;
+    sq_OnePkgGRADE_STAMP: TStringField;
+    sq_OnePkgGRADESTAMPNO: TIntegerField;
+    sq_OnePkgPKG_HEIGHT: TIntegerField;
+    sq_OnePkgPKGWIDTH: TIntegerField;
+    sq_OnePkgMINI_BUNDLE: TIntegerField;
+    sq_OnePkgSHRINK_WRAP: TIntegerField;
+    sq_OnePkgWRAP_TYPE: TStringField;
+    sq_OnePkgWRAPTYPENO: TIntegerField;
+    sq_OnePkgSUPPLIERNO: TIntegerField;
+    sq_OnePkgOLD_PACKAGETYPENO: TIntegerField;
+    sp_PackageTypes: TFDStoredProc;
+    sp_NewPackageType: TFDStoredProc;
+    sp_NewPackageDetail: TFDStoredProc;
+    sp_ExtMovePkg: TFDStoredProc;
+    sp_changePkgInventering: TFDStoredProc;
+    sp_MovePkg: TFDStoredProc;
+    sp_updateFelReg: TFDStoredProc;
+    sp_Del_PkgProd: TFDStoredProc;
+    sp_ChangePkg: TFDStoredProc;
+    sp_ChgPkgVard: TFDStoredProc;
+    sp_StandardLengths: TFDStoredProc;
+    sp_ProdLeng: TFDStoredProc;
+    sp_PkgInfo: TFDStoredProc;
+    sp_PackageTotals: TFDStoredProc;
+    sp_NewPackageNo: TFDStoredProc;
+    sp_Populate_One_PkgTypeLengths: TFDStoredProc;
+    sp_PackageTypeDetail: TFDStoredProc;
+    sp_VardaBortPaket: TFDStoredProc;
+    sp_RemovePackageFromInventory: TFDStoredProc;
+    sp_DeletePackage: TFDStoredProc;
+    sp_PaRegPaket: TFDStoredProc;
+    sp_AktiveraPktExt: TFDStoredProc;
+    sp_OnePackageNo: TFDStoredProc;
+    sp_ProdLengProductLengthNo: TIntegerField;
+    sp_StandardLengthsProductLengthNo: TIntegerField;
+    sp_StandardLengthsActualLengthMM: TFloatField;
+    sp_StandardLengthsPET: TIntegerField;
+    sp_StandardLengthsFingerJoint: TIntegerField;
+    sp_PkgInfoCREATED: TSQLTimeStampField;
+    sp_PkgInfoCREATED_BY: TStringField;
+    sp_PkgInfoOWNER: TStringField;
+    sp_PkgInfoPKG_STATUS: TIntegerField;
+    sp_PkgInfoINVENTORY: TStringField;
+    mtLoadPackagesALMM: TFloatField;
+    sq_OneUniquePkgActualThicknessMM: TFloatField;
+    sq_OneUniquePkgActualWidthMM: TFloatField;
+    sq_OneUniquePkgNominalThicknessMM: TFloatField;
+    sq_OneUniquePkgNominalWidthMM: TFloatField;
+    sp_vida_updateProdStat: TFDStoredProc;
+    sp_PaRegPaket_II: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtPackagesBeforePost(DataSet: TDataSet);
     procedure mtLoadPackagesAfterInsert(DataSet: TDataSet);
@@ -339,8 +311,8 @@ type
    function  GetPackageNo(const OwnerNo : Integer;const SupplierCode : String3) : Integer ;
    function  Get_Me_A_PackageNo(const OwnerNo : Integer;const SupplierCode : String3) : Integer ;
    function  PackageNumberExists(const PkgNo: Integer; const SupplierCode : String3): Boolean;
-   Function  GetLengthsEntered : String ;
-   Function  GetNoOfOriginalLengthsInPkg : String ;
+   Function  GetLengthsEntered(const ChangeLength : Double) : String ;
+   Function  GetNoOfOriginalLengthsInPkg(const ChangeLength : Double) : String ;
   public
     { Public declarations }
     ROWNO : Integer ;
@@ -392,8 +364,8 @@ var
 
 implementation
 
-uses dmsDataConn, VidaConst, VidaUser, recerror, dmsVidaContact, dmsVidaSystem ,
-  dm_Inventory;
+uses dmsDataConn, VidaConst, VidaUser, dmsVidaContact, dmsVidaSystem ,
+  dm_Inventory, dmsVidaProduct;
 
 {$R *.dfm}
 
@@ -404,14 +376,15 @@ Begin
 // sq_PkgStatus.Close ;
  cds_PkgStatus.ParamByName('PackageNo').AsInteger    := PackageNo ;
  cds_PkgStatus.ParamByName('ClientNo').AsInteger     := SupplierNo ;
-// sq_PkgStatus.ParamByName('SupplierNo').AsInteger   := SupplierNo ;
+// cds_PkgStatus.ParamByName('SupplierNo').AsInteger   := SupplierNo ;
  cds_PkgStatus.ParamByName('SupplierCode').AsString  := SupplierCode ;
  cds_PkgStatus.Active:= True ;
+ try
  if not cds_PkgStatus.Eof then
  Begin
   if cds_PkgStatus.RecordCount = 1 then
   Begin
-//   SupplierCode := sq_PkgStatusSupplierCode.AsString ;
+//   SupplierCode := cds_PkgStatusSupplierCode.AsString ;
 //   LIPNo:= cds_PkgStatusLIPNo.AsInteger ;
    if cds_PkgStatusInvenType.AsInteger = pkgType then
     LIPNo:= cds_PkgStatusAvReg.AsInteger
@@ -422,8 +395,11 @@ Begin
     LIPNo := -1 ;
  End
   else
-   LIPNo := -2 ; ;
- cds_PkgStatus.Active:= False ;
+   LIPNo := -2 ;
+ finally
+  cds_PkgStatus.Active:= False ;
+ end;
+
 End ;
 
 procedure TdmPkgs.DataModuleCreate(Sender: TObject);
@@ -480,7 +456,7 @@ Begin
  if not mtProdSpecificLengths.FindKey([ProductGroupNo]) then
  Begin
   sp_ProdLeng.Close ;
-  sp_ProdLeng.ParamByName('ProductGroupNo').AsInteger:= ProductGroupNo ;
+  sp_ProdLeng.ParamByName('@ProductGroupNo').AsInteger:= ProductGroupNo ;
   sp_ProdLeng.Open ;
   sp_ProdLeng.First ;
   While not sp_ProdLeng.Eof do
@@ -503,7 +479,7 @@ begin
   mtStandardLengths.Active:= True ;
   // Populate the list with std lengths applicable to the selected length group
   sp_StandardLengths.Close;
-  sp_StandardLengths.ParamByName('LengthGroupNo').AsInteger := GroupNo;
+  sp_StandardLengths.ParamByName('@LengthGroupNo').AsInteger := GroupNo;
   sp_StandardLengths.Open;
   sp_StandardLengths.First;
   while not sp_StandardLengths.Eof do
@@ -520,11 +496,11 @@ end;
 
 function TdmPkgs.Pkg_Info(const PkgNo: Integer; const SuppCode : String) : String ;
 Begin
- sp_PkgInfo.ParamByName('PackageNo').AsInteger:= PkgNo ;
- sp_PkgInfo.ParamByName('SupplierCode').AsString:= SuppCode ;
+ sp_PkgInfo.ParamByName('@PackageNo').AsInteger:= PkgNo ;
+ sp_PkgInfo.ParamByName('@SupplierCode').AsString:= SuppCode ;
  sp_PkgInfo.Open ;
  Result:= intToStr(PkgNo)+'/'+SuppCode+' It was created by '+
- sp_PkgInfoCREATED_BY.AsString+' at: '+SQLTimeStampToStr('',sp_PkgInfoCREATED.AsSQLTimeStamp)+
+ sp_PkgInfoCREATED_BY.AsString+' at: '+ SQLTimeStampToStr('',sp_PkgInfoCREATED.AsSQLTimeStamp)+
  ' inventory: '+sp_PkgInfoINVENTORY.AsString ;
  sp_PkgInfo.Close ;
 End ;
@@ -537,7 +513,7 @@ Begin
 //if no of pieces was entered by user then assign to TOTALPCS
  if mtpackages.State in [dsbrowse] then
   if mtpackages.Fields[1].AsInteger > 0 then
-   TOTALPCS:= mtpackages.Fields[1].AsInteger ;
+   TOTALPCS := mtpackages.Fields[1].AsInteger ;
 
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
@@ -579,31 +555,31 @@ End ;
 function TdmPkgs.DeletePackagesFromSystem (mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor  : TCursor;
- TransactionNo : LongWord;
 begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
  Result:= False ;
-Try
-  dmsConnector.StartTransaction;
+//Try
+ // dmsConnector.StartTransaction;
   try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
     Begin
       Try
       sp_DeletePackage.Close ;
-      sp_DeletePackage.ParamByName('PackageNo').AsInteger               := mtLoadPackagesPACKAGENO.AsInteger ;
-      sp_DeletePackage.ParamByName('SupplierCode').AsString             := mtLoadPackagesSUPP_CODE.AsString ;
-      sp_DeletePackage.ParamByName('RegistrationPointNo').AsInteger     := mtUserProp.FieldByName('RegPointNo').AsInteger ;
-      sp_DeletePackage.ParamByName('PackageTypeNo').AsInteger           := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-      sp_DeletePackage.ParamByName('LogicalInventoryPointNo').AsInteger := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-      sp_DeletePackage.ParamByName('UserID').AsInteger                  := ThisUser.UserID ;
+      sp_DeletePackage.ParamByName('@PackageNo').AsInteger               := mtLoadPackagesPACKAGENO.AsInteger ;
+      sp_DeletePackage.ParamByName('@SupplierCode').AsString             := mtLoadPackagesSUPP_CODE.AsString ;
+      sp_DeletePackage.ParamByName('@RegistrationPointNo').AsInteger     := mtUserProp.FieldByName('RegPointNo').AsInteger ;
+      sp_DeletePackage.ParamByName('@PackageTypeNo').AsInteger           := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+      sp_DeletePackage.ParamByName('@LogicalInventoryPointNo').AsInteger := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+      sp_DeletePackage.ParamByName('@UserID').AsInteger                  := ThisUser.UserID ;
 
       if PkgExistInLoad = False then
        sp_DeletePackage.ExecProc
         else
          ShowMessage('Kan ej ta bort paketnr ' + mtLoadPackagesPACKAGENO.AsString + ', det är upptaget i en leverans.') ;
      mtLoadPackages.Next ;
+     Result:= True ;
     except
      On E: Exception do
      Begin
@@ -613,12 +589,14 @@ Try
     end;
     end; //While...
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
  Finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
@@ -627,7 +605,6 @@ end;
 function TdmPkgs.RemovePkgsFromInventory (mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor   : TCursor;
-  TransactionNo : LongWord;
   LIPNo         : Integer ;
 begin
  Save_Cursor    := Screen.Cursor;
@@ -636,8 +613,11 @@ begin
  Try
  mtLoadPackages.DisableControls ;
 
- Try
-  dmsConnector.StartTransaction ;
+ //Try
+//  if dmsConnector.FDConnection1.InTransaction then
+//   dmsConnector.FDConnection1.Rollback ;
+
+//  dmsConnector.StartTransaction;
   try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
@@ -661,26 +641,34 @@ begin
        sp_RemovePackageFromInventory.ParamByName('@MatPunktAgareNo').AsInteger          := mtUserProp.FieldByName('ProducerNo').AsInteger ;
        sp_RemovePackageFromInventory.ParamByName('@RunNo').AsInteger                    := mtUserProp.FieldByName('RunNo').AsInteger ;
        sp_RemovePackageFromInventory.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+       sp_RemovePackageFromInventory.ParamByName('@SkiftLagNo').AsInteger               := mtUserProp.FieldByName('GroupByBox').AsInteger ;
        sp_RemovePackageFromInventory.ExecProc ;
-    except
-     On E: Exception do
-     Begin
-      dmsSystem.FDoLog(E.Message+' :sp_RemovePackageFromInventory.ExecProc') ;
-      Raise ;
-     End ;
-    end;
+       Result:= True ;
+      except
+       On E: Exception do
+       Begin
+        dmsSystem.FDoLog(E.Message+' :sp_RemovePackageFromInventory.ExecProc') ;
+        Result:= False ;
+        Raise ;
+       End ;
+      end;
       End
        else
         ShowMessage('Paketnr '+ mtLoadPackagesPACKAGENO.AsString +' har avregistrerats tidigare...') ;
      mtLoadPackages.Next ;
     end; //While...
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+//    dmsConnector.Commit ;
+{
+      Result:= True ;
+    except
+  //    dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
+
+
+
  Finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
@@ -693,49 +681,86 @@ end;
 function TdmPkgs.AterStallPktTillInventory (mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor   : TCursor;
-  TransactionNo : LongWord;
 //  LIPNo         : Integer ;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
  Result         := False ;
- Try
-  TransactionNo := dmsConnector.StartTransaction;
+ //Try
+ // dmsConnector.StartTransaction;
   try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
     Begin
-      Try
+    //if VolumeUnitNo = 1 then Ta bort paketet från avreg.statistiken
+     if mtUserProp.FieldByName('VolumeUnitNo').AsInteger = 1 then
+     Begin
 
+      Try
+       sp_PaRegPaket_II.Close ;
+       sp_PaRegPaket_II.ParamByName('@PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
+       sp_PaRegPaket_II.ParamByName('@SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
+       sp_PaRegPaket_II.ParamByName('@RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
+       sp_PaRegPaket_II.ParamByName('@PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+       sp_PaRegPaket_II.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+       sp_PaRegPaket_II.ParamByName('@UserID').AsInteger                   := ThisUser.UserID ;
+//       sp_PaRegPaket_II.ParamByName('SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
+       sp_PaRegPaket_II.ParamByName('@DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+       sp_PaRegPaket_II.ParamByName('@MatPunktAgareNo').AsInteger          := mtLoadPackagesOWNERNO.AsInteger ;// mtUserProp.FieldByName('ProducerNo').AsInteger ;
+//       sp_PaRegPaket_II.ParamByName('RunNo').AsInteger                    := mtUserProp.FieldByName('RunNo').AsInteger ;
+
+       sp_PaRegPaket_II.ExecProc ;
+       Result:= True ;
+      except
+       On E: Exception do
+       Begin
+        dmsSystem.FDoLog(E.Message+' :sp_PaRegPaket_II.ExecProc') ;
+        Result:= False ;
+        Raise ;
+       End ;
+      end;
+
+     End
+     else
+     Begin
+
+
+      Try
        sp_PaRegPaket.Close ;
-       sp_PaRegPaket.ParamByName('PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
-       sp_PaRegPaket.ParamByName('SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
-       sp_PaRegPaket.ParamByName('RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
-       sp_PaRegPaket.ParamByName('PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-       sp_PaRegPaket.ParamByName('LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-       sp_PaRegPaket.ParamByName('UserID').AsInteger                   := ThisUser.UserID ;
+       sp_PaRegPaket.ParamByName('@PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
+       sp_PaRegPaket.ParamByName('@SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
+       sp_PaRegPaket.ParamByName('@RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
+       sp_PaRegPaket.ParamByName('@PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+       sp_PaRegPaket.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+       sp_PaRegPaket.ParamByName('@UserID').AsInteger                   := ThisUser.UserID ;
 //       sp_PaRegPaket.ParamByName('SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
-       sp_PaRegPaket.ParamByName('DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-       sp_PaRegPaket.ParamByName('MatPunktAgareNo').AsInteger          := mtLoadPackagesOWNERNO.AsInteger ;// mtUserProp.FieldByName('ProducerNo').AsInteger ;
+       sp_PaRegPaket.ParamByName('@DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+       sp_PaRegPaket.ParamByName('@MatPunktAgareNo').AsInteger          := mtLoadPackagesOWNERNO.AsInteger ;// mtUserProp.FieldByName('ProducerNo').AsInteger ;
 //       sp_PaRegPaket.ParamByName('RunNo').AsInteger                    := mtUserProp.FieldByName('RunNo').AsInteger ;
 
        sp_PaRegPaket.ExecProc ;
-    except
-     On E: Exception do
-     Begin
-      dmsSystem.FDoLog(E.Message+' :sp_PaRegPaket.ExecProc') ;
-      Raise ;
-     End ;
-    end;
+       Result:= True ;
+      except
+       On E: Exception do
+       Begin
+        dmsSystem.FDoLog(E.Message+' :sp_PaRegPaket.ExecProc') ;
+        Result:= False ;
+        Raise ;
+       End ;
+      end;
+     End;
+
      mtLoadPackages.Next ;
     end; //While...
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
  Finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
@@ -744,49 +769,54 @@ end;
 function TdmPkgs.VardaBortPaket (mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor   : TCursor;
-  TransactionNo : LongWord;
 //  LIPNo         : Integer ;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
  Result         := False ;
  mtLoadPackages.DisableControls ;
- Try
-  dmsConnector.StartTransaction;
+  {
+   Try
+     dmsConnector.StartTransaction;
+ }
   try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
     Begin
      Try
        sp_VardaBortPaket.Close ;
-       sp_VardaBortPaket.ParamByName('PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
-       sp_VardaBortPaket.ParamByName('SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
-       sp_VardaBortPaket.ParamByName('RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
-       sp_VardaBortPaket.ParamByName('PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-       sp_VardaBortPaket.ParamByName('LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-       sp_VardaBortPaket.ParamByName('UserID').AsInteger                   := ThisUser.UserID ;
+       sp_VardaBortPaket.ParamByName('@PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
+       sp_VardaBortPaket.ParamByName('@SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
+       sp_VardaBortPaket.ParamByName('@RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
+       sp_VardaBortPaket.ParamByName('@PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+       sp_VardaBortPaket.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+       sp_VardaBortPaket.ParamByName('@UserID').AsInteger                   := ThisUser.UserID ;
 //       sp_VardaBortPaket.ParamByName('SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
-       sp_VardaBortPaket.ParamByName('DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-       sp_VardaBortPaket.ParamByName('MatPunktAgareNo').AsInteger          := mtLoadPackagesOWNERNO.AsInteger ;// mtUserProp.FieldByName('ProducerNo').AsInteger ;
+       sp_VardaBortPaket.ParamByName('@DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+       sp_VardaBortPaket.ParamByName('@MatPunktAgareNo').AsInteger          := mtLoadPackagesOWNERNO.AsInteger ;// mtUserProp.FieldByName('ProducerNo').AsInteger ;
 //       sp_VardaBortPaket.ParamByName('RunNo').AsInteger                    := mtUserProp.FieldByName('RunNo').AsInteger ;
 
        sp_VardaBortPaket.ExecProc ;
+       Result:= True ;
     except
      On E: Exception do
      Begin
       dmsSystem.FDoLog(E.Message+' :sp_VardaBortPaket.ExecProc') ;
+       Result:= False ;
       Raise ;
      End ;
     end;
      mtLoadPackages.Next ;
     end; //While...
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
  Finally
   mtLoadPackages.EnableControls ;
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
@@ -801,11 +831,9 @@ begin
  mtLoadPackagesInvNr.AsInteger  := 0 ;    
 end;
 
-
 function TdmPkgs.SaveChgPkgVard(mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor : TCursor;
-  TransactionNo   : LongWord;
   PackagetypeNo   : Integer ;
 
   procedure SavePkgType ;
@@ -815,36 +843,37 @@ Var
     function SelectMatchingPkgTypeHdrs : Integer;
     begin
       // First get all package type (header) records that match
-      FDsp_vis_PkgType_II.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      sp_PackageTypes.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      FDsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := 0
+      sp_PackageTypes.ParamByName('@BarCodeID'    ).AsInteger := 0
       else
-      FDsp_vis_PkgType_II.ParamByName('@BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      sp_PackageTypes.ParamByName('@BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNo.AsInteger < 1 then
-      FDsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := 0
+      sp_PackageTypes.ParamByName('@GradeStamp'   ).AsInteger := 0
       else
-      FDsp_vis_PkgType_II.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      FDsp_vis_PkgType_II.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      sp_PackageTypes.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      sp_PackageTypes.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
 
       if (mtpackages.Active) AND (mtpackages.Fields[1].AsInteger > 0) then
-       FDsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered
+       sp_PackageTypes.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered(mtUserProp.FieldByName('ALMM').AsFloat)
       else
-       FDsp_vis_PkgType_II.ParamByName('@PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
+       sp_PackageTypes.ParamByName('@PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg (mtUserProp.FieldByName('ALMM').AsFloat) ;
 
-      FDsp_vis_PkgType_II.Open;
+
+      sp_PackageTypes.Open;
       try
-//        FDsp_vis_PkgType_II.First;
-        if not FDsp_vis_PkgType_II.Eof then begin
-          Result := FDsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
-//          FDsp_vis_PkgType_II.Next;
+//        sp_PackageTypes.First;
+        if not sp_PackageTypes.Eof then begin
+          Result := sp_PackageTypes.FieldByName('PackageTypeNo').AsInteger ;
+//          sp_PackageTypes.Next;
         end
          else
           Result:= -1 ;
 
       finally
-        FDsp_vis_PkgType_II.Close;
+        sp_PackageTypes.Close;
         end;
 
     end;
@@ -859,27 +888,27 @@ Var
       PackageTypeNo := dmsConnector.NextMaxNo('PackageType');
 
       Try
-      FDsp_vis_NewPkgType.Close ;
-      FDsp_vis_NewPkgType.ParamByName('@PackageTypeNo'   ).AsInteger := PackageTypeNo;
-      FDsp_vis_NewPkgType.ParamByName('@ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      sp_NewPackageType.Close ;
+      sp_NewPackageType.ParamByName('@PackageTypeNo'   ).AsInteger := PackageTypeNo;
+      sp_NewPackageType.ParamByName('@ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      FDsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := 0
+      sp_NewPackageType.ParamByName('@BarCodeID'       ).AsInteger := 0
       else
-      FDsp_vis_NewPkgType.ParamByName('@BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      sp_NewPackageType.ParamByName('@BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNO.AsInteger < 1 then
-      FDsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := 0
+      sp_NewPackageType.ParamByName('@GradeStamp'      ).AsInteger := 0
       else
-      FDsp_vis_NewPkgType.ParamByName('@GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      FDsp_vis_NewPkgType.ParamByName('@TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
-      FDsp_vis_NewPkgType.ParamByName('@UserID').AsInteger := ThisUser.UserID;
-//      FDsp_vis_NewPkgType.ParamByName('ProdInstruNo').AsInteger := -1 ;
-      FDsp_vis_NewPkgType.ExecProc;
+      sp_NewPackageType.ParamByName('@GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      sp_NewPackageType.ParamByName('@TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      sp_NewPackageType.ParamByName('@UserID').AsInteger := ThisUser.UserID;
+//      sp_NewPackageType.ParamByName('ProdInstruNo').AsInteger := -1 ;
+      sp_NewPackageType.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vis_NewPkgType.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_NewPackageType.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -889,15 +918,15 @@ Var
       While not mtPcsPerLength.Eof do
       Begin
        Try
-        FDsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
-        FDsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
-        FDsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
-        FDsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
-        FDsp_vida_NewPackageDetail.ExecProc;
+        sp_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
+        sp_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
+        sp_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
+        sp_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
+        sp_NewPackageDetail.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_NewPackageDetail.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_NewPackageDetail.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -908,32 +937,32 @@ Var
     procedure  SavePackageTypeLengths ;
     Begin
      Try
-      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
-      FDsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
-      FDsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
+      sp_Populate_One_PkgTypeLengths.Close ;
+      sp_Populate_One_PkgTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
+      sp_Populate_One_PkgTypeLengths.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_Populate_One_PkgTypeLengths.ExecProc') ;
       Raise ;
      End ;
     end;
-      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
+      sp_Populate_One_PkgTypeLengths.Close ;
     End ;
 
   procedure SavePkgTotals( PackageTypeNo : Integer );
   begin
    Try
-    FDsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
-    FDsp_vida_PackageTotals.ExecProc;
+    sp_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
+    sp_PackageTotals.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_PackageTotals.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_PackageTotals.ExecProc') ;
       Raise ;
      End ;
     end;
-    FDsp_vida_PackageTotals.Close;
+    sp_PackageTotals.Close;
   end;
 
 
@@ -950,28 +979,25 @@ Var
   end;
 
 
-  function AndraPaket : Integer ;
+  procedure AndraPaket ;
   begin
     Try
-    FDsp_vida_ChgPkgVard.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
-    FDsp_vida_ChgPkgVard.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
-    FDsp_vida_ChgPkgVard.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
-    FDsp_vida_ChgPkgVard.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-    FDsp_vida_ChgPkgVard.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
-    FDsp_vida_ChgPkgVard.ParamByName('@RegistrationPointNo'    ).AsInteger  := 2 ; //2 = Lagevård. mtUserProp.FieldByName('RegPointNo').AsInteger ;
-    FDsp_vida_ChgPkgVard.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
-//    FDsp_vida_ChgPkgVard.ParamByName('SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
-    FDsp_vida_ChgPkgVard.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-    FDsp_vida_ChgPkgVard.ParamByName('@Package_Size'           ).AsInteger      := mtUserProp.FieldByName('NewItemRow').AsInteger ;
-//    FDsp_vida_ChgPkgVard.ParamByName('MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
-//    FDsp_vida_ChgPkgVard.ParamByName('RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+    sp_ChgPkgVard.ParamByName('@PackageNo'              ).AsInteger       := mtLoadPackagesPACKAGENO.AsInteger ;
+    sp_ChgPkgVard.ParamByName('@PackageTypeNo'          ).AsInteger       := PackageTypeNo;
+    sp_ChgPkgVard.ParamByName('@SupplierCode'           ).AsString        := mtLoadPackagesSUPP_CODE.AsString;
+    sp_ChgPkgVard.ParamByName('@LogicalInventoryPointNo').AsInteger       := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    sp_ChgPkgVard.ParamByName('@UserID'                 ).AsInteger       := ThisUser.UserID;
+    sp_ChgPkgVard.ParamByName('@RegistrationPointNo'    ).AsInteger       := 2 ; //2 = Lagevård. mtUserProp.FieldByName('RegPointNo').AsInteger ;
+    sp_ChgPkgVard.ParamByName('@OLD_PackageTypeNo'      ).AsInteger       := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
+    sp_ChgPkgVard.ParamByName('@DateCreated'            ).AsSQLTimeStamp  := DateTimeToSQLTimeStamp(Now) ;// DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+    sp_ChgPkgVard.ParamByName('@Package_Size'           ).AsInteger       := mtUserProp.FieldByName('NewItemRow').AsInteger ;
 
-    //Result:=
-    FDsp_vida_ChgPkgVard.ExecProc ;
+
+    sp_ChgPkgVard.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_ChgPkgVard.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_ChgPkgVard.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -990,25 +1016,30 @@ Try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
     Begin
-     dmsConnector.StartTransaction;
-     try
+{
+       dmsConnector.StartTransaction;
+       try
+}
       mtPcsPerLength.Active:= False ;
       mtPcsPerLength.Active:= True ;
       SavePkgType ;
       Try
       AndraPaket ;
+      Result:= True ;
       except
        ShowMessage ('Could not save Package no '+Pkg_Info(mtLoadPackagesPACKAGENO.AsInteger, mtLoadPackagesSUPP_CODE.AsString));
        Result:= False ;
        Raise ;
       End ;
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
    mtLoadPackages.Next ;
    PackageTypeNo:= -1 ;
  end;
@@ -1023,7 +1054,6 @@ end;
 function TdmPkgs.SaveFelRegPkgs(mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor : TCursor;
-  TransactionNo   : LongWord;
   PackagetypeNo   : Integer ;
 
   procedure SavePkgType ;
@@ -1033,36 +1063,36 @@ Var
     function SelectMatchingPkgTypeHdrs : Integer;
     begin
       // First get all package type (header) records that match
-      FDsp_vis_PkgType_II.ParamByName('ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      sp_PackageTypes.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      FDsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := 0
+      sp_PackageTypes.ParamByName('@BarCodeID'    ).AsInteger := 0
       else
-      FDsp_vis_PkgType_II.ParamByName('BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      sp_PackageTypes.ParamByName('@BarCodeID'    ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNo.AsInteger < 1 then
-      FDsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := 0
+      sp_PackageTypes.ParamByName('@GradeStamp'   ).AsInteger := 0
       else
-      FDsp_vis_PkgType_II.ParamByName('GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      FDsp_vis_PkgType_II.ParamByName('TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      sp_PackageTypes.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      sp_PackageTypes.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
 
       if (mtpackages.Active) AND (mtpackages.Fields[1].AsInteger > 0) then
-       FDsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetLengthsEntered
+       sp_PackageTypes.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered(mtUserProp.FieldByName('ALMM').AsFloat)
       else
-       FDsp_vis_PkgType_II.ParamByName('PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg ;
+       sp_PackageTypes.ParamByName('@PcsPerLength'  ).AsString := GetNoOfOriginalLengthsInPkg (mtUserProp.FieldByName('ALMM').AsFloat) ;
 
-      FDsp_vis_PkgType_II.Open;
+      sp_PackageTypes.Open;
       try
-//        FDsp_vis_PkgType_II.First;
-        if not FDsp_vis_PkgType_II.Eof then begin
-          Result := FDsp_vis_PkgType_II.FieldByName('PackageTypeNo').AsInteger ;
-//          FDsp_vis_PkgType_II.Next;
+//        sp_PackageTypes.First;
+        if not sp_PackageTypes.Eof then begin
+          Result := sp_PackageTypes.FieldByName('PackageTypeNo').AsInteger ;
+//          sp_PackageTypes.Next;
         end
          else
           Result:= -1 ;
 
       finally
-        FDsp_vis_PkgType_II.Close;
+        sp_PackageTypes.Close;
         end;
 
     end;
@@ -1078,26 +1108,26 @@ Var
       PackageTypeNo := dmsConnector.NextMaxNo('PackageType');
 
       Try
-      FDsp_vis_NewPkgType.Close ;
-      FDsp_vis_NewPkgType.ParamByName('PackageTypeNo'   ).AsInteger := PackageTypeNo;
-      FDsp_vis_NewPkgType.ParamByName('ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
+      sp_NewPackageType.Close ;
+      sp_NewPackageType.ParamByName('@PackageTypeNo'   ).AsInteger := PackageTypeNo;
+      sp_NewPackageType.ParamByName('@ProductNo'       ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
 
       if mtLoadPackagesBARCODE_ID.AsInteger < 1 then
-      FDsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := 0
+      sp_NewPackageType.ParamByName('@BarCodeID'       ).AsInteger := 0
       else
-      FDsp_vis_NewPkgType.ParamByName('BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
+      sp_NewPackageType.ParamByName('@BarCodeID'       ).AsInteger := mtLoadPackagesBARCODE_ID.AsInteger ;
 
       if mtLoadPackagesGRADESTAMPNO.AsInteger < 1 then
-      FDsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := 0
+      sp_NewPackageType.ParamByName('@GradeStamp'      ).AsInteger := 0
       else
-      FDsp_vis_NewPkgType.ParamByName('GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
-      FDsp_vis_NewPkgType.ParamByName('TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
-      FDsp_vis_NewPkgType.ParamByName('UserID').AsInteger := ThisUser.UserID;
-      FDsp_vis_NewPkgType.ExecProc;
+      sp_NewPackageType.ParamByName('@GradeStamp'      ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
+      sp_NewPackageType.ParamByName('@TotalNoOfPieces' ).AsInteger := mtLoadPackagesPCS.AsInteger ;
+      sp_NewPackageType.ParamByName('@UserID').AsInteger := ThisUser.UserID;
+      sp_NewPackageType.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vis_NewPkgType.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_NewPackageType.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -1107,15 +1137,15 @@ Var
       While not mtPcsPerLength.Eof do
       Begin
        Try
-        FDsp_vida_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
-        FDsp_vida_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
-        FDsp_vida_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
-        FDsp_vida_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
-        FDsp_vida_NewPackageDetail.ExecProc;
+        sp_NewPackageDetail.ParamByName('@PackageTypeNo'  ).AsInteger  := PackageTypeNo;
+        sp_NewPackageDetail.ParamByName('@ProductLengthNo').AsInteger  := mtPcsPerLengthProductLengthNo.AsInteger ;
+        sp_NewPackageDetail.ParamByName('@NoOfPieces'     ).AsInteger  := mtPcsPerLengthNoOfPieces.AsInteger ;
+        sp_NewPackageDetail.ParamByName('@UserID'         ).AsInteger  := ThisUser.UserID;
+        sp_NewPackageDetail.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_NewPackageDetail.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_NewPackageDetail.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -1128,32 +1158,32 @@ Var
     procedure  SavePackageTypeLengths ;
     Begin
      Try
-      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
-      FDsp_vida_Populate_One_PackageTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
-      FDsp_vida_Populate_One_PackageTypeLengths.ExecProc ;
+      sp_Populate_One_PkgTypeLengths.Close ;
+      sp_Populate_One_PkgTypeLengths.ParamByName('@SearchPackageTypeNo').AsInteger:= PackageTypeNo ;
+      sp_Populate_One_PkgTypeLengths.ExecProc ;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_Populate_One_PackageTypeLengths.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_Populate_One_PkgTypeLengths.ExecProc') ;
       Raise ;
      End ;
     end;
-      FDsp_vida_Populate_One_PackageTypeLengths.Close ;
+      sp_Populate_One_PkgTypeLengths.Close ;
     End ;
 
   procedure SavePkgTotals( PackageTypeNo : Integer );
   begin
    Try
-    FDsp_vida_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
-    FDsp_vida_PackageTotals.ExecProc;
+    sp_PackageTotals.ParamByName('@PkgNo').AsInteger := PackageTypeNo;
+    sp_PackageTotals.ExecProc;
     except
      On E: Exception do
      Begin
-      dmsSystem.FDoLog(E.Message+' :FDsp_vida_PackageTotals.ExecProc') ;
+      dmsSystem.FDoLog(E.Message+' :sp_PackageTotals.ExecProc') ;
       Raise ;
      End ;
     end;
-    FDsp_vida_PackageTotals.Close;
+    sp_PackageTotals.Close;
   end;
 
 
@@ -1170,26 +1200,101 @@ Var
   end;
 
 
-  function UpdatePackage : Integer ;
+  procedure UpdatePackage ;
   begin
    Try
-    sp_updateFelReg.ParamByName('PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
-    sp_updateFelReg.ParamByName('PackageTypeNo'          ).AsInteger  := PackageTypeNo;
-    sp_updateFelReg.ParamByName('SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
-    sp_updateFelReg.ParamByName('LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-    sp_updateFelReg.ParamByName('UserID'                 ).AsInteger  := ThisUser.UserID;
-    sp_updateFelReg.ParamByName('RegistrationPointNo'    ).AsInteger  := mtUserProp.FieldByName('RegPointNo').AsInteger ;
-    sp_updateFelReg.ParamByName('OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
-    sp_updateFelReg.ParamByName('SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
-    sp_updateFelReg.ParamByName('DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-    sp_updateFelReg.ParamByName('MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
-    sp_updateFelReg.ParamByName('RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+    sp_updateFelReg.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
+    sp_updateFelReg.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+    sp_updateFelReg.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
+    sp_updateFelReg.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    sp_updateFelReg.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+    sp_updateFelReg.ParamByName('@RegistrationPointNo'    ).AsInteger  := mtUserProp.FieldByName('RegPointNo').AsInteger ;
+    sp_updateFelReg.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
+    sp_updateFelReg.ParamByName('@SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
+    sp_updateFelReg.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+    sp_updateFelReg.ParamByName('@MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
+    sp_updateFelReg.ParamByName('@RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+    sp_updateFelReg.ParamByName('@Package_Size'           ).AsInteger  := mtUserProp.FieldByName('NewItemRow').AsInteger ;
+    sp_updateFelReg.ParamByName('@SkiftLagNo'             ).AsInteger  := mtUserProp.FieldByName('GroupByBox').AsInteger ;
 
-    Result:= sp_updateFelReg.ExecProc;
+
+    sp_updateFelReg.ExecProc ;
     except
      On E: Exception do
      Begin
       dmsSystem.FDoLog(E.Message+' :sp_updateFelReg.ExecProc') ;
+      Raise ;
+     End ;
+    end;
+  end;
+
+  {
+
+  procedure UpdatePackageLog ;
+  begin
+   with dmsProduct do
+   Begin
+   Try
+    sp_vis_InsPnLog.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
+    sp_vis_InsPnLog.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+    sp_vis_InsPnLog.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
+    sp_vis_InsPnLog.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    sp_vis_InsPnLog.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+    sp_vis_InsPnLog.ParamByName('@RegistrationPointNo'    ).AsInteger  := mtUserProp.FieldByName('RegPointNo').AsInteger ;
+    sp_vis_InsPnLog.ParamByName('@OLD_PackageTypeNo'      ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger; //this is the old pkgtype
+    sp_vis_InsPnLog.ParamByName('@SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
+    sp_vis_InsPnLog.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+    sp_vis_InsPnLog.ParamByName('@MatPunktAgareNo'        ).AsInteger  := mtUserProp.FieldByName('ProducerNo').AsInteger ;
+    sp_vis_InsPnLog.ParamByName('@RunNo'                  ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+
+    sp_vis_InsPnLog.ExecProc ;
+    except
+     On E: Exception do
+     Begin
+      dmsSystem.FDoLog(E.Message+' :sp_vis_InsPnLog.ExecProc') ;
+      Raise ;
+     End ;
+    end;
+   End;
+  end;    }
+
+  procedure UpdateProdStat ;
+  begin
+   Try
+    sp_vida_updateProdStat.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
+    sp_vida_updateProdStat.ParamByName('@PackageTypeNo'          ).AsInteger  := PackageTypeNo;
+    sp_vida_updateProdStat.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString;
+    sp_vida_updateProdStat.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    sp_vida_updateProdStat.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+
+
+    if mtUserProp.FieldByName('VolumeUnitNo').AsInteger = 1 then
+    sp_vida_updateProdStat.ParamByName('@RegistrationPointNo'    ).AsInteger  := mtUserProp.FieldByName('RegPointNo').AsInteger
+    else
+    sp_vida_updateProdStat.ParamByName('@RegistrationPointNo'    ).Clear(-1);
+
+
+    sp_vida_updateProdStat.ParamByName('@SupplierNo'             ).AsInteger  := mtUserProp.FieldByName('OwnerNo').AsInteger ;
+
+
+    if mtUserProp.FieldByName('LengthFormatNo').AsInteger = 1 then
+    sp_vida_updateProdStat.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime)
+    else
+    sp_vida_updateProdStat.ParamByName('@DateCreated'            ).AsSQLTimeStamp ;
+
+    if mtUserProp.FieldByName('AgentNo').AsInteger = 1 then
+    sp_vida_updateProdStat.ParamByName('@ShiftNo'        ).AsInteger  := mtUserProp.FieldByName('GroupByBox').AsInteger
+    else
+    sp_vida_updateProdStat.ParamByName('@ShiftNo'        ).Clear(-1) ;
+
+
+    sp_vida_updateProdStat.ParamByName('@RunNo'          ).AsInteger  := mtUserProp.FieldByName('RunNo').AsInteger ;
+
+    sp_vida_updateProdStat.ExecProc ;
+    except
+     On E: Exception do
+     Begin
+      dmsSystem.FDoLog(E.Message+' :sp_vida_updateProdStat.ExecProc') ;
       Raise ;
      End ;
     end;
@@ -1208,41 +1313,51 @@ Try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
     Begin
-     dmsConnector.StartTransaction;
-     try
+{
+       dmsConnector.StartTransaction;
+       try
+}
       mtPcsPerLength.Active:= False ;
       mtPcsPerLength.Active:= True ;
       SavePkgType ;
+
       Try
       UpdatePackage ;
+{      if (mtUserProp.FieldByName('VolumeUnitNo').AsInteger = 1)
+      or (mtUserProp.FieldByName('AgentNo').AsInteger = 1)
+      or (mtUserProp.FieldByName('LengthFormatNo').AsInteger = 1) then }
+      if (mtUserProp.FieldByName('GroupSummary').AsInteger = 1) then
+      UpdateProdStat ;
+      Result:= True ;
       except
        ShowMessage ('Could not save Package no '+Pkg_Info(mtLoadPackagesPACKAGENO.AsInteger, mtLoadPackagesSUPP_CODE.AsString));
        Result:= False ;
        Raise ;
       End ;
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
    mtLoadPackages.Next ;
    PackageTypeNo:= -1 ;
  end;
 
  Finally
-  mtPcsPerLength.Active:= False ;
-  Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  mtPcsPerLength.Active := False ;
+  Screen.Cursor         := Save_Cursor;  { Always restore to normal }
  End ;
 end;
 
 function TdmPkgs.FlyttaPaket(mtUserProp : TkbmMemTable) : Boolean ;
 Var
   Save_Cursor:TCursor;
-  TransactionNo : LongWord;
 
-  function MovePackage : Integer ;
+  procedure MovePackage ;
   begin
    Try
     sp_MovePkg.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
@@ -1274,22 +1389,27 @@ begin
  mtLoadPackages.First ;
  While not mtLoadPackages.Eof do
  Begin
-  dmsConnector.StartTransaction;
-  try
+{
+     dmsConnector.StartTransaction;
+    try
+}
     Try
      MovePackage ;
+     Result:= True ;
     except
      ShowMessage ('Kan inte flytta paketnr ' + Pkg_Info(mtLoadPackagesPACKAGENO.AsInteger, mtLoadPackagesSUPP_CODE.AsString));
      Result:= False ;
      Raise ;
     End ;
 
-   dmsConnector.Commit ;
-   Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+     dmsConnector.Commit ;
+     Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
 
   mtLoadPackages.Next ;
  end;
@@ -1323,21 +1443,23 @@ Var
   Save_Cursor:TCursor;
 //  TransactionNo : LongWord;
 
-  function SavePackage : Integer ;
+
+ (*
+  procedure SavePackage ;
   begin
     Try
-    sp_NewPackageNo.ParamByName('PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
-    sp_NewPackageNo.ParamByName('PackageTypeNo'          ).AsInteger  := mtLoadPackagesPackageTypeNo.AsInteger;
-    sp_NewPackageNo.ParamByName('SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString ;
-    sp_NewPackageNo.ParamByName('LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-    sp_NewPackageNo.ParamByName('SupplierNo'             ).AsInteger  := mtLoadPackagesSUPPLIERNO.AsInteger ;
-    sp_NewPackageNo.ParamByName('RegistrationPointNo'    ).AsInteger  := RegistrationPointNo ;
-    sp_NewPackageNo.ParamByName('UserID'                 ).AsInteger  := ThisUser.UserID;
-    sp_NewPackageNo.ParamByName('CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
-    sp_NewPackageNo.ParamByName('DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated) ;
+    sp_NewPackageNo.ParamByName('@PackageNo'              ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
+    sp_NewPackageNo.ParamByName('@PackageTypeNo'          ).AsInteger  := mtLoadPackagesPackageTypeNo.AsInteger;
+    sp_NewPackageNo.ParamByName('@SupplierCode'           ).AsString   := mtLoadPackagesSUPP_CODE.AsString ;
+    sp_NewPackageNo.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+    sp_NewPackageNo.ParamByName('@SupplierNo'             ).AsInteger  := mtLoadPackagesSUPPLIERNO.AsInteger ;
+    sp_NewPackageNo.ParamByName('@RegistrationPointNo'    ).AsInteger  := RegistrationPointNo ;
+    sp_NewPackageNo.ParamByName('@UserID'                 ).AsInteger  := ThisUser.UserID;
+    sp_NewPackageNo.ParamByName('@CreatedOfPkgStr'        ).AsInteger  := 0 ; // 0 = Manual entry
+    sp_NewPackageNo.ParamByName('@DateCreated'            ).AsSQLTimeStamp := DateTimeToSQLTimeStamp(WhenCreated) ;
 
-    sp_NewPackageNo.ParamByName('OwnerNo'                ).AsInteger  := mtLoadPackagesOWNERNO.AsInteger ;
-    sp_NewPackageNo.ParamByName('ProducerNo'             ).AsInteger  := mtLoadPackagesSUPPLIERNO.AsInteger ;
+    sp_NewPackageNo.ParamByName('@OwnerNo'                ).AsInteger  := mtLoadPackagesOWNERNO.AsInteger ;
+    sp_NewPackageNo.ParamByName('@ProducerNo'             ).AsInteger  := mtLoadPackagesSUPPLIERNO.AsInteger ;
     sp_NewPackageNo.ExecProc;
     except
      On E: Exception do
@@ -1347,6 +1469,8 @@ Var
      End ;
     end;
   end;
+
+  *)
 //Main AddPkgsByPktType
 begin
  Save_Cursor := Screen.Cursor;
@@ -1360,7 +1484,7 @@ Try
    While not mtLoadPackages.Eof do
     Begin
       Try
-      SavePackage
+     // SavePackage
       except
        ShowMessage ('Could not save Package no '+Pkg_Info(mtLoadPackagesPACKAGENO.AsInteger, mtLoadPackagesSUPP_CODE.AsString));
        Result:= False ;
@@ -1452,8 +1576,8 @@ End ;
 function TdmPkgs.PackageNumberExists(const PkgNo: Integer; const SupplierCode : String3): Boolean;
 begin
   sp_OnePackageNo.Close;
-  sp_OnePackageNo.ParamByName('PackageNo').AsInteger := PkgNo;
-  sp_OnePackageNo.ParamByName('SupplierCode').AsString := Trim(SupplierCode);
+  sp_OnePackageNo.ParamByName('@PackageNo').AsInteger     := PkgNo;
+  sp_OnePackageNo.ParamByName('@SupplierCode').AsString   := Trim(SupplierCode);
   sp_OnePackageNo.Open;
   sp_OnePackageNo.First;
   Result := not sp_OnePackageNo.eof;
@@ -1489,14 +1613,14 @@ Begin
   mtLoadPackages.Post ;
   x:= succ(x) ;
 
-           Except
-            on eDatabaseError do
-            Begin
-             Result:= False ;
-             Raise ;
-             mtpackages.Cancel ;
-            End ;
-           End ;
+   Except
+    on eDatabaseError do
+    Begin
+     Result:= False ;
+     Raise ;
+     mtpackages.Cancel ;
+    End ;
+   End ;
 
 
   sq_PkgNoAvail.Next ;
@@ -1525,15 +1649,15 @@ Try
     Begin
      Try
       sp_RemovePackageFromInventory.Close ;
-      sp_RemovePackageFromInventory.ParamByName('PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
-      sp_RemovePackageFromInventory.ParamByName('SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
-      sp_RemovePackageFromInventory.ParamByName('RegistrationPointNo').AsInteger      := RegistrationPointNo ;
-      sp_RemovePackageFromInventory.ParamByName('PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-      sp_RemovePackageFromInventory.ParamByName('LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
-      sp_RemovePackageFromInventory.ParamByName('UserID').AsInteger                   := ThisUser.UserID ;
-      sp_RemovePackageFromInventory.ParamByName('SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
-      sp_RemovePackageFromInventory.ParamByName('DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(WhenCreated) ;
-      sp_RemovePackageFromInventory.ParamByName('MatPunktAgareNo').AsInteger          := MatPunktAgareNo ;
+      sp_RemovePackageFromInventory.ParamByName('@PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
+      sp_RemovePackageFromInventory.ParamByName('@SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
+      sp_RemovePackageFromInventory.ParamByName('@RegistrationPointNo').AsInteger      := RegistrationPointNo ;
+      sp_RemovePackageFromInventory.ParamByName('@PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+      sp_RemovePackageFromInventory.ParamByName('@LogicalInventoryPointNo').AsInteger  := mtLoadPackagesLOG_INVENTORY_NO.AsInteger ;
+      sp_RemovePackageFromInventory.ParamByName('@UserID').AsInteger                   := ThisUser.UserID ;
+      sp_RemovePackageFromInventory.ParamByName('@SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
+      sp_RemovePackageFromInventory.ParamByName('@DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(WhenCreated) ;
+      sp_RemovePackageFromInventory.ParamByName('@MatPunktAgareNo').AsInteger          := MatPunktAgareNo ;
 
       sp_RemovePackageFromInventory.ExecProc ;
     except
@@ -1581,9 +1705,9 @@ function TdmPkgs.ExtFlyttaPaket(mtUserProp : TkbmMemTable) : Boolean ;
 //const RegistrationPointNo, NewLogicalInventoryPointNo, ToOwnerNo : Integer) : Boolean ;
 Var
   Save_Cursor:TCursor;
-  TransactionNo : LongWord;
 
-  function MovePackage : Integer ;
+
+  procedure MovePackage ;
   begin
    Try
     sp_ExtMovePkg.ParamByName('@PackageNo'                 ).AsInteger  := mtLoadPackagesPACKAGENO.AsInteger ;
@@ -1596,7 +1720,7 @@ Var
     sp_ExtMovePkg.ParamByName('@OLD_PackageTypeNo'         ).AsInteger  := mtLoadPackagesPACKAGETYPENO.AsInteger ;
     sp_ExtMovePkg.ParamByName('@OldSupplierNo'             ).AsInteger  := mtLoadPackagesOWNERNO.AsInteger ;
     sp_ExtMovePkg.ParamByName('@NewSupplierNo'             ).AsInteger  := mtUserProp.FieldByName('VerkNo').AsInteger ;
-    Result:= sp_ExtMovePkg.ExecProc;
+    sp_ExtMovePkg.ExecProc;
     except
      On E: Exception do
      Begin
@@ -1617,22 +1741,27 @@ begin
  mtLoadPackages.First ;
  While not mtLoadPackages.Eof do
  Begin
-  dmsConnector.StartTransaction;
-  try
+{
+     dmsConnector.StartTransaction;
+    try
+}
     Try
      MovePackage ;
+     Result:= True ;
     except
      ShowMessage ('Could not save Package no '+Pkg_Info(mtLoadPackagesPACKAGENO.AsInteger, mtLoadPackagesSUPP_CODE.AsString));
      Result:= False ;
      Raise ;
     End ;
 
-   dmsConnector.Commit ;
-   Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+     dmsConnector.Commit ;
+     Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
 
   mtLoadPackages.Next ;
  end;
@@ -1667,7 +1796,7 @@ Begin
 
 End ;
 
-Function TdmPkgs.GetLengthsEntered : String ;
+Function TdmPkgs.GetLengthsEntered(const ChangeLength : Double) : String ;
 
     Function GetNoOfLengthsInPkg : Integer ;
     Var x : Integer ;
@@ -1720,6 +1849,21 @@ Function TdmPkgs.GetLengthsEntered : String ;
      mtPcsPerLength.Post ;
     End ;
 
+    Function Get_Lengths_For_Ramar : Integer ;
+    Var ML : Double ;
+  //      Le : String ;
+    Begin
+     ML                                       := ChangeLength ;
+//     Le := FloatToStr(ML) ;
+     mtPcsPerLength.Insert ;
+     mtPcsPerLengthProductLengthNo.AsInteger  := dmsSystem.GetProductLengthNoByALMM(FloatToStr(ML)) ;
+     mtPcsPerLengthNoOfPieces.AsInteger       := mtPackages.Fields[cTOTALPCS].AsInteger ;
+     mtPcsPerLengthProductNo.AsInteger        := mtPackages.Fields[cPRODUCTNO].AsInteger ;
+     mtPcsPerLengthUserID.AsInteger           := ThisUser.UserID ;
+     mtPcsPerLengthALMM.AsFloat               := ML ;
+     mtPcsPerLength.Post ;
+    End ;
+
 Begin
 // if (mtUserPropInputOption.AsInteger = INPUT_PIECES) or (mtUserPropInputOption.AsInteger = INPUT_SPECIAL_LENGTH) then
   GetNoOfLengthsInPkg ;
@@ -1739,34 +1883,40 @@ Begin
  End ;
 End ;
 
-Function TdmPkgs.GetNoOfOriginalLengthsInPkg : String ;
+Function TdmPkgs.GetNoOfOriginalLengthsInPkg(const ChangeLength : Double) : String ;
 Begin
-     Result:= '' ;
-     FDsp_vida_PackageTypeDetail.Close;
-     FDsp_vida_PackageTypeDetail.ParamByName('@PackageTypeNo').AsInteger := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-     FDsp_vida_PackageTypeDetail.Open;
-     FDsp_vida_PackageTypeDetail.First;
-          // NB We know that both the data retrieved from FDsp_vida_PackageTypeDetail and the
-          // grid column info are in length order, smallest to largest.
-
-      while not FDsp_vida_PackageTypeDetail.Eof  do
-      begin
-       mtPcsPerLength.Insert ;
-       mtPcsPerLengthProductLengthNo.AsInteger :=  FDsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
-       mtPcsPerLengthNoOfPieces.AsInteger       := FDsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
-       mtPcsPerLengthProductNo.AsInteger        := mtPackages.Fields[cPRODUCTNO].AsInteger ;
-       mtPcsPerLengthUserID.AsInteger           := ThisUser.UserID ;
+ Result:= '' ;
+ //Om changeLength < 1 then "normal" procedure
+ if ChangeLength < 1 then
+  Begin
+   sp_PackageTypeDetail.Close;
+   sp_PackageTypeDetail.ParamByName('@PackageTypeNo').AsInteger := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+   sp_PackageTypeDetail.Open;
+   sp_PackageTypeDetail.First;
+   while not sp_PackageTypeDetail.Eof  do
+   begin
+    mtPcsPerLength.Insert ;
+    mtPcsPerLengthProductLengthNo.AsInteger :=  sp_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
+    mtPcsPerLengthNoOfPieces.AsInteger       := sp_PackageTypeDetail.FieldValues['NoOfPieces'] ;
+    mtPcsPerLengthProductNo.AsInteger        := mtPackages.Fields[cPRODUCTNO].AsInteger ;
+    mtPcsPerLengthUserID.AsInteger           := ThisUser.UserID ;
 //       mtPcsPerLengthALMM.AsFloat               := StrToFloat(mtPackages.Fields[x].DisplayLabel) ;
-       mtPcsPerLength.Post ;
+    mtPcsPerLength.Post ;
 
-
-{       New(ARecord);
-       ARecord^.ProductLengthNo:= FDsp_vida_PackageTypeDetail.FieldValues['ProductLengthNo'] ;
-       ARecord^.NoOfPieces:= FDsp_vida_PackageTypeDetail.FieldValues['NoOfPieces'] ;
-       MyList.Add(ARecord);      }
-       FDsp_vida_PackageTypeDetail.Next;
-      end;
-     FDsp_vida_PackageTypeDetail.Close;
+    sp_PackageTypeDetail.Next;
+   end;
+   sp_PackageTypeDetail.Close;
+  End
+  else
+  Begin
+    mtPcsPerLength.Insert ;
+    mtPcsPerLengthProductLengthNo.AsInteger :=  dmsSystem.GetProductLengthNoByALMM(FloatToStr(ChangeLength)) ;
+    mtPcsPerLengthNoOfPieces.AsInteger       := mtLoadPackagesPCS.AsInteger ;
+    mtPcsPerLengthProductNo.AsInteger        := mtLoadPackagesProductNo.AsInteger ;
+    mtPcsPerLengthUserID.AsInteger           := ThisUser.UserID ;
+//       mtPcsPerLengthALMM.AsFloat               := StrToFloat(mtPackages.Fields[x].DisplayLabel) ;
+    mtPcsPerLength.Post ;
+  End;
 
      mtPcsPerLength.First ;
      While not mtPcsPerLength.Eof do
@@ -1783,14 +1933,15 @@ End ;//end proc
 function TdmPkgs.AterStallPktTillInventoryEXT (mtUserProp : TkbmMemTable;const LIPNo, OwnerNo : Integer) : Boolean ;
 Var
   Save_Cursor   : TCursor;
-  TransactionNo : LongWord;
 //  LIPNo         : Integer ;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
  Result         := False ;
- Try
-  dmsConnector.StartTransaction;
+{
+   Try
+    dmsConnector.StartTransaction;
+}
   try
    mtLoadPackages.First ;
    While not mtLoadPackages.Eof do
@@ -1798,34 +1949,38 @@ begin
       Try
 
        sp_AktiveraPktExt.Close ;
-       sp_AktiveraPktExt.ParamByName('PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
-       sp_AktiveraPktExt.ParamByName('SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
-       sp_AktiveraPktExt.ParamByName('RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
-       sp_AktiveraPktExt.ParamByName('PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
-       sp_AktiveraPktExt.ParamByName('LogicalInventoryPointNo').AsInteger  := LIPNo ;
-       sp_AktiveraPktExt.ParamByName('UserID').AsInteger                   := ThisUser.UserID ;
+       sp_AktiveraPktExt.ParamByName('@PackageNo').AsInteger                := mtLoadPackagesPACKAGENO.AsInteger ;
+       sp_AktiveraPktExt.ParamByName('@SupplierCode').AsString              := mtLoadPackagesSUPP_CODE.AsString ;
+       sp_AktiveraPktExt.ParamByName('@RegistrationPointNo').AsInteger      := 2 ;//2 = Lagervård //mtUserProp.FieldByName('RegPointNo').AsInteger ;
+       sp_AktiveraPktExt.ParamByName('@PackageTypeNo').AsInteger            := mtLoadPackagesPACKAGETYPENO.AsInteger ;
+       sp_AktiveraPktExt.ParamByName('@LogicalInventoryPointNo').AsInteger  := LIPNo ;
+       sp_AktiveraPktExt.ParamByName('@UserID').AsInteger                   := ThisUser.UserID ;
 //       sp_AktiveraPktExt.ParamByName('SupplierNo').AsInteger               := mtLoadPackagesSupplierNo.AsInteger ;
-       sp_AktiveraPktExt.ParamByName('DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
-       sp_AktiveraPktExt.ParamByName('MatPunktAgareNo').AsInteger          := OWNERNO ;
+       sp_AktiveraPktExt.ParamByName('@DateCreated').AsSQLTimeStamp         := DateTimeToSQLTimeStamp(mtUserProp.FieldByName('RegDate').AsDateTime) ;
+       sp_AktiveraPktExt.ParamByName('@MatPunktAgareNo').AsInteger          := OWNERNO ;
 //       sp_AktiveraPktExt.ParamByName('RunNo').AsInteger                    := mtUserProp.FieldByName('RunNo').AsInteger ;
 
        sp_AktiveraPktExt.ExecProc ;
+       Result:= True ;
     except
      On E: Exception do
      Begin
       dmsSystem.FDoLog(E.Message+' :sp_AktiveraPktExt.ExecProc') ;
+      Result:= False ;
       Raise ;
      End ;
     end;
      mtLoadPackages.Next ;
     end; //While...
 
-    dmsConnector.Commit ;
-    Result:= True ;
-  except
-    dmsConnector.Rollback ;
-    Result:= False ;
-  end;
+{
+      dmsConnector.Commit ;
+      Result:= True ;
+    except
+      dmsConnector.Rollback ;
+      Result:= False ;
+    end;
+}
  Finally
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;

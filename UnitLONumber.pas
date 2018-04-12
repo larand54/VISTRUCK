@@ -3,7 +3,23 @@ unit UnitLONumber;
 interface
 
 uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls, 
-  Buttons, ExtCtrls, dxCntner, dxTL, dxDBCtrl, dxDBGrid, dxExEdtr;
+  Buttons, ExtCtrls, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGridLevel, cxClasses, cxControls,
+  cxGridCustomView, cxGrid, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, siComp, siLngLnk ;
 
 type
   TfLONumber = class(TForm)
@@ -13,10 +29,13 @@ type
     Panel2: TPanel;
     OKBtn: TButton;
     CancelBtn: TButton;
-    grdProducts: TdxDBGrid;
-    grdProductsPRODUCT: TdxDBGridMaskColumn;
-    grdProductsPRODUCTNO: TdxDBGridMaskColumn;
     bGetProducts: TButton;
+    grdProdLODBTableView1: TcxGridDBTableView;
+    grdProdLOLevel1: TcxGridLevel;
+    grdProdLO: TcxGrid;
+    grdProdLODBTableView1PRODUCT: TcxGridDBColumn;
+    grdProdLODBTableView1PRODUCTNO: TcxGridDBColumn;
+    siLangLinked_fLONumber: TsiLangLinked;
     procedure bGetProductsClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -38,8 +57,8 @@ begin
  With dmPkgs do
  Begin
   cds_Prod_In_LO.Active:= False ;
-  sq_Prod_In_LO.ParamByName('OwnerNo').AsInteger:= dmPkgs.SupplierNo ;
-  sq_Prod_In_LO.ParamByName('LONo').AsInteger:= StrToIntDef(Trim(eLONo.Text),0) ;
+  cds_Prod_In_LO.ParamByName('OwnerNo').AsInteger  := dmPkgs.SupplierNo ;
+  cds_Prod_In_LO.ParamByName('LONo').AsInteger     := StrToIntDef(Trim(eLONo.Text),0) ;
   cds_Prod_In_LO.Active:= True ;
  End ;
 end;
