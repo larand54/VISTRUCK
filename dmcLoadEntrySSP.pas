@@ -452,6 +452,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function getNewBULKPackageNo: Integer;
    function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
    procedure inactivatePackage(const aPkgNo: integer);
@@ -589,71 +590,71 @@ procedure TdmLoadEntrySSP.SaveLOData(LoadNo: Integer);
 // We have been passed data to be saved in the database. The data passed includes the original
 // data(if any) and the modified/new data, so we can handle any concurrency issues that arise.
 var
-  WhenPosted    : TDateTime;
-  NewLoad       : Boolean;
-  Save_Cursor   : TCursor;
+  WhenPosted: TDateTime;
+  NewLoad: Boolean;
+  Save_Cursor: TCursor;
 begin
- NewLoad        := False;
- Save_Cursor    := Screen.Cursor;
- Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
-  Try
-  WhenPosted    := Now; // Make sure all records get same time of posting.
-
-  if ThisUser.UserID <> 8 then
-  if Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger) then
-  Begin
-   ShowMessage('Kan inte spara för att lasten är ankomstregistrerad') ;
-   Exit ;
-  End ;
-
-  dmsConnector.StartTransaction;
+  NewLoad := False;
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
   try
-    if NewLoad = TRUE then
-    Begin
-      if SaveLoadHeader(WhenPosted, cds_LoadHeadLoadNo.AsInteger) = False then
-       Begin
-        ShowMessage('A Load No conflict occured, please try save again or close the load form and try again.') ;
+    WhenPosted := Now; // Make sure all records get same time of posting.
+
+    if ThisUser.UserID <> 8 then
+      if Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger) then
+      begin
+        ShowMessage('Kan inte spara för att lasten är ankomstregistrerad');
+        Exit;
+      end;
+
+    dmsConnector.StartTransaction;
+    try
+      if NewLoad = TRUE then
+      begin
+        if SaveLoadHeader(WhenPosted, cds_LoadHeadLoadNo.AsInteger) = False then
+        begin
+          ShowMessage('A Load No conflict occured, please try save again or close the load form and try again.');
 //        dmsConnector.Rollback ;
-        cds_LoadHead.Edit ;
-        cds_LoadHeadLoadNo.AsInteger:= 0 ;
-        cds_LoadHead.Post ;
-        Exit ;
-       End ;
-    end
-    else
-     begin
+          cds_LoadHead.Edit;
+          cds_LoadHeadLoadNo.AsInteger := 0;
+          cds_LoadHead.Post;
+          Exit;
+        end;
+      end
+      else
+      begin
     //Modify Existing load
-      if not cds_LoadHead.UpdateOptions.ReadOnly then
-       ModifyLoadHeader(WhenPosted, LoadNo);
-     end; //Else
+        if not cds_LoadHead.UpdateOptions.ReadOnly then
+          ModifyLoadHeader(WhenPosted, LoadNo);
+      end; //Else
 
 //     try
       // Now write the data to the database
       if cds_LSP.ChangeCount > 0 then
-      Begin
-       cds_LSP.ApplyUpdates(0) ;
-       cds_LSP.CommitUpdates ;
-      End ;
+      begin
+        cds_LSP.ApplyUpdates(0);
+        cds_LSP.CommitUpdates;
+      end;
 
-      SaveLoadPkgs  (WhenPosted, LoadNo);
+      SaveLoadPkgs(WhenPosted, LoadNo);
 
       //Check and change package size and articleno
 
       if cds_LoadPackages.ChangeCount > 0 then
-      Begin
-       cds_LoadPackages.ApplyUpdates(0) ;
-       cds_LoadPackages.CommitUpdates ;
-      End ;
+      begin
+        cds_LoadPackages.ApplyUpdates(0);
+        cds_LoadPackages.CommitUpdates;
+      end;
 
       //Om status = 2 then check and change manuell overriden packages
       if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
-      Begin
+      begin
         chgManLoadPkgs(LoadNo);
         AdjustPkgArticleNoOnLoadPkgs(LoadNo);
-      End;
+      end;
 
 //      CleanUpLoadpkgsGrid(Sender) ;
-      dmsConnector.Commit ;
+      dmsConnector.Commit;
 {    except
       on Exception do begin
         if NewLoad then
@@ -662,101 +663,89 @@ begin
         end;
       end; }
 
-  except
-    dmsConnector.Rollback;
-    raise;
+    except
+      dmsConnector.Rollback;
+      raise;
+    end;
+
+    if (not Assigned(dmArrivingLoads)) then
+    begin
+      dmArrivingLoads := TdmArrivingLoads.Create(nil);
+    end;
+    dmsSystem.AssignDMToThisWork('TdmLoadEntrySSP', 'dmArrivingLoads');
+    try
+
+      if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
+        dmArrivingLoads.GetIntPrice(-1, 0, -1, cds_LoadHeadLoadNo.AsInteger, True);
+
+    finally
+      if dmsSystem.DeleteAssigned('TdmLoadEntrySSP', 'dmArrivingLoads') = True then
+      begin
+        dmArrivingLoads.Free;
+        dmArrivingLoads := Nil;
+      end;
+    end;
+
+  finally
+    Screen.Cursor := Save_Cursor;
   end;
-
-  if (not Assigned(dmArrivingLoads)) then
-  Begin
-   dmArrivingLoads  := TdmArrivingLoads.Create(nil);
-  End ;
-  dmsSystem.AssignDMToThisWork('TdmLoadEntrySSP', 'dmArrivingLoads') ;
- Try
-
-  if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
-   dmArrivingLoads.GetIntPrice(-1, 0, -1, cds_LoadHeadLoadNo.AsInteger, True) ;
-
- Finally
-  if dmsSystem.DeleteAssigned('TdmLoadEntrySSP', 'dmArrivingLoads') = True then
-  Begin
-   dmArrivingLoads.Free ;
-   dmArrivingLoads := Nil ;
-  End ;
- End ;
-
-
-  Finally
-   Screen.Cursor := Save_Cursor ;
-  End ;
 end;
 
-function TdmLoadEntrySSP.IS_Load_OK : Word ;
-Begin
- Result := 2 ;
- cds_LoadPackages.First ;
- While not cds_LoadPackages.Eof do
- Begin
-  if ((cds_LoadPackagesPackageOK.AsInteger > 0)
-  and (cds_LoadPackagesPackageOK.AsInteger <> VP_LengthNotInLengthGroup)
-  and (cds_LoadPackagesOverrideRL.AsInteger = 0)
-  and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
+function TdmLoadEntrySSP.IS_Load_OK: Word;
+begin
+  Result := 2;
+  cds_LoadPackages.First;
+  while not cds_LoadPackages.Eof do
+  begin
+    if ((cds_LoadPackagesPackageOK.AsInteger > 0) and (cds_LoadPackagesPackageOK.AsInteger <> VP_LengthNotInLengthGroup) and (cds_LoadPackagesOverrideRL.AsInteger = 0) and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
+ or ((dmLoadEntrySSP.cds_LSPObjectType.AsInteger = 2) and (cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup) and (cds_LoadPackagesOverrideRL.AsInteger = 0) and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
+ or ((cds_LoadPackagesShippingPlanNo.AsInteger < 1) and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
+ or (cds_LoadPackagesDefsspno.AsInteger = -1) then
+      Result := 1;
+    cds_LoadPackages.Next;
+  end;
+end;
 
-  or ((dmLoadEntrySSP.cds_LSPObjectType.AsInteger = 2)
-  and (cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup)
-  and (cds_LoadPackagesOverrideRL.AsInteger = 0)
-  and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
-
-  or ((cds_LoadPackagesShippingPlanNo.AsInteger < 1)
-  and (dmLoadEntrySSP.cds_LoadPackagesPkg_Function.AsInteger <> REMOVE_PKG_FROM_LOAD))
-
-  or (cds_LoadPackagesDefsspno.AsInteger = -1)
-  then
-   Result := 1 ;
-  cds_LoadPackages.Next ;
- End ;
-End ;
-
-function TdmLoadEntrySSP.SaveLoadHeader(const WhenPosted : TDateTime;const LoadNo: Integer) : Boolean ;
+function TdmLoadEntrySSP.SaveLoadHeader(const WhenPosted: TDateTime; const LoadNo: Integer): Boolean;
 const
   ALWAYS_ZERO = 0;
 begin
- if cds_LoadHead.State = dsBrowse then
-  cds_LoadHead.Edit ;
+  if cds_LoadHead.State = dsBrowse then
+    cds_LoadHead.Edit;
 //  cds_LoadHeadLoadNo.AsInteger              := LoadNo ;
 
-  cds_LoadHeadSupplierNo.AsInteger          := FSupplierNo;
-  cds_LoadHeadPackageEntryOption.AsInteger  := 0 ;
-  cds_LoadHeadCreatedUser.AsInteger         := ThisUser.UserID ;
-  cds_LoadHeadModifiedUser.AsInteger        := ThisUser.UserID ;
-  cds_LoadHeadDateCreated.AsSQLTimeStamp    := DateTimeToSqlTimeStamp(Now) ;
-  cds_LoadHeadOriginalSupplierNo.AsInteger  := FSupplierNo ;
-  cds_LoadHeadCustomerNo.AsInteger          := FCustomerNo ;
+  cds_LoadHeadSupplierNo.AsInteger := FSupplierNo;
+  cds_LoadHeadPackageEntryOption.AsInteger := 0;
+  cds_LoadHeadCreatedUser.AsInteger := ThisUser.UserID;
+  cds_LoadHeadModifiedUser.AsInteger := ThisUser.UserID;
+  cds_LoadHeadDateCreated.AsSQLTimeStamp := DateTimeToSqlTimeStamp(Now);
+  cds_LoadHeadOriginalSupplierNo.AsInteger := FSupplierNo;
+  cds_LoadHeadCustomerNo.AsInteger := FCustomerNo;
 
-  cds_LoadHead.Post ;
+  cds_LoadHead.Post;
 
   if cds_LoadHeadSenderLoadStatus.AsInteger <> 0 then
-  Begin
-   cds_LoadHead.Edit ;
-   cds_LoadHeadSenderLoadStatus.AsInteger:= IS_Load_OK ;
-   cds_LoadHead.Post ;
-  End ;
+  begin
+    cds_LoadHead.Edit;
+    cds_LoadHeadSenderLoadStatus.AsInteger := IS_Load_OK;
+    cds_LoadHead.Post;
+  end;
 
-  cds_LoadHead.Edit ;
-  cds_LoadHeadLoadOK.AsInteger:= IS_Load_OK ;
-  cds_LoadHead.Post ;
+  cds_LoadHead.Edit;
+  cds_LoadHeadLoadOK.AsInteger := IS_Load_OK;
+  cds_LoadHead.Post;
 
- if cds_LoadHead.ChangeCount > 0 then
- Begin
-  if cds_LoadHead.ApplyUpdates(0) > 0 then
-  Begin
-   Result:= False ;
-  End
+  if cds_LoadHead.ChangeCount > 0 then
+  begin
+    if cds_LoadHead.ApplyUpdates(0) > 0 then
+    begin
+      Result := False;
+    end
+    else
+      Result := True;
+  end
   else
-  Result:= True ;
- End
- else
-  Result:= True ;
+    Result := True;
 end;
 
 
@@ -956,6 +945,25 @@ begin
     end;
 
   Result := SuppCode;
+end;
+
+function TdmLoadEntrySSP.getNewBULKPackageNo: Integer;
+var
+  sp: TFDStoredProc;
+begin
+  // Get next available ID-number using a storedprocedure
+  sp := TFDStoredProc.create(nil);
+  result := -1;
+  try
+    sp.Connection := TFDConnection(dmsConnector.FDConnection1);;
+    sp.StoredProcName := 'dbo.vida_GetMaxNo';
+    sp.Prepare;
+    sp.ParamByName('@TableName').AsString := 'BLK';
+    sp.Execute;
+    result := sp.ParamByName('@MaxNo').AsInteger;
+  finally
+    sp.Free;
+  end;
 end;
 
 function TdmLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;

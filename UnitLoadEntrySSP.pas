@@ -395,6 +395,12 @@ type
     grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn;
     grdLORowsLevel1: TcxGridLevel;
     Splitter1: TSplitter;
+    lbl1: TLabel;
+    cxbtnRegBulkDelivery: TcxButton;
+    acRegBulkDelivery: TAction;
+    RegBULKleverans1: TMenuItem;
+    dxBarButton16: TdxBarButton;
+    dxbrbtnRegBulkDelivery: TdxBarButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -519,6 +525,8 @@ type
     procedure cxSplitter1Moved(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure PanelPackagesResize(Sender: TObject);
+    procedure acRegBulkDeliveryUpdate(Sender: TObject);
+    procedure acRegBulkDeliveryExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -612,6 +620,8 @@ type
      procedure InsertScannedPkgNo(Sender : TObject;const PkgNo : Integer;const PkgSupplierCode : String) ;
      procedure ShowPackages (Sender: TObject;const DeliveryMessageNumber : String);
     function checkIfVidaEnergi: Boolean;
+    function getDeliveredWeight(const aLoadNo: Integer; const aProduct, aReference: string): Integer;
+    procedure registrateLoadAsDelivered(const aLoadNo, deliveredWeight: integer);
 
   Protected
       procedure ResolvePkgNoAmbiguity(
@@ -680,7 +690,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
   uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports, dm_Inventory,
-  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg;
+  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg, udlgEnterDeliveredWeight;
 
 {$R *.dfm}
 
@@ -885,6 +895,17 @@ Begin
 //    if ThisUser.UserID = 8 then cds_LSP.SQL.SaveToFile('Generate_LSP_Sales_SQL.txt') ;
    End ;
 End ;
+
+function TfLoadEntrySSP.getDeliveredWeight(const aLoadNo: Integer; const aProduct, aReference: string): Integer;
+var
+ Weight: integer;
+begin
+  dlgEnterDeliveredWeight := TdlgEnterDeliveredWeight.create(Self);
+  if dlgEnterDeliveredWeight.execute(aLoadnO, aProduct, aReference, Weight) = mrOk then
+    Result := Weight
+  else
+    Result := -1;
+end;
 
 function TfLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
 begin
@@ -3385,6 +3406,55 @@ Begin
  End ;//With..
 end;
 
+procedure TfLoadEntrySSP.registrateLoadAsDelivered(const aLoadNo, deliveredWeight: integer);
+var
+  newPkgNo: Integer;
+begin
+  // Get new package number
+  newPkgNo := dmLoadEntrySSP.getNewBULKPackageNo;
+  
+end;
+
+procedure TfLoadEntrySSP.acRegBulkDeliveryExecute(Sender: TObject);
+var
+  deliveredWeight: Integer;
+  LoadNo: Integer;
+  reference: string;
+  product: string;
+  RecIDx: Integer;
+  ColIdx: Integer;
+begin
+  if VidaEnergi then begin
+      if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then begin
+        RecIDx          := grdLORowsDBBandedTableView1.Controller.SelectedRecords[0].RecordIndex ;
+        ColIdx          := grdLORowsDBBandedTableView1.DataController.GetItemByFieldName('REFERENCE').Index;
+        reference       := grdLORowsDBBandedTableView1.DataController.Values[RecIdx, ColIdx];
+        ColIdx          := grdLORowsDBBandedTableView1.DataController.GetItemByFieldName('LoadNo').Index;
+        LoadNo          := grdLORowsDBBandedTableView1.DataController.Values[RecIdx, ColIdx];
+        ColIdx          := grdLORowsDBBandedTableView1.DataController.GetItemByFieldName('INTERNPRODDESC').Index;
+        product          := grdLORowsDBBandedTableView1.DataController.Values[RecIdx, ColIdx];
+        deliveredWeight := getDeliveredWeight(LoadNo, product, reference);
+        ShowMessage('Levererad vikt: '+IntToStr(deliveredWeight));
+        if deliveredWeight = -1 then Exit;
+        registrateLoadAsDelivered(LoadNo, deliveredWeight);
+      end;
+  end;
+end;
+
+procedure TfLoadEntrySSP.acRegBulkDeliveryUpdate(Sender: TObject);
+begin
+  if VidaEnergi then begin
+    acRegBulkDelivery.Visible := true;
+      if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then
+        acRegBulkDelivery.enabled := true
+      else
+        acRegBulkDelivery.enabled := false;
+  end
+  else begin
+    acRegBulkDelivery.Visible := False;
+  end;
+end;
+
 procedure TfLoadEntrySSP.acRemoveAllPkgsFromSystemExecute(Sender: TObject);
 Var  Save_Cursor:TCursor;
 Begin
@@ -5597,8 +5667,6 @@ begin
   if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
     dmLoadEntrySSP.cds_LoadPackages.Edit;
   result := Validate_VE_Pkg1(aPkgNo, aArticleNo);
-  //if dmLoadEntrySSP.cds_LoadPackages.State in [dsEdit, dsInsert] then
-  // dmLoadEntrySSP.cds_LoadPackages.Post;
 end;
 
 function TfLoadEntrySSP.Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;

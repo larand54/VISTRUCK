@@ -1872,7 +1872,7 @@ Begin
  LockWindowUpdate(Self.Handle);
  Try
 
-  dmsSystem.FDoLog('LOpenWorkOrder. SortingOrderNo = ' + inttostr(SortingOrderNo)) ;
+//  dmsSystem.FDoLog('LOpenWorkOrder. SortingOrderNo = ' + inttostr(SortingOrderNo)) ;
 // if ThisUser.UserID = 8 then
   cbVisaMeddelande.Visible := True ;
 //   else

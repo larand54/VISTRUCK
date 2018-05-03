@@ -331,6 +331,28 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
     end
+    object cxdtAvregDatum: TcxDateEdit
+      Left = 682
+      Top = 93
+      AutoSize = False
+      Style.Color = clYellow
+      Style.Edges = [bLeft, bTop, bRight, bBottom]
+      TabOrder = 12
+      Height = 24
+      Width = 121
+    end
+    object cxlblAvregDate: TcxLabel
+      Left = 598
+      Top = 93
+      Caption = 'Avr datum:'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -15
+      Style.Font.Name = 'MS Sans Serif'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+    end
   end
   object Panel1: TPanel
     Left = 0

@@ -26,7 +26,7 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, siComp, siLngLnk,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, cxDBEdit ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, cxDBEdit, Vcl.ComCtrls, dxCore, cxDateUtils ;
 
 type
   TfSearchPkgToDeReg = class(TForm)
@@ -110,6 +110,8 @@ type
     sq_ProdOnlyLProdukt: TStringField;
     sq_SearchPkgNoProdukt: TStringField;
     grdPickPkgNosDBTableView1Produkt: TcxGridDBColumn;
+    cxdtAvregDatum: TcxDateEdit;
+    cxlblAvregDate: TcxLabel;
     procedure acRefreshInventoryExecute(Sender: TObject);
     procedure acAvregistreraMarkeradePaketExecute(Sender: TObject);
     procedure mtProductProductNoChange(Sender: TField);
@@ -226,81 +228,73 @@ end;
 
 
 procedure TfSearchPkgToDeReg.acAvregistreraMarkeradePaketExecute(Sender: TObject);
-Var PIPNo : Integer ;
+var
+  PIPNo: Integer;
 begin
- with dmsSortOrder do
- Begin
-  if cds_SortOrderTypeOfRunNo.AsInteger = 1 then
-   AvregistreraMarkeradePaket ;
-//    else
-//     ChangeToIMPMarkeradePaket ;
-//  SaveAO(Sender) ;
-  if cds_SORaw.State in [dsEdit, dsInsert] then
-   cds_SORaw.Post ;
-  if cds_SORaw.ChangeCount > 0 then
-  Begin
-   cds_SORaw.ApplyUpdates(0) ;
-   cds_SORaw.CommitUpdates ;
-  End ;
-//  cds_SORaw.Refresh ;
+  with dmsSortOrder do
+  begin
+    if cds_SortOrderTypeOfRunNo.AsInteger = 1 then
+    begin
+      case Application.MessageBox(PChar('Paketet avregistreras mot datum: ' + DateTimeToStr(cxdtAvregDatum.Date) + ' Är det ok?'), PChar('Konfirmera Avregistreringsdatum'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON2) of
+        IDOK:
+          begin
 
-  dm_PkgWorkOrder.cds_UsedPkgs.Active:= False ;
-  dm_PkgWorkOrder.cds_UsedPkgs.ParamByName('SortingOrderNo').AsInteger:= dmsSortOrder.cds_SortOrderSortingOrderNo.AsInteger ;
-  dm_PkgWorkOrder.cds_UsedPkgs.Active:= True ;
+          end;
+        IDCANCEL:
+          begin
+            Exit;
+          end;
+      end;
+      AvregistreraMarkeradePaket;
+    end;
+    if cds_SORaw.State in [dsEdit, dsInsert] then
+      cds_SORaw.Post;
+    if cds_SORaw.ChangeCount > 0 then
+    begin
+      cds_SORaw.ApplyUpdates(0);
+      cds_SORaw.CommitUpdates;
+    end;
 
-  cds_SORaw.Active:= False ;
-  cds_SORaw.Active:= True ;
+    dm_PkgWorkOrder.cds_UsedPkgs.Active := False;
+    dm_PkgWorkOrder.cds_UsedPkgs.ParamByName('SortingOrderNo').AsInteger := dmsSortOrder.cds_SortOrderSortingOrderNo.AsInteger;
+    dm_PkgWorkOrder.cds_UsedPkgs.Active := True;
 
-//  acRefreshAvRegExecute(Sender) ;
+    cds_SORaw.Active := False;
+    cds_SORaw.Active := True;
 
-{  if pgMAIN.ActivePage = tsEndProdukt then
-   Begin
-    PIPNo                 := cds_SortOrderPIPNo.AsInteger ;
-    LabelPIPName.Caption  := lcInvPlace.Text ;
-    AvregOK               := False ;
-   End
-    else
-     if pgMAIN.ActivePage = tsRawMtrl then
-     Begin
-      PIPNo                 := cds_SortOrderRawPIPNo.AsInteger ;
-      LabelPIPName.Caption  := lcRawPIPNAME.Text ;
-      AvregOK               := True ;
-     End ; }
-
-  RefreshLagerLista(mtProductProductNo.AsInteger) ;
- End ;
+    RefreshLagerLista(mtProductProductNo.AsInteger);
+  end;
 end;
 
 procedure TfSearchPkgToDeReg.AvregistreraMarkeradePaket ;
-Var Save_Cursor : TCursor ;
+var
+  Save_Cursor: TCursor;
+  AvRegDate: TDateTime;
 begin
- Save_Cursor     := Screen.Cursor;
- Screen.Cursor   := crSQLWait;    { Show hourglass cursor }
- Try
-  dmsSystem.mtSelectedPkgNo.Filter:= 'MARKERAD = 1' ;
-  dmsSystem.mtSelectedPkgNo.Filtered:= True ;
-  Try
-   dmsSystem.mtSelectedPkgNo.First ;
-    While not dmsSystem.mtSelectedPkgNo.Eof do
-    Begin
-      dm_PkgWorkOrder.RemovePkgsFromInventory
-     (dmsSortOrder.cds_SchedulerVerkNo.AsInteger,
-     dmsSystem.mtSelectedPkgNoPackageTypeNo.AsInteger,
-     dmsSystem.mtSelectedPkgNoLIPNo.AsInteger,
-     dmsSystem.mtSelectedPkgNoPaketnr.AsInteger,
-     dmsSortOrder.cds_SchedulerOwnerNo.AsInteger,
-     dmsSortOrder.cds_SchedulerResourceID.AsInteger,
-     dmsSystem.mtSelectedPkgNoLEVKOD.AsString,
-     SQLTimeStampToDateTime(dmsSortOrder.cds_SchedulerStart.AsSQLTimeStamp),
-     dmsSystem.mtSelectedPkgNoProductNo.AsInteger) ;
-     dmsSystem.mtSelectedPkgNo.Next ;
-    End ;//While
-  Finally
-   dmsSystem.mtSelectedPkgNo.Filtered:= False ;
-  End ;
- Finally
-  Screen.Cursor             := Save_Cursor;  { Always restore to normal }
- End ;
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+  try
+    dmsSystem.mtSelectedPkgNo.Filter := 'MARKERAD = 1';
+    dmsSystem.mtSelectedPkgNo.Filtered := True;
+    if (dmsSortOrder.cds_SchedulerTaskStatusField.AsInteger = 1) or (dmsSortOrder.cds_SchedulerTaskStatusField.AsInteger = 2) then //om klar och köra eller pågående
+      AvRegDate := Now
+    else
+      AvRegDate := cxdtAvregDatum.Date;
+    try
+      dmsSystem.mtSelectedPkgNo.First;
+      while not dmsSystem.mtSelectedPkgNo.Eof do
+      begin
+        dm_PkgWorkOrder.RemovePkgsFromInventory(dmsSortOrder.cds_SchedulerVerkNo.AsInteger, dmsSystem.mtSelectedPkgNoPackageTypeNo.AsInteger, dmsSystem.mtSelectedPkgNoLIPNo.AsInteger, dmsSystem.mtSelectedPkgNoPaketnr.AsInteger, dmsSortOrder.cds_SchedulerOwnerNo.AsInteger, dmsSortOrder.cds_SchedulerResourceID.AsInteger, dmsSystem.mtSelectedPkgNoLEVKOD.AsString, AvRegDate,
+//     SQLTimeStampToDateTime(dmsSortOrder.cds_SchedulerStart.AsSQLTimeStamp),
+          dmsSystem.mtSelectedPkgNoProductNo.AsInteger);
+        dmsSystem.mtSelectedPkgNo.Next;
+      end; //While
+    finally
+      dmsSystem.mtSelectedPkgNo.Filtered := False;
+    end;
+  finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  end;
 end;
 
 procedure TfSearchPkgToDeReg.mtProductProductNoChange(Sender: TField);
@@ -315,6 +309,7 @@ end;
 procedure TfSearchPkgToDeReg.FormCreate(Sender: TObject);
 begin
  mtProduct.Active := True ;
+ cxdtAvregDatum.Date := Now;
 end;
 
 procedure TfSearchPkgToDeReg.mtProductPIPNoChange(Sender: TField);

@@ -60,6 +60,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
+          object lbl1: TLabel
+            Left = 968
+            Top = 56
+            Width = 36
+            Height = 13
+            Caption = 'lbl1-test'
+          end
           object detLoaded: TcxDBDateEdit
             Left = 80
             Top = 26
@@ -947,16 +954,25 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxBtnChgTreatmentInfo: TcxButton
-            Left = 1063
-            Top = 5
-            Width = 90
-            Height = 31
+            Left = 1056
+            Top = 2
+            Width = 97
+            Height = 35
             Margins.Left = 2
             Margins.Top = 2
             Margins.Right = 2
             Margins.Bottom = 2
             Action = acChgRef_and_Info
             TabOrder = 8
+            WordWrap = True
+          end
+          object cxbtnRegBulkDelivery: TcxButton
+            Left = 1155
+            Top = 2
+            Width = 81
+            Height = 35
+            Action = acRegBulkDelivery
+            TabOrder = 9
             WordWrap = True
           end
         end
@@ -968,6 +984,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alClient
           PopupMenu = pmPkgs
           TabOrder = 1
+          ExplicitLeft = 1
           object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
             OnKeyDown = grdPkgsDBBandedTableView1KeyDown
             Navigator.Buttons.CustomButtons = <>
@@ -2415,6 +2432,16 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Action = acMailTO_Manuell
       Category = 0
     end
+    object dxBarButton16: TdxBarButton
+      Caption = 'New Button'
+      Category = 0
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxbrbtnRegBulkDelivery: TdxBarButton
+      Action = acRegBulkDelivery
+      Category = 0
+    end
     object lbValidatePkg: TdxBarLargeButton
       Action = acValidatePkg
       Category = 1
@@ -3618,6 +3645,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       item
         Visible = True
+        ItemName = 'dxbrbtnRegBulkDelivery'
+      end
+      item
+        Visible = True
         ItemName = 'dxBarSpinEditContent'
       end>
     UseOwnFont = True
@@ -3885,6 +3916,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Caption = #196'ndra Ref o Info f'#246'r markerade'
       OnExecute = acChgRef_and_InfoExecute
     end
+    object acRegBulkDelivery: TAction
+      Caption = 'Reg. BULK-leverans.'
+      OnExecute = acRegBulkDeliveryExecute
+      OnUpdate = acRegBulkDeliveryUpdate
+    end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
@@ -4093,6 +4129,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
     object KopplamarkeradepaketmotLOmanuellt1: TMenuItem
       Action = acKopplaPaketMotLOManuellt
     end
+    object RegBULKleverans1: TMenuItem
+      Action = acRegBulkDelivery
+    end
     object Lastorderallaverk1: TMenuItem
       Action = acLOAllaVerk
     end
@@ -4239,8 +4278,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxGridPopupMenu1: TcxGridPopupMenu
     Grid = grdPkgs
     PopupMenus = <>
-    Left = 512
-    Top = 465
+    Left = 600
+    Top = 393
   end
   object cxGridPopupMenu2: TcxGridPopupMenu
     Grid = grdLORows
@@ -4348,8 +4387,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 672
-    Top = 464
+    Left = 744
+    Top = 400
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066004C006F006100640045006E007400720079005300

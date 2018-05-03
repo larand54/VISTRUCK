@@ -21,6 +21,8 @@ object frmSortOrder: TfrmSortOrder
   OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object PanelAOMain: TPanel
@@ -57,8 +59,6 @@ object frmSortOrder: TfrmSortOrder
           Align = alClient
           PopupMenu = pmAO
           TabOrder = 0
-          ExplicitWidth = 1155
-          ExplicitHeight = 571
           object grdWorkOrderDBTableView1: TcxGridDBTableView
             OnDblClick = grdWorkOrderDBTableView1DblClick
             Navigator.Buttons.CustomButtons = <>
@@ -339,8 +339,6 @@ object frmSortOrder: TfrmSortOrder
           Height = 19
           Panels = <>
           SimplePanel = True
-          ExplicitTop = 635
-          ExplicitWidth = 1422
         end
         object Panel2: TPanel
           Left = 0
@@ -389,7 +387,6 @@ object frmSortOrder: TfrmSortOrder
                 Height = 64
                 Align = alRight
                 TabOrder = 1
-                ExplicitLeft = 793
               end
               object Panel9: TPanel
                 Left = 766
@@ -398,7 +395,6 @@ object frmSortOrder: TfrmSortOrder
                 Height = 64
                 Align = alRight
                 TabOrder = 2
-                ExplicitLeft = 772
               end
             end
           end
@@ -501,8 +497,6 @@ object frmSortOrder: TfrmSortOrder
           TabOrder = 0
           Properties.ActivePage = tsInstruktioner
           Properties.CustomButtons.Buttons = <>
-          ExplicitWidth = 1155
-          ExplicitHeight = 626
           ClientRectBottom = 616
           ClientRectLeft = 4
           ClientRectRight = 1145
@@ -524,8 +518,6 @@ object frmSortOrder: TfrmSortOrder
               Properties.ActivePage = tsHuvudinstruktioner
               Properties.CustomButtons.Buttons = <>
               Properties.Images = ImageList1
-              ExplicitWidth = 1154
-              ExplicitHeight = 605
               ClientRectBottom = 588
               ClientRectLeft = 4
               ClientRectRight = 1137
@@ -544,8 +536,6 @@ object frmSortOrder: TfrmSortOrder
                   Height = 563
                   Align = alClient
                   TabOrder = 0
-                  ExplicitWidth = 1152
-                  ExplicitHeight = 585
                   DesignSize = (
                     1133
                     563)
@@ -1170,8 +1160,6 @@ object frmSortOrder: TfrmSortOrder
                   Align = alClient
                   Caption = 'PanelRowInfo'
                   TabOrder = 0
-                  ExplicitWidth = 1152
-                  ExplicitHeight = 585
                   object PanelKorOrderInfo: TPanel
                     Left = 1
                     Top = 1
@@ -1181,8 +1169,6 @@ object frmSortOrder: TfrmSortOrder
                     BevelOuter = bvNone
                     Caption = 'PanelKorOrderInfo'
                     TabOrder = 0
-                    ExplicitWidth = 1150
-                    ExplicitHeight = 583
                     object Panel11: TPanel
                       Left = 0
                       Top = 0
@@ -1192,7 +1178,6 @@ object frmSortOrder: TfrmSortOrder
                       BevelOuter = bvNone
                       Caption = 'Panel11'
                       TabOrder = 0
-                      ExplicitHeight = 583
                       object Panel17: TPanel
                         Left = 0
                         Top = 0
@@ -1596,8 +1581,6 @@ object frmSortOrder: TfrmSortOrder
                       BevelOuter = bvNone
                       Caption = 'Panel13'
                       TabOrder = 1
-                      ExplicitWidth = 590
-                      ExplicitHeight = 583
                       object Panel28: TPanel
                         Left = 0
                         Top = 0
@@ -1607,7 +1590,6 @@ object frmSortOrder: TfrmSortOrder
                         BevelOuter = bvNone
                         Color = 57825
                         TabOrder = 0
-                        ExplicitWidth = 590
                         object cxButton41: TcxButton
                           Left = 8
                           Top = 3
@@ -2551,14 +2533,14 @@ object frmSortOrder: TfrmSortOrder
                 object PanelPaketSpec: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1152
+                  Width = 1133
                   Height = 217
                   Align = alTop
                   TabOrder = 0
                   object Panel18: TPanel
                     Left = 1
                     Top = 1
-                    Width = 1150
+                    Width = 1131
                     Height = 25
                     Align = alTop
                     BevelOuter = bvNone
@@ -2591,7 +2573,7 @@ object frmSortOrder: TfrmSortOrder
                   object grdSpecLayout: TcxGrid
                     Left = 1
                     Top = 26
-                    Width = 1150
+                    Width = 1131
                     Height = 190
                     Align = alClient
                     TabOrder = 1
@@ -2650,15 +2632,15 @@ object frmSortOrder: TfrmSortOrder
             object PanelKopplaRavara: TPanel
               Left = 0
               Top = 0
-              Width = 1154
-              Height = 605
+              Width = 1141
+              Height = 592
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
-                Width = 1154
+                Width = 1141
                 Height = 25
                 Align = alTop
                 BevelOuter = bvNone
@@ -2674,8 +2656,8 @@ object frmSortOrder: TfrmSortOrder
               object grdRawMtrl: TcxGrid
                 Left = 0
                 Top = 81
-                Width = 1154
-                Height = 524
+                Width = 1141
+                Height = 511
                 Align = alClient
                 PopupMenu = pmRawMtrl
                 TabOrder = 1
@@ -2998,7 +2980,7 @@ object frmSortOrder: TfrmSortOrder
               object Panel16: TPanel
                 Left = 0
                 Top = 25
-                Width = 1154
+                Width = 1141
                 Height = 56
                 Align = alTop
                 BevelOuter = bvNone
@@ -3177,7 +3159,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel23: TPanel
               Left = 0
               Top = 0
-              Width = 1154
+              Width = 1141
               Height = 113
               Align = alTop
               TabOrder = 0
@@ -3300,7 +3282,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel25: TPanel
               Left = 0
               Top = 0
-              Width = 1154
+              Width = 1141
               Height = 121
               Align = alTop
               TabOrder = 0
@@ -3352,7 +3334,6 @@ object frmSortOrder: TfrmSortOrder
             'F'#246'rkalkyl'
             #214'vrigt')
           OnChange = tcEditKorOrderChange
-          ExplicitWidth = 1155
           ClientRectBottom = 25
           ClientRectLeft = 4
           ClientRectRight = 1145
@@ -3362,6 +3343,10 @@ object frmSortOrder: TfrmSortOrder
       object tsAnalys: TcxTabSheet
         Caption = 'tsAnalys'
         ImageIndex = 3
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object pgSubAttest: TcxPageControl
           Left = 0
           Top = 0
@@ -3398,22 +3383,22 @@ object frmSortOrder: TfrmSortOrder
             object Panel20: TPanel
               Left = 0
               Top = 4
-              Width = 1154
-              Height = 619
+              Width = 1141
+              Height = 609
               Align = alClient
               TabOrder = 0
               object Panel21: TPanel
                 Left = 1
                 Top = 1
                 Width = 543
-                Height = 617
+                Height = 607
                 Align = alLeft
                 TabOrder = 0
                 object grdNewPkgs: TcxGrid
                   Left = 1
                   Top = 65
-                  Width = 542
-                  Height = 552
+                  Width = 541
+                  Height = 541
                   Align = alClient
                   TabOrder = 0
                   LookAndFeel.Kind = lfFlat
@@ -3533,7 +3518,7 @@ object frmSortOrder: TfrmSortOrder
                 object PanelPaRegHeader: TPanel
                   Left = 1
                   Top = 1
-                  Width = 542
+                  Width = 541
                   Height = 23
                   Align = alTop
                   BevelOuter = bvNone
@@ -3550,7 +3535,7 @@ object frmSortOrder: TfrmSortOrder
                 object Panel26: TPanel
                   Left = 1
                   Top = 24
-                  Width = 542
+                  Width = 541
                   Height = 41
                   Align = alTop
                   BevelOuter = bvNone
@@ -3620,16 +3605,16 @@ object frmSortOrder: TfrmSortOrder
                 end
               end
               object Panel22: TPanel
-                Left = 551
+                Left = 552
                 Top = 1
-                Width = 602
-                Height = 617
+                Width = 588
+                Height = 607
                 Align = alClient
                 TabOrder = 1
                 object PanelAvRegHeader: TPanel
                   Left = 1
                   Top = 1
-                  Width = 600
+                  Width = 586
                   Height = 23
                   Align = alTop
                   BevelOuter = bvNone
@@ -3646,8 +3631,8 @@ object frmSortOrder: TfrmSortOrder
                 object grdUsedPkgs: TcxGrid
                   Left = 1
                   Top = 65
-                  Width = 600
-                  Height = 552
+                  Width = 586
+                  Height = 541
                   Align = alClient
                   PopupMenu = pmUsedPkgs
                   TabOrder = 1
@@ -3761,7 +3746,7 @@ object frmSortOrder: TfrmSortOrder
                 object Panel27: TPanel
                   Left = 1
                   Top = 24
-                  Width = 600
+                  Width = 586
                   Height = 41
                   Align = alTop
                   BevelOuter = bvNone
@@ -3847,7 +3832,7 @@ object frmSortOrder: TfrmSortOrder
                 Left = 544
                 Top = 1
                 Width = 8
-                Height = 617
+                Height = 607
                 HotZoneClassName = 'TcxMediaPlayer8Style'
                 Control = Panel21
                 Color = clGreen
@@ -3857,7 +3842,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel19: TPanel
               Left = 0
               Top = 0
-              Width = 1154
+              Width = 1141
               Height = 4
               Align = alTop
               TabOrder = 1
@@ -3874,7 +3859,6 @@ object frmSortOrder: TfrmSortOrder
               Height = 67
               Align = alTop
               TabOrder = 0
-              ExplicitWidth = 1154
               object Label9: TLabel
                 Left = 649
                 Top = 20
@@ -4001,8 +3985,6 @@ object frmSortOrder: TfrmSortOrder
               Height = 504
               Align = alClient
               TabOrder = 1
-              ExplicitWidth = 1154
-              ExplicitHeight = 514
             end
             object Panel35: TPanel
               Left = 0
@@ -4571,7 +4553,7 @@ object frmSortOrder: TfrmSortOrder
                   end
                   object Edit1: TEdit
                     Left = 80
-                    Top = 11
+                    Top = 9
                     Width = 186
                     Height = 28
                     Font.Charset = DEFAULT_CHARSET
@@ -6812,8 +6794,8 @@ object frmSortOrder: TfrmSortOrder
         object grdSortOrderRows: TcxGrid
           Left = 0
           Top = 56
-          Width = 1155
-          Height = 594
+          Width = 1149
+          Height = 588
           Align = alClient
           PopupMenu = dxBarPopupMenuSortOrderRows
           TabOrder = 0
@@ -7387,7 +7369,7 @@ object frmSortOrder: TfrmSortOrder
         object Panel34: TPanel
           Left = 0
           Top = 0
-          Width = 1155
+          Width = 1149
           Height = 56
           Align = alTop
           TabOrder = 1
