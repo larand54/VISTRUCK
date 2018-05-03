@@ -6728,7 +6728,8 @@ Begin
      Begin
       if not FDm_AvRegPkgs.Locate('Paketnr;Prefix', VarArrayOf([PkgNo, PkgSupplierCode]), []) then
       Begin
-       if (sq_GetPkgDataStatus.AsInteger = 1) or ((sq_GetPkgDataOwnerNo.AsInteger = 76) and (sq_GetPkgDataStatus.AsInteger = 0)) then
+       if (sq_GetPkgDataStatus.AsInteger = 1) or (((sq_GetPkgDataOwnerNo.AsInteger = 76) and (sq_GetPkgDataStatus.AsInteger = 0))
+       or ((sq_GetPkgDataOwnerNo.AsInteger = 2846) and (sq_GetPkgDataStatus.AsInteger = 0))) then
        Begin
            FDm_AvRegPkgs.Insert ;
            Try

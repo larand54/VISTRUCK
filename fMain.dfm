@@ -21,9 +21,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 126
+    Top = 124
     Width = 1132
-    Height = 669
+    Height = 671
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
@@ -31,7 +31,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 0
       Width = 1132
-      Height = 669
+      Height = 671
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
@@ -39,7 +39,7 @@ object frmMain: TfrmMain
         Left = 0
         Top = 0
         Width = 1132
-        Height = 669
+        Height = 671
         Margins.Left = 2
         Margins.Top = 2
         Margins.Right = 2
@@ -151,7 +151,7 @@ object frmMain: TfrmMain
           Left = 0
           Top = 116
           Width = 1132
-          Height = 553
+          Height = 555
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -160,9 +160,8 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 549
-          ClientRectLeft = 4
-          ClientRectRight = 1128
+          ClientRectBottom = 555
+          ClientRectRight = 1132
           ClientRectTop = 24
           object tsUttag: TcxTabSheet
             Margins.Left = 2
@@ -174,8 +173,8 @@ object frmMain: TfrmMain
             object PanelMain: TPanel
               Left = 0
               Top = 0
-              Width = 1124
-              Height = 525
+              Width = 1132
+              Height = 531
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -186,8 +185,8 @@ object frmMain: TfrmMain
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
-                Width = 1124
-                Height = 466
+                Width = 1132
+                Height = 472
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -198,8 +197,8 @@ object frmMain: TfrmMain
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1124
-                  Height = 466
+                  Width = 1132
+                  Height = 472
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -209,8 +208,8 @@ object frmMain: TfrmMain
                   TabOrder = 0
                   object Panel4: TPanel
                     Left = 0
-                    Top = 422
-                    Width = 1124
+                    Top = 428
+                    Width = 1132
                     Height = 44
                     Margins.Left = 2
                     Margins.Top = 2
@@ -223,8 +222,8 @@ object frmMain: TfrmMain
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
-                    Width = 1124
-                    Height = 422
+                    Width = 1132
+                    Height = 428
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
@@ -332,7 +331,7 @@ object frmMain: TfrmMain
               object PanelTop: TPanel
                 Left = 0
                 Top = 0
-                Width = 1124
+                Width = 1132
                 Height = 59
                 Margins.Left = 2
                 Margins.Top = 2
@@ -341,6 +340,7 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitTop = -1
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -419,7 +419,7 @@ object frmMain: TfrmMain
             object Panel3: TPanel
               Left = 0
               Top = 0
-              Width = 1124
+              Width = 1132
               Height = 61
               Margins.Left = 2
               Margins.Top = 2
@@ -455,8 +455,8 @@ object frmMain: TfrmMain
             object Panel8: TPanel
               Left = 0
               Top = 61
-              Width = 1124
-              Height = 464
+              Width = 1132
+              Height = 470
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -468,7 +468,7 @@ object frmMain: TfrmMain
                 Left = 0
                 Top = 0
                 Width = 390
-                Height = 464
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -493,7 +493,7 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 388
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -666,8 +666,8 @@ object frmMain: TfrmMain
               object Panel5: TPanel
                 Left = 390
                 Top = 0
-                Width = 267
-                Height = 464
+                Width = 275
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -678,7 +678,7 @@ object frmMain: TfrmMain
                 object Panel10: TPanel
                   Left = 1
                   Top = 1
-                  Width = 265
+                  Width = 273
                   Height = 53
                   Margins.Left = 2
                   Margins.Top = 2
@@ -690,10 +690,10 @@ object frmMain: TfrmMain
                 end
               end
               object Panel6: TPanel
-                Left = 657
+                Left = 665
                 Top = 0
                 Width = 467
-                Height = 464
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -717,7 +717,7 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 195
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -758,7 +758,7 @@ object frmMain: TfrmMain
                   Left = 196
                   Top = 54
                   Width = 270
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -811,7 +811,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1132
-    Height = 126
+    Height = 124
     ApplicationButton.Glyph.Data = {
       36090000424D3609000000000000360000002800000018000000180000000100
       2000000000000009000000000000000000000000000000000000000000000000
@@ -3853,7 +3853,7 @@ object frmMain: TfrmMain
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     Categories.Strings = (
