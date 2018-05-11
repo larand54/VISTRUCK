@@ -984,7 +984,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alClient
           PopupMenu = pmPkgs
           TabOrder = 1
-          ExplicitLeft = 1
           object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
             OnKeyDown = grdPkgsDBBandedTableView1KeyDown
             Navigator.Buttons.CustomButtons = <>

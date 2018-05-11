@@ -690,7 +690,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
   uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports, dm_Inventory,
-  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg, udlgEnterDeliveredWeight;
+  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg, udlgEnterDeliveredWeight, uVIS_UTILS;
 
 {$R *.dfm}
 
@@ -3443,6 +3443,11 @@ end;
 
 procedure TfLoadEntrySSP.acRegBulkDeliveryUpdate(Sender: TObject);
 begin
+  if ComputerName <> 'CARMAK-FASTER' then begin
+    acRegBulkDelivery.Visible := False;
+    acRegBulkDelivery.enabled := false;
+    Exit;
+  end;
   if VidaEnergi then begin
     acRegBulkDelivery.Visible := true;
       if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then
