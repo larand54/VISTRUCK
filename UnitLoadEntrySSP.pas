@@ -621,7 +621,7 @@ type
      procedure ShowPackages (Sender: TObject;const DeliveryMessageNumber : String);
     function checkIfVidaEnergi: Boolean;
     function getDeliveredWeight(const aLoadNo: Integer; const aProduct, aReference: string): Integer;
-    procedure registrateLoadAsDelivered(const aLoadNo, deliveredWeight: integer);
+    procedure registrateLoadAsDelivered(const Sender: TObject; const deliveredWeight: integer);
 
   Protected
       procedure ResolvePkgNoAmbiguity(
@@ -3406,13 +3406,33 @@ Begin
  End ;//With..
 end;
 
-procedure TfLoadEntrySSP.registrateLoadAsDelivered(const aLoadNo, deliveredWeight: integer);
+procedure TfLoadEntrySSP.registrateLoadAsDelivered(const Sender: TObject; const deliveredWeight: integer);
 var
   newPkgNo: Integer;
 begin
   // Get new package number
+  try
   newPkgNo := dmLoadEntrySSP.getNewBULKPackageNo;
-  
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Active := false;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@UserID').AsInteger := ThisUser.UserID;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PackageNo').AsInteger := newPkgNo;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@LIPNoAlt').AsInteger := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@ProductNoAlt').AsInteger := dmLoadEntrySSP.cdsLORowsProductNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Prefix').AsString := 'BLK';
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Kg').AsInteger := deliveredWeight;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PkgArticleNo').AsInteger := dmLoadEntrySSP.cdsLORowsPkgArticleNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.ExecProc;
+  // Add package to Load
+
+  GetpackageNoEntered(Sender, intToStr(newPkgNo)) ;
+  SaveLoad ;
+  except
+    ON E: Exception do begin
+       ShowMessage(E.Message);
+    end;
+
+  end;
+
 end;
 
 procedure TfLoadEntrySSP.acRegBulkDeliveryExecute(Sender: TObject);
@@ -3434,9 +3454,9 @@ begin
         ColIdx          := grdLORowsDBBandedTableView1.DataController.GetItemByFieldName('INTERNPRODDESC').Index;
         product          := grdLORowsDBBandedTableView1.DataController.Values[RecIdx, ColIdx];
         deliveredWeight := getDeliveredWeight(LoadNo, product, reference);
-        ShowMessage('Levererad vikt: '+IntToStr(deliveredWeight));
-        if deliveredWeight = -1 then Exit;
-        registrateLoadAsDelivered(LoadNo, deliveredWeight);
+//        ShowMessage('Levererad vikt: '+IntToStr(deliveredWeight));
+        if deliveredWeight <= 0 then Exit;
+        registrateLoadAsDelivered(Sender, deliveredWeight);
       end;
   end;
 end;
@@ -3450,8 +3470,9 @@ begin
   end;
   if VidaEnergi then begin
     acRegBulkDelivery.Visible := true;
-      if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then
-        acRegBulkDelivery.enabled := true
+      if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then begin
+        acRegBulkDelivery.enabled := true;//dmLoadEntrySSP.Is_Load_Confirmed(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger)
+      end
       else
         acRegBulkDelivery.enabled := false;
   end

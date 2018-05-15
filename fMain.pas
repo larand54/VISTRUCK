@@ -636,10 +636,9 @@ begin
 {$IFDEF DEBUG}
   if (Pos('CARMAK',GetEnvironmentVariable('COMPUTERNAME')) > 0) then begin
     dmsConnector.DriveLetter := 'C:\';
-    ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ; //ThisUser.Database:= 'alvesql03:vis_vida' ;
+    ThisUser.Database:= 'vistestsql.vida.se:vis_vida' ;
       with dmsConnector.FDConnection1 do begin
         Params.Clear;
-        Params.Add('carmak-speed\sqlexpress:vis_vida') ;
         Params.Add('Server=vistestsql.vida.se');
         Params.Add('Database=vis_vida');
         Params.Add('OSAuthent=No');
@@ -652,11 +651,9 @@ begin
       end;
   end
   else begin
-  //  ThisUser.Database:= 'alvesqltest01:vis_vida' ;
     ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
   end;
 {$ELSE}
- //ThisUser.Database:= 'alvesqltest01:vis_vida' ;
   ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 {$ENDIF}
 // -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-

@@ -533,10 +533,6 @@ object frmGetProd_III: TfrmGetProd_III
       Caption = 'Kundspecifika produkter'
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -654,10 +650,6 @@ object frmGetProd_III: TfrmGetProd_III
       Caption = 'Anpassade produkter'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object grdCustDimProd: TcxGrid
         Left = 0
         Top = 0
@@ -920,8 +912,9 @@ object frmGetProd_III: TfrmGetProd_III
     Top = 172
   end
   object dsMarkedProd: TDataSource
-    Left = 185
-    Top = 342
+    DataSet = dmsSystem.mtMarkedProd
+    Left = 201
+    Top = 350
   end
   object ActionList1: TActionList
     Left = 137
@@ -1809,8 +1802,8 @@ object frmGetProd_III: TfrmGetProd_III
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 520
-    Top = 320
+    Left = 608
+    Top = 248
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A005400660072006D00470065007400500072006F0064005F00

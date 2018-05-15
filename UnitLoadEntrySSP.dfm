@@ -936,8 +936,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxButton4: TcxButton
-            Left = 756
-            Top = 3
+            Left = 1157
+            Top = 4
             Width = 155
             Height = 31
             Margins.Left = 2
@@ -967,7 +967,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             WordWrap = True
           end
           object cxbtnRegBulkDelivery: TcxButton
-            Left = 1155
+            Left = 745
             Top = 2
             Width = 81
             Height = 35
@@ -1061,7 +1061,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'PACKAGENO'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 74
+              Width = 65
               Position.BandIndex = 0
               Position.ColIndex = 2
               Position.RowIndex = 0
@@ -1070,7 +1070,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'SupplierCode'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 52
+              Width = 30
               Position.BandIndex = 0
               Position.ColIndex = 3
               Position.RowIndex = 0
@@ -1089,7 +1089,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'PRODUCT'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 400
+              Width = 219
               Position.BandIndex = 0
               Position.ColIndex = 5
               Position.RowIndex = 0
@@ -1101,7 +1101,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               Properties.ValueChecked = 0
               Properties.ValueUnchecked = 1
               Options.Filtering = False
-              Width = 74
+              Width = 41
               Position.BandIndex = 0
               Position.ColIndex = 9
               Position.RowIndex = 0
@@ -1110,7 +1110,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'ProblemPackageLog'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 61
+              Width = 33
               Position.BandIndex = 0
               Position.ColIndex = 10
               Position.RowIndex = 0
@@ -1119,7 +1119,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'M3_NET'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 53
+              Width = 30
               Position.BandIndex = 0
               Position.ColIndex = 14
               Position.RowIndex = 0
@@ -1128,7 +1128,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'PCS'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 38
+              Width = 21
               Position.BandIndex = 0
               Position.ColIndex = 15
               Position.RowIndex = 0
@@ -1137,7 +1137,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'M3_NOM'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 41
+              Width = 23
               Position.BandIndex = 0
               Position.ColIndex = 16
               Position.RowIndex = 0
@@ -1178,7 +1178,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'PCS_PER_LENGTH'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 240
+              Width = 133
               Position.BandIndex = 0
               Position.ColIndex = 8
               Position.RowIndex = 0
@@ -1280,7 +1280,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
               Options.Filtering = False
-              Width = 27
+              Width = 20
               Position.BandIndex = 0
               Position.ColIndex = 29
               Position.RowIndex = 0
@@ -1321,7 +1321,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               DataBinding.FieldName = 'LoadDetailNo'
               PropertiesClassName = 'TcxLabelProperties'
               Options.Filtering = False
-              Width = 48
+              Width = 33
               Position.BandIndex = 0
               Position.ColIndex = 1
               Position.RowIndex = 0
@@ -1424,7 +1424,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               Properties.ReadOnly = True
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
-              Width = 72
+              Width = 40
               Position.BandIndex = 0
               Position.ColIndex = 36
               Position.RowIndex = 0
@@ -1445,25 +1445,28 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn
               DataBinding.FieldName = 'Paketstorlek'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 77
+              Width = 42
               Position.BandIndex = 0
               Position.ColIndex = 38
               Position.RowIndex = 0
             end
             object grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
               DataBinding.FieldName = 'REFERENCE'
+              Width = 117
               Position.BandIndex = 0
               Position.ColIndex = 41
               Position.RowIndex = 0
             end
             object grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn
               DataBinding.FieldName = 'INFO1'
+              Width = 119
               Position.BandIndex = 0
               Position.ColIndex = 42
               Position.RowIndex = 0
             end
             object grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn
               DataBinding.FieldName = 'INFO2'
+              Width = 118
               Position.BandIndex = 0
               Position.ColIndex = 43
               Position.RowIndex = 0
@@ -1471,7 +1474,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1Certfiering: TcxGridDBBandedColumn
               DataBinding.FieldName = 'Certfiering'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 64
+              Width = 36
               Position.BandIndex = 0
               Position.ColIndex = 39
               Position.RowIndex = 0
@@ -1479,7 +1482,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1PositionName: TcxGridDBBandedColumn
               DataBinding.FieldName = 'PositionName'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 186
+              Width = 103
               Position.BandIndex = 0
               Position.ColIndex = 40
               Position.RowIndex = 0

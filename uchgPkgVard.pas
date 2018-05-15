@@ -28,7 +28,7 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxStatusBarPainter,
   dxSkinsdxBarPainter, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  cxNavigator, siComp, siLngLnk, System.Actions ;
+  cxNavigator, siComp, siLngLnk, System.Actions, Vcl.Grids, Vcl.DBGrids ;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -824,6 +824,7 @@ Begin
      sq_OneUniquePkg.ParamByName('SupplierCode').AsString         := PkgSupplierCode ;
      sq_OneUniquePkg.ParamByName('OwnerNo').AsInteger             := mtUserPropOwnerNo.AsInteger ;
      sq_OneUniquePkg.ParamByName('UserCompanyLoggedIn').AsInteger := ThisUser.CompanyNo ;
+     sq_OneUniquePkg.ParamByName('LanguageID').AsInteger          := ThisUser.LanguageID ;
      sq_OneUniquePkg.ParamByName('Status').AsInteger              := 1 ;
      sq_OneUniquePkg.Open ;
      if not sq_OneUniquePkg.Eof then

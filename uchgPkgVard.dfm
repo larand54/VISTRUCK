@@ -2361,7 +2361,7 @@ object fchgPkgVard: TfchgPkgVard
   object dsUserProp: TDataSource
     DataSet = mtUserProp
     Left = 152
-    Top = 376
+    Top = 392
   end
   object cxGridPopupMenu1: TcxGridPopupMenu
     Grid = grdPaket

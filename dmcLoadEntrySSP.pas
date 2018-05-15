@@ -402,6 +402,7 @@ type
     cds_DeActivatePackage: TFDQuery;
     cdsLORowsPkgArticleNo: TIntegerField;
     cdsLORowsPackageSizeNo: TIntegerField;
+    sp_CreateNewBulkPkg: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -444,7 +445,6 @@ type
    procedure CleanUpLoadPkgsGrid(Sender: TObject);
    function  CheckIfLoadNoIsOK(const LoadNo : Integer) : Boolean ;
    procedure ProcessPkgAND_Log(const Status, Operation : Integer) ;
-   function  Is_Load_Confirmed(const LoadNo : Integer) : Boolean ;
    procedure RemovePkgFromLoad(const Status, Operation : Integer) ;
 
   public
@@ -452,6 +452,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function  Is_Load_Confirmed(const LoadNo : Integer) : Boolean ;
    function getNewBULKPackageNo: Integer;
    function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;

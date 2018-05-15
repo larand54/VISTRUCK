@@ -701,7 +701,6 @@
     end
   end
   object cdsLORows: TFDQuery
-    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -3834,6 +3833,62 @@
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
+      end>
+  end
+  object sp_CreateNewBulkPkg: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'vis_CreateBulkPkg'
+    Left = 896
+    Top = 112
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@LIPNoAlt'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@ProductNoAlt'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@Prefix'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 7
+        Name = '@Kg'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 8
+        Name = '@PkgArticleNo'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
   end
 end
