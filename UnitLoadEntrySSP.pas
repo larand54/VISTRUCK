@@ -1,4 +1,5 @@
 unit UnitLoadEntrySSP;
+{$DEFINE NOLOGG}
 
 interface
 
@@ -401,6 +402,7 @@ type
     RegBULKleverans1: TMenuItem;
     dxBarButton16: TdxBarButton;
     dxbrbtnRegBulkDelivery: TdxBarButton;
+    cxcbScanArticle: TcxCheckBox;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -525,13 +527,13 @@ type
     procedure cxSplitter1Moved(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure PanelPackagesResize(Sender: TObject);
-    procedure acRegBulkDeliveryUpdate(Sender: TObject);
     procedure acRegBulkDeliveryExecute(Sender: TObject);
 
   private
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     procedure ScanPkgsByArticle(const Sender: TObject; const aTxtPkgNo: string);
      function AfterAdded_VE_Pkg(const aPkgNo, aArtikelNo : Integer): TEditAction;
      function GetLikVardigtPaket(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
      function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
@@ -690,8 +692,12 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   uPickVPPkgs, //uImportedPackages,
   fLoadOrder, uSelectPrintDevice, uconfirm, UnitCRPrintOneReport,
   uEnterLoadWeight, uSelectLORowInLoad, uLagerPos, uFastReports, dm_Inventory,
-  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg, udlgEnterDeliveredWeight, uVIS_UTILS;
-
+  uDlgReferensAndInfo, udmFR, dmsUserAdm, uLGLogg, udlgEnterDeliveredWeight, uVIS_UTILS, uEntryFieldNoOfPkgs
+{$IFDEF LOGG}
+  , uDBLogg, uIDBConnector, uIDBLogg, uILogger, uLogger
+  //,uIIPObserver,  uIMsgObserver
+{$ENDIF}
+;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -708,6 +714,10 @@ type
 
 var
   MovablePanels: TMovablePanels;
+{$IFDEF LOGG}
+  Logg: TLogger;
+{$ENDIF}
+
 
 Procedure TfLoadEntrySSP.GetLO_Records ;
  Begin
@@ -1247,7 +1257,11 @@ end;
 
 function TfLoadEntrySSP.checkIfVidaEnergi: Boolean;
 begin
-  result := dmLoadEntrySSP.FSupplierNo = 2846;
+  result := ThisUser.CompanyNo = 2846;
+{$IFDEF LOGG}
+     logg.LogMessage(ExtractFileName(ParamStr(0)),Self.Name,'checkIfVidaEnergi',
+     'LOGG123',' ThisUser.CompanyNo: '+intToStr(ThisUser.CompanyNo)+'  dmLoadEntrySSP.FSupplierNo: '+intToStr(dmLoadEntrySSP.FSupplierNo));
+{$ENDIF}
 end;
 
 destructor TfLoadEntrySSP.Destroy;
@@ -2070,6 +2084,11 @@ begin
 
  // Load last used settings for some movable panels etc
 // LoadFormSettings;
+{$IFDEF LOGG}
+  if not assigned(logg) then
+    logg := TLogger.Create(dmFR.DBConnection);
+{$ENDIF}
+
 end;
 
 function TfLoadEntrySSP.GetLikVardigtPaket(const aPkgArticleNo,
@@ -3215,6 +3234,35 @@ begin
   end;
 end;
 
+procedure TfLoadEntrySSP.ScanPkgsByArticle(const Sender: TObject; const aTxtPkgNo: string);
+var
+  frm: TfEntryFieldNoOfPkgs;
+  noOfPkgs: integer;
+  baseTime: integer; // default setting of Timer1
+begin
+  frm := TfEntryFieldNoOfPkgs.Create(self);
+  if frm.ShowModal = mrOK then begin
+    noOfPkgs := frm.Count;
+    if noOfPkgs > 0 then begin
+      try
+      baseTime := Timer1.Interval;
+      Timer1.Interval := noOfPkgs * baseTime;
+      Timer1.Enabled := True;
+      while noOfPkgs > 0 do begin
+        GetpackageNoEntered(Sender, mePackageNo.Text);
+        dec(noOfPkgs);
+      end;
+      mePackageNo.Text := '';
+      SaveLoad;
+      finally
+        Timer1.Interval := baseTime;
+        if mePackageNo.Enabled then
+          mePackageNo.SetFocus ;
+      end;
+    end;
+  end
+end;
+
 procedure TfLoadEntrySSP.acValidatePkgExecute(Sender: TObject);
 var
   Save_Cursor:TCursor;
@@ -3458,26 +3506,6 @@ begin
         if deliveredWeight <= 0 then Exit;
         registrateLoadAsDelivered(Sender, deliveredWeight);
       end;
-  end;
-end;
-
-procedure TfLoadEntrySSP.acRegBulkDeliveryUpdate(Sender: TObject);
-begin
-  if ComputerName <> 'CARMAK-FASTER' then begin
-    acRegBulkDelivery.Visible := False;
-    acRegBulkDelivery.enabled := false;
-    Exit;
-  end;
-  if VidaEnergi then begin
-    acRegBulkDelivery.Visible := true;
-      if grdLORowsDBBandedTableView1.Controller.SelectedRecordCount = 1 then begin
-        acRegBulkDelivery.enabled := true;//dmLoadEntrySSP.Is_Load_Confirmed(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger)
-      end
-      else
-        acRegBulkDelivery.enabled := false;
-  end
-  else begin
-    acRegBulkDelivery.Visible := False;
   end;
 end;
 
@@ -6815,20 +6843,32 @@ end;
 procedure TfLoadEntrySSP.mePackageNoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  With dmLoadEntrySSP do
-  Begin
-   if Key <> VK_RETURN then Exit;
-   if cdsLORows.RecordCount > 0 then
-   Begin
-     if Length(mePackageNo.Text) > 0 then
-      GetpackageNoEntered(Sender, mePackageNo.Text) ;
-     Timer1.Enabled   := True ;
-     mePackageNo.Text := '' ;
-     SaveLoad ;
-   End
+  with dmLoadEntrySSP do
+  begin
+    if Key <> VK_RETURN then
+      Exit;
+
+    if cdsLORows.RecordCount > 0 then
+    begin
+      if Length(mePackageNo.Text) > 0 then
+      begin
+        mePackageNo.Enabled := false;
+        try
+          if VidaEnergi and cxcbScanArticle.Checked then
+            ScanPkgsByArticle(Sender, mePackageNo.Text)
+          else
+            GetpackageNoEntered(Sender, mePackageNo.Text);
+          Timer1.Enabled := True;
+          mePackageNo.Text := '';
+          SaveLoad;
+        finally
+          mePackageNo.Enabled := true;
+        end;
+      end
+    end
     else
-     ShowMessage('Inga LO rader synliga att koppla paket mot, kontrollera att "Visa 0-LO rader" är i bockad.') ;
- End;
+      ShowMessage('Inga LO rader synliga att koppla paket mot, kontrollera att "Visa 0-LO rader" är i bockad.');
+  end;
 end;
 
 procedure TfLoadEntrySSP.Timer1Timer(Sender: TObject);
@@ -6973,6 +7013,19 @@ begin
  if mePackageNo.Enabled then
   mePackageNo.SetFocus ;
 
+  cxcbScanArticle.Checked := false;
+  if VidaEnergi then begin
+    cxcbScanArticle.Visible := true;
+    cxcbScanArticle.enabled := true;
+    acRegBulkDelivery.Visible := true;
+    acRegBulkDelivery.enabled := true;
+  end
+  else begin
+    cxcbScanArticle.Visible := False;
+    cxcbScanArticle.enabled := false;
+    acRegBulkDelivery.Visible := False;
+    acRegBulkDelivery.Enabled := false;
+  end;
 end;
 
 procedure TfLoadEntrySSP.PrintDirectCMR(Sender: TObject);

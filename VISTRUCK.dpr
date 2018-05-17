@@ -156,7 +156,8 @@ uses
   UnitRemovePkg in 'UnitRemovePkg.pas' {frmRemovePkg},
   UfelRegPkg in 'UfelRegPkg.pas' {ffelRegPkg},
   UnitLONumber in 'UnitLONumber.pas' {fLONumber},
-  udlgEnterDeliveredWeight in 'udlgEnterDeliveredWeight.pas' {dlgEnterDeliveredWeight};
+  udlgEnterDeliveredWeight in 'udlgEnterDeliveredWeight.pas' {dlgEnterDeliveredWeight},
+  uEntryFieldNoOfPkgs in 'uEntryFieldNoOfPkgs.pas' {fEntryFieldNoOfPkgs};
 
 {$R *.res}
 begin
@@ -174,7 +175,6 @@ begin
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
-  Application.CreateForm(TdlgEnterDeliveredWeight, dlgEnterDeliveredWeight);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

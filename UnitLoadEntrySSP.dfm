@@ -860,9 +860,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
           end
           object cxButton1: TcxButton
             Left = 328
-            Top = 3
+            Top = 2
             Width = 97
-            Height = 31
+            Height = 35
             Action = acRaderaPaket
             SpeedButtonOptions.CanBeFocused = False
             TabOrder = 2
@@ -875,9 +875,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
           end
           object cxButton2: TcxButton
             Left = 432
-            Top = 3
+            Top = 2
             Width = 97
-            Height = 31
+            Height = 35
             Action = acPickPkgNos
             SpeedButtonOptions.CanBeFocused = False
             TabOrder = 3
@@ -890,9 +890,9 @@ object fLoadEntrySSP: TfLoadEntrySSP
           end
           object cxButton3: TcxButton
             Left = 535
-            Top = 3
-            Width = 207
-            Height = 31
+            Top = 2
+            Width = 130
+            Height = 35
             Action = acKopplaPaketMotLOManuellt
             SpeedButtonOptions.CanBeFocused = False
             TabOrder = 4
@@ -902,10 +902,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ParentFont = False
+            WordWrap = True
           end
           object cbKopplaEjMotDublett: TcxCheckBox
-            Left = 916
-            Top = 11
+            Left = 935
+            Top = 10
             Caption = 'Koppla ej om dublett'
             ParentBackground = False
             ParentColor = False
@@ -918,7 +919,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Style.Font.Style = []
             Style.IsFontAssigned = True
             TabOrder = 5
-            Width = 141
+            Width = 132
           end
           object btNumPad: TcxButton
             Left = 1160
@@ -936,7 +937,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxButton4: TcxButton
-            Left = 1157
+            Left = 1173
             Top = 4
             Width = 155
             Height = 31
@@ -954,8 +955,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxBtnChgTreatmentInfo: TcxButton
-            Left = 1056
-            Top = 2
+            Left = 1072
+            Top = 1
             Width = 97
             Height = 35
             Margins.Left = 2
@@ -967,13 +968,30 @@ object fLoadEntrySSP: TfLoadEntrySSP
             WordWrap = True
           end
           object cxbtnRegBulkDelivery: TcxButton
-            Left = 745
+            Left = 671
             Top = 2
             Width = 81
             Height = 35
             Action = acRegBulkDelivery
             TabOrder = 9
             WordWrap = True
+          end
+          object cxcbScanArticle: TcxCheckBox
+            Left = 816
+            Top = 10
+            Caption = 'Skanna Artikel'
+            ParentBackground = False
+            ParentColor = False
+            ParentFont = False
+            Style.Color = clMaroon
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWhite
+            Style.Font.Height = -12
+            Style.Font.Name = 'MS Sans Serif'
+            Style.Font.Style = []
+            Style.IsFontAssigned = True
+            TabOrder = 10
+            Width = 97
           end
         end
         object grdPkgs: TcxGrid
@@ -3921,7 +3939,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
     object acRegBulkDelivery: TAction
       Caption = 'Reg. BULK-leverans.'
       OnExecute = acRegBulkDeliveryExecute
-      OnUpdate = acRegBulkDeliveryUpdate
     end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
