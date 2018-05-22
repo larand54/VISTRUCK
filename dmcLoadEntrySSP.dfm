@@ -3823,8 +3823,7 @@
       
         'UPDATE dbo.PackageNumber SET status = 0 WHERE PackageNo = :PkgNo' +
         ' '
-      ''
-      '')
+      'and SupplierCode = :SupplierCode')
     Left = 320
     Top = 256
     ParamData = <
@@ -3833,6 +3832,11 @@
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
       end>
   end
   object sp_CreateNewBulkPkg: TFDStoredProc

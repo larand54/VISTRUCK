@@ -456,7 +456,7 @@ type
    function getNewBULKPackageNo: Integer;
    function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
-   procedure inactivatePackage(const aPkgNo: integer);
+   procedure inactivatePackage(const aPkgNo: integer;const aSupplierCode : String);
    function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
    function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
@@ -563,9 +563,10 @@ Procedure TdmLoadEntrySSP.Get_LO_LinesMatched (const PackageNo : Integer;const S
  End ;//if...
 End ;
 
-procedure TdmLoadEntrySSP.inactivatePackage(const aPkgNo: integer);
+procedure TdmLoadEntrySSP.inactivatePackage(const aPkgNo: integer;const aSupplierCode : String);
 begin
-  cds_DeActivatePackage.paramByName('PkgNo').AsInteger := aPkgNo;
+  cds_DeActivatePackage.paramByName('PkgNo').AsInteger        := aPkgNo;
+  cds_DeActivatePackage.paramByName('SupplierCode').AsString  := aSupplierCode ;
   try
     cds_DeActivatePackage.ExecSQL;
   except

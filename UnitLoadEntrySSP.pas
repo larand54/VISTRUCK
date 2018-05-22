@@ -6678,7 +6678,7 @@ var
     if Action = eaACCEPT then
     try
           // Inaktivera detta paket
-      dmLoadEntrySSP.inactivatePackage(NewPkgNo);
+      dmLoadEntrySSP.inactivatePackage(NewPkgNo, PkgSupplierCode);
     except
       on E: Exception do
       begin
