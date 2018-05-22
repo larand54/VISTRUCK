@@ -108,10 +108,11 @@ object dlgEnterDeliveredWeight: TdlgEnterDeliveredWeight
   object medtWeight: TMaskEdit
     Left = 160
     Top = 96
-    Width = 39
+    Width = 43
     Height = 21
-    EditMask = '99999;0;_'
-    MaxLength = 5
+    Alignment = taRightJustify
+    EditMask = '99999999;0;_'
+    MaxLength = 8
     TabOrder = 0
     Text = ''
   end

@@ -528,6 +528,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure PanelPackagesResize(Sender: TObject);
     procedure acRegBulkDeliveryExecute(Sender: TObject);
+    procedure acRegBulkDeliveryUpdate(Sender: TObject);
 
   private
     { Private declarations }
@@ -3507,6 +3508,14 @@ begin
         registrateLoadAsDelivered(Sender, deliveredWeight);
       end;
   end;
+end;
+
+procedure TfLoadEntrySSP.acRegBulkDeliveryUpdate(Sender: TObject);
+begin
+  if dmLoadEntrySSP.cdsLORowsPaketstorlek.AsString = 'BULK' then
+    acRegBulkDelivery.Enabled := true
+  else
+    acRegBulkDelivery.Enabled := false
 end;
 
 procedure TfLoadEntrySSP.acRemoveAllPkgsFromSystemExecute(Sender: TObject);
@@ -6643,36 +6652,41 @@ var
   function handleAcceptOf_VE_packages: TEditAction;
   begin
  //check that package is available in inventory and Get supplier code
-    Action := eaACCEPT;
-    artikelNr := getPkgArticleNo(NewPkgNo,
-                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                    dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger,
-                    PkgSupplierCode,
-                    lagerStatus);
+    artikelNr := getPkgArticleNo(NewPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger, PkgSupplierCode, lagerStatus);
 
-    if (lagerStatus <> 1) and (artikelNr <> -1) then  // Package not available in inventory
+    if artikelNr <> -1 then
     begin
+      if lagerStatus = 1 then
+      begin
+        Action := eaACCEPT;
+      end
+      else
       try
-        NewPkgNo := GetLikVardigtPaket(artikelNr,
-                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                    PkgSupplierCode);
-
-
-          // Inaktivera detta paket
-        dmLoadEntrySSP.inactivatePackage(NewPkgNo);
+        NewPkgNo := GetLikVardigtPaket(artikelNr, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, PkgSupplierCode);
+        Action := eaACCEPT;
       except
-        ON E: Exception do
+        on E: Exception do
         begin
 //          ShowMessage(E.Message);
           Action := eaREJECT;
         end;
       end;
-      result := Action;
     end
-    else if artikelNr = -1 then
-      result := eaREJECT
     else
-      result := Action;
+      Action := eaREJECT;
+
+    if Action = eaACCEPT then
+    try
+          // Inaktivera detta paket
+      dmLoadEntrySSP.inactivatePackage(NewPkgNo);
+    except
+      on E: Exception do
+      begin
+//          ShowMessage(E.Message);
+        Action := eaREJECT;
+      end;
+    end;
+    result := Action;
   end;
 
 begin

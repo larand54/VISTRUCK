@@ -3939,6 +3939,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     object acRegBulkDelivery: TAction
       Caption = 'Reg. BULK-leverans.'
       OnExecute = acRegBulkDeliveryExecute
+      OnUpdate = acRegBulkDeliveryUpdate
     end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
