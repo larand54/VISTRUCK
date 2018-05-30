@@ -235,6 +235,7 @@ begin
   begin
     if cds_SortOrderTypeOfRunNo.AsInteger = 1 then
     begin
+(*   Användarna störs av denna dialog LG - 2018-05-28
       case Application.MessageBox(PChar('Paketet avregistreras mot datum: ' + DateTimeToStr(cxdtAvregDatum.Date) + ' Är det ok?'), PChar('Konfirmera Avregistreringsdatum'), MB_OKCANCEL + MB_ICONWARNING + MB_DEFBUTTON2) of
         IDOK:
           begin
@@ -245,6 +246,7 @@ begin
             Exit;
           end;
       end;
+*)
       AvregistreraMarkeradePaket;
     end;
     if cds_SORaw.State in [dsEdit, dsInsert] then

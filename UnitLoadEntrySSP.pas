@@ -6876,7 +6876,6 @@ begin
           mePackageNo.Text := '';
           SaveLoad;
         finally
-          mePackageNo.Enabled := true;
         end;
       end
     end
