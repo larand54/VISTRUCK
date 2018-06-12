@@ -1373,6 +1373,8 @@ type
     AcceptInput : Boolean ;
     AktivtDiagram  : String ;
     PackageCode_Layout  : Array of array of variant ;
+    function VidaEnergi: boolean;
+    function getLikvardigtPaket(const aNewPkgNo : Integer; const aPrefix: string): integer;
     procedure AvRegistreraPaketIBufferten ;
     procedure ShowPkgInfo(const NewPkgNo : Integer;const PkgSupplierCode : String) ;
     procedure ShowHidePkgsPanels ;
@@ -4120,6 +4122,11 @@ Begin
  End ;//With
 End ;
 
+function TfrmSortOrder.VidaEnergi: boolean;
+begin
+  result := ThisUser.CompanyNo = 2846;
+end;
+
 procedure TfrmSortOrder.acRemovePkgFromSystemExecute(Sender: TObject);
 Var SortingOrderRowNo : Integer ;
 begin
@@ -6512,6 +6519,8 @@ begin
       Res_UserName,
       Status ) ;
 
+
+
    if Length(Trim(PkgSupplierCode)) = 0 then
    Begin
 //    InsertToadm_AvRegPkgs(NewPkgNo, PkgSupplierCode, 'Inget paket kunde identifieras') ;
@@ -6527,6 +6536,9 @@ begin
     dmsSystem.FDoLog('PkgSupplierCode = ' + PkgSupplierCode  + ' ScanningPkgNo short')  ;
     dmsSystem.FDoLog('NewPkgNo = ' + IntToStr(NewPkgNo)) ;
    End ;
+
+
+
 
    if Action = eaUserCancel then
    Begin
@@ -6548,6 +6560,15 @@ begin
   End
    else
     Action := eaAccept ; }
+
+    //check if packageno is active or not.
+    //if not then get a packageno that is active in same inventorygroup and same type and deregister that particular package against the work order
+    if VidaEnergi then begin
+      NewPkgNo := getLikvardigtPaket(NewPkgNo, PkgSupplierCode);
+      if NewPkgNo < 1 then
+        Action := eaAlreadyAvReg;
+    end;
+
 
   if Action = eaAccept then
   Begin
@@ -6920,6 +6941,23 @@ begin
 //   CalcKassationExecute(Sender) ;
   End ;
  acStartExecute(Sender) ;
+end;
+
+function TfrmSortOrder.getLikvardigtPaket(const aNewPkgNo: Integer; const aPrefix: string): integer;
+begin
+  with dm_Vis_Vida do
+  begin
+    try
+      result := -1;
+      cds_getActivePackage.Active := false;
+      cds_getActivePackage.ParamByName('@PkgNo').AsInteger := aNewPkgNo;
+      cds_getActivePackage.ParamByName('@Prefix').AsString := aPrefix;
+      cds_getActivePackage.Active := true;
+      result := cds_getActivePackage.FieldByName('PackageNo').AsInteger;
+    finally
+
+    end;
+  end;
 end;
 
 procedure TfrmSortOrder.acCancelPkgsInBuffertExecute(Sender: TObject);

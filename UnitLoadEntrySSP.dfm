@@ -677,10 +677,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -688,8 +684,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.DataField = 'InternalNote'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           TabOrder = 0
-          ExplicitWidth = 1237
-          ExplicitHeight = 207
           Height = 203
           Width = 1229
         end
@@ -982,22 +976,26 @@ object fLoadEntrySSP: TfLoadEntrySSP
             TabOrder = 9
             WordWrap = True
           end
-          object cxcbScanArticle: TcxCheckBox
-            Left = 816
-            Top = 10
+          object cxbtnScanArticle: TcxButton
+            Left = 772
+            Top = 2
+            Width = 75
+            Height = 35
             Caption = 'Skanna Artikel'
-            ParentBackground = False
-            ParentColor = False
-            ParentFont = False
-            Style.Color = clMaroon
-            Style.Font.Charset = DEFAULT_CHARSET
-            Style.Font.Color = clWhite
-            Style.Font.Height = -12
-            Style.Font.Name = 'MS Sans Serif'
-            Style.Font.Style = []
-            Style.IsFontAssigned = True
+            Colors.Normal = clScrollBar
+            Colors.NormalText = clBlack
+            Colors.Pressed = clRed
+            Colors.PressedText = clBtnHighlight
+            LookAndFeel.Kind = lfStandard
+            LookAndFeel.NativeStyle = False
+            LookAndFeel.SkinName = 'Office2007Green'
+            OptionsImage.Images = images1616
+            OptionsImage.NumGlyphs = 2
+            SpeedButtonOptions.GroupIndex = 576734370
+            SpeedButtonOptions.AllowAllUp = True
             TabOrder = 10
-            Width = 97
+            WordWrap = True
+            OnClick = cxbtnScanArticleClick
           end
         end
         object grdPkgs: TcxGrid

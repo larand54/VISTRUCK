@@ -402,7 +402,7 @@ type
     RegBULKleverans1: TMenuItem;
     dxBarButton16: TdxBarButton;
     dxbrbtnRegBulkDelivery: TdxBarButton;
-    cxcbScanArticle: TcxCheckBox;
+    cxbtnScanArticle: TcxButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -529,6 +529,7 @@ type
     procedure PanelPackagesResize(Sender: TObject);
     procedure acRegBulkDeliveryExecute(Sender: TObject);
     procedure acRegBulkDeliveryUpdate(Sender: TObject);
+    procedure cxbtnScanArticleClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -1209,6 +1210,14 @@ begin
   cdsLORows.Filtered  := True ;
  End ; //with
 
+end;
+
+procedure TfLoadEntrySSP.cxbtnScanArticleClick(Sender: TObject);
+begin
+  if cxbtnScanArticle.OptionsImage.ImageIndex = 1 then
+    cxbtnScanArticle.OptionsImage.ImageIndex := -1
+  else
+    cxbtnScanArticle.OptionsImage.ImageIndex := 1;
 end;
 
 procedure TfLoadEntrySSP.cxSplitter1Moved(Sender: TObject);
@@ -6863,21 +6872,22 @@ begin
       Exit;
 
     if cdsLORows.RecordCount > 0 then
-    begin
+    try
       if Length(mePackageNo.Text) > 0 then
       begin
-        mePackageNo.Enabled := false;
-        try
-          if VidaEnergi and cxcbScanArticle.Checked then
-            ScanPkgsByArticle(Sender, mePackageNo.Text)
-          else
-            GetpackageNoEntered(Sender, mePackageNo.Text);
-          Timer1.Enabled := True;
-          mePackageNo.Text := '';
-          SaveLoad;
-        finally
-        end;
-      end
+        if VidaEnergi and (cxbtnScanArticle.OptionsImage.ImageIndex = 1) then
+        begin
+          mePackageNo.Enabled := false;
+          ScanPkgsByArticle(Sender, mePackageNo.Text);
+        end
+        else
+          GetpackageNoEntered(Sender, mePackageNo.Text);
+      end;
+    finally
+      mePackageNo.Text := '';
+      SaveLoad;
+      mePackageNo.Enabled := true;
+      Timer1.Enabled := True;
     end
     else
       ShowMessage('Inga LO rader synliga att koppla paket mot, kontrollera att "Visa 0-LO rader" är i bockad.');
@@ -7026,16 +7036,16 @@ begin
  if mePackageNo.Enabled then
   mePackageNo.SetFocus ;
 
-  cxcbScanArticle.Checked := false;
+  cxbtnScanArticle.OptionsImage.ImageIndex := -1;
   if VidaEnergi then begin
-    cxcbScanArticle.Visible := true;
-    cxcbScanArticle.enabled := true;
+    cxbtnScanArticle.Visible := true;
+    cxbtnScanArticle.enabled := true;
     acRegBulkDelivery.Visible := true;
     acRegBulkDelivery.enabled := true;
   end
   else begin
-    cxcbScanArticle.Visible := False;
-    cxcbScanArticle.enabled := false;
+    cxbtnScanArticle.Visible := False;
+    cxbtnScanArticle.enabled := false;
     acRegBulkDelivery.Visible := False;
     acRegBulkDelivery.Enabled := false;
   end;
