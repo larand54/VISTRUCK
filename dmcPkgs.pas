@@ -841,6 +841,8 @@ Var
 //     iDtls : Integer ;
 
     function SelectMatchingPkgTypeHdrs : Integer;
+    var
+      ML: double;
     begin
       // First get all package type (header) records that match
       sp_PackageTypes.ParamByName('@ProductNo'    ).AsInteger := mtLoadPackagesPRODUCTNO.AsInteger ;
@@ -855,7 +857,6 @@ Var
       else
       sp_PackageTypes.ParamByName('@GradeStamp'   ).AsInteger := mtLoadPackagesGRADESTAMPNO.AsInteger ;
       sp_PackageTypes.ParamByName('@TotalPieces'  ).AsInteger := mtLoadPackagesPCS.AsInteger ;
-
       if (mtpackages.Active) AND (mtpackages.Fields[1].AsInteger > 0) then
        sp_PackageTypes.ParamByName('@PcsPerLength'  ).AsString := GetLengthsEntered(mtUserProp.FieldByName('ALMM').AsFloat)
       else

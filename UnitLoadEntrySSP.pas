@@ -535,6 +535,7 @@ type
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+      function getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
      procedure ScanPkgsByArticle(const Sender: TObject; const aTxtPkgNo: string);
      function AfterAdded_VE_Pkg(const aPkgNo, aArtikelNo : Integer): TEditAction;
      function GetLikVardigtPaket(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
@@ -908,6 +909,25 @@ Begin
    End ;
 End ;
 
+function TfLoadEntrySSP.getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
+var
+  colIdx,
+  recIdx: integer;
+  pkgNo,
+  lagerStatus: integer;
+  SupplierCode: string3;
+begin
+  result := -1;
+  if grdPkgsDBBandedTableView1.Controller.SelectedRecordCount <> 1 then
+    showMessage( 'Välj ett och endast ett paket')
+  else begin
+    RecIDx          := grdPkgsDBBandedTableView1.Controller.SelectedRecords[0].RecordIndex ;
+    ColIdx          := grdPkgsDBBandedTableView1.DataController.GetItemByFieldName('PackageNo').Index;
+    pkgNo           := grdPkgsDBBandedTableView1.DataController.Values[RecIdx, ColIdx];
+    result          := getPkgArticleNo(PkgNo, aPIPNo, 0, SupplierCode, lagerStatus);
+  end;
+end;
+
 function TfLoadEntrySSP.getDeliveredWeight(const aLoadNo: Integer; const aProduct, aReference: string): Integer;
 var
  Weight: integer;
@@ -1218,6 +1238,8 @@ begin
     cxbtnScanArticle.OptionsImage.ImageIndex := -1
   else
     cxbtnScanArticle.OptionsImage.ImageIndex := 1;
+ if mePackageNo.Enabled then
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfLoadEntrySSP.cxSplitter1Moved(Sender: TObject);
@@ -3869,6 +3891,7 @@ end;
 
 procedure TfLoadEntrySSP.acPickPkgNosExecute(Sender: TObject);
 var fPickPkgNo: TfPickPkgNo;
+  articleNo: integer;
 begin
  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
  Begin
@@ -3903,6 +3926,15 @@ begin
    fPickPkgNo.LabelReferens.Caption   := cdsLORowsKR_Ref.AsString ;
    fPickPkgNo.ObjectType              := cds_LSPOBJECTTYPE.AsInteger ;
    fPickPkgNo.Referens                := cdsLORowsKR_Ref.AsString ;
+   if VidaEnergi then begin
+    articleNo := getArticleNoFromSelectedPkg(dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger);
+    if articleNo > 0 then
+      fPickPkgNo.ArticleNo            := articleNo
+    else begin
+      showMessage('Artikelnr kunde ej hämtas!');
+      exit;
+    end;
+   end;
    if fPickPkgNo.ShowModal = mrOK then
     Begin
      Application.ProcessMessages ;

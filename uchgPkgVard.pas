@@ -251,6 +251,7 @@ type
     cxLabel6: TcxLabel;
     lcPackage_Size: TcxDBLookupComboBox;
     mtUserPropPackage_Size: TStringField;
+    mtUserPropALMM: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure bcStdLenGrpChange(Sender: TObject);
@@ -967,6 +968,22 @@ begin
 //    mtUserPropACT_WIDTH.AsFloat           := dmsSystem.mtMarkedProdAW.AsFloat ;
     mtUserPropNOMTHICK.AsFloat           := dmsSystem.mtMarkedProdNT.AsFloat ;
     mtUserPropSurfacingNo.AsInteger       := dmsSystem.mtMarkedProdSurfacingNo.AsInteger ;
+    mtUserPropALMM.AsFloat := 0 ;
+(*
+    if dmsSystem.mtMarkedProdSequenceNo.AsInteger = 3 {Ramar} then
+    Begin
+     mtUserPropInputOption.AsInteger  := INPUT_RAMAR ;
+     mtUserPropALMM.AsFloat           := dmsSystem.mtMarkedProdAT.AsFloat * 2 + dmsSystem.mtMarkedProdAW.AsFloat ;
+     grdLengths.Enabled := False ;
+    End
+    else
+    Begin
+     if mtUserPropInputOption.AsInteger = INPUT_RAMAR then
+      mtUserPropInputOption.AsInteger := INPUT_PIECES ;
+     mtUserPropALMM.AsFloat := 0 ;
+     grdLengths.Enabled := True ;
+    End ;
+*)
     mtUserProp.Post ;
 //    CreateFieldsInmtPackagesTable(Sender) ;
    End ;

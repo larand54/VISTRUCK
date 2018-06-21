@@ -586,6 +586,15 @@ object fPickPkgNo: TfPickPkgNo
       TabOrder = 8
       OnClick = cxButton2Click
     end
+    object cxbtnShowMatchingArticle: TcxButton
+      Left = 903
+      Top = 24
+      Width = 122
+      Height = 57
+      Action = acShowMatchingArticle
+      SpeedButtonOptions.GroupIndex = 1
+      TabOrder = 9
+    end
   end
   object ds_SelectedPkgNo: TDataSource
     DataSet = dmsSystem.mtSelectedPkgNo
@@ -762,6 +771,10 @@ object fPickPkgNo: TfPickPkgNo
       Caption = 'Urval lagergrupp'
       OnExecute = acShowMatchingLIPExecute
     end
+    object acShowMatchingArticle: TAction
+      Caption = 'Urval artikel'
+      OnExecute = acShowMatchingArticleExecute
+    end
   end
   object mtProduct: TkbmMemTable
     DesignActivation = True
@@ -771,6 +784,11 @@ object fPickPkgNo: TfPickPkgNo
       item
         Name = 'ProductNo'
         DataType = ftInteger
+      end
+      item
+        Name = 'ProductDisplayName'
+        DataType = ftString
+        Size = 100
       end>
     IndexDefs = <>
     SortOptions = []

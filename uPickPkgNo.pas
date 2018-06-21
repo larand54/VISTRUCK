@@ -38,6 +38,7 @@ uses
   ShowTM = 5 ;
   ShowLIP = 6 ;
   ShowLOPlusRef = 7 ;
+  ShowArticle = 8;
 
 
 type
@@ -168,6 +169,8 @@ type
     cxGridPopupMenu1: TcxGridPopupMenu;
     Label6: TLabel;
     LabelReferens: TLabel;
+    cxbtnShowMatchingArticle: TcxButton;
+    acShowMatchingArticle: TAction;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ds_SelectedPkgNoDataChange(Sender: TObject; Field: TField);
@@ -187,17 +190,19 @@ type
     procedure acSelectMarkedRowsExecute(Sender: TObject);
     procedure acShowMatchingLIPExecute(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
+    procedure acShowMatchingArticleExecute(Sender: TObject);
   private
     { Private declarations }
     ButtonDown : Integer ;
     procedure CheckSelectedPackages ;
     procedure BuildSQL ;
     procedure Refresh ;
+    function VidaEnergi: Boolean;
   public
     { Public declarations }
 
    Referens : String ;
-   ObjectType, LONo, ProductNo, ProductLengthNo, PIPNo : Integer ;
+   ObjectType, LONo, ProductNo, ArticleNo, ProductLengthNo, PIPNo : Integer ;
    ALMM : String ;
   end;
 
@@ -205,7 +210,7 @@ type
 
 implementation
 
-uses dmsDataConn, dmsVidaSystem, UnitdmModule1, VidaUser , UnitPkgInfo;
+uses dmsDataConn, dmsVidaSystem, UnitdmModule1, VidaUser , UnitPkgInfo, dmcLoadEntrySSP;
 
 {$R *.dfm}
 
@@ -236,6 +241,9 @@ begin
   lcProductDisplayName.Visible                  := True ;
   lbShowMatchingProduct.Down                    := True ;
  End ;
+  cxbtnShowMatchingArticle.Enabled := VidaEnergi;
+  cxbtnShowMatchingArticle.visible := VidaEnergi;
+
  if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name+'/'+grdPickPkgNos.Name, grdPickPkgNosDBTableView1) = False then ;
 end;
 
@@ -362,6 +370,53 @@ Begin
   Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
   Add('pgrm.SupplierCode = pn.SupplierCode)') ;
   End //lbShowMatchingProduct
+  else
+  if (ButtonDown = ShowArticle) and VidaEnergi then
+  Begin
+  cxLabel_Val.Caption := 'Urval artikel';//siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_6' (* 'Urval artikel' *) ) ;
+  Clear ;
+  Add('Select pn.PackageNo, pn.SupplierCode AS LEVKOD,') ;
+  Add('pt.productno,') ;
+  Add('ptl.PcsPerLength,') ;
+  Add('pt.Totalm3Actual AS AM3,') ;
+  Add('pt.TotalNoOfPieces AS STYCK,') ;
+  Add('pn.DateCreated,') ;
+  Add('(Select Count(PackageTypeNo) From PackageTypeDetail WHERE PackageTypeNo = pt.PackageTypeNo) AS NOOFLENGTHS,') ;
+  Add('p.ProductDisplayName AS Produkt,') ;
+  Add('CASE') ;
+  Add('WHEN htf.Status = 1 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_1' (* 'Modtaget' *) ))) ;
+  Add('WHEN htf.Status = 2 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_2' (* 'Klar til produktion' *) ))) ;
+  Add('WHEN htf.Status = 3 THEN ' + QuotedStr('Produktionsdato')) ;
+  Add('WHEN htf.Status = 4 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_3' (* 'Klar til afgang' *) ))) ;
+  Add('WHEN htf.Status = 5 THEN ' + QuotedStr(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_4' (* 'Udleverat' *) ))) ;
+  Add('End AS StatusHTF,') ;
+  Add('PN.REFERENCE,') ;
+  Add('PN.BL_NO,') ;
+  Add('PN.Info2,') ;
+  Add('ps.PackageSizeName AS Paketstorlek,') ;
+  Add('cw.CertShortName AS Certfiering') ;
+
+  Add('From dbo.packagenumber pn') ;
+
+
+  Add('Left Outer Join dbo.PackageSize ps on ps.PackageSizeNo = pn.Package_Size') ;
+  Add('and ps.LanguageCode = 1') ;
+  Add('Left Outer join dbo.CertificationWood cw on cw.CertNo = pn.CertNo') ;
+  Add('Inner Join dbo.packagetype pt on pt.packagetypeno = pn.packagetypeno') ;
+  Add('Inner Join dbo.product p on p.productno = pt.productno') ;
+  Add('Inner Join dbo.PackageTypeLengths ptl on ptl.packagetypeno = pn.packagetypeno') ;
+  Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo') ;
+  Add('Left Outer Join dbo.PackageStatusHTF htf on htf.Paketnr = pn.PackageNo') ;
+  Add('and htf.prefix = pn.suppliercode') ;
+  Add('WHERE') ;
+  Add('pn.Status = 1 AND LIP.CanAddToLoad = 1') ;
+
+
+  Add('AND LIP.PhysicalInventoryPointNo = '+IntToStr(PIPNo)) ;
+  Add('AND pn.pkgArticleNo = '+IntToStr(ArticleNo)) ;
+  Add('AND pn.PackageNo not in (Select pgrm.PackageNo From dbo.Pkgs_ResModul pgrm WHERE ') ;
+  Add('pgrm.SupplierCode = pn.SupplierCode)') ;
+  End //lbShowMatchingArticle
   else
 //  if lbShowAddLOPkgsWithMatchingProduct.Down then
   if ButtonDown = AddLOPkgsWithMatchingProduct then
@@ -681,7 +736,7 @@ Begin
   End ;
 
 
-  if ThisUser.UserID = 258 then SaveToFile('sq_PaketLista.TXT') ;
+  if (ThisUser.UserID = 258) or (GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER') then SaveToFile('sq_PaketLista.TXT') ;
  End ; //With
 End ;
 
@@ -726,6 +781,11 @@ begin
  Refresh ;
 end;
 
+function TfPickPkgNo.VidaEnergi: Boolean;
+begin
+  result := ThisUser.CompanyNo = 2846;
+end;
+
 procedure TfPickPkgNo.acPkgInfoExecute(Sender: TObject);
 var frmPkgInfo : TfrmPkgInfo;
 begin
@@ -733,6 +793,7 @@ begin
  Begin
  frmPkgInfo:= TfrmPkgInfo.Create(Nil);
  Try
+
   frmPkgInfo.PackageNo:= mtSelectedPkgNoPAKETNR.AsInteger ;
   frmPkgInfo.SupplierCode:= mtSelectedPkgNoLEVKOD.AsString ;
   frmPkgInfo.ShowModal ;
@@ -801,6 +862,12 @@ begin
  end;
  End ;
 End ;
+
+procedure TfPickPkgNo.acShowMatchingArticleExecute(Sender: TObject);
+begin
+ ButtonDown  := ShowArticle ;
+ Refresh ;
+end;
 
 procedure TfPickPkgNo.acShowMatchingLIPExecute(Sender: TObject);
 begin

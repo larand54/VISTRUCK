@@ -2357,6 +2357,9 @@ object fchgPkgVard: TfchgPkgVard
       Size = 50
       Lookup = True
     end
+    object mtUserPropALMM: TFloatField
+      FieldName = 'ALMM'
+    end
   end
   object dsUserProp: TDataSource
     DataSet = mtUserProp
