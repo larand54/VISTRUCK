@@ -14,6 +14,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object grdPickPkgNos: TcxGrid
@@ -138,7 +139,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     TabOrder = 1
     object cxButton27: TcxButton
       Left = 6
-      Top = 20
+      Top = 7
       Width = 212
       Height = 60
       Action = acAvregistreraMarkeradePaket
@@ -153,7 +154,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     end
     object cxButton28: TcxButton
       Left = 224
-      Top = 20
+      Top = 7
       Width = 107
       Height = 60
       Action = acRefreshInventory
@@ -352,6 +353,23 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       Style.Font.Name = 'MS Sans Serif'
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
+    end
+    object cxbtnSelectManyPkgs: TcxButton
+      Left = 6
+      Top = 73
+      Width = 212
+      Height = 43
+      Action = acRefreshInventory
+      Caption = 'Markera m'#229'nga paket'
+      OptionsImage.Layout = blGlyphBottom
+      TabOrder = 14
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = cxbtnSelectManyPkgsClick
     end
   end
   object Panel1: TPanel

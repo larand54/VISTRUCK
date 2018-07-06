@@ -112,6 +112,7 @@ type
     grdPickPkgNosDBTableView1Produkt: TcxGridDBColumn;
     cxdtAvregDatum: TcxDateEdit;
     cxlblAvregDate: TcxLabel;
+    cxbtnSelectManyPkgs: TcxButton;
     procedure acRefreshInventoryExecute(Sender: TObject);
     procedure acAvregistreraMarkeradePaketExecute(Sender: TObject);
     procedure mtProductProductNoChange(Sender: TField);
@@ -125,10 +126,13 @@ type
     procedure tePkgNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure mtProductALMMChange(Sender: TField);
+    procedure FormShow(Sender: TObject);
+    procedure cxbtnSelectManyPkgsClick(Sender: TObject);
   private
     { Private declarations }
     procedure RefreshLagerLista(const ProductNo : Integer) ;
     procedure AvregistreraMarkeradePaket ;
+    procedure SelectManyPkgs(const aCount: integer);
   public
     { Public declarations }
     procedure RefreshLagerListaByPkgNo(const PackageNo : Integer) ;    
@@ -138,7 +142,7 @@ type
 
 implementation
 
-uses dm_SortOrder, dmsVidaSystem, dmsPkgWorkOrder, dmsDataConn, udmLanguage;
+uses dm_SortOrder, dmsVidaSystem, dmsPkgWorkOrder, dmsDataConn, udmLanguage, VidaUser, uEntryFieldNoOfPkgs;
 
 {$R *.dfm}
 
@@ -299,6 +303,19 @@ begin
   end;
 end;
 
+procedure TfSearchPkgToDeReg.cxbtnSelectManyPkgsClick(Sender: TObject);
+var
+  dlg : TfEntryFieldNoOfPkgs;
+begin
+  dlg := TfEntryFieldNoOfPkgs.create(self);
+  if (dlg.ShowModal = mrOK) and (dlg.Count > 0) then
+    try
+      selectManyPkgs(dlg.Count);
+    finally
+      dlg.Free;
+    end;
+end;
+
 procedure TfSearchPkgToDeReg.mtProductProductNoChange(Sender: TField);
 Var PIPNo, ProductNo : Integer ;
 begin
@@ -312,6 +329,19 @@ procedure TfSearchPkgToDeReg.FormCreate(Sender: TObject);
 begin
  mtProduct.Active := True ;
  cxdtAvregDatum.Date := Now;
+end;
+
+procedure TfSearchPkgToDeReg.FormShow(Sender: TObject);
+begin
+  if VidaUser.ThisUser.CompanyNo = 30177 then begin  // VIDA Tranemo AB
+    cxbtnSelectManyPkgs.Enabled := true;
+    cxbtnSelectManyPkgs.visible := true;
+  end
+  else begin
+    cxbtnSelectManyPkgs.Enabled := false;
+    cxbtnSelectManyPkgs.visible := false;
+  end;
+
 end;
 
 procedure TfSearchPkgToDeReg.mtProductPIPNoChange(Sender: TField);
@@ -435,6 +465,26 @@ begin
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  end;
  End ;
+end;
+
+procedure TfSearchPkgToDeReg.SelectManyPkgs(const aCount: integer);
+var
+  grView: TcxGridDBTableView;
+  i: integer;
+  count: integer;
+begin
+  count := aCount;
+  grView := grdPickPkgNosDBTableView1;
+  with grView.DataController do begin
+    if aCount > FilteredRecordCount then count := FilteredRecordCount;
+
+    for I := 0 to count - 1 do begin
+      FocusedRowIndex := i;
+      SetEditValue(0, 1, GetItemValueSource(0));
+    end;
+//     Memo1.Lines.Add(DisplayTexts[FilteredRecordIndex[I], 0]);
+  end;
+
 end;
 
 procedure TfSearchPkgToDeReg.tePkgNoKeyDown(Sender: TObject; var Key: Word;
