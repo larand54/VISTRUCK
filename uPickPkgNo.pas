@@ -200,10 +200,10 @@ type
     function VidaEnergi: Boolean;
   public
     { Public declarations }
-
    Referens : String ;
    ObjectType, LONo, ProductNo, ArticleNo, ProductLengthNo, PIPNo : Integer ;
    ALMM : String ;
+   constructor create(aOwner: TComponent; aArticleNo: integer);
   end;
 
 //var fPickPkgNo: TfPickPkgNo;
@@ -217,34 +217,39 @@ uses dmsDataConn, dmsVidaSystem, UnitdmModule1, VidaUser , UnitPkgInfo, dmcLoadE
 
 procedure TfPickPkgNo.FormShow(Sender: TObject);
 begin
- if (productLengthNo = 453)
- or (productLengthNo = 533)
- or (productLengthNo = 1960)
- or (productLengthNo = 1831)
- or (productLengthNo = 3187)
- or (productLengthNo = 3190)
- or (productLengthNo = -1) then
- cbFilterOnLength.Checked:= False
- else
-  cbFilterOnLength.Checked:= True ;
+  if (productLengthNo = 453) or
+     (productLengthNo = 533) or
+     (productLengthNo = 1960) or
+     (productLengthNo = 1831) or
+     (productLengthNo = 3187) or
+     (productLengthNo = 3190) or
+     (productLengthNo = -1) then cbFilterOnLength.Checked := False
+  else
+    cbFilterOnLength.Checked := True;
 
-  cds_LIP2.ParamByName('PIPNo').AsInteger := PIPNo ;
-  mtProps.Active  := True ;
+  cds_LIP2.ParamByName('PIPNo').AsInteger := PIPNo;
+  mtProps.Active := True;
 
- Refresh ;
- lcProductDisplayName.Visible:= False ;
- if ObjectType = 0 then
- Begin
-  mtProduct.Active                              := False ;
-  cds_ProdInLager.ParamByName('PIPNo').AsInteger := PIPNo ;
-  mtProduct.Active                              := True ;
-  lcProductDisplayName.Visible                  := True ;
-  lbShowMatchingProduct.Down                    := True ;
- End ;
+  Refresh;
+  lcProductDisplayName.Visible := False;
+  if ObjectType = 0 then
+  begin
+    mtProduct.Active := False;
+    cds_ProdInLager.ParamByName('PIPNo').AsInteger := PIPNo;
+    mtProduct.Active := True;
+    lcProductDisplayName.Visible := True;
+    lbShowMatchingProduct.Down := True;
+  end;
   cxbtnShowMatchingArticle.Enabled := VidaEnergi;
   cxbtnShowMatchingArticle.visible := VidaEnergi;
 
- if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name+'/'+grdPickPkgNos.Name, grdPickPkgNosDBTableView1) = False then ;
+  if dmsSystem.LoadGridLayout(ThisUser.UserID, Self.Name + '/' + grdPickPkgNos.Name, grdPickPkgNosDBTableView1) = False then
+    ;
+  if (ArticleNo > 0) and vidaEnergi then begin
+    buttonDown := ShowArticle;
+    cxbtnShowMatchingArticle.SpeedButtonOptions.Down := true;
+    refresh;
+  end;
 end;
 
 procedure TfPickPkgNo.FormCreate(Sender: TObject);
@@ -252,7 +257,6 @@ begin
  with dmsSystem do
  Begin
   MarkedPkgs:= 0 ;
-
  End ;
 end;
 
@@ -865,8 +869,11 @@ End ;
 
 procedure TfPickPkgNo.acShowMatchingArticleExecute(Sender: TObject);
 begin
- ButtonDown  := ShowArticle ;
- Refresh ;
+  mtPkgNos.Active := False;
+  mtPkgNos.Active := True;
+  CheckSelectedPackages;
+  ButtonDown := ShowArticle;
+  Refresh;
 end;
 
 procedure TfPickPkgNo.acShowMatchingLIPExecute(Sender: TObject);
@@ -921,6 +928,15 @@ begin
     mtPkgNosPrefix.AsString     := ADataSet.FieldByName('LEVKOD').AsString ;
 
     mtPkgNos.Post ;
+    if vidaEnergi then begin
+      articleNo := dmLoadEntrySSP.getPkgArticleNo_2(mtPkgNosPackageNo.AsInteger, mtPkgNosPrefix.AsString);
+      if articleNo <= 0 then begin
+        articleNo := -1;
+        showMessage('Artikelnummer hittades ej!');
+      end;
+      break;
+    end;
+
    End ;//for
 
  Finally
@@ -931,6 +947,12 @@ begin
   Screen.Cursor := Save_Cursor;  { Always restore to normal }
  End ;
 // End ;//with
+end;
+
+constructor TfPickPkgNo.create(aOwner: TComponent; aArticleNo: integer);
+begin
+  inherited create(aOwner);
+  ArticleNo := aArticleNo;
 end;
 
 procedure TfPickPkgNo.cxButton2Click(Sender: TObject);

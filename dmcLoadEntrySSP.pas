@@ -403,6 +403,9 @@ type
     cdsLORowsPkgArticleNo: TIntegerField;
     cdsLORowsPackageSizeNo: TIntegerField;
     sp_CreateNewBulkPkg: TFDStoredProc;
+    cds_LoadPackagesArticleNo: TIntegerField;
+    cds_GetPkgArticleNo_2: TFDQuery;
+    cds_GetPkgArticleNo_2PkgArticleNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -457,6 +460,7 @@ type
    function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
    procedure inactivatePackage(const aPkgNo: integer;const aSupplierCode : String);
+   function getPkgArticleNo_2(const aPkgNo: integer; aSupplierCode: string): integer;
    function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
    function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
@@ -991,6 +995,28 @@ begin
   finally
     cds_getPkgArticleNo.Active := False;
   end;
+end;
+
+function TdmLoadEntrySSP.getPkgArticleNo_2(const aPkgNo: integer; aSupplierCode: string): integer;
+begin
+  result := -1;
+  cds_GetPkgArticleNo_2.Active := false;
+  cds_GetPkgArticleNo_2.ParamByName('PACKAGENO').AsInteger := aPkgNo;
+  cds_GetPkgArticleNo_2.ParamByName('SUPPLIERCODE').AsString := aSupplierCode;
+  try
+    cds_GetPkgArticleNo_2.Active := true;
+    cds_GetPkgArticleNo_2.First;
+    if not cds_GetPkgArticleNo_2.Eof then
+      result := cds_GetPkgArticleNo_2PkgArticleNo.AsInteger;
+    cds_GetPkgArticleNo_2.Active := false;
+    exit;
+
+  except
+    on E:Exception do begin
+      showMessage('Kunde ej läsa in artikelnummer pg DB-Fel:'+#10#13+E.Message);
+    end;
+  end;
+
 end;
 
 procedure TdmLoadEntrySSP.getPkgsByInvOwner(const PkgNo, InventoryOwner, PIPNo : Integer);

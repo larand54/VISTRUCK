@@ -1496,6 +1496,7 @@
       '           PN.REFERENCE,'
       '           PN.BL_NO AS INFO1,'
       '           PN.INFO2,'
+      '           PN.PkgArticleNo AS ArticleNo,'
       ''
       '           PT.Totalm3Actual           AS  M3_NET,'
       '           PT.TotalNoOfPieces         AS  PCS,'
@@ -1590,6 +1591,7 @@
         Name = 'LOADNO'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end>
     object cds_LoadPackagesLoadNo: TIntegerField
       FieldName = 'LoadNo'
@@ -1850,6 +1852,10 @@
       FieldName = 'INFO2'
       Origin = 'INFO2'
       Size = 30
+    end
+    object cds_LoadPackagesArticleNo: TIntegerField
+      FieldName = 'ArticleNo'
+      Origin = 'ArticleNo'
     end
   end
   object cds_LO_LookUp: TFDQuery
@@ -3894,5 +3900,32 @@
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object cds_GetPkgArticleNo_2: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT PN.PkgArticleNo FROM dbo.PackageNumber PN'
+      'WHERE PN.PackageNo = :PackageNo'
+      'AND PN.SupplierCode = :SupplierCode'
+      '')
+    Left = 456
+    Top = 208
+    ParamData = <
+      item
+        Name = 'PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 118712
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = 'VEB'
+      end>
+    object cds_GetPkgArticleNo_2PkgArticleNo: TIntegerField
+      FieldName = 'PkgArticleNo'
+      Origin = 'PkgArticleNo'
+    end
   end
 end

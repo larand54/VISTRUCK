@@ -3890,64 +3890,62 @@ begin
 end;
 
 procedure TfLoadEntrySSP.acPickPkgNosExecute(Sender: TObject);
-var fPickPkgNo: TfPickPkgNo;
+var
+  fPickPkgNo: TfPickPkgNo;
   articleNo: integer;
 begin
- if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
- Begin
-  ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) )) ;
-  Exit ;
- End ;
+  if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger < 1 then
+  begin
+    ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_56' (* 'Spara lasten först.' *) ));
+    Exit;
+  end;
 
- With dmsSystem do
- Delete_ReservedPkgs ('TfLoadEntrySSP') ;
+  with dmsSystem do
+    Delete_ReservedPkgs('TfLoadEntrySSP');
 
- With dmLoadEntrySSP do
- Begin
-  if cds_LoadPackages.State in [dsEdit, dsInsert] then
-  Try
-  cds_LoadPackages.Post ;
-  Except
-   cds_LoadPackages.Cancel ;
-  End ;
-
-  fPickPkgNo:= TfPickPkgNo.Create(Nil);
-  Try
-   fPickPkgNo.ProductNo               := cdsLORowsProductNo.AsInteger ;
-   fPickPkgNo.ProductLengthNo         := cdsLORowsProductLengthNo.AsInteger ;
-   fPickPkgNo.ALMM                    := cdsLORowsACT_LENGTH.AsString ;
-   fPickPkgNo.PIPNo                   := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger ;
-   fPickPkgNo.LONo                    := cdsLORowsShippingPlanNo.AsInteger ;
-   fPickPkgNo.LabelProduct.Caption    := cdsLORowsINTERNPRODDESC.AsString ;//cdsLORowsPRODUCTDESCRIPTION.AsString ;
-   fPickPkgNo.LabelLength.Caption     := cdsLORowsLENGTHDESC.AsString ;
-   fPickPkgNo.LabelPIPName.Caption    := lcPIP.Text ;
-   fPickPkgNo.LabelOwner.Caption      := cds_LSPSUPPLIER.AsString ;
-   fPickPkgNo.LabelLONr.Caption       := cdsLORowsShippingPlanNo.AsString ;
-   fPickPkgNo.LabelReferens.Caption   := cdsLORowsKR_Ref.AsString ;
-   fPickPkgNo.ObjectType              := cds_LSPOBJECTTYPE.AsInteger ;
-   fPickPkgNo.Referens                := cdsLORowsKR_Ref.AsString ;
-   if VidaEnergi then begin
-    articleNo := getArticleNoFromSelectedPkg(dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger);
-    if articleNo > 0 then
-      fPickPkgNo.ArticleNo            := articleNo
-    else begin
-      showMessage('Artikelnr kunde ej hämtas!');
-      exit;
+  with dmLoadEntrySSP do
+  begin
+    if cds_LoadPackages.State in [dsEdit, dsInsert] then
+    try
+      cds_LoadPackages.Post;
+    except
+      cds_LoadPackages.Cancel;
     end;
-   end;
-   if fPickPkgNo.ShowModal = mrOK then
-    Begin
-     Application.ProcessMessages ;
-     InsertSelectedPkgNos(Sender) ;
-    End ;
+    if vidaEnergi then
+    begin
+      articleNo := cdsLORowsPkgArticleNo.AsInteger;
+      fPickPkgNo := TfPickPkgNo.Create(Nil, articleNo);
+    end
+    else
+      fPickPkgNo := TfPickPkgNo.Create(Nil,-1);
+    try
+      fPickPkgNo.ProductNo := cdsLORowsProductNo.AsInteger;
+      fPickPkgNo.ProductLengthNo := cdsLORowsProductLengthNo.AsInteger;
+      fPickPkgNo.ALMM := cdsLORowsACT_LENGTH.AsString;
+      fPickPkgNo.PIPNo := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger;
+      fPickPkgNo.LONo := cdsLORowsShippingPlanNo.AsInteger;
+      fPickPkgNo.LabelProduct.Caption := cdsLORowsINTERNPRODDESC.AsString; //cdsLORowsPRODUCTDESCRIPTION.AsString ;
+      fPickPkgNo.LabelLength.Caption := cdsLORowsLENGTHDESC.AsString;
+      fPickPkgNo.LabelPIPName.Caption := lcPIP.Text;
+      fPickPkgNo.LabelOwner.Caption := cds_LSPSUPPLIER.AsString;
+      fPickPkgNo.LabelLONr.Caption := cdsLORowsShippingPlanNo.AsString;
+      fPickPkgNo.LabelReferens.Caption := cdsLORowsKR_Ref.AsString;
+      fPickPkgNo.ObjectType := cds_LSPOBJECTTYPE.AsInteger;
+      fPickPkgNo.Referens := cdsLORowsKR_Ref.AsString;
 
-   SaveLoad ;
-  Finally
-   FreeAndNil(fPickPkgNo) ;//.Free ;
-  End ;
- End ; //with
- if mePackageNo.Enabled then
-  mePackageNo.SetFocus ;
+      if fPickPkgNo.ShowModal = mrOK then
+      begin
+        Application.ProcessMessages;
+        InsertSelectedPkgNos(Sender);
+      end;
+
+      SaveLoad;
+    finally
+      FreeAndNil(fPickPkgNo); //.Free ;
+    end;
+  end; //with
+  if mePackageNo.Enabled then
+    mePackageNo.SetFocus;
 End ;
 
 procedure TfLoadEntrySSP.acPickPkgNosUpdate(Sender: TObject);
