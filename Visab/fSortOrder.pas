@@ -6425,45 +6425,44 @@ procedure TfrmSortOrder.ScanningPkgNo(Sender: TObject; PkgNo : String) ;
 const
   LF = #10;
 var
-  NewPkgNo        : Integer ;
+  NewPkgNo: Integer;
 //  PktNrLevKod     : String ;//Lev koden i paketnrsträngen
-  PkgSupplierCode : String3;
-  Action          : TEditAction;
-  ProductNo       : Integer ;
-  Save_Cursor     : TCursor;
-  Res_UserName    : String ;
-  RegPointName    : String ;
-  Status          : Integer ;
-  ScannatPktnr    : String ;
-  ActionNo        : Integer ;
+  PkgSupplierCode: String3;
+  Action: TEditAction;
+  ProductNo: Integer;
+  Save_Cursor: TCursor;
+  Res_UserName: string;
+  RegPointName: string;
+  Status: Integer;
+  ScannatPktnr: string;
+  ActionNo: Integer;
 begin
- With dm_Vis_Vida do
- Begin
-  cxLabelSkannarPaketnr.Caption         := '' ;
-  cxLabelSkannarPaketnrProblem.Caption  := '' ;
-  Save_Cursor                           := Screen.Cursor;
-  Screen.Cursor                         := crHourGlass;    { Show hourglass cursor }
-  try
-  NewPkgNo:= 0 ;
-  if Length(Trim(PkgNo)) > 12 then
+  with dm_Vis_Vida do
+  begin
+    cxLabelSkannarPaketnr.Caption := '';
+    cxLabelSkannarPaketnrProblem.Caption := '';
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+    try
+      NewPkgNo := 0;
+      if Length(Trim(PkgNo)) > 12 then
 //************** LONG PACKAGENUMBER STRING ****************
-  Begin
+      begin
 
 //Notera att i den långa koden skall supplier koden finnas!
-    Try
+        try
 
-    ScannatPktnr      := PkgNo ;
-    PkgSupplierCode   := GetPkgPos(PkgNo) ;// dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
-    NewPkgNo          := StrToInt(PkgNo) ;
+          ScannatPktnr := PkgNo;
+          PkgSupplierCode := GetPkgPos(PkgNo); // dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
+          NewPkgNo := StrToInt(PkgNo);
 
-    dmsSystem.FDoLog('PkgSupplierCode = ' + PkgSupplierCode + ' ScanningPkgNo long')  ;
-    dmsSystem.FDoLog('NewPkgNo = ' + IntToStr(NewPkgNo)) ;
+          dmsSystem.FDoLog('PkgSupplierCode = ' + PkgSupplierCode + ' ScanningPkgNo long');
+          dmsSystem.FDoLog('NewPkgNo = ' + IntToStr(NewPkgNo));
 
 {
       procedure Tdmc_DB.AddPkgToLoggs (const PackageNo, SortingOrderNo, AvRegStatus : Integer;
       const Prefix, ScannedString : String) ;
 }
-
 
   {
       dmsSystem.AddPkgToLoggs(NewPkgNo, dmsSortOrder.cds_SortOrderSortingOrderNo.AsInteger,
@@ -6471,86 +6470,72 @@ begin
        PkgSupplierCode, PkgNo)
  }
 
-    Except
-     on E: EConvertError do
-      ShowMessage(E.ClassName + LF + E.Message);
-    End ;
-    if NewPkgNo < 1 then
-     Action  := eaREJECT
-      else
-       Begin
-        Action  := eaAccept ;
-        Status  := 1 ;
-       End ;
+        except
+          on E: EConvertError do
+            ShowMessage(E.ClassName + LF + E.Message);
+        end;
+        if NewPkgNo < 1 then
+          Action := eaREJECT
+        else
+        begin
+          Action := eaAccept;
+          Status := 1;
+        end;
 
-      if Action = eaAccept then
-      Begin
-       Action := IdentifyPackageSupplier(
-          NewPkgNo,
-          PkgSupplierCode,
-          ProductNo,
-          Res_UserName,
-          Status ) ;
-      End;
+        if Action = eaAccept then
+        begin
+          Action := IdentifyPackageSupplier(NewPkgNo, PkgSupplierCode, ProductNo, Res_UserName, Status);
+        end;
 
-  End
-  else //Length < 13
-  Begin
-   ScannatPktnr       := PkgNo ;
-   NewPkgNo           := StrToIntDef(PkgNo,0) ;
-   if NewPkgNo = 0 then
-   Begin
-    if dmsSystem.ShowAvregErrorDialog = 1 then
-    if tfOKDia.Execute('Streckkoden kunde inte översättas till ett Paketnr') = 1 then ;
-    cxLabelSkannarPaketnrProblem.Caption := PkgNo + ' streckkoden kunde inte översättas till ett Paketnr' ;
-    Exit ;
-   End ;
+      end
+      else //Length < 13
+      begin
+        ScannatPktnr := PkgNo;
+        NewPkgNo := StrToIntDef(PkgNo, 0);
+        if NewPkgNo = 0 then
+        begin
+          if dmsSystem.ShowAvregErrorDialog = 1 then
+            if tfOKDia.Execute('Streckkoden kunde inte översättas till ett Paketnr') = 1 then
+            ;
+          cxLabelSkannarPaketnrProblem.Caption := PkgNo + ' streckkoden kunde inte översättas till ett Paketnr';
+          Exit;
+        end;
 
-   if Length(PkgSupplierCode) = 0 then
-   PkgSupplierCode  := '___' ;
+        if Length(PkgSupplierCode) = 0 then
+          PkgSupplierCode := '___';
 //   else
 //   PkgSupplierCode  :=  FDm_SettingsPrefix.AsString ;
 
 
-   Action := IdentifyPackageSupplier(
-      NewPkgNo,
-      PkgSupplierCode,
-      ProductNo,
-      Res_UserName,
-      Status ) ;
+        Action := IdentifyPackageSupplier(NewPkgNo, PkgSupplierCode, ProductNo, Res_UserName, Status);
 
-
-
-   if Length(Trim(PkgSupplierCode)) = 0 then
-   Begin
+        if Length(Trim(PkgSupplierCode)) = 0 then
+        begin
 //    InsertToadm_AvRegPkgs(NewPkgNo, PkgSupplierCode, 'Inget paket kunde identifieras') ;
-    dmsSystem.FDoLog('!! Length(Trim(PkgSupplierCode)) = 0 ' + PkgSupplierCode) ;
-    dmsSystem.FDoLog('!! ScannatPktnr kunde inte identifieras ' + ScannatPktnr) ;
+          dmsSystem.FDoLog('!! Length(Trim(PkgSupplierCode)) = 0 ' + PkgSupplierCode);
+          dmsSystem.FDoLog('!! ScannatPktnr kunde inte identifieras ' + ScannatPktnr);
 //    ShowMessage('Paketnr ' + ScannatPktnr + ' kunde inte identifieras') ;
-    ShowPkgInfo(NewPkgNo, PkgSupplierCode) ;
-    cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + ScannatPktnr + ' kunde inte identifieras' ;
-    Exit ;
-   End
-   else
-   Begin
-    dmsSystem.FDoLog('PkgSupplierCode = ' + PkgSupplierCode  + ' ScanningPkgNo short')  ;
-    dmsSystem.FDoLog('NewPkgNo = ' + IntToStr(NewPkgNo)) ;
-   End ;
+          ShowPkgInfo(NewPkgNo, PkgSupplierCode);
+          cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + ScannatPktnr + ' kunde inte identifieras';
+          Exit;
+        end
+        else
+        begin
+          dmsSystem.FDoLog('PkgSupplierCode = ' + PkgSupplierCode + ' ScanningPkgNo short');
+          dmsSystem.FDoLog('NewPkgNo = ' + IntToStr(NewPkgNo));
+        end;
 
-
-
-
-   if Action = eaUserCancel then
-   Begin
+        if Action = eaUserCancel then
+        begin
 //    InsertToadm_AvRegPkgs(NewPkgNo, PkgSupplierCode, 'Inget paket kunde identifieras') ;
 //    ShowMessage('Inget paket kunde identifieras') ;
-    Exit ;
-   End ;
+          Exit;
+        end;
 
 
 //   PkgSupplierCode:= EgenPkgSupplierCode ;
 
-  End ;  //else //Length < 13
+      end;  //else //Length < 13
 
   //Ett paket kan inte avregistreras flera ggr mot en produktionsmätpunkt
 {  RegPointName:= dmPkgs.IsPkgAvregistrerat (NewPkgNo, mtUserPropOwnerNo.AsInteger, PkgSupplierCode) ;
@@ -6563,28 +6548,28 @@ begin
 
     //check if packageno is active or not.
     //if not then get a packageno that is active in same inventorygroup and same type and deregister that particular package against the work order
-    if VidaEnergi then begin
-      NewPkgNo := getLikvardigtPaket(NewPkgNo, PkgSupplierCode);
-      if NewPkgNo < 1 then
-        Action := eaAlreadyAvReg;
-    end;
+      if VidaEnergi then
+      begin
+        NewPkgNo := getLikvardigtPaket(NewPkgNo, PkgSupplierCode);
+        if NewPkgNo < 1 then
+          Action := eaAlreadyAvReg;
+      end;
 
-
-  if Action = eaAccept then
-  Begin
+      if Action = eaAccept then
+      begin
 //   if FDm_AvRegPkgs.Locate('Paketnr;Prefix', VarArrayOf([NewPkgNo, PkgSupplierCode]), []) then
-   if PkgInList(NewPkgNo, PkgSupplierCode) then
-   Begin
-    Action:= EFDuplicate ;
-    dmsSystem.FDoLog('!! Duplicate PkgSupplierCode = ' + PkgSupplierCode) ;
-    dmsSystem.FDoLog('!! Duplicate NewPkgNo = ' + IntToStr(NewPkgNo)) ;
-    cxLabelSkannarPaketnrProblem.Caption := ('Dublett, paketnr ' + IntToStr(NewPkgNo)) ;
-   End
-   else
-   Action := eaAccept ;
-  End
-   else
-    Action  := eaREJECT ;
+        if PkgInList(NewPkgNo, PkgSupplierCode) then
+        begin
+          Action := EFDuplicate;
+          dmsSystem.FDoLog('!! Duplicate PkgSupplierCode = ' + PkgSupplierCode);
+          dmsSystem.FDoLog('!! Duplicate NewPkgNo = ' + IntToStr(NewPkgNo));
+          cxLabelSkannarPaketnrProblem.Caption := ('Dublett, paketnr ' + IntToStr(NewPkgNo));
+        end
+        else
+          Action := eaAccept;
+      end
+      else
+        Action := eaREJECT;
 
 {  if Action = eaAccept then
         if dmsSystem.Pkg_Reserved(
@@ -6597,52 +6582,48 @@ begin
            Action := eaReserved ;
 }
 
-  if Action = eaACCEPT then
-  Begin
-   cxLabelSkannarPaketnr.Caption := 'Skannat paketnr ' + inttostr(NewPkgNo) + '/' + PkgSupplierCode ;
-   AddPkgToGrid(Sender, NewPkgNo, PkgSupplierCode, ProductNo, Status) ;
-   if dmsSystem.AllowDeRegPkg = 1 then
-   Begin
-    AvRegistreraPaketIBufferten ;
-    acRefreshAvRegExecute(Sender) ;
-   End;
-  End
-   else
-   if Action = eaREJECT then
-    Begin
-     if dmsSystem.ShowAvregErrorDialog = 1 then
-      tfOKDia.Execute('Paketnr ' + ScannatPktnr + ' finns inte') ;
-     cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + ScannatPktnr + ' finns inte' ;
-     dmsSystem.FDoLog('!! eaREJECT = ' + 'Paketnr ' + ScannatPktnr + ' finns inte') ;
-    End
-    else
-     if Action = eaReserved then
-      Begin
-       if dmsSystem.ShowAvregErrorDialog = 1 then
-        ShowMessage('Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är reserverat av användare ' + Res_UserName) ;
-       cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är reserverat av användare ' + Res_UserName ;
-      End
-      else
-       if (Action = eaAlreadyAvReg) or (Action = EFDuplicate) then
-       Begin
+      if Action = eaACCEPT then
+      begin
+        cxLabelSkannarPaketnr.Caption := 'Skannat paketnr ' + inttostr(NewPkgNo) + '/' + PkgSupplierCode;
+        AddPkgToGrid(Sender, NewPkgNo, PkgSupplierCode, ProductNo, Status);
+        if dmsSystem.AllowDeRegPkg = 1 then
+        begin
+          AvRegistreraPaketIBufferten;
+          acRefreshAvRegExecute(Sender);
+        end;
+      end
+      else if Action = eaREJECT then
+      begin
         if dmsSystem.ShowAvregErrorDialog = 1 then
-         ShowMessage('Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är redan avregistrerat mot körningen') ;
-        cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är redan avregistrerat mot körningen' ;
-       End ;
+          tfOKDia.Execute('Paketnr ' + ScannatPktnr + ' finns inte');
+        cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + ScannatPktnr + ' finns inte';
+        dmsSystem.FDoLog('!! eaREJECT = ' + 'Paketnr ' + ScannatPktnr + ' finns inte');
+      end
+      else if Action = eaReserved then
+      begin
+        if dmsSystem.ShowAvregErrorDialog = 1 then
+          ShowMessage('Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är reserverat av användare ' + Res_UserName);
+        cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är reserverat av användare ' + Res_UserName;
+      end
+      else if (Action = eaAlreadyAvReg) or (Action = EFDuplicate) then
+      begin
+        if dmsSystem.ShowAvregErrorDialog = 1 then
+          ShowMessage('Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är redan avregistrerat mot körningen');
+        cxLabelSkannarPaketnrProblem.Caption := 'Paketnr ' + IntToStr(NewPkgNo) + '/' + PkgSupplierCode + ' är redan avregistrerat mot körningen';
+      end;
 
-  dmsSystem.FDoLog('________________________________________________________________________ ') ;
+      dmsSystem.FDoLog('________________________________________________________________________ ');
 
-  ShowHidePkgsPanels ;
+      ShowHidePkgsPanels;
 
-  finally
-    ActionNo  := Ord(Action) ;
-    dmsSystem.AddPkgToLoggs(NewPkgNo, dmsSortOrder.cds_SortOrderSortingOrderNo.AsInteger,
-    {AvRegStatus Scanned string} ActionNo, PkgSupplierCode, ScannatPktnr) ;
-    Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  end;
- End ;// With dm_Vis_Vida  do
+    finally
+      ActionNo := Ord(Action);
+      dmsSystem.AddPkgToLoggs(NewPkgNo, dmsSortOrder.cds_SortOrderSortingOrderNo.AsInteger,
+    {AvRegStatus Scanned string} ActionNo, PkgSupplierCode, ScannatPktnr);
+      Screen.Cursor := Save_Cursor;  { Always restore to normal }
+    end;
+  end; // With dm_Vis_Vida  do
 end;
-
 procedure TfrmSortOrder.ShowHidePkgsPanels ;
 Begin
  With dm_Vis_Vida  do
@@ -6950,10 +6931,10 @@ begin
     try
       result := -1;
       cds_getActivePackage.Active := false;
-      cds_getActivePackage.ParamByName('@PkgNo').AsInteger := aNewPkgNo;
+      cds_getActivePackage.ParamByName('@PackageNo').AsInteger := aNewPkgNo;
       cds_getActivePackage.ParamByName('@Prefix').AsString := aPrefix;
       cds_getActivePackage.Active := true;
-      result := cds_getActivePackage.FieldByName('PackageNo').AsInteger;
+      result := cds_getActivePackage.FieldByName('NewPackageNo').AsInteger;
     finally
 
     end;

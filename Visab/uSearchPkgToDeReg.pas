@@ -142,7 +142,7 @@ type
 
 implementation
 
-uses dm_SortOrder, dmsVidaSystem, dmsPkgWorkOrder, dmsDataConn, udmLanguage, VidaUser, uEntryFieldNoOfPkgs;
+uses dm_SortOrder, dmsVidaSystem, dmsPkgWorkOrder, dmsDataConn, udmLanguage, VidaUser, uEntryFieldNoOfPkgs, dmsUserAdm;
 
 {$R *.dfm}
 
@@ -333,7 +333,10 @@ end;
 
 procedure TfSearchPkgToDeReg.FormShow(Sender: TObject);
 begin
-  if VidaUser.ThisUser.CompanyNo = 30177 then begin  // VIDA Tranemo AB
+  // Anpassa formulär efter användarpolicy
+  dmUserAdm.ApplyRestrictionsOnForm(ThisUser.UserID, self);
+  cxbtnSelectManyPkgs.Enabled := cxbtnSelectManyPkgs.visible; //Policyn gäller enbart visible och vi vill också aktivera/inaktivera knappen.
+(*  if VidaUser.ThisUser.CompanyNo = 30177 then begin  // VIDA Tranemo AB
     cxbtnSelectManyPkgs.Enabled := true;
     cxbtnSelectManyPkgs.visible := true;
   end
@@ -341,7 +344,7 @@ begin
     cxbtnSelectManyPkgs.Enabled := false;
     cxbtnSelectManyPkgs.visible := false;
   end;
-
+  *)
 end;
 
 procedure TfSearchPkgToDeReg.mtProductPIPNoChange(Sender: TField);

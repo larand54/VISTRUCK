@@ -1879,76 +1879,76 @@ End ;
 
 //Result = Prefix
 function Tdm_Vis_Vida.GetPkgPos (Var PackageNoString : String) : String ;
-Var ClientID, PktnrLevKod : String ;
-Begin
- dmsSystem.FDoLog('PackageNoString = ' + PackageNoString) ;
- ClientID :=  Trim(Copy(PackageNoString, 1, 11)) ;
+var
+  ClientID, PktnrLevKod: string;
+begin
+  dmsSystem.FDoLog('PackageNoString = ' + PackageNoString);
+  ClientID := Trim(Copy(PackageNoString, 1, 11));
 // FDoLog('ClientID = ' + ClientID) ;
 
- Try
- sq_GetPkgPos.Close ;
- sq_GetPkgPos.ParamByName('ClientID').Value:= ClientID ;
- sq_GetPkgPos.Open ;
- Try
- except
-  On E: Exception do
-  Begin
-   dmsSystem.FDoLog(E.Message+' :sq_GetPkgPos.Open') ;
-   ShowMessage(E.Message+' :sq_GetPkgPos.Open') ;
-   Raise ;
-  End ;
- end;
+  try
+    sq_GetPkgPos.Close;
+    sq_GetPkgPos.ParamByName('ClientID').Value := ClientID;
+    sq_GetPkgPos.Open;
+    try
+    except
+      on E: Exception do
+      begin
+        dmsSystem.FDoLog(E.Message + ' :sq_GetPkgPos.Open');
+        ShowMessage(E.Message + ' :sq_GetPkgPos.Open');
+        raise;
+      end;
+    end;
 
- if not sq_GetPkgPos.Eof then
- Begin
+    if not sq_GetPkgPos.Eof then
+    begin
   //Kopierar 2 siffrigt prefix från paketnrsträngen
-  PktnrLevKod:= Trim(Copy(PackageNoString, sq_GetPkgPosSupplierCodePos.AsInteger, sq_GetPkgPosSupplierCodeLength.AsInteger)) ;
+      PktnrLevKod := Trim(Copy(PackageNoString, sq_GetPkgPosSupplierCodePos.AsInteger, sq_GetPkgPosSupplierCodeLength.AsInteger));
 //  FDoLog('sq_GetPkgPosSupplierCodePos.AsString = ' + sq_GetPkgPosSupplierCodePos.AsString) ;
 //  FDoLog('sq_GetPkgPosSupplierCodeLength.AsString = ' + sq_GetPkgPosSupplierCodeLength.AsString) ;
 
-  PackageNoString:= Trim(Copy(PackageNoString, sq_GetPkgPosPaketNoPos.AsInteger, sq_GetPkgPosPaketNoLength.AsInteger)) ;
+      PackageNoString := Trim(Copy(PackageNoString, sq_GetPkgPosPaketNoPos.AsInteger, sq_GetPkgPosPaketNoLength.AsInteger));
 //  FDoLog('PackageNoString = ' + PackageNoString) ;
 
 //Hämta in paketprefix från tabellen PkgPrefix
-   Try
-   Try
-   sq_GetPkgPrefix.ParamByName('ProductionUnitCode').Value := PktnrLevKod ;
-   sq_GetPkgPrefix.ParamByName('ClientID').Value           := ClientID ;
-   sq_GetPkgPrefix.Open ;
+      try
+        try
+          sq_GetPkgPrefix.ParamByName('ProductionUnitCode').Value := PktnrLevKod;
+          sq_GetPkgPrefix.ParamByName('ClientID').Value := ClientID;
+          sq_GetPkgPrefix.Open;
 
-  except
-   On E: Exception do
-    Begin
-     dmsSystem.FDoLog(E.Message+' :sq_GetPkgPrefix.Open') ;
-     ShowMessage(E.Message+' :sq_GetPkgPrefix.Open') ;
-    Raise ;
-   End ;
-  end;
+        except
+          on E: Exception do
+          begin
+            dmsSystem.FDoLog(E.Message + ' :sq_GetPkgPrefix.Open');
+            ShowMessage(E.Message + ' :sq_GetPkgPrefix.Open');
+            raise;
+          end;
+        end;
 //   FDoLog('sq_GetPkgPrefixPkgPrefix.AsString = ' + sq_GetPkgPrefixPkgPrefix.AsString) ;
 
-   if (not sq_GetPkgPrefix.Eof) or (Length(sq_GetPkgPrefixPkgPrefix.AsString) > 1) then
-    Result  := sq_GetPkgPrefixPkgPrefix.AsString
-     else
-      Begin
-       Result           := '' ;
-       PackageNoString  := '-1' ;
-       dmsSystem.FDoLog('1:PackageNoString = ' + PackageNoString) ;
-      End ;
-   Finally
-    sq_GetPkgPrefix.Close ;
-   End ;
- End
- else//if not sq_GetPkgPos.Eof then
- Begin
-  Result  := '' ;
-  PackageNoString:= '-1' ;
-  dmsSystem.FDoLog('2:PackageNoString = ' + PackageNoString) ;
- End ;
+        if (not sq_GetPkgPrefix.Eof) or (Length(sq_GetPkgPrefixPkgPrefix.AsString) > 1) then
+          Result := sq_GetPkgPrefixPkgPrefix.AsString
+        else
+        begin
+          Result := '';
+          PackageNoString := '-1';
+          dmsSystem.FDoLog('1:PackageNoString = ' + PackageNoString);
+        end;
+      finally
+        sq_GetPkgPrefix.Close;
+      end;
+    end
+    else//if not sq_GetPkgPos.Eof then
+    begin
+      Result := '';
+      PackageNoString := '-1';
+      dmsSystem.FDoLog('2:PackageNoString = ' + PackageNoString);
+    end;
 
- Finally
-  sq_GetPkgPos.Close ;
- End ;
-
+  finally
+    sq_GetPkgPos.Close;
+  end;
 End ;
 
 function Tdm_Vis_Vida.Pkg_Has_ZERO_OperationStatus : Boolean ;
