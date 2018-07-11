@@ -1374,7 +1374,7 @@ type
     AktivtDiagram  : String ;
     PackageCode_Layout  : Array of array of variant ;
     function VidaEnergi: boolean;
-    function getLikvardigtPaket(const aNewPkgNo : Integer; const aPrefix: string): integer;
+    function getLikvardigtPaket(const aNewPkgNo, aSortOrderNo: Integer; const aPrefix: string): integer;
     procedure AvRegistreraPaketIBufferten ;
     procedure ShowPkgInfo(const NewPkgNo : Integer;const PkgSupplierCode : String) ;
     procedure ShowHidePkgsPanels ;
@@ -6437,7 +6437,7 @@ var
   ScannatPktnr: string;
   ActionNo: Integer;
 begin
-  with dm_Vis_Vida do
+  with dm_Vis_Vida, dmsSortOrder do
   begin
     cxLabelSkannarPaketnr.Caption := '';
     cxLabelSkannarPaketnrProblem.Caption := '';
@@ -6550,7 +6550,7 @@ begin
     //if not then get a packageno that is active in same inventorygroup and same type and deregister that particular package against the work order
       if VidaEnergi then
       begin
-        NewPkgNo := getLikvardigtPaket(NewPkgNo, PkgSupplierCode);
+        NewPkgNo := getLikvardigtPaket(NewPkgNo, cds_SchedulerID.AsInteger, PkgSupplierCode);
         if NewPkgNo < 1 then
           Action := eaAlreadyAvReg;
       end;
@@ -6924,19 +6924,31 @@ begin
  acStartExecute(Sender) ;
 end;
 
-function TfrmSortOrder.getLikvardigtPaket(const aNewPkgNo: Integer; const aPrefix: string): integer;
+function TfrmSortOrder.getLikvardigtPaket(const aNewPkgNo, aSortOrderNo: Integer; const aPrefix: string): integer;
+var
+  artikelNr,
+  lagerStatus,
+  newPkgNo: integer;
+  Action: TEditAction;
 begin
-  with dm_Vis_Vida do
+  with dm_Vis_Vida, dmsSortOrder do
   begin
+    result := -1;
     try
-      result := -1;
-      cds_getActivePackage.Active := false;
-      cds_getActivePackage.ParamByName('@PackageNo').AsInteger := aNewPkgNo;
-      cds_getActivePackage.ParamByName('@Prefix').AsString := aPrefix;
-      cds_getActivePackage.Active := true;
-      result := cds_getActivePackage.FieldByName('NewPackageNo').AsInteger;
+ //check that package is available in inventory or else we don't need a replacement package.
+      artikelNr := getPkgArticleNo(aNewPkgNo, aSortOrderNo, aPrefix, lagerStatus);
+      if artikelNr <> -1 then
+      begin
+        if lagerStatus <> 1 then
+        begin
+          newPkgNo := getActivePackage(artikelNr, FDm_SettingsPIPNo.AsInteger, aPrefix);
+          result := newPkgNo;
+        end
+        else begin
+          result := aNewPkgNo;
+        end;
+      end;
     finally
-
     end;
   end;
 end;
@@ -6953,39 +6965,38 @@ begin
 end;
 
 procedure TfrmSortOrder.ShowPkgInfo(const NewPkgNo : Integer;const PkgSupplierCode : String) ;
-var fPkgInfo  : TfPkgInfo;
-    Prefix    : String ;
-Begin
- With dm_Vis_Vida do
- Begin
-  if Length(PkgSupplierCode) = 0 then
-   Prefix  := '___'
+var
+  fPkgInfo: TfPkgInfo;
+  Prefix: string;
+begin
+  with dm_Vis_Vida do
+  begin
+    if Length(PkgSupplierCode) = 0 then
+      Prefix := '___'
     else
-     Prefix := PkgSupplierCode ;
-  OpenPkgInfo(NewPkgNo, Prefix) ;
-  if PkgInfoExist then
-  Begin
-   fPkgInfo := TfPkgInfo.Create(nil) ;
-   Try
-    if Prefix = '___' then
-    fPkgInfo.PanelTextInfo.Caption  :=
-    'Paketnr: ' + IntToStr(NewPkgNo) + ' Prefix: ALLA, matchar ej, nedan lista visar alla paket med det eftersökta paketnumret och varför paket inte matchar.'
-    else
-    fPkgInfo.PanelTextInfo.Caption  :=
-    'Paketnr: ' + IntToStr(NewPkgNo) + ' Prefix: ' + PkgSupplierCode + ', matchar ej, nedan lista visar alla paket med det eftersökta paketnumret och varför paket inte matchar.' ;
+      Prefix := PkgSupplierCode;
+    OpenPkgInfo(NewPkgNo, Prefix);
+    if PkgInfoExist then
+    begin
+      fPkgInfo := TfPkgInfo.Create(nil);
+      try
+        if Prefix = '___' then
+          fPkgInfo.PanelTextInfo.Caption := 'Paketnr: ' + IntToStr(NewPkgNo) + ' Prefix: ALLA, matchar ej, nedan lista visar alla paket med det eftersökta paketnumret och varför paket inte matchar.'
+        else
+          fPkgInfo.PanelTextInfo.Caption := 'Paketnr: ' + IntToStr(NewPkgNo) + ' Prefix: ' + PkgSupplierCode + ', matchar ej, nedan lista visar alla paket med det eftersökta paketnumret och varför paket inte matchar.';
 
-    fPkgInfo.ShowModal ;
-    ClosePkgInfo ;
-   Finally
-    FreeAndNil(fPkgInfo) ;
-   End ;
-  End //if PkgInfoExist then
-   else
-   Begin
-    if dmsSystem.ShowAvregErrorDialog = 1 then
-     tfOKDia.Execute('Paketnr: ' + IntToStr(NewPkgNo) + ' kan inte identifieras') ;
-   End;
- End ; // With dm_Vis_Vida do
+        fPkgInfo.ShowModal;
+        ClosePkgInfo;
+      finally
+        FreeAndNil(fPkgInfo);
+      end;
+    end //if PkgInfoExist then
+    else
+    begin
+      if dmsSystem.ShowAvregErrorDialog = 1 then
+        tfOKDia.Execute('Paketnr: ' + IntToStr(NewPkgNo) + ' kan inte identifieras');
+    end;
+  end; // With dm_Vis_Vida do
 End ;
 
 procedure TfrmSortOrder.acSetStatusKlarAttKoraExecute(Sender: TObject);

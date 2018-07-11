@@ -1183,6 +1183,9 @@ type
     FD_SortOrderRawSumAdjustedAM3: TFloatField;
     FD_SortOrderRawSumAdjustedNM3: TFloatField;
     FD_SortOrderRawSumAdjustedAM1: TFloatField;
+    cds_PIPNoLIPNo_from_SOR: TFDQuery;
+    cds_getPkgArticleNo: TFDQuery;
+    cds_GetActivePackage: TFDQuery;
     procedure dsp_SorOrdRowGetTableName(Sender: TObject; DataSet: TDataSet;
       var TableName: String);
     procedure dsp_SortOrderGetTableName(Sender: TObject; DataSet: TDataSet;
@@ -1295,6 +1298,9 @@ type
     ActivePage      : Integer ;
     SupplierCode    : String3 ;
 
+    function getPIPNoFromSortOrder(aSORNo: integer): integer;
+    function getPkgArticleNo(const aPkgNo, aSortOrderNo: integer; const aSupplierCode: string3; VAR aLagerStatus: integer): integer;
+    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
     Function  GetAT (const ProductNo : Integer) : Double ;
     Function  GetAB (const ProductNo : Integer) : Double ;
     procedure GetKassationStycketal ;
@@ -1404,6 +1410,41 @@ Begin
    FD_GetCost.Close ;
   End ;
 End ;
+
+function TdmsSortOrder.getPIPNoFromSortOrder(aSORNo: integer): integer;
+begin
+  cds_PIPNoLIPNo_from_SOR.Active := false;
+  cds_PIPNoLIPNo_from_SOR.ParamByName('SORNo').AsInteger := aSORNo;
+  try
+    cds_PIPNoLIPNo_from_SOR.Active := true;
+    result := cds_PIPNoLIPNo_from_SOR.FieldByName('PIPNo').AsInteger;
+  finally
+    cds_PIPNoLIPNo_from_SOR.Active := false;
+  end;
+end;
+
+function TdmsSortOrder.getPkgArticleNo(const aPkgNo, aSortOrderNo: integer; const aSupplierCode: string3; var aLagerStatus: integer): integer;
+begin
+  result := -1;
+  try
+    cds_getPkgArticleNo.Active := False;
+    cds_getPkgArticleNo.paramByName('PackageNo').AsInteger := aPkgNo;
+    cds_getPkgArticleNo.paramByName('SortingOrderNo').AsInteger := aSortOrderNo;
+    cds_getPkgArticleNo.paramByName('SupplierCode').AsString := aSupplierCode;
+    cds_getPkgArticleNo.Active := True;
+    cds_getPkgArticleNo.First;
+    if not cds_getPkgArticleNo.Eof then
+    begin
+      Result := cds_getPkgArticleNo.FieldByName('pkgArticleNo').AsInteger;
+      aLagerStatus := cds_getPkgArticleNo.FieldByName('LagerStatus').AsInteger
+    end
+    else
+
+  finally
+    cds_getPkgArticleNo.Active := False;
+  end;
+
+end;
 
 function TdmsSortOrder.GetSalaryPerHour(const ProductionUnitNo : Integer) : Double ;
 Begin
@@ -5306,6 +5347,19 @@ Begin
  End ;
 End ;
 
+
+function TdmsSortOrder.getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
+begin
+  cds_getActivePackage.Active := false;
+  cds_getActivePackage.ParamByName('PkgArticleNo').AsInteger := aPkgArticleNo;
+  cds_getActivePackage.ParamByName('SupplierCode').AsString := aSupplierCode;
+  cds_getActivePackage.ParamByName('PIPNo').AsInteger := aPIPNo;
+  cds_getActivePackage.Active := true;
+  if not cds_getActivePackage.Eof then
+    result :=   cds_getActivePackage.FieldByName('PackageNo').AsInteger
+  else
+    raise Exception.Create('Active Package  for articleNo (' + intToStr(aPkgArticleNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
+end;
 
 procedure TdmsSortOrder.cds_SOoutputAfterOpen(DataSet: TDataSet);
 begin

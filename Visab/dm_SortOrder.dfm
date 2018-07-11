@@ -6959,8 +6959,8 @@ object dmsSortOrder: TdmsSortOrder
   object FD_vis_PkgRegInOtherRunsBetweenDates: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_PkgRegInOtherRunsBetweenDates'
-    Left = 712
-    Top = 800
+    Left = 720
+    Top = 840
     ParamData = <
       item
         Name = '@NextDate'
@@ -12856,8 +12856,6 @@ object dmsSortOrder: TdmsSortOrder
       0A00730071005F00470065007400500072006F00640075006300740044006500
       73006300410063007400750061006C00570069006400740068004D004D000100
       410063007400750061006C00570069006400740068004D004D00010001000100
-      01000D000A006300640073005F00500072006F00700073004E0061006D006500
-      01004E0061006D00650001004E0061006D006E00010001004E0061006D006E00
       01000D000A007300740046006F006E00740073005F0055006E00690063006F00
       640065000D000A00730074004D0075006C00740069004C0069006E0065007300
       5F0055006E00690063006F00640065000D000A00730074005300740072006900
@@ -16094,5 +16092,102 @@ object dmsSortOrder: TdmsSortOrder
       FieldName = 'ActualWidthMM'
       Origin = 'ActualWidthMM'
     end
+  end
+  object cds_PIPNoLIPNo_from_SOR: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'select TOP 1 LIP.PhysicalInventoryPointNo AS PIPNo,sor.LIPNo '
+      'FROM dbo.SortingOrderRow sor'
+      
+        'JOIN dbo.LogicalInventoryPoint LIP ON LIP.LogicalInventoryPointN' +
+        'o=sor.LIPNo '
+      'where sor.sortingorderNo=:SORNo')
+    Left = 672
+    Top = 656
+    ParamData = <
+      item
+        Name = 'SORNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 97516
+      end>
+  end
+  object cds_getPkgArticleNo: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'DECLARE @LIPNo int'
+      
+        'select TOP 1 @LIPNo = sor.LIPNo FROM dbo.SortingOrderRow sor JOI' +
+        'N dbo.LogicalInventoryPoint LIP ON LIP.LogicalInventoryPointNo=s' +
+        'or.LIPNo WHERE sor.SortingOrderNo=:SortingOrderNo'
+      
+        'SELECT PN.PkgArticleNo, PN.status AS LagerStatus FROM dbo.Packag' +
+        'eNumber PN'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = PN.LogicalInventoryPointNo'
+      'WHERE PN.PackageNo = :PackageNo'
+      'AND LIP.LogicalInventoryPointNo = @LIPNo'
+      'AND PN.SupplierCode = :SupplierCode'
+      ''
+      '')
+    Left = 672
+    Top = 720
+    ParamData = <
+      item
+        Name = 'SORTINGORDERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 97516
+      end
+      item
+        Name = 'PACKAGENO'
+        DataType = ftString
+        ParamType = ptInput
+        Value = '999000'
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = 'VEP'
+      end>
+  end
+  object cds_GetActivePackage: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'SELECT TOP 1 PackageNo FROM dbo.PackageNumber PN'
+      
+        'Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventory' +
+        'PointNo = PN.LogicalInventoryPointNo'
+      'WHERE PN.PkgArticleNo = :PkgArticleNo'
+      'AND PN.SupplierCode = :SupplierCode'
+      'AND LIP.PhysicalInventoryPointNo = :PIPNo'
+      'AND PN.Status = 1'
+      'AND LIP.CanAddToLoad = 1'
+      'ORDER BY PackageNo '
+      ''
+      '')
+    Left = 672
+    Top = 768
+    ParamData = <
+      item
+        Name = 'PKGARTICLENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'PIPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
   end
 end

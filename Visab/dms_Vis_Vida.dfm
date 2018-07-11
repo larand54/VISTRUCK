@@ -6220,31 +6220,4 @@ object dm_Vis_Vida: Tdm_Vis_Vida
       ReadOnly = True
     end
   end
-  object cds_getActivePackage: TFDStoredProc
-    Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_getActivePackage'
-    Left = 784
-    Top = 280
-    ParamData = <
-      item
-        Position = 1
-        Name = '@RETURN_VALUE'
-        DataType = ftInteger
-        ParamType = ptResult
-        Value = 0
-      end
-      item
-        Position = 2
-        Name = '@PackageNo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 3
-        Name = '@Prefix'
-        DataType = ftFixedChar
-        ParamType = ptInput
-        Size = 3
-      end>
-  end
 end

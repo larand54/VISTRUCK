@@ -5,7 +5,7 @@ object fOKDia: TfOKDia
   Caption = 'Meddelande'
   ClientHeight = 479
   ClientWidth = 531
-  Color = clRed
+  Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -92,8 +92,8 @@ object fOKDia: TfOKDia
       'DataField'
       'KeyField'
       'ListField')
-    Left = 200
-    Top = 176
+    Left = 256
+    Top = 120
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066004F004B0044006900610001004D00650064006400

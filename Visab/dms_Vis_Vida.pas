@@ -460,7 +460,6 @@ type
     cds_PksByInventoryPlaceIIIIInInventory: TIntegerField;
     cds_PksByInventoryPlaceIIIIOwnerNo: TIntegerField;
     cds_PksByInventoryPlaceIIIIPIPNo: TIntegerField;
-    cds_getActivePackage: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure FDm_SettingsSortingOrderNoChange(Sender: TField);
     procedure FDm_SettingsOwnInventoryChange(Sender: TField);
