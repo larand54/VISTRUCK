@@ -1178,12 +1178,12 @@ Begin
       Result  := ID ;//StrToIntDef(Trim(KorNr),-1) ;
     End
      else
-      Result  := -1 ;
+      Result  := -1 ; // Wrong input
 //   KorNr  := Copy(fSelectSortingOrderNo.meRunNo.Text, 1, 5) ;
 
   End
     else
-     Result := -1 ;
+     Result := 0 ; // Cancelled input
   Finally
    FreeAndNil(fSelectSortingOrderNo) ;
   End ;
@@ -1214,54 +1214,49 @@ var frmSortOrder        : TfrmSortOrder;
     Save_Cursor         : TCursor;
     VerkNo              : Integer ;
 Begin
-  Save_Cursor    := Screen.Cursor;
+  Save_Cursor := Screen.Cursor;
   Screen.Cursor := crSQLWait; { Show hourglass cursor }
-  Try
+  try
     Default_SortingOrderNo := SelectSortingOrderNo;
-    // dmc_DB.sq_ProdSumPktKrNr.AsInteger ;
-    Screen.Cursor := crSQLWait; { Show hourglass cursor }
+    if Default_SortingOrderNo < 1 then
+    begin
+      if Default_SortingOrderNo = -1 then
+        Showmessage('Mata in ett giltigt körordernummer!');
+      exit;
+    end;
+
     VerkNo := dmsSystem.GetVerkNoForSortingOrderServer(Default_SortingOrderNo);
+    if VerkNo = -1 then
+    begin
+      showmessage('Körordernummer: ' + intToStr(Default_SortingOrderNo) + ' saknas!');
+      exit;
+    end;
 
     if GetGroupClientRegionNo(VerkNo, ThisUser.CompanyNo) then
+    begin
+      Default_RegPointNo := -1;
+      frmSortOrder := TfrmSortOrder.Create(nil);
+      try
+        Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-    // if VerkNo = ThisUser.CompanyNo then
-    Begin
-      if (Default_SortingOrderNo > 0) and (VerkNo > -1) then
-      Begin
-        Default_RegPointNo := -1;
-        // dmc_DB.cds_MainParamsStandardMatPunkt.AsInteger ;
-        frmSortOrder := TfrmSortOrder.Create(nil);
-        Try
-          Screen.Cursor := crSQLWait; { Show hourglass cursor }
+        frmSortOrder.CreateCo(VerkNo);
+        Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-          frmSortOrder.CreateCo(VerkNo);
-          Screen.Cursor := crSQLWait; { Show hourglass cursor }
+        frmSortOrder.LOpenWorkOrder(Default_SortingOrderNo, -1);
+        Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
-          frmSortOrder.LOpenWorkOrder(Default_SortingOrderNo, -1);
-          Screen.Cursor := crSQLWait; { Show hourglass cursor }
+        frmSortOrder.ShowModal;
 
-          frmSortOrder.ShowModal;
-
-        Finally
-          FreeAndNil(frmSortOrder);
-        End;
-      End
-      else
-      begin
-        // if Default_SortingOrderNo < 1 then
-        // Showmessage('Fel körordernr');
-        if VerkNo = -1 then
-          ShowMessage('Körordernr ' + IntToStr(Default_SortingOrderNo) +
-            ' saknas');
-      end;
-    End
+      finally
+        FreeAndNil(frmSortOrder);
+      end
+    end
     else
-      ShowMessage('Körordernr ' + IntToStr(Default_SortingOrderNo) +
-        ' producent stämmer inte med inloggad användare');
+      ShowMessage('Körordernr ' + IntToStr(Default_SortingOrderNo) + ' producent stämmer inte med inloggad användare');
 
-  Finally
+  finally
     Screen.Cursor := Save_Cursor; { Always restore to normal }
-  End;
+  end;
 End;
 
 procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);

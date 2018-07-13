@@ -535,7 +535,8 @@ type
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
-      function getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
+     function validatePkgsReference(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3): TEditAction;
+     function getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
      procedure ScanPkgsByArticle(const Sender: TObject; const aTxtPkgNo: string);
      function AfterAdded_VE_Pkg(const aPkgNo, aArtikelNo : Integer): TEditAction;
      function GetLikVardigtPaket(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
@@ -5763,6 +5764,20 @@ begin
   end;
 end;
 
+function TfLoadEntrySSP.validatePkgsReference(Sender: TObject; const PkgNo: Integer;
+  const PkgSupplierCode: String3): TEditAction;
+var
+  pkgREF: string;
+  orderREF: string;
+begin
+  if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
+    dmLoadEntrySSP.cds_LoadPackages.Edit;
+
+  pkgREF := dmLoadEntrySSP.cds_LoadPackagesREFERENCE.AsString;
+  if pkgREF <> '' then showMessage('Paketreferens: '+pkgREF);
+  result := eaACCEPT;
+end;
+
 function TfLoadEntrySSP.Validate_VE_Pkg(const aPkgNo,
   aArticleNo: integer): integer;
 begin
@@ -6847,6 +6862,7 @@ begin
             Begin
               Error := False;
             End;
+            validatePkgsReference(Sender, NewPkgNo, PkgSupplierCode);
           End;
         End
         else if Action = eaREJECT then
