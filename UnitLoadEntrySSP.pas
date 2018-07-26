@@ -537,6 +537,7 @@ type
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     function verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
      function linkedArticle(const aArticleNo: integer): boolean;
      function validatePkgsReference(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3): TEditAction;
      function getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
@@ -1487,10 +1488,10 @@ Begin
                           End ;
         else
         end;
-
+    cds_LoadPackagesPackageOK.AsInteger := REF_MISMATCH;
     if (ValidPackage = ALL_OK) or
     ((cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup)
-    and (cds_LoadPackagesOverrideRL.AsInteger = 1)) then
+    and (cds_LoadPackagesOverrideRL.AsInteger = 1)) or (cds_LoadPackagesPackageOK.AsInteger = REF_MISMATCH) then
     Begin
      cds_LoadPackagesDefsspno.AsInteger                   := SuppShipPlanObjectNo ;
      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger    := -1 ;
@@ -1977,6 +1978,9 @@ var
   PkgLog                : String ;
   LO_Number             : Integer ;
   OverrideRL            : Integer ;
+  errMsg                : string;
+  errCode               : integer;
+  LOString              : string;
 begin
  SuppShipPlanObjectNo := -1 ;
  CustcdsNo            := -1  ;
@@ -2044,6 +2048,16 @@ begin
     ((cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup)
     and (cds_LoadPackagesOverrideRL.AsInteger = 1)) then
     Begin
+
+     errMsg := cds_LoadPackagesProblemPackageLog.AsString;
+     errCode := cds_LoadPackagesPackageOK.AsInteger;
+     LOString := verifyPackageReference(cds_LoadPackagesREFERENCE.AsString, LO_Number, errMsg, errCode);
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then 
+     begin
+        cds_LoadPackagesPackageOK.AsInteger := errCode;
+        cds_LoadPackagesProblemPackageLog.AsString := errMsg;
+     end;
+
      cds_LoadPackagesDefsspno.AsInteger                 := SuppShipPlanObjectNo ;
      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
      cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
@@ -5569,6 +5583,7 @@ begin
      else
       AStyle := cxStyleRed ;
   End ;
+  REF_MISMATCH : AStyle := cxStyleYellow
  End ;
 
  if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('Pkg_Function').Index] <> null then
@@ -5867,44 +5882,88 @@ var
   artikelNr: integer;
   PkgSupplierCode: string3;
   lagerStatus: integer;
+  PkgRef: string;
+  errMsg                : string;
+  errCode               : integer;
+  LOString              : string;
+
 begin
-  With dmLoadEntrySSP do
-  Begin
-    if aArticleNo = -1 then begin
-      artikelNr := getPkgArticleNo(aPkgNo,
-                    dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger,
-                    dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger,
-                    PkgSupplierCode,
-                    lagerStatus);
+  with dmLoadEntrySSP do
+  begin
+    if aArticleNo = -1 then
+    begin
+      artikelNr := getPkgArticleNo(aPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger, PkgSupplierCode, lagerStatus);
     end
     else
       artikelNr := aArticleNo;
 
     defSSPNo := dmLoadEntrySSP.TestLOrow(artikelNr);
     LO_Number := cdsLORowsShippingPlanNo.AsInteger;
-    if defSSPNo <> -1 then begin
-      cds_LoadPackagesPackageOK.AsInteger:= ALL_OK ;
-      cds_LoadPackagesProblemPackageLog.AsString:= siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
-      cds_LoadPackagesDefsspno.AsInteger                 := defSSPNo ;
-      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
-      cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
-    End
+    if defSSPNo <> -1 then
+    begin
+      cds_LoadPackagesPackageOK.AsInteger := ALL_OK;
+      cds_LoadPackagesProblemPackageLog.AsString := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_7' (* 'OK' *) );
+      cds_LoadPackagesDefsspno.AsInteger := defSSPNo;
+      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger := -1;
+      cds_LoadPackagesShippingPlanNo.AsInteger := LO_Number;
+    end
     else
-    Begin
-     if LO_Number > 0 then
-      cds_LoadPackagesShippingPlanNo.AsInteger           := LO_Number ;
-      cds_LoadPackagesDefsspno.AsInteger                 := -1 ;
-      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
-      cds_LoadPackagesOverrideRL.AsInteger               := 0 ;
-      cds_LoadPackagesPackageOK.AsInteger                := BAD_PKG ;
+    begin
+      if LO_Number > 0 then
+        cds_LoadPackagesShippingPlanNo.AsInteger := LO_Number;
+      cds_LoadPackagesDefsspno.AsInteger := -1;
+      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger := -1;
+      cds_LoadPackagesPackageOK.AsInteger := BAD_PKG;
       if linkedArticle(artikelNr) then
-        cds_LoadPackagesProblemPackageLog.AsString:= 'Länkad artikel! Skapa LO-rad för denna!'
+        cds_LoadPackagesProblemPackageLog.AsString := 'Länkad artikel! Skapa LO-rad för denna!'
       else
-        cds_LoadPackagesProblemPackageLog.AsString:= 'Artikelnummer matchar ej';
+        cds_LoadPackagesProblemPackageLog.AsString := 'Artikelnummer matchar ej';
     end;
+    if defSSPNo <> -1 then begin
+      PkgRef := dmLoadEntrySSP.cds_LoadPackagesREFERENCE.AsString;
+     errMsg := cds_LoadPackagesProblemPackageLog.AsString;
+     errCode := cds_LoadPackagesPackageOK.AsInteger;
+      LOString := verifyPackageReference(pkgRef, LO_Number, errMsg, errCode);
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then 
+     begin
+        cds_LoadPackagesPackageOK.AsInteger := errCode;
+        cds_LoadPackagesProblemPackageLog.AsString := errMsg;
+     end;
+     
+    end;
+
   end;
   result := defSSPNo;
 end;
+
+function TfLoadEntrySSP.verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
+var
+  sPkgRef: string;
+  pkgRef: integer;
+
+  procedure returnError;
+  begin
+    aErr := REF_MISMATCH;
+    aMsg := 'Paketets referens matchar ej orderradens!';
+  end;
+
+begin
+  sPkgRef := copy(aPkgRef, 1, pos('/', aPkgRef, 2) - 1);
+  result := sPkgRef;
+  if sPkgRef <> '' then
+  begin
+    if aLO_Number <> 0 then
+    try
+      pkgRef := strToInt(sPkgRef);
+      if pkgRef <> aLO_Number then
+        returnError;
+    except
+      on E: Exception do
+        returnError;
+    end;
+  end;
+end;
+
 
 function TfLoadEntrySSP.AfterAddedPkgNo_WhenPickPkgNo(Sender: TObject;
 const PkgNo : Integer;

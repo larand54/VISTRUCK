@@ -282,6 +282,7 @@ const
   VP_LengthNotInLengthGroup = 13 ;
   VP_BadImp                 = 14 ;
   VP_NyaHTFPaket            = 15 ;
+  REF_MISMATCH = 20;
 
 
   INTERNAL_LOAD = 0 ;
