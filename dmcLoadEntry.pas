@@ -1204,7 +1204,7 @@ end;
 procedure TdmLoadEntry.DataModuleCreate(Sender: TObject);
 begin
  GlobalLoadDetailNo := 1 ;
- mtPkgLog.Active:= True ;
+  if not design then mtPkgLog.Active:= True ;
 end;
 
 procedure TdmLoadEntry.mtLoadPackagesAfterInsert(DataSet: TDataSet);

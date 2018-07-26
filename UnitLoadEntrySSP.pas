@@ -403,6 +403,7 @@ type
     dxBarButton16: TdxBarButton;
     dxbrbtnRegBulkDelivery: TdxBarButton;
     cxbtnScanArticle: TcxButton;
+    cxbtnCreatePalletPkg: TcxButton;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -530,11 +531,13 @@ type
     procedure acRegBulkDeliveryExecute(Sender: TObject);
     procedure acRegBulkDeliveryUpdate(Sender: TObject);
     procedure cxbtnScanArticleClick(Sender: TObject);
+    procedure cxbtnCreatePalletPkgClick(Sender: TObject);
 
   private
     { Private declarations }
 //     TempEditString  : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     function linkedArticle(const aArticleNo: integer): boolean;
      function validatePkgsReference(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3): TEditAction;
      function getArticleNoFromSelectedPkg(const aPIPNo: integer): integer;
      procedure ScanPkgsByArticle(const Sender: TObject; const aTxtPkgNo: string);
@@ -1231,6 +1234,71 @@ begin
   cdsLORows.Filtered  := True ;
  End ; //with
 
+end;
+
+procedure TfLoadEntrySSP.cxbtnCreatePalletPkgClick(Sender: TObject);
+var
+  i: integer;
+  pkgNo: integer;
+  prefix: string3;
+  loadNo: integer;
+  loadDetailNo: integer;
+begin
+  with dmLoadEntrySSP do
+  begin
+    try
+      cds_LoadPackages.DisableControls;
+      dmFR.SaveAndSetCursor(crHourGlass);
+      // First check if we already got linked articles in our load - they must first be removed.
+      loadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+      cds_VE_Pallets_In_Load.Active := false;
+      cds_VE_Pallets_In_Load.paramByName('LoadNo').AsInteger := loadNo;
+      cds_VE_Pallets_In_Load.Active := true;
+      cds_VE_Pallets_In_Load.First;
+      while not cds_VE_Pallets_In_Load.EOF do
+      begin
+        pkgNo := cds_VE_Pallets_In_Load.FieldByName('PackageNo').AsInteger;
+        prefix := cds_VE_Pallets_In_Load.FieldByName('prefix').AsString;
+        loadDetailNo := cds_VE_Pallets_In_Load.FieldByName('loadDetailNo').AsInteger;
+        if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([loadNo, loadDetailNo]), []) then
+        begin
+          if cds_LoadPackagesPkg_State.AsInteger = NEW_PACKAGE then
+            cds_LoadPackages.Delete
+          else
+          begin
+            if cds_LoadPackages.State = dsBrowse then
+              cds_LoadPackages.Edit;
+            cds_LoadPackagesPkg_Function.AsInteger := DELETE_PKG;
+            cds_LoadPackagesChanged.AsInteger := 1;
+            cds_LoadPackages.Post;
+          end;
+        end;
+        cds_VE_Pallets_In_Load.Next;
+      end;
+      cds_VE_Pallets_In_Load.Active := false;
+
+      // Now everything has been cleaned up  we can start up adding the pallets
+
+      dmLoadEntrySSP.createPalletPkg(loadNo, thisUser.UserID);
+
+      // If packages created - add these to the load.
+      sp_CreatePalletPkgs.First;
+      while not dmLoadEntrySSP.sp_CreatePalletPkgs.EOF do
+      begin
+        pkgNo := sp_CreatePalletPkgs.FieldByName('pkgNo').AsInteger;
+        prefix := sp_CreatePalletPkgs.FieldByName('prefix').AsString;
+        AddPkgTo_cds_LoadPackages(self,pkgNo, prefix);
+        sp_CreatePalletPkgs.Next;
+      end;
+    finally
+      sp_CreatePalletPkgs.Active := false;
+      cds_LoadPackages.EnableControls;
+      dmFR.RestoreCursor;
+      SaveLoad ;
+      if mePackageNo.Enabled then
+        mePackageNo.SetFocus ;
+    end;
+  end;
 end;
 
 procedure TfLoadEntrySSP.cxbtnScanArticleClick(Sender: TObject);
@@ -2014,6 +2082,11 @@ Begin
    dmLoadEntrySSP.ds_LoadPackages2.OnDataChange:= dmLoadEntrySSP.ds_LoadPackages2DataChange ;
    Screen.Cursor := Save_Cursor;  { Always restore to normal }
   End ;
+end;
+
+function TfLoadEntrySSP.linkedArticle(const aArticleNo: integer): boolean;
+begin
+  result := dmLoadEntrySSP.isLinkedArticle(aArticleNo);
 end;
 
 procedure TfLoadEntrySSP.LoadFormSettings;
@@ -3384,46 +3457,47 @@ begin
 end;
 
 procedure TfLoadEntrySSP.acInsertPkgToInventoryExecute(Sender: TObject);
-Var  Save_Cursor:TCursor;
-Begin
- With dmLoadEntrySSP do
- Begin
+var
+  Save_Cursor: TCursor;
+begin
+  with dmLoadEntrySSP do
+  begin
 
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
-  mtLoadPackages.Active:= True ;
-  GetMarkedPkgs ;
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
+    mtLoadPackages.Active := True;
+    GetMarkedPkgs;
 
-  cds_LoadPackages.DisableControls ;
-  try
-  ds_LoadPackages2.OnDataChange:= NIL ;
+    cds_LoadPackages.DisableControls;
+    try
+      ds_LoadPackages2.OnDataChange := NIL;
 
-  mtLoadPackages.First ;
-  While not mtLoadPackages.Eof do
-  Begin
-   if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([cds_LoadHeadLoadNo.AsInteger, mtLoadPackagesLoadDetailNo.AsInteger]),[]) then
-   Begin
-    if cds_LoadPackagesPkg_State.AsInteger =  NEW_PACKAGE then
-     cds_LoadPackages.Delete
-     else
-     Begin
-      if cds_LoadPackages.State = dsBrowse then
-      cds_LoadPackages.Edit ;
-      cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD ;
-      cds_LoadPackagesChanged.AsInteger      := 1 ;
-      cds_LoadPackages.Post ;
-     End ;
-   End ;
-   mtLoadPackages.Next ;
-  End ;
+      mtLoadPackages.First;
+      while not mtLoadPackages.Eof do
+      begin
+        if cds_LoadPackages.Locate('LoadNo;LoadDetailNo', VarArrayOf([cds_LoadHeadLoadNo.AsInteger, mtLoadPackagesLoadDetailNo.AsInteger]), []) then
+        begin
+          if cds_LoadPackagesPkg_State.AsInteger = NEW_PACKAGE then
+            cds_LoadPackages.Delete
+          else
+          begin
+            if cds_LoadPackages.State = dsBrowse then
+              cds_LoadPackages.Edit;
+            cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD;
+            cds_LoadPackagesChanged.AsInteger := 1;
+            cds_LoadPackages.Post;
+          end;
+        end;
+        mtLoadPackages.Next;
+      end;
 
-  Finally
-   ds_LoadPackages2.OnDataChange:= ds_LoadPackages2DataChange ;
-   mtLoadPackages.Active:= False ;
-   cds_LoadPackages.EnableControls ;
-   Screen.Cursor := Save_Cursor;  { Always restore to normal }
-  End ;
- End ;//with
+    finally
+      ds_LoadPackages2.OnDataChange := ds_LoadPackages2DataChange;
+      mtLoadPackages.Active := False;
+      cds_LoadPackages.EnableControls;
+      Screen.Cursor := Save_Cursor;  { Always restore to normal }
+    end;
+  end; //with
 end;
 
 procedure TfLoadEntrySSP.acInsertAllPkgsToInventoryExecute(
@@ -5823,7 +5897,10 @@ begin
       cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
       cds_LoadPackagesOverrideRL.AsInteger               := 0 ;
       cds_LoadPackagesPackageOK.AsInteger                := BAD_PKG ;
-      cds_LoadPackagesProblemPackageLog.AsString:= 'Artikelnummer matchar ej';
+      if linkedArticle(artikelNr) then
+        cds_LoadPackagesProblemPackageLog.AsString:= 'Länkad artikel! Skapa LO-rad för denna!'
+      else
+        cds_LoadPackagesProblemPackageLog.AsString:= 'Artikelnummer matchar ej';
     end;
   end;
   result := defSSPNo;
@@ -7088,12 +7165,16 @@ begin
     cxbtnScanArticle.enabled := true;
     acRegBulkDelivery.Visible := true;
     acRegBulkDelivery.enabled := true;
+    cxbtnCreatePalletPkg.Visible := true;
+    cxbtnCreatePalletPkg.Enabled := true;
   end
   else begin
     cxbtnScanArticle.Visible := False;
     cxbtnScanArticle.enabled := false;
     acRegBulkDelivery.Visible := False;
     acRegBulkDelivery.Enabled := false;
+    cxbtnCreatePalletPkg.Visible := false;
+    cxbtnCreatePalletPkg.Enabled := false;
   end;
 end;
 

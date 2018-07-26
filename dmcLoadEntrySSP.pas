@@ -406,6 +406,11 @@ type
     cds_LoadPackagesArticleNo: TIntegerField;
     cds_GetPkgArticleNo_2: TFDQuery;
     cds_GetPkgArticleNo_2PkgArticleNo: TIntegerField;
+    sp_CreatePalletPkgs: TFDStoredProc;
+    cds_VE_Pallets_In_Load: TFDQuery;
+    ds_VE_Pallets_In_Load: TDataSource;
+    ds1: TDataSource;
+    cds_LikedArticleUsage: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -455,7 +460,9 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function isLinkedArticle(const aArticleNo: integer): boolean;
    function  Is_Load_Confirmed(const LoadNo : Integer) : Boolean ;
+   function createPalletPkg(const aLoadNo, aUserID: integer): integer;
    function getNewBULKPackageNo: Integer;
    function TestLOrow(const ArticleNo  : Integer) : integer ;
    function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
@@ -577,6 +584,19 @@ begin
     ON e: Exception do begin
       showMessage('Paket: ' + intToStr(aPkgNo) + ' kunde ej inaktiveras! se felmeddelande: '+e.message);
     end;
+  end;
+end;
+
+function TdmLoadEntrySSP.isLinkedArticle(const aArticleNo: integer): boolean;
+begin
+  result := false;
+  try
+    cds_LikedArticleUsage.Active := false;
+    cds_LikedArticleUsage.ParamByName('ARTICLENO').AsInteger := aArticleNo;
+    cds_LikedArticleUsage.Active := true;
+  finally
+    result := cds_LikedArticleUsage.RecordCount > 0;
+    cds_LikedArticleUsage.Active := false;
   end;
 end;
 
@@ -1582,6 +1602,20 @@ Begin
   FD_GetMaxLoadDetailNo.Close ;
  End ;
 End ;
+
+function TdmLoadEntrySSP.createPalletPkg(const aLoadNo, aUserID: integer): integer;
+begin
+  result := -1;
+  try
+    sp_CreatePalletPkgs.Active := false;
+    sp_CreatePalletPkgs.Params.ParamByName('@LoadNo').AsInteger := aLoadNo;
+    sp_CreatePalletPkgs.Params.ParamByName('@UserId').AsInteger := aUserId;
+    sp_CreatePalletPkgs.Active := true;
+    result := 0;
+  finally
+
+  end;
+end;
 
 procedure TdmLoadEntrySSP.csdUnit_OpenLagerLookup ;
 Begin

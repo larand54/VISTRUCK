@@ -19,7 +19,7 @@
     Top = 72
   end
   object mtPkgNos: TkbmMemTable
-    DesignActivation = True
+    DesignActivation = False
     AttachedAutoRefresh = True
     AttachMaxCount = 1
     FieldDefs = <
@@ -93,7 +93,7 @@
     Top = 80
   end
   object mtLoadPackages: TkbmMemTable
-    DesignActivation = True
+    DesignActivation = False
     AttachedAutoRefresh = True
     AttachMaxCount = 1
     FieldDefs = <
@@ -3067,7 +3067,7 @@
       end>
   end
   object mtLoadProp: TkbmMemTable
-    DesignActivation = True
+    DesignActivation = False
     AttachedAutoRefresh = True
     AttachMaxCount = 1
     FieldDefs = <
@@ -3927,5 +3927,92 @@
       FieldName = 'PkgArticleNo'
       Origin = 'PkgArticleNo'
     end
+  end
+  object sp_CreatePalletPkgs: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    SchemaName = 'dbo'
+    StoredProcName = 'VE_pkg_AddLinkedArticlePkg'
+    Left = 896
+    Top = 184
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 863905
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 258
+      end>
+  end
+  object cds_VE_Pallets_In_Load: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'SELECT DISTINCT LD.PackageNo, LD.SupplierCode AS prefix, LD.Load' +
+        'DetailNo FROM LoadDetail LD '
+      'WHERE LD.LoadNo=:LOADNO'
+      
+        'AND LD.PackageNo in (SELECT PN.PackageNo FROM dbo.PackageNumber ' +
+        'PN '
+      'INNER JOIN '
+      '(SELECT pa.LinkedArticleNo FROM dbo.PackageNumber PN '
+      
+        'INNER JOIN dbo.LoadDetail LD1 ON PN.PackageNo=LD1.PackageNo and ' +
+        'PN.SupplierCode = LD1.SupplierCode'
+      
+        'inner join [dbo].[PkgArticle_II] pa on pa.PkgArticleNo  = PN.Pkg' +
+        'ArticleNo AND pa.LinkedArticleNo is not null'
+      'WHERE LD1.LoadNo=:LOADNO'
+      
+        'GROUP BY pa.LinkedArticleNo ) LA ON LA.LinkedArticleNo = PN.pkgA' +
+        'rticleno)')
+    Left = 896
+    Top = 240
+    ParamData = <
+      item
+        Name = 'LOADNO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 863905
+      end>
+  end
+  object ds_VE_Pallets_In_Load: TDataSource
+    DataSet = cds_VE_Pallets_In_Load
+    Left = 904
+    Top = 296
+  end
+  object ds1: TDataSource
+    DataSet = sp_CreatePalletPkgs
+    Left = 904
+    Top = 472
+  end
+  object cds_LikedArticleUsage: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'SELECT * FROM [VIS_VIDA].[dbo].[PkgArticle_II] WHERE LinkedArtic' +
+        'leNo = :ArticleNo')
+    Left = 904
+    Top = 352
+    ParamData = <
+      item
+        Name = 'ARTICLENO'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 77479
+      end>
   end
 end

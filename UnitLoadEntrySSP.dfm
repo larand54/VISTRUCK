@@ -677,10 +677,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -981,7 +977,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             WordWrap = True
           end
           object cxbtnScanArticle: TcxButton
-            Left = 772
+            Left = 764
             Top = 2
             Width = 75
             Height = 35
@@ -1000,6 +996,27 @@ object fLoadEntrySSP: TfLoadEntrySSP
             TabOrder = 10
             WordWrap = True
             OnClick = cxbtnScanArticleClick
+          end
+          object cxbtnCreatePalletPkg: TcxButton
+            Left = 852
+            Top = 2
+            Width = 75
+            Height = 35
+            Caption = 'Skapa pallpaket'
+            Colors.Normal = clScrollBar
+            Colors.NormalText = clBlack
+            Colors.Pressed = clRed
+            Colors.PressedText = clBtnHighlight
+            LookAndFeel.Kind = lfStandard
+            LookAndFeel.NativeStyle = False
+            LookAndFeel.SkinName = 'Seven'
+            OptionsImage.Images = images1616
+            OptionsImage.NumGlyphs = 2
+            SpeedButtonOptions.GroupIndex = 576734370
+            SpeedButtonOptions.AllowAllUp = True
+            TabOrder = 11
+            WordWrap = True
+            OnClick = cxbtnCreatePalletPkgClick
           end
         end
         object grdPkgs: TcxGrid
@@ -1529,8 +1546,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Visible = False
         end
         object TouchKeyboard2: TTouchKeyboard
-          Left = 832
-          Top = 32
+          Left = 840
+          Top = 43
           Width = 250
           Height = 230
           GradientEnd = clSilver
