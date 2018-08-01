@@ -1841,21 +1841,25 @@
     object cds_LoadPackagesREFERENCE: TStringField
       FieldName = 'REFERENCE'
       Origin = 'REFERENCE'
+      ProviderFlags = []
       Size = 30
     end
     object cds_LoadPackagesINFO1: TStringField
       FieldName = 'INFO1'
       Origin = 'INFO1'
+      ProviderFlags = []
       Size = 30
     end
     object cds_LoadPackagesINFO2: TStringField
       FieldName = 'INFO2'
       Origin = 'INFO2'
+      ProviderFlags = []
       Size = 30
     end
     object cds_LoadPackagesArticleNo: TIntegerField
       FieldName = 'ArticleNo'
       Origin = 'ArticleNo'
+      ProviderFlags = []
     end
   end
   object cds_LO_LookUp: TFDQuery
@@ -2414,11 +2418,13 @@
     end
   end
   object sq_OnePkgDetailData: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT distinct'
+      '  PN.REFERENCE,'
       '  PR.ProductDisplayName         AS PRODUCT,'
       '  PN.PackageNo'#9#9'              AS PACKAGENO,'
       '  PN.PackageTypeNo'#9'            AS PACKAGETYPENO,'
@@ -2556,6 +2562,7 @@
     object sq_OnePkgDetailDataProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
       Origin = 'ProductLengthNo'
+      ProviderFlags = []
       ReadOnly = True
     end
     object sq_OnePkgDetailDataALMM: TFloatField
@@ -2566,27 +2573,32 @@
     object sq_OnePkgDetailDataProductNo: TIntegerField
       FieldName = 'ProductNo'
       Origin = 'ProductNo'
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataActualThicknessMM: TFloatField
       FieldName = 'ActualThicknessMM'
       Origin = 'ActualThicknessMM'
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataActualWidthMM: TFloatField
       FieldName = 'ActualWidthMM'
       Origin = 'ActualWidthMM'
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataSurfacingNo: TIntegerField
       FieldName = 'SurfacingNo'
       Origin = 'SurfacingNo'
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataSpeciesNo: TIntegerField
       FieldName = 'SpeciesNo'
       Origin = 'SpeciesNo'
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataMainGradeNo: TIntegerField
       FieldName = 'MainGradeNo'
       Origin = 'MainGradeNo'
-      Required = True
+      ProviderFlags = []
     end
     object sq_OnePkgDetailDataLIPNo: TIntegerField
       FieldName = 'LIPNo'
@@ -2595,6 +2607,13 @@
     object sq_OnePkgDetailDataProductCategoryNo: TIntegerField
       FieldName = 'ProductCategoryNo'
       Origin = 'ProductCategoryNo'
+      ProviderFlags = []
+    end
+    object sq_OnePkgDetailDataREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      ProviderFlags = []
+      Size = 30
     end
   end
   object sq_UpdateLSP: TFDQuery

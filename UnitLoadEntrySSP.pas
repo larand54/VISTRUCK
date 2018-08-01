@@ -1411,6 +1411,9 @@ var
   PkgLog                : String ;
   LO_Number             : Integer ;
   OverrideRL            : Integer ;
+  errMsg                : string;
+  errCode               : integer;
+  LOString              : string;
 Begin
  With dmLoadEntrySSP do
  Begin
@@ -1488,14 +1491,22 @@ Begin
                           End ;
         else
         end;
-    cds_LoadPackagesPackageOK.AsInteger := REF_MISMATCH;
     if (ValidPackage = ALL_OK) or
     ((cds_LoadPackagesPackageOK.AsInteger = VP_LengthNotInLengthGroup)
-    and (cds_LoadPackagesOverrideRL.AsInteger = 1)) or (cds_LoadPackagesPackageOK.AsInteger = REF_MISMATCH) then
+    and (cds_LoadPackagesOverrideRL.AsInteger = 1)) then
     Begin
      cds_LoadPackagesDefsspno.AsInteger                   := SuppShipPlanObjectNo ;
      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger    := -1 ;
      cds_LoadPackagesShippingPlanNo.AsInteger             := LO_Number ;
+
+      // Check package reference
+     LOString := verifyPackageReference(cds_LoadPackagesREFERENCE.AsString, LO_Number, errMsg, errCode);
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then
+     begin
+        cds_LoadPackagesPackageOK.AsInteger := errCode;
+        cds_LoadPackagesProblemPackageLog.AsString := errMsg;
+     end;
+
     End
     else
     Begin
@@ -2052,7 +2063,7 @@ begin
      errMsg := cds_LoadPackagesProblemPackageLog.AsString;
      errCode := cds_LoadPackagesPackageOK.AsInteger;
      LOString := verifyPackageReference(cds_LoadPackagesREFERENCE.AsString, LO_Number, errMsg, errCode);
-     if errCode <> cds_LoadPackagesPackageOK.AsInteger then 
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then
      begin
         cds_LoadPackagesPackageOK.AsInteger := errCode;
         cds_LoadPackagesProblemPackageLog.AsString := errMsg;
@@ -2424,6 +2435,7 @@ Begin
       cds_LoadPackagesLIPNo.AsInteger             := sq_OnePkgDetailDataLIPNo.AsInteger ;
       cds_LoadPackagesProductCategoryNo.AsInteger := sq_OnePkgDetailDataProductCategoryNo.AsInteger ;
       cds_LoadPackagesOLDPACKAGETYPENO.AsInteger  := sq_OnePkgDetailDataPackageTypeNo.AsInteger ;
+      cds_LoadPackagesREFERENCE.AsString          := sq_OnePkgDetailDataREFERENCE.AsString ;
 
       sq_OnePkgDetailData.Close ;
      End ;
@@ -2871,6 +2883,7 @@ Begin
       cds_LoadPackagesLIPNo.AsInteger             := sq_OnePkgDetailDataLIPNo.AsInteger ;
       cds_LoadPackagesProductCategoryNo.AsInteger := sq_OnePkgDetailDataProductCategoryNo.AsInteger ;
       cds_LoadPackagesOLDPACKAGETYPENO.AsInteger  := sq_OnePkgDetailDataPackageTypeNo.AsInteger ;
+      cds_LoadPackagesREFERENCE.AsString          := sq_OnePkgDetailDataREFERENCE.AsString ;
 
       sq_OnePkgDetailData.Close ;
      End ;
@@ -2967,6 +2980,7 @@ begin
        cds_LoadPackagesSupplierCode.AsString  := mtSelectedPkgNoLevKod.AsString ;
        cds_LoadPackagesDefsspno.AsInteger     := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
        cds_LoadPackagesOverrideRL.AsInteger   := cdsLORowsOverrideRL.AsInteger ;
+
 
        ValidatePkgNoSuppCode_WhenPickPkgNo(Sender, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
        mtSelectedPkgNoproductno.AsInteger, mtSelectedPkgNoNOOFLENGTHS.AsInteger);
@@ -3197,6 +3211,7 @@ begin
       cds_LoadPackagesALMM.AsFloat                      := sq_OnePkgDetailDataALMM.AsFloat ;
       cds_LoadPackagesLIPNo.AsInteger                   := sq_OnePkgDetailDataLIPNo.AsInteger ;
       cds_LoadPackagesProductCategoryNo.AsInteger       := sq_OnePkgDetailDataProductCategoryNo.AsInteger ;
+      cds_LoadPackagesREFERENCE.AsString                := sq_OnePkgDetailDataREFERENCE.AsString ;
 
       cds_LoadPackagesPkg_State.AsInteger               := NEW_PACKAGE ;
       cds_LoadPackagesPkg_Function.AsInteger            := ADD_PKG_TO_LOAD ;
@@ -5784,7 +5799,8 @@ Begin
       cds_LoadPackagesMainGradeNo.AsInteger     := sq_OnePkgDetailDataMainGradeNo.AsInteger ;
       cds_LoadPackagesALMM.AsFloat              := sq_OnePkgDetailDataALMM.AsFloat ;
       cds_LoadPackagesLIPNo.AsInteger           := sq_OnePkgDetailDataLIPNo.AsInteger ;
-      cds_LoadPackagesProductCategoryNo.AsInteger:= sq_OnePkgDetailDataProductCategoryNo.AsInteger ;
+      cds_LoadPackagesProductCategoryNo.AsInteger  := sq_OnePkgDetailDataProductCategoryNo.AsInteger ;
+      cds_LoadPackagesREFERENCE.AsString           := sq_OnePkgDetailDataREFERENCE.AsString ;
 
       sq_OnePkgDetailData.Close ;
      End ;
@@ -5976,6 +5992,9 @@ var
   PkgLog                : String ;
   LO_Number             : Integer ;
   OverrideRL            : Integer ;
+  errMsg                : string;
+  errCode               : integer;
+  LOString              : string;
 Begin
  With dmLoadEntrySSP do
  Begin
@@ -6065,6 +6084,15 @@ Begin
      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger    := -1 ;
      cds_LoadPackagesShippingPlanNo.AsInteger             := LO_Number ;
 //     cds_LoadPackagesOverrideRL.AsInteger                 := cdsLORowsOverrideRL.AsInteger ;
+
+      // Check package reference
+     LOString := verifyPackageReference(cds_LoadPackagesREFERENCE.AsString, LO_Number, errMsg, errCode);
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then
+     begin
+        cds_LoadPackagesPackageOK.AsInteger := errCode;
+        cds_LoadPackagesProblemPackageLog.AsString := errMsg;
+     end;
+
     End
     else
     Begin

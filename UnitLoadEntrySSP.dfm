@@ -1495,6 +1495,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             end
             object grdPkgsDBBandedTableView1REFERENCE: TcxGridDBBandedColumn
               DataBinding.FieldName = 'REFERENCE'
+              PropertiesClassName = 'TcxLabelProperties'
               Width = 117
               Position.BandIndex = 0
               Position.ColIndex = 41
@@ -1502,6 +1503,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             end
             object grdPkgsDBBandedTableView1INFO1: TcxGridDBBandedColumn
               DataBinding.FieldName = 'INFO1'
+              PropertiesClassName = 'TcxLabelProperties'
               Width = 119
               Position.BandIndex = 0
               Position.ColIndex = 42
@@ -1509,6 +1511,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             end
             object grdPkgsDBBandedTableView1INFO2: TcxGridDBBandedColumn
               DataBinding.FieldName = 'INFO2'
+              PropertiesClassName = 'TcxLabelProperties'
               Width = 118
               Position.BandIndex = 0
               Position.ColIndex = 43

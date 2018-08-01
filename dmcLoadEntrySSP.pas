@@ -411,6 +411,7 @@ type
     ds_VE_Pallets_In_Load: TDataSource;
     ds1: TDataSource;
     cds_LikedArticleUsage: TFDQuery;
+    sq_OnePkgDetailDataREFERENCE: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
