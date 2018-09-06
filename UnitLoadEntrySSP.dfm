@@ -88,6 +88,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Top = 50
             DataBinding.DataField = 'SenderLoadStatus'
             DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
+            Enabled = False
             ParentFont = False
             Properties.Images = images1616
             Properties.ImmediatePost = True

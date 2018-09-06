@@ -2213,6 +2213,13 @@ begin
  // Save original settings of some panels etc
  MovablePanels := TMovablePanels.Save(pgrdAddress.Height, pgrdLO.Height, dxPageControl1.Height);
 
+ // Hide button when run in other than development computers
+  if pos('CARMAK',GetEnvironmentVariable('ComputerName')) < 1 then
+  begin
+    cxbtnCreatePalletPkg.Enabled := false;
+    cxbtnCreatePalletPkg.Visible := false;
+  end;
+
  // Load last used settings for some movable panels etc
 // LoadFormSettings;
 {$IFDEF LOGG}
@@ -6454,46 +6461,47 @@ Begin
 End;
 
 procedure TfLoadEntrySSP.acSaveAndOKExecute(Sender: TObject);
-Var DagensDag, UtlastningsDatum : Integer ;
+var
+  DagensDag, UtlastningsDatum: Integer;
 begin
- with dmLoadEntrySSP do
- Begin
-  DagensDag         := DayOfTheMonth(Date) ;
-  UtlastningsDatum  := DayOfTheMonth(cds_LoadHeadLoadedDate.AsDateTime) ;
+  with dmLoadEntrySSP do
+  begin
+    DagensDag := DayOfTheMonth(Date);
+    UtlastningsDatum := DayOfTheMonth(cds_LoadHeadLoadedDate.AsDateTime);
 
- if DiffOK then
- Begin
-    if DagensDag <> UtlastningsDatum then
-    Begin
-    if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_82' (* 'Vill du ändra till dagens datum?' *) ),
-    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    if DiffOK then
     begin
-     if cds_LoadHead.State in [dsBrowse] then
-     cds_LoadHead.Edit ;
-     cds_LoadHeadSenderLoadStatus.AsInteger  := 2 ; //OK
-     cds_LoadHeadLoadedDate.AsSQLTimeStamp   := DateTimeToSQLTimeStamp(Now) ;
-     cds_LoadHead.Post ;
-    End
-    else
-    Begin
-     if cds_LoadHead.State in [dsBrowse] then
-     cds_LoadHead.Edit ;
-     cds_LoadHeadSenderLoadStatus.AsInteger  := 2 ; //OK
-     cds_LoadHead.Post ;
-    End ;
-    end
-    else
-    Begin
-     if cds_LoadHead.State in [dsBrowse] then
-     cds_LoadHead.Edit ;
-     cds_LoadHeadSenderLoadStatus.AsInteger  := 2 ; //OK
-     cds_LoadHead.Post ;
-    End ;
+      if VidaEnergi then cxbtnCreatePalletPkgClick(nil);
+      if DagensDag <> UtlastningsDatum then
+      begin
+        if MessageDlg(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_82' (* 'Vill du ändra till dagens datum?' *) ), mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          if cds_LoadHead.State in [dsBrowse] then
+            cds_LoadHead.Edit;
+          cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
+          cds_LoadHeadLoadedDate.AsSQLTimeStamp := DateTimeToSQLTimeStamp(Now);
+          cds_LoadHead.Post;
+        end
+        else
+        begin
+          if cds_LoadHead.State in [dsBrowse] then
+            cds_LoadHead.Edit;
+          cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
+          cds_LoadHead.Post;
+        end;
+      end
+      else
+      begin
+        if cds_LoadHead.State in [dsBrowse] then
+          cds_LoadHead.Edit;
+        cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
+        cds_LoadHead.Post;
+      end;
 
-    SaveLoad ;
-    SetLoadEnabled ;
-  End;
- End ;
+      SaveLoad;
+      SetLoadEnabled;
+    end;
+  end;
 end;
 
 procedure TfLoadEntrySSP.acSaveAndOKUpdate(Sender: TObject);
