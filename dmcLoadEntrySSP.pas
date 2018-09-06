@@ -438,8 +438,9 @@ type
   private
     { Private declarations }
    FOnAmbiguousPkgNo: TAmbiguityEvent;
+   FWarningForRefMismatch: integer;
 
-
+   procedure updateFlagForNoWarnings;
    procedure AdjustPkgArticleNoOnLoadPkgs(const LoadNo : Integer) ;
    Function  SetShowOriginalLO(const LONo : Integer) : Integer ;
    procedure LOBSetChanged (const PackageNo : Integer;Prefix : String3) ;
@@ -461,6 +462,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function noWarningForRefMismatch: boolean;
    function isLinkedArticle(const aArticleNo: integer): boolean;
    function  Is_Load_Confirmed(const LoadNo : Integer) : Boolean ;
    function createPalletPkg(const aLoadNo, aUserID: integer): integer;
@@ -804,6 +806,14 @@ begin
  End
  else
  cds_LoadHead.CommitUpdates ;
+end;
+
+function TdmLoadEntrySSP.noWarningForRefMismatch: boolean;
+begin
+  if FWarningForRefMismatch = -1 then begin
+     updateFlagForNoWarnings;
+  end;
+  result := FWarningForRefMismatch = 0;
 end;
 
 procedure TdmLoadEntrySSP.SaveLoadPkgs(const WhenPosted : TDateTime;const LoadNo:Integer);
@@ -1854,6 +1864,7 @@ Begin
   cds_Props.Post ;
  End ;
 // cds_Props.Active:= False ;
+  FWarningForRefMismatch        := -1;  // Mark it unread.
 End ;
 
 procedure TdmLoadEntrySSP.SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
@@ -1894,6 +1905,24 @@ Begin
     Result := cdsLORowsSupplierShipPlanObjectNo.asinteger
   else
     Result := -1;
+end;
+
+procedure TdmLoadEntrySSP.updateFlagForNoWarnings;
+var
+  qry: TFDQuery;
+begin
+  qry := TFDQuery.Create(self);
+  try
+    qry.Connection := dmsConnector.FDConnection1;
+    qry.SQL.Clear;
+    qry.SQL.Add(format('SELECT WarningForRefMismatch FROM dbo.Users U WHERE U.UserID = %d', [ThisUser.UserID]));
+    qry.Open();
+    FWarningForRefMismatch := qry.FieldByName('WarningForRefMismatch').AsInteger;
+    qry.Close;
+  finally
+    if assigned(qry) then
+      qry.Free;
+  end;
 end;
 
 function TdmLoadEntrySSP.CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;

@@ -632,7 +632,7 @@ type
     function checkIfVidaEnergi: Boolean;
     function getDeliveredWeight(const aLoadNo: Integer; const aProduct, aReference: string): Integer;
     procedure registrateLoadAsDelivered(const Sender: TObject; const deliveredWeight: integer);
-
+    function noUserReferenceWarning: boolean;
   Protected
       procedure ResolvePkgNoAmbiguity(
       Sender : TObject;
@@ -5947,7 +5947,7 @@ begin
      errMsg := cds_LoadPackagesProblemPackageLog.AsString;
      errCode := cds_LoadPackagesPackageOK.AsInteger;
       LOString := verifyPackageReference(pkgRef, LO_Number, errMsg, errCode);
-     if errCode <> cds_LoadPackagesPackageOK.AsInteger then 
+     if errCode <> cds_LoadPackagesPackageOK.AsInteger then
      begin
         cds_LoadPackagesPackageOK.AsInteger := errCode;
         cds_LoadPackagesProblemPackageLog.AsString := errMsg;
@@ -5975,6 +5975,8 @@ begin
   result := sPkgRef;
   if sPkgRef <> '' then
   begin
+    if noUserReferenceWarning then exit;
+
     if aLO_Number <> 0 then
     try
       pkgRef := strToInt(sPkgRef);
@@ -7110,6 +7112,11 @@ begin
     else
       ShowMessage('Inga LO rader synliga att koppla paket mot, kontrollera att "Visa 0-LO rader" är i bockad.');
   end;
+end;
+
+function TfLoadEntrySSP.noUserReferenceWarning: boolean;
+begin
+  result := dmLoadEntrySSP.noWarningForRefMismatch;
 end;
 
 procedure TfLoadEntrySSP.Timer1Timer(Sender: TObject);
