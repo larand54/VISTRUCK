@@ -670,6 +670,7 @@ implementation
 
 uses
 //--LARS  DB,
+  dateUtils,
   psAPI,
   FileCtrl,
   //hahFindFiles,
@@ -2059,131 +2060,174 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.BuildGetOne_LO_SQL(Sender: TObject);
-Var ClientNo,
-    OrderType : Integer ;
-    LEGO      : Boolean ;
-    Ref,
-    StartLikeStr, EndLikeStr  : String ;
-    StartLike, EndLike    : Boolean ;
+var
+  ClientNo, OrderType: Integer;
+  LEGO: Boolean;
+  Ref, StartLikeStr, EndLikeStr: string;
+  StartLike, EndLike: Boolean;
+  mill: integer;
 begin
- LEGO       := False ;
- StartLike  := False ;
- EndLike    := False ;
+  LEGO := False;
+  StartLike := False;
+  EndLike := False;
 
- StartLikeStr   := '' ;
- EndLikeStr     := '' ;
+  StartLikeStr := '';
+  EndLikeStr := '';
 
- Ref            := teRef.Text ;
+  Ref := teRef.Text;
 
 // cbOrderType.Properties.OnChange:= nil ;
- Try
- CheckIfChangesUnSaved ;
+  CheckIfChangesUnSaved;
 // icStatusChange(Sender) ;
- With dmcOrder do
- Begin
-  OrderType := OrderTypeOrderType(dmcOrder.cds_PropsVerkNo.AsInteger, StrToIntDef(teSearchLONo.Text,0) );
-  if OrderType > -1 then
-  Begin
-   dmcOrder.cds_Props.Edit ;
-   dmcOrder.cds_PropsOrderTypeNo.AsInteger  := OrderType ;
-   dmcOrder.cds_Props.Post ;
-  End ;
+  with dmcOrder do
+  begin
+    OrderType := OrderTypeOrderType(dmcOrder.cds_PropsVerkNo.AsInteger,
+      StrToIntDef(teSearchLONo.Text, 0));
+    if OrderType > -1 then
+    begin
+      dmcOrder.cds_Props.Edit;
+      dmcOrder.cds_PropsOrderTypeNo.AsInteger := OrderType;
+      dmcOrder.cds_Props.Post;
+    end;
 
-  if (dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego)
-  and (dmsContact.ClientInterVerk(ThisUser.CompanyNo) = False) then
-  Begin
-   if LO_LoadingLocationIsLegoLoadingLocation(StrToIntDef(teSearchLONo.Text,0), ThisUser.CompanyNo) then
-   Begin
-    dmcOrder.cds_Props.Edit ;
-    dmcOrder.cds_PropsOrderTypeNo.AsInteger  := 0 ;
-    dmcOrder.cds_Props.Post ;
-   End
-   else
-   Begin
-    dmcOrder.cds_Props.Edit ;
-    dmcOrder.cds_PropsOrderTypeNo.AsInteger  := 1 ;
-    dmcOrder.cds_Props.Post ;
-   End ;
-   ClientNo := 741 ;
-   LEGO     := True ;
-  End
-  else
-  if (dmsContact.ClientInterVerk(ThisUser.CompanyNo) ) or (ThisUser.CompanyNo = 741) or (ThisUser.CompanyNo = 2846) then
-  ClientNo  := dmcOrder.cds_PropsVerkNo.AsInteger ;
+    if (dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego) and (dmsContact.ClientInterVerk
+      (ThisUser.CompanyNo) = False) then
+    begin
+      if LO_LoadingLocationIsLegoLoadingLocation(StrToIntDef(teSearchLONo.Text,
+        0), ThisUser.CompanyNo) then
+      begin
+        dmcOrder.cds_Props.Edit;
+        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0;
+        dmcOrder.cds_Props.Post;
+      end
+      else
+      begin
+        dmcOrder.cds_Props.Edit;
+        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 1;
+        dmcOrder.cds_Props.Post;
+      end;
+      ClientNo := 741;
+      LEGO := True;
+    end
+    else if (dmsContact.ClientInterVerk(ThisUser.CompanyNo)) or (ThisUser.CompanyNo
+      = 741) or (ThisUser.CompanyNo = 2846) then
+      ClientNo := dmcOrder.cds_PropsVerkNo.AsInteger;
 
-  cdsSawmillLoadOrders.SQL.Clear ;
+    cdsSawmillLoadOrders.SQL.Clear;
 
-  cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
-  cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
+    with cdsSawMillLoadOrders do
+    begin
+      mill := dmcOrder.cds_PropsVerkNo.AsInteger;
+      SQL.Add('DECLARE @LOList table (LOno int)');
+      SQL.Add('INSERT INTO @LOList SELECT SP.ShippingPlanNo FROM SupplierShippingPlan SP');
+      SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH ON SP.ShippingPlanNo = CH.ShippingPlanNo');
+      SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD ON SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo');
+      SQL.Add('WHERE');
+      SQL.Add('SP.DateCreated > ' + QuotedStr(DateToStr(IncYear(now, -2))));
+      SQL.Add('AND SP.ObjectType in (0,1,2)');
+      SQL.Add('AND SP.SupplierNo = ' + intToStr(mill));
+      if Length(Trim(Ref)) > 0 then
+      begin
+        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
+        SQL.Add('AND((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
+        SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
+        SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
+      end
+      else
+        SQL.Add('AND SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
-  cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
-    cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
-    cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShowInGrid,                                   -- SmallInt');
+      SQL.Add('AND SP.ShippingPlanStatus IN  (' 
+        + quotedStr(intToStr(STATUS_PRELIMINARY))
+        + ',' 
+        + quotedStr(intToStr(STATUS_NEW)) 
+        + ',' 
+//          + quotedStr(intToStr(STATUS_REJECTED))
+//          + ','
+        + quotedStr(intToStr(STATUS_ACCEPTED)) 
+        + ',' 
+        + quotedStr(intToStr(STATUS_COMPLETE))
+        + ',' 
+        + quotedStr(intToStr(STATUS_PRODUCTION_COMPLETE)) 
+        + ',' 
+        +
+        quotedStr(intToStr(STATUS_ONHOLD)) 
+        + ',' 
+//          + quotedStr(intToStr(STATUS_ANNULERAD))
+//          + ','
+//          + quotedStr(intToStr(STATUS_ANNULERAD_BEKRAFTAD))
+//          + ','
+        + quotedStr(intToStr(STATUS_KLU)) + ')');
 
+      cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
+      cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
+
+      cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShowInGrid,                                   -- SmallInt');
 
       cdsSawmillLoadOrders.SQL.Add('Od.OrderNoText              AS OrderNoText,          -- VarChar 20');
       cdsSawmillLoadOrders.SQL.Add('UN.VolumeUnitName           AS UnitName,         -- VarChar 10');
       cdsSawmillLoadOrders.SQL.Add('Cy.CityName                 AS Destination,      -- VarChar 50');
       cdsSawmillLoadOrders.SQL.Add('CL.ClientName               AS ClientName,       -- LARS VarChar 80');
-      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,') ;
+      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,');
 
       cdsSawmillLoadOrders.SQL.Add('CSD.Reference               AS Reference,       -- LARS');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierNo               AS Supplier,        -- Integer');
 
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,    -- Integer');
 
-     cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
 
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
+      cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
+      cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('CASE WHEN OD.OrderType = 1 then 1	ELSE 0	END AS ORDERTYPE,');
+      cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
+      cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,              ');
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingLocationNo,');
+      cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
+      cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,');
 
-     cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
-     cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
-     cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('CASE WHEN OD.OrderType = 1 then 1	ELSE 0	END AS ORDERTYPE,');
-     cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
-     cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
-     cdsSawmillLoadOrders.SQL.Add('IsNull(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,              ');
-     cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingLocationNo,');
-     cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
-     cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,') ;
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+' + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +' + QuotedStr('kr') + ' else');
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )');
+        cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,');
+      end
+      else //Inköp
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30))+'
+          + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast(OL.InternalPrice AS Varchar(30)) +'
+          + QuotedStr('kr'));
+        cdsSawmillLoadOrders.SQL.Add('END END AS Pris,');
+      end;
 
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  Begin
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+'+QuotedStr('kr')+' Else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice') ;
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +'+QuotedStr('kr')+' else');
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
-  cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,') ;
-  End
-  else //Inköp
-  Begin
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30))+'+QuotedStr('kr')+' Else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast(OL.InternalPrice AS Varchar(30)) +'+QuotedStr('kr'));
-  cdsSawmillLoadOrders.SQL.Add('END END AS Pris,') ;
-  End ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthOL.PriceListName,');
+      cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,');
+      cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,');
 
-  cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthOL.PriceListName,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,') ;
-  cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,') ;
-
-
-  cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,');
 
   (*
   cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD') ;
@@ -2202,104 +2246,100 @@ begin
   *)
 
 
-  cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,');
 
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+      cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
+      else
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo');
 
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1');
 
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo');
 
-  cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
-  else
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo');
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo') ;
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo');
+      cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo');
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser') ;
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.ShippingPlanNo          = CH.ShippingPlanNo      -- LARS');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo');
-  cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo');
-
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo') ;
-
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.ShippingPlanNo          = CH.ShippingPlanNo      -- LARS');
-
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Client                     CL   ON  CH.CustomerNo              = CL.ClientNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN ShippingPlan_ShippingAddress ST');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Address 		             ST_ADR     ON ST_ADR.AddressNo	     = ST.AddressNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CITY                     CY         ON CY.CityNo 	           = ST_ADR.CityNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Country		               ST_AdrCtry	ON ST_AdrCtry.CountryNo  = ST_ADR.CountryNo');
-    cdsSawmillLoadOrders.SQL.Add('ON	ST.ShippingPlanNo	   = CSD.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Client                     CL   ON  CH.CustomerNo              = CL.ClientNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN ShippingPlan_ShippingAddress ST');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Address 		             ST_ADR     ON ST_ADR.AddressNo	     = ST.AddressNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CITY                     CY         ON CY.CityNo 	           = ST_ADR.CityNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Country		               ST_AdrCtry	ON ST_AdrCtry.CountryNo  = ST_ADR.CountryNo');
+      cdsSawmillLoadOrders.SQL.Add('ON	ST.ShippingPlanNo	   = CSD.ShippingPlanNo');
       cdsSawmillLoadOrders.SQL.Add('AND	ST.Reference		     = CSD.Reference');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo');
 
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
+      cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
-  cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID');
+      cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo');
 
 
   //RadReferens
-  if Length(Trim(Ref)) > 0 then
-  Begin
-   Ref  := StringReplace(Ref, '*', '%',
-                          [rfReplaceAll, rfIgnoreCase]);
+      if Length(Trim(Ref)) > 0 then
+      begin
+        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
 
  {  if Copy(Trim(Ref), 1, 1) = '*' then
    Begin
@@ -2314,53 +2354,52 @@ begin
     Delete(Ref, Length(Trim(Ref)), 1) ;
    End;               }
 
-   cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')' ) ;
+        cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
 
-   cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref)  + ')') ;
+        cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
 
-   cdsSawmillLoadOrders.SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref)  + '))') ;
+        cdsSawmillLoadOrders.SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
 
-  End
-   else
-     cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text) ;
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
-  if cds_PropsAutoColWidth.AsInteger  = 1 then
-   cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo = ' + dmcOrder.cds_PropsVerkNo.AsString) ;
+      if cds_PropsAutoColWidth.AsInteger = 1 then
+        cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo = ' + dmcOrder.cds_PropsVerkNo.AsString);
 
+      if LEGO then
+      begin
+        if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+          cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo =  ' + IntToStr(ClientNo))
+        else
+          cdsSawmillLoadOrders.SQL.Add('AND SP.CustomerNo =  ' + IntToStr(ClientNo));
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('AND  CLL.ClientNo          =  ' + IntToStr
+          (ClientNo));
 
-
-
-  if LEGO then
-  Begin
-   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-   cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo =  ' + IntToStr(ClientNo))
-   else
-   cdsSawmillLoadOrders.SQL.Add('AND SP.CustomerNo =  ' + IntToStr(ClientNo)) ;
-  End
-  else
-  cdsSawmillLoadOrders.SQL.Add('AND  CLL.ClientNo          =  '+IntToStr(ClientNo)) ;
-
-
- cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
- cdsSawmillLoadOrders.SQL.Add('AND CH.ShippingPlanStatus <> 3');
- cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
+      cdsSawmillLoadOrders.SQL.Add('AND CH.ShippingPlanStatus <> 3');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
 {  if cbOrderType.ItemIndex = 0 then
   cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 0')
   else
   cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 1') ; }
 
-cdsSawmillLoadOrders.SQL.Add('UNION');
-  cdsSawmillLoadOrders.SQL.Add('SELECT distinct '+QuotedStr('NA')+' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
-  cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
+      cdsSawmillLoadOrders.SQL.Add('UNION');
+      cdsSawmillLoadOrders.SQL.Add('SELECT distinct ' + QuotedStr('NA') +
+        ' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
+      cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
 
-  cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
-    cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
@@ -2372,60 +2411,61 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
 
 //      cdsSawmillLoadOrders.SQL.Add('''''               AS ClientName,       -- LARS VarChar 80');
       cdsSawmillLoadOrders.SQL.Add('CL.ClientName               AS ClientName,');
-      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,') ;
+      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,');
 
       cdsSawmillLoadOrders.SQL.Add('''''              AS Reference,       -- LARS');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierNo               AS Supplier,        -- Integer');
 
-  cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,');
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,');
 //  cdsSawmillLoadOrders.SQL.Add('-1              AS CHCustomerNo,');
 
-   cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
 
-     cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
-     cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
+      cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
+      cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
 //     cdsSawmillLoadOrders.SQL.Add('SC.ClientName                           AS SHIPPER,');
-     cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
-     if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-     cdsSawmillLoadOrders.SQL.Add('0 AS ORDERTYPE,')
-     else
-     cdsSawmillLoadOrders.SQL.Add('1 AS ORDERTYPE,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('0 AS ORDERTYPE,')
+      else
+        cdsSawmillLoadOrders.SQL.Add('1 AS ORDERTYPE,');
 
-     cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
-     cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
-     cdsSawmillLoadOrders.SQL.Add('ISNULL(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,');
-     cdsSawmillLoadOrders.SQL.Add('-1 AS CSH_CustomerNo, SP.ShipToInvPointNo, SP.LoadingLocationNo,');
-     cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
-     cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,') ;
+      cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
+      cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
+      cdsSawmillLoadOrders.SQL.Add('ISNULL(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,');
+      cdsSawmillLoadOrders.SQL.Add('-1 AS CSH_CustomerNo, SP.ShipToInvPointNo, SP.LoadingLocationNo,');
+      cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
+      cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,');
 
 //intern, add LO's, om prislista vald dras vwcost och priskorr av, om direktpris dras inget av eller läggs till?!
 //Prislistan används inte på inköp!
-   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-   Begin
-    cdsSawmillLoadOrders.SQL.Add('Case') ;
-    cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30)) +'+QuotedStr('kr')+' Else') ;
-    cdsSawmillLoadOrders.SQL.Add('Case') ;
-    cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
-    cdsSawmillLoadOrders.SQL.Add('END') ;
-    cdsSawmillLoadOrders.SQL.Add('End AS Pris,') ;
-   End
-   else //Inköp
-   Begin
-    cdsSawmillLoadOrders.SQL.Add('Case') ;
-    cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast((SP.Price + isnull(SP.InternKundFrakt,0))') ;
-    cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +'+QuotedStr('kr')) ;
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30)) +'
+          + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )');
+        cdsSawmillLoadOrders.SQL.Add('END');
+        cdsSawmillLoadOrders.SQL.Add('End AS Pris,');
+      end
+      else //Inköp
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast((SP.Price + isnull(SP.InternKundFrakt,0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +' + QuotedStr('kr'));
 //    cdsSawmillLoadOrders.SQL.Add('Case') ;
 //    cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
 //    cdsSawmillLoadOrders.SQL.Add('END') ;
-    cdsSawmillLoadOrders.SQL.Add('End AS Pris,') ;
-   End ;
+        cdsSawmillLoadOrders.SQL.Add('End AS Pris,');
+      end;
 
-  cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthLO.PriceListName,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,') ;
-  cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthLO.PriceListName,');
+      cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,');
+      cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,');
+      cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,');
 
   (*
   cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD') ;
@@ -2444,101 +2484,96 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
   *)
 
 
-  cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,');
 
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+      cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
+      else
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo');
 
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1');
 
-  cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
-  else
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo') ;
-
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
-
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo');
 
 //  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo');
 
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner JOIN dbo.Client                     CL   ON  CL.ClientNo = CH.CustomerNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo') ;
-  cdsSawmillLoadOrders.SQL.Add('ON  CH.ShippingPlanNo          = SP.LO_No') ;
-  cdsSawmillLoadOrders.SQL.Add('  AND CH.ShippingPlanStatus <> 3') ;
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH');
+      cdsSawmillLoadOrders.SQL.Add('Inner JOIN dbo.Client                     CL   ON  CL.ClientNo = CH.CustomerNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo');
+      cdsSawmillLoadOrders.SQL.Add('ON  CH.ShippingPlanNo          = SP.LO_No');
+      cdsSawmillLoadOrders.SQL.Add('  AND CH.ShippingPlanStatus <> 3');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
 
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
 
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
+      cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
-
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
-
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
-  cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID');
+      cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo');
 
   //if Lego then supplier or customer = SP
 //if verk or vw then CLL.ClientNo
 
   //RadReferens
-  if Length(Trim(Ref)) > 0 then
-  Begin
-   Ref  := StringReplace(Ref, '*', '%',
-                          [rfReplaceAll, rfIgnoreCase]);
+      if Length(Trim(Ref)) > 0 then
+      begin
+        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
 
 {   if Copy(Trim(teRef.Text), 1, 1) = '*' then
    Begin
@@ -2553,66 +2588,66 @@ cdsSawmillLoadOrders.SQL.Add('UNION');
     Delete(Ref, Length(Trim(teRef.text)), 1) ;
    End;
  }
-   cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')' ) ;
+        cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
 
-   cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref)  + '))') ;
-  End
-   else
-     cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text) ;
+        cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + '))');
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
+      if cds_PropsAutoColWidth.AsInteger = 1 then
+        cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo = ' + dmcOrder.cds_PropsVerkNo.AsString);
 
-  if cds_PropsAutoColWidth.AsInteger  = 1 then
-   cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo = ' + dmcOrder.cds_PropsVerkNo.AsString) ;
-
-  if LEGO then
-  Begin
-   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-   cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo =  ' + IntToStr(ClientNo))
-   else
-   cdsSawmillLoadOrders.SQL.Add('AND SP.CustomerNo =  ' + IntToStr(ClientNo)) ;
-  End
-  else
-  cdsSawmillLoadOrders.SQL.Add('AND  CLL.ClientNo          =  '+IntToStr(ClientNo)) ;
+      if LEGO then
+      begin
+        if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+          cdsSawmillLoadOrders.SQL.Add('AND SP.SupplierNo =  ' + IntToStr(ClientNo))
+        else
+          cdsSawmillLoadOrders.SQL.Add('AND SP.CustomerNo =  ' + IntToStr(ClientNo));
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('AND  CLL.ClientNo          =  ' + IntToStr
+          (ClientNo));
 
 //  cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
 
 
-  cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
 
 // if ThisUser.UserID = 8 then  cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
 //cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
-  OrderTypeChanged := False ;
- End ;
-  Finally
-//   cbOrderType.Properties.OnChange:= cbOrderTypePropertiesChange ;
-  End ;
+      OrderTypeChanged := False;
+    end;
+  end;
 end;
 
 procedure TfrmVisTruckLoadOrder.BuildVIDAWOODGetOne_LO_SQL(Sender: TObject);
-Var
-  Ref, StartLikeStr, EndLikeStr  : String ;
-  StartLike, EndLike, LEGO      : Boolean ;
+var
+  Ref, StartLikeStr, EndLikeStr: string;
+  StartLike, EndLike, LEGO: Boolean;
+  mill: integer;
 begin
- LEGO       := False ;
- StartLike  := False ;
- EndLike    := False ;
+  LEGO := False;
+  StartLike := False;
+  EndLike := False;
 
- StartLikeStr   := '' ;
- EndLikeStr     := '' ;
- Ref            := teRef.Text ;
+  StartLikeStr := '';
+  EndLikeStr := '';
+  Ref := teRef.Text;
 // cbOrderType.Properties.OnChange:= nil ;
- Try
- CheckIfChangesUnSaved ;
+  try
+    CheckIfChangesUnSaved;
 // icStatusChange(Sender) ;
- With dmcOrder do
- Begin
+    with dmcOrder do
+    begin
 {  OrderType := OrderTypeOrderType(dmcOrder.cds_PropsVerkNo.AsInteger, StrToIntDef(teSearchLONo.Text,0) );
   if OrderType > -1 then
   Begin}
-   dmcOrder.cds_Props.Edit ;
-   dmcOrder.cds_PropsOrderTypeNo.AsInteger  := 0 ;//OrderType ;
-   dmcOrder.cds_Props.Post ;
+      dmcOrder.cds_Props.Edit;
+      dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0; //OrderType ;
+      dmcOrder.cds_Props.Post;
 //  End ;
 
 {  if (dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego)
@@ -2636,80 +2671,121 @@ begin
   else
   if (dmsContact.ClientInterVerk(ThisUser.CompanyNo) ) or (ThisUser.CompanyNo = 741) then
   ClientNo  := dmcOrder.cds_PropsVerkNo.AsInteger ;}
+//      buildSQLForVWGetOneLO(Ref, teSearchLONo.Text);
+      cdsSawmillLoadOrders.SQL.Clear;
 
-  cdsSawmillLoadOrders.SQL.Clear ;
+      with cdsSawMillLoadOrders do
+      begin
+        mill := dmcOrder.cds_PropsVerkNo.AsInteger;
+        SQL.Add('DECLARE @LOList table (LOno int)'); 
+        SQL.Add('INSERT INTO @LOList SELECT SP.ShippingPlanNo FROM SupplierShippingPlan SP');
+        SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH ON SP.ShippingPlanNo = CH.ShippingPlanNo');
+        SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD ON SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo');
+        SQL.Add('WHERE');
+        SQL.Add('SP.DateCreated > ' + QuotedStr(DateToStr(IncYear(now,-2))));  
+        SQL.Add('AND SP.ObjectType in (0,1,2)'); 
+        SQL.Add('AND SP.SupplierNo = ' + intToStr(mill));    
+        if Length(Trim(Ref)) > 0 then
+        begin
+          Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
+          SQL.Add('AND((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
+          SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
+          SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
+        end
+        else
+          SQL.Add('AND SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
-  cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
-  cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
+        SQL.Add('AND SP.ShippingPlanStatus IN  ('
+          + quotedStr(intToStr(STATUS_PRELIMINARY))
+          + ','
+          + quotedStr(intToStr(STATUS_NEW)) 
+          + ',' 
+//          + quotedStr(intToStr(STATUS_REJECTED)) 
+//          + ',' 
+          + quotedStr(intToStr(STATUS_ACCEPTED)) 
+          + ',' 
+          + quotedStr(intToStr(STATUS_COMPLETE)) 
+          + ',' 
+          + quotedStr(intToStr(STATUS_PRODUCTION_COMPLETE)) 
+          + ',' 
+          + quotedStr(intToStr(STATUS_ONHOLD)) 
+          + ',' 
+//          + quotedStr(intToStr(STATUS_ANNULERAD)) 
+//          + ',' 
+//          + quotedStr(intToStr(STATUS_ANNULERAD_BEKRAFTAD)) 
+//          + ',' 
+          + quotedStr(intToStr(STATUS_KLU))
+          + ')');
 
-  cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
-    cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
-    cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShowInGrid,                                   -- SmallInt');
+      end;
+      cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
+      cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
 
+      cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShowInGrid,                                   -- SmallInt');
 
       cdsSawmillLoadOrders.SQL.Add('Od.OrderNoText              AS OrderNoText,          -- VarChar 20');
       cdsSawmillLoadOrders.SQL.Add('UN.VolumeUnitName           AS UnitName,         -- VarChar 10');
       cdsSawmillLoadOrders.SQL.Add('Cy.CityName                 AS Destination,      -- VarChar 50');
       cdsSawmillLoadOrders.SQL.Add('CL.ClientName               AS ClientName,       -- LARS VarChar 80');
-      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,') ;
+      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,');
 
       cdsSawmillLoadOrders.SQL.Add('CSD.Reference               AS Reference,       -- LARS');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierNo               AS Supplier,        -- Integer');
 
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,    -- Integer');
 
-     cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
 
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
+      cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
+      cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('CASE WHEN OD.OrderType = 1 then 1	ELSE 0	END AS ORDERTYPE,');
+      cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
+      cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,              ');
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingLocationNo,');
+      cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
+      cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,');
 
-     cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
-     cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
-     cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('CASE WHEN OD.OrderType = 1 then 1	ELSE 0	END AS ORDERTYPE,');
-     cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
-     cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
-     cdsSawmillLoadOrders.SQL.Add('IsNull(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,              ');
-     cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingLocationNo,');
-     cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
-     cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,') ;
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+' + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +' + QuotedStr('kr') + ' else');
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )');
+        cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,');
+      end
+      else //Inköp
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30))+' + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast(OL.InternalPrice AS Varchar(30)) +' + QuotedStr('kr'));
+        cdsSawmillLoadOrders.SQL.Add('END END AS Pris,');
+      end;
 
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  Begin
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+'+QuotedStr('kr')+' Else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice') ;
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +'+QuotedStr('kr')+' else');
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
-  cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,') ;
-  End
-  else //Inköp
-  Begin
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30))+'+QuotedStr('kr')+' Else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast(OL.InternalPrice AS Varchar(30)) +'+QuotedStr('kr'));
-  cdsSawmillLoadOrders.SQL.Add('END END AS Pris,') ;
-  End ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthOL.PriceListName,');
+      cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,');
+      cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,');
 
-  cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthOL.PriceListName,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,') ;
-  cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,') ;
-
-
-  cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,');
 
   (*
   cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD') ;
@@ -2728,126 +2804,126 @@ begin
   *)
 
 
-  cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
 
+      cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo AND SP.DateCreated > '+ QuotedStr(DateToStr(IncYear(now,-2))))
+      else
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo AND SP.DateCreated > '+ QuotedStr(DateToStr(IncYear(now,-2))));
 
-  cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
-  else
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo') ;
-
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo');
 
   cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser') ;
+//      cdsSawmillLoadOrders.SQL.Add('INNER JOIN @ProdList pli ON pli.ProductNo = sp.ProductNo');
+//      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.LG_LOList pli ON pli.ProductNo = sp.ProductNo AND pli.UserID = '+intToStr(thisUser.UserID));
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo');
-  cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo');
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo') ;
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo');
+      cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.ShippingPlanNo          = CH.ShippingPlanNo      -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo');
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo');
 
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Client                     CL   ON  CH.CustomerNo              = CL.ClientNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN ShippingPlan_ShippingAddress ST');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Address 		             ST_ADR     ON ST_ADR.AddressNo	     = ST.AddressNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CITY                     CY         ON CY.CityNo 	           = ST_ADR.CityNo');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Country		               ST_AdrCtry	ON ST_AdrCtry.CountryNo  = ST_ADR.CountryNo');
-    cdsSawmillLoadOrders.SQL.Add('ON	ST.ShippingPlanNo	   = CSD.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.ShippingPlanNo          = CH.ShippingPlanNo      -- LARS');
+
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Client                     CL   ON  CH.CustomerNo              = CL.ClientNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN ShippingPlan_ShippingAddress ST');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Address 		             ST_ADR     ON ST_ADR.AddressNo	     = ST.AddressNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.CITY                     CY         ON CY.CityNo 	           = ST_ADR.CityNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Country		               ST_AdrCtry	ON ST_AdrCtry.CountryNo  = ST_ADR.CountryNo');
+      cdsSawmillLoadOrders.SQL.Add('ON	ST.ShippingPlanNo	   = CSD.ShippingPlanNo');
       cdsSawmillLoadOrders.SQL.Add('AND	ST.Reference		     = CSD.Reference');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo');
 
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
+      cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
-  cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID');
+      cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo');
 
-  if Length(Trim(Ref)) > 0 then
-  Begin
-   Ref  := StringReplace(Ref, '*', '%',
-                          [rfReplaceAll, rfIgnoreCase]);
+      if Length(Trim(Ref)) > 0 then
+      begin
+        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
 
-   cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')' ) ;
+        cdsSawmillLoadOrders.SQL.Add('WHERE CLL.DateCreated > ' + QuotedStr(DateToStr(IncYear(now,-2))) + ' AND((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
 
-   cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref)  + ')') ;
+        cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
 
-   cdsSawmillLoadOrders.SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref)  + '))') ;
+        cdsSawmillLoadOrders.SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
 
-  End
-    else
-     cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text) ;
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
- cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
+      cdsSawmillLoadOrders.SQL.Add('UNION');
+      cdsSawmillLoadOrders.SQL.Add('SELECT distinct ' + QuotedStr('NA') + ' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
+      cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
 
-
-  cdsSawmillLoadOrders.SQL.Add('UNION');
-  cdsSawmillLoadOrders.SQL.Add('SELECT distinct '+QuotedStr('NA')+' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
-  cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
-
-  cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
-    cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
-    cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('SP.LengthDescription        AS Length,           -- Char 100');
+      cdsSawmillLoadOrders.SQL.Add('IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.NoOfUnits                AS Volume,           -- Float');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierShipPlanObjectNo,                     -- Integer');
@@ -2859,49 +2935,49 @@ begin
 
 //      cdsSawmillLoadOrders.SQL.Add('''''               AS ClientName,       -- LARS VarChar 80');
       cdsSawmillLoadOrders.SQL.Add('CL.ClientName               AS ClientName,');
-      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,') ;
+      cdsSawmillLoadOrders.SQL.Add('mr.MarketRegionName         AS MARKNAD,');
 
       cdsSawmillLoadOrders.SQL.Add('''''              AS Reference,       -- LARS');
       cdsSawmillLoadOrders.SQL.Add('SP.SupplierNo               AS Supplier,        -- Integer');
 
-  cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,');
+      cdsSawmillLoadOrders.SQL.Add('CH.CustomerNo               AS CHCustomerNo,');
 //  cdsSawmillLoadOrders.SQL.Add('-1              AS CHCustomerNo,');
 
-   cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
-     cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerNo               AS SPCustomerNO,    -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerPrice,                               -- Float');
+      cdsSawmillLoadOrders.SQL.Add('SP.CustomerShowInGrid,                           -- SmallInt');
 
-     cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
-     cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
+      cdsSawmillLoadOrders.SQL.Add('SUPP.ClientName				AS SUPP_NAME,');
+      cdsSawmillLoadOrders.SQL.Add('CUST.ClientName				AS LOCAL_CUST,');
 //     cdsSawmillLoadOrders.SQL.Add('SC.ClientName                           AS SHIPPER,');
-     cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
-     if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-     cdsSawmillLoadOrders.SQL.Add('0 AS ORDERTYPE,')
-     else
-     cdsSawmillLoadOrders.SQL.Add('1 AS ORDERTYPE,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ObjectType,                                  -- Integer');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('0 AS ORDERTYPE,')
+      else
+        cdsSawmillLoadOrders.SQL.Add('1 AS ORDERTYPE,');
 
-     cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
-     cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
-     cdsSawmillLoadOrders.SQL.Add('ISNULL(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,');
-     cdsSawmillLoadOrders.SQL.Add('-1 AS CSH_CustomerNo, SP.ShipToInvPointNo, SP.LoadingLocationNo,');
-     cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
-     cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,') ;
+      cdsSawmillLoadOrders.SQL.Add('ShipTo.CityName                 AS SHIPTO,      -- VarChar 50');
+      cdsSawmillLoadOrders.SQL.Add('Loading.CityName                 AS LOADING,');
+      cdsSawmillLoadOrders.SQL.Add('ISNULL(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,');
+      cdsSawmillLoadOrders.SQL.Add('-1 AS CSH_CustomerNo, SP.ShipToInvPointNo, SP.LoadingLocationNo,');
+      cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
+      cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,');
 
 //intern, add LO's, om prislista vald dras vwcost och priskorr av, om direktpris dras inget av eller läggs till?!
 //Prislistan används inte på inköp!
-   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-   Begin
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+'+QuotedStr('kr')+' Else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else') ;
-  cdsSawmillLoadOrders.SQL.Add('Case') ;
-  cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice') ;
-  cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))') ;
-  cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +'+QuotedStr('kr')+' else');
-  cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
-  cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,') ;
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30))+' + QuotedStr('kr') + ' Else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else');
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice');
+        cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +' + QuotedStr('kr') + ' else');
+        cdsSawmillLoadOrders.SQL.Add('Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), ol.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )');
+        cdsSawmillLoadOrders.SQL.Add('END END END END AS Pris,');
 
 {    cdsSawmillLoadOrders.SQL.Add('Case') ;
     cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast(SP.Price AS Varchar(30)) +'+QuotedStr('kr')+' Else') ;
@@ -2910,22 +2986,22 @@ begin
     cdsSawmillLoadOrders.SQL.Add('END') ;
     cdsSawmillLoadOrders.SQL.Add('End AS Pris,') ;
 }
-   End
-   else //Inköp
-   Begin
-    cdsSawmillLoadOrders.SQL.Add('Case') ;
-    cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast((SP.Price + isnull(SP.InternKundFrakt,0))') ;
-    cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +'+QuotedStr('kr')) ;
+      end
+      else //Inköp
+      begin
+        cdsSawmillLoadOrders.SQL.Add('Case');
+        cdsSawmillLoadOrders.SQL.Add('WHEN SP.Price > 0 then Cast((SP.Price + isnull(SP.InternKundFrakt,0))');
+        cdsSawmillLoadOrders.SQL.Add('AS Varchar(30)) +' + QuotedStr('kr'));
 //    cdsSawmillLoadOrders.SQL.Add('Case') ;
 //    cdsSawmillLoadOrders.SQL.Add('WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )') ;
 //    cdsSawmillLoadOrders.SQL.Add('END') ;
-    cdsSawmillLoadOrders.SQL.Add('End AS Pris,') ;
-   End ;
+        cdsSawmillLoadOrders.SQL.Add('End AS Pris,');
+      end;
 
-  cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthLO.PriceListName,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,') ;
-  cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,') ;
+      cdsSawmillLoadOrders.SQL.Add('SP.ProductGroupNo, pthLO.PriceListName,');
+      cdsSawmillLoadOrders.SQL.Add('SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo, PIS.ProdInstruNo,');
+      cdsSawmillLoadOrders.SQL.Add('sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCode, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpec AS Längd, Vg.ETD, Vg.ETA,');
+      cdsSawmillLoadOrders.SQL.Add('SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroupNo, LOB.LOBuffertName,');
 
   (*
   cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD') ;
@@ -2944,120 +3020,117 @@ begin
   *)
 
 
-  cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo)) AS LoadedPkgs,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedNM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)') ;
-  cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPlanObjectNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo');
+      cdsSawmillLoadOrders.SQL.Add('AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)');
+      cdsSawmillLoadOrders.SQL.Add('OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ) AS LoadedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.NoOfUnits)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)') ;
-  cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(SOR.PlannedAM3)');
+      cdsSawmillLoadOrders.SQL.Add('FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.PackageTypeNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,');
 
-  cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
-  cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo = SOR.SortingOrderNo');
+      cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
+      cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
+      cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
 
+      cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo AND SP.DateCreated > '+ QuotedStr(DateToStr(IncYear(now,-2))))
+      else
+        cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo AND SP.DateCreated > '+ QuotedStr(DateToStr(IncYear(now,-2))));
 
-  cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
-  if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
-  else
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo');
+      cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo');
 
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo') ;
-  cdsSawmillLoadOrders.SQL.Add('AND OL.OrderLineNo = SP.OrderLineNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = SP.LIPNo') ;
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
 
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.OrderNo                 = Od.OrderNo');
-
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.ProductLengthNo');
 
 //  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templateno = ol.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo') ;
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templateno = sp.PriceListNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo');
+//      cdsSawmillLoadOrders.SQL.Add('INNER JOIN @ProdList pli ON pli.ProductNo = sp.ProductNo');
+//      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.LG_LOList pli ON pli.ProductNo = sp.ProductNo AND pli.UserID = '+intToStr(thisUser.UserID));
 
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner JOIN dbo.Client                     CL   ON  CL.ClientNo = CH.CustomerNo') ;
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo') ;
-  cdsSawmillLoadOrders.SQL.Add('ON  CH.ShippingPlanNo          = SP.LO_No') ;
-  cdsSawmillLoadOrders.SQL.Add('  AND CH.ShippingPlanStatus <> 3') ;
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH');
+      cdsSawmillLoadOrders.SQL.Add('Inner JOIN dbo.Client                     CL   ON  CL.ClientNo = CH.CustomerNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.MarketRegionNo');
+      cdsSawmillLoadOrders.SQL.Add('ON  CH.ShippingPlanNo          = SP.LO_No');
+      cdsSawmillLoadOrders.SQL.Add('  AND CH.ShippingPlanStatus <> 3');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Users USR			ON USR.UserID = SP.ModifiedUser');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
-  cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     SUPP   ON  SUPP.ClientNo            = SP.SupplierNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.Client                     CUST   ON  CUST.ClientNo            = SP.CustomerNo            -- LARS');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Shipto         ON ShipTo.CityNo 	           = SP.ShipToInvPointNo');
+      cdsSawmillLoadOrders.SQL.Add('LEFT OUTER JOIN dbo.CITY                     Loading         ON Loading.CityNo 	           = SP.LoadingLocationNo');
 
+      cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
 
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo');
 
-  cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnitNo            = UN.VolumeUnit_No');
+      cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo');
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS');
+      cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID');
+      cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo');
 
-  cdsSawmillLoadOrders.SQL.Add('left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.VoyageNo') ;
+      if Length(Trim(Ref)) > 0 then
+      begin
+        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
 
-  cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.ProdInstru PIS') ;
-  cdsSawmillLoadOrders.SQL.Add('Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID') ;
-  cdsSawmillLoadOrders.SQL.Add('ON PIS.ProdInstruNo = SP.ProdInstructNo') ;
+        cdsSawmillLoadOrders.SQL.Add('WHERE CLL.DateCreated > ' + QuotedStr(DateToStr(IncYear(now,-2))) + ' AND ((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
 
+        cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + '))');
 
-  if Length(Trim(Ref)) > 0 then
-  Begin
-   Ref  := StringReplace(Ref, '*', '%',
-                          [rfReplaceAll, rfIgnoreCase]);
+      end
+      else
+        cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
-   cdsSawmillLoadOrders.SQL.Add('WHERE ((SP.Reference LIKE ' + QuotedStr(Ref) + ')' ) ;
-
-   cdsSawmillLoadOrders.SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref)  + '))') ;
-
-
-  End
-    else
-     cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text) ;
-
-
-  cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
-
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
+      cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
+      if thisUser.UserID = 258 then
+        cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
 
 // if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('BuildVIDAWOODGetOne_LO_SQL_BuildGetOne_LO_SQL.txt');
-  OrderTypeChanged := False ;
- End ;
-  Finally
+      OrderTypeChanged := False;
+    end;
+  finally
 //   cbOrderType.Properties.OnChange:= cbOrderTypePropertiesChange ;
-  End ;
+  end;
 end;
 
 procedure TfrmVisTruckLoadOrder.eRedoDagExit(Sender: TObject);
@@ -5737,22 +5810,45 @@ end;
 
 procedure TfrmVisTruckLoadOrder.teREFKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+
+  function outOfLimit(const s: string): boolean;
+  var
+    FirstDigitPos: integer;
+    NoOfchars: integer;
+  begin
+    result := true;
+    FirstDigitPos := pos('*', s) + 1;
+    if FirstDigitPos <> 2 then exit;
+    noOfChars := s.Length;
+    if (noOfChars - 1) < 3 then exit;   // Minimum 3
+    result := false;
+  end;
+
 begin
-  if Key <> VK_RETURN then Exit;
- With dmcOrder do
- Begin
-  dmcOrder.cdsSawmillLoadOrders.IndexName:= 'cdsSawmillLoadOrdersLONo' ;
-  Try
+  if Key <> VK_RETURN then
+    Exit;
+  if OutOfLimit(teREF.Text) then
+  begin
+    showMessage('För få tecken inmatade eller så saknas "*"!' + #10#13 +
+      '(ex. "*123" är korrekt men ej "*12" - för få tecken');
+    exit;
+  end;
+
+  with dmcOrder do
+  begin
+    dmcOrder.cdsSawmillLoadOrders.IndexName := 'cdsSawmillLoadOrdersLONo';
+    try
 //   teSearchLONo.Text:= IntToStr(dmcOrder.GetLONoForLoadNo (StrToIntDef(Trim(teSearchLoadNo.Text),0))) ;
-   GetOneLO(Sender) ;
+      GetOneLO(Sender);
 //   cdsLoadsForLO.Locate('LoadNo',StrToIntDef(Trim(teSearchLoadNo.Text),0),[])
-   if dmcOrder.FindLoadRecord(StrToIntDef(Trim(teSearchLoadNo.Text),0)) then ;
-   Timer3.Enabled:= True ;
-  Finally
-   dmcOrder.cdsSawmillLoadOrders.IndexName:= 'indexSupplierShipPlanObjectNo' ;
-   teRef.Text:= '' ;
-  End ;
- End ; //with
+      if dmcOrder.FindLoadRecord(StrToIntDef(Trim(teSearchLoadNo.Text), 0)) then
+        ;
+      Timer3.Enabled := True;
+    finally
+      dmcOrder.cdsSawmillLoadOrders.IndexName := 'indexSupplierShipPlanObjectNo';
+      teRef.Text := '';
+    end;
+  end; //with
 
 end;
 

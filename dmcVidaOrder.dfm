@@ -2583,7 +2583,7 @@ object dmcOrder: TdmcOrder
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateObject = updLoadsForLO
-    StoredProcName = 'vida_LoadsForLO_XII'
+    StoredProcName = 'dbo.vida_LoadsForLO_XII'
     Left = 320
     Top = 24
     ParamData = <
@@ -2592,7 +2592,6 @@ object dmcOrder: TdmcOrder
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
-        Value = 0
       end
       item
         Position = 2
