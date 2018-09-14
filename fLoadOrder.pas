@@ -1820,7 +1820,8 @@ CheckIfChangesUnSaved ;
    cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
    cdsSawmillLoadOrders.SQL.Add(')') ;
 
-
+   if thisUser.UserID = 258 then cdsSawmillLoadOrders.SQL.SaveToFile('BuildLOSQL.sql');
+   
 
 // if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.txt');
     OrderTypeChanged := False ;
@@ -5811,16 +5812,30 @@ end;
 procedure TfrmVisTruckLoadOrder.teREFKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 
+  function OccurrencesOfChar(const ContentString: string; const CharToCount:
+    char): integer;
+  var
+    C: Char;
+  begin
+    result := 0;
+    for C in ContentString do
+      if C = CharToCount then
+        Inc(result);
+  end;
+
   function outOfLimit(const s: string): boolean;
   var
-    FirstDigitPos: integer;
+    noOfAsterisks: integer;
     NoOfchars: integer;
+    minNoOfChar: integer;
   begin
     result := true;
-    FirstDigitPos := pos('*', s) + 1;
-    if FirstDigitPos <> 2 then exit;
-    noOfChars := s.Length;
-    if (noOfChars - 1) < 3 then exit;   // Minimum 3
+    noOfAsterisks := OccurrencesOfChar(s, '*');
+    NoOfchars := s.Length;
+    if noOfAsterisks > 0 then
+      dec(NoOfchars, noOfAsterisks);
+    if NoOfchars < 3 then
+      exit;   // Minimum 3
     result := false;
   end;
 
@@ -5829,8 +5844,8 @@ begin
     Exit;
   if OutOfLimit(teREF.Text) then
   begin
-    showMessage('För få tecken inmatade eller så saknas "*"!' + #10#13 +
-      '(ex. "*123" är korrekt men ej "*12" - för få tecken');
+    showMessage('För få tecken inmatade!' + #10#13 +
+      '(ex. "*123", "*123*", "na*-*7 och "NaGy*" är korrekt men ej "*12" - för få tecken');
     exit;
   end;
 
