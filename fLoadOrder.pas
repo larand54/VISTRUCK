@@ -5844,10 +5844,13 @@ begin
     Exit;
   if OutOfLimit(teREF.Text) then
   begin
-    showMessage('För få tecken inmatade!' + #10#13 +
+    showMessage('För få tecken inmatade! ( minst 3 tecken förutom wildcards)' + #10#13 +
       '(ex. "*123", "*123*", "na*-*7 och "NaGy*" är korrekt men ej "*12" - för få tecken');
     exit;
   end;
+
+  if OccurrencesOfChar(teREF.Text,'*') = 0 then teREF.Text := '*' + teREF.Text + '*';
+
 
   with dmcOrder do
   begin
