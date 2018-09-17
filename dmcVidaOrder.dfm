@@ -2430,7 +2430,9 @@ object dmcOrder: TdmcOrder
       '1'
       'END AS OrderType'
       'FROM dbo.SupplierShippingPlan SP'
-      'WHERE  SP.ShippingPlanNo = :LONo')
+      'WHERE  SP.ShippingPlanNo = :LONo '
+      'AND'
+      '(SP.SupplierNO = :SupplierNo OR SP.CustomerNo = :SupplierNo)')
     Left = 408
     Top = 368
     ParamData = <
@@ -2438,6 +2440,7 @@ object dmcOrder: TdmcOrder
         Name = 'SUPPLIERNO'
         DataType = ftInteger
         ParamType = ptInput
+        Value = Null
       end
       item
         Name = 'LONO'

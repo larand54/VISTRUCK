@@ -598,6 +598,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Align = alTop
         BevelOuter = bvLowered
         TabOrder = 1
+        ExplicitLeft = 0
+        ExplicitTop = 6
         object teSearchLONo: TcxTextEdit
           Left = 64
           Top = 11
@@ -1060,6 +1062,18 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Action = acClose
           OptionsImage.Layout = blGlyphTop
           TabOrder = 26
+        end
+        object cxLabel10: TcxLabel
+          Left = 509
+          Top = 41
+          Caption = 'O.typ:'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -15
+          Style.Font.Name = 'Tahoma'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
         end
       end
     end
@@ -6915,6 +6929,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6929,6 +6944,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

@@ -463,6 +463,7 @@ type
     dxBarButton35: TdxBarButton;
     sq_GetLONos: TFDQuery;
     grdFSDBTableView1LocalShippingCompany: TcxGridDBColumn;
+    cxLabel10: TcxLabel;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -2098,13 +2099,13 @@ begin
         0), ThisUser.CompanyNo) then
       begin
         dmcOrder.cds_Props.Edit;
-        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0;
+        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0;  // Sales
         dmcOrder.cds_Props.Post;
       end
       else
       begin
         dmcOrder.cds_Props.Edit;
-        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 1;
+        dmcOrder.cds_PropsOrderTypeNo.AsInteger := 1; // Purchase
         dmcOrder.cds_Props.Post;
       end;
       ClientNo := 741;
@@ -2637,42 +2638,14 @@ begin
   StartLikeStr := '';
   EndLikeStr := '';
   Ref := teRef.Text;
-// cbOrderType.Properties.OnChange:= nil ;
   try
     CheckIfChangesUnSaved;
-// icStatusChange(Sender) ;
     with dmcOrder do
     begin
-{  OrderType := OrderTypeOrderType(dmcOrder.cds_PropsVerkNo.AsInteger, StrToIntDef(teSearchLONo.Text,0) );
-  if OrderType > -1 then
-  Begin}
       dmcOrder.cds_Props.Edit;
-      dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0; //OrderType ;
+      dmcOrder.cds_PropsOrderTypeNo.AsInteger := 0; // Sales ;
       dmcOrder.cds_Props.Post;
-//  End ;
 
-{  if (dmsContact.IsClientLego(ThisUser.CompanyNo) = cLego)
-  and (dmsContact.ClientInterVerk(ThisUser.CompanyNo) = False) then
-  Begin
-   if LO_LoadingLocationIsLegoLoadingLocation(StrToIntDef(teSearchLONo.Text,0), ThisUser.CompanyNo) then
-   Begin
-    dmcOrder.cds_Props.Edit ;
-    dmcOrder.cds_PropsOrderTypeNo.AsInteger  := 0 ;
-    dmcOrder.cds_Props.Post ;
-   End
-   else
-   Begin
-    dmcOrder.cds_Props.Edit ;
-    dmcOrder.cds_PropsOrderTypeNo.AsInteger  := 1 ;
-    dmcOrder.cds_Props.Post ;
-   End ;
-   ClientNo := 741 ;
-   LEGO     := True ;
-  End
-  else
-  if (dmsContact.ClientInterVerk(ThisUser.CompanyNo) ) or (ThisUser.CompanyNo = 741) then
-  ClientNo  := dmcOrder.cds_PropsVerkNo.AsInteger ;}
-//      buildSQLForVWGetOneLO(Ref, teSearchLONo.Text);
       cdsSawmillLoadOrders.SQL.Clear;
 
       with cdsSawMillLoadOrders do
@@ -2760,7 +2733,7 @@ begin
       cdsSawmillLoadOrders.SQL.Add('BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,');
       cdsSawmillLoadOrders.SQL.Add('pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, pli.KV, pli.PK, SP.lengthtyp AS INTLÄNGD, SP.Reference AS RADREFERENS,');
 
-      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+      if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then    // Sales
       begin
         cdsSawmillLoadOrders.SQL.Add('Case WHEN SP.Price > 0 then Cast((SP.Price');
         cdsSawmillLoadOrders.SQL.Add('+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BETWEEN vwc.Fom AND vwc.Tom),0.0))');
