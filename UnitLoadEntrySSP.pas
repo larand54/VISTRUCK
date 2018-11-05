@@ -5881,13 +5881,37 @@ function TfLoadEntrySSP.validatePkgsReference(Sender: TObject; const PkgNo: Inte
 var
   pkgREF: string;
   orderREF: string;
+  LONumber: integer;
+  err: integer;
+  msg: string;
 begin
+  result := eaACCEPT;
+{  if noUserReferenceWarning then exit;
+
   if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
     dmLoadEntrySSP.cds_LoadPackages.Edit;
 
+  LONumber := dmLoadEntrySSP.cdsLORowsShippingPlanNo.AsInteger;
   pkgREF := dmLoadEntrySSP.cds_LoadPackagesREFERENCE.AsString;
-  if pkgREF <> '' then showMessage('Paketreferens: '+pkgREF);
-  result := eaACCEPT;
+  if pkgREF <> '' then begin
+    err := 0;
+    verifyPackageReference(PkgREF,LONumber, Msg, Err);
+    if err <> 0 then
+    MessageDlg(Msg,mtWarning,[mbok],0);
+      case MessageDlg(Msg,
+        mtWarning, mbOKCancel, 0) of
+        mrOk:
+          begin
+            result := eaAccept
+          end;
+        mrCancel:
+          begin
+            result := eaUserCancel;
+          end;
+      end;
+
+  end;
+}
 end;
 
 function TfLoadEntrySSP.Validate_VE_Pkg(const aPkgNo,
@@ -6871,6 +6895,7 @@ var
   Error             : Boolean ;
   NewPkgNo          : Integer ;
   PktNrLevKod       : String3 ;//Lev koden i paketnrsträngen
+  PkgREF            : string ;
   ErrorText         : String ;
   NumberPrefix      : String ;
   MsgInfo           : String ;
@@ -7036,7 +7061,14 @@ begin
             Begin
               Error := False;
             End;
-            validatePkgsReference(Sender, NewPkgNo, PkgSupplierCode);
+            if validatePkgsReference(Sender, NewPkgNo, PkgSupplierCode) <> eaAccept then
+            begin
+              pkgREF := dmLoadEntrySSP.cds_LoadPackagesREFERENCE.AsString;
+              Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' referens' +
+                PkgREF + ' does not match order reference! ' +
+                Trim(lcPIP.Text);
+              Error := True;
+            end;
           End;
         End
         else if Action = eaREJECT then
