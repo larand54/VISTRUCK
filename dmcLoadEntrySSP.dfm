@@ -2418,7 +2418,6 @@
     end
   end
   object sq_OnePkgDetailData: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -3813,7 +3812,7 @@
         'rCode '
       '--'#9#9#9'               and sp.ShippingPlanNo = :LONo'
       'WHERE PN.PkgArticleNo = :PkgArticleNo'
-      'AND PN.SupplierCode = :SupplierCode'
+      '-- AND PN.SupplierCode = :SupplierCode'
       'AND LIP.PhysicalInventoryPointNo = :PIPNo'
       'AND PN.Status = 1'
       'AND LIP.CanAddToLoad = 1'
@@ -3826,12 +3825,6 @@
       item
         Name = 'PKGARTICLENO'
         DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end
-      item
-        Name = 'SUPPLIERCODE'
-        DataType = ftString
         ParamType = ptInput
         Value = Null
       end

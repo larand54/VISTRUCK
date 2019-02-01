@@ -4526,24 +4526,24 @@ object frmMain: TfrmMain
     ExtraPane.Items = <>
     ItemLinks = <>
     UseOwnFont = False
-    Left = 848
-    Top = 192
+    Left = 784
+    Top = 344
   end
   object dxRibbonPopupMenu1: TdxRibbonPopupMenu
     BarManager = dxBarManager1
     ItemLinks = <>
     Ribbon = dxRibbon1
     UseOwnFont = False
-    Left = 848
-    Top = 160
+    Left = 784
+    Top = 312
   end
   object dxRibbonDropDownGallery1: TdxRibbonDropDownGallery
     BarManager = dxBarManager1
     ItemLinks = <>
     Ribbon = dxRibbon1
     UseOwnFont = False
-    Left = 848
-    Top = 240
+    Left = 784
+    Top = 392
   end
   object siLangLinked1: TsiLangLinked
     Version = '7.2'

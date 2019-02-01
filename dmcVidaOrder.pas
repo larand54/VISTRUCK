@@ -442,6 +442,7 @@ type
     sp_LOBuffertLO: TFDStoredProc;
     sp_SetAvropStatus: TFDStoredProc;
     cdsLoadsForLOLocalShippingCompany: TStringField;
+    cdsSawmillLoadOrdersLagerkod: TStringField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;

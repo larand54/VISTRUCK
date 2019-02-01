@@ -386,6 +386,7 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
+    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -417,6 +418,7 @@ object dmcOrder: TdmcOrder
       'bk.PreliminaryRequestedPeriod               AS READYDATE,'
       'USR.INITIALS,'
       'SP.ShippingPlanStatus,'
+      'SP.Lagerkod,'
       'SP.ShippingPlanNo                           AS LONumber,'
       'SP.PackageCode                              AS PackageCode,'
       'SP.ProductDescription                       AS Product,'
@@ -628,6 +630,7 @@ object dmcOrder: TdmcOrder
       'bk.PreliminaryRequestedPeriod AS READYDATE,'
       'USR.INITIALS,'
       'SP.ShippingPlanStatus,'
+      'SP.Lagerkod,'
       'SP.ShippingPlanNo                           AS LONumber,'
       'SP.PackageCode                              AS PackageCode,'
       'SP.ProductDescription                       AS Product,'
@@ -1374,6 +1377,13 @@ object dmcOrder: TdmcOrder
       Origin = 'Produktnotering'
       ProviderFlags = []
       ReadOnly = True
+    end
+    object cdsSawmillLoadOrdersLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      ReadOnly = True
+      FixedChar = True
+      Size = 1
     end
   end
   object cdsBooking: TFDQuery

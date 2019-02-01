@@ -2860,9 +2860,11 @@ Begin
      cds_LoadPackagesOverrideRL.AsInteger               := 0 ;
      cds_LoadPackagesDefsspno.AsInteger                 := -1 ;
      cds_LoadPackagesDefaultCustShipObjectNo.AsInteger  := -1 ;
+     if sq_OnePkgDetailData.Active then
+      sq_OnePkgDetailData.Active  := False ;
      sq_OnePkgDetailData.ParamByName('PackageNo').AsInteger   := PkgNo ;
      sq_OnePkgDetailData.ParamByName('SupplierCode').AsString := PkgSupplierCode ;
-     sq_OnePkgDetailData.Open ;
+     sq_OnePkgDetailData.Active := True ;
      if not sq_OnePkgDetailData.Eof then
      Begin
       cds_LoadPackagesShippingPlanNo.AsInteger    := LO_Number ;
@@ -2914,6 +2916,7 @@ Begin
     End ;
 
   Finally
+   sq_OnePkgDetailData.Close ;
    ds_LoadPackages2.OnDataChange:= ds_LoadPackages2DataChange ;
   End ;
  End ; //with

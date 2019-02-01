@@ -1765,7 +1765,7 @@ begin
      ShowMessage(siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_110' (* 'Radnr ' *) )+mtpackages.Fields[cRECID].AsString+siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_111' (* ' saknar paketnr' *) )) ;
      OKToSave := False ;
     End ;
-   if mtpackages.Fields[cTOTALLPM].AsInteger < 1 then //PCS
+   if mtpackages.Fields[cTOTALLPM].AsFloat = 0 then //PCS
     Begin
      ShowMessage(siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_90' (* 'Paketnr ' *) )+mtpackages.Fields[cPACKAGENO].AsString+siLangLinked_frmPkgEntry.GetTextOrDefault('IDS_113' (* ' saknar löpmeter' *) )) ;
      OKToSave := False ;

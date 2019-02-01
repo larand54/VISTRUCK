@@ -1703,7 +1703,8 @@ function TdmLoadEntrySSP.getActivePackage(const aPkgArticleNo, aPIPNo: integer;
 begin
   cds_getActivePackage.Active := false;
   cds_getActivePackage.ParamByName('PkgArticleNo').AsInteger := aPkgArticleNo;
-  cds_getActivePackage.ParamByName('SupplierCode').AsString := aSupplierCode;
+  //Tog bort denna parameter då det kan vara olika prefix på det som finns i lager och det prefix som används som parametervärde.
+//  cds_getActivePackage.ParamByName('SupplierCode').AsString := aSupplierCode;
   cds_getActivePackage.ParamByName('PIPNo').AsInteger := aPIPNo;
   cds_getActivePackage.Active := true;
   if not cds_getActivePackage.Eof then
