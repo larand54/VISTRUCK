@@ -689,7 +689,7 @@ uses
   uLoadOrderSearch, UnitCRExportOneReport, uSendMapiMail,
   //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
-  uLagerPos, uFastReports, dmsUserAdm;
+  uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS;
 
 procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
 Begin
@@ -1920,7 +1920,7 @@ Begin
     Begin
       sq_GetLONos.SQL.Add('WHERE  CLL.ClientNo = ' +
         dmcOrder.cds_PropsVerkNo.AsString);
-      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus i (1,3)');
+      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus in (1,3)');
     End
     else
     Begin
@@ -1938,6 +1938,8 @@ Begin
   End;
 
   GetStatFilter;
+
+  if computerName = 'CARMAK-FASTER' then sq_GetLONos.SQL.SaveToFile('sq_GetLONos.sql');
 
   sq_GetLONos.Active := True;
   sq_GetLONos.First;

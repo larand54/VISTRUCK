@@ -612,9 +612,6 @@ var Height, Width, Top, Left, LanguageNo : Integer ;
 begin
 // PanelMain.Visible  := False ;
 
-
-
-
  dmInventory.mtScannedPkgs.Active  := True ;
  ScanningEnabled  := True ;
  PanelPkgsPerLine.Align := alClient ;
@@ -657,8 +654,6 @@ begin
   ThisUser.Database:= 'visprodsql.vida.se:vis_vida' ;
 {$ENDIF}
 // -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-
-
 
  dmsConnector.Org_DB_Name:= ThisUser.HostName + ':' + ThisUser.Database ;
    if not ThisUser.Logon then
