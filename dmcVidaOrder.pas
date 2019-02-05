@@ -546,7 +546,7 @@ uses
   recerror,//dlgReconcileConcurrencyError,
   dmsVidaContact,
   VidaConst, dmsDataConn, VidaUser , dmsVidaProduct, dmsVidaSystem,
-  dmBooking, uSelectBTHorBTB, uPackageSize;
+  dmBooking, uSelectBTHorBTB, uPackageSize, uVIS_UTILS;
 
 
 Type
@@ -642,6 +642,8 @@ begin
   cdsSawmillLoadOrders.close;
   IsolateLoads;
   try
+   if ComputerName = 'CARMAK-FASTER' then cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
+
    cdsSawmillLoadOrders.Open;
    cdsSawmillLoadOrders.First;
   finally

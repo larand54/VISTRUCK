@@ -1920,14 +1920,15 @@ Begin
     Begin
       sq_GetLONos.SQL.Add('WHERE  CLL.ClientNo = ' +
         dmcOrder.cds_PropsVerkNo.AsString);
-      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus in (1,3)');
+      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus <> 0');
+//      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus in (1,3)');
     End
     else
     Begin
-      sq_GetLONos.SQL.Add('WHERE  SP.SupplierNo = 980 ') ;// +
-      //  dmcOrder.cds_PropsVerkNo.AsString);
-    //  sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus <> 0');
-      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus in (1,3)');
+      sq_GetLONos.SQL.Add('WHERE  SP.SupplierNo = ' +
+        dmcOrder.cds_PropsVerkNo.AsString);
+      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus <> 0');
+//      sq_GetLONos.SQL.Add('AND SP.ShippingPlanStatus in (1,3)');
     End;
 
     if (cds_PropsLoadingLocationNo.AsInteger > 0) And
@@ -2171,6 +2172,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -2403,6 +2405,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -2703,6 +2706,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -2899,6 +2903,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
+      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
