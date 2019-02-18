@@ -1606,7 +1606,7 @@ CheckIfChangesUnSaved ;
   cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
   cdsSawmillLoadOrders.SQL.Add(')') ;
 
-
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> U N I O N <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   cdsSawmillLoadOrders.SQL.Add('UNION');
 
   cdsSawmillLoadOrders.SQL.Add('SELECT distinct '+QuotedStr('NA')+' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
@@ -2127,46 +2127,6 @@ begin
     with cdsSawMillLoadOrders do
     begin
       mill := dmcOrder.cds_PropsVerkNo.AsInteger;
-      SQL.Add('DECLARE @LOList table (LOno int)');
-      SQL.Add('INSERT INTO @LOList SELECT SP.ShippingPlanNo FROM SupplierShippingPlan SP');
-      SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH ON SP.ShippingPlanNo = CH.ShippingPlanNo');
-      SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD ON SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo');
-      SQL.Add('WHERE');
-      SQL.Add('SP.DateCreated > ' + QuotedStr(DateToStr(IncYear(now, -2))));
-      SQL.Add('AND SP.ObjectType in (0,1,2)');
-      SQL.Add('AND SP.SupplierNo = ' + intToStr(mill));
-      if Length(Trim(Ref)) > 0 then
-      begin
-        Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
-        SQL.Add('AND((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
-        SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
-        SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
-      end
-      else
-        SQL.Add('AND SP.ShippingPlanNo = ' + teSearchLONo.Text);
-
-      SQL.Add('AND SP.ShippingPlanStatus IN  (' 
-        + quotedStr(intToStr(STATUS_PRELIMINARY))
-        + ',' 
-        + quotedStr(intToStr(STATUS_NEW)) 
-        + ',' 
-//          + quotedStr(intToStr(STATUS_REJECTED))
-//          + ','
-        + quotedStr(intToStr(STATUS_ACCEPTED)) 
-        + ',' 
-        + quotedStr(intToStr(STATUS_COMPLETE))
-        + ',' 
-        + quotedStr(intToStr(STATUS_PRODUCTION_COMPLETE)) 
-        + ',' 
-        +
-        quotedStr(intToStr(STATUS_ONHOLD)) 
-        + ',' 
-//          + quotedStr(intToStr(STATUS_ANNULERAD))
-//          + ','
-//          + quotedStr(intToStr(STATUS_ANNULERAD_BEKRAFTAD))
-//          + ','
-        + quotedStr(intToStr(STATUS_KLU)) + ')');
-
       cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
       cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
 
@@ -2391,13 +2351,13 @@ begin
       cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
       cdsSawmillLoadOrders.SQL.Add('AND CH.ShippingPlanStatus <> 3');
       cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
-      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
 {  if cbOrderType.ItemIndex = 0 then
   cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 0')
   else
   cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 1') ; }
 
+// >>>>>>>>>>>>>>>>>> U N I O N <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       cdsSawmillLoadOrders.SQL.Add('UNION');
       cdsSawmillLoadOrders.SQL.Add('SELECT distinct ' + QuotedStr('NA') +
         ' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
@@ -2624,7 +2584,6 @@ begin
 
 
       cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
-      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
 
 // if ThisUser.UserID = 8 then  cdsSawmillLoadOrders.SQL.SaveToFile('BuildGetOne_LO_SQL.txt');
@@ -2657,50 +2616,6 @@ begin
 
       cdsSawmillLoadOrders.SQL.Clear;
 
-      with cdsSawMillLoadOrders do
-      begin
-        mill := dmcOrder.cds_PropsVerkNo.AsInteger;
-        SQL.Add('DECLARE @LOList table (LOno int)'); 
-        SQL.Add('INSERT INTO @LOList SELECT SP.ShippingPlanNo FROM SupplierShippingPlan SP');
-        SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CH ON SP.ShippingPlanNo = CH.ShippingPlanNo');
-        SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails CSD ON SP.CustShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo');
-        SQL.Add('WHERE');
-        SQL.Add('SP.DateCreated > ' + QuotedStr(DateToStr(IncYear(now,-2))));  
-        SQL.Add('AND SP.ObjectType in (0,1,2)'); 
-        SQL.Add('AND SP.SupplierNo = ' + intToStr(mill));    
-        if Length(Trim(Ref)) > 0 then
-        begin
-          Ref := StringReplace(Ref, '*', '%', [rfReplaceAll, rfIgnoreCase]);
-          SQL.Add('AND((SP.Reference LIKE ' + QuotedStr(Ref) + ')');
-          SQL.Add('OR (CH.Reference LIKE ' + QuotedStr(Ref) + ')');
-          SQL.Add('OR (CSD.Reference LIKE ' + QuotedStr(Ref) + '))');
-        end
-        else
-          SQL.Add('AND SP.ShippingPlanNo = ' + teSearchLONo.Text);
-
-        SQL.Add('AND SP.ShippingPlanStatus IN  ('
-          + quotedStr(intToStr(STATUS_PRELIMINARY))
-          + ','
-          + quotedStr(intToStr(STATUS_NEW)) 
-          + ',' 
-//          + quotedStr(intToStr(STATUS_REJECTED)) 
-//          + ',' 
-          + quotedStr(intToStr(STATUS_ACCEPTED)) 
-          + ',' 
-          + quotedStr(intToStr(STATUS_COMPLETE)) 
-          + ',' 
-          + quotedStr(intToStr(STATUS_PRODUCTION_COMPLETE)) 
-          + ',' 
-          + quotedStr(intToStr(STATUS_ONHOLD)) 
-          + ',' 
-//          + quotedStr(intToStr(STATUS_ANNULERAD)) 
-//          + ',' 
-//          + quotedStr(intToStr(STATUS_ANNULERAD_BEKRAFTAD)) 
-//          + ',' 
-          + quotedStr(intToStr(STATUS_KLU))
-          + ')');
-
-      end;
       cdsSawmillLoadOrders.SQL.Add('SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
       cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
 
@@ -3105,7 +3020,6 @@ begin
       else
         cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
-      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
       cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
       if thisUser.UserID = 258 then
         cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
