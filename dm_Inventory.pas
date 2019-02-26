@@ -1819,6 +1819,8 @@ begin
  cds_KilnVagnKilnChargeNo.AsInteger       := KilnChargeNo ;
  cds_KilnVagnIMPNo.AsInteger              := GetIMPNoByKiln(KilnChargeNo)  ;
  cds_KilnVagnPlannedDuration.AsFloat      := GetDefaultDurationByKiln(KilnChargeNo) ;
+
+ cds_KilnVagnNotering.AsString            :=   cds_KilnVagnKilnChargeNo.AsString + ';' + cds_KilnVagnVagnNo.AsString ;
 end;
 
 
