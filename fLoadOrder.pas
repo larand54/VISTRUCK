@@ -2810,7 +2810,6 @@ begin
         cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
       cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType = 2');
-      cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo in (SELECT LONo FROM @LOList)');
 
       cdsSawmillLoadOrders.SQL.Add('UNION');
       cdsSawmillLoadOrders.SQL.Add('SELECT distinct ' + QuotedStr('NA') + ' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDate,');
