@@ -682,7 +682,7 @@ uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils,
   UnitCRPrintOneReport, dmsVidaSystem, //dmc_Filter,
   uTradingLinkMult, dmc_UserProps,
   uWait, uLagerPos, udmLanguage, URegionToRegionSelectLIPNo, uFastReports,
-  udmFR, uReportController;
+  udmFR, uReportController, uFRConstants, uFRAccessories, uFixMail, uFastReports2, udmFRSystem;
 
 {$R *.dfm}
 
@@ -3411,6 +3411,7 @@ end;
 
 procedure TfrmLoadArrivals.acFSExecute(Sender: TObject);
 Var
+(*
   FormCRViewReport: TFormCRViewReport;
   ReportType: Integer;
   LoadNo: Integer;
@@ -3418,9 +3419,42 @@ Var
   FR: TFastReports;
   CustomerNo: integer;
   NoOfCopies: integer;
+*)
+  CustomerNo: integer;
+  LoadNo: integer;
+  Lang: integer;
+  ReportType: integer;
+  salesregion: TCompanyNo;
+  FR2: TFastReports2;
 begin
   dmFR.SaveCursor;
   try
+    CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
+    if CustomerNo < 1 then
+      CustomerNo := dmArrivingLoads.cdsArrivingLoadsCUSTOMERNO.AsInteger;
+    Lang := dmsContact.getCustomerLanguage(CustomerNo);
+    LoadNo := dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
+    if LoadNo < 1 then
+      Exit;
+
+    // Try get client language, use swedish if fail.
+    Lang := dmsContact.getCustomerLanguage(CustomerNo);
+    if Lang = -1 then
+      Lang := cSwedish;
+
+      salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+      ReportType := cfTallyInternal
+    else
+      ReportType := cfTally;
+
+    FR2 := TFastReports2.create(dmsConnector, dmFR, Lang, salesregion);
+    try
+      FR2.preViewTallyByReportType(ReportType, LoadNo, true);
+    finally
+      FR2.free;
+    end;
+(*
     NoOfCopies := 0;
     CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
     if CustomerNo < 1 then
@@ -3501,6 +3535,7 @@ begin
         mePackageNo.SetFocus;
       End;
     end;
+*)
   finally
     dmFR.RestoreCursor;
   end;
@@ -5174,6 +5209,7 @@ end;
 
 procedure TfrmLoadArrivals.PrintDirectFS(Sender: TObject);
 var
+(*
   FormCRPrintOneReport  : TFormCRPrintOneReport;
   A : array of variant;
   ReportType: Integer;
@@ -5182,9 +5218,47 @@ var
   FR: TFastReports;
   CustomerNo: integer;
   NoOfCopies: integer;
+*)
+  loadNo: integer;
+  ReportType: Integer;
+  lang: integer;
+  FR2: TFastReports2;
+  SalesRegion: integer;
+  NoOfCopies: integer;
+  loads: TList<integer>;
 begin
   dmFR.SaveCursor;
   try
+    lang := ThisUser.LanguageID;
+    loadNo := dmArrivingLoads.cdsArrivingLoadsLoadNo.AsInteger;
+    if loadNo < 1 then
+      Exit;
+    loads := TList<integer>.create;
+    SalesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    NoOfCopies := 0;
+    try
+      loads.Add(loadNo);
+      if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+        ReportType := cfTallyInternal
+      else
+        ReportType := cfTally;
+
+      FR2 := TFastReports2.createForPrint(dmsConnector, dmFR, true, false, lang, SalesRegion, NoOfCopies);
+      try
+        FR2.printTallyByType(ReportType, loads, true);
+      finally
+        FR2.Free;
+      end;
+    finally
+      loads.Free;
+    end;
+
+  finally
+    dmFR.RestoreCursor;
+  end;
+
+(*
+
     NoOfCopies := 0;
     CustomerNo := dmArrivingLoads.cdsArrivingLoadsAVROP_CUSTOMERNO.AsInteger;
     if CustomerNo < 1 then
@@ -5260,6 +5334,7 @@ begin
   finally
     dmFR.RestoreCursor;
   end;
+  *)
 end;
 
 procedure TfrmLoadArrivals.acPrepareScanExecute(Sender: TObject);

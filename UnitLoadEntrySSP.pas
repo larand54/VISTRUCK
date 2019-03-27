@@ -705,7 +705,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   , uDBLogg, uIDBConnector, uIDBLogg, uILogger, uLogger
   //,uIIPObserver,  uIMsgObserver
 {$ENDIF}
-;
+, uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -4546,13 +4546,52 @@ End ;
 
 procedure TfLoadEntrySSP.PrintDirectFS(Sender: TObject);
 var FormCRPrintOneReport  : TFormCRPrintOneReport;
+(*
   A: array of variant;
   fr: TFastReports;
   ReportType: Integer;
   language: integer;
   LoadNo: integer;
   NoOfCopies: integer;
+*)
+  loadNo: integer;
+  ReportType: Integer;
+  lang: integer;
+  FR2: TFastReports2;
+  SalesRegion: integer;
+  NoOfCopies: integer;
+  loads: TList<integer>;
 begin
+  dmFR.SaveCursor;
+  try
+    lang := ThisUser.LanguageID;
+    loadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    if loadNo < 1 then
+      Exit;
+    loads := TList<integer>.create;
+    SalesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
+    try
+      loads.Add(loadNo);
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+        ReportType := cfTallyInternal
+      else
+        ReportType := cfTally;
+
+      FR2 := TFastReports2.createForPrint(dmsConnector, dmFR, true, false, lang, SalesRegion, NoOfCopies);
+      try
+        FR2.printTallyByType(ReportType, loads, true);
+      finally
+        FR2.Free;
+      end;
+    finally
+      loads.Free;
+    end;
+
+  finally
+    dmFR.RestoreCursor;
+  end;
+(*
   dmFR.SaveCursor;
   try
     NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
@@ -4628,18 +4667,40 @@ begin
   finally
     dmFR.RestoreCursor;
   end;
+*)
 end;
 
 procedure TfLoadEntrySSP.PreviewFS(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport ;
-  fr: TFastReports;
+  loadNo: integer;
   ReportType: Integer;
-  Language: Integer;
-  LoadNo: Integer;
-  NoOfCopies: integer;
+  lang: integer;
+  FR2: TFastReports2;
+  SalesRegionNo: integer;
 begin
   dmFR.SaveCursor;
+  try
+    loadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    if loadNo < 1 then
+      Exit;
+
+    lang := ThisUser.LanguageID;
+    salesRegionNo := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+      ReportType := cfTallyInternal
+    else
+      ReportType := cfTally;
+    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegionNo);
+    try
+      FR2.preViewTallyByReportType(ReportType, loadNo, true);
+    finally
+      FR2.Free;
+    end;
+
+  finally
+    dmFR.RestoreCursor;
+  end;
+(*  dmFR.SaveCursor;
   try
     NoOfCopies := 0;
     Edit1.SetFocus;
@@ -4662,7 +4723,10 @@ begin
       end
     end
     else
+
     begin
+    try
+      dmFR.SaveCursor;
       Try
         dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
           := LoadNo;
@@ -4710,6 +4774,7 @@ begin
   finally
     dmFR.RestoreCursor;
   end;
+*)
 end;
 
 procedure TfLoadEntrySSP.acPrintHyvelOrderExecute(Sender: TObject);
@@ -6549,17 +6614,38 @@ end;
 
 procedure TfLoadEntrySSP.acPrintFSMisMatchExecute(Sender: TObject);
 Var
+(*
   FormCRViewReport : TFormCRViewReport ;
   fr: TFastReports;
   ReportType: integer;
   Language: integer;
-  LoadNo: integer;
   NoOfCopies: integer;
+*)
+  LoadNo        : integer;
+  FR2           : TFastReports2;
+  lang          : integer;
+  salesRegion   : TCompanyNo;
+
 begin
-  NoOfCopies := 0;
-  LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
-  if uReportController.useFR then
+  dmsConnector.SaveandSetCursor(crSQLWait);
+  try
+    LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    if LoadNo < 1 then
+      exit;
+    lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegion);
+    try
+      FR2.preViewTallyByReportType(cfTally_no_matching_pkg, LoadNo, false);
+    finally
+      FR2.Free;
+    end;
+  finally
+    dmsConnector.RestoreCursor;
+  end;
+(*  if uReportController.useFR then
   begin
+    NoOfCopies := 0;
     Language := dmsContact.getCustomerLanguage
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
       ReportType := cFoljesedel_no_matching_pkg;
@@ -6589,6 +6675,7 @@ begin
       FreeAndNil(FormCRViewReport);
     End;
   end;
+  *)
 end;
 
 procedure TfLoadEntrySSP.acDeleteNotCompletePkgsExecute(Sender: TObject);
@@ -6637,7 +6724,9 @@ end;
 procedure TfLoadEntrySSP.acMailaFSExecute(Sender: TObject);
 const
   LF = #10;
-Var FormCRExportOneReport   : TFormCRExportOneReport ;
+Var 
+(*
+    FormCRExportOneReport   : TFormCRExportOneReport ;
     A                       : array of variant ;
     dm_SendMapiMail         : Tdm_SendMapiMail;
     Attach                  : array of String ;
@@ -6647,9 +6736,68 @@ Var FormCRExportOneReport   : TFormCRExportOneReport ;
     LoadNo: integer;
     ExcelDir                : String ;
     fr                      : TFastReports;
-    NoOfCopies: integer;
+    FR2                     : TFastReports2;
+    salesRegion             : integer;
+    NoOfCopies              : integer;
+*)
+    dmSendMail         : Tdm_SendMapiMail;
+    MailToAddress           : String ;
+    MailFrom                : string;
+    ExcelDir                : String ;
+    loadNo                  : integer;
+    ReportType              : Integer;
+    lang                    : integer;
+    FR2                     : TFastReports2;
+    SalesRegion             : TCompanyNo;
+    NoOfCopies              : integer;
+    loads                   : TList<integer>;
 begin
 {TSI:IGNORE ON}
+  dmFR.SaveCursor;
+  try
+    loadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
+    if loadNo < 1 then
+      exit;
+    lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+
+    if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger)
+    else
+      MailToAddress := dmsContact.GetEmailAddress(dmLoadEntrySSP.cds_LSPCustomerNo.AsInteger);
+    if Length(MailToAddress) = 0 then
+    begin
+      MailToAddress := 'ange@adress.nu';
+      ShowMessage('Email address is missing, please enter the address direct in the mail(outlook)');
+    end;
+    SalesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    ExcelDir := dmsSystem.Get_Dir('ExcelDir');
+    if Length(MailToAddress) > 0 then
+    begin
+      MailFrom := dmsSystem.Get_Dir('MyEmailAddress');
+      loads := TList<integer>.create;
+      try
+        loads.add(loadNo);
+        dmSendMail := Tdm_SendMapiMail.Create(nil);
+        if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
+        begin
+          FR2 := TFastReports2.createForMail(dmsConnector, dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion);
+          try
+            FR2.mailTallyByType(cfTally, loads, true);
+          finally
+            dmSendMail.Free;
+            FR2.free;
+          end;
+        end
+        else
+          showMessage(format('Wrong ordertype: %d', [dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger]));
+      finally
+        loads.free;
+      end;
+    end;
+  finally
+    dmFR.RestoreCursor;
+  end;
+(*
   NoOfCopies := 0;
   if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
       (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
@@ -6747,8 +6895,9 @@ begin
     end;
   end
   else
-{TSI:IGNORE OFF}
     ShowMessage('Emailadress saknas för klienten!');
+  *)
+{TSI:IGNORE OFF}
 end;
 
 procedure TfLoadEntrySSP.acMailTreatmentCertificateExecute(Sender: TObject);

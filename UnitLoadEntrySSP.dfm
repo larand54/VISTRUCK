@@ -678,10 +678,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -3977,6 +3973,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    SkinName = 'Silver'
     Left = 112
     Top = 674
   end

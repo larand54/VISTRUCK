@@ -7,16 +7,16 @@ uses
   DB,
 
 
-  SysUtils, FMTBcd, Provider, ImgList, Controls, Dialogs,
+  System.Generics.Collections,SysUtils, FMTBcd, Provider, ImgList, Controls, Dialogs,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Comp.Client,
   FireDAC.Moni.Base, FireDAC.Moni.RemoteClient, FireDAC.VCLUI.Login, FireDAC.VCLUI.Error,
   FireDAC.VCLUI.Wait, FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, FireDAC.Comp.DataSet,
-  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ;
+  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ,uIDBConnector;
 
 type
-  TdmsConnector = class(TDataModule)
+  TdmsConnector = class(TDataModule,IDBConnector)
     ilStatus: TImageList;
     imglistActions: TImageList;
     sq_GetLoggedInUser: TFDQuery;
@@ -54,17 +54,35 @@ type
     { Private declarations }
 
     FLastTransNo : LongWord;
+    FSaveCursor: TStack<TCursor>;
+    function getAppName: string;
+    function getAppPath: string;
+    function getLocalServer: string;
 
   public
     { Public declarations }
 
-    LocalServer,
     DriveLetter,
     InifilesMap : String ;
     LoginChanged : Boolean ;
     Org_AD_Name : String ;
     Org_DB_Name : String ;
 //    DeleteTdmVidaInvoice  : Boolean ;
+    procedure setUp(const aDBServer, aDBUser, aDBPassw: string);
+    procedure FDoLog(s: string);
+    function getDBUser: string;
+    function getDBPassw: string;
+    function getDBServer: string;
+    function ConnectToDatabase: boolean;
+    function DisconnectDB: boolean;
+    function getDBConnector: TObject;
+    procedure setDBConnector(const value: TObject);
+    function Connected: boolean;
+    function ResetCursor: TCursor;
+    function RestoreCursor: TCursor;
+    function SaveandSetCursor(const aCursor: TCursor): TCursor;
+    function SaveCursor: TCursor;
+
     function  CanChangeUser(const OriginalUserID : Integer)  : Boolean ;
     procedure DeleteSecondNo(const TableName: String; const PrimaryKeyValue: Integer) ;
     function  GetSOPkgNo(Var Prefix : String3;const ProducerNo, RegPointNo, SeriesType : Integer): Integer ;
@@ -94,6 +112,15 @@ type
 
     function NextMaxNo(TableName: string): Integer;
     function NextMinNo(TableName: string): Integer;
+
+    property localServer: string read getLocalServer;
+    property Connection: TObject read getDBConnector write setDBConnector;
+    property DBServer: string read getDBServer;
+    property DBUser: string read getDBUser;
+    property DBPassw: string read getDBPassw;
+
+    property AppName: string read getAppName;
+    property AppPath: string read getAppPath;
 
 
   end;
@@ -144,6 +171,37 @@ Begin
    End ;
   End ;
 End ;
+
+function TdmsConnector.DisconnectDB: boolean;
+begin
+
+end;
+
+procedure TdmsConnector.FDoLog(s: string);
+begin
+
+end;
+
+function TdmsConnector.getAppName: string;
+var
+  i: integer;
+  s: string;
+begin
+  s := ExtractFileName(Application.ExeName);
+  i := pos('.',s,1);
+  result := copy(s,1,i-1);
+end;
+
+function TdmsConnector.getAppPath: string;
+var
+  i,i1: integer;
+  s: string;
+begin
+  s := ExtractFilePath(Application.ExeName);
+  s := s.Remove(s.length-1);
+  i := LastDelimiter('\',s);
+  result := s.Substring(i);
+end;
 
 function TdmsConnector.GetSOPkgNo(Var Prefix : String3;const ProducerNo, RegPointNo, SeriesType : Integer): Integer ;
 begin
@@ -203,6 +261,11 @@ begin
     sp_GetUserStartHost.Active  := False ;
   End;
 End;
+
+function TdmsConnector.getLocalServer: string;
+begin
+  result := GetEnvironmentVariable('COMPUTERNAME')+'\SQLEXPRESS\';
+end;
 
 procedure TdmsConnector.InitProcedure(Proc: TFDStoredProc);
 var
@@ -292,15 +355,27 @@ begin
 // FDTransaction1.Commit ;
 end;
 
+function TdmsConnector.Connected: boolean;
+begin
+
+end;
+
+function TdmsConnector.ConnectToDatabase: boolean;
+begin
+
+end;
+
 constructor TdmsConnector.Create(AOwner : TComponent);
 begin
   inherited;
   FLastTransNo := 0;
+  FDConnection1.Close;
+  FSaveCursor := TStack<TCursor>.create;
 end;
 
 procedure TdmsConnector.DataModuleCreate(Sender: TObject);
 begin
-  LocalServer := GetEnvironmentVariable('COMPUTERNAME') + '\sqlexpress';
+
 {$IFDEF DEBUG}
   if (Pos('CARMAK', LocalServer) > 0) then
   begin
@@ -435,9 +510,45 @@ begin
   end;
 end;
 
+function TdmsConnector.ResetCursor: TCursor;
+begin
+  FSaveCursor.Clear;
+  result := crDefault;
+  Screen.Cursor := result;
+end;
+
+function TdmsConnector.RestoreCursor: TCursor;
+begin
+  result := FSaveCursor.Pop;
+  Screen.cursor := result;
+end;
+
 procedure TdmsConnector.Rollback ;
 begin
  // FDTransaction1.Rollback ;
+end;
+
+function TdmsConnector.SaveandSetCursor(const aCursor: TCursor): TCursor;
+begin
+  result := Screen.cursor;
+  FSaveCursor.Push(result);
+  Screen.cursor := aCursor;
+end;
+
+function TdmsConnector.SaveCursor: TCursor;
+begin
+  result := Screen.cursor;
+  FSaveCursor.Push(Screen.Cursor);
+end;
+
+procedure TdmsConnector.setDBConnector(const value: TObject);
+begin
+
+end;
+
+procedure TdmsConnector.setUp(const aDBServer, aDBUser, aDBPassw: string);
+begin
+
 end;
 
 function TdmsConnector.StartTransaction : LongWord;
@@ -472,6 +583,26 @@ begin
   end;
 end;
 
+
+function TdmsConnector.getDBConnector: TObject;
+begin
+
+end;
+
+function TdmsConnector.getDBPassw: string;
+begin
+
+end;
+
+function TdmsConnector.getDBServer: string;
+begin
+
+end;
+
+function TdmsConnector.getDBUser: string;
+begin
+
+end;
 
 procedure TdmsConnector.UpdateMaxSecByLoad(const LoadNo : Integer) ;
 begin

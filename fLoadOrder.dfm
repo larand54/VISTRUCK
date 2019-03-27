@@ -2109,7 +2109,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Category = 1
       Hint = 'F'#246'ljesedel'
       Visible = ivAlways
-      OnClick = bbTallyVer2Click
+      OnClick = acPrintFSExecute
     end
     object bbTally_USA: TdxBarButton
       Caption = 'F'#246'ljesedel (USA) '
@@ -7116,6 +7116,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    SkinName = 'Silver'
     Left = 488
     Top = 726
   end

@@ -7,7 +7,8 @@ uses
   StdCtrls,
   siComp, siLngLnk,
   uRwEWSBase, VCL.uRwEWSSession, uRwEWSInterfaces,
-  VCL.uRwFormScaler, uRwEWS, uRwEasyMAPI, uRwMapiInterfaces, VCL.uRwMAPISession ;
+  VCL.uRwFormScaler, uRwEWS, uRwEasyMAPI, uRwMapiInterfaces, VCL.uRwMAPISession
+  , uIInterFacesFastReports ;
 
 
 //   uRwEWS,
@@ -15,7 +16,7 @@ uses
 //  VCL.uRwFormScaler, uRwEWS, uRwEWSTypes ;
 
 type
-  Tdm_SendMapiMail = class(TDataModule)
+  Tdm_SendMapiMail = class(TDataModule, ICMSendMail)
     siLangLinked1: TsiLangLinked;
     EWSSession: TRwEWSSession;
     dlgAttachment: TOpenDialog;

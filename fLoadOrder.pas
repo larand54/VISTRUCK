@@ -63,7 +63,7 @@ uses
   dxPScxGridLayoutViewLnk, dxSkinsdxRibbonPainter, cxNavigator,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
-  siLngLnk, System.Actions, udmFR, uReportController, uReport;
+  siLngLnk, System.Actions, udmFR, uReportController, uReport, System.Generics.Collections;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -689,7 +689,7 @@ uses
   uLoadOrderSearch, UnitCRExportOneReport, uSendMapiMail,
   //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
-  uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS;
+  uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS, udmFRSystem, uFastReports2, uFixMail, uFRAccessories, uFRConstants;
 
 procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
 Begin
@@ -4960,7 +4960,29 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acPrintFSMisMatchExecute(Sender: TObject);
 Var FormCRViewReport : TFormCRViewReport ;
+  LoadNo        : integer;
+  FR2           : TFastReports2;
+  lang          : integer;
+  salesRegion   : TCompanyNo;
+
 begin
+  dmsConnector.SaveandSetCursor(crSQLWait);
+  try
+    LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger;
+    if LoadNo < 1 then
+      exit;
+    lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+    salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegion);
+    try
+      FR2.preViewTallyByReportType(cfTally_no_matching_pkg, LoadNo, false);
+    finally
+      FR2.Free;
+    end;
+  finally
+    dmsConnector.RestoreCursor;
+  end;
+(*
  if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
  FormCRViewReport:= TFormCRViewReport.Create(Nil);
@@ -5001,6 +5023,7 @@ begin
  Finally
     FreeAndNil(FormCRViewReport)  ;
  End ;
+ *)
 end;
 
 procedure TfrmVisTruckLoadOrder.teSearchLONoKeyDown(Sender: TObject; var Key: Word;
@@ -5095,6 +5118,7 @@ procedure TfrmVisTruckLoadOrder.acEmailaFSExecute(Sender: TObject);
 const
   LF = #10;
 Var
+(*
   FormCRExportOneReport: TFormCRExportOneReport;
   A: array of Variant;
   dm_SendMapiMail: Tdm_SendMapiMail;
@@ -5105,9 +5129,60 @@ Var
   Lang: integer;
   FR: TFastReports;
   NoOfCopies: integer;
+*)
+    dmSendMail         : Tdm_SendMapiMail;
+    MailToAddress           : String ;
+    MailFrom                : string;
+    ExcelDir                : String ;
+    loadNo                  : integer;
+    ReportType              : Integer;
+    lang                    : integer;
+    FR2                     : TFastReports2;
+    SalesRegion             : TCompanyNo;
+    NoOfCopies              : integer;
+    loads                   : TList<integer>;
+
 begin
   dmFR.SaveCursor;
   try
+    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
+    else
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+    if Length(MailToAddress) = 0 then
+    begin
+      MailToAddress := 'ange@adress.nu';
+      ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_16' (* 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' *) ));
+    end;
+    loadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger;
+    if loadNo < 1 then
+      Exit;
+    lang := dmsContact.getCustomerLanguage(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+      ReportType := cFoljesedelIntern
+    else
+      ReportType := cFoljesedel;
+    SalesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    ExcelDir := dmsSystem.Get_Dir('ExcelDir');
+    if Length(MailToAddress) > 0 then
+    begin
+      MailFrom := dmsSystem.Get_Dir('MyEmailAddress');
+      loads := TList<integer>.create;
+      try
+        loads.add(loadNo);
+        dmSendMail := Tdm_SendMapiMail.Create(nil);
+        FR2 := TFastReports2.createForMail(dmsConnector, dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion);
+        try
+          FR2.mailTallyByType(ReportType, loads, true);
+        finally
+          dmSendMail.Free;
+          FR2.free;
+        end;
+      finally
+        loads.free;
+      end;
+    end;
+(*
     NoOfCopies := 0;
     if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
       (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
@@ -5120,7 +5195,7 @@ begin
     Begin
       MailToAddress := 'ange@adress.nu';
       ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-        ('IDS_16' (* 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' *) )
+        ('IDS_16' { 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' } )
         );
     End;
     if Length(MailToAddress) > 0 then
@@ -5199,10 +5274,10 @@ begin
             grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
             .AsString,
             siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-            ('IDS_18' (* 'Följesedel bifogad. ' *) )
+            ('IDS_18' { 'Följesedel bifogad. ' } )
             + LF + ''
             + siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-            ('IDS_19' (* 'Load tally attached. ' *) )
+            ('IDS_19' { 'Load tally attached. ' } )
             + LF + ''
             + LF + ''
             + LF + 'MVH/Best Regards, '
@@ -5218,7 +5293,7 @@ begin
     end
     else
       ShowMessage('Emailaddress is missing');
-
+*)
   finally
     dmFR.RestoreCursor;
   end;
@@ -5551,15 +5626,45 @@ Begin
 End ;
 
 procedure TfrmVisTruckLoadOrder.acPrintFSExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport;
+Var
+(*
+  FormCRViewReport : TFormCRViewReport;
   LoadNo: integer;
   Lang: integer;
   ReportType: integer;
   FR: TFastReports;
   NoOfCopies: integer;
+*)
+  LoadNo: integer;
+  Lang: integer;
+  ReportType: integer;
+  salesregion: TCompanyNo;
+  FR2: TFastReports2;
 begin
   dmFR.SaveCursor;
   try
+    LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger;
+    if LoadNo < 1 then
+      Exit;
+
+    // Try get client language, use swedish if fail.
+    Lang := dmsContact.getCustomerLanguage(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+    if Lang = -1 then
+      Lang := cSwedish;
+
+      salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+      ReportType := cfTallyInternal
+    else
+      ReportType := cfTally;
+
+    FR2 := TFastReports2.create(dmsConnector, dmFR, Lang, salesregion);
+    try
+      FR2.preViewTallyByReportType(ReportType, LoadNo, true);
+    finally
+      FR2.free;
+    end;
+(*
     NoOfCopies := 0;
     LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger;
     if LoadNo < 1
@@ -5641,6 +5746,7 @@ begin
         end;
       End;
     end;
+*)
   finally
     dmFR.RestoreCursor;
   end;

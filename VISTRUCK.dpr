@@ -157,7 +157,12 @@ uses
   UfelRegPkg in 'UfelRegPkg.pas' {ffelRegPkg},
   UnitLONumber in 'UnitLONumber.pas' {fLONumber},
   udlgEnterDeliveredWeight in 'udlgEnterDeliveredWeight.pas' {dlgEnterDeliveredWeight},
-  uEntryFieldNoOfPkgs in 'uEntryFieldNoOfPkgs.pas' {fEntryFieldNoOfPkgs};
+  uEntryFieldNoOfPkgs in 'uEntryFieldNoOfPkgs.pas' {fEntryFieldNoOfPkgs},
+  uFastReports2 in '..\CommonSources\FastReport\uFastReports2.pas',
+  uIInterfacesFastReports in '..\CommonSources\FastReport\uIInterfacesFastReports.pas',
+  uFixMail in '..\CommonSources\FastReport\uFixMail.pas',
+  uFRAccessories in '..\CommonSources\FastReport\uFRAccessories.pas',
+  udmFRSystem in '..\CommonSources\FastReport\udmFRSystem.pas' {dmFRSystem: TDataModule};
 
 {$R *.res}
 begin
@@ -175,6 +180,7 @@ begin
   Application.CreateForm(TdmLanguage, dmLanguage);
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
+  Application.CreateForm(TdmFRSystem, dmFRSystem);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.
