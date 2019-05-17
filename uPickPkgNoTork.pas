@@ -27,7 +27,7 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, VidaType,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk, cxSpinEdit, cxLabel ;
 
 type
   TfPickPkgNoTork = class(TForm)
@@ -118,6 +118,9 @@ type
     cxStyle10: TcxStyle;
     cxStyle11: TcxStyle;
     siLangLinked_fPickPkgNoTork: TsiLangLinked;
+    cxLabel6: TcxLabel;
+    cxSpinEdit1: TcxSpinEdit;
+    bbtnSelectPkgs: TBitBtn;
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure bbMarkAllClick(Sender: TObject);
     procedure bbUnMarkAllClick(Sender: TObject);
@@ -135,6 +138,8 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure teALMMExit(Sender: TObject);
+    procedure bbtnSelectPkgsClick(Sender: TObject);
+    procedure cxSpinEdit1PropertiesChange(Sender: TObject);
   private
     { Private declarations }
     TempEditString  : String ;
@@ -157,7 +162,7 @@ type
 
 implementation
 
-uses dmsDataConn, dm_Inventory, dmsVidaSystem, dmsVidaContact, VidaUser;
+uses dxCore,dmsDataConn, dm_Inventory, dmsVidaSystem, dmsVidaContact, VidaUser;
 
 {$R *.dfm}
 
@@ -236,6 +241,7 @@ begin
 // if dmInventory.InventoryPkgs then
   RefreshInventoryPackageList ;
   dmInventory.mtSelectedPkgNo.First ;
+
 //   else
   //  RefreshInActivePackageList ;
 end;
@@ -337,24 +343,107 @@ begin
   AStyle:= cxStyleMarkedRow ;
 end;
 
-procedure TfPickPkgNoTork.FormShow(Sender: TObject);
-Var
-    Save_Cursor  :  TCursor;
+procedure TfPickPkgNoTork.cxSpinEdit1PropertiesChange(Sender: TObject);
 begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crSQLWait;    { Show hourglass cursor }
- Try
+  if cxSpinEdit1.Value > 0 then
+    bbtnSelectPkgs.Visible := true
+  else
+    bbtnSelectPkgs.Visible := false;
+end;
+
+procedure TfPickPkgNoTork.bbtnSelectPkgsClick(Sender: TObject);
+var
+  i: integer;
+  col: TcxGridDBColumn;
+  length: integer;
+  sLength: string;
+
+  function getLength(const aLength: string): integer;
+  var
+    iLength: integer;
+  begin
+    if not TryStrToInt(aLength, iLength) then
+    begin
+      showMessage('Fel format på MaxLängd');
+      result := -1;
+    end
+    else
+      result := iLength;
+  end;
+
+begin
+  For i := 0 to  cxGrid1DBTableView1.ColumnCount-1 do
+    cxGrid1DBTableView1.Columns[i].SortOrder := dxCore.soNone;
+
+  with dmInventory do
+  begin
+    if mtSelectedPkgNo.Locate('MARKERAD',1,[]) then
+      length := getLength(mtSelectedPkgNo.FieldByName('Maxlangd').AsString)
+    else begin
+      cxSpinEdit1.Value := 0;
+      showMessage('Markera första paketet i serien');
+      exit;
+    end;
+// MarkedPkgs:= 0 ;
+    bbUnMarkAllClick(nil);
+    mtSelectedPkgNo.SortFields := 'Maxlangd;REGISTRERAT';
+    mtSelectedPkgNo.SortDefault;
+    col := cxGrid1DBTableView1.GetColumnByFieldName('Maxlangd');
+    col.SortOrder := dxCore.soAscending;
+    col := cxGrid1DBTableView1.GetColumnByFieldName('REGISTRERAT');
+    col.SortOrder := dxCore.soAscending;
+
+    dmsConnector.SaveandSetCursor(crSQLWait);
+    mtSelectedPkgNo.DisableControls;
+    try
+      mtSelectedPkgNo.First;
+      i := 1;
+      while (i <= cxSpinEdit1.Value) and not mtSelectedPkgNo.Eof do
+      begin
+        if getLength(mtSelectedPkgNo.FieldByName('Maxlangd').AsString) <> length then
+        begin
+          mtSelectedPkgNo.Next;
+          continue;
+        end;
+        mtSelectedPkgNo.Edit;
+        mtSelectedPkgNoMARKERAD.AsInteger := 1;
+        mtSelectedPkgNo.post;
+        mtSelectedPkgNo.Next;
+        inc(i);
+      end;
+    finally
+      mtSelectedPkgNo.EnableControls;
+      dmsConnector.RestoreCursor;
+    end;
+  end;
+end;
+
+procedure TfPickPkgNoTork.FormShow(Sender: TObject);
+var
+  Save_Cursor: TCursor;
+  col: TcxGridDBColumn;
+begin
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
+  try
 // if dmInventory.InventoryPkgs then
 // Begin
-  TempEditString                                      := '' ;
-  mtFilterProduct.LookupDataSet := cds_Products ;
-  cxGrid1DBTableView1.DataController.KeyFieldNames    := 'PAKETNR;LEVKOD' ;
-  cds_Products.Active                                 := False ;
-  cds_Products.ParamByName('LIPNo').AsInteger         := LIPNo ;
-  cds_Products.ParamByName('PIPNo').AsInteger         := PIPNo ;
-  cds_Products.Active                                 := True ;
-  cxGrid1DBTableView1ColumnAngeAntalPkt.Visible       := False ;
-{ end
+    TempEditString := '';
+    mtFilterProduct.LookupDataSet := cds_Products;
+    cxGrid1DBTableView1.DataController.KeyFieldNames := 'PAKETNR;LEVKOD';
+    cds_Products.Active := False;
+    cds_Products.ParamByName('LIPNo').AsInteger := LIPNo;
+    cds_Products.ParamByName('PIPNo').AsInteger := PIPNo;
+    cds_Products.Active := True;
+    cxGrid1DBTableView1ColumnAngeAntalPkt.Visible := False;
+
+    //Ensure sorting order is correct from the beginning
+    dmInventory.mtSelectedPkgNo.SortFields := 'REGISTRERAT';
+    dmInventory.mtSelectedPkgNo.SortDefault;
+    col := cxGrid1DBTableView1.GetColumnByFieldName('REGISTRERAT');
+    col.SortOrder := dxCore.soAscending;
+
+  { end
  else
  Begin
   cxGrid1DBTableView1.DataController.KeyFieldNames    := 'PAKETNR;LEVKOD' ;
@@ -364,10 +453,10 @@ begin
   sq_GetAllProducts.Active                                 := True ;
  end ; }
 
-  mtFilter.Active:= True ;
- finally
-  Screen.Cursor := Save_Cursor;  { Always restore to normal }
- end;
+    mtFilter.Active := True;
+  finally
+    Screen.Cursor := Save_Cursor;  { Always restore to normal }
+  end;
 end;
 
 procedure TfPickPkgNoTork.mtFilterProductNoChange(Sender: TField);
@@ -380,18 +469,25 @@ procedure TfPickPkgNoTork.cxGrid1DBTableView1CellClick(
   ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
   AShift: TShiftState; var AHandled: Boolean);
 begin
- With dmInventory do
- Begin
+  with dmInventory do
+  begin
 //  if InventoryPkgs = False then  exit ;
-  AHandled:= True ;
-  if mtSelectedPkgNo.State = dsBrowse then
-  mtSelectedPkgNo.Edit ;
-  if mtSelectedPkgNomarkerad.AsInteger = 0 then
-  mtSelectedPkgNomarkerad.AsInteger:= 1
-  else
-  mtSelectedPkgNomarkerad.AsInteger:= 0 ;
-  mtSelectedPkgNo.Post ;
- End ;
+    AHandled := True;
+    if mtSelectedPkgNo.State = dsBrowse then
+      mtSelectedPkgNo.Edit;
+    if mtSelectedPkgNomarkerad.AsInteger = 0 then
+      mtSelectedPkgNomarkerad.AsInteger := 1
+    else
+      mtSelectedPkgNomarkerad.AsInteger := 0;
+    mtSelectedPkgNo.Post;
+  end;
+  if dmInventory.markedPkgs = 1 then
+    cxSpinEdit1.Enabled := true
+  else begin
+    cxSpinEdit1.Enabled := false;
+    bbtnSelectPkgs.Visible := false;
+  end;
+
 end;
 
 procedure TfPickPkgNoTork.FormDestroy(Sender: TObject);

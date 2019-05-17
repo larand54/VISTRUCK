@@ -1595,9 +1595,11 @@ CheckIfChangesUnSaved ;
   End ;
 
   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
-  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 0')
+//LGA20190425  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 0')
+  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType in (0,3)')
   else
-  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 1') ;
+//LGA20190425  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType = 1') ;
+  cdsSawmillLoadOrders.SQL.Add('AND OD.OrderType in (1)') ;
 
   cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo > 1');
   AddFilter ;
@@ -1803,7 +1805,7 @@ CheckIfChangesUnSaved ;
    cdsSawmillLoadOrders.SQL.Add('WHERE  CLL.ClientNo          =  ' + dmcOrder.cds_PropsVerkNo.AsString) ;
 //  cdsSawmillLoadOrders.SQL.Add('AND CH.ShippingPlanStatus <> 3') ;
    cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
-   cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
+   cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType in (0,1,3)');
 //cdsSawmillLoadOrders.SQL.Add('  AND SP.ShippingPlanStatus <> 4 ' ) ;
    cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo > 1');
   End
@@ -1812,7 +1814,7 @@ CheckIfChangesUnSaved ;
    cdsSawmillLoadOrders.SQL.Add('WHERE  SP.SupplierNo = ' + dmcOrder.cds_PropsVerkNo.AsString) ;
 //  cdsSawmillLoadOrders.SQL.Add('AND CH.ShippingPlanStatus <> 3') ;
    cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanStatus <> 0');
-   cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
+   cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType in (0,1,3)');
 //cdsSawmillLoadOrders.SQL.Add('  AND SP.ShippingPlanStatus <> 4 ' ) ;
    cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo > 1');
   End ;
@@ -2119,7 +2121,7 @@ begin
       LEGO := True;
     end
     else if (dmsContact.ClientInterVerk(ThisUser.CompanyNo)) or (ThisUser.CompanyNo
-      = 741) or (ThisUser.CompanyNo = 2846) then
+      = 741) or (ThisUser.CompanyNo = 2846) or (ThisUser.CompanyNo = 980)then
       ClientNo := dmcOrder.cds_PropsVerkNo.AsInteger;
 
     cdsSawmillLoadOrders.SQL.Clear;

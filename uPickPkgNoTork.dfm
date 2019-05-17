@@ -116,6 +116,8 @@ object fPickPkgNoTork: TfPickPkgNoTork
         PropertiesClassName = 'TcxDateEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
+        SortIndex = 0
+        SortOrder = soAscending
         Width = 112
       end
       object cxGrid1DBTableView1STYCKPERLNGD: TcxGridDBColumn
@@ -129,12 +131,12 @@ object fPickPkgNoTork: TfPickPkgNoTork
         DataBinding.FieldName = 'ProductNo'
         Visible = False
         VisibleForCustomization = False
+        Width = 94
       end
       object cxGrid1DBTableView1Maxlangd: TcxGridDBColumn
         Caption = 'Maxl'#228'ngd'
         DataBinding.FieldName = 'Maxlangd'
-        SortIndex = 0
-        SortOrder = soAscending
+        Width = 94
       end
     end
     object cxGrid1Level1: TcxGridLevel
@@ -214,6 +216,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
     Height = 121
     Align = alTop
     TabOrder = 2
+    ExplicitTop = -6
     object LabelPIPName: TLabel
       Left = 76
       Top = 14
@@ -224,7 +227,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
@@ -233,12 +236,12 @@ object fPickPkgNoTork: TfPickPkgNoTork
       Left = 18
       Top = 14
       Width = 52
-      Height = 20
+      Height = 19
       Caption = 'Lager:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
@@ -246,39 +249,39 @@ object fPickPkgNoTork: TfPickPkgNoTork
     object Label5: TLabel
       Left = 479
       Top = 14
-      Width = 59
-      Height = 20
+      Width = 61
+      Height = 19
       Caption = 'Produkt:'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
     end
     object Label2: TLabel
       Left = 479
       Top = 40
-      Width = 50
-      Height = 20
+      Width = 49
+      Height = 19
       Caption = 'ALMM:'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
     end
     object bbMarkAll: TBitBtn
       Left = 18
-      Top = 48
+      Top = 69
       Width = 103
-      Height = 50
+      Height = 46
       Caption = 'Markera alla'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       TabOrder = 0
@@ -287,14 +290,14 @@ object fPickPkgNoTork: TfPickPkgNoTork
     end
     object bbUnMarkAll: TBitBtn
       Left = 127
-      Top = 48
+      Top = 69
       Width = 114
-      Height = 50
+      Height = 46
       Caption = 'Avmarkera alla'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       TabOrder = 1
@@ -315,15 +318,15 @@ object fPickPkgNoTork: TfPickPkgNoTork
       Width = 425
     end
     object BitBtn3: TBitBtn
-      Left = 544
+      Left = 543
       Top = 69
-      Width = 121
+      Width = 122
       Height = 46
       Caption = 'Uppdatera'
-      Font.Charset = DEFAULT_CHARSET
+      Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       TabOrder = 3
@@ -360,6 +363,60 @@ object fPickPkgNoTork: TfPickPkgNoTork
       OnExit = teALMMExit
       Width = 121
     end
+    object cxLabel6: TcxLabel
+      Left = 675
+      Top = 79
+      Hint = 'Markera 1 paket och endast ett paket f'#246'r den l'#228'ngd som avses.'
+      Caption = 'Antal paket att markera:'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      Style.Font.Charset = ANSI_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -16
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      Properties.Alignment.Horz = taRightJustify
+      AnchorX = 851
+    end
+    object cxSpinEdit1: TcxSpinEdit
+      Left = 851
+      Top = 78
+      AutoSize = False
+      Enabled = False
+      ParentFont = False
+      Properties.AssignedValues.MinValue = True
+      Properties.MaxValue = 56.000000000000000000
+      Properties.SpinButtons.ShowFastButtons = True
+      Properties.OnChange = cxSpinEdit1PropertiesChange
+      Style.Font.Charset = ANSI_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -16
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      TabOrder = 8
+      Height = 27
+      Width = 97
+    end
+    object bbtnSelectPkgs: TBitBtn
+      Left = 960
+      Top = 69
+      Width = 121
+      Height = 46
+      Caption = 'Markera'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 9
+      TabStop = False
+      Visible = False
+      OnClick = bbtnSelectPkgsClick
+    end
   end
   object ds_SelectedPkgNo: TDataSource
     DataSet = dmInventory.mtSelectedPkgNo
@@ -380,7 +437,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     Left = 552
-    Top = 128
+    Top = 152
     object mtFilterProductNo: TIntegerField
       FieldName = 'ProductNo'
       OnChange = mtFilterProductNoChange
@@ -402,7 +459,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
   object dsFilter: TDataSource
     DataSet = mtFilter
     Left = 552
-    Top = 176
+    Top = 208
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 72
@@ -997,8 +1054,8 @@ object fPickPkgNoTork: TfPickPkgNoTork
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 560
-    Top = 352
+    Left = 632
+    Top = 368
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066005000690063006B0050006B0067004E006F005400

@@ -256,23 +256,30 @@ begin
 end;
 
 procedure TfEnterKilnVagn.AddSelectedPkgsToVagn(Sender: TObject) ;
-Begin
- With dmInventory do
- Begin
-  mtSelectedPkgNo.Filter    := 'Markerad = 1' ;// siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* 'Markerad = 1' *) ) ;
-  mtSelectedPkgNo.Filtered  := True ;
-  Try
-  mtSelectedPkgNo.First ;
-  while not mtSelectedPkgNo.Eof do
-  Begin
-   AddPkgsToVagn(Sender, mtSelectedPkgNoPAKETNR.AsInteger, mtSelectedPkgNoLEVKOD.AsString, -1 {product}) ;
-   mtSelectedPkgNo.Next ;
-  End ;
-  Finally
-   mtSelectedPkgNo.Filtered  := False ;
-  End;
- End;
-End;
+begin
+  with dmInventory do
+  begin
+    cds_KilnChargeRows.DisableControls;
+    try
+      mtSelectedPkgNo.Filter := 'Markerad = 1'; // siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_0' (* 'Markerad = 1' *) ) ;
+      mtSelectedPkgNo.Filtered := True;
+      try
+        mtSelectedPkgNo.First;
+        while not mtSelectedPkgNo.Eof do
+        begin
+          AddPkgsToVagn(Sender, mtSelectedPkgNoPAKETNR.AsInteger, mtSelectedPkgNoLEVKOD.AsString, -1 {product});
+          mtSelectedPkgNo.Next;
+        end;
+      finally
+        mtSelectedPkgNo.Filtered := False;
+      end;
+//      cds_KilnChargeRows.Post ;
+      cds_KilnChargeRows.Refresh;
+    finally
+      cds_KilnChargeRows.EnableControls;
+    end;
+  end;
+end;
 
 procedure TfEnterKilnVagn.acRemovePackageExecute(Sender: TObject);
 begin
@@ -295,7 +302,7 @@ Begin
   cds_KilnChargeRowsRowNo.AsInteger        := RowNo ;
   cds_KilnChargeRows.Post ;
   RowNo := succ(RowNo) ;
-  dmInventory.cds_KilnChargeRows.Refresh ;
+  //
   Except
    On E: EDatabaseError do
    Begin

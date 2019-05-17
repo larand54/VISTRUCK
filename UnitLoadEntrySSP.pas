@@ -4573,7 +4573,7 @@ begin
     NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
     try
       loads.Add(loadNo);
-      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+      if not dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [2, 3] then
         ReportType := cfTallyInternal
       else
         ReportType := cfTally;
@@ -4686,7 +4686,7 @@ begin
 
     lang := ThisUser.LanguageID;
     salesRegionNo := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
+    if not dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [2, 3] then
       ReportType := cfTallyInternal
     else
       ReportType := cfTally;
