@@ -149,7 +149,7 @@ type
     SaveDialog2: TSaveDialog;
     acSearchLoadNo: TAction;
     dxBarLargeButton6: TdxBarLargeButton;
-    PopupMenu1: TPopupMenu;
+    cxb: TPopupMenu;
     Ny1: TMenuItem;
     bcLastLoadNoOpen: TdxBarCombo;
     bbGoToLoad: TdxBarButton;
@@ -465,6 +465,9 @@ type
     grdFSDBTableView1LocalShippingCompany: TcxGridDBColumn;
     cxLabel10: TcxLabel;
     grdLODBTableView1Lagerkod: TcxGridDBColumn;
+    dxBarLargeButton11: TdxBarLargeButton;
+    acSendWoodxDeliveryMessage: TAction;
+    cxButton10: TcxButton;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -586,6 +589,8 @@ type
     procedure acPrintLO_All_MillsExecute(Sender: TObject);
     procedure cxButton3Click(Sender: TObject);
     procedure dxBarButton35Click(Sender: TObject);
+    procedure acSendWoodxDeliveryMessageExecute(Sender: TObject);
+    procedure acSendWoodxDeliveryMessageUpdate(Sender: TObject);
 
   private
     { Private declarations }
@@ -3813,6 +3818,42 @@ begin
  End ;
 end;
 
+
+procedure TfrmVisTruckLoadOrder.acSendWoodxDeliveryMessageExecute(
+  Sender: TObject);
+Var Path : String ;
+begin
+  With dmcOrder do
+  Begin
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('SenderLoadStatus').AsInteger = 2 then
+   Begin
+     Path := dmsSystem.GetFtpTarget(cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
+     grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) ;
+      if (Path <> '0') and (Path <> 'x') then
+      Begin
+       dmsSystem.ExportTallyWoodx
+      (Sender, dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger,
+      grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
+      grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger,
+      grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString, Path) ;
+      End
+       else
+        Begin
+         if Path = '0' then
+          ShowMessage('No Ftp folder is setup for this destination.') ;
+        End;
+   End
+    else
+     ShowMessage('Load must be completed OK.') ;
+  End;
+end;
+
+procedure TfrmVisTruckLoadOrder.acSendWoodxDeliveryMessageUpdate(
+  Sender: TObject);
+begin
+  acSendWoodxDeliveryMessage.Enabled:= (grdFSDBTableView1.DataController.DataSet.Active)
+  and (grdFSDBTableView1.DataController.DataSet.RecordCount > 0) ;
+end;
 
 procedure TfrmVisTruckLoadOrder.acSpec_ALLA_LasterExecute(Sender: TObject);
 begin

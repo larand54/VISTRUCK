@@ -50,7 +50,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.12.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -91,7 +91,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.12.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -127,58 +127,58 @@ object dm_ImportWoodx: Tdm_ImportWoodx
   end
   object ds_ProdLength: TDataSource
     DataSet = cds_ProdLength
-    Left = 816
+    Left = 792
     Top = 80
   end
   object ds_DMWH: TDataSource
     DataSet = cds_DMWH
     Left = 56
-    Top = 520
+    Top = 432
   end
   object ds_DMR: TDataSource
     DataSet = cds_DMR
     Left = 136
-    Top = 520
+    Top = 432
   end
   object ds_PartyID: TDataSource
     DataSet = cds_PartyID
     Left = 216
-    Top = 528
+    Top = 440
   end
   object ds_NameAddress: TDataSource
     DataSet = cds_NameAddress
     Left = 296
-    Top = 528
+    Top = 440
   end
   object ds_DMS: TDataSource
     DataSet = cds_DMS
     Left = 384
-    Top = 528
+    Top = 440
   end
   object ds_DSDMR: TDataSource
     DataSet = cds_DSDMR
     Left = 464
-    Top = 528
+    Top = 440
   end
   object ds_ProdID: TDataSource
     DataSet = cds_ProdID
     Left = 552
-    Top = 528
+    Top = 440
   end
   object ds_TrpPkgInfo: TDataSource
     DataSet = cds_TrpPkgInfo
     Left = 632
-    Top = 536
+    Top = 448
   end
   object ds_InfoQuant: TDataSource
     DataSet = cds_InfoQuant
     Left = 720
-    Top = 528
+    Top = 440
   end
   object ds_LengthSpec: TDataSource
     DataSet = cds_LengthSpec
-    Left = 824
-    Top = 536
+    Left = 816
+    Top = 448
   end
   object mtLoadProducts: TkbmMemTable
     Active = True
@@ -202,7 +202,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.12.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -217,9 +217,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 100
     end
   end
-  object sq_GetDMR: TFDQuery
+  object sq_GetDMR: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -264,7 +264,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND (IL.ShippingPlanNo = :ShippingPlanNo)'
       '  AND     (IL.ShippingPlanNo      <> -1                )')
     Left = 136
-    Top = 408
+    Top = 320
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -312,9 +312,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 30
     end
   end
-  object cds_DMWH: TFDQuery
+  object cds_DMWH: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * from dbo.DeliveryMessageWoodHeader'
@@ -323,7 +323,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
     Left = 56
-    Top = 464
+    Top = 376
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -406,31 +406,10 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object cds_DMWHYear: TIntegerField
-      FieldName = 'Year'
-      Origin = '[Year]'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cds_DMWHMonth: TIntegerField
-      FieldName = 'Month'
-      Origin = '[Month]'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cds_DMWHDay: TIntegerField
-      FieldName = 'Day'
-      Origin = '[Day]'
-      ProviderFlags = [pfInUpdate]
-    end
-    object cds_DMWHPO_Number: TStringField
-      FieldName = 'PO_Number'
-      Origin = 'PO_Number'
-      ProviderFlags = [pfInUpdate]
-      Size = 50
-    end
   end
-  object sq_Ins_wx_prod_trsl: TFDQuery
+  object sq_Ins_wx_prod_trsl: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete From dbo.wx_prod_trsl'
@@ -480,9 +459,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_SearchPkgNo: TFDQuery
+  object sq_SearchPkgNo: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select PackageNo FROM dbo.PackageNumber'
@@ -508,7 +487,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object cds_ImpLenMap: TFDQuery
+  object cds_ImpLenMap: TADQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -520,7 +499,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     IndexName = 'cds_ImpLenMapIndex01'
     MasterSource = ds_ImpProdMap
     MasterFields = 'Identifier;DeliveryMessageNumber'
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -595,9 +574,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ReadOnly = True
     end
   end
-  object sq_GetISOCtry: TFDQuery
+  object sq_GetISOCtry: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select CountryCode FROM dbo.Country'
@@ -617,9 +596,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 5
     end
   end
-  object cds_ImpProdMap: TFDQuery
+  object cds_ImpProdMap: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select distinct'
@@ -797,9 +776,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object sq_Delete: TFDQuery
+  object sq_Delete: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Delete dbo.DeliveryMessageWoodHeader'
@@ -820,9 +799,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_GetLONos: TFDQuery
+  object sq_GetLONos: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -868,9 +847,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'InvoiceNo'
     end
   end
-  object cds_ImpClientMap: TFDQuery
+  object cds_ImpClientMap: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select distinct c.ClientName,'
@@ -966,15 +945,15 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_ClrPartyID: TFDQuery
+  object sq_ClrPartyID: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Client'
       'Set PartyIdentifier = '#39#39
       'WHERE PartyIdentifier = :PartyIdentifier')
-    Left = 816
+    Left = 792
     Top = 224
     ParamData = <
       item
@@ -983,16 +962,16 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object sq_UpdateClient: TFDQuery
+  object sq_UpdateClient: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Update dbo.Client'
       'Set PartyIdentifier = :PartyIdentifier,'
       'PartyIdentifierType = :PartyIdentifierType'
       'WHERE ClientNo = :ClientNo')
-    Left = 816
+    Left = 792
     Top = 168
     ParamData = <
       item
@@ -1011,16 +990,16 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object cds_ImpLengths: TFDQuery
+  object cds_ImpLengths: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select LS.*'
       'FROM dbo.LengthSpecification2 LS '
       'WHERE'
       'LS.DeliveryMessageNumber = :DeliveryMessageNumber')
-    Left = 712
+    Left = 688
     Top = 32
     ParamData = <
       item
@@ -1066,9 +1045,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object cds_Products: TFDQuery
+  object cds_Products: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'SELECT pd.ProductNo, pg.ProductGroupNo, gd.GradeName,'
@@ -1190,9 +1169,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'NominalWidthINCH'
     end
   end
-  object cdsClient: TFDQuery
+  object cdsClient: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1244,9 +1223,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_GetOLDesc: TFDQuery
+  object sq_GetOLDesc: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT OL.OrderLineDescription'#9'AS ProductDescription'
@@ -1303,9 +1282,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 100
     end
   end
-  object sq_GetLinkedProductNo: TFDQuery
+  object sq_GetLinkedProductNo: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select ProductNo From dbo.wx_prod_trsl'
@@ -1330,9 +1309,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetDMHW: TFDQuery
+  object sq_GetDMHW: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -1387,9 +1366,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'SUM(PTD.SQMofActualWidth) '#9#9'    AS AM2,'
       'SUM(PTD.m3Nominal) '#9#9#9'          AS NM3,'
       'Count(PN.PackageNo)'#9#9#9'          AS Pkgs,'
-      'Count(Distinct Ilo.LoadNo)'#9#9#9'  AS TotalNumberOfShipments,'
-      'OH.OrderCreated,'
-      'OH.PO_Number'
+      'Count(Distinct Ilo.LoadNo)'#9#9#9'  AS TotalNumberOfShipments'
       ''
       'FROM   dbo.InvoiceHeader IH '
       
@@ -1446,11 +1423,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'IH.InvoiceDate ,'
       'INV.InvoiceNo ,'
       'PU.TemplateUnitName,'
-      'DT.DeliveryTerm,'
-      'OH.OrderCreated,'
-      'OH.PO_Number')
+      'DT.DeliveryTerm')
     Left = 56
-    Top = 408
+    Top = 320
     ParamData = <
       item
         Name = 'SHIPPINGPLANNO'
@@ -1481,19 +1456,10 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'TotalNumberOfShipments'
       ReadOnly = True
     end
-    object sq_GetDMHWOrderCreated: TSQLTimeStampField
-      FieldName = 'OrderCreated'
-      Origin = 'OrderCreated'
-    end
-    object sq_GetDMHWPO_Number: TStringField
-      FieldName = 'PO_Number'
-      Origin = 'PO_Number'
-      Size = 30
-    end
   end
-  object sq_GetPGNo: TFDQuery
+  object sq_GetPGNo: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1505,7 +1471,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'GroupNo'
       ''
       'WHERE pd.ProductNo = :ProductNo')
-    Left = 904
+    Left = 880
     Top = 32
     ParamData = <
       item
@@ -1533,7 +1499,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'NominalThicknessMM'
     end
   end
-  object cds_ProdLength: TFDQuery
+  object cds_ProdLength: TADQuery
     CachedUpdates = True
     Indexes = <
       item
@@ -1543,11 +1509,11 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         Fields = 'ActualLengthMM;NominalLengthMM'
       end>
     IndexName = 'cds_ProdLengthIndex1'
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.ProductLength')
-    Left = 816
+    Left = 792
     Top = 32
     object cds_ProdLengthProductLengthNo: TIntegerField
       FieldName = 'ProductLengthNo'
@@ -1608,9 +1574,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'Act'
     end
   end
-  object cds_DMR: TFDQuery
+  object cds_DMR: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryMessageReference'
@@ -1618,7 +1584,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'DeliveryMessageNumber = :DeliveryMessageNumber'
       'AND InternalInvoiceNo = :InternalInvoiceNo')
     Left = 136
-    Top = 464
+    Top = 376
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -1658,9 +1624,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetPartyID: TFDQuery
+  object sq_GetPartyID: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       '-- //PartyIdentifiers'
@@ -1725,7 +1691,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       '  AND     (IL.ShippingPlanNo      <> -1)'
       '')
     Left = 216
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -1940,9 +1906,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_PartyID: TFDQuery
+  object cds_PartyID: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.PartyIdentifier'
@@ -1950,7 +1916,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'DeliveryMessageNumber = :DeliveryMessageNumber'
       '')
     Left = 216
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -1992,9 +1958,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetAddress: TFDQuery
+  object sq_GetAddress: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       '-- //PartyIdentifiers'
@@ -2073,7 +2039,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ' '
       '')
     Left = 296
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -2288,9 +2254,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_NameAddress: TFDQuery
+  object cds_NameAddress: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.NameAddress'
@@ -2299,7 +2265,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
     Left = 296
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -2396,9 +2362,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object cds_DMS: TFDQuery
+  object cds_DMS: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryMessageShipment'
@@ -2407,7 +2373,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
     Left = 384
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -2537,9 +2503,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 50
     end
   end
-  object sq_GetDSDMR: TFDQuery
+  object sq_GetDSDMR: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -2588,7 +2554,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ' '
       '')
     Left = 464
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -2641,9 +2607,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 30
     end
   end
-  object cds_DSDMR: TFDQuery
+  object cds_DSDMR: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.DeliveryShipmentDeliveryMessageReference'
@@ -2652,7 +2618,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
     Left = 464
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -2698,9 +2664,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetTrp: TFDQuery
+  object sq_GetTrp: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -2723,7 +2689,6 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ''
       ''
       'Cast(LD.PackageNo AS Varchar(10)) AS SPEC_PackageNo,'
-      ''
       #39'Supplier'#39' AS IdentifierCodeType,'
       #39'Primary'#39' AS IdentifierType,'
       'SUM(PTD.NoOfPieces) AS ItemCountValue,'
@@ -2754,27 +2719,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ''
       
         'isNull(Cast(LD.SupplierCode AS Varchar(3)),'#39#39') + Cast(LD.Package' +
-        'No AS Varchar(10)) AS PaketAprefix,'
+        'No AS Varchar(10)) AS PaketAprefix'
       ''
-      ''
-      #39'Supplier'#39' AS IdentifierCodeType2,'
-      #39'Barcode'#39' AS IdentifierType2,'
-      #39'Code128C'#39' AS IdentifierFormatType2,'
-      ''
-      'IsNull((Select Top 1 Cast(PkgFix.ClientID AS Varchar(12))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS Identifier2'
-      ''
-      'FROM   dbo.InvoiceHeader IH'
+      'FROM   dbo.InvoiceHeader IH '
       
         #9'INNER JOIN dbo.InvoiceLO     IL '#9'ON  IH.InternalInvoiceNo = IL.' +
         'InternalInvoiceNo'
@@ -2810,7 +2757,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ''
       
         #9'INNER JOIN dbo.PackUnit PU ON PU.TemplateUnitNo = OL.PriceUnitN' +
-        'o'
+        'o '
       ''
       
         #9'Inner Join dbo.PkgType_Invoice  PTD ON  PTD.PackageTypeNo = LD.' +
@@ -2837,7 +2784,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'evkod, LS.NoOfLengths,'
       'LD.SupplierCode')
     Left = 632
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -2927,33 +2874,6 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
       Size = 10
     end
-    object sq_GetTrpIdentifierCodeType2: TStringField
-      FieldName = 'IdentifierCodeType2'
-      Origin = 'IdentifierCodeType2'
-      ReadOnly = True
-      Required = True
-      Size = 31
-    end
-    object sq_GetTrpIdentifierType2: TStringField
-      FieldName = 'IdentifierType2'
-      Origin = 'IdentifierType2'
-      ReadOnly = True
-      Required = True
-      Size = 7
-    end
-    object sq_GetTrpIdentifier2: TStringField
-      FieldName = 'Identifier2'
-      Origin = 'Identifier2'
-      ReadOnly = True
-      Size = 25
-    end
-    object sq_GetTrpIdentifierFormatType2: TStringField
-      FieldName = 'IdentifierFormatType2'
-      Origin = 'IdentifierFormatType2'
-      ReadOnly = True
-      Required = True
-      Size = 8
-    end
     object sq_GetTrpPaketAprefix: TStringField
       FieldName = 'PaketAprefix'
       Origin = 'PaketAprefix'
@@ -2961,9 +2881,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 13
     end
   end
-  object cds_TrpPkgInfo: TFDQuery
+  object cds_TrpPkgInfo: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.Transportpackageinformation'
@@ -2971,7 +2891,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'DeliveryMessageNumber = :DeliveryMessageNumber'
       'AND InternalInvoiceNo = :InternalInvoiceNo')
     Left = 632
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -3046,26 +2966,6 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'QuantityUOM'
       Size = 50
     end
-    object cds_TrpPkgInfoIdentifierCodeType2: TStringField
-      FieldName = 'IdentifierCodeType2'
-      Origin = 'IdentifierCodeType2'
-      Size = 50
-    end
-    object cds_TrpPkgInfoIdentifierType2: TStringField
-      FieldName = 'IdentifierType2'
-      Origin = 'IdentifierType2'
-      Size = 50
-    end
-    object cds_TrpPkgInfoIdentifier2: TStringField
-      FieldName = 'Identifier2'
-      Origin = 'Identifier2'
-      Size = 60
-    end
-    object cds_TrpPkgInfoIdentifierFormatType2: TStringField
-      FieldName = 'IdentifierFormatType2'
-      Origin = 'IdentifierFormatType2'
-      Size = 50
-    end
     object cds_TrpPkgInfoInternalInvoiceNo: TIntegerField
       FieldName = 'InternalInvoiceNo'
       Origin = 'InternalInvoiceNo'
@@ -3073,9 +2973,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetIQ: TFDQuery
+  object sq_GetIQ: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3165,7 +3065,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'IL.ShippingPlanNo , LD.PackageNo , PU.TemplateUnitName, LD.Suppl' +
         'ierCode')
     Left = 720
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -3249,21 +3149,17 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 3
     end
   end
-  object cds_InfoQuant: TFDQuery
+  object cds_InfoQuant: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
-    UpdateOptions.UpdateTableName = 'InformationalQuantity'
-    UpdateOptions.KeyFields = 
-      'DeliveryMessageNumber;DeliveryShipmentLineItemNumber;Identifier;' +
-      'InformationalQuantityType;InternalInvoiceNo'
     SQL.Strings = (
       'Select * FROM dbo.InformationalQuantity'
       'WHERE'
       'DeliveryMessageNumber = :DeliveryMessageNumber'
       'AND InternalInvoiceNo = :InternalInvoiceNo')
     Left = 720
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -3322,9 +3218,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetLS: TFDQuery
+  object sq_GetLS: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3442,8 +3338,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         'IL.ShippingPlanNo , LD.PackageNo , PU.TemplateUnitName, PTD.NoOf' +
         'Pieces, PL.ActualLengthMM,'
       'LD.SupplierCode')
-    Left = 824
-    Top = 424
+    Left = 816
+    Top = 336
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -3511,9 +3407,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 10
     end
   end
-  object cds_LengthSpec: TFDQuery
+  object cds_LengthSpec: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.LengthSpecification'
@@ -3521,8 +3417,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'DeliveryMessageNumber = :DeliveryMessageNumber'
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
-    Left = 824
-    Top = 480
+    Left = 816
+    Top = 392
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -3564,14 +3460,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     object cds_LengthSpecTotalNumberOfUnitsValue: TBCDField
       FieldName = 'TotalNumberOfUnitsValue'
       Origin = 'TotalNumberOfUnitsValue'
-      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 3
     end
     object cds_LengthSpecTotalNumberOfUnitsUOM: TStringField
       FieldName = 'TotalNumberOfUnitsUOM'
       Origin = 'TotalNumberOfUnitsUOM'
-      ProviderFlags = [pfInUpdate]
       Size = 50
     end
     object cds_LengthSpecInternalInvoiceNo: TIntegerField
@@ -3581,9 +3475,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
     end
   end
-  object sq_GetDMS: TFDQuery
+  object sq_GetDMS: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select DISTINCT'
@@ -3680,7 +3574,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       ' '
       '')
     Left = 384
-    Top = 416
+    Top = 328
     ParamData = <
       item
         Name = 'INTERNALINVOICENO'
@@ -3840,9 +3734,9 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Size = 5
     end
   end
-  object cds_ProdID: TFDQuery
+  object cds_ProdID: TADQuery
     CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
+    Connection = dmsConnector.ADConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       'Select * FROM dbo.ProductIdentifier'
@@ -3851,7 +3745,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'AND InternalInvoiceNo = :InternalInvoiceNo'
       '')
     Left = 552
-    Top = 472
+    Top = 384
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -3914,12 +3808,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.12.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 992
+    Left = 968
     Top = 29
     object mtVisKlientClientNo: TIntegerField
       FieldName = 'ClientNo'
@@ -3943,15 +3837,15 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       FieldName = 'PartyIdentifierType'
     end
   end
-  object sq_UpdPrefix: TFDQuery
-    Connection = dmsConnector.FDConnection1
+  object sq_UpdPrefix: TADQuery
+    Connection = dmsConnector.ADConnection1
     SQL.Strings = (
       'Update dbo.Transportpackageinformation2'
       'Set Prefix = :Prefix'
       'WHERE DeliveryMessageNumber = :DeliveryMessageNumber'
       'AND Identifier = :Identifier')
     Left = 48
-    Top = 600
+    Top = 536
     ParamData = <
       item
         Name = 'PREFIX'
@@ -3969,8 +3863,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         ParamType = ptInput
       end>
   end
-  object cds_DSDMR2: TFDQuery
-    Connection = dmsConnector.FDConnection1
+  object cds_DSDMR2: TADQuery
+    Connection = dmsConnector.ADConnection1
     SQL.Strings = (
       
         'Select distinct * FROM dbo.DeliveryShipmentDeliveryMessageRefere' +
@@ -3978,7 +3872,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'WHERE'
       'DeliveryMessageNumber = :DeliveryMessageNumber')
     Left = 224
-    Top = 608
+    Top = 544
     ParamData = <
       item
         Name = 'DELIVERYMESSAGENUMBER'
@@ -4013,1802 +3907,6 @@ object dm_ImportWoodx: Tdm_ImportWoodx
   object ds_DSDMR2: TDataSource
     DataSet = cds_DSDMR2
     Left = 224
-    Top = 664
-  end
-  object sp_Ins_InvoicePkgSpecWoodX: TFDStoredProc
-    Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_Ins_InvoicePkgSpecWoodX'
-    Left = 824
-    Top = 592
-    ParamData = <
-      item
-        Position = 1
-        Name = '@RETURN_VALUE'
-        DataType = ftInteger
-        ParamType = ptResult
-      end
-      item
-        Position = 2
-        Name = '@InternalInvoiceNo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 3
-        Name = '@LONo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 4
-        Name = '@UserID'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
-  end
-  object sq_GetLONosTally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      'LS.SHIPPINGPLANNO AS LONo'
-      'FROM   dbo.LoadShippingPlan LS'
-      ''
-      ''
-      'WHERE     (LS.LoadNo = :LoadNo)'
-      '')
-    Left = 144
-    Top = 128
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
-    object sq_GetLONosTallyLONo: TIntegerField
-      FieldName = 'LONo'
-      Origin = 'InvoiceNo'
-      Required = True
-    end
-  end
-  object sq_GetDMHW_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT top 10 '
-      'CASE'
-      'WHEN DT.DeliveryTerm = '#39'CFR'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'CIF'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'CIP'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'CPT'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'DDP'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'DDU'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'DEQ'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'DES'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'EXW'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'FAS'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'FCA'#39' then DT.DeliveryTerm'
-      'WHEN DT.DeliveryTerm = '#39'FOB'#39' then DT.DeliveryTerm'
-      'Else'
-      ' '#39'Other'#39
-      'END                   AS DeliveryTerm,'
-      'L.LoadNo'#9#9#9'  AS LoadNo,'
-      'L.LoadedDate         AS LoadedDate,'
-      'L.LoadID              AS LoadID,'
-      ''
-      'SUM(PTD.Totalm3Actual) AS PriceVolume,'
-      '/*'
-      'CASE'
-      'WHEN PU.TemplateUnitName = '#39'm3 nDxnL'#39'   THEN SUM(PTD.m3Nominal)'
-      
-        'WHEN PU.TemplateUnitName = '#39'Lopm n'#39'     THEN SUM(PTD.LinealMeter' +
-        'NominalLength)'
-      
-        'WHEN PU.TemplateUnitName = '#39'kvm aB'#39'     THEN SUM(PTD.SQMofActual' +
-        'Width )'
-      
-        'WHEN PU.TemplateUnitName = '#39'Lopm a'#39'     THEN SUM(PTD.LinealMeter' +
-        'ActualLength)'
-      'WHEN PU.TemplateUnitName = '#39'Stycketal'#39'  THEN SUM(PTD.NoOfPieces)'
-      'WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39'   THEN SUM(PTD.m3Actual)'
-      
-        'WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39'   THEN SUM(PTD.m3ActualSiz' +
-        'eNomLength)'
-      
-        'WHEN PU.TemplateUnitName = '#39'm3 nDxaL'#39'   THEN SUM(PTD.m3NomSizeAc' +
-        'tualLength )'
-      
-        'WHEN PU.TemplateUnitName = '#39'MFBM Nom'#39'   THEN SUM(PTD.MFBMNominal' +
-        ')'
-      'END AS PriceVolume,'
-      '*/'
-      'SUM(PTD.TotalLinealMeterActualLength) '#9'AS AM1,'
-      'SUM(PTD.TotalNoOfPieces) '#9#9#9'        AS Pieces,'
-      'SUM(PTD.Totalm3Actual) '#9#9#9'          AS AM3,'
-      'SUM(PTD.TotalMFBMNominal) '#9#9#9'        AS MFBM,'
-      'SUM(PTD.TotalSQMofActualWidth) '#9#9'    AS AM2,'
-      'SUM(PTD.Totalm3Nominal) '#9#9#9'          AS NM3,'
-      'Count(PN.PackageNo)'#9#9#9'          AS Pkgs,'
-      'Count(Distinct L.LoadNo)'#9#9#9'  AS TotalNumberOfShipments,'
-      'L.DateCreated,'
-      'OH.PO_Number'
-      ''
-      'FROM   dbo.Loads L '
-      ''
-      ''
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo            = L.L' +
-        'oadNo'
-      #9'                                  '#9
-      
-        #9'Inner join dbo.SupplierShippingPlan sp on sp.SupplierShipPlanOb' +
-        'jectNo = LD.Defsspno'
-      #9
-      #9'Left JOIN DBO.ORDERLINE'#9'OL'#9
-      ''
-      #9#9'INNER JOIN dbo.Orders '#9#9#9'OH'#9'ON'#9'OH.OrderNo '#9#9'= OL.OrderNo'
-      
-        #9#9'INNER JOIN dbo.DeliveryTerm'#9#9'DT'#9'ON'#9'DT.DeliveryTerm_No'#9'= OH.Del' +
-        'iveryTermsNo'
-      
-        #9#9'INNER JOIN dbo.PackUnit PU ON PU.TemplateUnitNo = OL.PriceUnit' +
-        'No'
-      #9'ON OL.ORDERNO = sp.OrderNo'
-      #9#9#9#9#9#9'AND OL.ORDERLINENO = sp.ORDERLINENO'
-      ''
-      #9'inner join dbo.packagenumber PN ON PN.PackageNo = LD.packageNo'
-      #9#9#9#9#9'AND RTrim(PN.SupplierCode) = RTrim(LD.SupplierCode)'
-      ''
-      
-        #9'Inner Join dbo.PackageType  PTD ON  PTD.PackageTypeNo = LD.Pack' +
-        'ageTypeNo'
-      ''
-      #9
-      ''
-      'WHERE     L.LoadNo = :LoadNo'
-      ''
-      'GROUP BY'
-      'L.LoadNo ,'
-      'L.LoadedDate ,'
-      'L.LoadID ,'
-      'PU.TemplateUnitName,'
-      'DT.DeliveryTerm,'
-      'OH.OrderCreated,'
-      'OH.PO_Number,'
-      'L.DateCreated')
-    Left = 56
-    Top = 352
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 891519
-      end>
-    object sq_GetDMHW_TallyDeliveryTerm: TStringField
-      FieldName = 'DeliveryTerm'
-      Origin = 'DeliveryTerm'
-      ReadOnly = True
-      Size = 50
-    end
-    object sq_GetDMHW_TallyLoadNo: TIntegerField
-      FieldName = 'LoadNo'
-      Origin = 'LoadNo'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object sq_GetDMHW_TallyLoadedDate: TSQLTimeStampField
-      FieldName = 'LoadedDate'
-      Origin = 'LoadedDate'
-    end
-    object sq_GetDMHW_TallyLoadID: TStringField
-      FieldName = 'LoadID'
-      Origin = 'LoadID'
-      Size = 50
-    end
-    object sq_GetDMHW_TallyPriceVolume: TFloatField
-      FieldName = 'PriceVolume'
-      Origin = 'PriceVolume'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyAM1: TFloatField
-      FieldName = 'AM1'
-      Origin = 'AM1'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyPieces: TIntegerField
-      FieldName = 'Pieces'
-      Origin = 'Pieces'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyAM3: TFloatField
-      FieldName = 'AM3'
-      Origin = 'AM3'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyMFBM: TFloatField
-      FieldName = 'MFBM'
-      Origin = 'MFBM'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyAM2: TFloatField
-      FieldName = 'AM2'
-      Origin = 'AM2'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyNM3: TFloatField
-      FieldName = 'NM3'
-      Origin = 'NM3'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyPkgs: TIntegerField
-      FieldName = 'Pkgs'
-      Origin = 'Pkgs'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyTotalNumberOfShipments: TIntegerField
-      FieldName = 'TotalNumberOfShipments'
-      Origin = 'TotalNumberOfShipments'
-      ReadOnly = True
-    end
-    object sq_GetDMHW_TallyDateCreated: TSQLTimeStampField
-      FieldName = 'DateCreated'
-      Origin = 'DateCreated'
-    end
-    object sq_GetDMHW_TallyPO_Number: TStringField
-      FieldName = 'PO_Number'
-      Origin = 'PO_Number'
-      Size = 30
-    end
-  end
-  object sq_getDMR_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      'L.LoadNo '#9#9'AS LoadNo,'
-      'OH.OrderNoText '#9#9'AS OrderNoText,'
-      'SP.ShippingPlanNo '#9'AS LONo,'
-      'OL.Reference     '#9'AS IL_Reference,'
-      'SP.Reference     '#9'AS SP_Reference,'
-      'OH.PO_Number'
-      ''
-      'FROM   dbo.Loads  L'
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo            = L.L' +
-        'oadNo'
-      
-        #9'INNER JOIN dbo.SupplierShippingPlan SP ON SP.SupplierShipPlanOb' +
-        'jectNo = LD.Defsspno'
-      #9'Left JOIN DBO.ORDERLINE'#9'OL'
-      #9'INNER JOIN dbo.Orders '#9#9#9'OH'#9'ON'#9'OH.OrderNo '#9#9'= OL.OrderNo'
-      #9'ON OL.OrderNo = SP.OrderNo'
-      #9'and OL.OrderLineNo = SP.OrderLineNo'
-      ''
-      'WHERE L.LoadNo = :LoadNo'
-      '')
-    Left = 136
-    Top = 336
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object sq_getDMR_TallyLoadNo: TIntegerField
-      FieldName = 'LoadNo'
-      Origin = 'LoadNo'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Required = True
-    end
-    object sq_getDMR_TallyOrderNoText: TStringField
-      FieldName = 'OrderNoText'
-      Origin = 'OrderNoText'
-    end
-    object sq_getDMR_TallyLONo: TIntegerField
-      FieldName = 'LONo'
-      Origin = 'LONo'
-    end
-    object sq_getDMR_TallyIL_Reference: TStringField
-      FieldName = 'IL_Reference'
-      Origin = 'IL_Reference'
-      Size = 50
-    end
-    object sq_getDMR_TallySP_Reference: TStringField
-      FieldName = 'SP_Reference'
-      Origin = 'SP_Reference'
-      Size = 50
-    end
-    object sq_getDMR_TallyPO_Number: TStringField
-      FieldName = 'PO_Number'
-      Origin = 'PO_Number'
-      Size = 30
-    end
-  end
-  object sq_GetPartyID_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      '-- //PartyIdentifiers'
-      'Select DISTINCT'
-      'LS.ShippingPlanNo     AS LONo,  '
-      'L.LoadNo '#9'AS IntNo,'
-      'c.ClientName '#9'AS BuyerName,'
-      'AdSU.AddressLine1 '#9'AS BuyerAddressLine1,'
-      'AdSU.AddressLine2 '#9'AS BuyerAddressLine2,'
-      'AdSU.AddressLine3 '#9'AS BuyerAddressLine3,'
-      'AdSU.AddressLine4 '#9'AS BuyerAddressLine4,'
-      'AdSU.StateOrProvince '#9'AS BuyerStateOrProvince,'
-      'AdSU.PostalCode '#9#9'AS BuyerPostalCode,'
-      'ShipTocy.CityName '#9#9'AS BuyerCity,'
-      'ShipToco.CountryName'#9#9'AS BuyerCountry,'
-      'C.VATNo'#9#9#9'AS BuyerVATNo,'
-      'C.ClientNo'#9#9'AS BuyerClientNo,'
-      'C.ClientCode'#9#9'AS BuyerClientCode,'
-      ''
-      'c.ClientName  '#9'AS ShipToName,'
-      'AdSU.AddressName '#9'AS ShipToAddressName,'
-      'AdSU.AddressLine1'#9'AS ShipToAddressLine1,'
-      'AdSU.AddressLine2'#9'AS ShipToAddressLine2,'
-      'AdSU.AddressLine3'#9'AS ShipToAddressLine3,'
-      'AdSU.AddressLine4'#9'AS ShipToAddressLine4,'
-      'AdSU.StateOrProvince'#9'AS ShipToStateOrProvince,'
-      'AdSU.PostalCode'#9'AS ShipToPostalCode,'
-      'ShipTocy.CityName'#9#9'AS ShipToCity,'
-      'ShipToco.CountryName'#9'AS ShipToCountry,'
-      ''
-      'Supp.ClientName '#9'AS SupplierName,'
-      'Ad.AddressLine1'#9#9'AS SupplierAddressLine1,'
-      'Ad.AddressLine2'#9#9'AS SupplierAddressLine2,'
-      'Ad.AddressLine3'#9#9'AS SupplierAddressLine3,'
-      'Ad.AddressLine4'#9#9'AS SupplierAddressLine4,'
-      'Ad.StateOrProvince'#9'AS SupplierStateOrProvince,'
-      'Ad.PostalCode'#9#9'AS SupplierPostalCode,'
-      'City.CityName'#9#9'AS SupplierCity,'
-      'Country.CountryName'#9'AS SupplierCountry,'
-      'Supp.VATNo'#9#9'AS SupplierVatNo,'
-      'Supp.ClientNo'#9#9'AS SupplierClientNo,'
-      'Supp.ClientCode'#9#9'AS SupplierClientCode'
-      ''
-      ''
-      'FROM   dbo.Loads L'
-      
-        #9'Inner join dbo.PhysicalInventoryPoint pip on pip.PhysicalInvent' +
-        'oryPointNo = L.PIPNo'
-      #9'inner JOIN dbo.Client C'#9#9#9'ON C.ClientNo = L.CustomerNo'
-      ''
-      #9'inner JOIN dbo.Client Supp'#9#9'ON Supp.ClientNo = L.SupplierNo'
-      ''
-      ''
-      #9'inner Join dbo.[Address] Ad on Ad.AddressNo =  pip.AddressNo'
-      #9'inner Join dbo.City on City.CityNo = Ad.CityNo'
-      #9'inner Join dbo.Country on Country.CountryNo = Ad.CountryNo'
-      ''
-      '/*'
-      #9'Inner Join dbo.[Address] AdSU on AdSU.AddressNo = pip.AddressNo'
-      #9'Inner Join dbo.City cy on cy.CityNo = Adsu.CityNo'
-      #9'Inner Join dbo.Country co on co.CountryNo = Adsu.CountryNo'
-      '*/'#9
-      #9'Inner Join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo'
-      
-        '    Inner JOIN dbo.SupplierShippingPlan SP ON SP.ShippingPlanNo ' +
-        '= LS.ShippingPlanNo  '
-      
-        '    Inner Join dbo.City STL'#9#9#9#9'ON'#9'STL.CityNo = SP.ShipToInvPoint' +
-        'No'
-      #9#9#9#9#9#9#9
-      '    '
-      
-        #9'Left Outer  join dbo.City ShipToCy ON ShipToCy.CityNo=L.LocalDe' +
-        'stinationNo'
-      
-        '    left Outer  join dbo.LogicalInventoryPoint LIP ON LIP.Logica' +
-        'lInventoryPointNo = SP.LIPNo'
-      
-        #9'left Outer  join dbo.PhysicalInventoryPoint PIP1 ON PIP1.Physic' +
-        'alInventoryPointNo = LIP.PhysicalInventoryPointNo'
-      
-        #9'left Outer  join dbo.[Address] AdSU ON AdSU.AddressNo = PIP1.Ad' +
-        'dressNo'
-      
-        #9'Left Outer  join dbo.Country ShipToCo ON ShipToCo.CountryNo=AdS' +
-        'U.CountryNo'
-      #9
-      ''
-      
-        #9'--INNER JOIN dbo.LoadShippingPlan     LS '#9'ON  LS.LoadNo = L.Loa' +
-        'dNo'
-      ''
-      'WHERE     L.LOadNo = :LoadNo')
-    Left = 216
-    Top = 360
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 887527
-      end>
-    object sq_GetPartyID_TallyLONo: TIntegerField
-      FieldName = 'LONo'
-      Origin = 'LONo'
-      Required = True
-    end
-    object sq_GetPartyID_TallyIntNo: TIntegerField
-      FieldName = 'IntNo'
-      Origin = 'IntNo'
-      Required = True
-    end
-    object sq_GetPartyID_TallyBuyerName: TStringField
-      FieldName = 'BuyerName'
-      Origin = 'BuyerName'
-      Size = 80
-    end
-    object sq_GetPartyID_TallyBuyerAddressLine1: TStringField
-      FieldName = 'BuyerAddressLine1'
-      Origin = 'BuyerAddressLine1'
-      Size = 40
-    end
-    object sq_GetPartyID_TallyBuyerAddressLine2: TStringField
-      FieldName = 'BuyerAddressLine2'
-      Origin = 'BuyerAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyBuyerAddressLine3: TStringField
-      FieldName = 'BuyerAddressLine3'
-      Origin = 'BuyerAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyBuyerAddressLine4: TStringField
-      FieldName = 'BuyerAddressLine4'
-      Origin = 'BuyerAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyBuyerStateOrProvince: TStringField
-      FieldName = 'BuyerStateOrProvince'
-      Origin = 'BuyerStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyBuyerPostalCode: TStringField
-      FieldName = 'BuyerPostalCode'
-      Origin = 'BuyerPostalCode'
-      FixedChar = True
-    end
-    object sq_GetPartyID_TallyBuyerCity: TStringField
-      FieldName = 'BuyerCity'
-      Origin = 'BuyerCity'
-      Size = 50
-    end
-    object sq_GetPartyID_TallyBuyerCountry: TStringField
-      FieldName = 'BuyerCountry'
-      Origin = 'BuyerCountry'
-      Size = 30
-    end
-    object sq_GetPartyID_TallyBuyerVATNo: TStringField
-      FieldName = 'BuyerVATNo'
-      Origin = 'BuyerVATNo'
-      Size = 50
-    end
-    object sq_GetPartyID_TallyBuyerClientNo: TIntegerField
-      FieldName = 'BuyerClientNo'
-      Origin = 'BuyerClientNo'
-      Required = True
-    end
-    object sq_GetPartyID_TallyBuyerClientCode: TStringField
-      FieldName = 'BuyerClientCode'
-      Origin = 'BuyerClientCode'
-      FixedChar = True
-      Size = 3
-    end
-    object sq_GetPartyID_TallyShipToName: TStringField
-      FieldName = 'ShipToName'
-      Origin = 'ShipToName'
-      Size = 80
-    end
-    object sq_GetPartyID_TallyShipToAddressName: TStringField
-      FieldName = 'ShipToAddressName'
-      Origin = 'ShipToAddressName'
-      Size = 80
-    end
-    object sq_GetPartyID_TallyShipToAddressLine1: TStringField
-      FieldName = 'ShipToAddressLine1'
-      Origin = 'ShipToAddressLine1'
-      Size = 40
-    end
-    object sq_GetPartyID_TallyShipToAddressLine2: TStringField
-      FieldName = 'ShipToAddressLine2'
-      Origin = 'ShipToAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyShipToAddressLine3: TStringField
-      FieldName = 'ShipToAddressLine3'
-      Origin = 'ShipToAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyShipToAddressLine4: TStringField
-      FieldName = 'ShipToAddressLine4'
-      Origin = 'ShipToAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyShipToStateOrProvince: TStringField
-      FieldName = 'ShipToStateOrProvince'
-      Origin = 'ShipToStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallyShipToPostalCode: TStringField
-      FieldName = 'ShipToPostalCode'
-      Origin = 'ShipToPostalCode'
-      FixedChar = True
-    end
-    object sq_GetPartyID_TallyShipToCity: TStringField
-      FieldName = 'ShipToCity'
-      Origin = 'ShipToCity'
-      Size = 50
-    end
-    object sq_GetPartyID_TallyShipToCountry: TStringField
-      FieldName = 'ShipToCountry'
-      Origin = 'ShipToCountry'
-      Size = 30
-    end
-    object sq_GetPartyID_TallySupplierName: TStringField
-      FieldName = 'SupplierName'
-      Origin = 'SupplierName'
-      Size = 80
-    end
-    object sq_GetPartyID_TallySupplierAddressLine1: TStringField
-      FieldName = 'SupplierAddressLine1'
-      Origin = 'SupplierAddressLine1'
-      Size = 40
-    end
-    object sq_GetPartyID_TallySupplierAddressLine2: TStringField
-      FieldName = 'SupplierAddressLine2'
-      Origin = 'SupplierAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallySupplierAddressLine3: TStringField
-      FieldName = 'SupplierAddressLine3'
-      Origin = 'SupplierAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallySupplierAddressLine4: TStringField
-      FieldName = 'SupplierAddressLine4'
-      Origin = 'SupplierAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallySupplierStateOrProvince: TStringField
-      FieldName = 'SupplierStateOrProvince'
-      Origin = 'SupplierStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_GetPartyID_TallySupplierPostalCode: TStringField
-      FieldName = 'SupplierPostalCode'
-      Origin = 'SupplierPostalCode'
-      FixedChar = True
-    end
-    object sq_GetPartyID_TallySupplierCity: TStringField
-      FieldName = 'SupplierCity'
-      Origin = 'SupplierCity'
-      Size = 50
-    end
-    object sq_GetPartyID_TallySupplierCountry: TStringField
-      FieldName = 'SupplierCountry'
-      Origin = 'SupplierCountry'
-      Required = True
-      Size = 30
-    end
-    object sq_GetPartyID_TallySupplierVatNo: TStringField
-      FieldName = 'SupplierVatNo'
-      Origin = 'SupplierVatNo'
-      Size = 50
-    end
-    object sq_GetPartyID_TallySupplierClientNo: TIntegerField
-      FieldName = 'SupplierClientNo'
-      Origin = 'SupplierClientNo'
-      Required = True
-    end
-    object sq_GetPartyID_TallySupplierClientCode: TStringField
-      FieldName = 'SupplierClientCode'
-      Origin = 'SupplierClientCode'
-      FixedChar = True
-      Size = 3
-    end
-  end
-  object sq_getDMS_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'DECLARE @LanguageCode int;'
-      
-        'SELECT @LanguageCode = CP.LanguageCode FROM dbo.ClientPreference' +
-        ' CP '
-      ' INNER JOIN dbo.Loads L ON L.SupplierNo = CP.ClientNo'
-      'WHERE L.LoadNo = :LoadNo'
-      ''
-      '--SET @languageCode = 2'
-      ''
-      'Select DISTINCT'
-      'SSP.ShippingPlanNo AS LONo,'
-      #39' '#39' AS ShipmentID,'
-      #39' '#39' AS ShipmentIDType,'
-      #39' '#39' AS ProductGroupID,'
-      #39' '#39' AS ProductGroupIDType,'
-      '0 AS DeliveryShipmentLineItemNumber,'
-      '0 AS ProductIdentifier,'
-      #39'PartNumber'#39' AS ProductIdentifierType,'
-      #39'Supplier'#39' AS Agency,'
-      '-- OL.OrderLineDescription'#9'AS ProductDescription,'
-      'CASE'
-      'WHEN S.SpeciesNo = 46 Then '#39'WhiteWood'#39
-      'WHEN S.SpeciesNo = 47 Then '#39'Redwood'#39
-      'WHEN S.SpeciesNo = 52 Then '#39'RedWhitewood'#39
-      'Else'
-      #39'Other'#39
-      'END AS SpeciesType,'
-      #39'Other'#39' AS GradingRule,'
-      'G.GradeCode,'
-      'G.GradeName,'
-      'PG.ActualWidthMM AS WidthValue,'
-      #39'Millimeter'#39' AS WidthUOM,'
-      'PG.ActualThicknessMM AS ThicknessValue,'
-      #39'Millimeter'#39' AS ThicknessUOM,'
-      #39'Other'#39' AS ManufacturingProcessType,'
-      '0 AS ExLogValue,'
-      #39'Piece'#39' AS ExlogUOM,'
-      'P.ProductNo,'
-      'S.SpeciesCode,'
-      'SU.SurfacingCode,'
-      'PC.ImpCode'
-      ''
-      ''
-      'FROM   dbo.Loads L'
-      ''
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo            = L.L' +
-        'oadNo'
-      
-        #9'INNER JOIN dbo.SupplierShippingPlan SSP ON SSP.SupplierShipPlan' +
-        'ObjectNo =  LD.Defsspno'
-      
-        #9'Inner Join dbo.PackageType  PT ON  PT.PackageTypeNo = LD.Packag' +
-        'eTypeNo'
-      #9'Inner Join dbo.Product P ON  P.ProductNo = PT.ProductNo'
-      
-        #9'Inner Join dbo.ProductGroup PG ON  PG.ProductGroupNo = P.Produc' +
-        'tGroupNo'
-      #9'Inner Join dbo.Species S ON  S.SpeciesNo = PG.SpeciesNo'
-      #9#9#9#9'AND S.LanguageCode = @LanguageCode'
-      #9'Inner Join dbo.Surfacing SU ON  SU.SurfacingNo = PG.SurfacingNo'
-      #9#9#9#9'AND SU.LanguageCode = @LanguageCode'
-      #9'Inner Join dbo.Grade G ON  G.GradeNo = P.GradeNo'
-      #9#9#9#9'AND G.LanguageCode = @LanguageCode'
-      
-        #9'Inner Join dbo.ProductCategory PC ON  PC.ProductCategoryNo = PG' +
-        '.ProductCategoryNo'
-      #9#9#9#9'AND PC.LanguageCode = @LanguageCode'
-      ''
-      ''
-      
-        #9'Inner Join dbo.PackageTypeLengths PTL ON PTL.PackageTypeNo = LD' +
-        '.PackageTypeNo'
-      ''
-      'WHERE L.LoadNo = :LoadNo'
-      ''
-      ''
-      ' '
-      '')
-    Left = 384
-    Top = 360
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 640231
-      end>
-    object sq_getDMS_TallyLONo: TIntegerField
-      FieldName = 'LONo'
-      Origin = 'LONo'
-      Required = True
-    end
-    object sq_getDMS_TallyShipmentID: TStringField
-      FieldName = 'ShipmentID'
-      Origin = 'ShipmentID'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_getDMS_TallyShipmentIDType: TStringField
-      FieldName = 'ShipmentIDType'
-      Origin = 'ShipmentIDType'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_getDMS_TallyProductGroupID: TStringField
-      FieldName = 'ProductGroupID'
-      Origin = 'ProductGroupID'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_getDMS_TallyProductGroupIDType: TStringField
-      FieldName = 'ProductGroupIDType'
-      Origin = 'ProductGroupIDType'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_getDMS_TallyDeliveryShipmentLineItemNumber: TIntegerField
-      FieldName = 'DeliveryShipmentLineItemNumber'
-      Origin = 'DeliveryShipmentLineItemNumber'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_getDMS_TallyProductIdentifier: TIntegerField
-      FieldName = 'ProductIdentifier'
-      Origin = 'ProductIdentifier'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_getDMS_TallyProductIdentifierType: TStringField
-      FieldName = 'ProductIdentifierType'
-      Origin = 'ProductIdentifierType'
-      ReadOnly = True
-      Required = True
-      Size = 10
-    end
-    object sq_getDMS_TallyAgency: TStringField
-      FieldName = 'Agency'
-      Origin = 'Agency'
-      ReadOnly = True
-      Required = True
-      Size = 8
-    end
-    object sq_getDMS_TallySpeciesType: TStringField
-      FieldName = 'SpeciesType'
-      Origin = 'SpeciesType'
-      ReadOnly = True
-      Required = True
-      Size = 12
-    end
-    object sq_getDMS_TallyGradingRule: TStringField
-      FieldName = 'GradingRule'
-      Origin = 'GradingRule'
-      ReadOnly = True
-      Required = True
-      Size = 5
-    end
-    object sq_getDMS_TallyGradeCode: TStringField
-      FieldName = 'GradeCode'
-      Origin = 'GradeCode'
-      Size = 5
-    end
-    object sq_getDMS_TallyGradeName: TStringField
-      FieldName = 'GradeName'
-      Origin = 'GradeName'
-      Required = True
-      FixedChar = True
-      Size = 30
-    end
-    object sq_getDMS_TallyWidthValue: TFloatField
-      FieldName = 'WidthValue'
-      Origin = 'WidthValue'
-    end
-    object sq_getDMS_TallyWidthUOM: TStringField
-      FieldName = 'WidthUOM'
-      Origin = 'WidthUOM'
-      ReadOnly = True
-      Required = True
-      Size = 10
-    end
-    object sq_getDMS_TallyThicknessValue: TFloatField
-      FieldName = 'ThicknessValue'
-      Origin = 'ThicknessValue'
-    end
-    object sq_getDMS_TallyThicknessUOM: TStringField
-      FieldName = 'ThicknessUOM'
-      Origin = 'ThicknessUOM'
-      ReadOnly = True
-      Required = True
-      Size = 10
-    end
-    object sq_getDMS_TallyManufacturingProcessType: TStringField
-      FieldName = 'ManufacturingProcessType'
-      Origin = 'ManufacturingProcessType'
-      ReadOnly = True
-      Required = True
-      Size = 5
-    end
-    object sq_getDMS_TallyExLogValue: TIntegerField
-      FieldName = 'ExLogValue'
-      Origin = 'ExLogValue'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_getDMS_TallyExlogUOM: TStringField
-      FieldName = 'ExlogUOM'
-      Origin = 'ExlogUOM'
-      ReadOnly = True
-      Required = True
-      Size = 5
-    end
-    object sq_getDMS_TallyProductNo: TIntegerField
-      FieldName = 'ProductNo'
-      Origin = 'ProductNo'
-      Required = True
-    end
-    object sq_getDMS_TallySpeciesCode: TStringField
-      FieldName = 'SpeciesCode'
-      Origin = 'SpeciesCode'
-      Size = 5
-    end
-    object sq_getDMS_TallySurfacingCode: TStringField
-      FieldName = 'SurfacingCode'
-      Origin = 'SurfacingCode'
-      Size = 5
-    end
-    object sq_getDMS_TallyImpCode: TStringField
-      FieldName = 'ImpCode'
-      Origin = 'ImpCode'
-      Size = 5
-    end
-  end
-  object sq_getAddress_Tally: TFDQuery
-    Active = True
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      '-- //PartyIdentifiers'
-      'Select DISTINCT'
-      'LS.ShippingPlanNo     AS LONo,  '
-      'L.LoadNo '#9'AS IntNo,'
-      ''
-      '-- F'#246'rs'#228'ljningsbolag'
-      'cSales.ClientName  '#9'AS ShipToName,'
-      'AdSUSales.AddressName '#9'AS LevAddressName,'
-      'AdSUSales.AddressLine1'#9'AS LevAddressLine1,'
-      'AdSUSales.AddressLine2'#9'AS LevAddressLine2,'
-      'AdSUSales.AddressLine3'#9'AS LevAddressLine3,'
-      'AdSUSales.AddressLine4'#9'AS LevAddressLine4,'
-      'AdSUSales.StateOrProvince'#9'AS LevStateOrProvince,'
-      'AdSUSales.PostalCode'#9'AS LevPostalCode,'
-      'ShipToCySales.CityName'#9#9'AS LevCity,'
-      'ShipToCoSales.CountryName'#9'AS LevCountry,'
-      'cSales.VATNo'#9#9#9'AS LevVATNo,'
-      'cSales.ClientNo'#9#9'AS LevClientNo,'
-      'cSales.ClientCode'#9#9'AS LevClientCode,'
-      ''
-      ''
-      ''
-      '-- kund'
-      'kund.ClientName '#9'AS BuyerName,'
-      'Adkund.AddressLine1 '#9'AS BuyerAddressLine1,'
-      'Adkund.AddressLine2 '#9'AS BuyerAddressLine2,'
-      'Adkund.AddressLine3 '#9'AS BuyerAddressLine3,'
-      'Adkund.AddressLine4 '#9'AS BuyerAddressLine4,'
-      'Adkund.StateOrProvince '#9'AS BuyerStateOrProvince,'
-      'Adkund.PostalCode '#9#9'AS BuyerPostalCode,'
-      'citykund.CityName '#9#9'AS BuyerCity,'
-      'Countrykund.CountryName'#9#9'AS BuyerCountry,'
-      'kund.VATNo'#9#9#9'AS BuyerVATNo,'
-      'kund.ClientNo'#9#9'AS BuyerClientNo,'
-      'kund.ClientCode'#9#9'AS BuyerClientCode,'
-      ''
-      '-- verk'
-      ''
-      'Supp.ClientName '#9'AS SupplierName,'
-      'AdSU.AddressLine1'#9#9'AS SupplierAddressLine1,'
-      'AdSU.AddressLine2'#9#9'AS SupplierAddressLine2,'
-      'AdSU.AddressLine3'#9#9'AS SupplierAddressLine3,'
-      'AdSU.AddressLine4'#9#9'AS SupplierAddressLine4,'
-      'AdSU.StateOrProvince'#9'AS SupplierStateOrProvince,'
-      'AdSU.PostalCode'#9#9'AS SupplierPostalCode,'
-      'ShipToCySU.CityName'#9#9'AS SupplierCity,'
-      'ShipToCoSu.CountryName'#9'AS SupplierCountry,'
-      'Supp.VATNo'#9#9'AS SupplierVatNo,'
-      'Supp.ClientNo'#9#9'AS SupplierClientNo,'
-      'Supp.ClientCode'#9#9'AS SupplierClientCode'
-      ''
-      ''
-      ''
-      ''
-      'FROM   dbo.Loads L'
-      
-        #9'INNER JOIN dbo.LoadShippingPlan     LS '#9'ON  LS.LoadNo = L.LoadN' +
-        'o'
-      
-        #9'inner join dbo.PhysicalInventoryPoint pip on pip.PhysicalInvent' +
-        'oryPointNo = L.PIPNo'
-      #9
-      ''
-      #9
-      #9'-- F'#246'rs'#228'ljningsbolag'
-      #9'Left Join dbo.CustomerShippingPlanHeader csh '
-      #9'inner join dbo.Orders oh on oh.OrderNo = csh.OrderNo'
-      
-        #9'inner JOIN dbo.Client CSales'#9#9'ON CSales.ClientNo = oh.SalesRegi' +
-        'onNo'
-      
-        #9'inner join dbo.ClientPreference cpSales on cpSales.ClientNo = o' +
-        'h.SalesRegionNo'
-      #9'and cpSales.RoleType = 7'
-      
-        #9'Inner Join dbo.[Address] AdSUSales on AdSUSales.AddressNo = cpS' +
-        'ales.DefaultBillingAddressNo'
-      
-        #9'inner join dbo.City ShipToCySales ON ShipToCySales.CityNo=AdSUS' +
-        'ales.CityNo'
-      
-        #9'inner join dbo.Country ShipToCoSales ON ShipToCoSales.CountryNo' +
-        '=AdSUSales.CountryNo'
-      ''
-      '-- kund'
-      
-        #9'inner join dbo.ShippingPlan_ShippingAddress spa on spa.Shipping' +
-        'PlanNo = csh.ShippingPlanNo'
-      #9'inner JOIN dbo.Client kund'#9#9#9'ON kund.ClientNo = csh.CustomerNo'
-      
-        #9'Inner Join dbo.[Address] Adkund on Adkund.AddressNo =  spa.Addr' +
-        'essNo'
-      #9'Inner Join dbo.City citykund on citykund.CityNo = Adkund.CityNo'
-      
-        #9'Inner Join dbo.Country Countrykund on Countrykund.CountryNo = A' +
-        'dkund.CountryNo'
-      ''
-      ''
-      ''
-      #9'on csh.ShippingPlanNo = LS.ShippingPlanNo'
-      ''
-      #9'-- Verk'
-      #9'inner JOIN dbo.Client Supp'#9#9'ON Supp.ClientNo = L.SupplierNo'
-      
-        #9'inner join dbo.ClientPreference cp on cp.ClientNo = L.SupplierN' +
-        'o'
-      #9'and cp.RoleType = 9'
-      
-        #9'Inner Join dbo.[Address] AdSU on AdSU.AddressNo = cp.DefaultBil' +
-        'lingAddressNo'
-      #9'inner join dbo.City ShipToCySU ON ShipToCySu.CityNo=AdSU.CityNo'
-      
-        #9'inner join dbo.Country ShipToCoSu ON ShipToCoSu.CountryNo=AdSU.' +
-        'CountryNo  '#9
-      ''
-      ''
-      #9
-      #9#9#9#9#9#9#9
-      '    '
-      
-        #9'   -- Inner JOIN dbo.SupplierShippingPlan SP ON SP.ShippingPlan' +
-        'No = LS.ShippingPlanNo  '
-      
-        '    --Inner Join dbo.City STL'#9#9#9#9'ON'#9'STL.CityNo = SP.ShipToInvPoi' +
-        'ntNo'
-      #9
-      ''
-      ''
-      'WHERE     L.LoadNo = :LoadNo')
-    Left = 304
-    Top = 336
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 891519
-      end>
-    object sq_getAddress_TallyLONo: TIntegerField
-      FieldName = 'LONo'
-      Origin = 'LONo'
-      Required = True
-    end
-    object sq_getAddress_TallyIntNo: TIntegerField
-      FieldName = 'IntNo'
-      Origin = 'IntNo'
-      Required = True
-    end
-    object sq_getAddress_TallyShipToName: TStringField
-      FieldName = 'ShipToName'
-      Origin = 'ShipToName'
-      Size = 80
-    end
-    object sq_getAddress_TallyLevAddressName: TStringField
-      FieldName = 'LevAddressName'
-      Origin = 'LevAddressName'
-      Size = 80
-    end
-    object sq_getAddress_TallyLevAddressLine1: TStringField
-      FieldName = 'LevAddressLine1'
-      Origin = 'LevAddressLine1'
-      Size = 40
-    end
-    object sq_getAddress_TallyLevAddressLine2: TStringField
-      FieldName = 'LevAddressLine2'
-      Origin = 'LevAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyLevAddressLine3: TStringField
-      FieldName = 'LevAddressLine3'
-      Origin = 'LevAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyLevAddressLine4: TStringField
-      FieldName = 'LevAddressLine4'
-      Origin = 'LevAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyLevStateOrProvince: TStringField
-      FieldName = 'LevStateOrProvince'
-      Origin = 'LevStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyLevPostalCode: TStringField
-      FieldName = 'LevPostalCode'
-      Origin = 'LevPostalCode'
-      FixedChar = True
-    end
-    object sq_getAddress_TallyLevCity: TStringField
-      FieldName = 'LevCity'
-      Origin = 'LevCity'
-      Size = 50
-    end
-    object sq_getAddress_TallyLevCountry: TStringField
-      FieldName = 'LevCountry'
-      Origin = 'LevCountry'
-      Size = 30
-    end
-    object sq_getAddress_TallyLevVATNo: TStringField
-      FieldName = 'LevVATNo'
-      Origin = 'LevVATNo'
-      Size = 50
-    end
-    object sq_getAddress_TallyLevClientNo: TIntegerField
-      FieldName = 'LevClientNo'
-      Origin = 'LevClientNo'
-    end
-    object sq_getAddress_TallyLevClientCode: TStringField
-      FieldName = 'LevClientCode'
-      Origin = 'LevClientCode'
-      FixedChar = True
-      Size = 3
-    end
-    object sq_getAddress_TallyBuyerName: TStringField
-      FieldName = 'BuyerName'
-      Origin = 'BuyerName'
-      Size = 80
-    end
-    object sq_getAddress_TallyBuyerAddressLine1: TStringField
-      FieldName = 'BuyerAddressLine1'
-      Origin = 'BuyerAddressLine1'
-      Size = 40
-    end
-    object sq_getAddress_TallyBuyerAddressLine2: TStringField
-      FieldName = 'BuyerAddressLine2'
-      Origin = 'BuyerAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyBuyerAddressLine3: TStringField
-      FieldName = 'BuyerAddressLine3'
-      Origin = 'BuyerAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyBuyerAddressLine4: TStringField
-      FieldName = 'BuyerAddressLine4'
-      Origin = 'BuyerAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyBuyerStateOrProvince: TStringField
-      FieldName = 'BuyerStateOrProvince'
-      Origin = 'BuyerStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallyBuyerPostalCode: TStringField
-      FieldName = 'BuyerPostalCode'
-      Origin = 'BuyerPostalCode'
-      FixedChar = True
-    end
-    object sq_getAddress_TallyBuyerCity: TStringField
-      FieldName = 'BuyerCity'
-      Origin = 'BuyerCity'
-      Size = 50
-    end
-    object sq_getAddress_TallyBuyerCountry: TStringField
-      FieldName = 'BuyerCountry'
-      Origin = 'BuyerCountry'
-      Size = 30
-    end
-    object sq_getAddress_TallyBuyerVATNo: TStringField
-      FieldName = 'BuyerVATNo'
-      Origin = 'BuyerVATNo'
-      Size = 50
-    end
-    object sq_getAddress_TallyBuyerClientNo: TIntegerField
-      FieldName = 'BuyerClientNo'
-      Origin = 'BuyerClientNo'
-    end
-    object sq_getAddress_TallyBuyerClientCode: TStringField
-      FieldName = 'BuyerClientCode'
-      Origin = 'BuyerClientCode'
-      FixedChar = True
-      Size = 3
-    end
-    object sq_getAddress_TallySupplierName: TStringField
-      FieldName = 'SupplierName'
-      Origin = 'SupplierName'
-      Size = 80
-    end
-    object sq_getAddress_TallySupplierAddressLine1: TStringField
-      FieldName = 'SupplierAddressLine1'
-      Origin = 'SupplierAddressLine1'
-      Size = 40
-    end
-    object sq_getAddress_TallySupplierAddressLine2: TStringField
-      FieldName = 'SupplierAddressLine2'
-      Origin = 'SupplierAddressLine2'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallySupplierAddressLine3: TStringField
-      FieldName = 'SupplierAddressLine3'
-      Origin = 'SupplierAddressLine3'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallySupplierAddressLine4: TStringField
-      FieldName = 'SupplierAddressLine4'
-      Origin = 'SupplierAddressLine4'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallySupplierStateOrProvince: TStringField
-      FieldName = 'SupplierStateOrProvince'
-      Origin = 'SupplierStateOrProvince'
-      FixedChar = True
-      Size = 40
-    end
-    object sq_getAddress_TallySupplierPostalCode: TStringField
-      FieldName = 'SupplierPostalCode'
-      Origin = 'SupplierPostalCode'
-      FixedChar = True
-    end
-    object sq_getAddress_TallySupplierCity: TStringField
-      FieldName = 'SupplierCity'
-      Origin = 'SupplierCity'
-      Size = 50
-    end
-    object sq_getAddress_TallySupplierCountry: TStringField
-      FieldName = 'SupplierCountry'
-      Origin = 'SupplierCountry'
-      Required = True
-      Size = 30
-    end
-    object sq_getAddress_TallySupplierVatNo: TStringField
-      FieldName = 'SupplierVatNo'
-      Origin = 'SupplierVatNo'
-      Size = 50
-    end
-    object sq_getAddress_TallySupplierClientNo: TIntegerField
-      FieldName = 'SupplierClientNo'
-      Origin = 'SupplierClientNo'
-      Required = True
-    end
-    object sq_getAddress_TallySupplierClientCode: TStringField
-      FieldName = 'SupplierClientCode'
-      Origin = 'SupplierClientCode'
-      FixedChar = True
-      Size = 3
-    end
-  end
-  object sq_GetTrp_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      #39' '#39' AS DeliveryMessageNumber,'
-      '0 AS DeliveryShipmentLineItemNumber,'
-      'CASE WHEN LS.NoOfLengths = 1 THEN '#39'LengthPackage'#39
-      'Else'
-      ' '#39'TruckPackage'#39
-      'End AS PackageType,'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS SPEC_PackageNo,'
-      ''
-      #39'Supplier'#39' AS IdentifierCodeType,'
-      #39'Primary'#39' AS IdentifierType,'
-      'SUM(PTD.NoOfPieces) AS ItemCountValue,'
-      #39'Piece'#39' AS ItemCountUOM,'
-      #39'Volume'#39' AS QuantityType,'
-      '--CASE'
-      '--WHEN PU.TemplateUnitName = '#39'm3 nDxnL'#39' THEN SUM(PTD.m3Nominal)'
-      '--WHEN PU.TemplateUnitName = '#39'Lopm n'#39' THEN SUM(PTD.m3Net)'
-      
-        '--WHEN PU.TemplateUnitName = '#39'kvm aB'#39' THEN SUM(PTD.SQMofActualWi' +
-        'dth )'
-      
-        '--WHEN PU.TemplateUnitName = '#39'Lopm a'#39' THEN SUM(PTD.LinealMeterAc' +
-        'tualLength)'
-      
-        '--WHEN PU.TemplateUnitName = '#39'Stycketal'#39' THEN SUM(PTD.NoOfPieces' +
-        ')'
-      '--WHEN PU.TemplateUnitName = '#39'm3 aDxaL'#39' THEN SUM(PTD.m3Actual)'
-      
-        '--WHEN PU.TemplateUnitName = '#39'm3 aDxnL'#39' THEN SUM(PTD.m3ActualSiz' +
-        'eNomLength)'
-      
-        '--WHEN PU.TemplateUnitName = '#39'm3 nDxaL'#39' THEN SUM(PTD.m3NomSizeAc' +
-        'tualLength )'
-      
-        '--WHEN PU.TemplateUnitName = '#39'MFBM Nom'#39' THEN SUM(PTD.MFBMNominal' +
-        ')'
-      '--END AS '
-      'SUM(PTD.m3Actual) as QuantityValue,'
-      #39'CubicMeter'#39' AS QuantityUOM,'
-      ''
-      
-        'isNull(Cast(LD.SupplierCode AS Varchar(3)),'#39#39') + Cast(LD.Package' +
-        'No AS Varchar(10)) AS PaketAprefix,'
-      ''
-      ''
-      #39'Supplier'#39' AS IdentifierCodeType2,'
-      #39'Barcode'#39' AS IdentifierType2,'
-      #39'Code128C'#39' AS IdentifierFormatType2,'
-      ''
-      'IsNull((Select Top 1 Cast(PkgFix.ClientID AS Varchar(12))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS Identifier2'
-      ''
-      ''
-      'FROM   dbo.Loads L'
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  L.LoadNo            = LD.L' +
-        'oadNo'
-      
-        #9'                                  '#9'AND LD.SHIPPINGPLANNO   = :L' +
-        'ONo'
-      ''
-      #9'LEFT JOIN dbo.SupplierShippingPlan SSP '
-      #9'ON SSP.SupplierShipPlanObjectNo =  LD.DefaultCustShipObjectNo'
-      ''
-      ''
-      ''
-      #9'inner join dbo.packagenumber PN ON PN.PackageNo = LD.packageNo'
-      #9#9#9#9#9'AND RTrim(PN.SupplierCode) = RTrim(LD.SupplierCode)'
-      ''
-      #9'inner JOIN dbo.Client C'#9#9#9'ON C.ClientNo = PN.SupplierNo'
-      ''
-      ''
-      ''
-      
-        #9'Inner Join dbo.PackageTypeDetail  PTD ON  PTD.PackageTypeNo = L' +
-        'D.PackageTypeNo'
-      #9
-      
-        #9'Inner Join dbo.PackageType  PT ON  PT.PackageTypeNo = LD.Packag' +
-        'eTypeNo'
-      
-        #9'Inner Join dbo.LengthSpec LS on LS.LengthSpecNo = PT.LengthSpec' +
-        'No'
-      ''
-      ''
-      'WHERE L.LoadNo = :LoadNo AND PT.ProductNo = :ProductNo'
-      ''
-      ''
-      'GROUP BY'
-      
-        'PT.PackageTypeNo, PT.ProductNo, LD.PackageTypeNo,LD.PackageNo , ' +
-        'C.pktnrlevkod, LS.NoOfLengths,'
-      'LD.SupplierCode')
-    Left = 624
-    Top = 328
-    ParamData = <
-      item
-        Name = 'LONO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 124738
-      end
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 640231
-      end
-      item
-        Name = 'PRODUCTNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 21811
-      end>
-    object sq_GetTrp_TallyDeliveryMessageNumber: TStringField
-      FieldName = 'DeliveryMessageNumber'
-      Origin = 'DeliveryMessageNumber'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_GetTrp_TallyDeliveryShipmentLineItemNumber: TIntegerField
-      FieldName = 'DeliveryShipmentLineItemNumber'
-      Origin = 'DeliveryShipmentLineItemNumber'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_GetTrp_TallyPackageType: TStringField
-      FieldName = 'PackageType'
-      Origin = 'PackageType'
-      ReadOnly = True
-      Required = True
-      Size = 13
-    end
-    object sq_GetTrp_TallySPEC_PackageNo: TStringField
-      FieldName = 'SPEC_PackageNo'
-      Origin = 'SPEC_PackageNo'
-      ReadOnly = True
-      Size = 13
-    end
-    object sq_GetTrp_TallyIdentifierCodeType: TStringField
-      FieldName = 'IdentifierCodeType'
-      Origin = 'IdentifierCodeType'
-      ReadOnly = True
-      Required = True
-      Size = 8
-    end
-    object sq_GetTrp_TallyIdentifierType: TStringField
-      FieldName = 'IdentifierType'
-      Origin = 'IdentifierType'
-      ReadOnly = True
-      Required = True
-      Size = 7
-    end
-    object sq_GetTrp_TallyItemCountValue: TIntegerField
-      FieldName = 'ItemCountValue'
-      Origin = 'ItemCountValue'
-      ReadOnly = True
-    end
-    object sq_GetTrp_TallyItemCountUOM: TStringField
-      FieldName = 'ItemCountUOM'
-      Origin = 'ItemCountUOM'
-      ReadOnly = True
-      Required = True
-      Size = 5
-    end
-    object sq_GetTrp_TallyQuantityType: TStringField
-      FieldName = 'QuantityType'
-      Origin = 'QuantityType'
-      ReadOnly = True
-      Required = True
-      Size = 6
-    end
-    object sq_GetTrp_TallyQuantityValue: TFloatField
-      FieldName = 'QuantityValue'
-      Origin = 'QuantityValue'
-      ReadOnly = True
-    end
-    object sq_GetTrp_TallyQuantityUOM: TStringField
-      FieldName = 'QuantityUOM'
-      Origin = 'QuantityUOM'
-      ReadOnly = True
-      Required = True
-      Size = 10
-    end
-    object sq_GetTrp_TallyPaketAprefix: TStringField
-      FieldName = 'PaketAprefix'
-      Origin = 'PaketAprefix'
-      ReadOnly = True
-      Size = 13
-    end
-    object sq_GetTrp_TallyIdentifierCodeType2: TStringField
-      FieldName = 'IdentifierCodeType2'
-      Origin = 'IdentifierCodeType2'
-      ReadOnly = True
-      Required = True
-      Size = 8
-    end
-    object sq_GetTrp_TallyIdentifierType2: TStringField
-      FieldName = 'IdentifierType2'
-      Origin = 'IdentifierType2'
-      ReadOnly = True
-      Required = True
-      Size = 7
-    end
-    object sq_GetTrp_TallyIdentifierFormatType2: TStringField
-      FieldName = 'IdentifierFormatType2'
-      Origin = 'IdentifierFormatType2'
-      ReadOnly = True
-      Required = True
-      Size = 8
-    end
-    object sq_GetTrp_TallyIdentifier2: TStringField
-      FieldName = 'Identifier2'
-      Origin = 'Identifier2'
-      ReadOnly = True
-      Size = 25
-    end
-  end
-  object sq_GetIQ_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      #39' '#39' AS DeliveryMessageNumber,'
-      '0 AS DeliveryShipmentLineItemNumber,'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS Identifier,'
-      ''
-      'SUM(PTD.m3Nominal) '#9#9#9'AS NM3,'
-      'SUM(PTD.m3ActualSizeNomLength) '#9'AS NM1,'
-      'SUM(PTD.SQMofActualWidth )'#9#9'AS AM2,'
-      'SUM(PTD.LinealMeterActualLength)'#9'AS AM1,'
-      'SUM(PTD.NoOfPieces)'#9#9#9'AS PIECE,'
-      'SUM(PTD.m3Actual)'#9#9#9'AS AM3,'
-      'SUM(PTD.MFBMNominal) '#9#9#9'AS MFBM'
-      ''
-      'FROM   dbo.Loads L '
-      ''
-      ''
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo            = L.L' +
-        'oadNo'
-      #9'                                  '#9
-      
-        #9'Inner join dbo.SupplierShippingPlan sp on sp.SupplierShipPlanOb' +
-        'jectNo = LD.Defsspno'
-      #9
-      ''
-      #9'inner join dbo.packagenumber PN ON PN.PackageNo = LD.packageNo'
-      #9#9#9#9#9'AND RTrim(PN.SupplierCode) = RTrim(LD.SupplierCode)'
-      ''
-      
-        #9'Inner Join dbo.PackageTypeDetail  PTD ON  PTD.PackageTypeNo = L' +
-        'D.PackageTypeNo'
-      ''
-      #9
-      ''
-      
-        'WHERE     L.LoadNo = :LoadNo AND LD.SupplierCode + Cast(LD.Packa' +
-        'geNo AS Varchar(10)) = :Identifier'
-      ''
-      ''
-      'GROUP BY'
-      'L.LoadNo ,'
-      'L.LoadedDate ,'
-      'L.LoadID ,'
-      'LD.SupplierCode,'
-      'LD.PackageNo,'
-      'L.DateCreated')
-    Left = 720
-    Top = 336
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 640231
-      end
-      item
-        Name = 'IDENTIFIER'
-        DataType = ftString
-        ParamType = ptInput
-        Value = Null
-      end>
-    object sq_GetIQ_TallyDeliveryMessageNumber: TStringField
-      FieldName = 'DeliveryMessageNumber'
-      Origin = 'DeliveryMessageNumber'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_GetIQ_TallyDeliveryShipmentLineItemNumber: TIntegerField
-      FieldName = 'DeliveryShipmentLineItemNumber'
-      Origin = 'DeliveryShipmentLineItemNumber'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_GetIQ_TallyIdentifier: TStringField
-      FieldName = 'Identifier'
-      Origin = 'Identifier'
-      ReadOnly = True
-      Size = 13
-    end
-    object sq_GetIQ_TallyNM3: TFloatField
-      FieldName = 'NM3'
-      Origin = 'NM3'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyNM1: TFloatField
-      FieldName = 'NM1'
-      Origin = 'NM1'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyAM2: TFloatField
-      FieldName = 'AM2'
-      Origin = 'AM2'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyAM1: TFloatField
-      FieldName = 'AM1'
-      Origin = 'AM1'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyPIECE: TIntegerField
-      FieldName = 'PIECE'
-      Origin = 'PIECE'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyAM3: TFloatField
-      FieldName = 'AM3'
-      Origin = 'AM3'
-      ReadOnly = True
-    end
-    object sq_GetIQ_TallyMFBM: TFloatField
-      FieldName = 'MFBM'
-      Origin = 'MFBM'
-      ReadOnly = True
-    end
-  end
-  object sq_GetLS_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      #39' '#39' AS DeliveryMessageNumber,'
-      '0 AS DeliveryShipmentLineItemNumber,'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS SPEC_PackageNo,'
-      ''
-      
-        'IsNull((Select Top 1 Cast(PkgFix.ProductionUnitCode AS Varchar(3' +
-        '))'
-      'FROM dbo.PkgPrefix PkgFix'
-      'WHERE PkgFix.PkgPrefix = LD.SupplierCode),'#39'99'#39') +'
-      ''
-      'Cast(LD.PackageNo AS Varchar(10)) AS Identifier,'
-      'Cast(PL.ActualLengthMM AS Varchar(6)) AS LengthCategory,'
-      'PTD.NoOfPieces AS TotalNumberOfUnitsValue,'
-      #39'Piece'#39' AS TotalNumberOfUnitsUOM'
-      ''
-      ',SUM(PTD.m3Actual ) AS QuantityValue'
-      ','#39'CubicMeter'#39' AS QuantityUOM'
-      ''
-      'FROM   dbo.Loads L'
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo            = L.L' +
-        'oadNo'
-      ''
-      
-        #9'INNER JOIN dbo.SupplierShippingPlan SSP ON SSP.SupplierShipPlan' +
-        'ObjectNo =  LD.Defsspno'
-      ''
-      ''
-      ''
-      #9'inner join dbo.packagenumber PN ON PN.PackageNo = LD.packageNo'
-      #9#9#9#9#9'AND RTrim(PN.SupplierCode) = RTrim(LD.SupplierCode)'
-      #9'inner JOIN dbo.Client C'#9#9#9'ON C.ClientNo = PN.SupplierNo'
-      
-        #9'Inner Join dbo.PackageTypeDetail  PTD ON  PTD.PackageTypeNo = L' +
-        'D.PackageTypeNo'
-      ''
-      
-        #9'INNER JOIN dbo.ProductLength PL ON PL.ProductLengthNo = PTD.Pro' +
-        'ductLengthNo'
-      ''
-      ''
-      'WHERE    L.LoadNo = :LoadNo'
-      '  '#9'AND     LD.ShippingPlanNo = :LONo'
-      
-        '    AND LD.SupplierCode + Cast(LD.PackageNo AS Varchar(10)) = :I' +
-        'dentifier'
-      ''
-      'GROUP BY'
-      
-        'SSP.ShippingPlanNo , LD.PackageNo ,  PTD.NoOfPieces, PL.ActualLe' +
-        'ngthMM,'
-      'LD.SupplierCode,LD.ShippingPlanNo')
-    Left = 824
-    Top = 344
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 640231
-      end
-      item
-        Name = 'LONO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end
-      item
-        Name = 'IDENTIFIER'
-        DataType = ftString
-        ParamType = ptInput
-        Value = Null
-      end>
-    object sq_GetLS_TallyDeliveryMessageNumber: TStringField
-      FieldName = 'DeliveryMessageNumber'
-      Origin = 'DeliveryMessageNumber'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_GetLS_TallyDeliveryShipmentLineItemNumber: TIntegerField
-      FieldName = 'DeliveryShipmentLineItemNumber'
-      Origin = 'DeliveryShipmentLineItemNumber'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_GetLS_TallyIdentifier: TStringField
-      FieldName = 'Identifier'
-      Origin = 'Identifier'
-      ReadOnly = True
-      Size = 13
-    end
-    object sq_GetLS_TallyLengthCategory: TStringField
-      FieldName = 'LengthCategory'
-      Origin = 'LengthCategory'
-      ReadOnly = True
-      Size = 6
-    end
-    object sq_GetLS_TallyTotalNumberOfUnitsValue: TIntegerField
-      FieldName = 'TotalNumberOfUnitsValue'
-      Origin = 'TotalNumberOfUnitsValue'
-    end
-    object sq_GetLS_TallyTotalNumberOfUnitsUOM: TStringField
-      FieldName = 'TotalNumberOfUnitsUOM'
-      Origin = 'TotalNumberOfUnitsUOM'
-      ReadOnly = True
-      Required = True
-      Size = 5
-    end
-    object sq_GetLS_TallyQuantityValue: TFloatField
-      FieldName = 'QuantityValue'
-      Origin = 'QuantityValue'
-      ReadOnly = True
-    end
-    object sq_GetLS_TallyQuantityUOM: TStringField
-      FieldName = 'QuantityUOM'
-      Origin = 'QuantityUOM'
-      ReadOnly = True
-      Required = True
-      Size = 10
-    end
-  end
-  object sq_getDSDMR_Tally: TFDQuery
-    CachedUpdates = True
-    Connection = dmsConnector.FDConnection1
-    FetchOptions.AssignedValues = [evCache]
-    SQL.Strings = (
-      'Select DISTINCT'
-      'L.LoadNo           AS InvoiceNumber,'
-      #39#39' '#9#9'   AS ContractNumber,'
-      'SSP.ShippingPlanNo AS LoadingOrderNumber,'
-      '0'#9#9'   AS OrderLineItemNumber,'
-      'SSP.Reference      AS IL_Reference,'
-      '0 '#9'           AS InternalInvoiceNo,'
-      'SSP.Reference      AS CSD_Reference_Detail,'
-      '0                  AS PO_Number --OH.PO_Number'
-      ''
-      'FROM   dbo.Loads L '
-      
-        #9'INNER JOIN dbo.Loaddetail    LD '#9'ON  LD.LoadNo           = L.Lo' +
-        'adNo'
-      
-        #9'INNER JOIN dbo.SupplierShippingPlan SSP ON SSP.SupplierShipPlan' +
-        'ObjectNo =  LD.Defsspno'
-      ''
-      ''
-      'WHERE     L.LoadNo = :LoadNo '
-      ' '
-      '')
-    Left = 456
-    Top = 344
-    ParamData = <
-      item
-        Name = 'LOADNO'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = 640231
-      end>
-    object sq_getDSDMR_TallyInvoiceNumber: TIntegerField
-      FieldName = 'InvoiceNumber'
-      Origin = 'InvoiceNumber'
-      Required = True
-    end
-    object sq_getDSDMR_TallyContractNumber: TStringField
-      FieldName = 'ContractNumber'
-      Origin = 'ContractNumber'
-      ReadOnly = True
-      Required = True
-      Size = 1
-    end
-    object sq_getDSDMR_TallyLoadingOrderNumber: TIntegerField
-      FieldName = 'LoadingOrderNumber'
-      Origin = 'LoadingOrderNumber'
-    end
-    object sq_getDSDMR_TallyOrderLineItemNumber: TIntegerField
-      FieldName = 'OrderLineItemNumber'
-      Origin = 'OrderLineItemNumber'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_getDSDMR_TallyIL_Reference: TStringField
-      FieldName = 'IL_Reference'
-      Origin = 'IL_Reference'
-      Size = 50
-    end
-    object sq_getDSDMR_TallyInternalInvoiceNo: TIntegerField
-      FieldName = 'InternalInvoiceNo'
-      Origin = 'InternalInvoiceNo'
-      ReadOnly = True
-      Required = True
-    end
-    object sq_getDSDMR_TallyCSD_Reference_Detail: TStringField
-      FieldName = 'CSD_Reference_Detail'
-      Origin = 'CSD_Reference_Detail'
-      Size = 50
-    end
-    object sq_getDSDMR_TallyPO_Number: TIntegerField
-      FieldName = 'PO_Number'
-      Origin = 'PO_Number'
-      ReadOnly = True
-      Required = True
-    end
+    Top = 600
   end
 end

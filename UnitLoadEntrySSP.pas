@@ -396,7 +396,6 @@ type
     grdLORowsDBBandedTableView1Paketstorlek: TcxGridDBBandedColumn;
     grdLORowsLevel1: TcxGridLevel;
     Splitter1: TSplitter;
-    lbl1: TLabel;
     cxbtnRegBulkDelivery: TcxButton;
     acRegBulkDelivery: TAction;
     RegBULKleverans1: TMenuItem;
@@ -404,6 +403,8 @@ type
     dxbrbtnRegBulkDelivery: TdxBarButton;
     cxbtnScanArticle: TcxButton;
     cxbtnCreatePalletPkg: TcxButton;
+    dxBarLargeButton12: TdxBarLargeButton;
+    acShowPkgLogg: TAction;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -532,6 +533,7 @@ type
     procedure acRegBulkDeliveryUpdate(Sender: TObject);
     procedure cxbtnScanArticleClick(Sender: TObject);
     procedure cxbtnCreatePalletPkgClick(Sender: TObject);
+    procedure acShowPkgLoggExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -705,7 +707,8 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   , uDBLogg, uIDBConnector, uIDBLogg, uILogger, uLogger
   //,uIIPObserver,  uIMsgObserver
 {$ENDIF}
-, uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem;
+, uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
+  uAddErrorPkgLoad;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -6550,16 +6553,25 @@ Begin
       End;
      cdsLORows.Next ;
     End;
-  End;
+  End ;
+   //else
+   // Result := True ;
  End;
 End;
 
 procedure TfLoadEntrySSP.acSaveAndOKExecute(Sender: TObject);
 var
   DagensDag, UtlastningsDatum: Integer;
+  var path : string ;
 begin
   with dmLoadEntrySSP do
   begin
+   if ErrorPkgExist(cds_LoadHeadLoadNo.AsInteger) then
+   Begin
+    acShowPkgLoggExecute(Sender) ;
+   End;
+
+
     DagensDag := DayOfTheMonth(Date);
     UtlastningsDatum := DayOfTheMonth(cds_LoadHeadLoadedDate.AsDateTime);
 
@@ -6594,6 +6606,19 @@ begin
 
       SaveLoad;
       SetLoadEnabled;
+    if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
+    Begin
+      Path := dmsSystem.GetFtpTarget(cdsLORowsShipToInvPointNo.AsInteger, cds_LoadHeadLoadNo.AsInteger) ;
+      if Path <> '0' then
+      Begin
+        dmsSystem.ExportTallyWoodx
+      (Sender, cdsLORowsCustomerNo.AsInteger,
+      cdsLORowsShippingPlanNo.AsInteger,
+      cds_LoadHeadLoadNo.AsInteger,
+      cds_LoadHeadLoadNo.AsString,
+      Path) ;
+      End;
+    End;
     end;
   end;
 end;
@@ -7181,7 +7206,7 @@ begin
               Begin
                 Action := eaREJECT;
                 Errortext := 'Paketnr ' + IntToStr(NewPkgNo) + ' prefix:' +
-                  PkgSupplierCode + ' var mot fel huvudLO ';
+                  PkgSupplierCode + ' var mot fel huvud LO ';
                 Error := True;
               End;
             end;
@@ -7260,7 +7285,8 @@ begin
         Error := True;
       End;
       if Error then
-        ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext);
+       AddLoadPkgErrorLog(cds_LoadHeadLoadNo.AsInteger, NewPkgNo, PkgSupplierCode, Errortext) ;
+        //ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext);
     finally
       Screen.Cursor := Save_Cursor; { Always restore to normal }
     end;
@@ -7406,6 +7432,19 @@ begin
  End
    else
     dxPageControl1.Visible  := True ;
+end;
+
+procedure TfLoadEntrySSP.acShowPkgLoggExecute(Sender: TObject);
+Var fAddErrorPkgLoad  : TfAddErrorPkgLoad ;
+begin
+ //if not Assigned(fAddErrorPkgLoad) then
+  fAddErrorPkgLoad:= TfAddErrorPkgLoad.Create(nil);
+  Try
+  fAddErrorPkgLoad.ShowModal ;
+
+  Finally
+   FreeAndNil(fAddErrorPkgLoad) ;
+  End;
 end;
 
 procedure TfLoadEntrySSP.acRaderaPaketExecute(Sender: TObject);

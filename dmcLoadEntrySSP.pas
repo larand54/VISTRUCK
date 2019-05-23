@@ -412,6 +412,10 @@ type
     ds1: TDataSource;
     cds_LikedArticleUsage: TFDQuery;
     sq_OnePkgDetailDataREFERENCE: TStringField;
+    sp_AddLoadPkgErrorLog: TFDStoredProc;
+    cds_AddLoadPkgErrorLog: TFDQuery;
+    ds_AddLoadPkgErrorLog: TDataSource;
+    sp_LoadPkgErrorExists: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -462,16 +466,18 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
-   function noWarningForRefMismatch: boolean;
-   function isLinkedArticle(const aArticleNo: integer): boolean;
+   function  ErrorPkgExist(const LoadNo : Integer) : Boolean ;
+   procedure AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
+   function  noWarningForRefMismatch: boolean;
+   function  isLinkedArticle(const aArticleNo: integer): boolean;
    function  Is_Load_Confirmed(const LoadNo : Integer) : Boolean ;
-   function createPalletPkg(const aLoadNo, aUserID: integer): integer;
-   function getNewBULKPackageNo: Integer;
-   function TestLOrow(const ArticleNo  : Integer) : integer ;
-   function getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
+   function  createPalletPkg(const aLoadNo, aUserID: integer): integer;
+   function  getNewBULKPackageNo: Integer;
+   function  TestLOrow(const ArticleNo  : Integer) : integer ;
+   function  getActivePackage(const aPkgArticleNo, aPIPNo: integer; const aSupplierCode: string): integer;
    procedure inactivatePackage(const aPkgNo: integer;const aSupplierCode : String);
-   function getPkgArticleNo_2(const aPkgNo: integer; aSupplierCode: string): integer;
-   function getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
+   function  getPkgArticleNo_2(const aPkgNo: integer; aSupplierCode: string): integer;
+   function  getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
    function  CtrlCorrectMainLO(const LONo, PackageNo  : Integer;const Prefix : String) : String ;
    procedure SetPositionOnSelectedPkgs (const PackageNo : Integer; const SupplierCode : String; const PositionID : Integer) ;
    function  OriginalFilter(const Add_AND : Boolean) : String ;
@@ -1944,5 +1950,59 @@ Begin
      end;
 End ;
 
+
+{
+  procedure TdmLoadEntrySSP.AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
+  Begin
+   Try
+    sp_AddLoadPkgErrorLog.ParamByName('@LoadNo').AsInteger    := LoadNo ;
+    sp_AddLoadPkgErrorLog.ParamByName('@PackgeNo').AsInteger  := NewPkgNo ;
+    sp_AddLoadPkgErrorLog.ParamByName('@Prefix').AsString     := PkgSupplierCode ;
+    sp_AddLoadPkgErrorLog.ParamByName('@ErrorText').AsString  := Errortext ;
+    sp_AddLoadPkgErrorLog.ParamByName('@UserID').AsInteger    := ThisUser.UserID ;
+    sp_AddLoadPkgErrorLog.ExecProc ;
+   except
+    On E: Exception do
+    Begin
+     dmsSystem.FDoLog(E.Message) ;
+  //      ShowMessage(E.Message);
+     Raise ;
+    End ;
+   end;
+  End;
+}
+
+procedure TdmLoadEntrySSP.AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
+Begin
+ Try
+  if not cds_AddLoadPkgErrorLog.Active then
+   cds_AddLoadPkgErrorLog.Active  := True ;
+  cds_AddLoadPkgErrorLog.Insert ;
+  cds_AddLoadPkgErrorLog.FieldByName('LoadNo').AsInteger            := LoadNo ;
+  cds_AddLoadPkgErrorLog.FieldByName('PackageNo').AsInteger         := NewPkgNo ;
+  cds_AddLoadPkgErrorLog.FieldByName('Prefix').AsString             := PkgSupplierCode ;
+  cds_AddLoadPkgErrorLog.FieldByName('ErrorText').AsString          := Errortext ;
+  cds_AddLoadPkgErrorLog.FieldByName('DateCreated').AsSQLTimeStamp  := DateTimeToSQLTimeStamp(Now) ;
+  cds_AddLoadPkgErrorLog.FieldByName('UserID').AsInteger            := ThisUser.UserID ;
+  cds_AddLoadPkgErrorLog.Post ;
+ except
+  On E: Exception do
+  Begin
+   dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+   Raise ;
+  End ;
+ end;
+End;
+
+function TdmLoadEntrySSP.ErrorPkgExist(const LoadNo : Integer) : Boolean ;
+begin
+  sp_LoadPkgErrorExists.ParamByName('@LoadNo').AsInteger  := LoadNo ;
+  sp_LoadPkgErrorExists.ExecProc ;
+  if sp_LoadPkgErrorExists.ParamByName('@Error').AsInteger = 1 then
+   Result := True
+    else
+     Result := False ;
+End;
 
 end.

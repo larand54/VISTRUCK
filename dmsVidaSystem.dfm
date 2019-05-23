@@ -5604,4 +5604,119 @@ object dmsSystem: TdmsSystem
       Origin = 'ClientNo'
     end
   end
+  object sp_GetFtpTarget: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_FtpTargetExists'
+    Left = 456
+    Top = 992
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@CityNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_FtpLoadLogg: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.visFtpLoadLogg'
+    Left = 344
+    Top = 992
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@StartDate'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end>
+  end
+  object sp_getFtpLoadLog: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.getFtpLoadLog'
+    Left = 568
+    Top = 992
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Info'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end>
+  end
+  object sp_visInsertFtpLoadLog: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.visInsertFtpLoadLog'
+    Left = 680
+    Top = 992
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_GetOrderData: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'vis_GetOrderData'
+    Left = 744
+    Top = 872
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

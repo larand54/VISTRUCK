@@ -1,6 +1,6 @@
 object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
-  Left = 227
-  Top = 108
+  Left = 212
+  Top = 0
   Align = alClient
   BorderStyle = bsNone
   Caption = 'LASTORDER'
@@ -15,6 +15,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   KeyPreview = True
   OldCreateOrder = True
   PopupMenu = pmShortcuts
+  Position = poDesigned
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -1078,6 +1079,14 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.Font.Style = [fsBold]
           Style.IsFontAssigned = True
         end
+        object cxButton10: TcxButton
+          Left = 920
+          Top = 64
+          Width = 305
+          Height = 33
+          Action = acSendWoodxDeliveryMessage
+          TabOrder = 28
+        end
       end
     end
     object PanelLoadDetail: TPanel
@@ -1905,6 +1914,10 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         item
           Visible = True
           ItemName = 'lbCancelUpdates'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton11'
         end>
       MultiLine = True
       OldName = 'Custom 1'
@@ -2065,6 +2078,10 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     end
     object dxBarButton34: TdxBarButton
       Action = acPrintLO_Your_Mill_Manually
+      Category = 0
+    end
+    object dxBarLargeButton11: TdxBarLargeButton
+      Action = acSendWoodxDeliveryMessage
       Category = 0
     end
     object bPrintLODittVerk: TdxBarButton
@@ -5780,6 +5797,12 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Caption = 'Maila TO Manuell'
       OnExecute = acPrintTO_ManuallyExecute
     end
+    object acSendWoodxDeliveryMessage: TAction
+      Caption = 'Send woodx'
+      ImageIndex = 34
+      OnExecute = acSendWoodxDeliveryMessageExecute
+      OnUpdate = acSendWoodxDeliveryMessageUpdate
+    end
   end
   object pmPrint: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -7055,12 +7078,12 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object SaveDialog2: TSaveDialog
     Left = 88
-    Top = 712
+    Top = 624
   end
-  object PopupMenu1: TPopupMenu
+  object cxb: TPopupMenu
     Images = imglistActions
     Left = 176
-    Top = 712
+    Top = 624
     object Ny1: TMenuItem
       Action = acSetToNEW
     end
@@ -7116,7 +7139,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Kind = lfFlat
     SkinName = 'Silver'
     Left = 488
-    Top = 726
+    Top = 638
   end
   object Timer1: TTimer
     Enabled = False
@@ -7193,7 +7216,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 288
-    Top = 711
+    Top = 623
     PixelsPerInch = 96
     object cxStyle1clYellow: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -8460,7 +8483,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       'KeyField'
       'ListField')
     Left = 488
-    Top = 672
+    Top = 584
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A005400660072006D0056006900730054007200750063006B00

@@ -1712,6 +1712,7 @@ object frmPkgEntry: TfrmPkgEntry
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    SkinName = 'Silver'
     Left = 80
     Top = 490
   end

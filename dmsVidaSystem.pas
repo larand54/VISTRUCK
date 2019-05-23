@@ -10,7 +10,7 @@ uses
   cxGridTableView, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore, dateutils,
-  FireDAC.Stan.StorageBin ;
+  FireDAC.Stan.StorageBin, Windows ;
 
 type
  TAmbiguityEvent = procedure(
@@ -621,6 +621,11 @@ type
     cds_ShiftLagDateModified: TSQLTimeStampField;
     cds_ShiftLagModifiedUser: TIntegerField;
     cds_ShiftLagClientNo: TIntegerField;
+    sp_GetFtpTarget: TFDStoredProc;
+    sp_FtpLoadLogg: TFDStoredProc;
+    sp_getFtpLoadLog: TFDStoredProc;
+    sp_visInsertFtpLoadLog: TFDStoredProc;
+    sp_GetOrderData: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure mtSelectedPkgNoAfterInsert(DataSet: TDataSet);
     procedure mtSelectedPkgNoBeforePost(DataSet: TDataSet);
@@ -639,7 +644,9 @@ type
   { Private declarations }
     AssignedDM : TStrings ;
     FOnAmbiguousPkgNo: TAmbiguityEvent;
-
+    Procedure ExportToWoodx(Sender: TObject;const CustomerNo, LoadNo: Integer;
+    const sLoadNo, Path : String);
+    Function  LogShowLoadAlreadySent(const LoadNo : Integer; var info : string) : Boolean ;
     procedure getPkgsByLIPNo(const PkgNo, LIPNo : Integer);
     function  SP_Pkg_Reserved(const PkgNo: Integer; const PkgSupplierCode : string3;const Modul : String;Var Res_UserName : String): String;
     procedure getPkgsByInvOwner(const PkgNo, InventoryOwner, UserCompanyLoggedOn : Integer);
@@ -664,6 +671,14 @@ type
     LOG_ENABLE  : Boolean ;
     MarkedPkgs : Integer ;
     PktNrPos, AntPosPktNr, LevKodPos, AntPosLevKod : Cardinal ;
+
+    function  Test_VerLanguageName : Boolean ;
+    procedure Open_FtpLoadLogg(const LoadNo : Integer;StartDate : TDateTime) ;
+    procedure Close_FtpLoadLogg ;
+    procedure visInsertFtpLoadLog(const LoadNo : Integer) ;
+    function  GetFtpTarget(const CityNo, LoadNo : Integer): String ;
+    procedure ExportTallyWoodx(Sender: TObject;const CustomerNo,
+    LONo, LoadNo: Integer; const InvoiceNo, Path: String);
 
    // function  GetVerkNoForSortingOrder (const Default_SortingOrderNo : Integer) : Integer ;
     function UserIsAllowedToMovePkgs(const aUserID: integer): integer;
@@ -818,7 +833,7 @@ uses
   dlgPickPkg_II,
   //recerror ,
   uShowMemo, dmsVidaContact, uSendMapiMail , uLagerPos, VidaUtils ,
-  uEnterLengthData;
+  uEnterLengthData, MainU, dmc_ImportWoodx;
 
 
 { TdmsSystem }
@@ -3381,5 +3396,183 @@ begin
   End;
 end;
 
+
+Procedure TdmsSystem.ExportToWoodx(Sender: TObject;const CustomerNo, LoadNo: Integer;
+  const sLoadNo, Path: String);
+// Var DeliveryMessageNumber : String ;
+begin
+  XMLImportExport := TXMLImportExport.Create(nil);
+  try
+    XMLImportExport.LoadNo := LoadNo ;
+    XMLImportExport.InternalInvoiceNo := LoadNo ;
+    XMLImportExport.CustomerNo := CustomerNo;
+    XMLImportExport.tsImport.TabVisible := False;
+    XMLImportExport.Path  := path ;
+
+    XMLImportExport.Show ;//Modal = MrOK then
+    XMLImportExport.acExportTallyExecute(Sender) ;
+    XMLImportExport.Close ;
+    //Begin
+      // DeliveryMessageNumber:= XMLImportExport.DeliveryMessageNumber ;
+    //End;
+  finally
+    FreeAndNil(XMLImportExport);
+  end;
+end;
+
+procedure TdmsSystem.ExportTallyWoodx(Sender: TObject;const CustomerNo,
+  LONo, LoadNo: Integer; const InvoiceNo, Path : String);
+begin
+  dmsSystem.RunLengthSpec;
+  dm_ImportWoodx := Tdm_ImportWoodx.Create(nil);
+  Try
+    With dm_ImportWoodx do
+    Begin
+      // DeliveryMessageNumber:= dmVidaI1nvoice.cdsInvoiceListINT_INVNO.AsString ;
+      Try
+        ExportDeliveryWoodMessageTally(LoadNo);   //Create records in tables needed for creating xml file in step 2
+        ExportToWoodx(Sender, CustomerNo, LoadNo, inttostr(LoadNo), Path);
+        visInsertFtpLoadLog(LoadNo) ;
+      Except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          Raise;
+        End;
+      End;
+    End;
+  Finally
+    FreeAndNil(dm_ImportWoodx);
+  End;
+end;
+
+Function TdmsSystem.LogShowLoadAlreadySent(const LoadNo : Integer; var info : string) : Boolean ;
+Begin
+ Result  := False ;
+    Try
+      sp_getFtpLoadLog.ParamByName('@LoadNo').AsInteger    := LoadNo;
+      sp_getFtpLoadLog.ExecProc;
+      info  := sp_getFtpLoadLog.ParamByName('@Info').AsString ;
+      if info > ' ' then
+        Result  := True ;
+    except
+      On E: Exception do
+      Begin
+        dmsSystem.FDoLog(E.Message);
+        // ShowMessage(E.Message);
+        Raise;
+      End;
+    end;
+End;
+
+function TdmsSystem.GetFtpTarget(const CityNo, LoadNo : Integer): String ;
+var s, info : string ;
+begin
+ Try
+  Result := '0' ;
+    Try
+      sp_GetFtpTarget.ParamByName('@CityNo').AsInteger    := CityNo;
+      sp_GetFtpTarget.Active := True ;
+      if not sp_GetFtpTarget.Eof then
+       s  := sp_GetFtpTarget.FieldByName('Path').AsString
+        else
+         s := '0' ;
+    if s > '0' then
+    Begin
+      if MessageDlg('Do you want to send a woodx message of the delivery to the receiver? ', mtConfirmation, [mbYes, mbNo],
+      0) = mrYes then
+      Begin
+       if LogShowLoadAlreadySent(LoadNo, info) then
+       Begin
+          if MessageDlg('Wood x message already sent, do you want to resend? ' + info, mtConfirmation, [mbYes, mbNo],
+          0) = mrYes then
+           Result := s
+            else
+             Result := 'x' ;
+       End
+        else
+          Result := s ;
+      End
+       else
+        Result := 'x' ;
+    End;
+    except
+      On E: Exception do
+      Begin
+        dmsSystem.FDoLog(E.Message);
+        // ShowMessage(E.Message);
+        Raise;
+      End;
+    end ;
+ Finally
+   sp_GetFtpTarget.Active := False ;
+ End;
+end;
+
+procedure TdmsSystem.visInsertFtpLoadLog(const LoadNo : Integer) ;
+Begin
+  Try
+  sp_visInsertFtpLoadLog.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_visInsertFtpLoadLog.ParamByName('@Userid').AsInteger := ThisUser.UserID ;
+  sp_visInsertFtpLoadLog.ExecProc ;
+  except
+    On E: Exception do
+    Begin
+      dmsSystem.FDoLog(E.Message);
+      ShowMessage(E.Message);
+      Raise;
+    End;
+  end;
+End;
+
+procedure TdmsSystem.Open_FtpLoadLogg(const LoadNo : Integer;StartDate : TDateTime) ;
+Begin
+  if sp_FtpLoadLogg.Active then
+   sp_FtpLoadLogg.Active := False ;
+  sp_FtpLoadLogg.ParamByName('@LoadNo').AsInteger         := LoadNo ;
+  sp_FtpLoadLogg.ParamByName('@StartDate').AsSQLTimeStamp := DateTimeToSQLTimeStamp(StartDate) ;
+  sp_FtpLoadLogg.Active := True ;
+End;
+
+procedure TdmsSystem.Close_FtpLoadLogg ;
+Begin
+  if sp_FtpLoadLogg.Active then
+   sp_FtpLoadLogg.Active := False ;
+End;
+
+//True om svenska
+function TdmsSystem.Test_VerLanguageName : Boolean ;
+var
+  wLang   : LangID;
+  szLang  : Array [0..254] of Char;
+  Buffer  : PChar;
+  Size    : integer;
+begin
+    Result := False ;
+
+  Size := GetLocaleInfo (LOCALE_USER_DEFAULT, LOCALE_SENGLANGUAGE, nil, 0);
+//  GetMem(Buffer, Size);
+  GetMem(Buffer, Size * SizeOf(Char)) ;
+  try
+    GetLocaleInfo (LOCALE_USER_DEFAULT, LOCALE_SENGLANGUAGE, Buffer, Size);
+  //  Showmessage(Buffer);
+  finally
+    FreeMem(Buffer);
+  end;
+
+  if Copy(Buffer,1,1) = 'S' then
+      Result := True ;
+
+
+  {
+    wLang := GetSystemDefaultLCID;
+     VerLanguageName(wLang, szLang, SizeOf(szLang));
+     if Copy(szLang,1,1) = 'S' then
+      Result := True ;
+       ShowMessage(szLang);
+       if Result  then
+        ShowMessage('Result = true') ;
+ }
+end;
 
 end.

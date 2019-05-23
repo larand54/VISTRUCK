@@ -415,10 +415,6 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Panel3: TPanel
               Left = 0
               Top = 0
@@ -4531,7 +4527,7 @@ object frmMain: TfrmMain
     ItemLinks = <>
     UseOwnFont = False
     Left = 784
-    Top = 344
+    Top = 384
   end
   object dxRibbonPopupMenu1: TdxRibbonPopupMenu
     BarManager = dxBarManager1
@@ -4547,7 +4543,7 @@ object frmMain: TfrmMain
     Ribbon = dxRibbon1
     UseOwnFont = False
     Left = 784
-    Top = 392
+    Top = 440
   end
   object siLangLinked1: TsiLangLinked
     Version = '7.2'

@@ -60,13 +60,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          object lbl1: TLabel
-            Left = 968
-            Top = 56
-            Width = 36
-            Height = 13
-            Caption = 'lbl1-test'
-          end
           object detLoaded: TcxDBDateEdit
             Left = 80
             Top = 26
@@ -373,7 +366,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
             TabOrder = 20
-            Width = 271
+            Width = 239
           end
           object btTextPad: TcxButton
             Left = 429
@@ -678,10 +671,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -2207,6 +2196,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
         item
           Visible = True
           ItemName = 'dxBarLargeButton9'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarLargeButton12'
         end>
       OldName = 'Custom 1'
       OneOnRow = True
@@ -2493,6 +2486,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object dxbrbtnRegBulkDelivery: TdxBarButton
       Action = acRegBulkDelivery
+      Category = 0
+    end
+    object dxBarLargeButton12: TdxBarLargeButton
+      Action = acShowPkgLogg
       Category = 0
     end
     object lbValidatePkg: TdxBarLargeButton
@@ -5699,6 +5696,11 @@ object fLoadEntrySSP: TfLoadEntrySSP
     object acNumPad: TAction
       Caption = 'NumPad'
       OnExecute = acNumPadExecute
+    end
+    object acShowPkgLogg: TAction
+      Caption = 'Show log'
+      ImageIndex = 1
+      OnExecute = acShowPkgLoggExecute
     end
   end
   object pmReport: TdxBarPopupMenu

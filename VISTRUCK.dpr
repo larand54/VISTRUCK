@@ -2,11 +2,6 @@ program VISTRUCK;
 
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -162,7 +157,13 @@ uses
   uIInterfacesFastReports in '..\CommonSources\FastReport\uIInterfacesFastReports.pas',
   uFixMail in '..\CommonSources\FastReport\uFixMail.pas',
   uFRAccessories in '..\CommonSources\FastReport\uFRAccessories.pas',
-  udmFRSystem in '..\CommonSources\FastReport\udmFRSystem.pas' {dmFRSystem: TDataModule};
+  udmFRSystem in '..\CommonSources\FastReport\udmFRSystem.pas' {dmFRSystem: TDataModule},
+  MainU in 'Aug 31B dbExpress\MainU.pas' {XMLImportExport},
+  dmc_ImportWoodx in 'dmc_ImportWoodx.pas' {dm_ImportWoodx: TDataModule},
+  DeliveryMessageWoodV2R31 in 'Aug 31B dbExpress\DeliveryMessageWoodV2R31.pas',
+  PackageExportU in 'Aug 31B dbExpress\PackageExportU.pas',
+  PackageImportU in 'Aug 31B dbExpress\PackageImportU.pas',
+  uAddErrorPkgLoad in 'uAddErrorPkgLoad.pas' {fAddErrorPkgLoad};
 
 {$R *.res}
 begin
@@ -181,6 +182,8 @@ begin
   Application.CreateForm(TfrmChangeLanguage, frmChangeLanguage);
   Application.CreateForm(TdmFR, dmFR);
   Application.CreateForm(TdmFRSystem, dmFRSystem);
+  Application.CreateForm(TXMLImportExport, XMLImportExport);
+  Application.CreateForm(Tdm_ImportWoodx, dm_ImportWoodx);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

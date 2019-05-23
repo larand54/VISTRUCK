@@ -4027,4 +4027,99 @@
         Value = 77479
       end>
   end
+  object sp_AddLoadPkgErrorLog: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_AddLoadPkgErrorLog'
+    Left = 912
+    Top = 608
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@Prefix'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 5
+        Name = '@ErrorText'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 255
+      end
+      item
+        Position = 6
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object cds_AddLoadPkgErrorLog: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'select * from dbo.LoadPkgErrorLog pke'
+      'WHERE pke.LoadNo = :LoadNo'
+      'or ((:LoadNo = -1) and (pke.DateCreated >= :StartDate))')
+    Left = 136
+    Top = 528
+    ParamData = <
+      item
+        Name = 'LOADNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'STARTDATE'
+        DataType = ftTimeStamp
+        ParamType = ptInput
+      end>
+  end
+  object ds_AddLoadPkgErrorLog: TDataSource
+    DataSet = cds_AddLoadPkgErrorLog
+    Left = 136
+    Top = 584
+  end
+  object sp_LoadPkgErrorExists: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_LoadPkgErrorExists'
+    Left = 136
+    Top = 648
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Error'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
 end
