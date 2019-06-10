@@ -6609,7 +6609,7 @@ begin
     if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
     Begin
       Path := dmsSystem.GetFtpTarget(cdsLORowsShipToInvPointNo.AsInteger, cds_LoadHeadLoadNo.AsInteger) ;
-      if Path <> '0' then
+      if (Path <> '0') and (Path <> 'x') then
       Begin
         dmsSystem.ExportTallyWoodx
       (Sender, cdsLORowsCustomerNo.AsInteger,

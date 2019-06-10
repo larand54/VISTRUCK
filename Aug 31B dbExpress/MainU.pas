@@ -153,10 +153,10 @@ begin
 
 
 // Vida server original
- //edtConnectionString.Text       :='Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=vis_vida;Data Source=visprodsql.vida.se' ;
+ edtConnectionString.Text       :='Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=vis_vida;Data Source=visprodsql.vida.se' ;
 
 // Vida server Lars
- edtConnectionString.Text       :=  'Provider=SQLOLEDB.1;Password=woods2011;Persist Security Info=True;User ID=Lars;Initial Catalog=vis_vida;Data Source=vistestsql.vida.se' ;
+ //edtConnectionString.Text       :=  'Provider=SQLOLEDB.1;Password=woods2011;Persist Security Info=True;User ID=Lars;Initial Catalog=vis_vida;Data Source=vistestsql.vida.se' ;
 
 
 //Carmak-HP\SQLEXPRESS

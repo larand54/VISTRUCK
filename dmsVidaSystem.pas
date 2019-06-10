@@ -3450,10 +3450,12 @@ Function TdmsSystem.LogShowLoadAlreadySent(const LoadNo : Integer; var info : st
 Begin
  Result  := False ;
     Try
+      sp_getFtpLoadLog.Close ;
       sp_getFtpLoadLog.ParamByName('@LoadNo').AsInteger    := LoadNo;
       sp_getFtpLoadLog.ExecProc;
       info  := sp_getFtpLoadLog.ParamByName('@Info').AsString ;
-      if info > ' ' then
+      sp_getFtpLoadLog.ParamByName('@Info').Clear();
+      if info > '0' then
         Result  := True ;
     except
       On E: Exception do
