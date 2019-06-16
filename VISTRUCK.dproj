@@ -92,6 +92,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_Define>madExcept;DO_LOG;$(DCC_Define)</DCC_Define>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <Icon_MainIcon>VIS_TRUCK.ico</Icon_MainIcon>
         <VerInfo_Special>true</VerInfo_Special>
@@ -592,6 +593,24 @@
             <Form>fAddErrorPkgLoad</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\CommonSources\sendMail\ISendMailInterfaces.pas"/>
+        <DCCReference Include="..\CommonSources\sendMail\udmDBSendMail.pas">
+            <Form>dmDBSendMail</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\CommonSources\sendMail\uSendMail.pas"/>
+        <DCCReference Include="..\CommonSources\sendMail\udmEWSSendMail.pas">
+            <Form>dmEWSSendMail</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\CommonSources\sendMail\udmMAPISendMail.pas">
+            <Form>dmMAPISendMail</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\CommonSources\DelphiLogg\uDO_LOG.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">

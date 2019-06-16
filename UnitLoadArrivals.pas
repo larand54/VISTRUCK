@@ -3448,7 +3448,7 @@ begin
     else
       ReportType := cfTally;
 
-    FR2 := TFastReports2.create(dmsConnector, dmFR, Lang, salesregion);
+    FR2 := TFastReports2.create(dmFR, Lang, salesregion);
     try
       FR2.preViewTallyByReportType(ReportType, LoadNo, true);
     finally
@@ -5243,7 +5243,7 @@ begin
       else
         ReportType := cfTally;
 
-      FR2 := TFastReports2.createForPrint(dmsConnector, dmFR, true, false, lang, SalesRegion, NoOfCopies);
+      FR2 := TFastReports2.createForPrint(dmFR, true, false, lang, SalesRegion, NoOfCopies);
       try
         FR2.printTallyByType(ReportType, loads, true);
       finally

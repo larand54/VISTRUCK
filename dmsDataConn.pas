@@ -55,13 +55,14 @@ type
 
     FLastTransNo : LongWord;
     FSaveCursor: TStack<TCursor>;
+    function getFileSize(const sFilename: string): int64;
     function getAppName: string;
     function getAppPath: string;
     function getLocalServer: string;
 
   public
     { Public declarations }
-
+    LOG_ENABLE: boolean;
     DriveLetter,
     InifilesMap : String ;
     LoginChanged : Boolean ;
@@ -177,9 +178,41 @@ begin
 
 end;
 
-procedure TdmsConnector.FDoLog(s: string);
+function TdmsConnector.getFileSize(const sFilename: string): int64;
+var
+  f: Cardinal;
 begin
+  f := FileOpen(sFileName, fmOpenRead);
+  Result := FileSeek(f, 0, 2);
+  FileClose(f);
+end;
 
+procedure TdmsConnector.FDoLog(s: string);
+var
+  sName: string;
+  f: Text;
+begin
+ {$IFDEF DEBUG}
+   ShowMessage('s = ' + s) ;
+
+ {$ELSE}
+  if LOG_ENABLE then
+  Begin
+    // sName := dmsConnector.DriveLetter + 'VIS\TEMP\'  + Application.Title + '.log' ;
+    sName := dmsConnector.DriveLetter + 'VIS\TEMP\' + 'VIS' + '.log';
+    AssignFile(f, sName);
+    if not FileExists(sName) then
+      Rewrite(f)
+    else
+    begin
+      Append(f);
+    end;
+    Writeln(f, FormatDateTime('yyyy.mm.dd hh:nn:ss zzz    ', now) + s);
+    CloseFile(f);
+    if GetFileSize(sName) >= 512 * 1024 then
+      RenameFile(sName, sName + FormatDateTime('.yyyy.mm.dd_hh.nn.ss.zzz', now))
+  End
+  {$ENDIF}
 end;
 
 function TdmsConnector.getAppName: string;
@@ -375,7 +408,7 @@ end;
 
 procedure TdmsConnector.DataModuleCreate(Sender: TObject);
 begin
-
+  LOG_ENABLE := false;
 {$IFDEF DEBUG}
   if (Pos('CARMAK', LocalServer) > 0) then
   begin

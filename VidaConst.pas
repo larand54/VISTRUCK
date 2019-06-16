@@ -91,7 +91,7 @@ const
   cTrpBrev          = 13 ;
   cTrpOrderAvrop    = 14 ;
 
-  cFoljesedelIntern = 17 ;
+  cFoljesedelIntern = 41 ;
   cFoljesedel_eng   = 18;
   cFoljesedel_no_matching_pkg = 19;
   cTrpOrder_eng               = 20;

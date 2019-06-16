@@ -708,7 +708,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   //,uIIPObserver,  uIMsgObserver
 {$ENDIF}
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
-  uAddErrorPkgLoad;
+  uAddErrorPkgLoad, ISendMailInterfaces, uSendMail;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -4581,7 +4581,7 @@ begin
       else
         ReportType := cfTally;
 
-      FR2 := TFastReports2.createForPrint(dmsConnector, dmFR, true, false, lang, SalesRegion, NoOfCopies);
+      FR2 := TFastReports2.createForPrint(dmFR, true, false, lang, SalesRegion, NoOfCopies);
       try
         FR2.printTallyByType(ReportType, loads, true);
       finally
@@ -4693,7 +4693,7 @@ begin
       ReportType := cfTallyInternal
     else
       ReportType := cfTally;
-    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegionNo);
+    FR2 := TFastReports2.create(dmFR, lang, salesRegionNo);
     try
       FR2.preViewTallyByReportType(ReportType, loadNo, true);
     finally
@@ -6659,7 +6659,7 @@ begin
       exit;
     lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegion);
+    FR2 := TFastReports2.create(dmFR, lang, salesRegion);
     try
       FR2.preViewTallyByReportType(cfTally_no_matching_pkg, LoadNo, false);
     finally
@@ -6765,7 +6765,7 @@ Var
     salesRegion             : integer;
     NoOfCopies              : integer;
 *)
-    dmSendMail         : Tdm_SendMapiMail;
+    dmSendMail              : ISendMail;
     MailToAddress           : String ;
     MailFrom                : string;
     ExcelDir                : String ;
@@ -6802,14 +6802,13 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := Tdm_SendMapiMail.Create(nil);
+        dmSendMail := TSendMail.Create;
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
-          FR2 := TFastReports2.createForMail(dmsConnector, dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion);
+          FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
           try
             FR2.mailTallyByType(cfTally, loads, true);
           finally
-            dmSendMail.Free;
             FR2.free;
           end;
         end

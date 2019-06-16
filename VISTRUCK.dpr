@@ -2,6 +2,11 @@ program VISTRUCK;
 
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -163,7 +168,13 @@ uses
   DeliveryMessageWoodV2R31 in 'Aug 31B dbExpress\DeliveryMessageWoodV2R31.pas',
   PackageExportU in 'Aug 31B dbExpress\PackageExportU.pas',
   PackageImportU in 'Aug 31B dbExpress\PackageImportU.pas',
-  uAddErrorPkgLoad in 'uAddErrorPkgLoad.pas' {fAddErrorPkgLoad};
+  uAddErrorPkgLoad in 'uAddErrorPkgLoad.pas' {fAddErrorPkgLoad},
+  ISendMailInterfaces in '..\CommonSources\sendMail\ISendMailInterfaces.pas',
+  udmDBSendMail in '..\CommonSources\sendMail\udmDBSendMail.pas' {dmDBSendMail: TDataModule},
+  uSendMail in '..\CommonSources\sendMail\uSendMail.pas',
+  udmEWSSendMail in '..\CommonSources\sendMail\udmEWSSendMail.pas' {dmEWSSendMail: TDataModule},
+  udmMAPISendMail in '..\CommonSources\sendMail\udmMAPISendMail.pas' {dmMAPISendMail: TDataModule},
+  uDO_LOG in '..\CommonSources\DelphiLogg\uDO_LOG.pas';
 
 {$R *.res}
 begin
@@ -184,6 +195,9 @@ begin
   Application.CreateForm(TdmFRSystem, dmFRSystem);
   Application.CreateForm(TXMLImportExport, XMLImportExport);
   Application.CreateForm(Tdm_ImportWoodx, dm_ImportWoodx);
+  Application.CreateForm(TdmDBSendMail, dmDBSendMail);
+  Application.CreateForm(TdmEWSSendMail, dmEWSSendMail);
+  Application.CreateForm(TdmMAPISendMail, dmMAPISendMail);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

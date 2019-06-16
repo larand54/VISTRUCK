@@ -691,7 +691,7 @@ uses
   dmcLoadEntrySSP, dmc_ArrivingLoads, dmsDataConn, uEntryField,
   dmsVidaSystem, UnitCRPrintReport,
   uLOLengths, uLoadOrderListSetup , dmBooking,
-  uLoadOrderSearch, UnitCRExportOneReport, uSendMapiMail,
+  uLoadOrderSearch, UnitCRExportOneReport, ISendMailInterfaces, uSendMail,
   //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
   uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS, udmFRSystem, uFastReports2, uFixMail, uFRAccessories, uFRConstants;
@@ -5016,7 +5016,7 @@ begin
       exit;
     lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
     salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    FR2 := TFastReports2.create(dmsConnector, dmFR, lang, salesRegion);
+    FR2 := TFastReports2.create(dmFR, lang, salesRegion);
     try
       FR2.preViewTallyByReportType(cfTally_no_matching_pkg, LoadNo, false);
     finally
@@ -5161,19 +5161,7 @@ procedure TfrmVisTruckLoadOrder.acEmailaFSExecute(Sender: TObject);
 const
   LF = #10;
 Var
-(*
-  FormCRExportOneReport: TFormCRExportOneReport;
-  A: array of Variant;
-  dm_SendMapiMail: Tdm_SendMapiMail;
-  Attach: array of String;
-  MailToAddress: String;
-  ReportType: integer;
-  LoadNo: integer;
-  Lang: integer;
-  FR: TFastReports;
-  NoOfCopies: integer;
-*)
-    dmSendMail         : Tdm_SendMapiMail;
+    dmSendMail              : ISendMail;
     MailToAddress           : String ;
     MailFrom                : string;
     ExcelDir                : String ;
@@ -5213,12 +5201,11 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := Tdm_SendMapiMail.Create(nil);
-        FR2 := TFastReports2.createForMail(dmsConnector, dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion);
+        dmSendMail := TSendMail.Create;
+        FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
         try
           FR2.mailTallyByType(ReportType, loads, true);
         finally
-          dmSendMail.Free;
           FR2.free;
         end;
       finally
@@ -5701,7 +5688,7 @@ begin
     else
       ReportType := cfTally;
 
-    FR2 := TFastReports2.create(dmsConnector, dmFR, Lang, salesregion);
+    FR2 := TFastReports2.create(dmFR, Lang, salesregion);
     try
       FR2.preViewTallyByReportType(ReportType, LoadNo, true);
     finally
