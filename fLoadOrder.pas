@@ -4908,10 +4908,15 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acPrintTO_ManuallyExecute(Sender: TObject);
 var
-  Lang: integer;
+  Lang,
+  salesRegion: integer;
   FR: TFastReports;
+  FR2: TFastReports2;
+  SR: integer;
+  sm: ISendMail;
   MailToAddress: string;
   LoNo: integer;
+  LONos: TList<integer>;
 begin
   if TAction(Sender) = acMailTO_Manually then
   begin
@@ -4941,11 +4946,18 @@ begin
     (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
   if uReportController.useFR then
   begin
+    LONos := TList<integer>.create;
+    LONos.Add(LoNo);
     Try
-      FR := TFastReports.Create;
-      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+      SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
+      sm := TSendMail.Create;
+      FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'),'', MailToAddress, Lang, SR, ThisUser.UserID);
+      FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
+//      FR := TFastReports.Create;
+//      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
     Finally
-      FreeAndNil(FR);
+      FreeAndNil(FR2);
+      FreeAndNil(LONos);
     End;
   end;
 end;

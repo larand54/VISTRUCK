@@ -4289,65 +4289,84 @@ end;
 
 procedure TfLoadEntrySSP.acPrintTOExecute(Sender: TObject);
 var
-  fr: TFastReports;
-  ReportType: integer;
-  TONo: integer;
+  SR: integer;
+  FR2: TFastReports2;
+  LONo: integer;
   Language: integer;
 begin
   // Check language
   Language :=  dmsContact.getCustomerLanguage
     (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-  ReportType := cTrporder;
   // Get trp order no
-  TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
-  fr := TFastReports.create;
-  fr.TrpO(TONo,ReportType,Language,'','','');
+  LONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+  FR2 := TFastReports2.create(dmFR, Language, SR);
+  try
+    FR2.preViewTrpOrderByReportType(cfTrpOrder_Note, LoNo);
+  finally
+    FR2.Free;
+  end;
+//  fr := TFastReports.create;
+//  fr.TrpO(TONo,ReportType,Language,'','','');
 end;
 
 procedure TfLoadEntrySSP.acPrintTo_ManuellExecute(Sender: TObject);
 var
-  ReportType: integer;
-  TONo: integer;
-  Lang: integer;
+  salesRegion: integer;
   FR: TFastReports;
+  FR2: TFastReports2;
+  SR: integer;
+  sm: ISendMail;
   MailToAddress: string;
+  LoNo: integer;
+  LONos: TList<integer>;
+  ReportType: integer;
+  Lang: integer;
 begin
   if TAction(Sender) = acMailTO_Manuell then
   begin
-    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
-      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
+    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
     else
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
     if Length(MailToAddress) = 0 then
-    Begin
+    begin
       MailToAddress := 'ange@adress.nu';
-      ShowMessage('Emailadress saknas för klienten, ange adressen '
-        + 'direkt i mailet(outlook)');
-    End;
+      ShowMessage('Emailadress saknas för klienten, ange adressen ' + 'direkt i mailet(outlook)');
+    end;
   end
   else
     MailToAddress := '';
 
-  TONo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
-  if TONo < 1
-  then
+  LoNo := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger;
+  if LoNo < 1 then
     Exit;
 
 
   // Check language
-  Lang :=  dmsContact.getCustomerLanguage
-    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  Lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
   if uReportController.useFR then
   begin
-    Try
-      FR := TFastReports.Create;
-      FR.TrpO(ToNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
-    Finally
-      FreeAndNil(FR);
-    End;
+    try
+      SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
+      if mailToAddress <> '' then
+      begin
+        LONos := TList<integer>.create;
+        LONos.Add(LoNo);
+        sm := TSendMail.Create;
+        FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
+        FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
+      end
+      else
+      begin
+        FR2 := TFastReports2.create(dmFR, Lang, SR);
+        FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LoNo);
+      end;
+//      FR := TFastReports.Create;
+//      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+    finally
+      FreeAndNil(FR2);
+      if assigned(LONOs) then FreeAndNil(LONos);
+    end;
   end;
 end;
 

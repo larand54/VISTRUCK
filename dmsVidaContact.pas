@@ -393,7 +393,7 @@ var
 implementation
 
 uses Vcl.Controls, Vcl.Forms, dmsDataConn, VidaConst, VidaUser, dmsVidaSystem,
-  udmFR;
+  udmFR, uVIS_UTILS;
 
 {$R *.dfm}
 
@@ -912,6 +912,7 @@ End ;
 
 function TdmsContact.GetSalesRegionNo (const CompanyNo : Integer) : Integer ;
 Begin
+ saveCursor;
  sq_GetSRNo.ParamByName('ClientNo').AsInteger:= CompanyNo ;
  Try
  sq_GetSRNo.Open ;
@@ -921,6 +922,7 @@ Begin
     Result:= -1 ;
  Finally
   sq_GetSRNo.Close ;
+  restoreCursor;
  End ;
 End ;
 

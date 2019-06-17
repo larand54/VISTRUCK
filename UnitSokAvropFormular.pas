@@ -3,41 +3,28 @@ unit UnitSokAvropFormular;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ImgList, dxBar, dxBarExtItems, ExtCtrls,
-  StdCtrls, db, SqlTimSt, Buttons, Menus, cxPC, cxControls,
-  cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar,
-  DateUtils, ActnList, cxGraphics, cxStyles, cxCustomData, cxFilter,
-  cxData, cxDataStorage, cxDBData, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView, cxGrid,
-  cxGridBandedTableView, cxGridDBBandedTableView, dxPSGlbl, dxPSUtl,
-  dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev, dxPSCompsProvider,
-  dxPSFillPatterns, dxPSEdgePatterns, dxPSCore, dxPScxCommon,
-  cxGridExportLink, cxExport, cxCalc, cxLabel, cxLookAndFeels,
-  cxCurrencyEdit, kbmMemTable, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
-  FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, cxCheckBox, cxDBEdit, cxImageComboBox,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxLookupEdit, cxDBLookupEdit,
-  cxDBLookupComboBox, cxGridCustomPopupMenu, cxGridPopupMenu, cxDBLabel,
-  cxLookAndFeelPainters, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
-  dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxEditorProducers,
-  dxPScxExtEditorProducers, dxPScxPageControlProducer, dxSkinsCore, dxSkinBlack,
-  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom,
-  dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
-  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
-  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
-  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
-  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
-  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinPumpkin, dxSkinSeven,
-  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
-  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
-  dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
-  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, dxPScxGridLnk,
-  dxPScxGridLayoutViewLnk, dxPScxSSLnk, dxSkinsdxRibbonPainter, cxNavigator,
-  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, siComp,
-  siLngLnk;
+  Windows, Messages, SysUtils, Variants, Classes, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  cxContainer, cxEdit, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans,
+  dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin,
+  dxSkinSeven, dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
+  dxSkinXmas2008Blue, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB,
+  cxDBData, cxLabel, cxTextEdit, cxCalendar, cxCalc, dxSkinsdxBarPainter, dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd,
+  dxWrap, dxPrnDev, dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore, dxPSPDFExport,
+  cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxPageControlProducer, dxPScxGridLnk,
+  dxPScxGridLayoutViewLnk, dxSkinsdxRibbonPainter, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, siComp,
+  siLngLnk, cxGridCustomPopupMenu, cxGridPopupMenu, FireDAC.Comp.DataSet, FireDAC.Comp.Client, cxClasses, dxPSCore,
+  dxPScxCommon, dxBar, System.Actions, Vcl.ActnList, Vcl.Menus, Vcl.Dialogs, Vcl.ImgList, Vcl.Controls, dxBarExtItems,
+  cxDBLabel, cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridBandedTableView, cxGridDBBandedTableView,
+  cxGridCustomView, cxGrid, cxGridExportLink, cxDBEdit, cxCheckBox, cxImageComboBox, cxDropDownEdit, cxMaskEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, Data.SQLTimst,
+  system.Generics.collections, Forms
+  ;
 
 type
   TfrmSokAvropFormular = class(TForm)
@@ -303,6 +290,7 @@ type
     AA: array of variant;
     LO: Integer;
     ExcelDir: String;
+    procedure MailTrpOrders(const aLONos: TList<integer>);
     procedure BuildSQL(Sender: TObject);
     procedure GetUserPrefs(Sender: TObject);
     function OpenMall: Boolean;
@@ -323,7 +311,8 @@ implementation
 uses VidaUser, dmSokFormular, dmcVidaOrder, dmsVidaContact,
   UnitBookingFormorg, UnitCRViewReport, dmsDataConn, VidaConst,
   dmsVidaSystem, uSokAvropMall, UnitCRExportOneReport, uSendMapiMail,
-  uEntryField, dmBooking, udmLanguage, uReport, uReportController;
+  uEntryField, dmBooking, udmLanguage, uReport, uReportController
+  , uVIS_UTILS, uFRConstants, uFastReports2, ISendMailInterfaces, uSendMail, udmFR;
 
 {$R *.dfm}
 
@@ -1325,103 +1314,61 @@ begin
 end;
 
 procedure TfrmSokAvropFormular.acMailaTrpOrderExecute(Sender: TObject);
-const
-  LF = #10;
-Var
-  FormCRExportOneReport: TFormCRExportOneReport;
-  A: array of variant;
-  dm_SendMapiMail: Tdm_SendMapiMail;
-  Attach: array of String;
-  MailToAddress: String;
-  ReportType: Integer;
-  RC: TCMReportController;
-  DocTyp, RoleType, ClientNo: Integer;
-  Params: TCMParams;
-  ExportFile: string;
-  Save_Cursor: TCursor;
+var
+  LONos: TList<integer>;
 begin
-  Save_Cursor := Screen.Cursor;
-  With dm_SokFormular do Begin
+  if (not dm_SokFormular.cds_MakeSokAvrop.Active) or (dm_SokFormular.cds_MakeSokAvrop.RecordCount < 1) then
+    exit;
+  LONos := TList<integer>.create;
+  try
+    LONos.add(dm_SokFormular.cds_MakeSokAvropLO.AsInteger);
+    MailTrpOrders(LONos);
+  finally
+    LONos.Free;
+  end;
+end;
+
+procedure TfrmSokAvropFormular.MailTrpOrders(const aLONos: TList<integer>);
+var
+  MailToAddress: string;
+  ReportType: Integer;
+  FR2: TFastReports2;
+  sr: integer;
+  sm: ISendMail;
+  lang: integer;
+begin
+  SaveCursor;
+  try
+  with dm_SokFormular do
+  begin
     MailToAddress := dmsContact.GetEmailAddressForSpeditorByLO
     // Byter cursor !! Bör fixas!
       (cds_MakeSokAvropLO.AsInteger);
-    if Length(MailToAddress) = 0 then Begin
+    if Length(MailToAddress) = 0 then
+    begin
       MailToAddress := 'ange@adress.nu';
-      ShowMessage
-        ('Email address missing, enter the address direct in the mail(outlook).');
-    End;
-{$IFDEF TEST_WITH_EMAIL}
-    if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
-      MailToAddress := 'larand54@gmail.com'
-    else if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-SPEED' then
-      MailToAddress := 'lars.makiaho@gmail.com';
-{$ENDIF}
-    if Length(MailToAddress) > 0 then Begin
-      if cds_MakeSokAvropORDERTYPE.AsInteger = 0 then
-        ReportType := cTrpOrder // TRP_ORDER_NOTE.fr3 (22)
-      else
-        ReportType := cTrpOrderInkop; // trp_order_inkop_NOTE.fr3  (23)
-      // if dmVidaInvoice.cdsInvoiceListINT_INVNO.AsInteger < 1 then exit ;
-      RoleType := 1;
-      ClientNo := cds_MakeSokAvropCustomerNo.AsInteger;
-      ExportFile := ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString + '.pdf';
+      ShowMessage('Email address missing, enter the address direct in the mail(outlook).');
+    end;
+    if Length(MailToAddress) <= 0 then
+      MailToAddress := 'ange@adress.nu';
 
-      if uReportController.useFR then begin
-        Params := TCMParams.Create();
-        Params.Add('@Language', ThisUser.LanguageID);
-        Params.Add('@SHIPPINGPLANNO', cds_MakeSokAvropLO.AsInteger);
-        DocTyp := ReportType;
-        RC := TCMReportController.Create;
-        Try
-          RC.setExportFile(ExportFile);
-          RC.RunReport(0, ClientNo, RoleType, DocTyp, Params, frFile);
-        Finally
-          FreeAndNil(Params);
-          FreeAndNil(RC);
-        End;
-        if not FileExists(ExportFile) then begin
-          Screen.Cursor := Save_Cursor;
-          Exit;
-        end;
-      end
-      else
-        Try
-          FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-          SetLength(A, 1);
-          A[0] := cds_MakeSokAvropLO.AsInteger;
-          FormCRExportOneReport.CreateCo(cds_MakeSokAvropCustomerNo.AsInteger,
-            ReportType, A, ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString);
-          // FormCRExportOneReport.CreateCo(dmVidaInvoice.cdsInvoiceListCustomerNo.AsInteger, cPkgSpec, A, ExcelDir + 'Specification '+dmVidaInvoice.cdsInvoiceListINVOICE_NO.AsString) ;
-          if FormCRExportOneReport.ReportFound = False then
-            Exit;
-        Finally
-          FreeAndNil(FormCRExportOneReport); // .Free ;
-        End;
-{$IFDEF DEBUG}
-{$IFDEF TEST_WITH_EMAIL}
-{$ELSE}
-      Exit; // No email if debugging and not TEST_WITH_EMAIL
-{$ENDIF}
-{$ENDIF}
-      SetLength(Attach, 1);
-      Attach[0] := ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString + '.pdf';
-      // Attach[1]        := ExcelDir + 'Specification '+dmVidaInvoice.cdsInvoiceListINVOICE_NO.AsString+'.pdf' ;
-      dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
-      Try
-        dm_SendMapiMail.SendMail('Transportorder. LOnr: ' +
-          cds_MakeSokAvropLO.AsString, 'Transportorder bifogad. ' + LF + '' +
-          'Transportorder attached. ' + LF + '' + LF + '' + LF +
-          'MVH/Best Regards, ' + LF + '' + dmsContact.GetFirstAndLastName
-          (ThisUser.UserID), dmsSystem.Get_Dir('MyEmailAddress'), MailToAddress,
-          Attach);
-      Finally
-        FreeAndNil(dm_SendMapiMail);
-        Screen.Cursor := Save_Cursor;
-      End;
-    End
+    if cds_MakeSokAvropORDERTYPE.AsInteger = 0 then
+      ReportType := cfTrpOrder_Note
     else
-      ShowMessage('Email address missing.');
-  End; // With dm_SokFormular do
+      ReportType := cfTrpOrder_Note_Purchase;
+
+    sr := dmsContact.GetSalesRegionNo(ThisUser.UserID);
+    sm := TSendMail.create;
+    FR2 := TFastReports2.createForMail(dmFR, sm, ExcelDir, '', MailToAddress, ThisUser.LanguageID, sr, ThisUser.UserID);
+    try
+      FR2.mailTrpOrderByType(ReportType, aLONos);
+    finally
+      FR2.Free;
+    end;
+  end;
+  finally
+    RestoreCursor;
+  end;
 end;
 
 procedure TfrmSokAvropFormular.acMailaTrpOrderAvropDKExecute(Sender: TObject);
@@ -1577,115 +1524,23 @@ begin
 end;
 
 procedure TfrmSokAvropFormular.acMailaManyTrpOrdersExecute(Sender: TObject);
-const
-  LF = #10;
-Var
-  FormCRExportOneReport: TFormCRExportOneReport;
-  A: array of variant;
-  dm_SendMapiMail: Tdm_SendMapiMail;
-  Attach: array of String;
-  SS, S, MailToAddress: String;
-  ReportType, I: Integer;
-  RC: TCMReportController;
-  DocTyp,
-  RoleType,
-  ClientNo: integer;
-  Params: TCMParams;
-  ExportFile: string;
-  Save_Cursor: TCursor;
+var
+  LONos: TList<integer>;
+  i: integer;
 begin
-  if GetSelectedLONos then Begin
-    With dm_SokFormular do Begin
-      MailToAddress := dmsContact.GetEmailAddressForSpeditorByLO
-        (cds_MakeSokAvropLO.AsInteger);
-
-      if Length(MailToAddress) = 0 then Begin
-        MailToAddress := 'ange@adress.nu';
-        ShowMessage
-          ('Email address missing, enter the address direct in the mail(outlook).');
-      End;
-
-      if Length(MailToAddress) > 0 then Begin
-        if cds_MakeSokAvropORDERTYPE.AsInteger = 0 then
-          ReportType := cTrpOrder
-        else
-          ReportType := cTrpOrderInkop;
-        RoleType := 1;
-        ClientNo := cds_MakeSokAvropCustomerNo.AsInteger;
-        ExportFile := ExcelDir + 'LONo ';
-
-        if uReportController.useFR then begin
-          Params := TCMParams.Create();
-          DocTyp := ReportType;
-          RC := TCMReportController.Create;
-          Try
-            for I := 0 to High(AA) do Begin
-              Params.Clear;
-              Params.Add('@Language', ThisUser.LanguageID);
-              Params.Add('@SHIPPINGPLANNO', AA[I]);
-              RC.setExportFile(ExportFile + intToStr(AA[I]) + '.pdf');
-              RC.RunReport(0, ClientNo, RoleType, DocTyp, Params, frFile);
-              Params.Clear;
-              SetLength(Attach, I + 1);
-              Attach[I] := ExportFile + intToStr(AA[I]) + '.pdf';
-              if not FileExists(Attach[I]) then begin
-                Showmessage('File: '+Attach[I] + ' has not been created. Operation aborted.');
-                Screen.Cursor := Save_Cursor;
-                exit;
-              end;
-            End;
-          Finally
-            FreeAndNil(Params);
-            FreeAndNil(RC);
-          End;
-        end
-        else begin
-          FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-          Try
-
-            // A[0]:= cds_MakeSokAvropLO.AsInteger ;
-            SetLength(A, 1);
-            for I := 0 to High(AA) do Begin
-              A[0] := AA[I];
-              S := AA[I]; // A[0] ;
-              FormCRExportOneReport.CreateCo
-                (cds_MakeSokAvropCustomerNo.AsInteger, ReportType, A,
-                ExcelDir + 'LONo ' + S);
-              if FormCRExportOneReport.ReportFound = False then
-                Exit;
-              Screen.Cursor := crSQLWait; { Show hourglass cursor }
-              SetLength(Attach, I + 1);
-              Attach[I] := ExcelDir + 'LONo ' + S + '.pdf';
-            End; // for I := 0 to High(AA) do
-
-          Finally
-            FreeAndNil(FormCRExportOneReport); // .Free ;
-          End;
-        end;
-
-        for I := 0 to High(AA) do Begin
-          SS := AA[I];
-          if I = 0 then
-            S := SS
-          else
-            S := S + ', ' + SS;
-        End;
-
-        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
-        Try
-          dm_SendMapiMail.SendMail('Transportorder. LO number(s): ' + S,
-            'Transportorder bifogad. ' + LF + '' + 'Transportorder attached. ' +
-            LF + '' + LF + '' + LF + 'MVH/Best Regards, ' + LF + '' +
-            dmsContact.GetFirstAndLastName(ThisUser.UserID),
-            dmsSystem.Get_Dir('MyEmailAddress'), MailToAddress, Attach);
-        Finally
-          FreeAndNil(dm_SendMapiMail);
-        End;
-      End
-      else
-        ShowMessage('Email address missing.');
-    End; // With dm_SokFormular do
-  end // GetSelectedLOnos
+  if GetSelectedLONos then
+  begin
+    LONos := TList<integer>.create;
+    for i := 0 to High(AA) do
+    begin
+      LONos.Add(AA[i]);
+    end;
+    try
+      MailTrpOrders(LONos);
+    finally
+      LONos.Free;
+    end;
+  end
   else
     ShowMessage('Must be same freight company on all rows.');
 end;
