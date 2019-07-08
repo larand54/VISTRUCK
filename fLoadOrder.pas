@@ -4937,10 +4937,12 @@ begin
   else
     MailToAddress := '';
 
-  LONo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger;
+  LoNo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger;
   if LoNo < 1
-  then
+  then begin
+    showMessage(format('Ogiltigt LO-nummer: %d',[LoNo]));
     Exit;
+  end;
 
   Lang := dmsContact.getCustomerLanguage
     (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
@@ -4950,7 +4952,7 @@ begin
     LONos.Add(LoNo);
     Try
       SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-      sm := TSendMail.Create;
+      sm := TSendMail.Create(ThisUser.UserName);
       FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'),'', MailToAddress, Lang, SR, ThisUser.UserID);
       FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
 //      FR := TFastReports.Create;
@@ -5213,7 +5215,7 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := TSendMail.Create;
+        dmSendMail := TSendMail.Create(ThisUser.UserName);
         FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
         try
           FR2.mailTallyByType(ReportType, loads, true);

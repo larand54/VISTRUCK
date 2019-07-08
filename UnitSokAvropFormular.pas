@@ -23,7 +23,7 @@ uses
   cxDBLabel, cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridBandedTableView, cxGridDBBandedTableView,
   cxGridCustomView, cxGrid, cxGridExportLink, cxDBEdit, cxCheckBox, cxImageComboBox, cxDropDownEdit, cxMaskEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, Data.SQLTimst,
-  system.Generics.collections, Forms
+  system.Generics.collections, Forms, dxPScxEditorProducers, dxPScxExtEditorProducers
   ;
 
 type
@@ -1358,7 +1358,7 @@ begin
       ReportType := cfTrpOrder_Note_Purchase;
 
     sr := dmsContact.GetSalesRegionNo(ThisUser.UserID);
-    sm := TSendMail.create;
+    sm := TSendMail.create(ThisUser.UserName);
     FR2 := TFastReports2.createForMail(dmFR, sm, ExcelDir, '', MailToAddress, ThisUser.LanguageID, sr, ThisUser.UserID);
     try
       FR2.mailTrpOrderByType(ReportType, aLONos);
@@ -1530,6 +1530,8 @@ var
 begin
   if GetSelectedLONos then
   begin
+    if high(AA) < 0 then
+      exit;
     LONos := TList<integer>.create;
     for i := 0 to High(AA) do
     begin
@@ -1550,12 +1552,11 @@ Var
   x, I, RecIDX, ColIdx: Integer;
   RecID: variant;
   ADATASET: TDataSet;
-  Save_Cursor: TCursor;
   SHIPPER, OldSHIPPER: String;
 begin
-  Save_Cursor := Screen.Cursor;
-  Screen.Cursor := crSQLWait; { Show hourglass cursor }
-  Result := True;
+  SaveAndSetCursor(crSQLWait);
+  Result := true;
+  setLength(AA,0);
   x := 1;
   // with dmcOrder, dmArrivingLoads do
   Begin
@@ -1595,7 +1596,7 @@ begin
     Finally
       grdAvropSokDBBandedTableView1.DataController.EndLocate;
       grdAvropSokDBBandedTableView1.EndUpdate;
-      Screen.Cursor := Save_Cursor; { Always restore to normal }
+      RestoreCursor;
     End;
   End; // with
 End;

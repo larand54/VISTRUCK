@@ -195,9 +195,6 @@ begin
   Application.CreateForm(TdmFRSystem, dmFRSystem);
   Application.CreateForm(TXMLImportExport, XMLImportExport);
   Application.CreateForm(Tdm_ImportWoodx, dm_ImportWoodx);
-  Application.CreateForm(TdmDBSendMail, dmDBSendMail);
-  Application.CreateForm(TdmEWSSendMail, dmEWSSendMail);
-  Application.CreateForm(TdmMAPISendMail, dmMAPISendMail);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

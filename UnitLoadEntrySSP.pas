@@ -4352,7 +4352,7 @@ begin
       begin
         LONos := TList<integer>.create;
         LONos.Add(LoNo);
-        sm := TSendMail.Create;
+        sm := TSendMail.Create(ThisUser.UserName);
         FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
         FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
       end
@@ -6821,7 +6821,7 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := TSendMail.Create;
+        dmSendMail := TSendMail.Create(ThisUser.UserName);
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
           FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
