@@ -306,6 +306,7 @@ type
     dxBarLargeButton37: TdxBarLargeButton;
     dxBarLargeButton38: TdxBarLargeButton;
     sp_GetGroupClientRegionNo: TFDStoredProc;
+    dxBarLargeButtonEWSProfileManager: TdxBarLargeButton;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -356,6 +357,7 @@ type
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
     procedure dxBarLargeButton38Click(Sender: TObject);
+    procedure dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -421,7 +423,7 @@ uses
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
   uSetupUserOutput, UnitSokAvropFormular , uSendMapiMail
-  , dmsUserAdm;
+  , dmsUserAdm, udmEWSSendMail;
   //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
   //uFreightExternLoad,
 //  uFtpParam ;//, uKundspecifika,
@@ -774,6 +776,16 @@ begin
         Finally
           FreeAndNil(dm_SendMapiMail);
         End;
+end;
+
+procedure TfrmMain.dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
+begin
+  with TdmEWSSendMail.createWithProfile(ThisUser.UserName) do
+  begin
+    if rwEWSSession.ShowProfileManager = mrOK then
+      showMessage('EWS Profile updated');
+    free;
+  end;
 end;
 
 procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);
