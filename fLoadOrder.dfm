@@ -40,6 +40,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Control = Panel1
       Color = clMaroon
       ParentColor = False
+      ExplicitWidth = 8
     end
     object Memo1: TMemo
       Left = 616
@@ -1167,6 +1168,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Styles.Content = cxStyleContent
           Styles.ContentEven = cxStyleContent
           Styles.ContentOdd = cxStyleContentOdd
+          Styles.OnGetContentStyle = grdFSDBTableView1StylesGetContentStyle
           Styles.Footer = cxStyleHeader
           Styles.Header = cxStyleHeader
           object grdFSDBTableView1ShippingPlanNo: TcxGridDBColumn
@@ -5618,6 +5620,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     end
     object acPrintLOStatus: TAction
       Caption = 'LO kontroll'
+      ImageIndex = 7
       OnExecute = acPrintLOStatusExecute
     end
     object acPrintMarkedLOs: TAction

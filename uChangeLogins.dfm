@@ -3,7 +3,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   Top = 193
   ActiveControl = EFD_Name
   Caption = 'Byt anv'#228'ndare'
-  ClientHeight = 236
+  ClientHeight = 271
   ClientWidth = 429
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -80,7 +80,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   end
   object cxLabel1: TcxLabel
     Left = 7
-    Top = 180
+    Top = 204
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -90,7 +90,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   end
   object cxLabel2: TcxLabel
     Left = 7
-    Top = 202
+    Top = 234
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -116,7 +116,18 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'vistestsql.vida.se:vis_vida'
+    OnClick = cxlblTestDBClick
     OnDblClick = cxlblTestDBDblClick
+  end
+  object cxLabel4: TcxLabel
+    Left = 7
+    Top = 171
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'vida\shathi2'
+    OnClick = cxLabel4Click
   end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'

@@ -393,8 +393,8 @@ object fLastLista: TfLastLista
   object imglistActions: TImageList
     Height = 24
     Width = 24
-    Left = 480
-    Top = 216
+    Left = 632
+    Top = 120
     Bitmap = {
       494C01010D001100040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
@@ -1592,16 +1592,16 @@ object fLastLista: TfLastLista
       000000000000}
   end
   object PopupMenu2: TPopupMenu
-    Left = 288
-    Top = 344
+    Left = 120
+    Top = 200
     object PackageInfo1: TMenuItem
       Caption = 'Paket info'
       OnClick = PackageInfo1Click
     end
   end
   object il_LastStatus: TImageList
-    Left = 424
-    Top = 176
+    Left = 504
+    Top = 120
     Bitmap = {
       494C010103000500040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
@@ -1759,16 +1759,16 @@ object fLastLista: TfLastLista
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
-    Left = 336
-    Top = 280
+    Left = 376
+    Top = 192
     object mtMarkedRowsLoadNo: TIntegerField
       FieldName = 'LoadNo'
     end
   end
   object ds_Props: TDataSource
     DataSet = cds_Props
-    Left = 424
-    Top = 264
+    Left = 496
+    Top = 240
   end
   object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
@@ -1779,8 +1779,8 @@ object fLastLista: TfLastLista
       'Select * FROM dbo.userprops'
       'WHERE UserID = :UserID'
       'AND Form = :Form')
-    Left = 424
-    Top = 216
+    Left = 496
+    Top = 192
     ParamData = <
       item
         Name = 'USERID'
@@ -2116,13 +2116,13 @@ object fLastLista: TfLastLista
   object cxGridPopupMenu2: TcxGridPopupMenu
     Grid = grdLoadPackages
     PopupMenus = <>
-    Left = 384
-    Top = 398
+    Left = 264
+    Top = 198
   end
   object ActionList1: TActionList
     Images = imglistActions
-    Left = 296
-    Top = 208
+    Left = 264
+    Top = 128
     object acRefreshLoads: TAction
       Caption = 'Uppdatera'
       ImageIndex = 1
@@ -2145,8 +2145,8 @@ object fLastLista: TfLastLista
     end
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 161
-    Top = 175
+    Left = 121
+    Top = 135
     PixelsPerInch = 96
     object cxStyleYellow: TcxStyle
       AssignedValues = [svColor, svFont]
@@ -2313,8 +2313,8 @@ object fLastLista: TfLastLista
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 472
-    Top = 280
+    Left = 632
+    Top = 184
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540066004C006100730074004C0069007300740061000100
@@ -2569,9 +2569,7 @@ object fLastLista: TfLastLista
       4C006F0061006400200070006C0061006300650001004C006100730074007300
       7400E4006C006C00650001000D000A006300640073005F00500072006F007000
       73004100670065006E0074004E0061006D006E0001004100670065006E007400
-      4E0061006D006E0001000100010001000D000A006300640073005F0050007200
-      6F00700073004E0061006D00650001004E0061006D00650001004E0061006D00
-      6E00010001004E0061006D006E0001000D000A007300740046006F006E007400
+      4E0061006D006E0001000100010001000D000A007300740046006F006E007400
       73005F0055006E00690063006F00640065000D000A00540066004C0061007300
       74004C00690073007400610001004D0053002000530061006E00730020005300
       650072006900660001000100010001000D000A00500061006E0065006C003300
