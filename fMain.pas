@@ -380,7 +380,7 @@ type
     procedure CheckDrive ;
   public
   end;
-
+// end of TfrmMain 
 var
   FrmMain: TfrmMain;
 

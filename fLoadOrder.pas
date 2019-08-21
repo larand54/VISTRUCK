@@ -4918,6 +4918,7 @@ var
   LoNo: integer;
   LONos: TList<integer>;
 begin
+  LONos := nil;
   if TAction(Sender) = acMailTO_Manually then
   begin
     if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
@@ -4948,18 +4949,23 @@ begin
     (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
   if uReportController.useFR then
   begin
-    LONos := TList<integer>.create;
-    LONos.Add(LoNo);
     Try
       SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
       sm := TSendMail.Create(ThisUser.UserName);
-      FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'),'', MailToAddress, Lang, SR, ThisUser.UserID);
-      FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
-//      FR := TFastReports.Create;
-//      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+      if TAction(Sender) = acMailTO_Manually then
+      begin
+        LONos := TList<integer>.create;
+        LONos.Add(LoNo);
+        FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'),'', MailToAddress, Lang, SR, ThisUser.UserID);
+        FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
+      end
+      else begin
+        FR2 := TFastReports2.create(dmFR,Lang,SR);
+        FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LONo)
+      end;
     Finally
-      FreeAndNil(FR2);
-      FreeAndNil(LONos);
+      FR2.Free;
+      if assigned(LONos) then LONos.Free;
     End;
   end;
 end;
