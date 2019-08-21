@@ -3914,4 +3914,67 @@ object dmcOrder: TdmcOrder
         ParamType = ptInput
       end>
   end
+  object sq_Samlast: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      
+        'select distinct sp.ShippingPlanNo as LO, c.ClientName as Verk, L' +
+        'S.LoadNo as Lastnr from dbo.SupplierShippingPlan sp'
+      
+        'inner join dbo.LOGroupNo Sam on sam.ShippingPlanNo = sp.Shipping' +
+        'PlanNo'
+      'Inner Join dbo.Client c on c.clientNo = sp.supplierNo'
+      
+        'Left join dbo.LoadShippingPlan LS on LS.ShippingPlanNo = sp.Ship' +
+        'pingPlanNo'
+      'WHERE sp.ShippingPlanNo = :LONo'
+      'and sp.SupplierNo <> :SupplierNo')
+    Left = 1024
+    Top = 312
+    ParamData = <
+      item
+        Name = 'LONO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SUPPLIERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_SamlastLO: TIntegerField
+      FieldName = 'LO'
+      Origin = 'LO'
+    end
+    object sq_SamlastVerk: TStringField
+      FieldName = 'Verk'
+      Origin = 'Verk'
+      Size = 80
+    end
+    object sq_SamlastLastnr: TIntegerField
+      FieldName = 'Lastnr'
+      Origin = 'Lastnr'
+    end
+  end
+  object sp_SamlastInfo: TFDStoredProc
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_SamlastInfo'
+    Left = 1024
+    Top = 240
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

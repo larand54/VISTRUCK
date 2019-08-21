@@ -443,6 +443,11 @@ type
     sp_SetAvropStatus: TFDStoredProc;
     cdsLoadsForLOLocalShippingCompany: TStringField;
     cdsSawmillLoadOrdersLagerkod: TStringField;
+    sq_Samlast: TFDQuery;
+    sq_SamlastLO: TIntegerField;
+    sq_SamlastVerk: TStringField;
+    sq_SamlastLastnr: TIntegerField;
+    sp_SamlastInfo: TFDStoredProc;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;

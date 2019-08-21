@@ -2,11 +2,6 @@ program VISTRUCK;
 
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -174,7 +169,8 @@ uses
   uSendMail in '..\CommonSources\sendMail\uSendMail.pas',
   udmEWSSendMail in '..\CommonSources\sendMail\udmEWSSendMail.pas' {dmEWSSendMail: TDataModule},
   udmMAPISendMail in '..\CommonSources\sendMail\udmMAPISendMail.pas' {dmMAPISendMail: TDataModule},
-  uDO_LOG in '..\CommonSources\DelphiLogg\uDO_LOG.pas';
+  uDO_LOG in '..\CommonSources\DelphiLogg\uDO_LOG.pas',
+  uSamlastInfo in 'uSamlastInfo.pas' {fSamLastInfo};
 
 {$R *.res}
 begin
