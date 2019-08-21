@@ -5338,8 +5338,7 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acPrintTO_ManuallyExecute(Sender: TObject);
 var
-  Lang,
-  salesRegion: integer;
+  Lang, salesRegion: integer;
   FR: TFastReports;
   FR2: TFastReports2;
   SR: integer;
@@ -5351,52 +5350,47 @@ begin
   LONos := nil;
   if TAction(Sender) = acMailTO_Manually then
   begin
-    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
-      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
+    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
     else
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
+      MailToAddress := dmsContact.GetEmailAddress(dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
     if Length(MailToAddress) = 0 then
-    Begin
+    begin
       MailToAddress := 'ange@adress.nu';
-      ShowMessage('Emailadress saknas för klienten, ange adressen '
-        + 'direkt i mailet(outlook)');
-    End;
+      ShowMessage('Emailadress saknas för klienten, ange adressen ' + 'direkt i mailet(outlook)');
+    end;
   end
   else
     MailToAddress := '';
 
   LoNo := grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger;
-  if LoNo < 1
-  then begin
-    showMessage(format('Ogiltigt LO-nummer: %d',[LoNo]));
+  if LoNo < 1 then
+  begin
+    showMessage(format('Ogiltigt LO-nummer: %d', [LoNo]));
     Exit;
   end;
 
-  Lang := dmsContact.getCustomerLanguage
-    (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
-  if uReportController.useFR then
-  begin
-    Try
-      SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-      sm := TSendMail.Create(ThisUser.UserName);
-      if TAction(Sender) = acMailTO_Manually then
-      begin
-        LONos := TList<integer>.create;
-        LONos.Add(LoNo);
-        FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'),'', MailToAddress, Lang, SR, ThisUser.UserID);
-        FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
-      end
-      else begin
-        FR2 := TFastReports2.create(dmFR,Lang,SR);
-        FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LONo)
-      end;
-    Finally
+  Lang := dmsContact.getCustomerLanguage(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
+  try
+    SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
+    sm := TSendMail.Create(ThisUser.UserName);
+    if TAction(Sender) = acMailTO_Manually then
+    begin
+      LONos := TList<integer>.create;
+      LONos.Add(LoNo);
+      FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCELDIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
+      FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
+    end
+    else
+    begin
+      FR2 := TFastReports2.create(dmFR, Lang, SR);
+      FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LoNo)
+    end;
+  finally
+    if assigned(FR2) then
       FR2.Free;
-      if assigned(LONos) then LONos.Free;
-    End;
+    if assigned(LONos) then
+      LONos.Free;
   end;
 end;
 

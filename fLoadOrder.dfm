@@ -40,7 +40,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Control = Panel1
       Color = clMaroon
       ParentColor = False
-      ExplicitWidth = 8
     end
     object Memo1: TMemo
       Left = 616
@@ -6958,7 +6957,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6973,7 +6971,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
