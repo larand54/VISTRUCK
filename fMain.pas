@@ -307,6 +307,7 @@ type
     dxBarLargeButton38: TdxBarLargeButton;
     sp_GetGroupClientRegionNo: TFDStoredProc;
     dxBarLargeButtonEWSProfileManager: TdxBarLargeButton;
+    acEWSProfile: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -358,6 +359,7 @@ type
       AShift: TShiftState; var AHandled: Boolean);
     procedure dxBarLargeButton38Click(Sender: TObject);
     procedure dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
+    procedure acEWSProfileExecute(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -780,7 +782,7 @@ end;
 
 procedure TfrmMain.dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
 begin
-  with TdmEWSSendMail.createWithProfile(ThisUser.UserName) do
+  with TdmEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
   begin
     if rwEWSSession.ShowProfileManager = mrOK then
       showMessage('EWS Profile updated');
@@ -1269,6 +1271,16 @@ End;
 procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);
 begin
   AvregistreraPaket ;
+end;
+
+procedure TfrmMain.acEWSProfileExecute(Sender: TObject);
+begin
+  with TdmEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
+  begin
+    if rwEWSSession.ShowProfileManager = mrOK then
+      showMessage('EWS Profile updated');
+    free;
+  end;
 end;
 
 procedure TfrmMain.Timer1Timer(Sender: TObject);

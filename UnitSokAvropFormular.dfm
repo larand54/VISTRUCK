@@ -2411,6 +2411,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     object dxComponentPrinter1Link1: TdxGridReportLink
       Active = True
       Component = grdAvropSok
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -2424,7 +2425,8 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 43642.680014953700000000
+      ReportDocument.CreationDate = 43712.486623136570000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
       OptionsView.Caption = False

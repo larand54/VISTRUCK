@@ -5373,7 +5373,7 @@ begin
   Lang := dmsContact.getCustomerLanguage(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
   try
     SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-    sm := TSendMail.Create(ThisUser.UserName);
+    sm := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
     if TAction(Sender) = acMailTO_Manually then
     begin
       LONos := TList<integer>.create;
@@ -5645,7 +5645,7 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := TSendMail.Create(ThisUser.UserName);
+        dmSendMail := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
         FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
         try
           FR2.mailTallyByType(ReportType, loads, true);

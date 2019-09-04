@@ -1358,7 +1358,7 @@ begin
       ReportType := cfTrpOrder_Note_Purchase;
 
     sr := dmsContact.GetSalesRegionNo(ThisUser.UserID);
-    sm := TSendMail.create(ThisUser.UserName);
+    sm := TSendMail.create(ThisUser.UserName, ThisUser.UserEmail);
     FR2 := TFastReports2.createForMail(dmFR, sm, ExcelDir, '', MailToAddress, ThisUser.LanguageID, sr, ThisUser.UserID);
     try
       FR2.mailTrpOrderByType(ReportType, aLONos);

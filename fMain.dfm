@@ -1162,6 +1162,10 @@ object frmMain: TfrmMain
       Caption = 'Tillbaka'
       OnExecute = acGoToUttagExecute
     end
+    object acEWSProfile: TAction
+      Caption = 'acEWSProfile'
+      OnExecute = acEWSProfileExecute
+    end
   end
   object imglOutbar_large: TImageList
     Height = 24
@@ -4231,11 +4235,9 @@ object frmMain: TfrmMain
       OnClick = dxBarLargeButton38Click
     end
     object dxBarLargeButtonEWSProfileManager: TdxBarLargeButton
+      Action = acEWSProfile
       Caption = 'EWS Profile'
       Category = 0
-      Hint = 'EWS Profile'
-      Visible = ivAlways
-      OnClick = dxBarLargeButtonEWSProfileManagerClick
     end
     object dxBarButton1: TdxBarButton
       Action = atExit
