@@ -115,6 +115,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           object grdLODBTableView1Lagerkod: TcxGridDBColumn
             Caption = 'Location'
             DataBinding.FieldName = 'Lagerkod'
+            PropertiesClassName = 'TcxLabelProperties'
             Width = 64
           end
           object grdLODBTableView1Supplier: TcxGridDBColumn
@@ -1314,6 +1315,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           object grdFSDBTableView1LocalShippingCompany: TcxGridDBColumn
             Caption = 'Lokal befraktare'
             DataBinding.FieldName = 'LocalShippingCompany'
+          end
+          object grdFSDBTableView1Lagerkod: TcxGridDBColumn
+            DataBinding.FieldName = 'Lagerkod'
           end
         end
         object grdFSLevel1: TcxGridLevel

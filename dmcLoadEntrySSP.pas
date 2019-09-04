@@ -416,6 +416,7 @@ type
     cds_AddLoadPkgErrorLog: TFDQuery;
     ds_AddLoadPkgErrorLog: TDataSource;
     sp_LoadPkgErrorExists: TFDStoredProc;
+    cds_LoadHeadLagerkod: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -749,13 +750,13 @@ begin
     cds_LoadHead.Edit;
 //  cds_LoadHeadLoadNo.AsInteger              := LoadNo ;
 
-  cds_LoadHeadSupplierNo.AsInteger := FSupplierNo;
-  cds_LoadHeadPackageEntryOption.AsInteger := 0;
-  cds_LoadHeadCreatedUser.AsInteger := ThisUser.UserID;
-  cds_LoadHeadModifiedUser.AsInteger := ThisUser.UserID;
-  cds_LoadHeadDateCreated.AsSQLTimeStamp := DateTimeToSqlTimeStamp(Now);
-  cds_LoadHeadOriginalSupplierNo.AsInteger := FSupplierNo;
-  cds_LoadHeadCustomerNo.AsInteger := FCustomerNo;
+  cds_LoadHeadSupplierNo.AsInteger          := FSupplierNo;
+  cds_LoadHeadPackageEntryOption.AsInteger  := 0;
+  cds_LoadHeadCreatedUser.AsInteger         := ThisUser.UserID;
+  cds_LoadHeadModifiedUser.AsInteger        := ThisUser.UserID;
+  cds_LoadHeadDateCreated.AsSQLTimeStamp    := DateTimeToSqlTimeStamp(Now);
+  cds_LoadHeadOriginalSupplierNo.AsInteger  := FSupplierNo;
+  cds_LoadHeadCustomerNo.AsInteger          := FCustomerNo;
 
   cds_LoadHead.Post;
 

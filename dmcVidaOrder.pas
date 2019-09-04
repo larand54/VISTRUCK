@@ -448,6 +448,8 @@ type
     sq_SamlastVerk: TStringField;
     sq_SamlastLastnr: TIntegerField;
     sp_SamlastInfo: TFDStoredProc;
+    cdsLoadsForLOLagerkod: TStringField;
+    cdsLoadsForLO_forVWLagerkod: TStringField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;
