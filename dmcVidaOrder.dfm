@@ -2591,7 +2591,6 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO: TFDStoredProc
-    Active = True
     OnUpdateRecord = cdsLoadsForLOUpdateRecord
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -2624,6 +2623,13 @@ object dmcOrder: TdmcOrder
         Name = '@Shipping'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@Lagerkod'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 4
       end>
     object cdsLoadsForLOFS: TStringField
       FieldName = 'FS'
@@ -3419,6 +3425,7 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO_forVW: TFDStoredProc
+    Active = True
     OnUpdateRecord = cdsLoadsForLO_forVWUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = updLoadsForLO_forVW
@@ -3450,6 +3457,13 @@ object dmcOrder: TdmcOrder
         Name = '@Shipping'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@Lagerkod'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 4
       end>
     object cdsLoadsForLO_forVWFS: TStringField
       FieldName = 'FS'

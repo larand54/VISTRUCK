@@ -707,6 +707,7 @@
     end
   end
   object cdsLORows: TFDQuery
+    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -877,7 +878,7 @@
       ''
       ''
       'WHERE L.LoadNo = :LoadNo'
-      'AND SSP.Lagerkod = :Lagerkod'
+      'AND isnull(SSP.Lagerkod,1) = :Lagerkod'
       
         'AND ((SSP.ShippingPlanStatus <> 7) and (SSP.ShippingPlanStatus <' +
         '> 8)) '
@@ -1147,6 +1148,11 @@
     object cdsLORowsPackageSizeNo: TIntegerField
       FieldName = 'PackageSizeNo'
       Origin = 'PackageSizeNo'
+    end
+    object cdsLORowsLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      Size = 4
     end
   end
   object sq_GetLO_Records: TFDQuery
@@ -3591,7 +3597,7 @@
   end
   object sp_LOBSetChanged: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_LOBSetChanged'
+    StoredProcName = 'dbo.vis_LOBSetChanged_v2'
     Left = 728
     Top = 464
     ParamData = <

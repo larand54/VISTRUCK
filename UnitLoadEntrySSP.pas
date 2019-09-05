@@ -405,6 +405,7 @@ type
     cxbtnCreatePalletPkg: TcxButton;
     dxBarLargeButton12: TdxBarLargeButton;
     acShowPkgLogg: TAction;
+    grdLORowsDBBandedTableView1Lagerkod: TcxGridDBBandedColumn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

@@ -1621,6 +1621,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
                 Width = 52
               end
               item
+                Caption = 'LO Rows'
                 Width = 897
               end>
             object grdLORowsDBBandedTableView1MATCH: TcxGridDBBandedColumn
@@ -1900,6 +1901,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
               VisibleForCustomization = False
               Position.BandIndex = 1
               Position.ColIndex = 3
+              Position.RowIndex = 0
+            end
+            object grdLORowsDBBandedTableView1Lagerkod: TcxGridDBBandedColumn
+              DataBinding.FieldName = 'Lagerkod'
+              PropertiesClassName = 'TcxLabelProperties'
+              Position.BandIndex = 1
+              Position.ColIndex = 46
               Position.RowIndex = 0
             end
             object grdLORowsDBBandedTableView1ProductNo: TcxGridDBBandedColumn

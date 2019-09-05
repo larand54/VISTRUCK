@@ -488,9 +488,10 @@ type
 
   private
     PackageCode_Layout  : Array of array of variant ;
+    FLastLagerkodChecked : String ;
     FLastLOChecked : Integer;
     FLoadOrdersAfterScroll : TDataSetNotifyEvent;
-    procedure ShowLoadsForLO_II(const LONo, pSupplierNo : Integer) ;
+    procedure ShowLoadsForLO_II(const LONo, pSupplierNo : Integer;const Lagerkod : String);
     procedure CheckIfPkgCodeNeedsToBeGeneratedFor_ELO (InfoList : TStrings) ;
     procedure CheckIfPkgCodeNeedsToBeGeneratedFor_LO(InfoList : TStrings) ;
     procedure SkapaEnKodFor_LO (const ShipPlanObjectNo, LanguageCode : Integer;const ELO : Boolean;const oThickness, oWidth, oLength, ArtikelKod : String) ;
@@ -585,14 +586,16 @@ begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
  Try
-  ShowLoadsForLO_II(cdsSawmillLoadOrdersLONumber.AsInteger, cdsSawmillLoadOrdersSupplier.AsInteger) ;
+  ShowLoadsForLO_II(cdsSawmillLoadOrdersLONumber.AsInteger, cdsSawmillLoadOrdersSupplier.AsInteger,
+  cdsSawmillLoadOrdersLagerkod.AsString) ;
   FLastLOChecked := LONo;
+  FLastLagerkodChecked  := cdsSawmillLoadOrdersLagerkod.AsString ;
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
 end;
 
-procedure TdmcOrder.ShowLoadsForLO_II(const LONo, pSupplierNo : Integer);
+procedure TdmcOrder.ShowLoadsForLO_II(const LONo, pSupplierNo : Integer;const Lagerkod : String);
 begin
  if pSupplierNo = 741 then
  Begin
@@ -603,6 +606,7 @@ begin
    cdsLoadsForLO_forVW.ParamByName('@LONo').AsInteger        := cdsSawmillLoadOrdersLONumber.AsInteger ;// LONo;
    cdsLoadsForLO_forVW.ParamByName('@SupplierNo').AsInteger  := cdsSawmillLoadOrdersSupplier.AsInteger ;// SupplierNo ;
    cdsLoadsForLO_forVW.ParamByName('@Shipping').AsInteger    := cdsSawmillLoadOrdersOrderType.AsInteger ;// Shipping ;
+   cdsLoadsForLO_forVW.ParamByName('@Lagerkod').AsString     := cdsSawmillLoadOrdersLagerkod.AsString ;
    cdsLoadsForLO_forVW.Open;
    dsrcLoadsForLO.dataset  := cdsLoadsForLO_forVW ;
 //  End ;
@@ -614,6 +618,7 @@ begin
   cdsLoadsForLO.ParamByName('@LONo').AsInteger        := cdsSawmillLoadOrdersLONumber.AsInteger ;// LONo;
   cdsLoadsForLO.ParamByName('@SupplierNo').AsInteger  := cdsSawmillLoadOrdersSupplier.AsInteger ;// SupplierNo ;
   cdsLoadsForLO.ParamByName('@Shipping').AsInteger    := cdsSawmillLoadOrdersOrderType.AsInteger ;// Shipping ;
+  cdsLoadsForLO.ParamByName('@Lagerkod').AsString     := cdsSawmillLoadOrdersLagerkod.AsString ;
   cdsLoadsForLO.Open;
   dsrcLoadsForLO.dataset  := cdsLoadsForLO ;
  End ;
@@ -662,7 +667,8 @@ end;
 procedure TdmcOrder.dsrcSawmillLoadOrdersDataChange(Sender: TObject;
   Field: TField);
 begin
- if cdsSawmillLoadOrdersLONumber.AsInteger <>  FLastLOChecked then
+ if (cdsSawmillLoadOrdersLONumber.AsInteger <>  FLastLOChecked)
+ or (cdsSawmillLoadOrdersLagerkod.AsString <> FLastLagerkodChecked)  then
   ShowLoadsForLO(cdsSawmillLoadOrdersLONumber.AsInteger) ;
 
   {  if cdsBooking.RecordCount = 0 then
