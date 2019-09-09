@@ -613,7 +613,7 @@ type
     procedure SetPanelToShowAndHide ;
     procedure CreateLoadForm ;
     procedure ClearLOTab ;
-    procedure AddLoadNoTab(const LONo, LoadNo : String) ;
+    procedure AddLoadNoTab(const LONo, LoadNo, Lagerkod : String) ;
 //    procedure OpenUtlastningsSpec(Sender: TObject);
     function  OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
     procedure BuildVIDAWOODGetOne_LO_SQL(Sender: TObject);
@@ -4082,7 +4082,7 @@ begin
 //    Application.ProcessMessages ;
 
 
-   AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString) ;
+   AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString, dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString) ;
 
    SetPanelToShowAndHide ;
 
@@ -5946,7 +5946,7 @@ begin
 //   End ;//if..
   End ; //if dmLoadEntrySSP.IsLoadOpen(LoadNo) then
 
-    AddLoadNoTab(IntToStr(LONo), IntToStr(LoadNo)) ;
+    AddLoadNoTab(IntToStr(LONo), IntToStr(LoadNo), Lagerkod) ;
 
  Finally
   tcLO.OnChange := tcLOChange ;
@@ -6013,18 +6013,25 @@ end;
 
 procedure TfrmVisTruckLoadOrder.tcLOChange(Sender: TObject);
 Var LONo, LoadNo  : Integer ;
-    LONoLoadNo    : String ;
+    LONoLoadNo, Lagerkod    : String ;
 begin
-  (*
+
    SetPanelToShowAndHide ;
     if tcLO.TabIndex > 0 then
     Begin
-     LoadNo := 0 ;
-     LONo   := 0 ;
+     LoadNo     := 0 ;
+     LONo       := 0 ;
+     Lagerkod   := '1' ;
      LONoLoadNo := tcLO.Tabs.Strings[tcLO.TabIndex] ;
      LONo       := StrToInt(Copy(LONoLoadNo, 1, POS('/', LONoLoadNo)-1 )) ;
-     LoadNo     := StrToInt(Copy(LONoLoadNo, POS('/', LONoLoadNo)+1, Length(LONoLoadNo) )) ;
-     if OpenNormalLoad(LONo, LoadNo) then
+     LONoLoadNo := Copy(LONoLoadNo, POS('/', LONoLoadNo)+1,  Length(LONoLoadNo) -  POS('/', LONoLoadNo)) ;
+
+     LoadNo     := StrToInt(Copy(LONoLoadNo, 1, POS('-', LONoLoadNo)-1)) ; //Length(LONoLoadNo) )) ;
+     LONoLoadNo := Copy(LONoLoadNo, POS('-', LONoLoadNo)+1,  Length(LONoLoadNo) -  POS('-', LONoLoadNo)) ;
+
+     Lagerkod   := LONoLoadNo ;//Copy(LONoLoadNo, POS('-', LONoLoadNo)+1, Length(LONoLoadNo) ) ;
+
+     if OpenNormalLoad(LONo, LoadNo, Lagerkod) then
      begin
        if fLoadEntrySSP.mePackageNo.Enabled then
         fLoadEntrySSP.mePackageNo.SetFocus
@@ -6042,7 +6049,7 @@ begin
         if LoadNo > 0 then
          dmcOrder.dsrcLoadsForLO.DataSet.Locate('LoadNo', LoadNo, []) ;
        End ;
- *)
+
 end;
 
 procedure TfrmVisTruckLoadOrder.SetPanelToShowAndHide ;
@@ -6062,11 +6069,11 @@ begin
  End ;
 end;
 
-procedure TfrmVisTruckLoadOrder.AddLoadNoTab(const LONo, LoadNo : String) ;
+procedure TfrmVisTruckLoadOrder.AddLoadNoTab(const LONo, LoadNo, Lagerkod : String) ;
 Var i : Integer ;
     LONoLoadNo : String ;
 Begin
- LONoLoadNo := LONo + '/' + LoadNo ;
+ LONoLoadNo := LONo + '/' + LoadNo + '-' + Lagerkod ;
  i  := tcLO.Tabs.IndexOf(LONoLoadNo) ;
  if i > 0 then
   tcLO.TabIndex := i
