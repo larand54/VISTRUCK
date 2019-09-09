@@ -58,8 +58,6 @@ type
     grdPickPkgNosDBTableView1REGISTRERAT: TcxGridDBColumn;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
-    bbMarkAll: TBitBtn;
-    bbUnMarkAll: TBitBtn;
     LabelProduct: TLabel;
     LabelLength: TLabel;
     LabelPIPName: TLabel;
@@ -149,7 +147,6 @@ type
     acSelectMarkedRows: TAction;
     acShowMatchingLIP: TAction;
     cxButton1: TcxButton;
-    BitBtn3: TBitBtn;
     mtPkgNos: TFDMemTable;
     mtPkgNosPackageNo: TIntegerField;
     mtPkgNosPrefix: TStringField;
@@ -171,6 +168,9 @@ type
     LabelReferens: TLabel;
     cxbtnShowMatchingArticle: TcxButton;
     acShowMatchingArticle: TAction;
+    cxButton8: TcxButton;
+    cxButton9: TcxButton;
+    cxButton10: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ds_SelectedPkgNoDataChange(Sender: TObject; Field: TField);
@@ -318,7 +318,7 @@ Begin
 
   if cbFilterOnLength.Checked then
   Begin
-   Add(siLangLinked_fPickPkgNo.GetTextOrDefault('IDS_5' (* 'and ' *) )+ALMM+' in (Select pl.ActualLengthMM from dbo.PackageTypeDetail ptd') ;
+   Add( 'and ' +ALMM+' in (Select pl.ActualLengthMM from dbo.PackageTypeDetail ptd') ;
    Add('inner join dbo.ProductLength pl on pl.productlengthno = ptd.productlengthno') ;
    Add('Inner Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo') ;
    Add('WHERE') ;
@@ -740,7 +740,7 @@ Begin
   End ;
 
 
-  if (ThisUser.UserID = 258) or (GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER') then SaveToFile('sq_PaketLista.TXT') ;
+  // if (ThisUser.UserID = 258) or (GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER') then SaveToFile('sq_PaketLista.TXT') ;
  End ; //With
 End ;
 

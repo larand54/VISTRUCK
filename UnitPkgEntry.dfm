@@ -87,12 +87,14 @@ object frmPkgEntry: TfrmPkgEntry
         Left = 447
         Top = 7
         Caption = 'L'#228'ngdgrupp:'
+        ParentFont = False
       end
       object lcLengthGroup: TcxDBLookupComboBox
         Left = 521
         Top = 2
         DataBinding.DataField = 'LengthGroup'
         DataBinding.DataSource = dsUserProp
+        ParentFont = False
         Properties.ImmediatePost = True
         Properties.ListColumns = <>
         Properties.ListOptions.ShowHeader = False
@@ -107,6 +109,7 @@ object frmPkgEntry: TfrmPkgEntry
         Caption = 'Kopiera stycketal'
         DataBinding.DataField = 'CopyPcs'
         DataBinding.DataSource = dsUserProp
+        ParentFont = False
         Properties.ImmediatePost = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
@@ -119,6 +122,7 @@ object frmPkgEntry: TfrmPkgEntry
         Caption = 'Auto. kol.bredd'
         DataBinding.DataField = 'AutoColWidth'
         DataBinding.DataSource = dsUserProp
+        ParentFont = False
         Properties.ImmediatePost = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
@@ -132,6 +136,7 @@ object frmPkgEntry: TfrmPkgEntry
         Caption = 'Inmatningsrad'
         DataBinding.DataField = 'NewItemRow'
         DataBinding.DataSource = dsUserProp
+        ParentFont = False
         Properties.ImmediatePost = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
@@ -269,6 +274,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 2
       DataBinding.DataField = 'OWNER'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.ListColumns = <>
@@ -282,6 +288,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 32
       DataBinding.DataField = 'VERK'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.ListColumns = <>
       Properties.MaxLength = 0
       TabOrder = 13
@@ -293,6 +300,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 26
       DataBinding.DataField = 'PIPNAME'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.ListColumns = <>
@@ -306,6 +314,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 50
       DataBinding.DataField = 'LIPName'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.ListColumns = <>
@@ -319,6 +328,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 26
       DataBinding.DataField = 'REGPOINT'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.ListColumns = <>
@@ -332,6 +342,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 2
       DataBinding.DataField = 'InputOption'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.ImmediatePost = True
       Properties.Items = <
         item
@@ -368,6 +379,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 71
       DataBinding.DataField = 'RegDate'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.ImmediatePost = True
       Properties.Kind = ckDateTime
       TabOrder = 6
@@ -378,6 +390,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 50
       DataBinding.DataField = 'RunNo'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.ImmediatePost = True
       TabOrder = 15
       Visible = False
@@ -388,6 +401,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 2
       DataBinding.DataField = 'PRODUCER'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.ListColumns = <>
@@ -400,12 +414,14 @@ object frmPkgEntry: TfrmPkgEntry
       Left = 279
       Top = 6
       Caption = 'Producent:'
+      ParentFont = False
     end
     object teSupplierCode: TcxDBTextEdit
       Left = 672
       Top = 72
       DataBinding.DataField = 'SupplierCode'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       TabOrder = 10
       Width = 41
     end
@@ -413,12 +429,14 @@ object frmPkgEntry: TfrmPkgEntry
       Left = 553
       Top = 78
       Caption = 'Prefix:'
+      ParentFont = False
     end
     object icLengthOption: TcxDBImageComboBox
       Left = 992
       Top = 64
       DataBinding.DataField = 'LengthOption'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.ImmediatePost = True
       Properties.Items = <
         item
@@ -439,6 +457,7 @@ object frmPkgEntry: TfrmPkgEntry
       Left = 976
       Top = 90
       Caption = 'L'#228'ngd alt:'
+      ParentFont = False
       Visible = False
     end
     object beProductDescription: TcxDBButtonEdit
@@ -446,6 +465,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 98
       DataBinding.DataField = 'ProductDescription'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.Buttons = <
         item
           Caption = 'V'#228'lj produkt'
@@ -466,6 +486,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 50
       DataBinding.DataField = 'Barcode'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ListColumns = <>
       Properties.ListOptions.ShowHeader = False
@@ -478,6 +499,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 26
       DataBinding.DataField = 'Gradestamp'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ListColumns = <>
       Properties.ListOptions.ShowHeader = False
@@ -510,12 +532,14 @@ object frmPkgEntry: TfrmPkgEntry
       Left = 553
       Top = 102
       Caption = 'Standard pris/NM3:'
+      ParentFont = False
     end
     object meStdPris: TcxDBMaskEdit
       Left = 672
       Top = 94
       DataBinding.DataField = 'Pris'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.MaskKind = emkRegExpr
       Properties.EditMask = '\d+'
       Properties.MaxLength = 0
@@ -527,6 +551,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 49
       DataBinding.DataField = 'SkiftLag'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.ImmediatePost = True
       Properties.KeyFieldNames = 'ShiftTeamNo'
@@ -544,6 +569,7 @@ object frmPkgEntry: TfrmPkgEntry
       Top = 117
       DataBinding.DataField = 'Package_Size'
       DataBinding.DataSource = dsUserProp
+      ParentFont = False
       Properties.DropDownListStyle = lsFixedList
       Properties.DropDownRows = 10
       Properties.ImmediatePost = True
@@ -557,6 +583,7 @@ object frmPkgEntry: TfrmPkgEntry
       Left = 554
       Top = 122
       Caption = 'Paketstorlek:'
+      ParentFont = False
     end
   end
   object Panel5: TPanel

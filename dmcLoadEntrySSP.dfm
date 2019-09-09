@@ -392,6 +392,12 @@
       ProviderFlags = [pfInUpdate]
       Size = 50
     end
+    object cds_LoadHeadLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      ProviderFlags = [pfInUpdate]
+      Size = 4
+    end
   end
   object cds_LSP: TFDQuery
     AfterInsert = cds_LSPAfterInsert
@@ -701,6 +707,7 @@
     end
   end
   object cdsLORows: TFDQuery
+    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <
@@ -798,7 +805,8 @@
       'SSP.ObjectType,'
       'SSP.InternRowNote AS Internnotering,'
       'SSP.PkgArticleNo,'
-      'ps.PackageSizeNo'
+      'ps.PackageSizeNo,'
+      'SSP.Lagerkod'
       ''
       'FROM  '#9'dbo.Loads L'
       #9'Inner Join dbo.LoadShippingPlan LS ON LS.LoadNo = L.LoadNo'
@@ -870,6 +878,7 @@
       ''
       ''
       'WHERE L.LoadNo = :LoadNo'
+      'AND isnull(SSP.Lagerkod,1) = :Lagerkod'
       
         'AND ((SSP.ShippingPlanStatus <> 7) and (SSP.ShippingPlanStatus <' +
         '> 8)) '
@@ -880,6 +889,11 @@
       item
         Name = 'LOADNO'
         DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'LAGERKOD'
+        DataType = ftString
         ParamType = ptInput
       end>
     object cdsLORowsCustomerNo: TIntegerField
@@ -1134,6 +1148,11 @@
     object cdsLORowsPackageSizeNo: TIntegerField
       FieldName = 'PackageSizeNo'
       Origin = 'PackageSizeNo'
+    end
+    object cdsLORowsLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      Size = 4
     end
   end
   object sq_GetLO_Records: TFDQuery
@@ -3578,7 +3597,7 @@
   end
   object sp_LOBSetChanged: TFDStoredProc
     Connection = dmsConnector.FDConnection1
-    StoredProcName = 'dbo.vis_LOBSetChanged'
+    StoredProcName = 'dbo.vis_LOBSetChanged_v2'
     Left = 728
     Top = 464
     ParamData = <

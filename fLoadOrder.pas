@@ -468,6 +468,7 @@ type
     dxBarLargeButton11: TdxBarLargeButton;
     acSendWoodxDeliveryMessage: TAction;
     cxButton10: TcxButton;
+    grdFSDBTableView1Lagerkod: TcxGridDBColumn;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -612,9 +613,9 @@ type
     procedure SetPanelToShowAndHide ;
     procedure CreateLoadForm ;
     procedure ClearLOTab ;
-    procedure AddLoadNoTab(const LONo, LoadNo : String) ;
+    procedure AddLoadNoTab(const LONo, LoadNo, Lagerkod : String) ;
 //    procedure OpenUtlastningsSpec(Sender: TObject);
-    function  OpenNormalLoad(const LONo, LoadNo : Integer) : Boolean ;
+    function  OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
     procedure BuildVIDAWOODGetOne_LO_SQL(Sender: TObject);
 //    procedure CleanFromNotWantedFiles ;
 //    procedure AddLONosToFileName ;
@@ -701,7 +702,8 @@ uses
 procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
 Begin
  if OpenNormalLoad(grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
- grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) then
+ grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger,
+ grdFSDBTableView1.DataController.DataSet.FieldByName('Lagerkod').AsString)  then
  begin
   // grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger) ;
    SetPanelToShowAndHide ;
@@ -923,26 +925,23 @@ end;
 
 procedure TfrmVisTruckLoadOrder.atNewLoadExecute(Sender: TObject);
 begin
- CreateLoadForm ;
-  fLoadEntrySSP.CreateWithNewLoad(
-  920,
-  0,
-  0,
-  0,
-  0,
-  -1 {LoadNo},
-  -1{OrderType (is unknown in this case)},
-  -1 {CSH_CustomerNo}) ;
-    fLoadEntrySSP.Show ;
-    Application.ProcessMessages ;
+  (*
+   CreateLoadForm ;
+     fLoadEntrySSP.CreateWithNewLoad(
+     920,
+     0,
+     0,
+     0,
+     0,
+     -1 {LoadNo},
+     -1{OrderType (is unknown in this case)},
+     -1 {CSH_CustomerNo}) ;
+       fLoadEntrySSP.Show ;
+       Application.ProcessMessages ;
 
-    AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString) ;
+       AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString) ;
+ *)
 
-//    if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger > 0 then
-//    AddLoadNoToList(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger,
-//    dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-
-//    dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger);
 end;
 
 procedure TfrmVisTruckLoadOrder.FormCloseQuery(Sender: TObject;
@@ -1405,7 +1404,7 @@ CheckIfChangesUnSaved ;
   cdsSawmillLoadOrders.SQL.Add('bk.PreliminaryRequestedPeriod AS READYDATE,');
   cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
   cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-  cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+  cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
   cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
   cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,          -- Char 10');
   cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -1628,7 +1627,7 @@ CheckIfChangesUnSaved ;
 
   cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
     cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-    cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+    cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
     cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
     cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
     cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -2381,7 +2380,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+      cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -2614,7 +2613,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+      cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -3034,7 +3033,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+      cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,      -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -3230,7 +3229,7 @@ begin
 
       cdsSawmillLoadOrders.SQL.Add('USR.INITIALS,');
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanStatus,                           -- Integer');
-      cdsSawmillLoadOrders.SQL.Add('SP.Lagerkod,') ;
+      cdsSawmillLoadOrders.SQL.Add('isnull(SP.Lagerkod,1) as Lagerkod,') ;
       cdsSawmillLoadOrders.SQL.Add('SP.ShippingPlanNo           AS LONumber,         -- Integer');
       cdsSawmillLoadOrders.SQL.Add('SP.PackageCode              AS PackageCode,    -- Char 10');
       cdsSawmillLoadOrders.SQL.Add('SP.ProductDescription       AS Product,          -- Char 100');
@@ -4075,14 +4074,15 @@ begin
    dmcOrder.cdsSawmillLoadOrdersLoadingLocationNo.AsInteger,
    -1{LoadNo},
    grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
-   grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger) ;
+   grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger,
+   dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString) ;
 
    fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange  := fLoadEntrySSP.cbShowOriginalLOPropertiesChange ;
    fLoadEntrySSP.Show ;
 //    Application.ProcessMessages ;
 
 
-   AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString) ;
+   AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString, dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString) ;
 
    SetPanelToShowAndHide ;
 
@@ -4127,7 +4127,8 @@ begin
 //   OpenUtlastningsSpec(Sender)
 //    else
  if OpenNormalLoad(grdFSDBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger,
- grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) then
+ grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger,
+ grdFSDBTableView1.DataController.DataSet.FieldByName('Lagerkod').AsString) then
  Begin
   // grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger) ;
    SetPanelToShowAndHide ;
@@ -5892,7 +5893,7 @@ end;
   *)
 
 
-function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer) : Boolean ;
+function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
 Var LSupplierNo     : Integer ;
     ReservedByUser  : String ;
 begin
@@ -5935,8 +5936,8 @@ begin
         grdLODBTableView1.DataController.DataSet.FieldByName('LoadingLocationNo').AsInteger,
         grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger,
         LSupplierNo,//grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger,
-        grdLODBTableView1.DataController.DataSet.FieldByName('SPCustomerNo').AsInteger
-        ) ;
+        grdLODBTableView1.DataController.DataSet.FieldByName('SPCustomerNo').AsInteger,
+        Lagerkod) ;
         fLoadEntrySSP.Show ;
 
         Application.ProcessMessages ;
@@ -5945,7 +5946,7 @@ begin
 //   End ;//if..
   End ; //if dmLoadEntrySSP.IsLoadOpen(LoadNo) then
 
-    AddLoadNoTab(IntToStr(LONo), IntToStr(LoadNo)) ;
+    AddLoadNoTab(IntToStr(LONo), IntToStr(LoadNo), Lagerkod) ;
 
  Finally
   tcLO.OnChange := tcLOChange ;
@@ -6012,51 +6013,43 @@ end;
 
 procedure TfrmVisTruckLoadOrder.tcLOChange(Sender: TObject);
 Var LONo, LoadNo  : Integer ;
-    LONoLoadNo    : String ;
+    LONoLoadNo, Lagerkod    : String ;
 begin
- SetPanelToShowAndHide ;
- if tcLO.TabIndex > 0 then
- Begin
-  LoadNo := 0 ;
-  LONo   := 0 ;
-  LONoLoadNo := tcLO.Tabs.Strings[tcLO.TabIndex] ;
-  LONo       := StrToInt(Copy(LONoLoadNo, 1, POS('/', LONoLoadNo)-1 )) ;
-  LoadNo     := StrToInt(Copy(LONoLoadNo, POS('/', LONoLoadNo)+1, Length(LONoLoadNo) )) ;
-  if OpenNormalLoad(LONo, LoadNo) then
-  begin
-    if fLoadEntrySSP.mePackageNo.Enabled then
-     fLoadEntrySSP.mePackageNo.SetFocus
-      else
-       fLoadEntrySSP.grdLORows.SetFocus ;
-  end;
 
- End
-   else
+   SetPanelToShowAndHide ;
+    if tcLO.TabIndex > 0 then
     Begin
-     if (dmcOrder.dsrcLoadsForLO.DataSet.Active) and (dmcOrder.dsrcLoadsForLO.DataSet.RecordCount > 0) then
-      LoadNo := dmcOrder.dsrcLoadsForLO.DataSet.FieldByName('LoadNo').AsInteger ;
+     LoadNo     := 0 ;
+     LONo       := 0 ;
+     Lagerkod   := '1' ;
+     LONoLoadNo := tcLO.Tabs.Strings[tcLO.TabIndex] ;
+     LONo       := StrToInt(Copy(LONoLoadNo, 1, POS('/', LONoLoadNo)-1 )) ;
+     LONoLoadNo := Copy(LONoLoadNo, POS('/', LONoLoadNo)+1,  Length(LONoLoadNo) -  POS('/', LONoLoadNo)) ;
 
-     dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
-     if LoadNo > 0 then
-      dmcOrder.dsrcLoadsForLO.DataSet.Locate('LoadNo', LoadNo, []) ;
-    End ;
+     LoadNo     := StrToInt(Copy(LONoLoadNo, 1, POS('-', LONoLoadNo)-1)) ; //Length(LONoLoadNo) )) ;
+     LONoLoadNo := Copy(LONoLoadNo, POS('-', LONoLoadNo)+1,  Length(LONoLoadNo) -  POS('-', LONoLoadNo)) ;
 
+     Lagerkod   := LONoLoadNo ;//Copy(LONoLoadNo, POS('-', LONoLoadNo)+1, Length(LONoLoadNo) ) ;
 
+     if OpenNormalLoad(LONo, LoadNo, Lagerkod) then
+     begin
+       if fLoadEntrySSP.mePackageNo.Enabled then
+        fLoadEntrySSP.mePackageNo.SetFocus
+         else
+          fLoadEntrySSP.grdLORows.SetFocus ;
+     end;
 
-{ if tcLO.TabIndex = 0 then
- Begin
-  pnlLOList.Visible := True ;
-  pnlLoad.Visible   := False ;
-  pnlLOList.Align   := alClient ;
- End
- else
- Begin
-  pnlLOList.Visible := False ;
-  pnlLoad.Visible   := True ;
-  pnlLoad.Align     := alClient ;
+    End
+      else
+       Begin
+        if (dmcOrder.dsrcLoadsForLO.DataSet.Active) and (dmcOrder.dsrcLoadsForLO.DataSet.RecordCount > 0) then
+         LoadNo := dmcOrder.dsrcLoadsForLO.DataSet.FieldByName('LoadNo').AsInteger ;
 
-  OpenNormalLoad(Sender, StrToIntDef(tcLO.Tabs.Strings[tcLO.TabIndex],-1), 76) ;
- End ; }
+        dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
+        if LoadNo > 0 then
+         dmcOrder.dsrcLoadsForLO.DataSet.Locate('LoadNo', LoadNo, []) ;
+       End ;
+
 end;
 
 procedure TfrmVisTruckLoadOrder.SetPanelToShowAndHide ;
@@ -6076,11 +6069,11 @@ begin
  End ;
 end;
 
-procedure TfrmVisTruckLoadOrder.AddLoadNoTab(const LONo, LoadNo : String) ;
+procedure TfrmVisTruckLoadOrder.AddLoadNoTab(const LONo, LoadNo, Lagerkod : String) ;
 Var i : Integer ;
     LONoLoadNo : String ;
 Begin
- LONoLoadNo := LONo + '/' + LoadNo ;
+ LONoLoadNo := LONo + '/' + LoadNo + '-' + Lagerkod ;
  i  := tcLO.Tabs.IndexOf(LONoLoadNo) ;
  if i > 0 then
   tcLO.TabIndex := i

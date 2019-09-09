@@ -409,7 +409,7 @@ object dmcOrder: TdmcOrder
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateObject = upd_LO
     SQL.Strings = (
-      'SELECT distinct'
+      'SELECT distinct '
       
         'OL.OrderLineDescription                     AS KONTRAKTSBESKRIVN' +
         'ING,'
@@ -622,7 +622,7 @@ object dmcOrder: TdmcOrder
       ''
       'UNION'
       ''
-      'SELECT distinct'
+      'SELECT distinct '
       '-- NYTT'
       #39'NA'#39' AS KONTRAKTSBESKRIVNING,'
       'bk.ShippersShipDate,'
@@ -1382,7 +1382,7 @@ object dmcOrder: TdmcOrder
       Origin = 'Lagerkod'
       ReadOnly = True
       FixedChar = True
-      Size = 1
+      Size = 4
     end
   end
   object cdsBooking: TFDQuery
@@ -2595,7 +2595,7 @@ object dmcOrder: TdmcOrder
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     UpdateObject = updLoadsForLO
-    StoredProcName = 'dbo.vida_LoadsForLO_XII'
+    StoredProcName = 'dbo.vida_LoadsForLO_v2'
     Left = 320
     Top = 24
     ParamData = <
@@ -2604,6 +2604,7 @@ object dmcOrder: TdmcOrder
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -2622,6 +2623,13 @@ object dmcOrder: TdmcOrder
         Name = '@Shipping'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@Lagerkod'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 4
       end>
     object cdsLoadsForLOFS: TStringField
       FieldName = 'FS'
@@ -2743,6 +2751,11 @@ object dmcOrder: TdmcOrder
       FieldName = 'LocalShippingCompany'
       Origin = 'LocalShippingCompany'
       Size = 80
+    end
+    object cdsLoadsForLOLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      Size = 4
     end
   end
   object sp_Populate_One_PkgTypeLengths: TFDStoredProc
@@ -3412,10 +3425,11 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO_forVW: TFDStoredProc
+    Active = True
     OnUpdateRecord = cdsLoadsForLO_forVWUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = updLoadsForLO_forVW
-    StoredProcName = 'dbo.vida_LoadsForLO_X2'
+    StoredProcName = 'dbo.vida_LoadsForLO_v3'
     Left = 320
     Top = 144
     ParamData = <
@@ -3443,6 +3457,13 @@ object dmcOrder: TdmcOrder
         Name = '@Shipping'
         DataType = ftInteger
         ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@Lagerkod'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 4
       end>
     object cdsLoadsForLO_forVWFS: TStringField
       FieldName = 'FS'
@@ -3554,6 +3575,11 @@ object dmcOrder: TdmcOrder
       FieldName = 'ShortNote'
       Origin = 'ShortNote'
       Size = 150
+    end
+    object cdsLoadsForLO_forVWLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      Origin = 'Lagerkod'
+      Size = 4
     end
   end
   object sq_Dest: TFDQuery
@@ -3957,7 +3983,6 @@ object dmcOrder: TdmcOrder
     end
   end
   object sp_SamlastInfo: TFDStoredProc
-    Active = True
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_SamlastInfo'
     Left = 1024

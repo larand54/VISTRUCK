@@ -405,6 +405,7 @@ type
     cxbtnCreatePalletPkg: TcxButton;
     dxBarLargeButton12: TdxBarLargeButton;
     acShowPkgLogg: TAction;
+    grdLORowsDBBandedTableView1Lagerkod: TcxGridDBBandedColumn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -538,6 +539,7 @@ type
   private
     { Private declarations }
 //     TempEditString  : String ;
+     gLagerkod : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
      function verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
      function linkedArticle(const aArticleNo: integer): boolean;
@@ -668,7 +670,8 @@ type
       LoadingLocationNo,
       LoadNo,
       Shipping,
-      OrderClientNo : Integer) ; //OrderClient är extern kund om shipping = 0 else orderclient = extern leverantör
+      OrderClientNo : Integer;
+      Lagerkod : string) ; //OrderClient är extern kund om shipping = 0 else orderclient = extern leverantör
 
 
     procedure CreateWithExistingLoad
@@ -678,7 +681,8 @@ type
     LLNo,
     OrderClientNo,
     SupplierNo,
-    SPCustomerNo : Integer) ;
+    SPCustomerNo : Integer;
+    Lagerkod : string) ;
 
     destructor Destroy; override;
     function AfterAddedPkgNo(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3;const ProductNo, ProductLengthNo, NoOfLengths  : Integer) : TEditAction ;
@@ -737,7 +741,8 @@ Procedure TfLoadEntrySSP.GetLO_Records ;
     cdsLORows.DisableControls ;
     Try
      cdsLORows.Active:= False ;
-     cdsLORows.ParamByName('LoadNo').AsInteger:= cds_LoadHeadLoadNo.AsInteger ;
+     cdsLORows.ParamByName('LoadNo').AsInteger  := cds_LoadHeadLoadNo.AsInteger ;
+     cdsLORows.ParamByName('Lagerkod').AsString := gLagerkod ;
      cdsLORows.Active:= True ;
 
     Finally
@@ -959,7 +964,8 @@ procedure TfLoadEntrySSP.CreateWithExistingLoad(
   LLNo,
   OrderClientNo,
   SupplierNo,
-  SPCustomerNo : Integer );
+  SPCustomerNo : Integer;
+  Lagerkod : string );
 var
   Save_Cursor : TCursor;
 
@@ -1081,8 +1087,9 @@ begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
  Try
-  CreateWithNewLoad(SPCustomerNo, SupplierNo {Lars}{CustomerNo} {supplierno}, 0, 0, LLNo, LoadNo, Shipping, -1{orderClient});
+  CreateWithNewLoad(SPCustomerNo, SupplierNo {Lars}{CustomerNo} {supplierno}, 0, 0, LLNo, LoadNo, Shipping, -1{orderClient}, Lagerkod);
   fShipping           := Shipping ;
+  gLagerkod           := Lagerkod ;
   With dmLoadEntrySSP do
   Begin
    ds_LoadPackages2.Enabled:= False ;
@@ -1129,7 +1136,8 @@ const LocalCustomerNo,
       LoadingLocationNo,
       LoadNo,
       Shipping,
-      OrderClientNo : Integer) ;
+      OrderClientNo : Integer;
+      Lagerkod : string) ;
 
 //Var FLocalSupplierNo, x : Integer ;
 Var ReservedByUser : String ;
@@ -1143,6 +1151,7 @@ begin
   fLoadingLocationNo  := LoadingLocationNo ;
   fShipping           := Shipping ;
   FOrderClientNo      := OrderClientNo ;
+  gLagerkod           := Lagerkod ;
 
 
 {  if fShipping = 0 then
@@ -1185,6 +1194,7 @@ begin
     cds_LoadHeadPIPNo.AsInteger             := cds_LSPPIPNo.AsInteger  ;
     cds_LoadHeadLIPNo.AsInteger             := cds_LSPLIPNo.AsInteger ;
 
+    cds_LoadHeadLagerkod.AsString           := Lagerkod ;
 
     cds_LoadHeadLocalLoadingLocation.AsInteger  :=  LoadingLocationNo ;
 
@@ -4220,7 +4230,8 @@ Begin
   End ;
 
   cdsLORows.Active:= False ;
-  cdsLORows.ParamByName('LoadNo').AsInteger:= cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
 
   dmLoadEntrySSP.Get_LO_LinesMatched (dmLoadEntrySSP.cds_LoadPackagesPackageNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString) ;
@@ -6321,7 +6332,8 @@ begin
   cds_LoadHead.Post ;
 
   cdsLORows.Active:= False ;
-  cdsLORows.ParamByName('LoadNo').AsInteger := cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;
@@ -6388,7 +6400,8 @@ begin
 
 
   cdsLORows.Active:= False ;
-  cdsLORows.ParamByName('LoadNo').AsInteger:= cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;
@@ -6481,7 +6494,8 @@ begin
 
 
   cdsLORows.Active:= False ;
-  cdsLORows.ParamByName('LoadNo').AsInteger:= cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
+  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;
