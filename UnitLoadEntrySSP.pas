@@ -2331,7 +2331,7 @@ begin
    With dmLoadEntrySSP do
    Begin
     frmVisTruckLoadOrder.RemoveTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger,
-    cds_LoadHeadLoadNo.AsInteger) ;
+    cds_LoadHeadLoadNo.AsInteger, cds_LoadHeadLagerkod.AsString) ;
     dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
    End ;
   End ;
@@ -4515,9 +4515,11 @@ end;
 
 procedure TfLoadEntrySSP.acDeleteLoadExecute(Sender: TObject);
 Var LONo, LoadNo : Integer ;
+    Lagerkod : String ;
 begin
- LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
- LONo   := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger ;
+ LoadNo      := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger ;
+ LONo        := dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger ;
+ Lagerkod    := dmLoadEntrySSP.cds_LoadHeadLagerkod.AsString ;
  if dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0 then
   Begin
    ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_61' (* 'Ta bort paketen från lasten först.' *) )) ;
@@ -4528,7 +4530,7 @@ begin
    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     Try
      dmLoadEntrySSP.DeleteOneLoad(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
-     frmVisTruckLoadOrder.RemoveTab(LONo, LoadNo) ;
+     frmVisTruckLoadOrder.RemoveTab(LONo, LoadNo, Lagerkod) ;
      dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
      Close ;
     Except

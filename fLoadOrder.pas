@@ -664,7 +664,7 @@ type
 
   public
     { Public declarations }
-    procedure RemoveTab(const LONo, LoadNo : Integer) ;
+    procedure RemoveTab(const LONo, LoadNo : Integer;const Lagerkod : String);
     Procedure CreateCo(Sender: TObject;CompanyNo: Integer);
   end;
 
@@ -6219,14 +6219,14 @@ begin
   end;
 end;
 
-procedure TfrmVisTruckLoadOrder.RemoveTab(const LONo, LoadNo: integer);
+procedure TfrmVisTruckLoadOrder.RemoveTab(const LONo, LoadNo: integer;const Lagerkod : String);
 Var
   i: integer ;
     LONoLoadNo  : String ;
 Begin
  tcLO.OnChange  := nil ;
  Try
-   LONoLoadNo := IntToStr(LONo) + '/' + IntToStr(LoadNo) ;
+   LONoLoadNo := IntToStr(LONo) + '/' + IntToStr(LoadNo) + '-' + Lagerkod;
    i  := tcLO.Tabs.IndexOf(LONoLoadNo) ;
    if i > 0 then
    Begin
