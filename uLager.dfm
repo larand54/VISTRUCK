@@ -557,8 +557,8 @@ object fLager: TfLager
       WordWrap = True
     end
     object bClose: TcxButton
-      Left = 1012
-      Top = 7
+      Left = 1011
+      Top = 6
       Width = 78
       Height = 81
       Action = acClose
@@ -1238,6 +1238,7 @@ object fLager: TfLager
     Top = 297
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1259,12 +1260,14 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
       PrinterPage.GrayShading = True
@@ -1284,6 +1287,7 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end

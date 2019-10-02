@@ -507,7 +507,8 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
   ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs,
-  UnitRemovePkg, UfelRegPkg; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  UnitRemovePkg, UfelRegPkg
+  ,udmLanguage; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
 
 {$R *.dfm}
 
@@ -706,6 +707,7 @@ begin
 // if Assigned(dmInventory) then
 // FreeAndNil(dmInventory);
 // fBokaRavara := nil ;
+  fLager := nil;
 end;
 
 procedure TfLager.acCloseExecute(Sender: TObject);
@@ -1729,21 +1731,8 @@ begin
   End ;
 
   Try
-  if dmInventory.sp_invpiv.RecordCount > 0 then
-  Begin
-   if cbInklEjFakt.ItemIndex <> 1 then
-   Begin
-    if cbInklEjFakt.ItemIndex = 0 then
-     dmInventory.sp_invpiv.Filter  := 'InventorySource = 0'
-      else
-       dmInventory.sp_invpiv.Filter  := 'InventorySource = 1' ;
-    dmInventory.sp_invpiv.Filtered  := True ;
-   End
-    else
-     dmInventory.sp_invpiv.Filtered  := False ;
-
-   SetGridParamsPerSortiment(Sender) ;
-  End ;
+    dmInventory.sp_invpiv.EnableControls ;
+    ChangeInventorySource(Sender);
    Except
     On E: Exception do
     Begin
@@ -1799,6 +1788,7 @@ begin
     else
      dmInventory.sp_Vis_LagerPOS_v1.Filtered  := False ;
 
+   dmInventory.sp_Vis_LagerPOS_v1.EnableControls ;
    SetGridParamsPerPosition(Sender) ;
   End ;
    Except
@@ -1896,32 +1886,31 @@ begin
 end;
 
 procedure TfLager.SetGridParamsPerSortiment(Sender: TObject);
-Var Save_Cursor : TCursor;
-    aColumn     : TcxGridDBBandedColumn ;
-    x           : Integer ;
+var
+  Save_Cursor: TCursor;
+  aColumn: TcxGridDBBandedColumn;
+  x: Integer;
 begin
- Try
- grdDBBandedPerSortiment.ClearItems ;
+  try
+    grdDBBandedPerSortiment.ClearItems;
 
- grdDBBandedPerSortiment.DataController.CreateAllItems(True) ;
+    grdDBBandedPerSortiment.DataController.CreateAllItems(True);
 
-  Except
-   on E: eDatabaseError do
-   Begin
-    ShowMessage(
-{TSI:IGNORE ON}
-	'ClearItems, CreateAllItems '
-{TSI:IGNORE OFF}
- + E.Message) ;
-    Raise ;
-   End ;
-  End ;
+  except
+    on E: eDatabaseError do
+    begin
+      ShowMessage({TSI:IGNORE ON}
+        'ClearItems, CreateAllItems '{TSI:IGNORE OFF}
+        + E.Message);
+      raise;
+    end;
+  end;
 
- for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
- Begin
-  grdDBBandedPerSortiment.Columns[x].Styles.OnGetContentStyle := DoOnGetContentStyle ;
-  grdDBBandedPerSortiment.Columns[x].OnCustomDrawHeader       := grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader ;
- End;
+  for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
+  begin
+    grdDBBandedPerSortiment.Columns[x].Styles.OnGetContentStyle := DoOnGetContentStyle;
+    grdDBBandedPerSortiment.Columns[x].OnCustomDrawHeader := grdPIGDBBandedTableView1PigNoPkgs1CustomDrawHeader;
+  end;
 
 
 
@@ -1934,49 +1923,70 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
   out AStyle: TcxStyle);
   }
 
-
-
 // SetFilter ;
+  if not (dmLanguage.siLang1.ActiveLanguage in [2,4]) then
+  begin
+    dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'Package';
+    dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel := 'PT';
+    dmInventory.sp_invpiv.FieldByName('Styck').DisplayLabel := 'Pcs';
+    dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel := 'Place';
+    dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel := 'Group';
+    dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Product';
+    dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Size';
+    dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel := 'AT';
+    dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel := 'AB';
+    dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel := 'Average length';
+    dmInventory.sp_invpiv.FieldByName('InventorySource').DisplayLabel := 'Source';
+    dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel := 'Species';
+    dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel := 'Surfacing';
+    dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Commodity';
+  end
+  else
+  begin
 
- if cds_PropsOwnerNo.AsInteger = 30220 then
- dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel              := 'PALL'
- else
- dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel              := 'Paket' ;
+    if cds_PropsOwnerNo.AsInteger = 30220 then
+    begin
+      dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'PALL';
+    end
+    else
+      dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'Paket';
 
- dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel                 := 'PT' ;
- dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel                := 'Ställe' ;
- dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel                := 'Grupp' ;
- dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Produkt' ;
- dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel    := 'Storlek' ;
+    dmInventory.sp_invpiv.FieldByName('Styck').DisplayLabel := 'STYCK';
+    dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel := 'PT';
+    dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel := 'Ställe';
+    dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel := 'Grupp';
+    dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Produkt';
+    dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Storlek';
 
- dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel                 := 'AT' ;
- dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel                 := 'AB' ;
+    dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel := 'AT';
+    dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel := 'AB';
 
- dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel          := 'Medellängd' ;
+    dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel := 'Medellängd';
 
 
 
 // dmInventory.sp_invpiv.FieldByName('CertShortName').DisplayLabel      := 'Cert.' ;
  //dmInventory.sp_invpiv.FieldByName('RegPointType').DisplayLabel       := 'RPT' ;
- dmInventory.sp_invpiv.FieldByName('InventorySource').DisplayLabel     := 'Källa' ;
+    dmInventory.sp_invpiv.FieldByName('InventorySource').DisplayLabel := 'Källa';
 
 // dmInventory.sp_invpiv.FieldByName('LIPGroupNo').Visible              := False ;
 // dmInventory.sp_invpiv.FieldByName('nooflengths').Visible             := False ;
 // dmInventory.sp_invpiv.FieldByName('AT').Visible                      := False ;
 // dmInventory.sp_invpiv.FieldByName('AB').Visible                      := False ;
- dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel          := 'Träslag' ;
- dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel        := 'Utförande' ;
+    dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel := 'Träslag';
+    dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel := 'Utförande';
 // dmInventory.sp_invpiv.FieldByName('LPName').DisplayLabel           := 'LP' ;
 // dmInventory.sp_invpiv.FieldByName('AreaName').DisplayLabel         := 'Area' ;
 // dmInventory.sp_invpiv.FieldByName('PositionName').DisplayLabel     := 'Position' ;
- dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel    := 'Varugrupp' ;
+    dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Varugrupp';
+  end;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('productNo');
- aColumn.Visible  := False ;
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIPNo');
- aColumn.Visible  := False ;
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIPNo');
- aColumn.Visible  := False ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('productNo');
+  aColumn.Visible := False;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('PIPNo');
+  aColumn.Visible := False;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('LIPNo');
+  aColumn.Visible := False;
 
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Paketnr');
 // aColumn.Visible  := False ;
@@ -1984,12 +1994,12 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
 // aColumn.Visible  := False ;
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PackageTypeNo');
 // aColumn.Visible  := False ;
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
- aColumn.Visible  := False ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
+  aColumn.Visible := False;
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Pris');
 // aColumn.Visible  := False ;
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('ProductValue');
- aColumn.Visible  := False ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('ProductValue');
+  aColumn.Visible := False;
 
   {
    aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Reference');
@@ -2001,54 +2011,51 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
     aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('CertNo');
     aColumn.Visible  := False ;
  }
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('InventorySource');
- aColumn.Visible  := False ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('InventorySource');
+  aColumn.Visible := False;
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('TILLVERKAD');
 // aColumn.Visible  := False ;
-
-
  //aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('RegPointType');
  //aColumn.Visible  := False ;
-
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('nooflengths');
 // aColumn.Visible  := False ;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AT');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AT');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 1;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AB');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AB');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 1;
 
 // aColumn                    := grdDBBandedPerSortiment.GetColumnByFieldName('InventorySource');
 // aColumn.Visible            := True ;
 // aColumn.Position.BandIndex := 1 ;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('ProductDisplayName');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('ProductDisplayName');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 1;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PackageSizeName');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('PackageSizeName');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 1;
 
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('CertShortName');
 // aColumn.Visible  := True ;
 // aColumn.Position.BandIndex := 1 ;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Package_Size');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('Package_Size');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 1;
 
 // aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('CertNo');
 // aColumn.Visible  := False ;
 // aColumn.Position.BandIndex := 1 ;
 
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LP');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 1 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('LP');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 1;
 
 {
    aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LPName');
@@ -2056,41 +2063,41 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
    aColumn.Position.BandIndex := 1 ;
 
 }
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
- aColumn.Visible  := False ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
+  aColumn.Visible := False;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 3 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 3;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
- aColumn.Visible  := True ;
- aColumn.Position.BandIndex := 3 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+  aColumn.Visible := True;
+  aColumn.Position.BandIndex := 3;
 
 {
    aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AreaName');
@@ -2102,84 +2109,82 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
    aColumn.Position.BandIndex := 3 ;
 }
 
- For x := cFirstLengthFieldNumber to dmInventory.sp_invpiv.FieldCount -1 do
- Begin
-  dmInventory.sp_invpiv.Fields.Fields[x].ReadOnly  := False ;
-  dmInventory.sp_invpiv.Fields.Fields[x].Required  := False ;
- End ;
+  for x := cFirstLengthFieldNumber to dmInventory.sp_invpiv.FieldCount - 1 do
+  begin
+    dmInventory.sp_invpiv.Fields.Fields[x].ReadOnly := False;
+    dmInventory.sp_invpiv.Fields.Fields[x].Required := False;
+  end;
 
- For x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
-  Begin
-   grdDBBandedPerSortiment.Columns[x].Position.BandIndex  := 2 ;
-  End ;
+  for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
+  begin
+    grdDBBandedPerSortiment.Columns[x].Position.BandIndex := 2;
+  end;
 
+  LoadGridLayoutSortimentsVy;
 
-    LoadGridLayoutSortimentsVy ;
+  grdDBBandedPerSortiment.BeginUpdate;
+  try
+    for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do//  if (grdDBBandedPerSortiment.DataController.Summary.FooterSummaryValues[x-cFirstLengthFieldNumber] = 0) then
+      if Length(grdDBBandedPerSortiment.Columns[x].Caption) = 0 then
+      begin
+        grdDBBandedPerSortiment.Columns[x].Visible := False;
+      end
+      else
+      begin
+        grdDBBandedPerSortiment.Columns[x].Visible := True;
 
- grdDBBandedPerSortiment.BeginUpdate ;
- Try
-   For x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount -1 do
-//  if (grdDBBandedPerSortiment.DataController.Summary.FooterSummaryValues[x-cFirstLengthFieldNumber] = 0) then
-   if Length(grdDBBandedPerSortiment.Columns[x].Caption) = 0 then
-   Begin
-    grdDBBandedPerSortiment.Columns[x].Visible  := False ;
-   End
-     else
-     Begin
-      grdDBBandedPerSortiment.Columns[x].Visible  := True ;
-
-     End;
+      end;
 
 {  ShowMessage('index= ' + inttostr(grdDBBandedPerSortiment.Columns[x].Index)
   + ' ID= ' + inttostr(grdDBBandedPerSortiment.Columns[x].ID)
   + ' VisibleIndex= ' + inttostr(grdDBBandedPerSortiment.Columns[x].VisibleIndex)) ;  }
 
- Finally
-  grdDBBandedPerSortiment.EndUpdate ;
- End ;
+  finally
+    grdDBBandedPerSortiment.EndUpdate;
+  end;
 
- SetSummary_grdDBBandedPerSortiment(Sender) ;
+  SetSummary_grdDBBandedPerSortiment(Sender);
 
 // for x := 0 to grdDBBandedPerSortiment.Bands.Count-1 do
 //  grdDBBandedPerSortiment.Bands[x].c
- grdDBBandedPerSortiment.Bands[0].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_11' (* 'PAKET ID' *) );
- grdDBBandedPerSortiment.Bands[1].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_12' (* 'PRODUKT' *) );
- grdDBBandedPerSortiment.Bands[2].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) );
- grdDBBandedPerSortiment.Bands[3].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_14' (* 'LAGER' *) );
- grdDBBandedPerSortiment.Bands[4].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_15' (* 'KVANTITET' *) );
+  grdDBBandedPerSortiment.Bands[0].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_11' (* 'PAKET ID' *) );
+  grdDBBandedPerSortiment.Bands[1].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_12' (* 'PRODUKT' *) );
+  grdDBBandedPerSortiment.Bands[2].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_5' (* 'NM3 PER LÄNGD' *) );
+  grdDBBandedPerSortiment.Bands[3].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_14' (* 'LAGER' *) );
+  grdDBBandedPerSortiment.Bands[4].Caption := siLangLinked_fLager.GetTextOrDefault('IDS_15' (* 'KVANTITET' *) );
 
- FormatLengthColumns ;
+  FormatLengthColumns;
 
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
+  aColumn.Position.BandIndex := 3;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('PIP');
- aColumn.Position.BandIndex := 3 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
+  aColumn.Position.BandIndex := 3;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('LIP');
- aColumn.Position.BandIndex := 3 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('NM3');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM3');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM1');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AM2');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('MFBM');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Styck');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('Paket');
- aColumn.Position.BandIndex := 4 ;
+  aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
+  aColumn.Position.BandIndex := 4;
 
- aColumn:= grdDBBandedPerSortiment.GetColumnByFieldName('AvgLength');
- aColumn.Position.BandIndex := 4 ;
 end;
 
 procedure TfLager.acClearFilterExecute(Sender: TObject);
@@ -2196,7 +2201,7 @@ end;
 procedure TfLager.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-// Action := caFree ;
+  Action := caFree ;
 end;
 
 procedure TfLager.updateCellVolume ;

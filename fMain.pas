@@ -478,6 +478,9 @@ Begin
 
   if Assigned(frmPortArrivals) then
    Result:= True ;
+
+  if Assigned(fLager) then
+   Result:= True ;
 End ;
 
 function GetVersion: string;
@@ -1423,7 +1426,7 @@ begin
      fLager.Show;
 //     fLager.lcAgent.SetFocus ;
     end ;
- dxRibbon1.ShowTabGroups  := False ;
+   dxRibbon1.ShowTabGroups  := False ;
 end;
 
 procedure TfrmMain.acLevereradeLasterExecute(Sender: TObject);
