@@ -637,6 +637,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 168
           Top = 11
           DataBinding.DataField = 'Verk'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.DropDownWidth = 250
           Properties.ImmediatePost = True
@@ -659,6 +660,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 560
           Top = 7
           DataBinding.DataField = 'Status'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.DropDownRows = 12
           Properties.Images = imglistActions
@@ -737,6 +739,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 560
           Top = 39
           DataBinding.DataField = 'OrderTypeNo'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ImmediatePost = True
           Properties.Items = <
@@ -762,6 +765,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 386
           Top = 11
           DataBinding.DataField = 'Lastst'#228'lle'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ClearKey = 46
           Properties.DropDownWidth = 200
@@ -784,6 +788,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 386
           Top = 39
           DataBinding.DataField = 'Destination'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ClearKey = 46
           Properties.DropDownWidth = 200
@@ -6955,7 +6960,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
-      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6970,7 +6974,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
