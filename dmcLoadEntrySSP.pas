@@ -1014,6 +1014,7 @@ end;
 function TdmLoadEntrySSP.getPkgArticleNo(const aPkgNo, aPIPNo, aLONo: integer; VAR aSupplierCode: string3; VAR aLagerStatus: integer): integer;
 begin
   result := -1;
+  if aSupplierCode = '' then
   try
     cds_getPkgArticleNo.Active := False;
     cds_getPkgArticleNo.paramByName('PackageNo').AsInteger := aPkgNo;
@@ -1029,11 +1030,12 @@ begin
       aLagerStatus := cds_getPkgArticleNo.FieldByName('LagerStatus').AsInteger
     end
     else
-
       //raise Exception.Create('Package (' + intToStr(aPkgNo) + ' : ' + intToStr(aPIPNo) + ' : ' + aSupplierCode + ' not found!');
   finally
     cds_getPkgArticleNo.Active := False;
-  end;
+  end
+  else 
+    result := getPkgArticleNo_2(aPkgNo, aSupplierCode); 
 end;
 
 function TdmLoadEntrySSP.getPkgArticleNo_2(const aPkgNo: integer; aSupplierCode: string): integer;

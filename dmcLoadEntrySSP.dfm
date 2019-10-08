@@ -707,7 +707,6 @@
     end
   end
   object cdsLORows: TFDQuery
-    Active = True
     OnCalcFields = cdsLORowsCalcFields
     CachedUpdates = True
     Indexes = <

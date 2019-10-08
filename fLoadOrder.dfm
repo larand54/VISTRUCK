@@ -637,6 +637,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 168
           Top = 11
           DataBinding.DataField = 'Verk'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.DropDownWidth = 250
           Properties.ImmediatePost = True
@@ -659,6 +660,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 560
           Top = 7
           DataBinding.DataField = 'Status'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.DropDownRows = 12
           Properties.Images = imglistActions
@@ -737,6 +739,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 560
           Top = 39
           DataBinding.DataField = 'OrderTypeNo'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ImmediatePost = True
           Properties.Items = <
@@ -762,6 +765,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 386
           Top = 11
           DataBinding.DataField = 'Lastst'#228'lle'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ClearKey = 46
           Properties.DropDownWidth = 200
@@ -784,6 +788,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Left = 386
           Top = 39
           DataBinding.DataField = 'Destination'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ClearKey = 46
           Properties.DropDownWidth = 200
@@ -1017,6 +1022,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Top = 66
           Caption = 'Visa endast valt verks LO'#39's'
           DataBinding.DataField = 'AutoColWidth'
+          DataBinding.DataSource = dmcOrder.ds_Props
           ParentFont = False
           Properties.ImmediatePost = True
           Properties.ValueChecked = 1

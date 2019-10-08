@@ -589,7 +589,7 @@ type
           Var ProductLengthNo, NoOfLengths : Integer) : TEditAction;
 
      function Validate_VE_Pkg(const aPkgNo, aArticleNo: integer): integer;
-     function Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;
+     function Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer; const aSupplierCode: string): integer;
      function  ValidatePkg(const PkgNo : Integer;const PkgSupplierCode : String3;
                              const ProductNo, ProductLengthNo, NoOfLengths  : Integer) : Integer ;
      Procedure GetLO_Records_AfterAddingLO_Number(LO_Number : Integer) ;
@@ -3433,7 +3433,7 @@ begin
       dmLoadEntrySSP.cds_LoadPackages.Edit;
       Try
         if VidaEnergi then
-          Validate_VE_Pkg1(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger, -1)
+          Validate_VE_Pkg1(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger, -1, dmLoadEntrySSP.cds_LoadPackagesSuppliercode.AsString)
         else begin
           ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPackageNo.AsInteger,
             dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString,
@@ -3484,7 +3484,7 @@ begin
       cds_LoadPackages.Edit ;
       Try
         if VidaEnergi then
-          Validate_VE_Pkg1(cds_LoadPackagesPACKAGENO.AsInteger, -1)
+          Validate_VE_Pkg1(cds_LoadPackagesPACKAGENO.AsInteger, -1, dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString)
         else begin
           ValidatePkg(dmLoadEntrySSP.cds_LoadPackagesPACKAGENO.AsInteger,
                       dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString, dmLoadEntrySSP.cds_LoadPackagesProductNo.AsInteger,
@@ -6022,10 +6022,10 @@ function TfLoadEntrySSP.Validate_VE_Pkg(const aPkgNo,
 begin
   if dmLoadEntrySSP.cds_LoadPackages.State = dsBrowse then
     dmLoadEntrySSP.cds_LoadPackages.Edit;
-  result := Validate_VE_Pkg1(aPkgNo, aArticleNo);
+  result := Validate_VE_Pkg1(aPkgNo, aArticleNo, dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString);
 end;
 
-function TfLoadEntrySSP.Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer): integer;
+function TfLoadEntrySSP.Validate_VE_Pkg1(const aPkgNo, aArticleNo: integer; const aSupplierCode: string): integer;
 var
   defSSPNo: integer;
   LO_Number: integer;
@@ -6038,11 +6038,12 @@ var
   LOString              : string;
 
 begin
+  pkgSupplierCode := aSupplierCode;
   with dmLoadEntrySSP do
   begin
     if aArticleNo = -1 then
     begin
-      artikelNr := getPkgArticleNo(aPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger, PkgSupplierCode, lagerStatus);
+      artikelNr := getPkgArticleNo(aPkgNo, dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger, dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger, pkgSupplierCode, lagerStatus);
     end
     else
       artikelNr := aArticleNo;
@@ -7154,6 +7155,7 @@ var
   end;
 
 begin
+  PkgSupplierCode := '';
  With dmLoadEntrySSP do
  Begin
   NewPkgNo := 0 ;
