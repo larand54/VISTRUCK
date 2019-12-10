@@ -23,8 +23,6 @@ object frmLoadArrivals: TfrmLoadArrivals
   OnDestroy = FormDestroy
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object cxSplitter1: TcxSplitter
@@ -37,7 +35,6 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
@@ -3225,6 +3222,9 @@ object frmLoadArrivals: TfrmLoadArrivals
     object mtSelectedLoadsLOTYP: TStringField
       FieldName = 'LOTYP'
       Size = 10
+    end
+    object mtSelectedLoadsTrading: TIntegerField
+      FieldName = 'Trading'
     end
   end
   object cxLookAndFeelController1: TcxLookAndFeelController

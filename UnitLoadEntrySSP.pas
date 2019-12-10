@@ -903,7 +903,7 @@ Begin
     cds_LSP.SQL.Add('  Left Outer Join dbo.CustomerShippingPlanHeader CSH') ;
     cds_LSP.SQL.Add('  Inner Join dbo.Client		C 	ON  	C.ClientNo	= CSH.CustomerNo') ;
     cds_LSP.SQL.Add('  Inner JOIN dbo.Orders 		OH	ON	OH.OrderNo 		= CSH.OrderNo') ;
-    cds_LSP.SQL.Add('  AND OH.OrderType = 0') ;
+    cds_LSP.SQL.Add('  AND OH.OrderType in (0,3)') ;
     cds_LSP.SQL.Add('                              ON      CSH.ShippingPlanNo = SSP.ShippingPlanNo') ;
 
 
@@ -4721,7 +4721,8 @@ begin
 
     lang := ThisUser.LanguageID;
     salesRegionNo := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    if not dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [2, 3] then
+    if (dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 0) or
+    (dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 1) then
       ReportType := cfTallyInternal
     else
       ReportType := cfTally;
@@ -5322,7 +5323,7 @@ Begin
 
   Add('AND CSH.ShippingPlanStatus = 1') ;
   Add('AND SSP.ObjectType = 2') ;
-  Add('AND OH.OrderType = 0') ;
+  Add('AND OH.OrderType in (0,3)') ;
 
   if LoadingLocationNo <> -1 then
   Add('AND SSP.LoadingLocationNo = '+IntToStr(LoadingLocationNo)) ;
