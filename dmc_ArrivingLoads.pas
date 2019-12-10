@@ -578,6 +578,14 @@ type
     cdsArrivingPackagesScanned: TIntegerField;
     cdsArrivingLoadsOriginalInvoiceNo: TIntegerField;
     cds_verkLasterLONo: TIntegerField;
+    sp_CopyRtR: TFDStoredProc;
+    sp_GetRtRPOLoNo: TFDStoredProc;
+    sp_CopySalesLoadToPO: TFDStoredProc;
+    cdsArrivingLoadsLoadingLocationNo: TIntegerField;
+    cdsArrivingLoadsOrderNo: TIntegerField;
+    sp_UNDOintALOAR_OK: TFDStoredProc;
+    sp_RtR_Load_is_AR: TFDStoredProc;
+    sp_delAR_RtRLoad: TFDStoredProc;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
@@ -587,6 +595,7 @@ type
   private
     { Private declarations }
     FOnAmbiguousPkgNo: TAmbiguityEvent;
+    Function  UNDOintALOAR_OK(const LoadNo : Integer) : Boolean ;
     function  IsLoadAvr(const LoadNo : Integer) : Boolean ;
     function  NoOfConfirmedPkgs(const LoadNo : Integer): Integer ;
     Function  GetCurrentXrate(const LoadNo : Integer)  : Double ;
@@ -608,6 +617,12 @@ type
     PIPNo : Integer ;
     CustomerNo, SHIPTOINVPOINTNO  : Integer ;
     LoadConfirmedOK : Boolean ;
+    procedure delAR_RtRLoad(const Confirmed_LoadNo  : Integer) ;
+    function RtR_Load_is_AR(Const Confirmed_LoadNo : Integer;Var RtR_LoadNo : String) : Boolean ;
+    Function CopySalesLoadToPOLoadAndSetPackagesAsNotAvailable
+    (const OldLoadNo, NewLONo, Insert_Confirmed_Load : Integer): Integer;
+    function GetPOLoNoInRegionToRegion(const SalesLONo : Integer) : Integer ;//Return PO_LO
+    procedure CopyRtR(const OldLONo : Integer) ;
     procedure AddPkgNrExcepionList(const PkgNr: String;const PackageNo : integer;
     const Prefix : String;
     MottagareNo, LevereraTillNo, LeverantorNo, ErrorCode : Integer;const Desc, AppFormName : String) ;
@@ -632,7 +647,7 @@ type
     function  GetNoOfPkgs : Integer ;
 //    procedure ProcessPackage_Log(const LogInvPointNo : Integer) ;
     Function  SearchLoadNoByPkgNo(const PackageNo, ShippingCompanyNo : Integer;const SupplierCode : String) : Integer ;
-    function  UndoConfirmLoad : Boolean ;
+    function  UndoConfirmLoad (const Trading : Integer)  : Boolean;
 //    function  ChangePackagesToIMPProduct : Boolean ;
     procedure SetLoadAR(const LoadNo, LoadAR : Integer) ;
     function  GetDefaultCSObjectNo(const DefsspNo : Integer) : Integer ;
@@ -707,6 +722,7 @@ begin
 
 end;
 
+(*
 function TdmArrivingLoads.UndoConfirmLoad : Boolean ;
 const
   LF = #10;
@@ -832,19 +848,7 @@ begin
      End ;
     End ; //if not sq_ChkPkgs.Eof then
 
-(*    sq_PkgInvoiced.Close ;
-    sq_PkgInvoiced.ParamByName('PackageNo').AsInteger               := cds_Confirmed_Pkg_LogPackageNo.AsInteger ;
-    sq_PkgInvoiced.ParamByName('SupplierCode').AsString             := cds_Confirmed_Pkg_LogSupplierCode.AsString ;
-    sq_PkgInvoiced.Open ;
-    if not sq_PkgInvoiced.Eof then
-    Begin
-      ShowMessage('Kan inte ångra, Paketnr: '
-      +cds_Confirmed_Pkg_LogPackageNo.AsString+'/'+cds_Confirmed_Pkg_LogSupplierCode.AsString
-      +' är utlastat på lastnr ' + sq_ChkPkgsLoadNo.AsString) ;
-      CommitChanges:= False ;
-     Exit ;
-    End ; //if not sq_PkgInvoiced.Eof then
-    *)
+
 
 
 
@@ -997,6 +1001,7 @@ begin
 //  else
 //    Result:= True ;
 end;
+*)
 
 (*function TdmArrivingLoads.UndoConfirmLoad : Boolean ;
 const
@@ -2722,6 +2727,434 @@ begin
  End ;
 end ;
 
+procedure TdmArrivingLoads.CopyRtR(const OldLONo : Integer) ;
+Begin
+ sp_CopyRtR.ParamByName('@CreateUser').AsInteger  := ThisUser.UserID ;
+ sp_CopyRtR.ParamByName('@OldLONo').AsInteger     := OldLONo ;
+ Try
+ sp_CopyRtR.ExecProc ;
+ Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_CopyRtR.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
+End ;
 
+function TdmArrivingLoads.GetPOLoNoInRegionToRegion(const SalesLONo : Integer) : Integer ;//Return PO_LO
+Begin
+  sp_GetRtRPOLoNo.ParamByName('@SalesLONo').AsInteger :=  SalesLONo ;
+  sp_GetRtRPOLoNo.Active  := True ;
+  Try
+  if not sp_GetRtRPOLoNo.Eof then
+   Result := sp_GetRtRPOLoNo.FieldByName('POShippingPlanNo').AsInteger
+    else
+     Result := -1 ;
+  Finally
+   sp_GetRtRPOLoNo.Active := False ;
+  End;
+End;
+
+Function TdmArrivingLoads.CopySalesLoadToPOLoadAndSetPackagesAsNotAvailable
+  (const OldLoadNo, NewLONo, Insert_Confirmed_Load
+  : Integer): Integer;
+Begin
+  Try
+    sp_CopySalesLoadToPO.ParamByName('@SrcLoadNo').AsInteger  := OldLoadNo;
+    sp_CopySalesLoadToPO.ParamByName('@NewLONo').AsInteger    := NewLONo;
+    sp_CopySalesLoadToPO.ParamByName('@CreateUser').AsInteger := ThisUser.UserID;
+
+    sp_CopySalesLoadToPO.ParamByName('@Insert_Confirmed_Load').AsInteger :=
+      Insert_Confirmed_Load;
+    Result := sp_CopySalesLoadToPO.ParamByName('@NewLoadNo').AsInteger;
+    sp_CopySalesLoadToPO.ExecProc;
+    Result := sp_CopySalesLoadToPO.ParamByName('@NewLoadNo').AsInteger;
+  Try
+
+  except
+    On E: Exception do
+    Begin
+      dmsSystem.FDoLog(E.Message);
+      // ShowMessage(E.Message);
+      Raise;
+    End;
+  end;
+  Finally
+    sp_CopySalesLoadToPO.Close;
+  End;
+End;
+
+
+function TdmArrivingLoads.UndoConfirmLoad(const Trading : Integer)  : Boolean;
+const
+  LF = #10;
+Var
+  CommitChanges : Boolean;
+  Save_Cursor   : TCursor;
+  RtR_LoadNo    : String ;
+begin
+  CommitChanges := True;
+
+  // if MessageDlg('Vill du ångra ankomstregistration av lasten?',
+  // mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  // Begin
+
+  with dmArrivingLoads do
+  Begin
+    Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crHourGlass; { Show hourglass cursor }
+
+    If UNDOintALOAR_OK(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger) = False then
+    Begin
+      ShowMessage('Packages has been moved since arrival, cannot undo confirmation of arrival ' + LF +
+          ' LoadNo: ' + cdsArrivingLoadsLOADNO.AsString);
+        CommitChanges := False;
+        Exit;
+    End;
+
+    // Är lasten AR av Extern Kund, i så fall måste den externa kunden ångra AR först!
+    sq_IsEXTLoadConfirmed.Close;
+    sq_IsEXTLoadConfirmed.ParamByName('LoadNo').AsInteger :=
+      dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+    sq_IsEXTLoadConfirmed.ParamByName('ShippingPlanNo').AsInteger :=
+      dmArrivingLoads.cdsArrivingLoadsLO.AsInteger ;
+    sq_IsEXTLoadConfirmed.Open;
+    Try
+      if not sq_IsEXTLoadConfirmed.Eof then
+      Begin
+        ShowMessage('Cancel confirmation of customer/call off Load first: ' + LF +
+          ' LoadNo: ' + sq_IsEXTLoadConfirmedConfirmed_LoadNo.AsString + LF +
+          ' LO: ' + sq_IsEXTLoadConfirmedConfirmed_ShippingPlanNo.AsString + LF
+          + ' Confirmed by: ' +
+          sq_IsEXTLoadConfirmedUserName.AsString);
+        CommitChanges := False;
+        Exit;
+      End;
+    Finally
+      sq_IsEXTLoadConfirmed.Close;
+    End;
+
+    if Trading = 2 then
+    begin
+      //Check that the RtR load is not been AR
+      if RtR_Load_is_AR(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger, RtR_LoadNo) then
+      Begin
+        ShowMessage('Cannot undo because end customer has confirmed their load, End customer loadNo ' + RtR_LoadNo) ;
+        Exit ;
+      End;
+    end;
+
+    Try
+      // Undo Confirmation of load arrivals
+      // first check if there are customer loads made, if so then
+      // BEGIN
+      // check if Customer loads are invoiced, if so then
+      // stop the process and ask user to delete invoices first
+
+      // otherwhise check that no packages have been added or removed to/from customer load,
+      // To do that compare Mill load to customer load
+      // if customer have been changed then
+      // Give message to user that Undo is not possible unless the customer is
+      // put back to original spec
+
+      // If customer have not been changed or invoiced then
+      // Delete the customer load
+      // Delete Entry in Confirmed_Load for Mill Load
+
+      // END
+      // otherwise simply remove the verk load from confirmed_load table
+
+      dmsConnector.StartTransaction;
+      Try
+
+        // Är lasten fakturerad?
+        sq_IsLoadInvoiced.Close;
+        sq_IsLoadInvoiced.ParamByName('LoadNo').AsInteger :=
+          cdsArrivingLoadsLOADNO.AsInteger;
+        sq_IsLoadInvoiced.Open;
+        if not sq_IsLoadInvoiced.Eof then
+        Begin
+          ShowMessage('Cannot undo because end user load: ' + LF +
+            sq_IsLoadInvoicedLoadNo.AsString + LF + '  LO: ' +
+            sq_IsLoadInvoicedShippingPlanNo.AsString + LF +
+            ' is invoiced, see internal invoice number: ' +
+            sq_IsLoadInvoicedInternalInvoiceNo.AsString + LF +
+            ', Remove the invoice and try again.');
+          sq_IsLoadInvoiced.Close;
+          CommitChanges := False;
+          Exit;
+        End;
+        sq_IsLoadInvoiced.Close;
+
+        // Är lasten avräknad ?
+        sq_IsLoadAvraknad.Close;
+        sq_IsLoadAvraknad.ParamByName('LoadNo').AsInteger :=
+          cdsArrivingLoadsLOADNO.AsInteger;
+        // sq_IsLoadAvraknad.ParamByName('ShippingPlanNo').AsInteger:= cdsArrivingLoadsLO.AsInteger ;
+        sq_IsLoadAvraknad.Open;
+        if Not sq_IsLoadAvraknad.Eof then
+        Begin
+          ShowMessage('Cannot undo because, the load is settled. Settlement number: ' +
+            sq_IsLoadAvraknadPaymentNo.AsString);
+          sq_IsLoadAvraknad.Close;
+          CommitChanges := False;
+          Exit;
+        End;
+        sq_IsLoadAvraknad.Close;
+
+        // Kolla att det finns en confirmed package log fil
+        cds_Confirmed_Pkg_Log.Active := False;
+        cds_Confirmed_Pkg_Log.ParamByName('LoadNo').AsInteger :=
+          cdsArrivingLoadsLOADNO.AsInteger;
+        cds_Confirmed_Pkg_Log.Active := True;
+        if cds_Confirmed_Pkg_Log.Eof then
+        Begin
+          ShowMessage('Cannot undo because load number ' +
+            cdsArrivingLoadsLOADNO.AsString + ' because there is no package log file.');
+          CommitChanges := False;
+          Exit;
+        End;
+
+        // For x:= 0 to 1 do
+        // Begin
+        cds_Confirmed_Pkg_Log.Filter := 'Operation = 0 OR Operation = 1';
+        // +IntToStr(x) ;
+        cds_Confirmed_Pkg_Log.Filtered := True;
+        While not cds_Confirmed_Pkg_Log.Eof do
+        Begin
+          sq_ChkPkgs.Close;
+          sq_ChkPkgs.ParamByName('PackageNo').AsInteger :=
+            cds_Confirmed_Pkg_LogPackageNo.AsInteger;
+          sq_ChkPkgs.ParamByName('SupplierCode').AsString :=
+            cds_Confirmed_Pkg_LogSupplierCode.AsString;
+          sq_ChkPkgs.Open;
+          if not sq_ChkPkgs.Eof then
+          Begin
+            if (sq_ChkPkgsLoggLoadNo.AsInteger < sq_ChkPkgsLoadNo.AsInteger) and
+              (sq_ChkPkgsLoggLoadNo.AsInteger <> -1) then
+            Begin
+              ShowMessage('Cannot undo because package number: ' +
+                cds_Confirmed_Pkg_LogPackageNo.AsString + '/' +
+                cds_Confirmed_Pkg_LogSupplierCode.AsString +
+                ' is loaded on Load number ' + sq_ChkPkgsLoadNo.AsString);
+              CommitChanges := False;
+              Exit;
+            End;
+          End; // if not sq_ChkPkgs.Eof then
+
+          (* sq_PkgInvoiced.Close ;
+            sq_PkgInvoiced.ParamByName('PackageNo').AsInteger               := cds_Confirmed_Pkg_LogPackageNo.AsInteger ;
+            sq_PkgInvoiced.ParamByName('SupplierCode').AsString             := cds_Confirmed_Pkg_LogSupplierCode.AsString ;
+            sq_PkgInvoiced.Open ;
+            if not sq_PkgInvoiced.Eof then
+            Begin
+            ShowMessage('Kan inte ångra, Paketnr: '
+            +cds_Confirmed_Pkg_LogPackageNo.AsString+'/'+cds_Confirmed_Pkg_LogSupplierCode.AsString
+            +' är utlastat på lastnr ' + sq_ChkPkgsLoadNo.AsString) ;
+            CommitChanges:= False ;
+            Exit ;
+            End ; //if not sq_PkgInvoiced.Eof then
+          *)
+
+          cds_Confirmed_Pkg_Log.Next;
+        End; // While
+        // End ; //For
+        cds_Confirmed_Pkg_Log.Active := False;
+
+        if CommitChanges = True then
+        Begin
+         //RemoveRtRLoad ;
+          // Insert packagenumberlogg
+          Try
+            sq_InsertPkgNoLogg.ParamByName('LoadNo').AsInteger :=
+              cdsArrivingLoadsLOADNO.AsInteger;
+            sq_InsertPkgNoLogg.ParamByName('UserID').AsInteger :=
+              ThisUser.UserID;
+            sq_InsertPkgNoLogg.ExecSQL;
+          except
+            On E: Exception do
+            Begin
+              dmsSystem.FDoLog(E.Message);
+              CommitChanges := False;
+              // ShowMessage(E.Message);
+              Raise;
+            End;
+          end;
+
+          // Set package status = 0 on packages that were moved to inventory
+          Try
+            sq_UpdatePkgStatus.ParamByName('LoadNo').AsInteger :=
+              cdsArrivingLoadsLOADNO.AsInteger;
+            // if sq_UpdatePkgStatus.ExecSQL(False) = -1 then CommitChanges:= False ;
+            sq_UpdatePkgStatus.ExecSQL;
+          except
+            On E: Exception do
+            Begin
+              dmsSystem.FDoLog(E.Message);
+              CommitChanges := False;
+              // ShowMessage(E.Message);
+              Raise;
+            End;
+          end;
+
+          // Delete NewLoad, this also removes Confirmed_Load and Confirmed_Load_Packages
+          // Bara för LO av OBJECTTYPE = 2 (normala), add och int LO skapar aldrig en ny last
+          // if cdsArrivingLoadsOBJECTTYPE.AsInteger = 2 then
+          // Begin
+          // sq_DeleteNewLoadByOldLoadNo.ParamByName('LoadNo').AsInteger:= cdsArrivingLoadsLOADNO.AsInteger ;
+          // if sq_DeleteNewLoadByOldLoadNo.ExecSQL(False) = -1 then CommitChanges:= False ;
+          // End ;
+
+          // Byt ut ovan mot den här som använder länken i Confirmed_Package_Log för att ta bort nya laster
+          if cdsArrivingLoadsOBJECTTYPE.AsInteger = 2 then
+          Begin
+            Try
+              sq_DelNewLoads.ParamByName('LoadNo').AsInteger :=
+                cdsArrivingLoadsLOADNO.AsInteger;
+              // if sq_DelNewLoads.ExecSQL(False) = -1 then CommitChanges:= False ;
+              sq_DelNewLoads.ExecSQL;
+            except
+              On E: Exception do
+              Begin
+                dmsSystem.FDoLog(E.Message);
+                CommitChanges := False;
+                // ShowMessage(E.Message);
+                Raise;
+              End;
+            end;
+          End;
+
+          // Delete Confirmed_Load record for Old Load
+          Try
+           delAR_RtRLoad(cdsArrivingLoadsLOADNO.AsInteger) ;
+            sq_DeleteConfirmed_Load_Entry.ParamByName('LoadNo').AsInteger :=
+              cdsArrivingLoadsLOADNO.AsInteger;
+            // if sq_DeleteConfirmed_Load_Entry.ExecSQL(False) = -1 then CommitChanges:= False ;
+            sq_DeleteConfirmed_Load_Entry.ExecSQL;
+
+
+          except
+            On E: Exception do
+            Begin
+              dmsSystem.FDoLog(E.Message);
+              CommitChanges := False;
+              // ShowMessage(E.Message);
+              Raise;
+            End;
+          end;
+
+          // Set LoadAR till 0
+          SetLoadAR(cdsArrivingLoadsLOADNO.AsInteger,
+            0 { set LoadAR till ankomstregistrerad = 1 } );
+        End; // if CommitChanges = True then
+
+        { try
+          // Now write the data to the database
+          if CommitChanges = True then
+          Begin
+          dmsConnector.Commit(TransactionNo) ;
+          //    ShowMessage('Ångra ankomstregistrering OK');
+          Application.ProcessMessages ;
+          End
+          else
+          Begin
+          dmsConnector.Rollback(TransactionNo);
+          ShowMessage('Ångra ankomstregistrering misslyckades, data återställd.');
+          End ;
+
+          except
+          on Exception do begin
+          raise;
+          end;
+          end; }
+
+        if CommitChanges = True then
+        Begin
+          dmsConnector.Commit;
+          // ShowMessage('Ångra ankomstregistrering OK');
+          Application.ProcessMessages;
+        End
+        else
+        Begin
+          dmsConnector.Rollback;
+          ShowMessage
+            ('Cancel failed.');
+        End;
+
+      except
+        On E: Exception do
+        Begin
+          dmsSystem.FDoLog(E.Message);
+          dmsConnector.Rollback;
+          // ShowMessage(E.Message);
+          Raise;
+        End;
+      end;
+
+      { except
+        dmsConnector.Rollback(TransactionNo);
+        raise;
+        end; }
+
+    Finally
+      cds_Confirmed_Pkg_Log.Filtered := False;
+      if CommitChanges = False then
+      Begin
+        dmsConnector.Rollback;
+      End;
+
+      // cdsCurrentLoadDetails.Active:= False ;
+      sq_CompareDetails.Close;
+      Screen.Cursor := Save_Cursor; { Always restore to normal }
+      Result := CommitChanges;
+    End;
+  End; // with
+  // End  //if
+  // else
+  // Result:= True ;
+end;
+
+Function TdmArrivingLoads.UNDOintALOAR_OK(const LoadNo : Integer) : Boolean ;
+Begin
+ sp_UNDOintALOAR_OK.ParamByName('@LoadNo').AsInteger  := LoadNo ;
+ sp_UNDOintALOAR_OK.ExecProc ;
+ if sp_UNDOintALOAR_OK.ParamByName('@LoadOK').AsInteger = 1 then
+  Result  := True
+   else
+    Result := False ;
+End ;
+
+function TdmArrivingLoads.RtR_Load_is_AR(Const Confirmed_LoadNo : Integer;Var RtR_LoadNo : String) : Boolean ;
+Begin
+  sp_RtR_Load_is_AR.Active  :=  False ;
+  sp_RtR_Load_is_AR.ParamByName('@Confirmed_LoadNo').AsInteger :=  Confirmed_LoadNo ;
+  sp_RtR_Load_is_AR.Active  :=  True ;
+  if not sp_RtR_Load_is_AR.Eof then
+  Begin
+    RtR_LoadNo  :=  sp_RtR_Load_is_AR.FieldByName('NewLoadNo').AsString ;
+    Result      :=  True ;
+  End
+    else
+     Begin
+      RtR_LoadNo  :=  '-1' ;
+      Result      :=  False ;
+     End;
+End;
+
+//Remove RtR load when regret AR
+procedure TdmArrivingLoads.delAR_RtRLoad(const Confirmed_LoadNo  : Integer) ;
+begin
+ sp_delAR_RtRLoad.ParamByName('@Confirmed_LoadNo').AsInteger :=  Confirmed_LoadNo ;
+ Try
+ sp_delAR_RtRLoad.ExecProc ;
+ Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_delAR_RtRLoad.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
+end;
 
 end.

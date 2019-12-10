@@ -4721,7 +4721,8 @@ begin
 
     lang := ThisUser.LanguageID;
     salesRegionNo := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    if not dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [2, 3] then
+    if (dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 0) or
+    (dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 1) then
       ReportType := cfTallyInternal
     else
       ReportType := cfTally;

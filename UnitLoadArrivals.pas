@@ -509,6 +509,7 @@ type
     cxStylePkgsContent: TcxStyle;
     sp_insPkgInvStatByLoad: TFDStoredProc;
     grdLoadsDBTableView1OriginalInvoiceNo: TcxGridDBColumn;
+    mtSelectedLoadsTrading: TIntegerField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -609,6 +610,11 @@ type
 
     LastTime  : TTime ;
     SecondsBetweenKeyPressed  : Double ;
+    function  CheckThatCustomerNoIsValidOnSelectedLoads : Boolean;
+    function  DoesAllLoadsHaveSameLIPNo : Boolean ;
+    function  AreMarkedLoadsSameObjectTypeAndInternalContract: Boolean;
+
+    procedure CopyLoadToOtherSalesRegion(const LoadNo, LONo  : Integer);
     procedure Run_insPkgInvStatByLoad(const LoadNo  : Integer) ;
     Function  IsRegionToRegionLoadValid(LoadNo, ShippingPlanNo, ObjectType: Integer; Sender: TObject): Boolean;
     procedure ConfirmManyLoadsRegionToRegion(Sender: TObject) ;
@@ -1100,9 +1106,14 @@ Begin
         QuotedStr('SALES'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
         QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
         QuotedStr('INTERN'));
       cdsArrivingLoads.SQL.Add('End AS TYP,');
+
       cdsArrivingLoads.SQL.Add('CASE');
       cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
         QuotedStr('LO'));
@@ -1142,7 +1153,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, CSH.OrderNo') ;
 
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
@@ -1239,6 +1250,15 @@ Begin
       cdsArrivingLoads.SQL.Add('AND LSP.ConfirmedByReciever = 0') ;
 
 
+         if (LONo = -1) and (LoadNo = -1) then
+          if bcConfirmed.ItemIndex > 0 then
+          Begin
+            cdsArrivingLoads.SQL.Add('AND exists (select * from dbo.Confirmed_Load cl') ;
+            cdsArrivingLoads.SQL.Add('WHERE') ;
+            cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = L.LoadNo)') ;
+          End;
+
+
       if LONo > -1 then
         cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
       if LoadNo > -1 then
@@ -1271,7 +1291,7 @@ Begin
 
 //      cdsArrivingLoads.SQL.Add('AND SP.ObjectType <> 1');
 
-      cdsArrivingLoads.SQL.Add('AND SP.ObjectType IN (0,2)');
+      cdsArrivingLoads.SQL.Add('AND SP.ObjectType IN (2)');
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
@@ -1285,10 +1305,11 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           if (LONo = -1) and (LoadNo = -1) then
           Begin
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate >= ' +
-              QuotedStr(DateTimeToStr(deStartPeriod.Date)));
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate <= ' +
-              QuotedStr(DateTimeToStr(deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
           End;
         End
         else
@@ -1342,7 +1363,7 @@ Begin
         ('Cust.ClientCode                         AS      CUSTOMER,');
       cdsArrivingLoads.SQL.Add
         ('SP.SupplierNo                           AS      SUPPLIERNO,');
-      cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add('isnull(CSH.CustomerNo, 0)				AS	AVROP_CUSTOMERNO,');
       cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
       cdsArrivingLoads.SQL.Add('SP.OBJECTTYPE,');
 
@@ -1360,9 +1381,14 @@ Begin
         QuotedStr('SALES'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
         QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
         QuotedStr('INTERN'));
       cdsArrivingLoads.SQL.Add('End AS TYP,');
+
       cdsArrivingLoads.SQL.Add('CASE');
       cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
         QuotedStr('LO'));
@@ -1397,7 +1423,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, -1 asOrderNo') ;
 
 
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
@@ -1513,7 +1539,7 @@ Begin
           cdsArrivingLoads.SQL.Add('AND SP.SupplierNo = ' +
             cds_PropsClientNo.AsString);
 
-      cdsArrivingLoads.SQL.Add('AND SP.ObjectType = 1');
+      cdsArrivingLoads.SQL.Add('AND SP.ObjectType in (0, 1)');
 
  //     cdsArrivingLoads.SQL.Add('AND SP.ObjectType <= 3');
 
@@ -1529,10 +1555,11 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           if (LONo = -1) and (LoadNo = -1) then
           Begin
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate >= ' +
-              QuotedStr(DateTimeToStr(deStartPeriod.Date)));
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate <= ' +
-              QuotedStr(DateTimeToStr(deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102))');
           End;
         End
         else if bcConfirmed.ItemIndex = 2 then
@@ -1541,18 +1568,21 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
             IntToStr(ThisUser.UserID));
-          cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
-            QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-            DateTimeToSQLTimeStamp(deStartPeriod.Date))));
-          cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
-            QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-            DateTimeToSQLTimeStamp(deEndPeriod.Date))));
+
+          cdsArrivingLoads.SQL.Add('AND (CL.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
         End;
       End; // if(LONo = -1) and (LoadNo = -1) then
 
       cdsArrivingLoads.SQL.Add('UNION');
  // START REGION To REGION AR query
-      cdsArrivingLoads.SQL.Add('SELECT distinct  0 AS EGEN,') ;
+      cdsArrivingLoads.SQL.Add('SELECT distinct ') ;
+      cdsArrivingLoads.SQL.Add('CASE WHEN OH.Trading = 2 THEN 0') ;
+      cdsArrivingLoads.SQL.Add('ELSE 1 END AS EGEN,') ;
+
       cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
       cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
       cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
@@ -1589,16 +1619,23 @@ Begin
       cdsArrivingLoads.SQL.Add('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,') ;
       cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,') ;
 
-      cdsArrivingLoads.SQL.Add('CASE');
+    cdsArrivingLoads.SQL.Add('CASE');
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
         QuotedStr('SALES'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
         QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
         QuotedStr('INTERN'));
       cdsArrivingLoads.SQL.Add('End AS TYP,') ;
 
-      cdsArrivingLoads.SQL.Add(QuotedStr('RtR') + ' AS LOTYP,') ;
+      cdsArrivingLoads.SQL.Add('CASE WHEN OH.Trading = 2 THEN ') ;
+      cdsArrivingLoads.SQL.Add(QuotedStr('RtR')) ;
+      cdsArrivingLoads.SQL.Add('ELSE ' + QuotedStr('RtR') + ' END AS LOTYP,') ;
+
       cdsArrivingLoads.SQL.Add('(Select Top 1 US.INITIALS') ;
       cdsArrivingLoads.SQL.Add('From dbo.CustomerShippingPlanHeader sp2') ;
       cdsArrivingLoads.SQL.Add('Inner Join dbo.Users US on US.UserID = SP2.CreatedUser') ;
@@ -1624,7 +1661,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, csh.LoadingLocationNo, CSH.OrderNo') ;
 //* ===================== FROM ==================== */
       cdsArrivingLoads.SQL.Add('FROM  dbo.CustomerShippingPlanDetails CSD') ;
       cdsArrivingLoads.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo') ;
@@ -1713,10 +1750,11 @@ Begin
 
           if (LONo = -1) and (LoadNo = -1) then
           Begin
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate >= ' +
-              QuotedStr(DateTimeToStr(deStartPeriod.Date)));
-            cdsArrivingLoads.SQL.Add('AND L.LoadedDate <= ' +
-              QuotedStr(DateTimeToStr(deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
           End;
         End
         else if bcConfirmed.ItemIndex = 2 then
@@ -1725,12 +1763,11 @@ Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
           cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
             IntToStr(ThisUser.UserID));
-          cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
-            QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-            DateTimeToSQLTimeStamp(deStartPeriod.Date))));
-          cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
-            QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-            DateTimeToSQLTimeStamp(deEndPeriod.Date))));
+          cdsArrivingLoads.SQL.Add('AND (cl.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
         End;
       End; // if(LONo = -1) and (LoadNo = -1) then
 
@@ -1794,11 +1831,15 @@ Begin
       ('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,');
 
     cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,');
-    cdsArrivingLoads.SQL.Add('CASE');
+  cdsArrivingLoads.SQL.Add('CASE');
     cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
       QuotedStr('SALES'));
     cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
       QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
     cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
       QuotedStr('INTERN'));
     cdsArrivingLoads.SQL.Add('End AS TYP,');
@@ -1836,7 +1877,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, CSH.OrderNo') ;
 
 
     cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
@@ -3312,7 +3353,8 @@ procedure TfrmLoadArrivals.InsertMarkedLoadsToTempTable (Sender: TObject;const S
       LIPNo, LoadNo,
       LONo,
       CustomerNo,
-      LOAD_STATUS     : Integer ;
+      LOAD_STATUS,
+      Trading     : Integer ;
 begin
  Save_Cursor := Screen.Cursor;
  Screen.Cursor := crSQLWait;    { Show hourglass cursor }
@@ -3358,6 +3400,11 @@ begin
     ColIdx      := grdLoadsDBTableView1.DataController.GetItemByFieldName('AVROP_CUSTOMERNO').Index;
     AvropCustomerNo := grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx];
 
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('Trading').Index;
+        Trading := grdLoadsDBTableView1.DataController.Values
+          [RecIDX, ColIdx];
+
 //    if not mtSelectedLoads.Locate('LoadNo;LONo', VarArrayOf([LoadNo, LONo]), []) then
     if (not mtSelectedLoads.Locate('LoadNo', LoadNo, [])) and (LOAD_STATUS = 2) then
     Begin
@@ -3372,6 +3419,7 @@ begin
      mtSelectedLoadsImpOrt.AsInteger          := ImpVerk ;
      mtSelectedLoadsOBJECTTYPE.AsInteger      := OBJECTTYPE ;
      mtSelectedLoadsEGEN.AsInteger            := EGEN ;
+     mtSelectedLoadsTrading.AsInteger         := Trading ;
      mtSelectedLoads.Post ;
     End ;
    End ;//for y
@@ -3755,6 +3803,8 @@ procedure TfrmLoadArrivals.acConfirmedLoadExecute(Sender: TObject);
 begin
   With dmArrivingLoads do
    Begin
+    if not CheckThatCustomerNoIsValidOnSelectedLoads then
+     Exit ;
       if grdLoadsDBTableView1.Controller.SelectedRecordCount > 0 then
       Begin
         if AreMarkedLoadsSameObjectTypeRegionToRegion then
@@ -3766,6 +3816,9 @@ begin
        else
        if AreMarkedLoadsSameObjectTypeAndNotNormalLOType then
         AR_INTADDLoads(Sender)
+        else
+         if AreMarkedLoadsSameObjectTypeAndInternalContract then // True endast för objecttype < 2
+          AR_INTADDLoads(Sender)
         else
          if AreMarkedLoadsSameObjectTypeAndNotIntORAddLOType then
          Begin
@@ -4028,7 +4081,7 @@ begin
     End
     else
     Begin
-     if UndoConfirmLoad then
+     if UndoConfirmLoad(mtSelectedLoadsTrading.AsInteger) then
      Begin
       mtSelectedLoads.Edit ;
       mtSelectedLoadsStatus.AsInteger  := 0 ;
@@ -5045,7 +5098,8 @@ function TfrmLoadArrivals.AreMarkedLoadsSameObjectTypeAndNotIntORAddLOType : Boo
  Save_Cursor    : TCursor;
  ColIdx         : Integer ;
  OBJECTTYPE,
- OrderType      : Integer ;
+ OrderType,
+ Trading      : Integer ;
 begin
  Result:= False ;
  Save_Cursor := Screen.Cursor;
@@ -5067,11 +5121,21 @@ begin
     ColIdx      := grdLoadsDBTableView1.DataController.GetItemByFieldName('OrderType').Index;
     OrderType   := grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx];
 
-    if not mtSelectedLoads.Locate('OBJECTTYPE;OrderType', VarArrayOf([OBJECTTYPE, OrderType]), []) then
+       RecIDX := grdLoadsDBTableView1.Controller.SelectedRecords[i]
+          .RecordIndex;
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('Trading').Index;
+        Trading := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
+
+        if ObjectType = 3 then
+         ObjectType := 2 ;
+
+    if not mtSelectedLoads.Locate('OBJECTTYPE;OrderType;Trading', VarArrayOf([OBJECTTYPE, OrderType, Trading]), []) then
     Begin
      mtSelectedLoads.Insert ;
      mtSelectedLoadsOBJECTTYPE.AsInteger  := OBJECTTYPE ;
      mtSelectedLoadsOrderType.AsInteger   := OrderType ;
+     mtSelectedLoadsTrading.AsInteger     := Trading  ;
      mtSelectedLoads.Post ;
     End ;
    End ;//for y
@@ -5578,46 +5642,53 @@ var
   NoOfPackages      : integer;
   PackagesConfirmed : integer;
   LoadAR : Integer ;
+  iObjectType: Integer;
+  iObjectType2: Integer;
 begin
-  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('NoOfPackages') ;
+  AColumn := (Sender as TcxGridDBTableView).GetColumnByFieldName('OBJECTTYPE');
+  iObjectType := ARecord.Values[AColumn.Index];
+  AColumn := (Sender as TcxGridDBTableView).GetColumnByFieldName('ORDERTYPE');
+  iObjectType2 := ARecord.Values[AColumn.Index];
+  AColumn := (Sender as TcxGridDBTableView).GetColumnByFieldName('LoadAR');
+  if ARecord.Values[AColumn.Index] <> null then
+    LoadAR := ARecord.Values[AColumn.Index]
+  else
+    LoadAR := -1;
+
+  { iObjectTypeColumn2 := grdLoadHead.ColumnByName('grdLoadHeadOBJECTTYPE').Index;
+    iObjectType2 := ANode.Values[iObjectTypeColumn2];
+
+    iObjectTypeColumn := grdLoadHead.ColumnByName('grdLoadHeadORDERTYPE').Index;
+    iObjectType := ANode.Values[iObjectTypeColumn]; }
+
+  // if ANode.Values[iObjectTypeColumn] <> null then
+  Begin
+    // Set the color for this row, based on LO status
+    if iObjectType2 = 1 then
+      iObjectType := 4;
+
+    // if AColor <> clOlive then
+    // AColor :=
+    Case iObjectType of
+      0:
+        AStyle := cxStyle_0;
+      1:
+        AStyle := cxStyle_1;
+      4:
+        AStyle := cxStyle_4;
+    End;
+    if LoadAR = 1 then
+      AStyle := cxStyleLoadAR;
+  End;
+
+(*  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('NoOfPackages') ;
   NoOfPackages   := ARecord.Values[AColumn.Index] ;
   AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('PackagesConfirmed') ;
   PackagesConfirmed  := ARecord.Values[AColumn.Index] ;
-//  AColumn       := (Sender as TcxGridDBTableView).GetColumnByFieldName('LoadAR') ;
-//  LoadAR        := ARecord.Values[AColumn.Index] ;
-
-
-{  iObjectTypeColumn2 := grdLoadHead.ColumnByName('grdLoadHeadOBJECTTYPE').Index;
-  iObjectType2 := ANode.Values[iObjectTypeColumn2];
-
-  iObjectTypeColumn := grdLoadHead.ColumnByName('grdLoadHeadORDERTYPE').Index;
-  iObjectType := ANode.Values[iObjectTypeColumn]; }
-
-//  if ANode.Values[iObjectTypeColumn] <> null then
-//  Begin
-  // Set the color for this row, based on LO status
-
-
-
-       if PackagesConfirmed > 0 then
-         AStyle :=   cxStyleAvraknad ; //Gul
-        if NoOfPackages = PackagesConfirmed then
-         AStyle := cxStyleGreen ;
-
-
-
-//   if AColor <> clOlive then
-//   AColor :=
-{
-     Case iObjectType of
-      0 : AStyle := cxStyle_0 ;
-      1 : AStyle := cxStyle_1 ;
-      4 : AStyle := cxStyle_4 ;
-     End ;
-     if LoadAR = 1 then
-      AStyle := cxStyleLoadAR ;
-}
- // End ;
+  if PackagesConfirmed > 0 then
+   AStyle :=   cxStyleAvraknad ; //Gul
+  if NoOfPackages = PackagesConfirmed then
+   AStyle := cxStyleGreen ; *)
 end;
 
 procedure TfrmLoadArrivals.grdPkgsDBTableView1StylesGetContentStyle(
@@ -5639,9 +5710,6 @@ begin
         AStyle := cxStyleAvraknad
      else if Scanned = 1 then
         Astyle := cxStyleBlue
-
-
-
 end;
 
 procedure TfrmLoadArrivals.grdPkgsDBTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems4GetText(
@@ -5653,6 +5721,34 @@ if (Assigned(dmArrivingLoads)) then
  AText  := IntToStr(GetNoOfPkgs) ;
 end;
 
+procedure TfrmLoadArrivals.CopyLoadToOtherSalesRegion(const LoadNo, LONo  : Integer);
+Var
+  PO_LONo, NewLoadNo: Integer;
+begin
+
+  // ToDo ! Gör en kontroll att avropen matchar med orderlineno!!
+
+  With dmArrivingLoads do
+  Begin
+    NewLoadNo := dmsSystem.POLoadConfirmed(LoadNo,  PO_LONo);
+    if NewLoadNo = 0 then
+    Begin
+      PO_LONo := GetPOLoNoInRegionToRegion(LONo); // SelectAvropsNrAttSkapaSalesLoadMot
+
+      if PO_LONo > 0 then
+      Begin
+        NewLoadNo := CopySalesLoadToPOLoadAndSetPackagesAsNotAvailable
+          (LoadNo, PO_LONo, 1);
+        if NewLoadNo > 0 then
+          ShowMessage('The Load was copied to other sales region ' +
+            inttostr(PO_LONo) + ', Load# ' + inttostr(NewLoadNo));
+      End;
+    End
+    else
+      ShowMessage('The load is already copied to other sales region ' +
+        inttostr(PO_LONo) + ', Load# ' + inttostr(NewLoadNo));
+  End;
+end;
 
 procedure TfrmLoadArrivals.AR_Sales_Loads(Sender: TObject);
 Var
@@ -5720,6 +5816,8 @@ begin
 //       TformConfirmanyNormalLoad
 //göra det här när alla laster är OK, med andra ord flyta till efter loopen!
        NewLoadNo  := ex_AR_SALES_Loads(mtSelectedLoadsLoadNo.AsInteger, cdsArrivingLoadsLipNo.AsInteger) ;
+
+
  //Inserting LoadNo to PkgInvStat
        Run_insPkgInvStatByLoad(mtSelectedLoadsLoadNo.AsInteger) ;
 
@@ -5732,6 +5830,14 @@ begin
         mtSelectedLoads.Edit ;
         mtSelectedLoadsStatus.AsInteger    := 1 ;
         mtSelectedLoads.Post ;
+
+        if mtSelectedLoadsTrading.AsInteger = 2 then
+                 Begin
+                  // dmsSystem.FDoLog('CopyRtR, NewLoadNo = ' + inttostr(NewLoadNo) + ' - mtSelectedLoadsLONo.AsInteger = ' + mtSelectedLoadsLONo.AsString);
+                   dmArrivingLoads.CopyRtR(mtSelectedLoadsLONo.AsInteger) ;
+
+                   CopyLoadToOtherSalesRegion(NewLoadNo, mtSelectedLoadsLONo.AsInteger) ;
+                 End;
        End  //if NewLoadNo > 0 then
        else
        Begin
@@ -5805,6 +5911,13 @@ begin
 
 
   InsertMarkedLoadsToTempTable (Sender, 0) ;
+
+      if not DoesAllLoadsHaveSameLIPNo then
+      Begin
+            ShowMessage('Not all loads selected have the same inventory group target, do those loads separately.');
+            Exit;
+      End;
+
   fSelectLIP          := TfSelectLIP.Create(nil);
   fAnkomstRegProgress := TfAnkomstRegProgress.Create(nil);
   Try
@@ -7207,6 +7320,134 @@ Begin
      End ;
    End ;
 End;
+
+function TfrmLoadArrivals.CheckThatCustomerNoIsValidOnSelectedLoads : Boolean;
+Var
+  i, RecIDX: Integer;
+  Save_Cursor: TCursor;
+  ColIdx: Integer;
+  ObjectType: Integer;
+  SupplierNo  : Integer;
+  LoadNo : Integer ;
+begin
+  Result                  := False;
+  Save_Cursor             := Screen.Cursor;
+  Screen.Cursor           := crSQLWait; { Show hourglass cursor }
+  Result                  := True ;
+  with dmArrivingLoads do
+  Begin
+    grdLoadsDBTableView1.BeginUpdate;
+    grdLoadsDBTableView1.DataController.BeginLocate;
+    Try
+      For i := 0 to grdLoadsDBTableView1.Controller.SelectedRecordCount - 1 do
+      Begin
+        RecIDX := grdLoadsDBTableView1.Controller.SelectedRecords[i]
+          .RecordIndex;
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('OBJECTTYPE').Index;
+
+        ObjectType := grdLoadsDBTableView1.DataController.Values
+          [RecIDX, ColIdx];
+
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('SupplierNo').Index;
+        SupplierNo := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
+
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('LoadNo').Index;
+        LoadNo := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
+
+        if dmsContact.GetSRByCompanyNo(SupplierNo) <>  dmsContact.GetSRByCompanyNo(ThisUser.CompanyNo) then
+        Begin
+          ShowMessage('LoadNo ' + IntToStr(LoadNo) + ' does not appear to be a valid load to confirm arrival on due to difference in salesregion.') ;
+          Result := False ;
+          Exit ;
+        End;
+
+
+      End; // for y
+
+    Finally
+      grdLoadsDBTableView1.DataController.EndLocate;
+      grdLoadsDBTableView1.EndUpdate;
+      Screen.Cursor := Save_Cursor; { Always restore to normal }
+    End;
+
+  End; // with
+end;
+
+function TfrmLoadArrivals.DoesAllLoadsHaveSameLIPNo : Boolean ;
+Var LIPNo : Integer ;
+Begin
+ Result  :=   True ;
+ mtSelectedLoads.First ;
+ LIPNo  := mtSelectedLoadsLIPNo.AsInteger ;
+ while not mtSelectedLoads.eof do
+ Begin
+  if LIPNo <> mtSelectedLoadsLIPNo.AsInteger  then
+  Begin
+    Result  :=   False ;
+  End;
+  mtSelectedLoads.Next ;
+ End;
+End;
+
+function TfrmLoadArrivals.
+  AreMarkedLoadsSameObjectTypeAndInternalContract: Boolean;
+Var
+  i, RecIDX: Integer;
+  Save_Cursor: TCursor;
+  ColIdx: Integer;
+  ObjectType: Integer;
+  OrderType: Integer;
+begin
+  Result := False;
+  Save_Cursor := Screen.Cursor;
+  Screen.Cursor := crSQLWait; { Show hourglass cursor }
+  mtSelectedLoads.Active := False;
+  mtSelectedLoads.Active := True;
+  with dmArrivingLoads do
+  Begin
+    grdLoadsDBTableView1.BeginUpdate;
+    grdLoadsDBTableView1.DataController.BeginLocate;
+    Try
+      For i := 0 to grdLoadsDBTableView1.Controller.SelectedRecordCount - 1 do
+      Begin
+        RecIDX := grdLoadsDBTableView1.Controller.SelectedRecords[i]
+          .RecordIndex;
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('OBJECTTYPE').Index;
+        ObjectType := grdLoadsDBTableView1.DataController.Values
+          [RecIDX, ColIdx];
+
+        ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
+          ('OrderType').Index;
+        OrderType := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
+
+        if not mtSelectedLoads.Locate('OBJECTTYPE', ObjectType, []) then
+        Begin
+          mtSelectedLoads.Insert;
+          mtSelectedLoadsOBJECTTYPE.AsInteger := ObjectType;
+          mtSelectedLoads.Post;
+        End;
+      End; // for y
+      // Är det fler än en record är valda laster av olika "sort"
+      if (mtSelectedLoads.RecordCount = 0) or (mtSelectedLoads.RecordCount > 1) or (OrderType <> 3)
+      then
+        Result := False
+      else
+        if ((mtSelectedLoadsOBJECTTYPE.AsInteger = 2) and (OrderType = 3)) then
+        Result := True
+        else
+        Result := False;
+    Finally
+      grdLoadsDBTableView1.DataController.EndLocate;
+      grdLoadsDBTableView1.EndUpdate;
+      Screen.Cursor := Save_Cursor; { Always restore to normal }
+    End;
+
+  End; // with
+end;
 
 
 

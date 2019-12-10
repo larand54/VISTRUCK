@@ -536,7 +536,6 @@ object dmArrivingLoads: TdmArrivingLoads
     Top = 528
   end
   object cdsArrivingLoads: TFDQuery
-    Active = True
     CachedUpdates = True
     Indexes = <
       item
@@ -568,13 +567,12 @@ object dmArrivingLoads: TdmArrivingLoads
     SQL.Strings = (
       'SELECT DISTINCT'
       '0 AS EGEN,'
-      '(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl'
-      'where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,'
-      '(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2'
-      'where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,'
       'L.LoadAR,'
       'ST_AdrCtry.CountryCode,'
-      ''
+      '(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl'
+      'where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,'
+      '( select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2'
+      'where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,'
       'LSP.ShippingPlanNo'#9#9#9'                AS'#9'LO,'
       'L.LoadNo'#9#9#9#9'                        AS'#9'LOADNO,'
       'L.FS'#9#9#9#9'                            AS'#9'FS,'
@@ -605,6 +603,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'WHEN isNull(OH.OrderType,-1) = 0 THEN '#39'SALES'#39
       'WHEN isNull(OH.OrderType,-1) = 1 THEN '#39'PO'#39
       'WHEN isNull(OH.OrderType,-1) = -1 THEN '#39'INTERN'#39
+      'WHEN isNull(OH.OrderType,-1) = 2 THEN '#39'PRICELIST'#39
+      'WHEN isNull(OH.OrderType,-1) = 3 THEN '#39'INT.CONTRACT'#39
       'End AS TYP,'
       'CASE'
       'WHEN isNull(SP.ObjectType,-1) = 2 THEN '#39'LO'#39
@@ -637,7 +637,8 @@ object dmArrivingLoads: TdmArrivingLoads
       
         'inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.In' +
         'ternalInvoiceNo'
-      'WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo'
+      'WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo,'
+      'SP.LoadingLocationNo, CSH.OrderNo'
       ''
       ''
       ''
@@ -674,9 +675,7 @@ object dmArrivingLoads: TdmArrivingLoads
       #9#9#9#9#9#9'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
       #9#9#9#9#9#9'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
       ''
-      ''
       'Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo'
-      ''
       ''
       'INNER JOIN dbo.Client Mill'#9#9#9'ON'#9'Mill.ClientNo '#9#9'= SP.SupplierNo'
       ''
@@ -710,14 +709,18 @@ object dmArrivingLoads: TdmArrivingLoads
       #9#9#9#9#9#9#9'ON'#9'ST.ShippingPlanNo'#9'= CSD.ShippingPlanNo'
       #9#9#9#9#9#9#9'AND'#9'ST.Reference'#9#9'= CSD.Reference'
       ''
-      'LEFT OUTER JOIN dbo.Booking'#9#9'Bk'
+      #9'LEFT OUTER JOIN dbo.Booking'#9#9'Bk'
       
-        'Left Outer JOIN dbo.Client'#9#9'SC '#9'ON  '#9'Bk.ShippingCompanyNo '#9'= SC.' +
-        'ClientNo'
+        '--'#9'LEFT OUTER JOIN dbo.VoyageDestination'#9'VD '#9'ON  '#9'Bk.BookingNo'#9#9 +
+        '= vd.BookingNo'
       
-        'Left Outer Join dbo.BookingType'#9#9'Bt'#9'ON'#9'Bt.BookingTypeNo'#9'= Bk.Boo' +
-        'kingTypeNo'
-      'ON  '#9'Bk.ShippingPlanNo = CSH.ShippingPlanNo'
+        #9'Left Outer JOIN dbo.Client'#9#9'SC '#9'ON  '#9'Bk.ShippingCompanyNo '#9'= SC' +
+        '.ClientNo'
+      
+        #9'Left Outer Join dbo.BookingType'#9#9'Bt'#9'ON'#9'Bt.BookingTypeNo'#9'= Bk.Bo' +
+        'okingTypeNo'
+      ' ON  '#9'Bk.ShippingPlanNo = CSH.ShippingPlanNo'
+      ''
       ''
       'WHERE'
       'CLL.ClientNo          = -1'
@@ -727,9 +730,10 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       
         'AND L.LOADNO NOT IN (SELECT Confirmed_LoadNo FROM dbo.Confirmed_' +
-        'Load )')
+        'Load )'
+      '')
     Left = 56
-    Top = 32
+    Top = 24
     object cdsArrivingLoadsLoadAR: TIntegerField
       DisplayLabel = 'AR'
       FieldName = 'LoadAR'
@@ -946,6 +950,17 @@ object dmArrivingLoads: TdmArrivingLoads
       Origin = 'OriginalInvoiceNo'
       ProviderFlags = []
       ReadOnly = True
+    end
+    object cdsArrivingLoadsLoadingLocationNo: TIntegerField
+      FieldName = 'LoadingLocationNo'
+      Origin = 'LoadingLocationNo'
+      ProviderFlags = []
+      Required = True
+    end
+    object cdsArrivingLoadsOrderNo: TIntegerField
+      FieldName = 'OrderNo'
+      Origin = 'OrderNo'
+      ProviderFlags = []
     end
   end
   object cdsArrivingPackages: TFDQuery
@@ -1382,7 +1397,6 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cds_verkLaster: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -5788,7 +5802,7 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_AddPackageARConfirmed'
     Left = 1032
-    Top = 416
+    Top = 384
     ParamData = <
       item
         Position = 1
@@ -5870,7 +5884,7 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CngArtNoByPkgSize'
     Left = 1032
-    Top = 496
+    Top = 432
     ParamData = <
       item
         Position = 1
@@ -6070,6 +6084,156 @@ object dmArrivingLoads: TdmArrivingLoads
         DataType = ftString
         ParamType = ptInput
         Size = 100
+      end>
+  end
+  object sp_CopyRtR: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_CopyRtR]'
+    Left = 1056
+    Top = 584
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@CreateUser'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@OldLONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_GetRtRPOLoNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_GetRtRPOLoNo'
+    Left = 1056
+    Top = 536
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@SalesLONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_CopySalesLoadToPO: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_CopySalesLoadToPO'
+    Left = 1056
+    Top = 488
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@SrcLoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@NewLONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@CreateUser'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@NewLoadNo'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 6
+        Name = '@Insert_Confirmed_Load'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_UNDOintALOAR_OK: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_UNDOintALOAR_OK'
+    Left = 864
+    Top = 264
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@LoadOK'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object sp_RtR_Load_is_AR: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_RtR_Load_is_AR'
+    Left = 904
+    Top = 536
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@Confirmed_LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_delAR_RtRLoad: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_delAR_RtRLoad'
+    Left = 904
+    Top = 432
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@Confirmed_LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
   end
 end
