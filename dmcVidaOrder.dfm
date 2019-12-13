@@ -3425,7 +3425,6 @@ object dmcOrder: TdmcOrder
     end
   end
   object cdsLoadsForLO_forVW: TFDStoredProc
-    Active = True
     OnUpdateRecord = cdsLoadsForLO_forVWUpdateRecord
     Connection = dmsConnector.FDConnection1
     UpdateObject = updLoadsForLO_forVW

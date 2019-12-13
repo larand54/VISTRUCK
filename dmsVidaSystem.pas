@@ -2043,7 +2043,7 @@ begin
  mtSizeFormat.AppendRecord([2,'TUM']);
  mtSizeFormat.AppendRecord([4,'TUM (AKT.MM)']);
 
- LOG_ENABLE := True ;
+ LOG_ENABLE := False ;
 
  mtReportTypes.Active:= True ;
  mtReportTypes.InsertRecord(['Kontrakt', 1]);
