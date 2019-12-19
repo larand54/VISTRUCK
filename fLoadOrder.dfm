@@ -1018,8 +1018,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cbShowOnlySelectedVerksLOs: TcxDBCheckBox
-          Left = 669
-          Top = 66
+          Left = 629
+          Top = 68
           Caption = 'Visa endast valt verks LO'#39's'
           DataBinding.DataField = 'AutoColWidth'
           DataBinding.DataSource = dmcOrder.ds_Props
@@ -6961,6 +6961,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Left = 312
     Top = 252
     object dxComponentPrinter1Link2: TdxGridReportLink
+      PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 8
       PrinterPage.Footer = 5080
       PrinterPage.GrayShading = True
@@ -6975,6 +6976,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 40619.713961400460000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
       BuiltInReportLink = True
     end
   end
