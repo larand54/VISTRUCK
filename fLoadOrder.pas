@@ -4731,9 +4731,12 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acNewLoadWithLOUpdate(Sender: TObject);
 begin
- acNewLoadWithLO.Enabled:= (dmcOrder.cdsSawmillLoadOrders.Active)
- and (dmcOrder.cdsSawmillLoadOrders.RecordCount > 0)
- and (dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger = dmcOrder.cds_PropsVerkNo.AsInteger) ;
+ with dmsContact do
+ Begin
+   acNewLoadWithLO.Enabled:= (dmcOrder.cdsSawmillLoadOrders.Active)
+   and (dmcOrder.cdsSawmillLoadOrders.RecordCount > 0)
+   and dmcOrder.ShowAddLoadButton = True ;
+ End;
 end;
 
 procedure TfrmVisTruckLoadOrder.acOpenLoadUpdate(Sender: TObject);

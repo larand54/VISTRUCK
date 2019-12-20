@@ -2462,4 +2462,23 @@ object dmsContact: TdmsContact
       Origin = 'LanguageCode'
     end
   end
+  object sq_GetRealInterverk: TFDQuery
+    Active = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'select * from dbo.Client C'
+      'Where C.ClientNo = :CompanyNo')
+    Left = 984
+    Top = 592
+    ParamData = <
+      item
+        Name = 'COMPANYNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object sq_GetRealInterverkIntVerk: TIntegerField
+      FieldName = 'IntVerk'
+      Origin = 'IntVerk'
+    end
+  end
 end

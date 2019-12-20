@@ -4608,7 +4608,7 @@ begin
     NoOfCopies := dmcOrder.cds_PropsCopyPcs.AsInteger;
     try
       loads.Add(loadNo);
-      if not dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [0, 1] then
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [0, 1] then
         ReportType := cfTallyInternal
       else
         ReportType := cfTally;
