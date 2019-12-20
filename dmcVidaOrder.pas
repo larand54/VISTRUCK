@@ -508,6 +508,7 @@ type
     function  ELOLengthsChanged_for_specific_ELORow : Boolean ;
     procedure ModifiedTheUserOnLO ;
   public
+    ShowAddLoadButton : Boolean ;
     SupplierNo : Integer ;
     Shipping : Integer ; //Deliver or Receiving selected by user in fLoadForm
     procedure SetAvropStatusToActive(const LONo, AvropStatus : Integer) ;
@@ -676,6 +677,13 @@ begin
   else
   cdsBooking.ReadOnly:= False ;
   }
+
+ ShowAddLoadButton := ((dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger = dmcOrder.cds_PropsVerkNo.AsInteger)
+   and (dmsContact.IsRealInternverk(dmcOrder.cds_PropsVerkNo.AsInteger)=True))
+  OR
+ ((dmsContact.GetSalesRegionNo(cdsSawmillLoadOrdersSupplier.AsInteger)
+ = dmsContact.GetSalesRegionNo(dmcOrder.cds_PropsVerkNo.AsInteger))
+   and (dmsContact.IsRealInternverk(dmcOrder.cds_PropsVerkNo.AsInteger)=False)) ;
 end;
 
 Procedure TdmcOrder.SetLOStatus (const sspNo, Status : Integer) ;

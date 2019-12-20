@@ -7357,7 +7357,7 @@ begin
           ('LoadNo').Index;
         LoadNo := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
 
-        if dmsContact.GetSRByCompanyNo(SupplierNo) <>  dmsContact.GetSRByCompanyNo(ThisUser.CompanyNo) then
+        if dmsContact.GetSalesRegionNo(SupplierNo) <>  dmsContact.GetSalesRegionNo(ThisUser.CompanyNo) then
         Begin
           ShowMessage('LoadNo ' + IntToStr(LoadNo) + ' does not appear to be a valid load to confirm arrival on due to difference in salesregion.') ;
           Result := False ;

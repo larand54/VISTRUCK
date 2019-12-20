@@ -332,6 +332,8 @@ type
     sq_GetSRNoSalesRegionNo: TIntegerField;
     sq_GetCustomerLanguage: TFDQuery;
     LanguageCode: TIntegerField;
+    sq_GetRealInterverk: TFDQuery;
+    sq_GetRealInterverkIntVerk: TIntegerField;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;
@@ -352,6 +354,7 @@ type
 //    function  WhoBelongsToLoadingLocation(const LoadingLocationNo : Integer) : Integer ;
 
   public
+    function  IsRealInternverk (const CompanyNo : Integer) : Boolean ;
     function  GetSalesRegionNo (const CompanyNo : Integer) : Integer ;
     Function  Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
     function  ThisUserIsRoleType(const ClientNo, RoleType : Integer) : Boolean ;
@@ -926,6 +929,21 @@ Begin
  End ;
 End ;
 
+function TdmsContact.IsRealInternverk (const CompanyNo : Integer) : Boolean ;
+Begin
+ saveCursor;
+ sq_GetRealInterverk.ParamByName('CompanyNo').AsInteger:= CompanyNo ;
+ Try
+ sq_GetRealInterverk.Open ;
+ if not sq_GetRealInterverk.Eof then
+  Result:= sq_GetRealInterverkIntVerk.AsInteger  = 1
+   else
+    Result:= False ;
+ Finally
+  sq_GetRealInterverk.Close ;
+  restoreCursor;
+ End ;
+End ;
 
 
 end.

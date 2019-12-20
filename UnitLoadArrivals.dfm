@@ -35,6 +35,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
