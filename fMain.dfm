@@ -4014,10 +4014,6 @@ object frmMain: TfrmMain
         end
         item
           Visible = True
-          ItemName = 'dxBarLargeButton38'
-        end
-        item
-          Visible = True
           ItemName = 'dxBarLargeButtonEWSProfileManager'
         end>
       OneOnRow = True
@@ -4236,7 +4232,6 @@ object frmMain: TfrmMain
       Category = 0
       Hint = 'Mail test'
       Visible = ivNever
-      OnClick = dxBarLargeButton38Click
     end
     object dxBarLargeButtonEWSProfileManager: TdxBarLargeButton
       Action = acEWSProfile

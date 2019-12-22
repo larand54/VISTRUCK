@@ -4,7 +4,6 @@ interface
 
 uses
   DateUtils,
-//  fAvrop,
   ActnList,
   Classes,
   Controls,
@@ -357,7 +356,6 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
-    procedure dxBarLargeButton38Click(Sender: TObject);
     procedure dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
     procedure acEWSProfileExecute(Sender: TObject);
 
@@ -386,53 +384,27 @@ type
 var
   FrmMain: TfrmMain;
 
-
-
 implementation
 
 uses
   Dialogs,
-
-
   VidaConst,
   VidaType,
-  VidaUser,  //fInvoiceList,
+  VidaUser,
   dmcVidaSystem, UnitSetup, UnitCRViewReport,
-  //dmLM1,
-  //UnitShippingInstruction,
-  //UnitKP_List,
-  //UnitMaintenance,
   fLoadOrder, dmcVidaOrder, UnitAboutBox,
   UnitLoadArrivals, UnitPkgInfo, dmsDataConn,
-  //UnitSokAvropFormular,
-  //UnitAvrakningar,
-  dmsVidaProduct, //dmsVidaPkg,
-  dmsVidaSystem, //uFreightLoad,
-  uUserPreference, //Ucurrency,
-  //uPkgLog,
-  UnitCRPrintReport, //UnitProdRep,
-  //uGenShipCost, //uProductionUnit,
-  //uBasMatPunkter,
-  //UnotInvoicedReport,
-//  uPkgNoSeries,
-  //uSamlingsfaktura,
-  //uLastLista,
-//  uPktNrPos, uPkgNoPos, //UnitPkgsByPktType, //UExtMovePkg,
-  //dm_Inventory,
-  uEncode , //fAvrakningar, //fSkapaAvrakning,
-  UPortArrivals, uChangeLogins , //uChkAvrLoads,
+  dmsVidaProduct,
+  dmsVidaSystem,
+  uUserPreference,
+  UnitCRPrintReport,
+  uEncode,
+  UPortArrivals, uChangeLogins ,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput, UnitSokAvropFormular , uSendMapiMail
+  uSetupUserOutput, UnitSokAvropFormular
   , dmsUserAdm, udmEWSSendMail;
-  //uAttestLegoRun, //fRunAttester, //fSkapaRunAttest,
-  //uFreightExternLoad,
-//  uFtpParam ;//, uKundspecifika,
-  //uKontoLogik, uOrderStocken, uIntrastat,
-//  uTradingAnalyze, //uFreightExternLoad, uPayControl,
-//  uImportPkgStatusOfHampen ,
-  //uCredit, uCreditLimitAnalys, uLager;
 
 
 
@@ -753,35 +725,6 @@ begin
  End ;
 end;
 
-procedure TfrmMain.dxBarLargeButton38Click(Sender: TObject);
-const
-  LF = #10;
-Var
-  A: array of Variant;
-  dm_SendMapiMail: Tdm_SendMapiMail;
-  Attach: array of String;
-  MailToAddress: String;
-  ReportType: integer;
-  LoadNo: integer;
-  Lang: integer;
-
-  NoOfCopies: integer;
-begin
-        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
-        Try
-          dm_SendMapiMail.SendMail('Följesedel. FSnr: ' ,
-            'Följesedel bifogad. '
-            + LF + ''
-            + LF + 'MVH/Best Regards, '
-            + LF + ''
-            + 'lars.makiaho@vida.se',
-            dmsSystem.Get_Dir('MyEmailAddress'),
-            'larand54@gmail.com',
-            Attach);
-        Finally
-          FreeAndNil(dm_SendMapiMail);
-        End;
-end;
 
 procedure TfrmMain.dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
 begin

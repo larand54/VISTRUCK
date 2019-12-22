@@ -2,6 +2,11 @@ program VISTRUCK;
 
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   fMain in 'fMain.pas' {frmMain},
   VidaConst in 'VidaConst.pas',
@@ -178,10 +183,10 @@ begin
   Application.Title := 'VISTRUCK';
   Application.CreateForm(TdmsConnector, dmsConnector);
   Application.CreateForm(TdmUserAdm, dmUserAdm);
-  Application.CreateForm(TFrmMain, FrmMain);
   Application.CreateForm(TdmsSystem, dmsSystem);
   Application.CreateForm(TdmsContact, dmsContact);
   Application.CreateForm(TdmModule1, dmModule1);
+  Application.CreateForm(TFrmMain, FrmMain);
   Application.CreateForm(Tdm_UserProps, dm_UserProps);
   Application.CreateForm(TdmLoadEntrySSP, dmLoadEntrySSP);
   Application.CreateForm(TdmInventory, dmInventory);
