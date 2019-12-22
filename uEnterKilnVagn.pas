@@ -301,6 +301,8 @@ Begin
   cds_KilnChargeRowsSupplierCode.AsString  := PkgSupplierCode ;
   cds_KilnChargeRowsRowNo.AsInteger        := RowNo ;
   cds_KilnChargeRows.Post ;
+  cds_KilnChargeRows.Active  := False ;
+  cds_KilnChargeRows.Active  := True ;
   RowNo := succ(RowNo) ;
   //
   Except
