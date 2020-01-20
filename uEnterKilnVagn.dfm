@@ -26,8 +26,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
     BevelOuter = bvNone
     TabOrder = 0
     object mePackageNo: TcxTextEdit
-      Left = 203
-      Top = 10
+      Left = 139
+      Top = 8
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -40,8 +40,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 210
     end
     object cxLabel1: TcxLabel
-      Left = 88
-      Top = 13
+      Left = 24
+      Top = 11
       Caption = 'Ange paketnr:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -110,7 +110,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
     end
     object cxButton1: TcxButton
-      Left = 600
+      Left = 490
       Top = 10
       Width = 129
       Height = 65
@@ -124,7 +124,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       ParentFont = False
     end
     object cxButton2: TcxButton
-      Left = 465
+      Left = 355
       Top = 10
       Width = 129
       Height = 65
@@ -179,8 +179,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
     end
     object cxDBTextEdit1: TcxDBTextEdit
-      Left = 203
-      Top = 42
+      Left = 139
+      Top = 40
       Hint = 'Kopieras till info2 f'#228'ltet i paketen'
       Margins.Left = 2
       Margins.Top = 2
@@ -201,8 +201,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 210
     end
     object cxLabel4: TcxLabel
-      Left = 88
-      Top = 44
+      Left = 24
+      Top = 42
       Caption = 'Notering:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -213,8 +213,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
     end
     object tePlannedDuration: TcxDBTextEdit
-      Left = 203
-      Top = 73
+      Left = 139
+      Top = 71
       Margins.Left = 2
       Margins.Top = 2
       Margins.Right = 2
@@ -232,8 +232,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 210
     end
     object cxLabel5: TcxLabel
-      Left = 88
-      Top = 76
+      Left = 24
+      Top = 74
       Caption = 'Plan.torktid:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -242,6 +242,20 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.Font.Name = 'Tahoma'
       Style.Font.Style = []
       Style.IsFontAssigned = True
+    end
+    object cxButton3: TcxButton
+      Left = 624
+      Top = 10
+      Width = 129
+      Height = 65
+      Action = acRefresh
+      TabOrder = 14
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
   end
   object Panel2: TPanel
@@ -510,6 +524,10 @@ object fEnterKilnVagn: TfEnterKilnVagn
     object acPickPackages: TAction
       Caption = 'Plocka paket'
       OnExecute = acPickPackagesExecute
+    end
+    object acRefresh: TAction
+      Caption = 'Refresh'
+      OnExecute = acRefreshExecute
     end
   end
   object siLangLinked_fEnterKilnVagn: TsiLangLinked

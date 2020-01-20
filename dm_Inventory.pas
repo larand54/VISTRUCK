@@ -1471,6 +1471,10 @@ type
     sp_MatchingRefPIPNo: TIntegerField;
     sp_MatchingRefPosStatus: TIntegerField;
     sp_MatchingRefStoredDate: TSQLTimeStampField;
+    cds_GetPakProdName: TFDQuery;
+    cds_GetPakProdNameProductDisplayName: TStringField;
+    cds_GetPakProdNamePcsPerLength: TStringField;
+    cds_GetPakProdNameMatchingPT: TStringField;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -2822,6 +2826,12 @@ Begin
   End ;
   cds_KilnChargeRows.Next ;
  End;
+
+    if cds_KilnChargeRows.Changecount > 0 then
+      Begin
+         cds_KilnChargeRows.ApplyUpdates(0) ;
+         cds_KilnChargeRows.Commitupdates ;
+      End ;
 
  if x = 0 then
   cds_KilnVagn.Delete ;

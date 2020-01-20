@@ -1005,6 +1005,7 @@ begin
      Begin
       fEnterKilnVagn  := TfEnterKilnVagn.Create(nil);
       Try
+        fEnterKilnVagn.Caption  := 'Cart/set. ' + lcProgressKiln.Text ;
         dmInventory.EditVagn(mtUserPropKilnChargeNo.AsInteger, SelectedVagnNo) ;
         fEnterKilnVagn.TypeOfLine := dmInventory.GetTypeOfLine(mtUserPropKilnChargeNo.AsInteger) ;
         fEnterKilnVagn.ShowModal ;
@@ -1412,9 +1413,11 @@ var
 begin
  if mtUserPropKilnChargeNo.AsInteger > 0 then
  Begin
- TypeOfLine := dmInventory.GetTypeOfLine(mtUserPropKilnChargeNo.AsInteger) ;
+  TypeOfLine := dmInventory.GetTypeOfLine(mtUserPropKilnChargeNo.AsInteger) ;
+
   fEnterKilnVagn  := TfEnterKilnVagn.Create(nil);
   Try
+    fEnterKilnVagn.Caption  := 'Cart/set. ' + lcProgressKiln.Text ;
     fEnterKilnVagn.TypeOfLine :=  TypeOfLine ;
     dmInventory.AddVagn(mtUserPropKilnChargeNo.AsInteger) ;
     fEnterKilnVagn.ShowModal ;

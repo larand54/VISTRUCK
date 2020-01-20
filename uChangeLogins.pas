@@ -34,6 +34,8 @@ type
     cxLabel3: TcxLabel;
     cxlblTestDB: TcxLabel;
     cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
     procedure HelpBtnClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -43,6 +45,8 @@ type
     procedure cxlblTestDBDblClick(Sender: TObject);
     procedure cxlblTestDBClick(Sender: TObject);
     procedure cxLabel4Click(Sender: TObject);
+    procedure cxLabel5Click(Sender: TObject);
+    procedure cxLabel6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -92,6 +96,16 @@ end;
 procedure TOKHelpBottomDlg.cxLabel4Click(Sender: TObject);
 begin
   EFD_Name.Text :=  cxLabel4.Caption ;
+end;
+
+procedure TOKHelpBottomDlg.cxLabel5Click(Sender: TObject);
+begin
+ eDatabas.Text := cxLabel5.Caption;
+end;
+
+procedure TOKHelpBottomDlg.cxLabel6Click(Sender: TObject);
+begin
+ EFD_Name.Text :=  cxLabel6.Caption ;
 end;
 
 procedure TOKHelpBottomDlg.cxlblTestDBClick(Sender: TObject);
