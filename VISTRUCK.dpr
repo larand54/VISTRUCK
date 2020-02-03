@@ -172,10 +172,10 @@ uses
   ISendMailInterfaces in '..\CommonSources\sendMail\ISendMailInterfaces.pas',
   udmDBSendMail in '..\CommonSources\sendMail\udmDBSendMail.pas' {dmDBSendMail: TDataModule},
   uSendMail in '..\CommonSources\sendMail\uSendMail.pas',
-  udmEWSSendMail in '..\CommonSources\sendMail\udmEWSSendMail.pas' {dmEWSSendMail: TDataModule},
-  udmMAPISendMail in '..\CommonSources\sendMail\udmMAPISendMail.pas' {dmMAPISendMail: TDataModule},
   uDO_LOG in '..\CommonSources\DelphiLogg\uDO_LOG.pas',
-  uSamlastInfo in 'uSamlastInfo.pas' {fSamLastInfo};
+  uSamlastInfo in 'uSamlastInfo.pas' {fSamLastInfo},
+  uEWSMail in '..\CommonSources\sendMail\uEWSMail.pas',
+  uMAPIMail in '..\CommonSources\sendMail\uMAPIMail.pas';
 
 {$R *.res}
 begin

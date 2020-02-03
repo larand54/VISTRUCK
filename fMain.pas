@@ -404,7 +404,7 @@ uses
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
   uSetupUserOutput, UnitSokAvropFormular
-  , dmsUserAdm, udmEWSSendMail;
+  , dmsUserAdm, uEWSMail;
 
 
 
@@ -728,9 +728,9 @@ end;
 
 procedure TfrmMain.dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
 begin
-  with TdmEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
+  with TEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
   begin
-    if rwEWSSession.ShowProfileManager = mrOK then
+    if EWSSession.ShowProfileManager = mrOK then
       showMessage('EWS Profile updated');
     free;
   end;
@@ -1221,9 +1221,9 @@ end;
 
 procedure TfrmMain.acEWSProfileExecute(Sender: TObject);
 begin
-  with TdmEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
+  with TEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
   begin
-    if rwEWSSession.ShowProfileManager = mrOK then
+    if EWSSession.ShowProfileManager = mrOK then
       showMessage('EWS Profile updated');
     free;
   end;
