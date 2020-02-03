@@ -77,6 +77,8 @@ type
     tePlannedDuration: TcxDBTextEdit;
     cxLabel5: TcxLabel;
     grdVagnPkgsDBTableView1MatchingPT: TcxGridDBColumn;
+    cxButton3: TcxButton;
+    acRefresh: TAction;
     procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Timer1Timer(Sender: TObject);
@@ -86,9 +88,11 @@ type
     procedure acPickPackagesExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure acRemovePackageUpdate(Sender: TObject);
+    procedure acRefreshExecute(Sender: TObject);
   private
     { Private declarations }
     RowNo : Integer ;
+    procedure UpdateProductDesc(Sender: TObject; const PackageNo : Integer; const PkgSupplierCode : String) ;
     procedure checkIMPProducts ;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
     procedure AddSelectedPkgsToVagn(Sender: TObject) ;
@@ -179,7 +183,10 @@ begin
  With dmInventory do
  Begin
   if cds_KilnChargeRows.RecordCount > 0 then
-   RowNo  := cds_KilnChargeRows.RecordCount + 1
+  Begin
+   RowNo  := cds_KilnChargeRows.RecordCount + 1 ;
+   cds_KilnChargeRows.Last ;
+  End
     else
      RowNo  := 1 ;
  End;
@@ -273,17 +280,44 @@ begin
       finally
         mtSelectedPkgNo.Filtered := False;
       end;
+      if cds_KilnChargeRows.Changecount > 0 then
+      Begin
+         cds_KilnChargeRows.ApplyUpdates(0) ;
+         cds_KilnChargeRows.Commitupdates ;
+      End ;
 //      cds_KilnChargeRows.Post ;
       cds_KilnChargeRows.Refresh;
+      cds_KilnChargeRows.Last ;
     finally
       cds_KilnChargeRows.EnableControls;
     end;
   end;
 end;
 
+procedure TfEnterKilnVagn.acRefreshExecute(Sender: TObject);
+begin
+ With dmInventory do
+ Begin
+  if cds_KilnVagn.State in [dsEdit, dsInsert] then
+    cds_KilnVagn.Post ;
+  cds_KilnChargeRows.Refresh ;
+ End ;
+end;
+
 procedure TfEnterKilnVagn.acRemovePackageExecute(Sender: TObject);
 begin
- dmInventory.cds_KilnChargeRows.Delete ;
+ With dmInventory do
+ Begin
+ cds_KilnChargeRows.Delete ;
+      if cds_KilnChargeRows.Changecount > 0 then
+      Begin
+         cds_KilnChargeRows.ApplyUpdates(0) ;
+         cds_KilnChargeRows.Commitupdates ;
+      End ;
+//      cds_KilnChargeRows.Post ;
+//      cds_KilnChargeRows.Refresh;
+      cds_KilnChargeRows.Last ;
+ End;
 end;
 
 procedure TfEnterKilnVagn.acRemovePackageUpdate(Sender: TObject);
@@ -301,8 +335,9 @@ Begin
   cds_KilnChargeRowsSupplierCode.AsString  := PkgSupplierCode ;
   cds_KilnChargeRowsRowNo.AsInteger        := RowNo ;
   cds_KilnChargeRows.Post ;
-  cds_KilnChargeRows.Active  := False ;
-  cds_KilnChargeRows.Active  := True ;
+//  cds_KilnChargeRows.Active  := False ;
+//  cds_KilnChargeRows.Active  := True ;
+//  cds_KilnChargeRows.Last ;
   RowNo := succ(RowNo) ;
   //
   Except
@@ -389,6 +424,9 @@ begin
   Begin
    // AddPkgTo_cds_LoadPackages(Sender, NewPkgNo,PkgSupplierCode) ;
     AddPkgsToVagn(Sender, NewPkgNo,PkgSupplierCode, ProductNo) ;
+    UpdateProductDesc(Sender, NewPkgNo,PkgSupplierCode) ;
+
+
   End
    else
    if Action = eaREJECT then
@@ -420,6 +458,38 @@ begin
  End ;//With
 end;
 
+procedure TfEnterKilnVagn.UpdateProductDesc(Sender: TObject; const PackageNo : Integer; const PkgSupplierCode : String) ;
+Begin
+ With dmInventory do
+ Begin
+  Try
+  cds_KilnChargeRows.Edit ;
+  cds_GetPakProdName.ParamByName('PackageNo').AsInteger   := PackageNo ;
+  cds_GetPakProdName.ParamByName('SupplierCode').AsString := PkgSupplierCode ;
+  cds_GetPakProdName.ParamByName('IMPNo').AsInteger       := cds_KilnVagnIMPNo.AsInteger ;
+  cds_GetPakProdName.Active := True ;
+
+  cds_KilnChargeRowsProductDisplayName.AsString     := cds_GetPakProdNameProductDisplayName.AsString ;
+  cds_KilnChargeRowsPcsPerLength.AsString           := cds_GetPakProdNamePcsPerLength.AsString ;
+  cds_KilnChargeRowsMatchingPT.AsString             := cds_GetPakProdNameMatchingPT.AsString ;
+//  cds_KilnChargeRowsRowNo.AsInteger        := RowNo ;
+  cds_KilnChargeRows.Post ;
+  cds_GetPakProdName.Active := False ;
+//  cds_KilnChargeRows.Active  := False ;
+//  cds_KilnChargeRows.Active  := True ;
+//  cds_KilnChargeRows.Last ;
+
+  //
+  Except
+   On E: EDatabaseError do
+   Begin
+    cds_KilnChargeRows.Cancel ;
+    ShowMessage(E.Message + siLangLinked_fEnterKilnVagn.GetTextOrDefault('IDS_1' (* ' :Paketnr finns upptaget i en tork redan.' *) )) ;
+   End;
+  End;
+ End;
+End;
+
 procedure TfEnterKilnVagn.mePackageNoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
@@ -440,6 +510,19 @@ begin
   if dmInventory.cds_KilnVagn.State in [dsEdit, dsInsert] then
    dmInventory.cds_KilnVagn.Post ;
   GetpackageNoEntered(Sender, mePackageNo.Text) ;
+   with dmInventory do
+   Begin
+      if cds_KilnChargeRows.Changecount > 0 then
+      Begin
+         cds_KilnChargeRows.ApplyUpdates(0) ;
+         cds_KilnChargeRows.Commitupdates ;
+      End ;
+//      cds_KilnChargeRows.Post ;
+   //   cds_KilnChargeRows.Refresh;
+    //  cds_KilnChargeRows.RefreshRecord(false) ;
+      cds_KilnChargeRows.Last ;
+   End;
+
  End;
  Timer1.Enabled   := True ;
  mePackageNo.Text := '' ;

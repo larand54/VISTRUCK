@@ -3,7 +3,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   Top = 193
   ActiveControl = EFD_Name
   Caption = 'Byt anv'#228'ndare'
-  ClientHeight = 271
+  ClientHeight = 321
   ClientWidth = 429
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -61,8 +61,8 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     OnClick = Button2Click
   end
   object BitBtn1: TBitBtn
-    Left = 128
-    Top = 151
+    Left = 206
+    Top = 222
     Width = 75
     Height = 41
     Kind = bkOK
@@ -70,8 +70,8 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     TabOrder = 4
   end
   object BitBtn2: TBitBtn
-    Left = 216
-    Top = 151
+    Left = 294
+    Top = 222
     Width = 75
     Height = 41
     Kind = bkCancel
@@ -86,6 +86,13 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'Vida\alvetruck'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     OnDblClick = cxLabel1DblClick
   end
   object cxLabel2: TcxLabel
@@ -96,6 +103,13 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'vida\hesttruck01'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     OnDblClick = cxLabel2DblClick
   end
   object cxLabel3: TcxLabel
@@ -106,6 +120,13 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'Vida\thelin'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     OnDblClick = cxLabel3DblClick
   end
   object cxlblTestDB: TcxLabel
@@ -116,6 +137,13 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'vistestsql.vida.se:vis_vida'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     OnClick = cxlblTestDBClick
     OnDblClick = cxlblTestDBDblClick
   end
@@ -127,7 +155,48 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     Margins.Right = 2
     Margins.Bottom = 2
     Caption = 'vida\shathi2'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
     OnClick = cxLabel4Click
+  end
+  object cxLabel5: TcxLabel
+    Left = 7
+    Top = 105
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'visdevsql.vida.se:vis_vida'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    OnClick = cxLabel5Click
+  end
+  object cxLabel6: TcxLabel
+    Left = 7
+    Top = 258
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'vida\mattho'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'MS Sans Serif'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    OnClick = cxLabel6Click
   end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
     Version = '7.2'
@@ -223,8 +292,7 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 208
-    Top = 112
+    Left = 328
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A0054004F004B00480065006C00700042006F00740074006F00

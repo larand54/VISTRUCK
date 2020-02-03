@@ -116,8 +116,6 @@ object fPickPkgNoTork: TfPickPkgNoTork
         PropertiesClassName = 'TcxDateEditProperties'
         Properties.ReadOnly = True
         Options.Filtering = False
-        SortIndex = 0
-        SortOrder = soAscending
         Width = 112
       end
       object cxGrid1DBTableView1STYCKPERLNGD: TcxGridDBColumn
@@ -136,6 +134,9 @@ object fPickPkgNoTork: TfPickPkgNoTork
       object cxGrid1DBTableView1Maxlangd: TcxGridDBColumn
         Caption = 'Maxl'#228'ngd'
         DataBinding.FieldName = 'Maxlangd'
+        PropertiesClassName = 'TcxLabelProperties'
+        SortIndex = 0
+        SortOrder = soAscending
         Width = 94
       end
     end
@@ -216,7 +217,6 @@ object fPickPkgNoTork: TfPickPkgNoTork
     Height = 121
     Align = alTop
     TabOrder = 2
-    ExplicitTop = -6
     object LabelPIPName: TLabel
       Left = 76
       Top = 14

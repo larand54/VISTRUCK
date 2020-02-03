@@ -8981,6 +8981,7 @@ object dmInventory: TdmInventory
     AfterInsert = cds_KilnChargeRowsAfterInsert
     AfterPost = cds_KilnChargeRowsAfterPost
     BeforeDelete = cds_KilnChargeRowsBeforeDelete
+    CachedUpdates = True
     Indexes = <
       item
         Active = True
@@ -9099,15 +9100,12 @@ object dmInventory: TdmInventory
       FieldName = 'PcsPerLength'
       Origin = 'PcsPerLength'
       ProviderFlags = []
-      ReadOnly = True
       Size = 255
     end
     object cds_KilnChargeRowsMatchingPT: TStringField
       FieldName = 'MatchingPT'
       Origin = 'MatchingPT'
       ProviderFlags = []
-      ReadOnly = True
-      Required = True
       Size = 15
     end
   end
@@ -11976,6 +11974,74 @@ object dmInventory: TdmInventory
     object sp_MatchingRefStoredDate: TSQLTimeStampField
       FieldName = 'StoredDate'
       Origin = 'StoredDate'
+    end
+  end
+  object cds_GetPakProdName: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      'Select  P.ProductDisplayName,'
+      
+        '[dbo].[vida_LengthDescription]( pt.PackageTypeNo ) AS PcsPerLeng' +
+        'th,'
+      ''
+      'isnull((Select '#39'Matching P/T OK'#39' FROM dbo.Product p2'
+      
+        #9#9#9#9'inner join dbo.ProductGroup pg2 on pg2.ProductGroupNo = p2.P' +
+        'roductGroupNo'
+      #9#9#9#9'WHERE pg2.ActualThicknessMM = pg.ActualThicknessMM'
+      #9#9#9#9'and pg2.ActualWidthMM = pg.ActualWidthMM'
+      #9#9#9#9'and pg2.SpeciesNo = pg.SpeciesNo'
+      #9#9#9#9'and pg2.SurfacingNo = pg.SurfacingNo'
+      #9#9#9#9'and pg2.ProductCategoryNo = :IMPNo'
+      #9#9#9#9'and p2.GradeNo = p.GradeNo),'#39'NO matching P/T'#39') AS MatchingPT'
+      ''
+      'FROM  dbo.PackageNumber pn'
+      
+        'inner join dbo.PackageType pt on pt.PackageTypeNo = pn.PackageTy' +
+        'peNo'
+      'inner join dbo.Product P on P.ProductNo = pt.ProductNo'
+      
+        'inner join dbo.ProductGroup PG on PG.ProductGroupNo = P.ProductG' +
+        'roupNo'
+      ''
+      'WHERE pn.PackageNo = :PackageNo'
+      'and pn.SupplierCode = :SupplierCode')
+    Left = 1024
+    Top = 544
+    ParamData = <
+      item
+        Name = 'IMPNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'PACKAGENO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'SUPPLIERCODE'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object cds_GetPakProdNameProductDisplayName: TStringField
+      FieldName = 'ProductDisplayName'
+      Origin = 'ProductDisplayName'
+      Size = 150
+    end
+    object cds_GetPakProdNamePcsPerLength: TStringField
+      FieldName = 'PcsPerLength'
+      Origin = 'PcsPerLength'
+      ReadOnly = True
+      Size = 255
+    end
+    object cds_GetPakProdNameMatchingPT: TStringField
+      FieldName = 'MatchingPT'
+      Origin = 'MatchingPT'
+      ReadOnly = True
+      Required = True
+      Size = 15
     end
   end
 end

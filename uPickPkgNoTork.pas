@@ -438,9 +438,9 @@ begin
     cxGrid1DBTableView1ColumnAngeAntalPkt.Visible := False;
 
     //Ensure sorting order is correct from the beginning
-    dmInventory.mtSelectedPkgNo.SortFields := 'REGISTRERAT';
+    dmInventory.mtSelectedPkgNo.SortFields := 'Maxlangd';
     dmInventory.mtSelectedPkgNo.SortDefault;
-    col := cxGrid1DBTableView1.GetColumnByFieldName('REGISTRERAT');
+    col := cxGrid1DBTableView1.GetColumnByFieldName('Maxlangd');
     col.SortOrder := dxCore.soAscending;
 
   { end
