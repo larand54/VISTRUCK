@@ -67,6 +67,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
       Height = 21
       Width = 121
+      AnchorX = 1044
     end
     object cxLabel2: TcxLabel
       Left = 801
@@ -96,6 +97,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
       Height = 21
       Width = 121
+      AnchorX = 1238
     end
     object cxLabel3: TcxLabel
       Left = 1050
@@ -275,7 +277,21 @@ object fEnterKilnVagn: TfEnterKilnVagn
       TabOrder = 0
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object cxButton4: TcxButton
+      Left = 824
+      Top = 8
+      Width = 129
+      Height = 49
+      Action = acPrint
+      TabOrder = 1
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
@@ -309,10 +325,23 @@ object fEnterKilnVagn: TfEnterKilnVagn
       DataController.DataSource = dmInventory.ds_KilnChargeRows
       DataController.KeyFieldNames = 'KilnChargeNo;RowNo;VagnNo'
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = '#,###.000'
+          Kind = skSum
+          FieldName = 'Totalm3Actual'
+          Column = grdVagnPkgsDBTableView1Totalm3Actual
+        end
+        item
+          Format = '###'
+          Kind = skCount
+          FieldName = 'PackageNo'
+          Column = grdVagnPkgsDBTableView1PackageNo
+        end>
       DataController.Summary.SummaryGroups = <>
       OptionsCustomize.DataRowSizing = True
       OptionsView.ColumnAutoWidth = True
+      OptionsView.Footer = True
       OptionsView.GroupByBox = False
       OptionsView.Indicator = True
       Styles.StyleSheet = GridTableViewStyleSheetPumpkinlarge
@@ -373,6 +402,9 @@ object fEnterKilnVagn: TfEnterKilnVagn
         DataBinding.FieldName = 'MatchingPT'
         PropertiesClassName = 'TcxLabelProperties'
       end
+      object grdVagnPkgsDBTableView1Totalm3Actual: TcxGridDBColumn
+        DataBinding.FieldName = 'Totalm3Actual'
+      end
     end
     object grdVagnPkgsLevel1: TcxGridLevel
       GridView = grdVagnPkgsDBTableView1
@@ -392,27 +424,27 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -16
+      Font.Height = -21
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = clBlack
     end
     object cxStyle2: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
-      Color = 10343916
+      Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -21
       Font.Name = 'Tahoma'
       Font.Style = []
       TextColor = clBlack
     end
     object cxStyle3: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
-      Color = 13626101
+      Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -21
       Font.Name = 'Tahoma'
       Font.Style = []
       TextColor = clBlack
@@ -422,7 +454,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 10343916
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = clBlack
@@ -432,7 +464,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 3122647
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = 13626101
@@ -442,7 +474,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 4325442
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = [fsBold]
       TextColor = clWhite
@@ -452,7 +484,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 10343916
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = [fsBold]
       TextColor = clBlack
@@ -462,7 +494,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 4944971
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = clWhite
@@ -472,7 +504,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 10343916
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = [fsBold]
       TextColor = clBlack
@@ -482,7 +514,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = 3122647
@@ -492,7 +524,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Color = 4944971
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -17
+      Font.Height = -19
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       TextColor = clWhite
@@ -528,6 +560,10 @@ object fEnterKilnVagn: TfEnterKilnVagn
     object acRefresh: TAction
       Caption = 'Refresh'
       OnExecute = acRefreshExecute
+    end
+    object acPrint: TAction
+      Caption = 'Print'
+      OnExecute = acPrintExecute
     end
   end
   object siLangLinked_fEnterKilnVagn: TsiLangLinked
@@ -801,5 +837,33 @@ object fEnterKilnVagn: TfEnterKilnVagn
     DataSet = dmInventory.cds_KilnVagn
     Left = 368
     Top = 328
+  end
+  object dxComponentPrinter1: TdxComponentPrinter
+    CurrentLink = dxComponentPrinter1Link1
+    Version = 0
+    Left = 872
+    Top = 296
+    object dxComponentPrinter1Link1: TdxGridReportLink
+      Active = True
+      Component = grdVagnPkgs
+      PageNumberFormat = pnfNumeral
+      PrinterPage.DMPaper = 9
+      PrinterPage.Footer = 6350
+      PrinterPage.Header = 6350
+      PrinterPage.Margins.Bottom = 12700
+      PrinterPage.Margins.Left = 12700
+      PrinterPage.Margins.Right = 12700
+      PrinterPage.Margins.Top = 12700
+      PrinterPage.Orientation = poLandscape
+      PrinterPage.PageHeader.LeftTitle.Strings = (
+        '[Date Printed][Time Printed]')
+      PrinterPage.PageSize.X = 210000
+      PrinterPage.PageSize.Y = 297000
+      PrinterPage._dxMeasurementUnits_ = 0
+      PrinterPage._dxLastMU_ = 2
+      ReportDocument.CreationDate = 43902.889727754630000000
+      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      BuiltInReportLink = True
+    end
   end
 end

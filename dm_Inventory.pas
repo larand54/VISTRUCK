@@ -1475,6 +1475,7 @@ type
     cds_GetPakProdNameProductDisplayName: TStringField;
     cds_GetPakProdNamePcsPerLength: TStringField;
     cds_GetPakProdNameMatchingPT: TStringField;
+    cds_KilnChargeRowsTotalm3Actual: TFloatField;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;

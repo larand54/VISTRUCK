@@ -8978,6 +8978,7 @@ object dmInventory: TdmInventory
     end
   end
   object cds_KilnChargeRows: TFDQuery
+    Active = True
     AfterInsert = cds_KilnChargeRowsAfterInsert
     AfterPost = cds_KilnChargeRowsAfterPost
     BeforeDelete = cds_KilnChargeRowsBeforeDelete
@@ -8995,7 +8996,7 @@ object dmInventory: TdmInventory
       'Select kcr.*, P.ProductDisplayName,'
       
         '[dbo].[vida_LengthDescription]( pt.PackageTypeNo ) AS PcsPerLeng' +
-        'th,'
+        'th,  pt.Totalm3Actual,'
       ''
       'isnull((Select '#39'Matching P/T OK'#39' FROM dbo.Product p2'
       
@@ -9107,6 +9108,12 @@ object dmInventory: TdmInventory
       Origin = 'MatchingPT'
       ProviderFlags = []
       Size = 15
+    end
+    object cds_KilnChargeRowsTotalm3Actual: TFloatField
+      DisplayLabel = 'AM3'
+      FieldName = 'Totalm3Actual'
+      Origin = 'Totalm3Actual'
+      ProviderFlags = []
     end
   end
   object cds_KilnChargeHdr: TFDQuery

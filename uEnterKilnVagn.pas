@@ -23,7 +23,12 @@ uses
   cxLabel, cxTextEdit, VidaType, Vcl.ActnList, cxDBLabel, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, siComp, siLngLnk, System.Actions, cxMaskEdit,
-  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit ;
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit,
+  dxPSGlbl, dxPSUtl, dxPSEngn, dxPrnPg, dxBkgnd, dxWrap, dxPrnDev,
+  dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore,
+  dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
+  dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
+  dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon ;
 
 type
   TfEnterKilnVagn = class(TForm)
@@ -79,6 +84,11 @@ type
     grdVagnPkgsDBTableView1MatchingPT: TcxGridDBColumn;
     cxButton3: TcxButton;
     acRefresh: TAction;
+    grdVagnPkgsDBTableView1Totalm3Actual: TcxGridDBColumn;
+    cxButton4: TcxButton;
+    acPrint: TAction;
+    dxComponentPrinter1: TdxComponentPrinter;
+    dxComponentPrinter1Link1: TdxGridReportLink;
     procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Timer1Timer(Sender: TObject);
@@ -89,6 +99,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure acRemovePackageUpdate(Sender: TObject);
     procedure acRefreshExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
   private
     { Private declarations }
     RowNo : Integer ;
@@ -292,6 +303,24 @@ begin
       cds_KilnChargeRows.EnableControls;
     end;
   end;
+end;
+
+procedure TfEnterKilnVagn.acPrintExecute(Sender: TObject);
+begin
+
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Clear ;
+  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Clear ;
+
+  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add('CHARGE ' + dmInventory.cds_KilnVagnNotering.AsString) ;
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(' ') ;
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.CenterTitle.Add(lcPIPNAME.Text+'/'+lcLIPNAME.Text) ;
+//  dxComponentPrinter1Link1.PrinterPage.PageHeader.LeftTitle.Add(lcPIPNAME.Text+'/'+lcLIPNAME.Text) ;
+
+  dxComponentPrinter1Link1.PrinterPage.Orientation    := poLandscape ;
+  dxComponentPrinter1Link1.ShrinkToPageWidth          := True ;
+  dxComponentPrinter1Link1.OptionsOnEveryPage.Footers := False ;
+  dxComponentPrinter1Link1.PrinterPage.ApplyToPrintDevice ;
+ dxComponentPrinter1.Preview(True, dxComponentPrinter1Link1) ;
 end;
 
 procedure TfEnterKilnVagn.acRefreshExecute(Sender: TObject);
