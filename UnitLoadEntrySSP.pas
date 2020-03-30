@@ -742,7 +742,7 @@ Procedure TfLoadEntrySSP.GetLO_Records ;
     Try
      cdsLORows.Active:= False ;
      cdsLORows.ParamByName('LoadNo').AsInteger  := cds_LoadHeadLoadNo.AsInteger ;
-     cdsLORows.ParamByName('Lagerkod').AsString := gLagerkod ;
+     // cdsLORows.ParamByName('Lagerkod').AsString := gLagerkod ;
      cdsLORows.Active:= True ;
 
     Finally
@@ -4231,7 +4231,7 @@ Begin
 
   cdsLORows.Active:= False ;
   cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
-  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
+ // cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
 
   dmLoadEntrySSP.Get_LO_LinesMatched (dmLoadEntrySSP.cds_LoadPackagesPackageNo.AsInteger, dmLoadEntrySSP.cds_LoadPackagesSupplierCode.AsString) ;
@@ -6262,7 +6262,7 @@ begin
 
   cdsLORows.Active:= False ;
   cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
-  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
+ // cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;
@@ -6330,7 +6330,7 @@ begin
 
   cdsLORows.Active:= False ;
   cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
-  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
+ // cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;
@@ -6424,7 +6424,7 @@ begin
 
   cdsLORows.Active:= False ;
   cdsLORows.ParamByName('LoadNo').AsInteger   := cds_LoadHeadLoadNo.AsInteger ;
-  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
+//  cdsLORows.ParamByName('Lagerkod').AsString  := gLagerkod ;
   cdsLORows.Active:= True ;
   cdsLORows.Filter    := 'ShippingPlanNo = ' + cds_LSPShippingPlanNo.AsString + dmLoadEntrySSP.OriginalFilter(True) ;
   cdsLORows.Filtered  := True ;

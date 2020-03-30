@@ -170,6 +170,10 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object PanelMain: TPanel
               Left = 0
               Top = 0

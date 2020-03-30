@@ -877,7 +877,7 @@
       ''
       ''
       'WHERE L.LoadNo = :LoadNo'
-      'AND isnull(SSP.Lagerkod,1) = :Lagerkod'
+      '-- AND isnull(SSP.Lagerkod,1) = :Lagerkod'
       
         'AND ((SSP.ShippingPlanStatus <> 7) and (SSP.ShippingPlanStatus <' +
         '> 8)) '
@@ -888,11 +888,6 @@
       item
         Name = 'LOADNO'
         DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Name = 'LAGERKOD'
-        DataType = ftString
         ParamType = ptInput
       end>
     object cdsLORowsCustomerNo: TIntegerField
