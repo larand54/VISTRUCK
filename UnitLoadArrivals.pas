@@ -493,7 +493,7 @@ type
     cxButton2: TcxButton;
     grdPkgsDBTableView1Package_Size: TcxGridDBColumn;
     grdPkgsDBTableView1PackageSizeName: TcxGridDBColumn;
-    bcConfirmed: TcxComboBox;
+    bcConfirmedv2: TcxComboBox;
     mtSelectedLoadsLOTYP: TStringField;
     dxBarLargeButton2: TdxBarLargeButton;
     acScannedErrors: TAction;
@@ -866,7 +866,7 @@ end;
 
 procedure TfrmLoadArrivals.FormCreate(Sender: TObject);
 begin
- bcConfirmed.Properties.OnChange  := nil ;
+ bcConfirmedv2.Properties.OnChange  := nil ;
  Try
   if (not Assigned(dmArrivingLoads)) then
   Begin
@@ -874,7 +874,7 @@ begin
   End ;
  dmsSystem.AssignDMToThisWork('TfrmLoadArrivals', 'dmArrivingLoads') ;
  Finally
-  bcConfirmed.Properties.OnChange :=  bcConfirmedPropertiesChange ;
+  bcConfirmedv2.Properties.OnChange :=  bcConfirmedPropertiesChange ;
  End;
 end;
 
@@ -894,7 +894,7 @@ begin
  lcInternKund.PostEditValue ;
  lcLaststlle.PostEditValue ;
  lcVerk.PostEditValue ;
-// bcConfirmed.PostEditValue ;
+// bcConfirmedv2.PostEditValue ;
 
   if cds_Props.State = dsBrowse then
    cds_Props.Edit ;
@@ -1050,13 +1050,21 @@ begin
 end;
 
 
-procedure TfrmLoadArrivals.BuildARQuery(const LONo, LoadNo: Integer);
+procedure TfrmLoadArrivals.BuildARQuery(const LONo, LoadNo : Integer);
 Begin
   with dmArrivingLoads do
   Begin
     if cds_PropsNewItemRow.AsInteger = 0 then
     Begin
       cdsArrivingLoads.SQL.Clear;
+      cdsArrivingLoads.SQL.Add('Declare @ArrivalLoads as Table (Egen int, OriginalLO int, OriginalLoadNo int,LoadAR int,CountryCode varchar(5),') ;
+      cdsArrivingLoads.SQL.Add('LO int,LOADNO int,FS varchar(20),LOADEDDATE Datetime,LOAD_STATUS int,LOAD_ID varchar(50),SUPPLIER varchar(80),') ;
+      cdsArrivingLoads.SQL.Add('SUPPCODE varchar(3),DESTINATION varchar(50),ORDER_NO varchar(20),OBJECTTYPE int,INVPOINTNO int,INVPOINTNAME varchar(50),') ;
+      cdsArrivingLoads.SQL.Add('CUSTOMERNO int,CUSTOMER varchar(3),SUPPLIERNO int,AVROP_CUSTOMERNO int,AVROP_CUSTOMER varchar(80),OBJECTTYPE_1 int,') ;
+      cdsArrivingLoads.SQL.Add('INITIALS varchar(3),ORDERTYPE int,TYP varchar(10),LOTYP varchar(7),LOINI varchar(3),LASTSTÄLLE varchar(50),LipNo int,') ;
+      cdsArrivingLoads.SQL.Add('Trading int,ARtillLager varchar(131),ImpVerk int,intNM3 float, AM3 float, Pcs int, Pkgs int,ClientName varchar(80),') ;
+      cdsArrivingLoads.SQL.Add('BookingType varchar(30),NoOfPackages int,PackagesConfirmed int,OriginalInvoiceNo int, LoadingLocationNo int, OrderNo int, Lagerkod varchar(4))') ;
+      cdsArrivingLoads.SQL.Add('insert into @ArrivalLoads') ;
       cdsArrivingLoads.SQL.Add('SELECT DISTINCT  1 AS EGEN,') ;
       cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
       cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
@@ -1153,16 +1161,17 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, CSH.OrderNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, CSH.OrderNo, isnull(L.Lagerkod,1) as Lagerkod') ;
 
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
         cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
         cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan SP on SP.shippingplanno = LSP.shippingplanno');
-        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
+        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo') ;
+        cdsArrivingLoads.SQL.Add('and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
       //  cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on sp.SupplierShipPlanObjectNo = ld.Defsspno');
 
         if (LONo = -1) and (LoadNo = -1) then
-          if bcConfirmed.ItemIndex = 2 then
+          if bcConfirmedv2.ItemIndex > 0 then
           Begin
             cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
             cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
@@ -1250,13 +1259,15 @@ Begin
       cdsArrivingLoads.SQL.Add('AND LSP.ConfirmedByReciever = 0') ;
 
 
-         if (LONo = -1) and (LoadNo = -1) then
-          if bcConfirmed.ItemIndex > 0 then
-          Begin
-            cdsArrivingLoads.SQL.Add('AND exists (select * from dbo.Confirmed_Load cl') ;
-            cdsArrivingLoads.SQL.Add('WHERE') ;
-            cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = L.LoadNo)') ;
-          End;
+{
+          if (LONo = -1) and (LoadNo = -1)  then
+            if bcConfirmedv2.ItemIndex > 0 then
+            Begin
+              cdsArrivingLoads.SQL.Add('AND exists (select * from dbo.Confirmed_Load cl') ;
+              cdsArrivingLoads.SQL.Add('WHERE') ;
+              cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = L.LoadNo)') ;
+            End;
+}
 
 
       if LONo > -1 then
@@ -1264,7 +1275,7 @@ Begin
       if LoadNo > -1 then
         cdsArrivingLoads.SQL.Add('AND L.LoadNo = ' + IntToStr(LoadNo));
 
-      if (LONo = -1) and (LoadNo = -1) then
+      if (LONo = -1) and (LoadNo = -1)  then
       Begin
         if (not cds_PropsBookingTypeNo.IsNull) and
           (cds_PropsBookingTypeNo.AsInteger > 0) then
@@ -1293,44 +1304,101 @@ Begin
 
       cdsArrivingLoads.SQL.Add('AND SP.ObjectType IN (2)');
 
-      if (LONo = -1) and (LoadNo = -1) then
+
+       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
+          cdsArrivingLoads.SQL.Add('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
-
+        else if bcConfirmedv2.ItemIndex = 1 then
+        // lbConfirmLoad.Enabled = True then
         Begin
-          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
-          if (LONo = -1) and (LoadNo = -1) then
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+
+
+          if cds_PropsMarketRegionNo.AsInteger = 1 then
           Begin
-          cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
-          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
-          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
-          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
-          cdsArrivingLoads.SQL.Add(', 102))');
+            cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
+          End
+          else
+          Begin
+            cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
           End;
+
         End
-        else
-          // Mina AR
-          if bcConfirmed.ItemIndex = 2 then // lbConfirmLoad.Enabled = True then
-          Begin
-            cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
-            cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
-              IntToStr(ThisUser.UserID));
-            cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
-              QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-              DateTimeToSQLTimeStamp(deStartPeriod.Date))));
-            cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
-              QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
-              DateTimeToSQLTimeStamp(deEndPeriod.Date))));
-          End;
+        else if bcConfirmedv2.ItemIndex = 2 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.CreatedUser = ' + intTostr(thisuser.UserID)) ;
+          cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102)))');
+        End;
       End; // if(LONo = -1) and (LoadNo = -1) then
 
-      // UNION
-      cdsArrivingLoads.SQL.Add('UNION');
+    (*
+        if (LONo = -1) and (LoadNo = -1)  then
+          Begin
+            if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+            Begin
+              cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+            End
+            else if bcConfirmedv2.ItemIndex = 1 then
 
+            Begin
+              cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+              if (LONo = -1) and (LoadNo = -1) then
+              Begin
+
+              cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102))');
+
+
+              End;
+            End
+            else
+              // Mina AR
+              if bcConfirmedv2.ItemIndex = 2 then // lbConfirmLoad.Enabled = True then
+              Begin
+                cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+                cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' + IntToStr(ThisUser.UserID));
+
+
+              cdsArrivingLoads.SQL.Add('AND (CL.DateCreated BETWEEN CONVERT(DATETIME, ');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102))');
+              End;
+          End; // if(LONo = -1) and (LoadNo = -1)  then
+  *)
+
+      // UNION
+  //    cdsArrivingLoads.SQL.Add('UNION');
+
+      cdsArrivingLoads.SQL.Add('insert into @ArrivalLoads') ;
       cdsArrivingLoads.SQL.Add('SELECT DISTINCT  1 AS EGEN,') ;
       cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
       cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
@@ -1363,7 +1431,7 @@ Begin
         ('Cust.ClientCode                         AS      CUSTOMER,');
       cdsArrivingLoads.SQL.Add
         ('SP.SupplierNo                           AS      SUPPLIERNO,');
-      cdsArrivingLoads.SQL.Add('isnull(CSH.CustomerNo, 0)				AS	AVROP_CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,');
       cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
       cdsArrivingLoads.SQL.Add('SP.OBJECTTYPE,');
 
@@ -1388,7 +1456,6 @@ Begin
       cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
         QuotedStr('INTERN'));
       cdsArrivingLoads.SQL.Add('End AS TYP,');
-
       cdsArrivingLoads.SQL.Add('CASE');
       cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
         QuotedStr('LO'));
@@ -1423,7 +1490,7 @@ Begin
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
-      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, -1 asOrderNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, -1 asOrderNo, isnull(L.Lagerkod, 1) as Lagerkod') ;
 
 
         cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
@@ -1434,7 +1501,7 @@ Begin
         cdsArrivingLoads.SQL.Add('and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
         if (LONo = -1) and (LoadNo = -1) then
         Begin
-          if bcConfirmed.ItemIndex = 2 then
+          if bcConfirmedv2.ItemIndex > 0 then
           Begin
             cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
             cdsArrivingLoads.SQL.Add
@@ -1545,11 +1612,1108 @@ Begin
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
+        else if bcConfirmedv2.ItemIndex = 1 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+          if (LONo = -1) and (LoadNo = -1) then
+          Begin
+            if cds_PropsMarketRegionNo.AsInteger = 1 then
+            Begin
+              cdsArrivingLoads.SQL.Add('AND (cl.DateCreated BETWEEN CONVERT(DATETIME, ');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102))');
+            End
+            else
+            Begin
+              cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+              cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+              cdsArrivingLoads.SQL.Add(', 102))');
+            End;
+          End;
+        End
+        else if bcConfirmedv2.ItemIndex = 2 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+          cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
+            IntToStr(ThisUser.UserID));
+
+          cdsArrivingLoads.SQL.Add('AND (CL.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
+        End;
+      End; // if(LONo = -1) and (LoadNo = -1) then
+
+//      cdsArrivingLoads.SQL.Add('UNION');
+// Inleverans från annan Region (RtR) tex vida till UK, Borg till Vida ************************//
+      cdsArrivingLoads.SQL.Add('insert into @ArrivalLoads') ;
+ // START REGION To REGION AR query
+      cdsArrivingLoads.SQL.Add('SELECT distinct ') ;
+
+      cdsArrivingLoads.SQL.Add('CASE WHEN OH.Trading = 2 THEN 0') ;
+      cdsArrivingLoads.SQL.Add('ELSE 1 END AS EGEN,') ;
+
+      cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
+      cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
+      cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
+      cdsArrivingLoads.SQL.Add('where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,') ;
+      cdsArrivingLoads.SQL.Add('IsNull((Select Top 1 cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo ') ;
+
+      cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo),0) AS LoadAR,') ;
+
+      cdsArrivingLoads.SQL.Add('ST_AdrCtry.CountryCode,') ;
+      cdsArrivingLoads.SQL.Add('LSP.ShippingPlanNo			AS	LO,') ;
+      cdsArrivingLoads.SQL.Add('L.LoadNo				AS	LOADNO,') ;
+      cdsArrivingLoads.SQL.Add('L.FS				        AS	FS,') ;
+      cdsArrivingLoads.SQL.Add('L.LoadedDate				AS	LOADEDDATE,') ;
+      cdsArrivingLoads.SQL.Add('L.SenderLoadStatus			AS	LOAD_STATUS,') ;
+      cdsArrivingLoads.SQL.Add('L.LoadID				AS	LOAD_ID,') ;
+      cdsArrivingLoads.SQL.Add('Mill.ClientName				AS 	SUPPLIER,') ;
+      cdsArrivingLoads.SQL.Add('Mill.ClientCode                         AS      SUPPCODE,') ;
+      cdsArrivingLoads.SQL.Add('ST_AdrCY.CityName			AS	DESTINATION,') ;
+      cdsArrivingLoads.SQL.Add('OH.OrderNoText				AS 	ORDER_NO,') ;
+      cdsArrivingLoads.SQL.Add('2				AS	OBJECTTYPE,') ;
+      cdsArrivingLoads.SQL.Add('isNull(CSH.ShipToCityNo,-1)		AS	INVPOINTNO,') ;
+      cdsArrivingLoads.SQL.Add('isNull(IName.CityName, ' + QuotedStr('') + ')		AS	INVPOINTNAME,') ;// -- Leverera till
+      cdsArrivingLoads.SQL.Add('OH.CustomerNo                           AS      CUSTOMERNO,') ;
+      cdsArrivingLoads.SQL.Add('Cust.ClientCode                         AS      CUSTOMER,') ;
+      cdsArrivingLoads.SQL.Add('OH.SalesRegionNo                           AS      SUPPLIERNO,') ;
+      cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,') ;
+      cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,') ;
+      cdsArrivingLoads.SQL.Add(' 2 AS OBJECTTYPE,') ;
+      cdsArrivingLoads.SQL.Add('(SELECT Top 1 US.INITIALS') ;
+      cdsArrivingLoads.SQL.Add('FROM dbo.Confirmed_Load_EXT CL') ;
+      cdsArrivingLoads.SQL.Add('Inner Join dbo.Users	US on US.UserID = cl.CreatedUser') ;
+      cdsArrivingLoads.SQL.Add('WHERE CL.Confirmed_LoadNo = LSP.LoadNo') ;
+      cdsArrivingLoads.SQL.Add('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,') ;
+      cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,') ;
+
+      cdsArrivingLoads.SQL.Add('CASE');
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
+        QuotedStr('SALES'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
+        QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
+        QuotedStr('INTERN'));
+      cdsArrivingLoads.SQL.Add('End AS TYP,') ;
+
+      cdsArrivingLoads.SQL.Add('CASE WHEN OH.Trading = 2 THEN ') ;
+      cdsArrivingLoads.SQL.Add(QuotedStr('RtR')) ;
+      cdsArrivingLoads.SQL.Add('ELSE ' + QuotedStr('RtR') + ' END AS LOTYP,') ;
+
+      cdsArrivingLoads.SQL.Add('(Select Top 1 US.INITIALS') ;
+      cdsArrivingLoads.SQL.Add('From dbo.CustomerShippingPlanHeader sp2') ;
+      cdsArrivingLoads.SQL.Add('Inner Join dbo.Users US on US.UserID = SP2.CreatedUser') ;
+      cdsArrivingLoads.SQL.Add('WHERE SP2.ShippingPlanNo = CSH.ShippingPlanNo)') ;
+      cdsArrivingLoads.SQL.Add(' AS LOINI,') ;
+
+      cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE,') ;
+      cdsArrivingLoads.SQL.Add('CSH.ShipToLIPNo AS LipNo,') ;
+      cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,') ;
+ //     cdsArrivingLoads.SQL.Add(,isNull(PIPCity.CityName,'/')+'/' +	LIP.LogicalInventoryName	AS	ARtillLager,
+
+      cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/') + ')+' + QuotedStr('/') +
+        ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
+
+      cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,') ;
+      cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs') ;
+      cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,') ;
+      cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+      cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+      cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+      cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
+
+            {
+        cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
+              cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
+              cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
+              cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo,
+
+      }
+
+
+  cdsArrivingLoads.SQL.Add('(Select top 1 nos.invoiceno FROM dbo.InvoiceNos nos') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceLO ilo on ilo.InternalInvoiceNo = nos.InternalInvoiceNo') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.CSHTradingLink tl on tl.SalesShippingPlanNo = ilo.ShippingPlanNo') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.LOBArrivals loba on loba.InternalInvoiceNo = ilo.InternalInvoiceNo') ;
+ cdsArrivingLoads.SQL.Add('WHERE tl.POShippingPlanNo = CSH.ShippingPlanNo') ;
+ cdsArrivingLoads.SQL.Add('and loba.NewLoadNo = L.LoadNo) as OriginalInvoiceNo,') ;
+
+
+      cdsArrivingLoads.SQL.Add('csh.LoadingLocationNo, CSH.OrderNo, isnull(L.Lagerkod,1) as Lagerkod') ;
+//* ===================== FROM ==================== */
+      cdsArrivingLoads.SQL.Add('FROM  dbo.CustomerShippingPlanDetails CSD') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Orders	OH ON OH.OrderNo = CSH.OrderNo') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Client AV_CUST ON	AV_CUST.ClientNo 	= OH.SalesRegionNo') ; //	CSH.CustomerNo') ;
+
+
+
+      cdsArrivingLoads.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = CSH.ShipToLIPNo') ;
+      cdsArrivingLoads.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo') ;
+      cdsArrivingLoads.SQL.Add('inner JOIN dbo.City PIPCity ON PIPCity.CityNo = PIP.PhyInvPointNameNo') ;
+
+      cdsArrivingLoads.SQL.Add('inner JOIN dbo.City IName ON	IName.CityNo = PIP.PhyInvPointNameNo') ;
+      cdsArrivingLoads.SQL.Add('LEFT JOIN dbo.City Loading ON	Loading.CityNo = CSH.LoadingLocationNo') ;// -- SP.LoadingLocationNo
+
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP ON LSP.ShippingPlanNo = CSH.ShippingPlanNo') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo') ;
+      cdsArrivingLoads.SQL.Add('AND     L.supplierno 		= OH.SalesRegionNo') ;
+      cdsArrivingLoads.SQL.Add('AND     L.CustomerNo 		= OH.CustomerNo') ;
+      cdsArrivingLoads.SQL.Add('Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Client Mill			ON	Mill.ClientNo 		= OH.CustomerNo') ;
+      cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Client Cust			ON	Cust.ClientNo 		= OH.SalesRegionNo') ;
+      cdsArrivingLoads.SQL.Add('	INNER JOIN dbo.ShippingPlan_ShippingAddress ST') ;
+      cdsArrivingLoads.SQL.Add('	LEFT OUTER JOIN dbo.Address 		ST_ADR		ON	ST_ADR.AddressNo	= ST.AddressNo') ;
+      cdsArrivingLoads.SQL.Add('	LEFT OUTER JOIN dbo.CITY		ST_AdrCY	ON	ST_AdrCY.CityNo 	= ST_ADR.CityNo') ;
+      cdsArrivingLoads.SQL.Add('	LEFT OUTER JOIN dbo.Country		ST_AdrCtry	ON	ST_AdrCtry.CountryNo 	= ST_ADR.CountryNo') ;
+      cdsArrivingLoads.SQL.Add('							ON	ST.ShippingPlanNo	= CSD.ShippingPlanNo') ;
+      cdsArrivingLoads.SQL.Add('							AND	ST.Reference		= CSD.Reference') ;
+    //  cdsArrivingLoads.SQL.Add('Inner Join dbo.UserArrivalPoint uap on uap.PhyInvPointNameNo = PIPCity.CityNo
+      cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk') ;
+      cdsArrivingLoads.SQL.Add('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo') ;
+      cdsArrivingLoads.SQL.Add('Left Outer Join dbo.BookingType		Bt	ON	Bt.BookingTypeNo	= Bk.BookingTypeNo') ;
+      cdsArrivingLoads.SQL.Add('ON  	Bk.ShippingPlanNo = CSH.ShippingPlanNo') ;
+
+      cdsArrivingLoads.SQL.Add('WHERE');
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+       if (not cds_PropsVerkNo.IsNull) and (cds_PropsVerkNo.AsInteger > 0) then
+        cdsArrivingLoads.SQL.Add('OH.SalesRegionNo = ' + cds_PropsVerkNo.AsString)
+         else
+          cdsArrivingLoads.SQL.Add('OH.SalesRegionNo = -1');
+      End // if (LONo = -1) and (LoadNo = -1) then
+      else
+        cdsArrivingLoads.SQL.Add('1=1');
+
+        cdsArrivingLoads.SQL.Add('and OH.Trading in (2,3)') ;
+
+{
+        cdsArrivingLoads.SQL.Add('AND Not exists (select * from dbo.Confirmed_Load cl') ;
+        cdsArrivingLoads.SQL.Add('WHERE') ;
+        cdsArrivingLoads.SQL.Add('cl.NewLoadNo = L.LoadNo)') ;
+}
+
+
+      if LONo > -1 then
+        cdsArrivingLoads.SQL.Add('AND csh.ShippingPlanNo = ' + IntToStr(LONo));
+      if LoadNo > -1 then
+        cdsArrivingLoads.SQL.Add('AND L.LoadNo = ' + IntToStr(LoadNo));
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin  //cds_PropsBookingTypeNo = LevereraTill
+        if (not cds_PropsBookingTypeNo.IsNull) and
+          (cds_PropsBookingTypeNo.AsInteger > 0) then
+          cdsArrivingLoads.SQL.Add('AND PIP.PhyInvPointNameNo = ' +
+            cds_PropsBookingTypeNo.AsString);
+
+      End;
+
+      if (LONo = -1) and (LoadNo = -1) then
+        if (not cds_PropsOwnerNo.IsNull) and (cds_PropsOwnerNo.AsInteger > 0)
+        then
+          cdsArrivingLoads.SQL.Add('AND CSH.CustomerNo = ' +
+            cds_PropsOwnerNo.AsString);
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+        End
+        else if bcConfirmedv2.ItemIndex = 1 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+
+          if cds_PropsMarketRegionNo.AsInteger = 1 then
+          Begin
+            cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
+          End
+          else
+          Begin
+            cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
+          End;
+        End
+        else if bcConfirmedv2.ItemIndex = 2 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.CreatedUser = ' + intTostr(thisuser.UserID)) ;
+          cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102)))');
+        End;
+      End; // if(LONo = -1) and (LoadNo = -1) then
+
+
+ // END REGION To REGION AR query
+
+
+ //     cdsArrivingLoads.SQL.Add('UNION');
+
+
+    End // if cds_PropsNewItemRow.AsInteger = 0 then
+    else
+      cdsArrivingLoads.SQL.Clear;
+      cdsArrivingLoads.SQL.Add('insert into @ArrivalLoads') ;
+
+      cdsArrivingLoads.SQL.Add('SELECT DISTINCT  1 AS EGEN,') ;
+      cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
+      cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
+      cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
+      cdsArrivingLoads.SQL.Add('where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,') ;
+
+
+    cdsArrivingLoads.SQL.Add
+      ('IsNull((Select Top 1 cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2');
+    cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo');
+    cdsArrivingLoads.SQL.Add
+      ('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo),0) AS LoadAR,');
+
+    cdsArrivingLoads.SQL.Add('ST_AdrCtry.CountryCode,');
+
+    cdsArrivingLoads.SQL.Add('LSP.ShippingPlanNo			AS	LO,');
+    cdsArrivingLoads.SQL.Add('L.LoadNo				AS	LOADNO,');
+    cdsArrivingLoads.SQL.Add('L.FS				        AS	FS,');
+    cdsArrivingLoads.SQL.Add('L.LoadedDate				AS	LOADEDDATE,');
+    cdsArrivingLoads.SQL.Add('L.SenderLoadStatus			AS	LOAD_STATUS,');
+    cdsArrivingLoads.SQL.Add('L.LoadID				AS	LOAD_ID,');
+    cdsArrivingLoads.SQL.Add('Mill.ClientName				AS 	SUPPLIER,');
+    cdsArrivingLoads.SQL.Add
+      ('Mill.ClientCode                         AS      SUPPCODE,');
+    cdsArrivingLoads.SQL.Add('ST_AdrCY.CityName			AS	DESTINATION,');
+    cdsArrivingLoads.SQL.Add('OH.OrderNoText				AS 	ORDER_NO,');
+    cdsArrivingLoads.SQL.Add('SP.ObjectType				AS	OBJECTTYPE,');
+    cdsArrivingLoads.SQL.Add
+      ('isNull(SP.ShipToInvPointNo,-1)		AS	INVPOINTNO,');
+    cdsArrivingLoads.SQL.Add('isNull(IName.CityName, ' + QuotedStr('') +
+      ')		AS	INVPOINTNAME,');
+    cdsArrivingLoads.SQL.Add
+      ('SP.CustomerNo                           AS      CUSTOMERNO,');
+    cdsArrivingLoads.SQL.Add
+      ('Cust.ClientCode                         AS      CUSTOMER,');
+    cdsArrivingLoads.SQL.Add
+      ('SP.SupplierNo                           AS      SUPPLIERNO,');
+    cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,');
+    cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
+    cdsArrivingLoads.SQL.Add(' SP.OBJECTTYPE,');
+
+    cdsArrivingLoads.SQL.Add('(SELECT Top 1 US.INITIALS');
+    cdsArrivingLoads.SQL.Add('FROM dbo.Confirmed_Load_EXT CL');
+    cdsArrivingLoads.SQL.Add
+      ('Inner Join dbo.Users	US on US.UserID = cl.CreatedUser');
+    cdsArrivingLoads.SQL.Add('WHERE CL.Confirmed_LoadNo = LSP.LoadNo');
+    cdsArrivingLoads.SQL.Add
+      ('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,');
+
+    cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,');
+    cdsArrivingLoads.SQL.Add('CASE');
+    cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
+      QuotedStr('SALES'));
+    cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
+      QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
+    cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
+      QuotedStr('INTERN'));
+    cdsArrivingLoads.SQL.Add('End AS TYP,');
+    cdsArrivingLoads.SQL.Add('CASE');
+    cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
+      QuotedStr('LO'));
+    cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 1 THEN ' +
+      QuotedStr('ADD'));
+    cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 0 THEN ' +
+      QuotedStr('INT'));
+    cdsArrivingLoads.SQL.Add('END AS LOTYP,');
+
+    cdsArrivingLoads.SQL.Add('(Select Top 1 US.INITIALS');
+    cdsArrivingLoads.SQL.Add('From dbo.SupplierShippingPlan sp2');
+    cdsArrivingLoads.SQL.Add
+      ('Inner Join dbo.Users US on US.UserID = SP2.CreatedUser');
+    cdsArrivingLoads.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo)');
+    cdsArrivingLoads.SQL.Add(' AS LOINI,');
+
+    cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ');
+    cdsArrivingLoads.SQL.Add('CSH.ShipToLIPNo AS LipNo,');
+    cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
+    cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/') + ')+'
+      + QuotedStr('/') + ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
+    cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,');
+
+    cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs');
+    cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,');
+
+   cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+   cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+   cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+   cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
+
+    {
+        cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
+          cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
+          cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo,') ;
+
+  }
+
+      cdsArrivingLoads.SQL.Add('(Select top 1 nos.invoiceno FROM dbo.InvoiceNos nos') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceLO ilo on ilo.InternalInvoiceNo = nos.InternalInvoiceNo') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.CSHTradingLink tl on tl.SalesShippingPlanNo = ilo.ShippingPlanNo') ;
+ cdsArrivingLoads.SQL.Add('inner join dbo.LOBArrivals loba on loba.InternalInvoiceNo = ilo.InternalInvoiceNo') ;
+ cdsArrivingLoads.SQL.Add('WHERE tl.POShippingPlanNo = CSH.ShippingPlanNo') ;
+ cdsArrivingLoads.SQL.Add('and loba.NewLoadNo = L.LoadNo) as OriginalInvoiceNo,') ;
+
+
+      cdsArrivingLoads.SQL.Add('SP.LoadingLocationNo, CSH.OrderNo, isnull(l.Lagerkod, 1) as Lagerkod') ;
+
+
+    cdsArrivingLoads.SQL.Add('FROM dbo.SupplierShippingPlan       SP');
+
+    cdsArrivingLoads.SQL.Add
+      ('Left Outer JOIN dbo.CustomerShippingPlanDetails CSD');
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo');
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.Orders	OH ON OH.OrderNo = CSH.OrderNo');
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.Client AV_CUST ON	AV_CUST.ClientNo 	=	CSH.CustomerNo');
+    cdsArrivingLoads.SQL.Add
+      ('ON CSD.CustShipPlanDetailObjectNo = SP.CustShipPlanDetailObjectNo');
+
+    cdsArrivingLoads.SQL.Add
+      ('Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInventoryPointNo = CSH.ShipToLIPNo');
+
+    // 2 new rows
+    cdsArrivingLoads.SQL.Add
+      ('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+    cdsArrivingLoads.SQL.Add
+      ('inner JOIN dbo.City PIPCity ON PIPCity.CityNo = PIP.PhyInvPointNameNo');
+
+    cdsArrivingLoads.SQL.Add
+      ('inner JOIN dbo.City IName ON	IName.CityNo = SP.ShipToInvPointNo');
+    cdsArrivingLoads.SQL.Add
+      ('inner JOIN dbo.City Loading ON	Loading.CityNo = SP.LoadingLocationNo');
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.LoadShippingPlan LSP ON LSP.ShippingPlanNo = SP.ShippingPlanNo');
+    cdsArrivingLoads.SQL.Add
+      ('AND LSP.LoadingLocationNo = SP.LoadingLocationNo');
+
+
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.Loads L ON	LSP.LoadNo 		= L.LoadNo');
+    cdsArrivingLoads.SQL.Add('AND     L.supplierno 		= SP.SUPPLIERno');
+    cdsArrivingLoads.SQL.Add('AND     L.CustomerNo 		= SP.CustomerNo');
+    cdsArrivingLoads.SQL.Add
+      ('Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo');
+
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.Client Mill			ON	Mill.ClientNo 		= SP.SupplierNo');
+    cdsArrivingLoads.SQL.Add
+      ('INNER JOIN dbo.Client Cust			ON	Cust.ClientNo 		= SP.CustomerNo');
+
+    cdsArrivingLoads.SQL.Add
+      ('	INNER JOIN dbo.ShippingPlan_ShippingAddress ST');
+    cdsArrivingLoads.SQL.Add
+      ('	LEFT OUTER JOIN dbo.Address 		ST_ADR		ON	ST_ADR.AddressNo	= ST.AddressNo');
+    cdsArrivingLoads.SQL.Add
+      ('	LEFT OUTER JOIN dbo.CITY		ST_AdrCY	ON	ST_AdrCY.CityNo 	= ST_ADR.CityNo');
+    cdsArrivingLoads.SQL.Add
+      ('	LEFT OUTER JOIN dbo.Country		ST_AdrCtry	ON	ST_AdrCtry.CountryNo 	= ST_ADR.CountryNo');
+    cdsArrivingLoads.SQL.Add
+      ('							ON	ST.ShippingPlanNo	= CSD.ShippingPlanNo');
+    cdsArrivingLoads.SQL.Add
+      ('							AND	ST.Reference		= CSD.Reference');
+    cdsArrivingLoads.SQL.Add
+      ('Inner Join dbo.UserArrivalPoint uap on uap.PhyInvPointNameNo = PIPCity.CityNo');
+
+    cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
+
+    cdsArrivingLoads.SQL.Add
+      ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
+    cdsArrivingLoads.SQL.Add
+      ('Left Outer Join dbo.BookingType		Bt	ON	Bt.BookingTypeNo	= Bk.BookingTypeNo');
+    cdsArrivingLoads.SQL.Add('ON  	Bk.ShippingPlanNo = CSH.ShippingPlanNo');
+    // ST_ADR.CityNo') ;
+
+    cdsArrivingLoads.SQL.Add('WHERE');
+
+    if (not cds_PropsVerkNo.IsNull) and (cds_PropsVerkNo.AsInteger > 0) then
+      cdsArrivingLoads.SQL.Add('CSH.CustomerNo = ' + cds_PropsVerkNo.AsString)
+    else
+      cdsArrivingLoads.SQL.Add('CSH.CustomerNo = -1');
+
+    cdsArrivingLoads.SQL.Add(' AND  L.SupplierNo = CSH.CustomerNo') ;
+
+    cdsArrivingLoads.SQL.Add('AND SP.ObjectType <= 2');
+
+    cdsArrivingLoads.SQL.Add('AND (L.SenderLoadStatus = 2)');
+
+    if cds_PropsVerkNo.AsInteger = VIDA_PACKAGING_NO then
+      cdsArrivingLoads.SQL.Add('and OH.OrderType = 0');
+
+    if (LONo = -1) and (LoadNo = -1) then
+      if (not cds_PropsClientNo.IsNull) and (cds_PropsClientNo.AsInteger > 0)
+      then
+        cdsArrivingLoads.SQL.Add('AND SP.SupplierNo = ' +
+          cds_PropsClientNo.AsString);
+
+    cdsArrivingLoads.SQL.Add('AND uap.UserID = ' + IntToStr(ThisUser.UserID));
+
+    if (LONo > -1) or (LoadNo > -1) then
+    Begin
+      if LONo > -1 then
+        cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
+      if LoadNo > -1 then
+        cdsArrivingLoads.SQL.Add('AND L.LoadNo = ' + IntToStr(LoadNo));
+    End;
+
+    if (LONo = -1) and (LoadNo = -1) then
+    Begin
+      if cds_PropsBookingTypeNo.AsInteger > 0 then
+        cdsArrivingLoads.SQL.Add('AND PIPCity.CityNo = ' +
+          cds_PropsBookingTypeNo.AsString) // Destination, leverera till ort
+      else
+        cdsArrivingLoads.SQL.Add('AND PIPCity.CityNo = -99');
+
+      if (not cds_PropsLoadingLocationNo.IsNull) and
+        (cds_PropsLoadingLocationNo.AsInteger > 0) then
+        cdsArrivingLoads.SQL.Add('AND	SP.LoadingLocationNo = ' +
+          cds_PropsLoadingLocationNo.AsString);
+    End;
+
+    if (LONo = -1) and (LoadNo = -1) then
+    Begin
+      if (not cds_PropsOwnerNo.IsNull) and (cds_PropsOwnerNo.AsInteger > 0) then
+        cdsArrivingLoads.SQL.Add('AND CSH.CustomerNo = ' +
+          cds_PropsOwnerNo.AsString);
+    End;
+
+{
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if bcConfirmedv2.ItemIndex = 0 then
+          cdsArrivingLoads.SQL.Add
+            ('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2 ')
+        else
+          cdsArrivingLoads.SQL.Add
+            ('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2 ');
+
+        cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo');
+        cdsArrivingLoads.SQL.Add
+          ('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)');
+      End;
+}
+
+
+   if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+        End
+        else if bcConfirmedv2.ItemIndex = 1 then
+        // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+
+
+          if cds_PropsMarketRegionNo.AsInteger = 1 then
+          Begin
+            cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
+          End
+          else
+          Begin
+            cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+            cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+            cdsArrivingLoads.SQL.Add(', 102)))');
+          End;
+
+        End
+        else if bcConfirmedv2.ItemIndex = 2 then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
+          cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo') ;
+          cdsArrivingLoads.SQL.Add('AND cl2.CreatedUser = ' + intTostr(thisuser.UserID)) ;
+
+          cdsArrivingLoads.SQL.Add('AND (cl2.DateCreated BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102)))');
+        End;
+      End; // if(LONo = -1) and (LoadNo = -1) then
+
+
+{
+       if bcConfirmedv2.ItemIndex = 1 then
+       Begin
+          cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd hh:mm:ss',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
+       End;
+      End;
+}
+
+    cdsArrivingLoads.SQL.Add('select * from @ArrivalLoads') ;
+
+   //if thisuser.UserID = 258 then
+   cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
+  End;
+End;
+
+
+
+(*
+procedure TfrmLoadArrivals.BuildARQuery(const LONo, LoadNo: Integer);
+Begin
+  with dmArrivingLoads do
+  Begin
+    if cds_PropsNewItemRow.AsInteger = 0 then
+    Begin
+      cdsArrivingLoads.SQL.Clear;
+      cdsArrivingLoads.SQL.Add('SELECT DISTINCT  1 AS EGEN,') ;
+      cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
+      cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
+      cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
+      cdsArrivingLoads.SQL.Add('where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,') ;
+      cdsArrivingLoads.SQL.Add('L.LoadAR,');
+      cdsArrivingLoads.SQL.Add('ST_AdrCtry.CountryCode,');
+
+      cdsArrivingLoads.SQL.Add('LSP.ShippingPlanNo			AS	LO,');
+      cdsArrivingLoads.SQL.Add('L.LoadNo				AS	LOADNO,');
+      cdsArrivingLoads.SQL.Add('L.FS				        AS	FS,');
+      cdsArrivingLoads.SQL.Add('L.LoadedDate				AS	LOADEDDATE,');
+      cdsArrivingLoads.SQL.Add('L.SenderLoadStatus			AS	LOAD_STATUS,');
+      cdsArrivingLoads.SQL.Add('L.LoadID				AS	LOAD_ID,');
+      cdsArrivingLoads.SQL.Add('Mill.ClientName				AS 	SUPPLIER,');
+      cdsArrivingLoads.SQL.Add
+        ('Mill.ClientCode                         AS      SUPPCODE,');
+      cdsArrivingLoads.SQL.Add('ST_AdrCY.CityName			AS	DESTINATION,');
+      cdsArrivingLoads.SQL.Add('OH.OrderNoText				AS 	ORDER_NO,');
+      cdsArrivingLoads.SQL.Add('SP.ObjectType				AS	OBJECTTYPE,');
+      cdsArrivingLoads.SQL.Add
+        ('isNull(SP.ShipToInvPointNo,-1)		AS	INVPOINTNO,');
+      cdsArrivingLoads.SQL.Add('isNull(IName.CityName, ' + QuotedStr('') +
+        ')		AS	INVPOINTNAME,');
+      cdsArrivingLoads.SQL.Add
+        ('SP.CustomerNo                           AS      CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add
+        ('Cust.ClientCode                         AS      CUSTOMER,');
+      cdsArrivingLoads.SQL.Add
+        ('SP.SupplierNo                           AS      SUPPLIERNO,');
+      cdsArrivingLoads.SQL.Add
+        ('IsNull(CSH.CustomerNo,0)	AS	AVROP_CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			  AS	AVROP_CUSTOMER,');
+      cdsArrivingLoads.SQL.Add(' SP.OBJECTTYPE,');
+
+      cdsArrivingLoads.SQL.Add('(SELECT Top 1 US.INITIALS');
+      cdsArrivingLoads.SQL.Add('FROM dbo.Confirmed_Load CL');
+      cdsArrivingLoads.SQL.Add
+        ('Inner Join dbo.Users	US on US.UserID = cl.CreatedUser');
+      cdsArrivingLoads.SQL.Add('WHERE CL.Confirmed_LoadNo = LSP.LoadNo');
+      cdsArrivingLoads.SQL.Add
+        ('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,');
+
+      cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,');
+      cdsArrivingLoads.SQL.Add('CASE');
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
+        QuotedStr('SALES'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
+        QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
+        QuotedStr('INTERN'));
+      cdsArrivingLoads.SQL.Add('End AS TYP,');
+
+      cdsArrivingLoads.SQL.Add('CASE');
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
+        QuotedStr('LO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 1 THEN ' +
+        QuotedStr('ADD'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 0 THEN ' +
+        QuotedStr('INT'));
+      cdsArrivingLoads.SQL.Add('END AS LOTYP,');
+
+      cdsArrivingLoads.SQL.Add('(Select Top 1 US.INITIALS');
+      cdsArrivingLoads.SQL.Add('From dbo.SupplierShippingPlan sp2');
+      cdsArrivingLoads.SQL.Add
+        ('Inner Join dbo.Users US on US.UserID = SP2.CreatedUser');
+      cdsArrivingLoads.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo)');
+      cdsArrivingLoads.SQL.Add(' AS LOINI,');
+
+      cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ');
+
+      cdsArrivingLoads.SQL.Add('isNull(SP.LipNo,-1) AS LipNo,');
+      cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
+
+      cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/') +
+        ')+' + QuotedStr('/') +
+        ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
+
+      cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,');
+
+      cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs');
+
+      cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,');
+
+      cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.LoadDetail LD') ;
+      cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+      cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.PackageARConfirmed PC') ;
+      cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
+
+      cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
+      cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
+      cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, CSH.OrderNo') ;
+
+        cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
+        cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
+        cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan SP on SP.shippingplanno = LSP.shippingplanno');
+        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
+      //  cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on sp.SupplierShipPlanObjectNo = ld.Defsspno');
+
+        if (LONo = -1) and (LoadNo = -1) then
+          if bcConfirmedv2.ItemIndex = 2 then
+          Begin
+            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
+            cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
+          End;
+
+
+        cdsArrivingLoads.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP');
+        cdsArrivingLoads.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
+        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
+
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
+
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo');
+
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client Mill			ON	Mill.ClientNo 		= SP.SupplierNo');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client Cust			ON	Cust.ClientNo 		= SP.CustomerNo');
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer JOIN dbo.CustomerShippingPlanDetails CSD');
+
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Orders	OH			ON OH.OrderNo = CSH.OrderNo');
+      if cds_PropsVerkNo.AsInteger = VIDA_PACKAGING_NO then
+        cdsArrivingLoads.SQL.Add('and OH.OrderType = 1');
+
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client AV_CUST			ON	AV_CUST.ClientNo 	=	CSH.CustomerNo');
+      cdsArrivingLoads.SQL.Add
+        ('					ON    CSD.CustShipPlanDetailObjectNo = SP.CustShipPlanDetailObjectNo');
+
+      cdsArrivingLoads.SQL.Add
+        ('	LEFT OUTER JOIN ShippingPlan_ShippingAddress ST');
+      cdsArrivingLoads.SQL.Add
+        ('	LEFT OUTER JOIN dbo.Address 		ST_ADR		ON	ST_ADR.AddressNo	= ST.AddressNo');
+      cdsArrivingLoads.SQL.Add
+        ('	LEFT OUTER JOIN dbo.CITY		ST_AdrCY	ON	ST_AdrCY.CityNo 	= ST_ADR.CityNo');
+      cdsArrivingLoads.SQL.Add
+        ('	LEFT OUTER JOIN dbo.Country		ST_AdrCtry	ON	ST_AdrCtry.CountryNo 	= ST_ADR.CountryNo');
+      cdsArrivingLoads.SQL.Add
+        ('							ON	ST.ShippingPlanNo	= CSD.ShippingPlanNo');
+      cdsArrivingLoads.SQL.Add
+        ('							AND	ST.Reference		= CSD.Reference');
+
+      cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer Join dbo.BookingType		Bt	ON	Bt.BookingTypeNo	= Bk.BookingTypeNo');
+      cdsArrivingLoads.SQL.Add('ON  	Bk.ShippingPlanNo = CSH.ShippingPlanNo');
+
+      cdsArrivingLoads.SQL.Add('WHERE');
+
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if (cds_PropsVerkNo.IsNull) or (cds_PropsVerkNo.AsInteger < 1) then
+        Begin
+          cdsArrivingLoads.SQL.Add
+            ('(L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)');
+        End
+        else
+        Begin
+          if dmsContact.ThisUserIsRoleType(ThisUser.CompanyNo, cSalesRegion) then
+            cdsArrivingLoads.SQL.Add('(SP.CustomerNo = ' +
+              cds_PropsVerkNo.AsString + ' OR SP.CustomerNo = ' + Inttostr(ThisUser.CompanyNo) + ')')
+          else
+            cdsArrivingLoads.SQL.Add('SP.CustomerNo = ' +
+              cds_PropsVerkNo.AsString);
+          cdsArrivingLoads.SQL.Add
+            ('AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)');
+        End;
+      End
+      else
+        cdsArrivingLoads.SQL.Add('1=1');
+
+      cdsArrivingLoads.SQL.Add('AND LSP.ConfirmedByReciever = 0') ;
+
+
+         if (LONo = -1) and (LoadNo = -1) then
+          if bcConfirmedv2.ItemIndex > 0 then
+          Begin
+            cdsArrivingLoads.SQL.Add('AND exists (select * from dbo.Confirmed_Load cl') ;
+            cdsArrivingLoads.SQL.Add('WHERE') ;
+            cdsArrivingLoads.SQL.Add('cl.Confirmed_LoadNo = L.LoadNo)') ;
+          End;
+
+
+      if LONo > -1 then
+        cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
+      if LoadNo > -1 then
+        cdsArrivingLoads.SQL.Add('AND L.LoadNo = ' + IntToStr(LoadNo));
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if (not cds_PropsBookingTypeNo.IsNull) and
+          (cds_PropsBookingTypeNo.AsInteger > 0) then
+          cdsArrivingLoads.SQL.Add('AND SP.ShipToInvPointNo = ' +
+            cds_PropsBookingTypeNo.AsString);
+
+        if (not cds_PropsLoadingLocationNo.IsNull) and
+          (cds_PropsLoadingLocationNo.AsInteger > 0) then
+          cdsArrivingLoads.SQL.Add('AND	SP.LoadingLocationNo = ' +
+            cds_PropsLoadingLocationNo.AsString);
+      End;
+
+      if (LONo = -1) and (LoadNo = -1) then
+        if (not cds_PropsOwnerNo.IsNull) and (cds_PropsOwnerNo.AsInteger > 0)
+        then
+          cdsArrivingLoads.SQL.Add('AND CSH.CustomerNo = ' +
+            cds_PropsOwnerNo.AsString);
+
+      if (LONo = -1) and (LoadNo = -1) then
+        if (not cds_PropsClientNo.IsNull) and (cds_PropsClientNo.AsInteger > 0)
+        then
+          cdsArrivingLoads.SQL.Add('AND SP.SupplierNo = ' +
+            cds_PropsClientNo.AsString);
+
+//      cdsArrivingLoads.SQL.Add('AND SP.ObjectType <> 1');
+
+      cdsArrivingLoads.SQL.Add('AND SP.ObjectType IN (2)');
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+        End
+        else if bcConfirmedv2.ItemIndex = 1 then
+
+        Begin
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+          if (LONo = -1) and (LoadNo = -1) then
+          Begin
+          cdsArrivingLoads.SQL.Add('AND (L.LoadedDate BETWEEN CONVERT(DATETIME, ');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deStartPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102) AND CONVERT(DATETIME,');
+          cdsArrivingLoads.SQL.Add(QuotedStr(formatdatetime('yyyy-mm-dd',deEndPeriod.Date)));
+          cdsArrivingLoads.SQL.Add(', 102))');
+          End;
+        End
+        else
+          // Mina AR
+          if bcConfirmedv2.ItemIndex = 2 then // lbConfirmLoad.Enabled = True then
+          Begin
+            cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
+            cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
+              IntToStr(ThisUser.UserID));
+            cdsArrivingLoads.SQL.Add('AND cl.DateCreated >= ' +
+              QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
+              DateTimeToSQLTimeStamp(deStartPeriod.Date))));
+            cdsArrivingLoads.SQL.Add('AND cl.DateCreated <= ' +
+              QuotedStr(SqlTimeStampToStr('yyyy-mm-dd hh:mm:ss',
+              DateTimeToSQLTimeStamp(deEndPeriod.Date))));
+          End;
+      End; // if(LONo = -1) and (LoadNo = -1) then
+
+      // UNION
+      cdsArrivingLoads.SQL.Add('UNION');
+
+      cdsArrivingLoads.SQL.Add('SELECT DISTINCT  1 AS EGEN,') ;
+      cdsArrivingLoads.SQL.Add('(Select SalesShippingPlanNo FROM dbo.CSHTradingLink ctl') ;
+      cdsArrivingLoads.SQL.Add('where ctl.POShippingPlanNo = CSH.ShippingPlanNo) as OriginalLO,') ;
+      cdsArrivingLoads.SQL.Add('(select cl2.Confirmed_LoadNo from dbo.Confirmed_Load cl2') ;
+      cdsArrivingLoads.SQL.Add('where cl2.NewLoadNo = L.LoadNo) AS OriginalLoadNo,') ;
+      cdsArrivingLoads.SQL.Add('L.LoadAR,');
+
+      cdsArrivingLoads.SQL.Add('ST_AdrCtry.CountryCode,');
+
+      cdsArrivingLoads.SQL.Add('LSP.ShippingPlanNo			AS	LO,');
+      cdsArrivingLoads.SQL.Add('L.LoadNo				AS	LOADNO,');
+      cdsArrivingLoads.SQL.Add('L.FS				        AS	FS,');
+      cdsArrivingLoads.SQL.Add('L.LoadedDate				AS	LOADEDDATE,');
+      cdsArrivingLoads.SQL.Add('L.SenderLoadStatus			AS	LOAD_STATUS,');
+      cdsArrivingLoads.SQL.Add('L.LoadID				AS	LOAD_ID,');
+      cdsArrivingLoads.SQL.Add('Mill.ClientName				AS 	SUPPLIER,');
+      cdsArrivingLoads.SQL.Add
+        ('Mill.ClientCode                         AS      SUPPCODE,');
+      cdsArrivingLoads.SQL.Add('ST_AdrCY.CityName			AS	DESTINATION,');
+      cdsArrivingLoads.SQL.Add('OH.OrderNoText				AS 	ORDER_NO,');
+      cdsArrivingLoads.SQL.Add('SP.ObjectType				AS	OBJECTTYPE,');
+      cdsArrivingLoads.SQL.Add
+        ('isNull(SP.ShipToInvPointNo,-1)		AS	INVPOINTNO,');
+
+      cdsArrivingLoads.SQL.Add('isNull(IName.CityName, ' + QuotedStr('') +
+        ')		AS	INVPOINTNAME,');
+      cdsArrivingLoads.SQL.Add
+        ('SP.CustomerNo                           AS      CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add
+        ('Cust.ClientCode                         AS      CUSTOMER,');
+      cdsArrivingLoads.SQL.Add
+        ('SP.SupplierNo                           AS      SUPPLIERNO,');
+      cdsArrivingLoads.SQL.Add('isnull(CSH.CustomerNo, 0)				AS	AVROP_CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
+      cdsArrivingLoads.SQL.Add('SP.OBJECTTYPE,');
+
+      cdsArrivingLoads.SQL.Add('(SELECT Top 1 US.INITIALS');
+      cdsArrivingLoads.SQL.Add('FROM dbo.Confirmed_Load CL');
+      cdsArrivingLoads.SQL.Add
+        ('Inner Join dbo.Users	US on US.UserID = cl.CreatedUser');
+      cdsArrivingLoads.SQL.Add('WHERE CL.Confirmed_LoadNo = LSP.LoadNo');
+      cdsArrivingLoads.SQL.Add
+        ('AND CL.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo) AS INITIALS,');
+
+      cdsArrivingLoads.SQL.Add('isNull(OH.OrderType,-1) AS ORDERTYPE,');
+      cdsArrivingLoads.SQL.Add('CASE');
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 0 THEN ' +
+        QuotedStr('SALES'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 1 THEN ' +
+        QuotedStr('PO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 2 THEN ' +
+        QuotedStr('P-List'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = 3 THEN ' +
+        QuotedStr('c-Intern'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(OH.OrderType,-1) = -1 THEN ' +
+        QuotedStr('INTERN'));
+      cdsArrivingLoads.SQL.Add('End AS TYP,');
+
+      cdsArrivingLoads.SQL.Add('CASE');
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) >= 2 THEN ' +
+        QuotedStr('LO'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 1 THEN ' +
+        QuotedStr('ADD'));
+      cdsArrivingLoads.SQL.Add('WHEN isNull(SP.ObjectType,-1) = 0 THEN ' +
+        QuotedStr('INT'));
+      cdsArrivingLoads.SQL.Add('END AS LOTYP,');
+
+      cdsArrivingLoads.SQL.Add('(Select Top 1 US.INITIALS ');
+      cdsArrivingLoads.SQL.Add('From dbo.SupplierShippingPlan sp2');
+      cdsArrivingLoads.SQL.Add
+        ('Inner Join dbo.Users US on US.UserID = SP2.CreatedUser');
+      cdsArrivingLoads.SQL.Add('WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo)');
+      cdsArrivingLoads.SQL.Add(' AS LOINI,');
+      cdsArrivingLoads.SQL.Add('Loading.CityName AS LASTSTÄLLE, ');
+      cdsArrivingLoads.SQL.Add('isNull(SP.LipNo,-1) AS LipNo,');
+      cdsArrivingLoads.SQL.Add('isNull(OH.Trading,0) AS Trading,');
+      cdsArrivingLoads.SQL.Add('isNull(PIPCity.CityName,' + QuotedStr('/') +
+        ')+' + QuotedStr('/') +
+        ' +	LIP.LogicalInventoryName	AS	ARtillLager,');
+      cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,');
+
+      cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs');
+      cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,');
+
+     cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.LoadDetail LD') ;
+     cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
+     cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.PackageARConfirmed PC') ;
+     cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
+
+      cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
+      cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
+      cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
+      cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, SP.LoadingLocationNo, -1 asOrderNo') ;
+
+
+        cdsArrivingLoads.SQL.Add('FROM dbo.Loads L');
+        cdsArrivingLoads.SQL.Add('INNER JOIN dbo.LoadShippingPlan LSP 		ON 	LSP.LoadNo = L.LoadNo');
+ //       cdsArrivingLoads.SQL.Add('inner join dbo.loaddetail ld on ld.LoadNo = lsp.LoadNo and ld.shippingplanno = LSP.shippingplanno');
+        cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on SP.shippingplanno = LSP.shippingplanno');
+        cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo') ;
+        cdsArrivingLoads.SQL.Add('and SP.LoadingLocationNo = LSP.LoadingLocationNo') ;
+        if (LONo = -1) and (LoadNo = -1) then
+        Begin
+          if bcConfirmedv2.ItemIndex = 2 then
+          Begin
+            cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
+            cdsArrivingLoads.SQL.Add
+              ('cl.Confirmed_LoadNo = lsp.LoadNo AND cl.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo');
+          End;
+        End;
+
+
+        cdsArrivingLoads.SQL.Add('Left Outer Join dbo.LogicalInventoryPoint LIP');
+        cdsArrivingLoads.SQL.Add('Inner Join dbo.PhysicalInventoryPoint PIP on PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City PIPCity			ON	PIPCity.CityNo = PIP.PhyInvPointNameNo');
+        cdsArrivingLoads.SQL.Add('on LIP.LogicalInventoryPointNo = SP.LIPNo');
+
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City IName			ON	IName.CityNo = SP.ShipToInvPointNo');
+        cdsArrivingLoads.SQL.Add('inner JOIN dbo.City Loading			ON	Loading.CityNo = SP.LoadingLocationNo');
+
+
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer Join dbo.VIS_LoadVolumes LV on LV.LoadNo = L.LoadNo');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client Mill			ON	Mill.ClientNo 		= SP.SupplierNo');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client Cust			ON	Cust.ClientNo 		= SP.CustomerNo');
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer JOIN dbo.CustomerShippingPlanHeader CSH');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Orders	OH			ON OH.OrderNo = CSH.OrderNo');
+      cdsArrivingLoads.SQL.Add
+        ('INNER JOIN dbo.Client AV_CUST			ON	AV_CUST.ClientNo 	=	CSH.CustomerNo');
+      cdsArrivingLoads.SQL.Add('						ON CSH.ShippingPlanNo = SP.LO_No');
+
+      cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Address 		ST_ADR');
+      cdsArrivingLoads.SQL.Add
+        ('Inner JOIN dbo.CITY		ST_AdrCY	ON	ST_AdrCY.CityNo 	= ST_ADR.CityNo');
+      cdsArrivingLoads.SQL.Add
+        ('Inner  JOIN dbo.Country		ST_AdrCtry	ON	ST_AdrCtry.CountryNo 	= ST_ADR.CountryNo');
+      cdsArrivingLoads.SQL.Add
+        ('							ON	ST_ADR.AddressNo	= OH.DestinationNo');
+
+      cdsArrivingLoads.SQL.Add('LEFT OUTER JOIN dbo.Booking		Bk');
+
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer JOIN dbo.Client		SC 	ON  	Bk.ShippingCompanyNo 	= SC.ClientNo');
+      cdsArrivingLoads.SQL.Add
+        ('Left Outer Join dbo.BookingType		Bt	ON	Bt.BookingTypeNo	= Bk.BookingTypeNo');
+      cdsArrivingLoads.SQL.Add('ON  	Bk.ShippingPlanNo = CSH.ShippingPlanNo');
+
+      cdsArrivingLoads.SQL.Add('WHERE');
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        // if cbAllaVerk.Checked then
+        if (cds_PropsVerkNo.IsNull) or (cds_PropsVerkNo.AsInteger < 1) then
+        Begin
+          cdsArrivingLoads.SQL.Add
+            ('(L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)');
+        End
+        else
+        Begin
+          if dmsContact.ThisUserIsRoleType(ThisUser.CompanyNo, cSalesRegion) then
+            cdsArrivingLoads.SQL.Add('(SP.CustomerNo = ' +
+              cds_PropsVerkNo.AsString + ' OR SP.CustomerNo = ' + inttostr(ThisUser.CompanyNo) + ')')
+          else
+            cdsArrivingLoads.SQL.Add('SP.CustomerNo = ' +
+              cds_PropsVerkNo.AsString);
+
+          cdsArrivingLoads.SQL.Add
+            ('AND (L.SenderLoadStatus = 1 or L.SenderLoadStatus = 2)');
+        End;
+      End // if (LONo = -1) and (LoadNo = -1) then
+      else
+        cdsArrivingLoads.SQL.Add('1=1');
+
+      if LONo > -1 then
+        cdsArrivingLoads.SQL.Add('AND SP.ShippingPlanNo = ' + IntToStr(LONo));
+      if LoadNo > -1 then
+        cdsArrivingLoads.SQL.Add('AND L.LoadNo = ' + IntToStr(LoadNo));
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if (not cds_PropsBookingTypeNo.IsNull) and
+          (cds_PropsBookingTypeNo.AsInteger > 0) then
+          cdsArrivingLoads.SQL.Add('AND SP.ShipToInvPointNo = ' +
+            cds_PropsBookingTypeNo.AsString);
+
+        if (not cds_PropsLoadingLocationNo.IsNull) and
+          (cds_PropsLoadingLocationNo.AsInteger > 0) then
+          cdsArrivingLoads.SQL.Add('AND	SP.LoadingLocationNo = ' +
+            cds_PropsLoadingLocationNo.AsString);
+      End;
+
+      if (LONo = -1) and (LoadNo = -1) then
+        if (not cds_PropsOwnerNo.IsNull) and (cds_PropsOwnerNo.AsInteger > 0)
+        then
+          cdsArrivingLoads.SQL.Add('AND CSH.CustomerNo = ' +
+            cds_PropsOwnerNo.AsString);
+
+      if (LONo = -1) and (LoadNo = -1) then
+        if (not cds_PropsClientNo.IsNull) and (cds_PropsClientNo.AsInteger > 0)
+        then
+          cdsArrivingLoads.SQL.Add('AND SP.SupplierNo = ' +
+            cds_PropsClientNo.AsString);
+
+      cdsArrivingLoads.SQL.Add('AND SP.ObjectType in (0, 1)');
+
+ //     cdsArrivingLoads.SQL.Add('AND SP.ObjectType <= 3');
+
+      if (LONo = -1) and (LoadNo = -1) then
+      Begin
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        Begin
+          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+        End
+        else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -1562,7 +2726,7 @@ Begin
             cdsArrivingLoads.SQL.Add(', 102))');
           End;
         End
-        else if bcConfirmed.ItemIndex = 2 then
+        else if bcConfirmedv2.ItemIndex = 2 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -1653,16 +2817,16 @@ Begin
       cdsArrivingLoads.SQL.Add('IsNull(IName.ImpVerk,0) AS ImpVerk,') ;
       cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs') ;
       cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,') ;
-      cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+      cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.LoadDetail LD') ;
       cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
-      cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+      cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.PackageARConfirmed PC') ;
       cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
 
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.Invoiced_Load il on il.LoadNo = cl.Confirmed_LoadNo') ;
       cdsArrivingLoads.SQL.Add('inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.InternalInvoiceNo') ;
       cdsArrivingLoads.SQL.Add('WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo, csh.LoadingLocationNo, CSH.OrderNo') ;
-//* ===================== FROM ==================== */
+// ===================== FROM ==================== /
       cdsArrivingLoads.SQL.Add('FROM  dbo.CustomerShippingPlanDetails CSD') ;
       cdsArrivingLoads.SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader CSH	ON CSH.ShippingPlanNo = CSD.ShippingPlanNo') ;
       cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Orders	OH ON OH.OrderNo = CSH.OrderNo') ;
@@ -1733,14 +2897,14 @@ Begin
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
           cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
           cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
+        else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
@@ -1757,7 +2921,7 @@ Begin
           cdsArrivingLoads.SQL.Add(', 102))');
           End;
         End
-        else if bcConfirmed.ItemIndex = 2 then
+        else if bcConfirmedv2.ItemIndex = 2 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -1869,9 +3033,9 @@ Begin
     cdsArrivingLoads.SQL.Add('LV.intNM3, LV.AM3, LV.Pcs, LV.Pkgs');
     cdsArrivingLoads.SQL.Add(',SC.ClientName, Bt.BookingType,');
 
-   cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.LoadDetail LD') ;
+   cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.LoadDetail LD') ;
    cdsArrivingLoads.SQL.Add('WHERE LD.LoadNo = L.LoadNo) AS NoOfPackages,') ;
-   cdsArrivingLoads.SQL.Add('(Select Count(*) FROM dbo.PackageARConfirmed PC') ;
+   cdsArrivingLoads.SQL.Add('(Select Count( * ) FROM dbo.PackageARConfirmed PC') ;
    cdsArrivingLoads.SQL.Add('WHERE PC.LoadNo = L.LoadNo) AS PackagesConfirmed,') ;
 
       cdsArrivingLoads.SQL.Add('(Select inos.InvoiceNo FROM  dbo.Confirmed_Load cl') ;
@@ -2003,7 +3167,7 @@ Begin
 
     if (LONo = -1) and (LoadNo = -1) then
     Begin
-      if bcConfirmed.ItemIndex = 0 then
+      if bcConfirmedv2.ItemIndex = 0 then
         cdsArrivingLoads.SQL.Add
           ('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2 ')
       else
@@ -2018,6 +3182,8 @@ Begin
 //    if thisuser.UserID = 258 then cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
   End;
 End;
+
+*)
 
 (*
 
@@ -2125,7 +3291,7 @@ Begin
         cdsArrivingLoads.SQL.Add('inner join dbo.SupplierShippingPlan       SP on sp.shippingplanno = LSP.shippingplanno');
         cdsArrivingLoads.SQL.Add('and SP.SupplierNo = L.SupplierNo') ;
         if (LONo = -1) and (LoadNo = -1) then
-          if bcConfirmed.ItemIndex = 2 then
+          if bcConfirmedv2.ItemIndex = 2 then
           Begin
             cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
             cdsArrivingLoads.SQL.Add
@@ -2249,11 +3415,11 @@ Begin
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
+        else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -2267,7 +3433,7 @@ Begin
         End
         else
           // Mina AR
-          if bcConfirmed.ItemIndex = 2 then // lbConfirmLoad.Enabled = True then
+          if bcConfirmedv2.ItemIndex = 2 then // lbConfirmLoad.Enabled = True then
           Begin
             cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
             cdsArrivingLoads.SQL.Add('AND cl.CreatedUser = ' +
@@ -2383,7 +3549,7 @@ Begin
 
         if (LONo = -1) and (LoadNo = -1) then
         Begin
-          if bcConfirmed.ItemIndex = 2 then
+          if bcConfirmedv2.ItemIndex = 2 then
           Begin
             cdsArrivingLoads.SQL.Add('INNER JOIN dbo.Confirmed_Load cl on ');
             cdsArrivingLoads.SQL.Add
@@ -2494,11 +3660,11 @@ Begin
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
+        else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -2510,7 +3676,7 @@ Begin
               QuotedStr(DateTimeToStr(deEndPeriod.Date)));
           End;
         End
-        else if bcConfirmed.ItemIndex = 2 then
+        else if bcConfirmedv2.ItemIndex = 2 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -2746,7 +3912,7 @@ Begin
 
     if (LONo = -1) and (LoadNo = -1) then
     Begin
-      if bcConfirmed.ItemIndex = 0 then
+      if bcConfirmedv2.ItemIndex = 0 then
         cdsArrivingLoads.SQL.Add
           ('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2 ')
       else
@@ -2893,11 +4059,11 @@ Begin
 
       if (LONo = -1) and (LoadNo = -1) then
       Begin
-        if bcConfirmed.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
+        if bcConfirmedv2.ItemIndex = 0 then // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
         End
-        else if bcConfirmed.ItemIndex = 1 then
+        else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -2909,7 +4075,7 @@ Begin
               QuotedStr(DateTimeToStr(deEndPeriod.Date)));
           End;
         End
-        else if bcConfirmed.ItemIndex = 2 then
+        else if bcConfirmedv2.ItemIndex = 2 then
         // lbConfirmLoad.Enabled = True then
         Begin
           cdsArrivingLoads.SQL.Add('AND L.LoadAR = 1');
@@ -3891,7 +5057,7 @@ procedure TfrmLoadArrivals.acConfirmedLoadUpdate(Sender: TObject);
 begin
  With dmArrivingLoads do
  Begin
-  acConfirmedLoad.Enabled:= (bcConfirmed.ItemIndex = 0) and (cdsArrivingLoads.Active) and (cdsArrivingLoads.RecordCount > 0)
+  acConfirmedLoad.Enabled:= (bcConfirmedv2.ItemIndex = 0) and (cdsArrivingLoads.Active) and (cdsArrivingLoads.RecordCount > 0)
   and (cdsArrivingLoadsLoadAR.AsInteger = 0)
   and (cdsArrivingLoadsLOAD_STATUS.AsInteger = 2)
   and (grdLoadsDBTableView1.Controller.SelectedRecordCount > 0) ;
@@ -3934,7 +5100,7 @@ end;
 
 procedure TfrmLoadArrivals.bcConfirmedPropertiesChange(Sender: TObject);
 begin
- if bcConfirmed.ItemIndex = 0 then
+ if bcConfirmedv2.ItemIndex = 0 then
   Begin
    acConfirmedLoad.Enabled  := True ;
    acUndoAR.Enabled:= False ;
@@ -3943,7 +5109,7 @@ begin
    deEndPeriod.Enabled      := False ;
   End
   else
-  if bcConfirmed.ItemIndex = 1 then
+  if bcConfirmedv2.ItemIndex = 1 then
    Begin
     acConfirmedLoad.Enabled := False ;
     acUndoAR.Enabled:= True ;
@@ -4012,7 +5178,7 @@ end;
 procedure TfrmLoadArrivals.acRefreshExecute(Sender: TObject);
  var Year, Month, Day: Word ;
 begin
- if bcConfirmed.ItemIndex > 0 then
+ if bcConfirmedv2.ItemIndex > 0 then
  Begin
 
   DecodeDate(deStartPeriod.Date, Year, Month, Day);
@@ -4029,7 +5195,7 @@ begin
   End ;
  End ;
 { else
- if bcConfirmed.ItemIndex = 2 then
+ if bcConfirmedv2.ItemIndex = 2 then
  Begin
   DecodeDate(MittARDatum.Date, Year, Month, Day);
   if IsValidDate(Year, Month, Day) = False then
@@ -5623,7 +6789,7 @@ procedure TfrmLoadArrivals.acConfirmOneLoadUpdate(Sender: TObject);
 begin
  With dmArrivingLoads do
  Begin
-  acConfirmOneLoad.Enabled  := (bcConfirmed.ItemIndex = 0) and (cdsArrivingLoads.Active) and (cdsArrivingLoads.RecordCount > 0)
+  acConfirmOneLoad.Enabled  := (bcConfirmedv2.ItemIndex = 0) and (cdsArrivingLoads.Active) and (cdsArrivingLoads.RecordCount > 0)
   and (cdsArrivingLoadsLoadAR.AsInteger = 0)
   and (cdsArrivingLoadsLOAD_STATUS.AsInteger = 2) ;
  End ;
@@ -6386,7 +7552,7 @@ begin
  lcInternKund.PostEditValue ;
  lcLaststlle.PostEditValue ;
  lcVerk.PostEditValue ;
- bcConfirmed.PostEditValue ;
+ bcConfirmedv2.PostEditValue ;
 
  cdsArrivingLoads.DisableControls ;
  Screen.Cursor := crHourGlass;    { Show hourglass cursor }
