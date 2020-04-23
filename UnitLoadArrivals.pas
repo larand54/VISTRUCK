@@ -1431,7 +1431,7 @@ Begin
         ('Cust.ClientCode                         AS      CUSTOMER,');
       cdsArrivingLoads.SQL.Add
         ('SP.SupplierNo                           AS      SUPPLIERNO,');
-      cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,');
+      cdsArrivingLoads.SQL.Add('isNull(CSH.CustomerNo, 0)					AS	AVROP_CUSTOMERNO,');
       cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
       cdsArrivingLoads.SQL.Add('SP.OBJECTTYPE,');
 
@@ -1690,7 +1690,7 @@ Begin
       cdsArrivingLoads.SQL.Add('OH.CustomerNo                           AS      CUSTOMERNO,') ;
       cdsArrivingLoads.SQL.Add('Cust.ClientCode                         AS      CUSTOMER,') ;
       cdsArrivingLoads.SQL.Add('OH.SalesRegionNo                           AS      SUPPLIERNO,') ;
-      cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,') ;
+      cdsArrivingLoads.SQL.Add('isNull(CSH.CustomerNo, 0)				AS	AVROP_CUSTOMERNO,') ;
       cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,') ;
       cdsArrivingLoads.SQL.Add(' 2 AS OBJECTTYPE,') ;
       cdsArrivingLoads.SQL.Add('(SELECT Top 1 US.INITIALS') ;
@@ -1928,7 +1928,7 @@ Begin
       ('Cust.ClientCode                         AS      CUSTOMER,');
     cdsArrivingLoads.SQL.Add
       ('SP.SupplierNo                           AS      SUPPLIERNO,');
-    cdsArrivingLoads.SQL.Add('CSH.CustomerNo				AS	AVROP_CUSTOMERNO,');
+    cdsArrivingLoads.SQL.Add('isNull(CSH.CustomerNo, 0)				AS	AVROP_CUSTOMERNO,');
     cdsArrivingLoads.SQL.Add('AV_CUST.ClientName			AS	AVROP_CUSTOMER,');
     cdsArrivingLoads.SQL.Add(' SP.OBJECTTYPE,');
 
@@ -2206,7 +2206,7 @@ Begin
 
     cdsArrivingLoads.SQL.Add('select * from @ArrivalLoads') ;
 
-   //if thisuser.UserID = 258 then
+   if thisuser.UserID = 258 then
    cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
   End;
 End;
