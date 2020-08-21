@@ -29,6 +29,7 @@ object frmPortArrivals: TfrmPortArrivals
     object grdPortPkgsDBTableView1: TcxGridDBTableView
       PopupMenu = pmPkgs
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmArrivingLoads.dsrcPortArrivingPackages
       DataController.KeyFieldNames = 'LOAD_DETAILNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -186,6 +187,7 @@ object frmPortArrivals: TfrmPortArrivals
     Control = grdPortPkgs
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object grdPortLoads: TcxGrid
     Left = 0
@@ -197,6 +199,7 @@ object frmPortArrivals: TfrmPortArrivals
     object grdPortLoadsDBTableView1: TcxGridDBTableView
       PopupMenu = pmLoads
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmArrivingLoads.dsrcPortArrivingLoads
       DataController.KeyFieldNames = 'CountryCode;LO;LOADNO;LOINI;LASTST'#196'LLE;DESTINATION;M'#196'RKNING'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -409,7 +412,7 @@ object frmPortArrivals: TfrmPortArrivals
     Height = 53
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 8
+    TabOrder = 4
     object Panel2: TPanel
       Left = 472
       Top = 0
@@ -546,7 +549,6 @@ object frmPortArrivals: TfrmPortArrivals
         Properties.ValueUnchecked = 0
         TabOrder = 11
         Visible = False
-        Width = 73
       end
       object lcShipper: TcxDBLookupComboBox
         Left = 61
@@ -607,11 +609,7 @@ object frmPortArrivals: TfrmPortArrivals
     UseSystemFont = False
     Left = 320
     Top = 136
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
       AllowCustomizing = False
@@ -2039,6 +2037,7 @@ object frmPortArrivals: TfrmPortArrivals
     UseOwnFont = False
     Left = 368
     Top = 136
+    PixelsPerInch = 96
   end
   object il_LastStatus: TImageList
     Left = 448
@@ -2304,6 +2303,7 @@ object frmPortArrivals: TfrmPortArrivals
     UseOwnFont = False
     Left = 616
     Top = 136
+    PixelsPerInch = 96
   end
   object pmLoads: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -2327,6 +2327,7 @@ object frmPortArrivals: TfrmPortArrivals
     UseOwnFont = False
     Left = 280
     Top = 136
+    PixelsPerInch = 96
   end
   object mtSelectedLoads: TkbmMemTable
     DesignActivation = True
@@ -2340,11 +2341,12 @@ object frmPortArrivals: TfrmPortArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 520
     Top = 136
     object mtSelectedLoadsLoadNo: TIntegerField
@@ -2649,7 +2651,7 @@ object frmPortArrivals: TfrmPortArrivals
     end
   end
   object siLangLinked_frmPortArrivals: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -982,6 +982,7 @@ object FormBookingFormOrg: TFormBookingFormOrg
         LookAndFeel.Kind = lfFlat
         object grdOrderDocumentDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataModeController.GridMode = True
           DataController.DataSource = dm_Booking.ds_DocText
           DataController.KeyFieldNames = 'DocTextNo'
@@ -1038,6 +1039,7 @@ object FormBookingFormOrg: TFormBookingFormOrg
     TabOrder = 1
     object grdLoRowsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dm_Booking.dsBookingProducts
       DataController.KeyFieldNames = 'CSDNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -1786,6 +1788,7 @@ object FormBookingFormOrg: TFormBookingFormOrg
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    SkinName = 'Silver'
     Left = 520
     Top = 168
   end

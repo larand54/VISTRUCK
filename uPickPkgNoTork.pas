@@ -27,7 +27,8 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, VidaType,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk, cxSpinEdit, cxLabel ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, siComp, siLngLnk, cxSpinEdit, cxLabel,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations ;
 
 type
   TfPickPkgNoTork = class(TForm)

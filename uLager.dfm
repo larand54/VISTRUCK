@@ -38,7 +38,6 @@ object fLager: TfLager
     Properties.Style = 9
     Properties.TabSlants.Kind = skCutCorner
     LookAndFeel.Kind = lfUltraFlat
-    TabSlants.Kind = skCutCorner
     ClientRectBottom = 556
     ClientRectRight = 1282
     ClientRectTop = 0
@@ -67,6 +66,7 @@ object fLager: TfLager
           object grdDBBandedPerSortiment: TcxGridDBBandedTableView
             OnDblClick = grdDBBandedPerSortimentDblClick
             Navigator.Buttons.CustomButtons = <>
+            ScrollbarAnnotations.CustomAnnotations = <>
             DataController.DataSource = dmInventory.ds_invpiv
             DataController.KeyFieldNames = 'ProductNo;LIPNo;LP;Package_Size;InventorySource'
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -124,6 +124,7 @@ object fLager: TfLager
           end
           object grdDBBandedPerPaketNr: TcxGridDBBandedTableView
             Navigator.Buttons.CustomButtons = <>
+            ScrollbarAnnotations.CustomAnnotations = <>
             DataController.DataSource = dmInventory.ds_invpivPkg
             DataController.KeyFieldNames = 'Paketnr;Prefix'
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -172,6 +173,7 @@ object fLager: TfLager
           object grdBoTDBBandedPerPosition: TcxGridDBBandedTableView
             OnDblClick = grdBoTDBBandedPerPositionDblClick
             Navigator.Buttons.CustomButtons = <>
+            ScrollbarAnnotations.CustomAnnotations = <>
             DataController.DataSource = dmInventory.ds_Vis_LagerPOS_v1
             DataController.KeyFieldNames = 'ProductNo;Package_Size;PositionName;REFERENCE'
             DataController.Summary.DefaultGroupSummaryItems = <>
@@ -324,6 +326,7 @@ object fLager: TfLager
               ParentFont = False
               Style.StyleController = cxEditStyleControllerFileldLabels
               Properties.Alignment.Horz = taCenter
+              ExplicitTop = 58
               AnchorX = 641
             end
             object cxButton6: TcxButton
@@ -427,6 +430,7 @@ object fLager: TfLager
             TabOrder = 1
             object grdPkgNosDBBandedTableView1: TcxGridDBBandedTableView
               Navigator.Buttons.CustomButtons = <>
+              ScrollbarAnnotations.CustomAnnotations = <>
               DataController.DataSource = dmInventory.ds_invpivPkgDtl
               DataController.KeyFieldNames = 'Paketnr;Prefix'
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -487,6 +491,7 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
+          ExplicitWidth = 8
         end
       end
     end
@@ -505,7 +510,7 @@ object fLager: TfLager
     Width = 1282
     Height = 119
     Align = alTop
-    TabOrder = 6
+    TabOrder = 2
     DesignSize = (
       1282
       119)
@@ -602,7 +607,6 @@ object fLager: TfLager
       Style.StyleController = cxEditStyleControllerFileldLabels
       TabOrder = 9
       Visible = False
-      Width = 161
     end
     object lcLengthVolUnit: TcxDBLookupComboBox
       Left = 535
@@ -868,11 +872,7 @@ object fLager: TfLager
     UseSystemFont = False
     Left = 288
     Top = 161
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       Caption = 'Custom 1'
       CaptionButtons = <>
@@ -983,49 +983,42 @@ object fLager: TfLager
     object dxBarButton22: TdxBarButton
       Action = acPkgTypeTable
       Category = 2
+      Glyph.SourceDPI = 96
       Glyph.Data = {
-        36050000424D3605000000000000360400002800000010000000100000000100
-        08000000000000010000130B0000130B00000001000000000000000000008484
-        8400FF00FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00020202020202
-        0202020202020202020202020202020202020202020202020202020202020202
-        0202020202020202020202020202020202020202020202020202020202000000
-        0000000000000202020202020201000001020202020002020202020202020100
-        0001020202020202020202020202020100000102020202020202020202020202
-        0100000202020202020202020202020100000102020202020202020202020100
-        0001020202020202020202020201000001020202020002020202020202000000
-        0000000000000202020202020202020202020202020202020202020202020202
-        0202020202020202020202020202020202020202020202020202}
+        424D360400000000000036000000280000001000000010000000010020000000
+        000000000000C40E0000C40E00000000000000000000FF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+        00FF000000FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF000000FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFF848484FF000000FF000000FFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF848484FF000000FF000000FF848484FFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF000000FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
+        00FF000000FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF}
       PaintStyle = psCaptionGlyph
     end
     object dxBarButton23: TdxBarButton
@@ -1236,8 +1229,10 @@ object fLager: TfLager
     Version = 0
     Left = 1008
     Top = 297
+    PixelsPerInch = 96
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
+      DateFormat = 0
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
@@ -1260,13 +1255,15 @@ object fLager: TfLager
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
       ReportDocument.CreationDate = 39085.979061331020000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      TimeFormat = 0
       OptionsSelection.ProcessExactSelection = True
       OptionsSelection.ProcessSelection = True
+      PixelsPerInch = 96
       BuiltInReportLink = True
     end
     object dxComponentPrinter1Link2: TdxGridReportLink
       Component = grdPkgNos
+      DateFormat = 0
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
@@ -1287,7 +1284,8 @@ object fLager: TfLager
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      TimeFormat = 0
+      PixelsPerInch = 96
       BuiltInReportLink = True
     end
   end
@@ -1297,6 +1295,7 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 400
     Top = 545
+    PixelsPerInch = 96
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 120
@@ -2230,14 +2229,14 @@ object fLager: TfLager
       Styles.Content = cxStyle16
       Styles.ContentEven = cxStyle17
       Styles.ContentOdd = cxStyle18
-      Styles.Inactive = cxStyle23
-      Styles.Selection = cxStyle26
       Styles.Footer = cxStyle19
       Styles.Group = cxStyle20
       Styles.GroupByBox = cxStyle21
       Styles.Header = cxStyle22
+      Styles.Inactive = cxStyle23
       Styles.Indicator = cxStyle24
       Styles.Preview = cxStyle25
+      Styles.Selection = cxStyle26
       BuiltIn = True
     end
     object GridTableViewStyleSheetSpruce: TcxGridTableViewStyleSheet
@@ -2245,14 +2244,14 @@ object fLager: TfLager
       Styles.Content = cxStyle5
       Styles.ContentEven = cxStyle6
       Styles.ContentOdd = cxStyle7
-      Styles.Inactive = cxStyle12
-      Styles.Selection = cxStyle15
       Styles.Footer = cxStyle8
       Styles.Group = cxStyle9
       Styles.GroupByBox = cxStyle10
       Styles.Header = cxStyle11
+      Styles.Inactive = cxStyle12
       Styles.Indicator = cxStyle13
       Styles.Preview = cxStyle14
+      Styles.Selection = cxStyle15
       BuiltIn = True
     end
     object GridBandedTableViewStyleSheetMaple: TcxGridBandedTableViewStyleSheet
@@ -2260,14 +2259,14 @@ object fLager: TfLager
       Styles.Content = cxStyle28
       Styles.ContentEven = cxStyle29
       Styles.ContentOdd = cxStyle30
-      Styles.Inactive = cxStyle35
-      Styles.Selection = cxStyle38
       Styles.Footer = cxStyle31
       Styles.Group = cxStyle32
       Styles.GroupByBox = cxStyle33
       Styles.Header = cxStyle34
+      Styles.Inactive = cxStyle35
       Styles.Indicator = cxStyle36
       Styles.Preview = cxStyle37
+      Styles.Selection = cxStyle38
       Styles.BandHeader = cxStyle27
       BuiltIn = True
     end
@@ -2276,14 +2275,14 @@ object fLager: TfLager
       Styles.Content = cxStyle39
       Styles.ContentEven = cxStyle40
       Styles.ContentOdd = cxStyle41
-      Styles.Inactive = cxStyle46
-      Styles.Selection = cxStyle49
       Styles.Footer = cxStyle42
       Styles.Group = cxStyle43
       Styles.GroupByBox = cxStyle44
       Styles.Header = cxStyle45
+      Styles.Inactive = cxStyle46
       Styles.Indicator = cxStyle47
       Styles.Preview = cxStyle48
+      Styles.Selection = cxStyle49
       BuiltIn = True
     end
     object GridTableViewStyleSheetDesert: TcxGridTableViewStyleSheet
@@ -2291,14 +2290,14 @@ object fLager: TfLager
       Styles.Content = cxStyle51
       Styles.ContentEven = cxStyle52
       Styles.ContentOdd = cxStyle53
-      Styles.Inactive = cxStyle58
-      Styles.Selection = cxStyle61
       Styles.Footer = cxStyle54
       Styles.Group = cxStyle55
       Styles.GroupByBox = cxStyle56
       Styles.Header = cxStyle57
+      Styles.Inactive = cxStyle58
       Styles.Indicator = cxStyle59
       Styles.Preview = cxStyle60
+      Styles.Selection = cxStyle61
       BuiltIn = True
     end
     object GridBandedTableViewStyleSheetDesert: TcxGridBandedTableViewStyleSheet
@@ -2306,14 +2305,14 @@ object fLager: TfLager
       Styles.Content = cxStyle75
       Styles.ContentEven = cxStyle76
       Styles.ContentOdd = cxStyle77
-      Styles.Inactive = cxStyle82
-      Styles.Selection = cxStyle85
       Styles.Footer = cxStyle78
       Styles.Group = cxStyle79
       Styles.GroupByBox = cxStyle80
       Styles.Header = cxStyle81
+      Styles.Inactive = cxStyle82
       Styles.Indicator = cxStyle83
       Styles.Preview = cxStyle84
+      Styles.Selection = cxStyle85
       Styles.BandHeader = cxStyle74
       BuiltIn = True
     end
@@ -2330,11 +2329,12 @@ object fLager: TfLager
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 120
     Top = 257
     object mtPkgNosPackageNo: TIntegerField
@@ -2377,6 +2377,7 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 400
     Top = 592
+    PixelsPerInch = 96
   end
   object cxEditStyleController1: TcxEditStyleController
     Style.TextColor = clMaroon
@@ -2419,6 +2420,7 @@ object fLager: TfLager
     PixelsPerInch = 96
   end
   object cxImageList1: TcxImageList
+    SourceDPI = 96
     Height = 32
     Width = 32
     FormatVersion = 1
@@ -5182,6 +5184,7 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 473
     Top = 747
+    PixelsPerInch = 96
   end
   object pmRavara: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -5189,8 +5192,10 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 425
     Top = 749
+    PixelsPerInch = 96
   end
   object cxImageListTabs: TcxImageList
+    SourceDPI = 96
     Height = 32
     Width = 32
     FormatVersion = 1
@@ -6278,6 +6283,7 @@ object fLager: TfLager
       end>
   end
   object cxImageList2: TcxImageList
+    SourceDPI = 96
     Height = 32
     Width = 32
     FormatVersion = 1
@@ -6427,6 +6433,7 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 281
     Top = 541
+    PixelsPerInch = 96
   end
   object FD_Query: TFDQuery
     Left = 1009
@@ -6462,6 +6469,7 @@ object fLager: TfLager
     OnPopup = pmSortimentsVyPopup
     Left = 456
     Top = 289
+    PixelsPerInch = 96
   end
   object pmPrint: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -6473,9 +6481,10 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 552
     Top = 313
+    PixelsPerInch = 96
   end
   object siLangLinked_fLager: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -8094,5 +8103,6 @@ object fLager: TfLager
     UseOwnFont = False
     Left = 456
     Top = 349
+    PixelsPerInch = 96
   end
 end

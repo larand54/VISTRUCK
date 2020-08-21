@@ -67,7 +67,6 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
       Height = 21
       Width = 121
-      AnchorX = 1044
     end
     object cxLabel2: TcxLabel
       Left = 801
@@ -97,7 +96,6 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
       Height = 21
       Width = 121
-      AnchorX = 1238
     end
     object cxLabel3: TcxLabel
       Left = 1050
@@ -322,6 +320,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Navigator.Buttons.SaveBookmark.Visible = True
       Navigator.Buttons.GotoBookmark.Visible = True
       Navigator.Buttons.Filter.Visible = True
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmInventory.ds_KilnChargeRows
       DataController.KeyFieldNames = 'KilnChargeNo;RowNo;VagnNo'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -534,14 +533,14 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Styles.Content = cxStyle1
       Styles.ContentEven = cxStyle2
       Styles.ContentOdd = cxStyle3
-      Styles.Inactive = cxStyle8
-      Styles.Selection = cxStyle11
       Styles.Footer = cxStyle4
       Styles.Group = cxStyle5
       Styles.GroupByBox = cxStyle6
       Styles.Header = cxStyle7
+      Styles.Inactive = cxStyle8
       Styles.Indicator = cxStyle9
       Styles.Preview = cxStyle10
+      Styles.Selection = cxStyle11
       BuiltIn = True
     end
   end
@@ -567,7 +566,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
     end
   end
   object siLangLinked_fEnterKilnVagn: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -843,9 +842,11 @@ object fEnterKilnVagn: TfEnterKilnVagn
     Version = 0
     Left = 872
     Top = 296
+    PixelsPerInch = 96
     object dxComponentPrinter1Link1: TdxGridReportLink
       Active = True
       Component = grdVagnPkgs
+      DateFormat = 0
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
@@ -861,8 +862,9 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 43902.889727754630000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 43962.741574317130000000
+      TimeFormat = 0
+      PixelsPerInch = 96
       BuiltInReportLink = True
     end
   end

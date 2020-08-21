@@ -29,7 +29,8 @@ uses
   dxSkinsdxBarPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   Vcl.Menus, cxButtons, siComp, siLngLnk, System.Actions, cxGridCustomPopupMenu,
-  cxGridPopupMenu;
+  cxGridPopupMenu, dxSkinOffice2019Colorful, dxDateRanges,
+  dxScrollbarAnnotations, dxBarBuiltInMenu;
 
   const ProductAndLength = 1 ;
   MatchingProduct = 2 ;

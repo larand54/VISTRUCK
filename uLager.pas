@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, dxBarExtItems, StdCtrls, ImgList, OleServer, OleCtrls,
-  Menus, CRAXDRT_TLB, DB, ActnList, cxGraphics, cxControls,
+  Menus, DB, ActnList, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxStyles,
   cxCustomData, cxFilter, cxData, cxDataStorage, cxDBData, cxLabel, cxCalc,
   cxCurrencyEdit, cxTextEdit, cxDBLookupComboBox, cxCheckBox, dxPSGlbl,
@@ -20,7 +20,7 @@ uses
   cxGridLevel, cxGridCustomTableView, cxGridDBBandedTableView,
   cxGridCustomView, cxGrid, cxDBLabel, cxMaskEdit, cxLookupEdit,
   cxDBLookupEdit, DateUtils,
-  CrystalActiveXReportViewerLib11_TLB,
+
   Provider, SqlExpr, cxCheckComboBox, cxDBCheckComboBox, dxPSPDFExportCore,
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxEditorProducers, dxPScxExtEditorProducers,
@@ -39,7 +39,8 @@ uses
   dxSkinsdxBarPainter, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxRibbonPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  dxBarBuiltInMenu, System.Actions, siComp, siLngLnk ;
+  dxBarBuiltInMenu, System.Actions, siComp, siLngLnk, dxSkinOffice2019Colorful,
+  dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList ;
 
 const cFirstLengthFieldNumber         = 27 ;
       cFirstLengthFieldNumberPaketnr  = 37 ;
@@ -504,7 +505,7 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
 //  uProductUtfall, uVolPerLagerGrupp,
 //  UnitPickProduct, dm_SortOrder, fSortOrder, fMain, uSortingOrderWizard,
   dmsVidaProduct, //uSelectLO, uEnterMatPunktForBooking, uEnterLOStatus,
-  UnitCRViewReport,
+ // UnitCRViewReport,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
   ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs,
   UnitRemovePkg, UfelRegPkg

@@ -24,7 +24,7 @@ uses
   cxLookAndFeels, dxPSPDFExportCore, dxPSPDFExport, cxDrawTextUtils,
   dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon, dxPScxEditorProducers,
   dxPScxExtEditorProducers, dxPScxPageControlProducer,
-  dxPScxCheckListBoxLnk, dxPSLbxLnk, dxPSTextLnk, CRAXDRT_TLB,
+  dxPScxCheckListBoxLnk, dxPSLbxLnk, dxPSTextLnk,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client,
@@ -48,14 +48,17 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
   dxSkinsdxBarPainter, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
-  dxPScxPivotGridLnk, dxPScxSSLnk, dxSkinsdxRibbonPainter, DateUtils, SqlTimSt,
+  dxPScxPivotGridLnk, // dxPScxSSLnk,
+  dxSkinsdxRibbonPainter, DateUtils, SqlTimSt,
   frxClass, frxDBSet, frxCross, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions, siComp, siLngLnk,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
   FireDAC.Phys.MSSQL
   , uICMObserver,
-  udmFilterSQL, dxCore, cxDateUtils ;
+  udmFilterSQL, dxCore, cxDateUtils, dxSkinOffice2019Colorful, dxDateRanges,
+  dxScrollbarAnnotations, FireDAC.Phys.MSSQLDef, FireDAC.VCLUI.Wait,
+  System.ImageList, cxImageList ;
 
 
 type

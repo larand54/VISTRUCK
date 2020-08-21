@@ -32,7 +32,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Margins.Bottom = 2
     Align = alClient
     BevelOuter = bvNone
-    TabOrder = 4
+    TabOrder = 0
     object dxPageControl1: TcxPageControl
       Left = 0
       Top = 82
@@ -366,7 +366,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Style.Font.Style = [fsBold]
             Style.IsFontAssigned = True
             TabOrder = 20
-            Width = 239
           end
           object btTextPad: TcxButton
             Left = 429
@@ -435,6 +434,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdLODBTableView1: TcxGridDBTableView
               PopupMenu = pmLONumber
               Navigator.Buttons.CustomButtons = <>
+              ScrollbarAnnotations.CustomAnnotations = <>
               DataController.DataSource = dmLoadEntrySSP.ds_LSP
               DataController.KeyFieldNames = 'LoadNo;ShippingPlanNo'
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -634,6 +634,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             TabOrder = 0
             object grdAddressDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
+              ScrollbarAnnotations.CustomAnnotations = <>
               DataController.DataSource = dmsContact.dsrcAddressAndReference
               DataController.KeyFieldNames = 'Address'
               DataController.Summary.DefaultGroupSummaryItems = <>
@@ -671,10 +672,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -917,7 +914,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             Style.Font.Style = []
             Style.IsFontAssigned = True
             TabOrder = 5
-            Width = 132
           end
           object btNumPad: TcxButton
             Left = 1160
@@ -988,7 +984,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             LookAndFeel.NativeStyle = False
             LookAndFeel.SkinName = 'Office2007Green'
             OptionsImage.Images = images1616
-            OptionsImage.NumGlyphs = 2
             SpeedButtonOptions.GroupIndex = 576734370
             SpeedButtonOptions.AllowAllUp = True
             TabOrder = 10
@@ -1009,7 +1004,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
             LookAndFeel.NativeStyle = False
             LookAndFeel.SkinName = 'Seven'
             OptionsImage.Images = images1616
-            OptionsImage.NumGlyphs = 2
             SpeedButtonOptions.GroupIndex = 576734370
             SpeedButtonOptions.AllowAllUp = True
             TabOrder = 11
@@ -1028,6 +1022,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
             OnKeyDown = grdPkgsDBBandedTableView1KeyDown
             Navigator.Buttons.CustomButtons = <>
+            ScrollbarAnnotations.CustomAnnotations = <>
             OnEditing = grdPkgsDBBandedTableView1Editing
             DataController.DataSource = dmLoadEntrySSP.ds_LoadPackages2
             DataController.KeyFieldNames = 'LoadNo;LoadDetailNo'
@@ -1081,8 +1076,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             OptionsCustomize.ColumnVertSizing = False
             OptionsData.Deleting = False
             OptionsData.Inserting = False
-            OptionsSelection.HideSelection = True
             OptionsSelection.MultiSelect = True
+            OptionsSelection.HideSelection = True
             OptionsView.ColumnAutoWidth = True
             OptionsView.Footer = True
             OptionsView.GroupByBox = False
@@ -1138,6 +1133,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1PackageOK: TcxGridDBBandedColumn
               DataBinding.FieldName = 'PackageOK'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ReadOnly = True
               Properties.ValueChecked = 0
               Properties.ValueUnchecked = 1
@@ -1318,6 +1314,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1OverrideMatch: TcxGridDBBandedColumn
               DataBinding.FieldName = 'OverrideMatch'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
               Options.Filtering = False
@@ -1462,6 +1459,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdPkgsDBBandedTableView1OverrideRL: TcxGridDBBandedColumn
               DataBinding.FieldName = 'OverrideRL'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ReadOnly = True
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
@@ -1474,6 +1472,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               Caption = 'IK'
               DataBinding.FieldName = 'InvNr'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ReadOnly = True
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
@@ -1593,6 +1592,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           TabOrder = 1
           object grdLORowsDBBandedTableView1: TcxGridDBBandedTableView
             Navigator.Buttons.CustomButtons = <>
+            ScrollbarAnnotations.CustomAnnotations = <>
             OnCellClick = grdLORowsDBBandedTableView1CellClick
             DataController.DataSource = dmLoadEntrySSP.dsLORows
             DataController.KeyFieldNames = 'SupplierShipPlanObjectNo'
@@ -1631,6 +1631,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
             object grdLORowsDBBandedTableView1MATCH: TcxGridDBBandedColumn
               DataBinding.FieldName = 'MATCH'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ImmediatePost = True
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
@@ -2048,6 +2049,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
               Caption = 'Till'#229't alla l'#228'ngder'
               DataBinding.FieldName = 'OverrideRL'
               PropertiesClassName = 'TcxCheckBoxProperties'
+              Properties.Alignment = taRightJustify
               Properties.ReadOnly = True
               Properties.ValueChecked = 1
               Properties.ValueUnchecked = 0
@@ -2143,11 +2145,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     UseSystemFont = False
     Left = 928
     Top = 440
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
       AllowCustomizing = False
@@ -2349,49 +2347,42 @@ object fLoadEntrySSP: TfLoadEntrySSP
     object dxBarButton3: TdxBarButton
       Action = acPrintFSMisMatch
       Category = 0
+      Glyph.SourceDPI = 96
       Glyph.Data = {
-        36050000424D3605000000000000360400002800000010000000100000000100
-        0800000000000001000000000000000000000001000000000000424242000084
-        8400848484008C8C8C00426BB500C6C6C60000E7F70000EFF700FF00FF00006B
-        FF000084FF0000ADFF0010B5FF005ABDFF0000CEFF0000DEFF0000E7FF0000EF
-        FF0029EFFF0000F7FF0000FFFF0008FFFF0018FFFF0021FFFF0031FFFF006BFF
-        FF0073FFFF00C6FFFF00E7FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00080808080808
-        0800000000080808080808080808080803051D02020008080808080808080808
-        0300000000000808080808080808080803051D0202000808080808080B080808
-        0302020202000808080B08080809080A0114140E140104080908080808080B0A
-        140610100614040B0808080B08080D1410111110100F140408080808090D1B12
-        1113141410100F1404090808080D1B19171414141411100E04080808090D1B1C
-        18151414141310140409080B080D1B1C191814141413140E0408080808080D1B
-        1C1A171414140E04080808080808090D1B1C1C14140E040908080808090B0808
-        0D0D0C0C0C0C08080B0908080808080808080808080808080808}
+        424D360400000000000036000000280000001000000010000000010020000000
+        000000000000C40E0000C40E00000000000000000000FF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF424242FF424242FF424242FF4242
+        42FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFF8C8C8CFFC6C6C6FFFFFFFFFF848484FF8484
+        84FF424242FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFF8C8C8CFF424242FF424242FF424242FF4242
+        42FF424242FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFF8C8C8CFFC6C6C6FFFFFFFFFF848484FF8484
+        84FF424242FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF00AD
+        FFFFFF00FFFFFF00FFFFFF00FFFF8C8C8CFF848484FF848484FF848484FF8484
+        84FF424242FFFF00FFFFFF00FFFFFF00FFFF00ADFFFFFF00FFFFFF00FFFFFF00
+        FFFF006BFFFFFF00FFFF0084FFFF008484FF00FFFFFF00FFFFFF00CEFFFF00FF
+        FFFF008484FF426BB5FFFF00FFFF006BFFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFF00ADFFFF0084FFFF00FFFFFF00E7F7FF00E7FFFF00E7FFFF00E7
+        F7FF00FFFFFF426BB5FF00ADFFFFFF00FFFFFF00FFFFFF00FFFF00ADFFFFFF00
+        FFFFFF00FFFF5ABDFFFF00FFFFFF00E7FFFF00EFFFFF00EFFFFF00E7FFFF00E7
+        FFFF00DEFFFF00FFFFFF426BB5FFFF00FFFFFF00FFFFFF00FFFFFF00FFFF006B
+        FFFF5ABDFFFFC6FFFFFF29EFFFFF00EFFFFF00F7FFFF00FFFFFF00FFFFFF00E7
+        FFFF00E7FFFF00DEFFFF00FFFFFF426BB5FF006BFFFFFF00FFFFFF00FFFFFF00
+        FFFF5ABDFFFFC6FFFFFF6BFFFFFF21FFFFFF00FFFFFF00FFFFFF00FFFFFF00FF
+        FFFF00EFFFFF00E7FFFF00CEFFFF426BB5FFFF00FFFFFF00FFFFFF00FFFF006B
+        FFFF5ABDFFFFC6FFFFFFE7FFFFFF31FFFFFF08FFFFFF00FFFFFF00FFFFFF00FF
+        FFFF00F7FFFF00E7FFFF00FFFFFF426BB5FF006BFFFFFF00FFFF00ADFFFFFF00
+        FFFF5ABDFFFFC6FFFFFFE7FFFFFF6BFFFFFF31FFFFFF00FFFFFF00FFFFFF00FF
+        FFFF00F7FFFF00FFFFFF00CEFFFF426BB5FFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFF5ABDFFFFC6FFFFFFE7FFFFFF73FFFFFF21FFFFFF00FFFFFF00FF
+        FFFF00FFFFFF00CEFFFF426BB5FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFF006BFFFF5ABDFFFFC6FFFFFFE7FFFFFFE7FFFFFF00FFFFFF00FF
+        FFFF00CEFFFF426BB5FF006BFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF006B
+        FFFF00ADFFFFFF00FFFFFF00FFFF5ABDFFFF5ABDFFFF10B5FFFF10B5FFFF10B5
+        FFFF10B5FFFFFF00FFFFFF00FFFF00ADFFFF006BFFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+        FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF}
     end
     object dxBarButton4: TdxBarButton
       Action = acMailaFS
@@ -2624,6 +2615,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     OnPopup = pmPkgsPopup
     Left = 288
     Top = 392
+    PixelsPerInch = 96
   end
   object pmLONumber: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -2635,6 +2627,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     UseOwnFont = False
     Left = 816
     Top = 336
+    PixelsPerInch = 96
   end
   object ImageList1: TImageList
     Height = 24
@@ -3717,6 +3710,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     OnPopup = ppmenuLO_LinesPopup
     Left = 288
     Top = 336
+    PixelsPerInch = 96
   end
   object ActionList1: TActionList
     Images = ImageList1
@@ -4163,6 +4157,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     UseOwnFont = True
     Left = 889
     Top = 511
+    PixelsPerInch = 96
   end
   object PopupMenu1: TPopupMenu
     AutoPopup = False
@@ -4295,6 +4290,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     UseOwnFont = True
     Left = 480
     Top = 338
+    PixelsPerInch = 96
   end
   object Timer1: TTimer
     Enabled = False
@@ -4357,7 +4353,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Top = 408
   end
   object siLangLinked_fLoadEntrySSP: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -5765,5 +5761,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
     UseOwnFont = False
     Left = 408
     Top = 418
+    PixelsPerInch = 96
   end
 end

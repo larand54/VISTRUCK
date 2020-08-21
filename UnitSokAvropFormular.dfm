@@ -18,8 +18,6 @@ object frmSokAvropFormular: TfrmSokAvropFormular
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -317,7 +315,6 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       Properties.ValueUnchecked = 0
       Properties.OnChange = cbShowProductPropertiesChange
       TabOrder = 11
-      Width = 121
     end
     object deFilterOrderDate: TcxDBDateEdit
       Left = 856
@@ -338,7 +335,6 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       Properties.ValueChecked = 1
       Properties.ValueUnchecked = 0
       TabOrder = 13
-      Width = 121
     end
     object deRegDate: TcxDBDateEdit
       Left = 856
@@ -359,7 +355,6 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       Properties.ValueChecked = 1
       Properties.ValueUnchecked = 0
       TabOrder = 16
-      Width = 80
     end
     object meAvropsPeriodStart: TcxDBMaskEdit
       Left = 408
@@ -388,6 +383,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     TabOrder = 1
     object grdAvropSokDBBandedTableView1: TcxGridDBBandedTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       OnEditing = grdAvropSokDBBandedTableView1Editing
       DataController.DataSource = dm_SokFormular.ds_MakeSokAvrop
       DataController.KeyFieldNames = 'UKEY'
@@ -700,7 +696,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     Width = 1242
     Height = 62
     Align = alTop
-    TabOrder = 3
+    TabOrder = 2
     object Panel3: TPanel
       Left = 1
       Top = 1
@@ -779,11 +775,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     UseSystemFont = False
     Left = 80
     Top = 376
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
       AllowCustomizing = False
@@ -2402,15 +2394,18 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     UseOwnFont = False
     Left = 457
     Top = 542
+    PixelsPerInch = 96
   end
   object dxComponentPrinter1: TdxComponentPrinter
     CurrentLink = dxComponentPrinter1Link1
     Version = 0
     Left = 457
     Top = 597
+    PixelsPerInch = 96
     object dxComponentPrinter1Link1: TdxGridReportLink
       Active = True
       Component = grdAvropSok
+      DateFormat = 0
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
@@ -2425,13 +2420,14 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 43712.486623136570000000
-      AssignedFormatValues = [fvDate, fvTime, fvPageNumber]
+      ReportDocument.CreationDate = 43957.755954895830000000
+      TimeFormat = 0
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
       OptionsView.Caption = False
       OptionsView.FilterBar = False
       OptionsView.GroupFooters = False
+      PixelsPerInch = 96
       BuiltInReportLink = True
     end
   end
@@ -2478,6 +2474,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     UseOwnFont = False
     Left = 456
     Top = 488
+    PixelsPerInch = 96
   end
   object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
@@ -2916,7 +2913,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     Top = 248
   end
   object siLangLinked_frmSokAvropFormular: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

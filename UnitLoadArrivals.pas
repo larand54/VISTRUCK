@@ -37,7 +37,8 @@ uses
   System.Rtti, System.Bindings.Outputs, Vcl.Bind.Editors, Data.Bind.EngExt,
   Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, cxListView, System.Generics.Collections,
   UnitPosition, UnitStylesOKCANCL, UnitExceptionPkgNrList, cxPropertiesStore,
-  Vcl.Touch.Keyboard;
+  Vcl.Touch.Keyboard, dxSkinOffice2019Colorful, dxDateRanges,
+  dxScrollbarAnnotations, dxBarBuiltInMenu, System.ImageList;
 
 const AppFormName = 'VisTruck.Ankomstreg' ;
 
@@ -678,14 +679,16 @@ var
 
 implementation
 
-uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils,
+uses //UnitCRViewReport,
+dmc_ArrivingLoads, VidaUtils,
   Vidauser, UnitPkgInfo, dmsVidaContact, //dmcVidaSystem,
   dmsDataConn,
 //  fConfirmIntLoad,
   //fConfirmManyIntLoads,
   uSelectLIP, uAnkomstRegProgress, VidaConst ,
 //  fConfirmManyNormalLoad,
-  UnitCRPrintOneReport, dmsVidaSystem, //dmc_Filter,
+  //UnitCRPrintOneReport,
+  dmsVidaSystem, //dmc_Filter,
   uTradingLinkMult, dmc_UserProps,
   uWait, uLagerPos, udmLanguage, URegionToRegionSelectLIPNo, uFastReports,
   udmFR, uReportController, uFRConstants, uFRAccessories, uFixMail, uFastReports2, udmFRSystem;
@@ -4362,69 +4365,75 @@ begin
 end;
 
 procedure TfrmLoadArrivals.PrintSamlingsspecifikation(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+  {
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmLoadArrivals.PrintSamlingsspecifikation_USA(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+{
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- FormCRViewReport.CreateCo('SAM_LAST_USA.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+   FormCRViewReport.CreateCo('SAM_LAST_USA.RPT') ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 procedure TfrmLoadArrivals.PrintSamlingsspecifikationMedPktNr(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+{
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+   FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 procedure TfrmLoadArrivals.GetMarkedLoads (Sender: TObject) ;
@@ -4756,54 +4765,56 @@ begin
 end;
 
 procedure TfrmLoadArrivals.acFS_DKExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+  {
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
- FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_dk.RPT')
- else
- Begin
-  Try
-  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-  FormCRViewReport.CreateCo('TALLY_VER2_NOTE_dk.RPT') ;
- End ;
+    if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+    FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_dk.RPT')
+    else
+    Begin
+     Try
+     dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+     FormCRViewReport.CreateCo('TALLY_VER2_NOTE_dk.RPT') ;
+    End ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
-  mePackageNo.SetFocus ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+     FreeAndNil(FormCRViewReport)  ;
+     mePackageNo.SetFocus ;
+    End ;
+ }
 end;
 
 
@@ -6378,51 +6389,53 @@ begin
 end;
 
 procedure TfrmLoadArrivals.acPrintTallyUSNoteExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
- if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
- FormCRViewReport.CreateCo('TALLY_INT_USA.RPT')
- else
- Begin
-  Try
-  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-  FormCRViewReport.CreateCo('TALLY_US_NOTE.RPT') ;
- End ;
+  {
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
+    if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+    FormCRViewReport.CreateCo('TALLY_INT_USA.RPT')
+    else
+    Begin
+     Try
+     dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+     FormCRViewReport.CreateCo('TALLY_US_NOTE.RPT') ;
+    End ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
-    mePackageNo.SetFocus ;
- End ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+       mePackageNo.SetFocus ;
+    End ;
+ }
 end;
 
 procedure TfrmLoadArrivals.acConfirmOneLoadExecute(Sender: TObject);
@@ -6599,48 +6612,50 @@ end;
 
 procedure TfrmLoadArrivals.PrintDirectFS_USA(Sender: TObject);
 var
-  FormCRPrintOneReport  : TFormCRPrintOneReport;
+  //FormCRPrintOneReport  : TFormCRPrintOneReport;
     A : array of variant;
 begin
- if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
- FormCRPrintOneReport:= TFormCRPrintOneReport.Create(Nil);
- Try
-//CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+  {
+   if dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger < 1 then exit ;
+    FormCRPrintOneReport:= TFormCRPrintOneReport.Create(Nil);
+    Try
+   //CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
 
- SetLength(A, 1);
- A[0]:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
- if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
- FormCRPrintOneReport.CreateCo(1, False, False, A, 'TALLY_INT_USA.RPT')
- else
- Begin
-  Try
-  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-  FormCRPrintOneReport.CreateCo(1, False, False, A, 'TALLY_US_NOTE.RPT') ;
- End ;
+    SetLength(A, 1);
+    A[0]:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+    if dmArrivingLoads.cdsArrivingLoadsObjectType.AsInteger <> 2 then
+    FormCRPrintOneReport.CreateCo(1, False, False, A, 'TALLY_INT_USA.RPT')
+    else
+    Begin
+     Try
+     dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+     FormCRPrintOneReport.CreateCo(1, False, False, A, 'TALLY_US_NOTE.RPT') ;
+    End ;
 
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRPrintOneReport)  ;
- End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= dmArrivingLoads.cdsArrivingLoadsLOADNO.AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+     FreeAndNil(FormCRPrintOneReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmLoadArrivals.acPrintDirectFS_USAExecute(Sender: TObject);

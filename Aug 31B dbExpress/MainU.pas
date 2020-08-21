@@ -23,7 +23,8 @@ uses
   dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  dxSkinOffice2019Colorful;
 
 type
 
@@ -121,7 +122,7 @@ implementation
 {$R *.dfm}
 
 uses PackageImportU, ComObj, TypInfo, dmsVidaSystem, VidaUser ,
-  dmsDataConn, dmsVidaContact, UnitCRExportOneReport,
+  dmsDataConn, dmsVidaContact, //UnitCRExportOneReport,
   uSendMapiMail, VidaConst , dmc_ImportWoodx, uReport, uReportController, uVIS_UTILS;
 
 
@@ -607,7 +608,7 @@ procedure TXMLImportExport.EmailFakturaAndSpecExecuteViaBizTalk;
 const
   LF = #10;
 Var
-  FormCRExportOneReport: TFormCRExportOneReport;
+ // FormCRExportOneReport: TFormCRExportOneReport;
   A: array of Variant;
   dm_SendMapiMail: Tdm_SendMapiMail;
   Attach: array of String;
@@ -659,19 +660,21 @@ begin
 
   else begin
 
-    FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-    Try
-      ExportInvoiceFile := ExportDir + 'InvoiceNo ' + IntToStr(InvoiceNo);
-      ExportSpecFile := ExportDir + 'Specification ' + IntToStr(InvoiceNo);
-      SetLength(A, 1);
-      A[0] := InternalInvoiceNo;
-      FormCRExportOneReport.CreateCo(CustomerNo, cFaktura, A,
-        ExportInvoiceFile);
-      FormCRExportOneReport.CreateCo(CustomerNo, cPkgSpec, A,
-        ExportSpecFile);
-    Finally
-      FreeAndNil(FormCRExportOneReport); // .Free ;
-    End;
+    {
+      FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
+        Try
+          ExportInvoiceFile := ExportDir + 'InvoiceNo ' + IntToStr(InvoiceNo);
+          ExportSpecFile := ExportDir + 'Specification ' + IntToStr(InvoiceNo);
+          SetLength(A, 1);
+          A[0] := InternalInvoiceNo;
+          FormCRExportOneReport.CreateCo(CustomerNo, cFaktura, A,
+            ExportInvoiceFile);
+          FormCRExportOneReport.CreateCo(CustomerNo, cPkgSpec, A,
+            ExportSpecFile);
+        Finally
+          FreeAndNil(FormCRExportOneReport); // .Free ;
+        End;
+  }
   end;
   if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
     exit;
@@ -734,7 +737,7 @@ procedure TXMLImportExport.EmailFakturaAndSpecExecute;
 const
   LF = #10;
 Var
-  FormCRExportOneReport: TFormCRExportOneReport;
+  // FormCRExportOneReport: TFormCRExportOneReport;
   A: array of Variant;
   dm_SendMapiMail: Tdm_SendMapiMail;
   Attach: array of String;
@@ -785,19 +788,21 @@ begin
   else
   begin
 
-    FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-    Try
-      ExportInvoiceFile := ExportDir + 'InvoiceNo ' + IntToStr(InvoiceNo);
-      ExportSpecFile := ExportDir + 'Specification ' + IntToStr(InvoiceNo);
-      SetLength(A, 1);
-      A[0] := InternalInvoiceNo;
-      FormCRExportOneReport.CreateCo(CustomerNo, cFaktura, A,
-        ExportInvoiceFile);
-      FormCRExportOneReport.CreateCo(CustomerNo, cPkgSpec, A,
-        ExportSpecFile);
-    Finally
-      FreeAndNil(FormCRExportOneReport); // .Free ;
-    End;
+      {
+      FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
+         Try
+           ExportInvoiceFile := ExportDir + 'InvoiceNo ' + IntToStr(InvoiceNo);
+           ExportSpecFile := ExportDir + 'Specification ' + IntToStr(InvoiceNo);
+           SetLength(A, 1);
+           A[0] := InternalInvoiceNo;
+           FormCRExportOneReport.CreateCo(CustomerNo, cFaktura, A,
+             ExportInvoiceFile);
+           FormCRExportOneReport.CreateCo(CustomerNo, cPkgSpec, A,
+             ExportSpecFile);
+         Finally
+           FreeAndNil(FormCRExportOneReport); // .Free ;
+         End;
+   }
   end;
   if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
     exit;

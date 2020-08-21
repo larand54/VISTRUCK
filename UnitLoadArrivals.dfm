@@ -35,6 +35,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
@@ -46,6 +47,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     TabOrder = 1
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmArrivingLoads.dsrcArrivingLoads
       DataController.KeyFieldNames = 'LO;LOADNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -64,8 +66,8 @@ object frmLoadArrivals: TfrmLoadArrivals
       Styles.Content = cxStyle_Focus
       Styles.ContentEven = cxStyle10
       Styles.ContentOdd = cxStyle10
-      Styles.Selection = cxStyle42
       Styles.OnGetContentStyle = grdLoadsDBTableView1StylesGetContentStyle
+      Styles.Selection = cxStyle42
       object grdLoadsDBTableView1LO: TcxGridDBColumn
         DataBinding.FieldName = 'LO'
         PropertiesClassName = 'TcxLabelProperties'
@@ -228,6 +230,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1Trading: TcxGridDBColumn
         DataBinding.FieldName = 'Trading'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Width = 20
@@ -235,6 +238,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1LoadAR: TcxGridDBColumn
         DataBinding.FieldName = 'LoadAR'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ReadOnly = True
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
@@ -248,6 +252,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1ImpVerk: TcxGridDBColumn
         DataBinding.FieldName = 'ImpVerk'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Width = 29
@@ -255,6 +260,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       object grdLoadsDBTableView1EGEN: TcxGridDBColumn
         DataBinding.FieldName = 'EGEN'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         Width = 45
@@ -493,7 +499,6 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
           TabOrder = 10
-          Width = 213
         end
       end
     end
@@ -677,7 +682,6 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.IsFontAssigned = True
         TabOrder = 4
         Visible = False
-        Width = 90
       end
       object btPrepareScan: TcxButton
         Left = 288
@@ -821,6 +825,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       TabOrder = 1
       object grdPkgsDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmArrivingLoads.dsrcArrivingPackages
         DataController.KeyFieldNames = 'LOAD_DETAILNO;ProductLengthNo'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -989,6 +994,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         object grdPkgsDBTableView1Used: TcxGridDBColumn
           DataBinding.FieldName = 'Used'
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.Alignment = taRightJustify
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
           Width = 54
@@ -1092,11 +1098,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     UseSystemFont = False
     Left = 312
     Top = 296
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       BorderStyle = bbsNone
       Caption = 'Custom 2'
@@ -2834,6 +2836,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     UseOwnFont = False
     Left = 312
     Top = 408
+    PixelsPerInch = 96
   end
   object il_LastStatus: TImageList
     Left = 400
@@ -3133,6 +3136,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     UseOwnFont = False
     Left = 608
     Top = 296
+    PixelsPerInch = 96
   end
   object pmLoads: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -3166,6 +3170,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     UseOwnFont = False
     Left = 312
     Top = 352
+    PixelsPerInch = 96
   end
   object mtSelectedLoads: TkbmMemTable
     DesignActivation = True
@@ -3179,11 +3184,12 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 512
     Top = 288
     object mtSelectedLoadsLoadNo: TIntegerField
@@ -3818,7 +3824,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -7205,14 +7211,14 @@ object frmLoadArrivals: TfrmLoadArrivals
       Styles.Content = cxStyle12
       Styles.ContentEven = cxStyle13
       Styles.ContentOdd = cxStyle14
-      Styles.Inactive = cxStyle19
-      Styles.Selection = cxStyle22
       Styles.Footer = cxStyle15
       Styles.Group = cxStyle16
       Styles.GroupByBox = cxStyle17
       Styles.Header = cxStyle18
+      Styles.Inactive = cxStyle19
       Styles.Indicator = cxStyle20
       Styles.Preview = cxStyle21
+      Styles.Selection = cxStyle22
       BuiltIn = True
     end
     object GridTableViewStyleSheetRedWhiteandBlueVGA: TcxGridTableViewStyleSheet
@@ -7220,14 +7226,14 @@ object frmLoadArrivals: TfrmLoadArrivals
       Styles.Content = cxStyle88
       Styles.ContentEven = cxStyle89
       Styles.ContentOdd = cxStyle90
-      Styles.Inactive = cxStyle95
-      Styles.Selection = cxStyle98
       Styles.Footer = cxStyle91
       Styles.Group = cxStyle92
       Styles.GroupByBox = cxStyle93
       Styles.Header = cxStyle94
+      Styles.Inactive = cxStyle95
       Styles.Indicator = cxStyle96
       Styles.Preview = cxStyle97
+      Styles.Selection = cxStyle98
       BuiltIn = True
     end
     object GridTableViewStyleSheetPumpkinlarge: TcxGridTableViewStyleSheet
@@ -7235,14 +7241,14 @@ object frmLoadArrivals: TfrmLoadArrivals
       Styles.Content = cxStyle99
       Styles.ContentEven = cxStyle100
       Styles.ContentOdd = cxStyle101
-      Styles.Inactive = cxStyle106
-      Styles.Selection = cxStyle109
       Styles.Footer = cxStyle102
       Styles.Group = cxStyle103
       Styles.GroupByBox = cxStyle104
       Styles.Header = cxStyle105
+      Styles.Inactive = cxStyle106
       Styles.Indicator = cxStyle107
       Styles.Preview = cxStyle108
+      Styles.Selection = cxStyle109
       BuiltIn = True
     end
     object cxGridTableViewStyleSheetForPkgs: TcxGridTableViewStyleSheet
@@ -7288,11 +7294,12 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 184
     Top = 257
     object mtPkgNosPackageNo: TIntegerField

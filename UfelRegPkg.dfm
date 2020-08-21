@@ -346,7 +346,6 @@ object ffelRegPkg: TffelRegPkg
             Properties.ValueUnchecked = 0
             Properties.OnChange = cdAutoColWidthPropertiesChange
             TabOrder = 3
-            Width = 144
           end
           object cxButton3: TcxButton
             Left = 120
@@ -367,6 +366,7 @@ object ffelRegPkg: TffelRegPkg
         TabOrder = 1
         object grdLengthsDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dmPkgs.dsmtPackages
           DataController.KeyFieldNames = 'RecId'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -376,6 +376,7 @@ object ffelRegPkg: TffelRegPkg
         end
         object grdLengthsDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           OnEditing = grdLengthsDBBandedTableView1Editing
           OnEditKeyDown = grdLengthsDBBandedTableView1EditKeyDown
           DataController.DataSource = dmPkgs.dsmtPackages
@@ -408,7 +409,6 @@ object ffelRegPkg: TffelRegPkg
       Properties.ValueUnchecked = 0
       Properties.OnChange = cbLIPChangePropertiesChange
       TabOrder = 10
-      Width = 153
     end
     object lcVERK: TcxDBLookupComboBox
       Left = 816
@@ -508,7 +508,6 @@ object ffelRegPkg: TffelRegPkg
       Properties.ValueUnchecked = 0
       Properties.OnChange = cxDBCheckBox1PropertiesChange
       TabOrder = 19
-      Width = 24
     end
     object cbRegDate: TcxDBCheckBox
       Left = 239
@@ -521,7 +520,6 @@ object ffelRegPkg: TffelRegPkg
       Properties.ValueUnchecked = 0
       Properties.OnChange = cbRegDatePropertiesChange
       TabOrder = 20
-      Width = 24
     end
     object cbSkiftLag: TcxDBCheckBox
       Left = 239
@@ -534,7 +532,6 @@ object ffelRegPkg: TffelRegPkg
       Properties.ValueUnchecked = 0
       Properties.OnChange = cbSkiftLagPropertiesChange
       TabOrder = 21
-      Width = 24
     end
     object cbNotUseRule: TcxDBCheckBox
       Left = 72
@@ -547,7 +544,6 @@ object ffelRegPkg: TffelRegPkg
       Properties.ValueUnchecked = 0
       Properties.OnChange = cbSkiftLagPropertiesChange
       TabOrder = 22
-      Width = 161
     end
     object cbUpdateProductionStatistics: TcxDBCheckBox
       Left = 335
@@ -567,7 +563,6 @@ object ffelRegPkg: TffelRegPkg
       Style.Font.Style = [fsBold]
       Style.IsFontAssigned = True
       TabOrder = 23
-      Width = 418
     end
     object cxLabel6: TcxLabel
       Left = 355
@@ -596,7 +591,7 @@ object ffelRegPkg: TffelRegPkg
     Width = 1115
     Height = 313
     Align = alClient
-    TabOrder = 6
+    TabOrder = 2
     object grdPaket: TcxGrid
       Left = 1
       Top = 31
@@ -606,6 +601,7 @@ object ffelRegPkg: TffelRegPkg
       TabOrder = 0
       object grdPaketDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'LoadDetailNo'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -709,6 +705,7 @@ object ffelRegPkg: TffelRegPkg
       end
       object grdPaketDBBandedTableView1: TcxGridDBBandedTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'ROWNO'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -865,6 +862,7 @@ object ffelRegPkg: TffelRegPkg
         object grdPaketDBBandedTableView1Status: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Status'
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.Alignment = taRightJustify
           Properties.ReadOnly = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
@@ -1128,11 +1126,7 @@ object ffelRegPkg: TffelRegPkg
     UseSystemFont = False
     Left = 328
     Top = 464
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       BorderStyle = bbsNone
       Caption = 'Custom 1'
@@ -1271,6 +1265,7 @@ object ffelRegPkg: TffelRegPkg
     UseOwnFont = False
     Left = 248
     Top = 464
+    PixelsPerInch = 96
   end
   object ImageList1: TImageList
     Height = 24
@@ -2249,11 +2244,12 @@ object ffelRegPkg: TffelRegPkg
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtUserPropAfterInsert
     Left = 144
     Top = 464
@@ -2561,7 +2557,7 @@ object ffelRegPkg: TffelRegPkg
     end
   end
   object siLangLinked_ffelRegPkg: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

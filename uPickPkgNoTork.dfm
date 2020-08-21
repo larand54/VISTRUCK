@@ -31,6 +31,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
     object cxGrid1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.Cancel.Visible = True
+      ScrollbarAnnotations.CustomAnnotations = <>
       OnCellClick = cxGrid1DBTableView1CellClick
       DataController.DataSource = ds_SelectedPkgNo
       DataController.Filter.AutoDataSetFilter = True
@@ -68,6 +69,7 @@ object fPickPkgNoTork: TfPickPkgNoTork
         Caption = 'V'#228'lj'
         DataBinding.FieldName = 'MARKERAD'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ImmediatePost = True
         Properties.ReadOnly = False
         Properties.ValueChecked = '1'
@@ -949,19 +951,19 @@ object fPickPkgNoTork: TfPickPkgNoTork
       Styles.Content = cxStyle1
       Styles.ContentEven = cxStyle2
       Styles.ContentOdd = cxStyle3
-      Styles.Inactive = cxStyle8
-      Styles.Selection = cxStyle11
       Styles.Footer = cxStyle4
       Styles.Group = cxStyle5
       Styles.GroupByBox = cxStyle6
       Styles.Header = cxStyle7
+      Styles.Inactive = cxStyle8
       Styles.Indicator = cxStyle9
       Styles.Preview = cxStyle10
+      Styles.Selection = cxStyle11
       BuiltIn = True
     end
   end
   object siLangLinked_fPickPkgNoTork: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

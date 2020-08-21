@@ -28,7 +28,9 @@ uses
   dxPSCompsProvider, dxPSFillPatterns, dxPSEdgePatterns, dxPSPDFExportCore,
   dxPSPDFExport, cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
-  dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon ;
+  dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  dxPScxEditorProducers, dxPScxExtEditorProducers ;
 
 type
   TfEnterKilnVagn = class(TForm)

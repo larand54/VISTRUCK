@@ -23,7 +23,9 @@ uses
   cxDBLabel, cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridBandedTableView, cxGridDBBandedTableView,
   cxGridCustomView, cxGrid, cxGridExportLink, cxDBEdit, cxCheckBox, cxImageComboBox, cxDropDownEdit, cxMaskEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, Data.SQLTimst,
-  system.Generics.collections, Forms, dxPScxEditorProducers, dxPScxExtEditorProducers
+  system.Generics.collections, Forms, dxPScxEditorProducers, dxPScxExtEditorProducers,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  dxBarBuiltInMenu, System.ImageList
   ;
 
 type
@@ -309,8 +311,9 @@ var
 implementation
 
 uses VidaUser, dmSokFormular, dmcVidaOrder, dmsVidaContact,
-  UnitBookingFormorg, UnitCRViewReport, dmsDataConn, VidaConst,
-  dmsVidaSystem, uSokAvropMall, UnitCRExportOneReport, uSendMapiMail,
+  UnitBookingFormorg, //UnitCRViewReport,
+  dmsDataConn, VidaConst,
+  dmsVidaSystem, uSokAvropMall, uSendMapiMail,
   uEntryField, dmBooking, udmLanguage, uReport, uReportController
   , uVIS_UTILS, uFRConstants, uFastReports2, ISendMailInterfaces, uSendMail, udmFR;
 
@@ -938,29 +941,31 @@ end;
 
 procedure TfrmSokAvropFormular.PrintReport(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport;
+ // FormCRViewReport: TFormCRViewReport;
   A: array of variant;
 begin
-  cbShowProduct.SetFocus;
-  FormCRViewReport := TFormCRViewReport.Create(Nil);
-  Try
-//    SetLength(A, 1);
-//    A[0] := ThisUser.UserID;
+{
+    cbShowProduct.SetFocus;
+    FormCRViewReport := TFormCRViewReport.Create(Nil);
+    Try
+  //    SetLength(A, 1);
+  //    A[0] := ThisUser.UserID;
 
-    if cds_PropsRegPointNo.AsInteger = 1 then
-      FormCRViewReport.CreateCo('SokAvrop_PROD.RPT')
-    else
-      FormCRViewReport.CreateCo('SokAvrop.RPT');
+      if cds_PropsRegPointNo.AsInteger = 1 then
+        FormCRViewReport.CreateCo('SokAvrop_PROD.RPT')
+      else
+        FormCRViewReport.CreateCo('SokAvrop.RPT');
 
-      FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(ThisUser.UserID) ;
+        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(ThisUser.UserID) ;
 
-    if FormCRViewReport.ReportFound then
-    Begin
-      FormCRViewReport.ShowModal;
+      if FormCRViewReport.ReportFound then
+      Begin
+        FormCRViewReport.ShowModal;
+      End;
+    Finally
+      FreeAndNil(FormCRViewReport);
     End;
-  Finally
-    FreeAndNil(FormCRViewReport);
-  End;
+}
 end;
 
 procedure TfrmSokAvropFormular.acRefreshExecute(Sender: TObject);
@@ -1375,7 +1380,7 @@ procedure TfrmSokAvropFormular.acMailaTrpOrderAvropDKExecute(Sender: TObject);
 const
   LF = #10;
 Var
-  FormCRExportOneReport: TFormCRExportOneReport;
+ // FormCRExportOneReport: TFormCRExportOneReport;
   A: array of variant;
   dm_SendMapiMail: Tdm_SendMapiMail;
   Attach: array of String;
@@ -1426,20 +1431,22 @@ begin
         end;
       end
       else begin
-        FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-        Try
-          SetLength(A, 1);
-          A[0] := cds_MakeSokAvropLO.AsInteger;
-          // ReportType := cTrpOrderInkop ;
+          {
+          FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
+               Try
+                 SetLength(A, 1);
+                 A[0] := cds_MakeSokAvropLO.AsInteger;
+                 // ReportType := cTrpOrderInkop ;
 
-          FormCRExportOneReport.CreateCo(cds_MakeSokAvropCustomerNo.AsInteger,
-            ReportType, A, ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString);
-          // FormCRExportOneReport.CreateCo(dmVidaInvoice.cdsInvoiceListCustomerNo.AsInteger, cPkgSpec, A, ExcelDir + 'Specification '+dmVidaInvoice.cdsInvoiceListINVOICE_NO.AsString) ;
-          if FormCRExportOneReport.ReportFound = False then
-            Exit;
-        Finally
-          FreeAndNil(FormCRExportOneReport); // .Free ;
-        End;
+                 FormCRExportOneReport.CreateCo(cds_MakeSokAvropCustomerNo.AsInteger,
+                   ReportType, A, ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString);
+                 // FormCRExportOneReport.CreateCo(dmVidaInvoice.cdsInvoiceListCustomerNo.AsInteger, cPkgSpec, A, ExcelDir + 'Specification '+dmVidaInvoice.cdsInvoiceListINVOICE_NO.AsString) ;
+                 if FormCRExportOneReport.ReportFound = False then
+                   Exit;
+               Finally
+                 FreeAndNil(FormCRExportOneReport); // .Free ;
+               End;
+     }
       end;
       SetLength(Attach, 1);
       Attach[0] := ExcelDir + 'LONo ' + cds_MakeSokAvropLO.AsString + '.pdf';

@@ -15,11 +15,12 @@ object dmsProduct: TdmsProduct
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     BeforeInsert = mtPackagesBeforeInsert
     AfterInsert = mtPackagesAfterInsert
     BeforePost = mtPackagesBeforePost
@@ -50,11 +51,12 @@ object dmsProduct: TdmsProduct
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 64
     Top = 296
     object mtStandardLengthsProductLengthNo: TIntegerField
@@ -89,11 +91,12 @@ object dmsProduct: TdmsProduct
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 64
     Top = 72
     object mtDupPkgNoPackageNo: TIntegerField
@@ -362,11 +365,12 @@ object dmsProduct: TdmsProduct
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 64
     Top = 192
     object mtLO_RecordsCustomerNo: TIntegerField
@@ -1712,11 +1716,12 @@ object dmsProduct: TdmsProduct
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 64
     Top = 424
     object mtImportedProductLengthsProductLengthNo: TIntegerField
@@ -3069,7 +3074,7 @@ object dmsProduct: TdmsProduct
       end>
   end
   object siLang_dmsProduct: TsiLang
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

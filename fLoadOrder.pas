@@ -36,7 +36,7 @@ uses
   cxImageComboBox, cxTextEdit, dxPScxCommon,
   cxGridExportLink,
   cxExport, cxLabel, cxContainer, cxMaskEdit, cxDropDownEdit,
-  cxLookAndFeels, DBTables,
+  cxLookAndFeels, // DBTables,
   cxCurrencyEdit, kbmMemTable, cxSplitter,
   cxShellBrowserDialog, ShlObj, cxShellCommon, cxShellListView,
   cxLookAndFeelPainters, cxButtons, cxPC, cxCalendar, cxDBEdit, cxCheckBox,
@@ -64,7 +64,8 @@ uses
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
   siLngLnk, System.Actions, udmFR, uReportController, uReport, System.Generics.Collections, dxPScxPivotGridLnk,
-  dxPSLbxLnk, dxPSTextLnk;
+  dxPSLbxLnk, dxPSTextLnk, dxSkinOffice2019Colorful, dxDateRanges,
+  dxScrollbarAnnotations, cxImageList, System.ImageList;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -689,14 +690,15 @@ uses
   VidaConst,
   VidaType,
   VidaUser,
-  VidaUtils, UnitCRViewReport,
+  VidaUtils, // UnitCRViewReport,
   UnitLoadEntrySSP, UnitBookingForm, dmsVidaContact, dmcVidaSystem,
   dmcLoadEntrySSP, dmc_ArrivingLoads, dmsDataConn, uEntryField,
-  dmsVidaSystem, UnitCRPrintReport,
+  dmsVidaSystem, // UnitCRPrintReport,
   uLOLengths, uLoadOrderListSetup , dmBooking,
-  uLoadOrderSearch, UnitCRExportOneReport, ISendMailInterfaces, uSendMail,
+  uLoadOrderSearch, //UnitCRExportOneReport,
+  ISendMailInterfaces, uSendMail,
   //uSelectFSFileName,
-  dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, UnitCRPrintOneReport ,
+  dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, //UnitCRPrintOneReport ,
   uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS, udmFRSystem, uFastReports2, uFixMail, uFRAccessories, uFRConstants,
   uSamlastInfo;
 
@@ -1016,32 +1018,34 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.bPrintHyvelOrderClick(Sender: TObject);
-var FormCRViewReport: TFormCRViewReport;
+//var FormCRViewReport: TFormCRViewReport;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+{
+   if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- FormCRViewReport.CreateCo('HYVEL_ORDER.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+   FormCRViewReport.CreateCo('HYVEL_ORDER.RPT') ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
+    FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 
 end;
 
 procedure TfrmVisTruckLoadOrder.bPrintLOAllVerkClick(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport;
+ // FormCRViewReport: TFormCRViewReport;
   Supplier, LONo: integer;
   Lang: integer;
   LastOrderVerk, LastOrderInkop: Boolean;
@@ -1063,44 +1067,46 @@ begin
   end
   else
   begin
-    if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-      .AsInteger < 1 then
-      Exit;
+        {
+      if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+            .AsInteger < 1 then
+            Exit;
 
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
+          FormCRViewReport := TFormCRViewReport.Create(Nil);
+          Try
 
-      if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
-        (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-        FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
-      else
-      Begin
-        if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-          FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
-        else
-          FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
-      End;
+            if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+              (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+              FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
+            else
+            Begin
+              if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+                FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
+              else
+                FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
+            End;
 
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-          (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-          .AsInteger);
-        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+            if FormCRViewReport.ReportFound then
+            Begin
+              FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+                (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+                .AsInteger);
+              FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
+              FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
 
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
+              FormCRViewReport.CRViewer91.ViewReport;
+              FormCRViewReport.ShowModal;
+            End;
+          Finally
+            FreeAndNil(FormCRViewReport);
+          End;
+    }
   end;
 end;
 
 procedure TfrmVisTruckLoadOrder.bPrintLODittVerkClick(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport;
+ // FormCRViewReport: TFormCRViewReport;
   Supplier, LONo: integer;
   Lang: integer;
   LastOrderVerk, LastOrderInkop: Boolean;
@@ -1123,36 +1129,38 @@ begin
   end
   else
   begin
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
+      {
+      FormCRViewReport := TFormCRViewReport.Create(Nil);
+         Try
 
-      if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
-        (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-        FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
-      else
-      Begin
-        if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-          FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
-        else
-          FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
-      End;
+           if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+             (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+             FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_ver2.RPT')
+           else
+           Begin
+             if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+               FormCRViewReport.CreateCo('LASTORDER_NOTE_ver3.RPT')
+             else
+               FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
+           End;
 
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-          (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-          .AsInteger);
-        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue
-          (grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
-          .AsInteger);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+           if FormCRViewReport.ReportFound then
+           Begin
+             FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+               (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+               .AsInteger);
+             FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue
+               (grdLODBTableView1.DataController.DataSet.FieldByName('Supplier')
+               .AsInteger);
+             FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
 
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
+             FormCRViewReport.CRViewer91.ViewReport;
+             FormCRViewReport.ShowModal;
+           End;
+         Finally
+           FreeAndNil(FormCRViewReport);
+         End;
+   }
   end;
 end;
 
@@ -2252,27 +2260,29 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.bbAvropVerkClick(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+{
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
- FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM.RPT')
- else
-  FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM_PO.RPT') ;
+   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
+   FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM.RPT')
+   else
+    FormCRViewReport.CreateCo('SOKAVROP_VERK_DIM_PO.RPT') ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmcOrder.SupplierNo) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmcOrder.SupplierNo) ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 procedure TfrmVisTruckLoadOrder.GetOneLO(Sender: TObject);
@@ -3482,7 +3492,7 @@ end;
 
 procedure TfrmVisTruckLoadOrder.bbTallyVer2Click(Sender: TObject);
 Var
-  FormCRViewReport : TFormCRViewReport ;
+ // FormCRViewReport : TFormCRViewReport ;
   FR: TFastReports;
   lang,
   loadNo,
@@ -3512,58 +3522,60 @@ begin
     end
     else
     begin
-      FormCRViewReport := TFormCRViewReport.Create(Nil);
-      Try
+        {
+        FormCRViewReport := TFormCRViewReport.Create(Nil);
+            Try
 
-        if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-          FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
-        else
-        Begin
-          Try
-            dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
-              := LoadNo;
-            dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
-          except
-            On E: Exception do
-            Begin
-              dmsSystem.FDoLog(E.Message);
-              // ShowMessage(E.Message);
-              Raise;
+              if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+                FormCRViewReport.CreateCo('TALLY_INTERNAL_VER3_NOTE.RPT')
+              else
+              Begin
+                Try
+                  dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
+                    := LoadNo;
+                  dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
+                except
+                  On E: Exception do
+                  Begin
+                    dmsSystem.FDoLog(E.Message);
+                    // ShowMessage(E.Message);
+                    Raise;
+                  End;
+                end;
+                if Lang = cSwedish then
+                  FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT')
+                else
+                  FormCRViewReport.CreateCo('TALLY_eng_VER3_NOTE.RPT');
+
+              End;
+
+              if FormCRViewReport.ReportFound then
+              Begin
+                FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+                  (grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+                  .AsInteger);
+                FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+
+                FormCRViewReport.CRViewer91.ViewReport;
+                FormCRViewReport.ShowModal;
+              End;
+              Try
+                dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
+                  grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+                  .AsInteger;
+                dmsSystem.sq_DelPkgType.ExecSQL;
+              except
+                On E: Exception do
+                Begin
+                  dmsSystem.FDoLog(E.Message);
+                  // ShowMessage(E.Message);
+                  Raise;
+                End;
+              end;
+            Finally
+              FreeAndNil(FormCRViewReport);
             End;
-          end;
-          if Lang = cSwedish then
-            FormCRViewReport.CreateCo('TALLY_VER3_NOTE.RPT')
-          else
-            FormCRViewReport.CreateCo('TALLY_eng_VER3_NOTE.RPT');
-
-        End;
-
-        if FormCRViewReport.ReportFound then
-        Begin
-          FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-            (grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-            .AsInteger);
-          FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-
-          FormCRViewReport.CRViewer91.ViewReport;
-          FormCRViewReport.ShowModal;
-        End;
-        Try
-          dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger :=
-            grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-            .AsInteger;
-          dmsSystem.sq_DelPkgType.ExecSQL;
-        except
-          On E: Exception do
-          Begin
-            dmsSystem.FDoLog(E.Message);
-            // ShowMessage(E.Message);
-            Raise;
-          End;
-        end;
-      Finally
-        FreeAndNil(FormCRViewReport);
-      End;
+    }
     end;
   finally
     dmFR.RestoreCursor;
@@ -3571,150 +3583,158 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.bbTally_USAClick(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
+  {
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-  FormCRViewReport.CreateCo('TALLY_INT_USA.RPT')
-  else
-  Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-   FormCRViewReport.CreateCo('TALLY_US_NOTE.RPT') ;
-  End ;
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+     FormCRViewReport.CreateCo('TALLY_INT_USA.RPT')
+     else
+     Begin
+      Try
+      dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+      dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+      FormCRViewReport.CreateCo('TALLY_US_NOTE.RPT') ;
+     End ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.PrintSamlingsspecifikation(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
 // if dmcOrder.cdsLoadsForLOLoadNo.AsInteger < 1 then exit ;
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
+  {
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.PrintSamlingsspecifikationMedPktNr(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
 // if dmcOrder.cdsLoadsForLOLoadNo.AsInteger < 1 then exit ;
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
+{
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+   FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 procedure TfrmVisTruckLoadOrder.bbAvrakningSpecVer2Click(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
+  {
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-  FormCRViewReport.CreateCo('AVR_SPEC_TALLY_INTERNAL_VER2.RPT')
-  else
-  Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+     FormCRViewReport.CreateCo('AVR_SPEC_TALLY_INTERNAL_VER2.RPT')
+     else
+     Begin
+      Try
+      dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+      dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
 
-   FormCRViewReport.CreateCo('AVR_SPEC_TALLY_VER2.RPT')
-  End ;
+      FormCRViewReport.CreateCo('AVR_SPEC_TALLY_VER2.RPT')
+     End ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-  FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+     FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.acSamlingFSExecute(Sender: TObject);
@@ -4377,106 +4397,112 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.dxBarButton18Click(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
+  {
+   if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-  FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_dk.RPT')
-  else
-  Begin
-   Try
-   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
-   FormCRViewReport.CreateCo('TALLY_VER2_NOTE_dk.RPT') ;
-  End ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+     FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_dk.RPT')
+     else
+     Begin
+      Try
+      dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+      dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+      FormCRViewReport.CreateCo('TALLY_VER2_NOTE_dk.RPT') ;
+     End ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+     Try
+     dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
+     dmsSystem.sq_DelPkgType.ExecSQL ;
+        except
+         On E: Exception do
+         Begin
+          dmsSystem.FDoLog(E.Message) ;
+   //      ShowMessage(E.Message);
+          Raise ;
+         End ;
+        end;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.dxBarButton19Click(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+  {
+   if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
-  if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-  FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_dk_ver2.RPT')
-  else
- Begin
-  if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-   FormCRViewReport.CreateCo('LASTORDER_NOTE_dk_ver2.RPT')
-   else
-   FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_dk_ver2.RPT') ;
- End ;
+     if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+     FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_dk_ver2.RPT')
+     else
+    Begin
+     if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+      FormCRViewReport.CreateCo('LASTORDER_NOTE_dk_ver2.RPT')
+      else
+      FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_dk_ver2.RPT') ;
+    End ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
+     FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.dxBarButton20Click(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+  {
+   if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
 
- FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_dk.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_dk.RPT') ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
+     FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
 
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+    Finally
+       FreeAndNil(FormCRViewReport)  ;
+    End ;
+ }
 end;
 
 //Lägg in poster i SamLastReport tabell
@@ -4557,7 +4583,7 @@ end;
 procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_VERK_MARKERADE
   (Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport;
+//  FormCRViewReport: TFormCRViewReport;
   ReportType: integer;
   LONo: integer;
   Supplier: integer;
@@ -4580,72 +4606,78 @@ begin
   end
   else
   begin
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
-      FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT');
+    {
+      FormCRViewReport := TFormCRViewReport.Create(Nil);
+        Try
+          FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT');
 
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoNo);
-        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(Supplier);
-        FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
+          if FormCRViewReport.ReportFound then
+          Begin
+            FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoNo);
+            FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(Supplier);
+            FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
+            FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+            FormCRViewReport.CRViewer91.ViewReport;
+            FormCRViewReport.ShowModal;
+          End;
+        Finally
+          FreeAndNil(FormCRViewReport);
+        End;
+  }
   end;
 end;
 
 // Per LO
 procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_MARKERADE(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+{
+   if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
- FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_III.RPT') ;
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
+   FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_III.RPT') ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-//  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(ThisUser.UserID);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
+  //  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
+    FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(ThisUser.UserID);
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 
 procedure TfrmVisTruckLoadOrder.SPEC_ALLA_LASTER_VERK(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
+{
+   if grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger < 1 then exit ;
 
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
- FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT') ;
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
+   FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT') ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
-  FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('LONumber').AsInteger);
+    FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger);
+    FormCRViewReport.report.ParameterFields.Item[3].AddCurrentValue(ThisUser.UserID);
 
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+      FreeAndNil(FormCRViewReport)  ;
+   End ;
+}
 end;
 
 procedure TfrmVisTruckLoadOrder.dxBarButton22Click(Sender: TObject);
@@ -4775,7 +4807,7 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acPrintLOStatusExecute(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport;
+ // FormCRViewReport: TFormCRViewReport;
   ReportType: integer;
   LONo: integer;
   Supplier: integer;
@@ -4810,33 +4842,35 @@ begin
   end
   else
   begin
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
+        {
+      FormCRViewReport := TFormCRViewReport.Create(Nil);
+          Try
 
-      if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
-        (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
-        FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_STATUS_ver3.RPT.RPT')
-      else
-      Begin
-        if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
-          FormCRViewReport.CreateCo('LASTORDER_NOTE_STATUS_ver3.RPT')
-        else
-          FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_STATUS_ver3.RPT');
-      End;
+            if (dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 1) and
+              (dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2) then
+              FormCRViewReport.CreateCo('Lastorder_inkop_NOTE_STATUS_ver3.RPT.RPT')
+            else
+            Begin
+              if dmcOrder.cdsSawmillLoadOrdersObjectType.AsInteger = 2 then
+                FormCRViewReport.CreateCo('LASTORDER_NOTE_STATUS_ver3.RPT')
+              else
+                FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_STATUS_ver3.RPT');
+            End;
 
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-          (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
-          .AsInteger);
-        FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
+            if FormCRViewReport.ReportFound then
+            Begin
+              FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
+                (grdLODBTableView1.DataController.DataSet.FieldByName('LONumber')
+                .AsInteger);
+              FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(-1);
+              FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+              FormCRViewReport.CRViewer91.ViewReport;
+              FormCRViewReport.ShowModal;
+            End;
+          Finally
+            FreeAndNil(FormCRViewReport);
+          End;
+    }
   end;
 end;
 
@@ -4889,36 +4923,38 @@ end;
 procedure TfrmVisTruckLoadOrder.PrintLO (const ShippingPlanNo : Integer) ;
 Var LOReport, RoleType  : Integer ;
     Save_Cursor         : TCursor;
-    FormCRPrintReport   : TFormCRPrintReport;
+  //  FormCRPrintReport   : TFormCRPrintReport;
     A                   : array of variant;
 begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crSQLWait;    { Show hourglass cursor }
- FormCRPrintReport:= TFormCRPrintReport.Create(Nil);
- Try
-  if dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 0 then
-  Begin
-   LOReport := -1 ;
-   RoleType := 1 ;
-   SetLength(A, 2);
-   A[0]:= ShippingPlanNo ;
-   A[1]:= -1 ;
-   FormCRPrintReport.CreateCo(0, LOReport , RoleType, cLastorder, A) ;
-  End
-   else
-   Begin
-    LOReport:= -1 ;
-    RoleType := 2 ;
-    SetLength(A, 2);
-    A[0]:= ShippingPlanNo ;
-    A[1]:= -1 ;
-    FormCRPrintReport.CreateCo(0, LOReport , RoleType, cLastorderInkop, A) ;
-   End ;
+  {
+   Save_Cursor := Screen.Cursor;
+    Screen.Cursor := crSQLWait;
+    FormCRPrintReport:= TFormCRPrintReport.Create(Nil);
+    Try
+     if dmcOrder.cdsSawmillLoadOrdersOrderType.AsInteger = 0 then
+     Begin
+      LOReport := -1 ;
+      RoleType := 1 ;
+      SetLength(A, 2);
+      A[0]:= ShippingPlanNo ;
+      A[1]:= -1 ;
+      FormCRPrintReport.CreateCo(0, LOReport , RoleType, cLastorder, A) ;
+     End
+      else
+      Begin
+       LOReport:= -1 ;
+       RoleType := 2 ;
+       SetLength(A, 2);
+       A[0]:= ShippingPlanNo ;
+       A[1]:= -1 ;
+       FormCRPrintReport.CreateCo(0, LOReport , RoleType, cLastorderInkop, A) ;
+      End ;
 
- Finally
-  FreeAndNil(FormCRPrintReport)  ;
-  Screen.Cursor := Save_Cursor;  { Always restore to normal }
- End ;
+    Finally
+     FreeAndNil(FormCRPrintReport)  ;
+     Screen.Cursor := Save_Cursor;
+    End ;
+ }
 end;
 
 procedure TfrmVisTruckLoadOrder.PrintLO_Manually(aSupplierNo: integer);
@@ -5451,7 +5487,7 @@ begin
 end;
 
 procedure TfrmVisTruckLoadOrder.acPrintFSMisMatchExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var //FormCRViewReport : TFormCRViewReport ;
   LoadNo        : integer;
   FR2           : TFastReports2;
   lang          : integer;
@@ -6437,7 +6473,7 @@ begin
 End ;
 
 procedure TfrmVisTruckLoadOrder.PrintDirectCMR(Sender: TObject);
-var FormCRPrintOneReport  : TFormCRPrintOneReport;
+var //FormCRPrintOneReport  : TFormCRPrintOneReport;
   A: array of Variant;
   LoadNo: integer;
   FR: TFastReports;
@@ -6459,32 +6495,34 @@ begin
   end
   else
   begin
-    FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
-    Try
-      // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
+      {
+      FormCRPrintOneReport := TFormCRPrintOneReport.Create(Nil);
+         Try
+           // CreateCo(const numberOfCopy : Integer ;const PrinterSetup, promptUser : Boolean;const A: array of variant;const ReportName : String);
 
-      SetLength(A, 1);
-      A[0] := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-        .AsInteger;
-      FormCRPrintOneReport.CreateCo(1, False, False, A, 'CMR.RPT');
-      Try
-      except
-        On E: Exception do
-        Begin
-          dmsSystem.FDoLog(E.Message);
-          // ShowMessage(E.Message);
-          Raise;
-        End;
-      end;
-    Finally
-      FreeAndNil(FormCRPrintOneReport);
-    End;
+           SetLength(A, 1);
+           A[0] := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
+             .AsInteger;
+           FormCRPrintOneReport.CreateCo(1, False, False, A, 'CMR.RPT');
+           Try
+           except
+             On E: Exception do
+             Begin
+               dmsSystem.FDoLog(E.Message);
+               // ShowMessage(E.Message);
+               Raise;
+             End;
+           end;
+         Finally
+           FreeAndNil(FormCRPrintOneReport);
+         End;
+   }
   end;
 end;
 
 procedure TfrmVisTruckLoadOrder.PreviewCMR(Sender: TObject);
 Var
-  FormCRViewReport: TFormCRViewReport ;
+  //FormCRViewReport: TFormCRViewReport ;
   LoadNo: integer;
   FR: TFastReports;
 
@@ -6503,20 +6541,22 @@ begin
   end
   else
   begin
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
-      FormCRViewReport.CreateCo('CMR.RPT');
+      {
+      FormCRViewReport := TFormCRViewReport.Create(Nil);
+         Try
+           FormCRViewReport.CreateCo('CMR.RPT');
 
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoadNo);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
+           if FormCRViewReport.ReportFound then
+           Begin
+             FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoadNo);
+             FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
+             FormCRViewReport.CRViewer91.ViewReport;
+             FormCRViewReport.ShowModal;
+           End;
+         Finally
+           FreeAndNil(FormCRViewReport);
+         End;
+   }
   end;
 end;
 

@@ -28,7 +28,9 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxStatusBarPainter,
   dxSkinsdxBarPainter, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  cxNavigator, siComp, siLngLnk, System.Actions, Vcl.Grids, Vcl.DBGrids ;
+  cxNavigator, siComp, siLngLnk, System.Actions, Vcl.Grids, Vcl.DBGrids,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  dxBarBuiltInMenu, System.ImageList ;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -342,8 +344,9 @@ type
 implementation
 
 uses dmcPkgs, VidaConst, dlgPickPkg_II,
-  dmsVidaContact, dmsVidaProduct, 
-  VidaUser, UnitCRViewReport, UnitPkgInfo,
+  dmsVidaContact, dmsVidaProduct,
+  VidaUser, //UnitCRViewReport,
+  UnitPkgInfo,
   UnitPkgNoSeries, dmcVidaSystem, //UnitGetProduct,
   dmsVidaSystem,
   dmsDataConn , uSearchRunNo, dmc_UserProps,

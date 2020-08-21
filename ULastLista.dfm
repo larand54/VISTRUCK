@@ -108,6 +108,7 @@ object fLastLista: TfLastLista
     TabOrder = 1
     object grdLastListaDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmArrivingLoads.ds_verkLaster
       DataController.KeyFieldNames = 'LASTNR'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -278,6 +279,7 @@ object fLastLista: TfLastLista
       TabOrder = 1
       object grdLoadPackagesDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmArrivingLoads.ds_VerkLastPkgs
         DataController.KeyFieldNames = 'LOAD_DETAILNO'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -389,6 +391,7 @@ object fLastLista: TfLastLista
     Control = grdLastLista
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object imglistActions: TImageList
     Height = 24
@@ -1754,11 +1757,12 @@ object fLastLista: TfLastLista
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 376
     Top = 192
     object mtMarkedRowsLoadNo: TIntegerField
@@ -2220,7 +2224,7 @@ object fLastLista: TfLastLista
     end
   end
   object siLangLinked_fLastLista: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

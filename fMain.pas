@@ -42,7 +42,8 @@ uses
   System.Actions, udmFR, uReportController, dxSkinscxPCPainter, cxNavigator,
   System.Variants, cxGridChartView, cxGridDBChartView, cxGridCardView,
   cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
-  cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC ;
+  cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC, dxSkinOffice2019Colorful,
+  dxDateRanges, dxScrollbarAnnotations, System.ImageList ;
 
 
 
@@ -391,13 +392,13 @@ uses
   VidaConst,
   VidaType,
   VidaUser,
-  dmcVidaSystem, UnitSetup, UnitCRViewReport,
+  dmcVidaSystem, UnitSetup, //UnitCRViewReport,
   fLoadOrder, dmcVidaOrder, UnitAboutBox,
   UnitLoadArrivals, UnitPkgInfo, dmsDataConn,
   dmsVidaProduct,
   dmsVidaSystem,
   uUserPreference,
-  UnitCRPrintReport,
+ // UnitCRPrintReport,
   uEncode,
   UPortArrivals, uChangeLogins ,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,

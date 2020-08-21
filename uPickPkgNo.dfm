@@ -26,11 +26,10 @@ object fPickPkgNo: TfPickPkgNo
     Align = alClient
     PopupMenu = pmPickPkgNosGrid
     TabOrder = 0
-    ExplicitTop = 248
-    ExplicitHeight = 346
     object grdPickPkgNosDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.Cancel.Visible = True
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = ds_SelectedPkgNo
       DataController.KeyFieldNames = 'PAKETNR;LEVKOD'
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
@@ -70,6 +69,7 @@ object fPickPkgNo: TfPickPkgNo
         Caption = 'L'#228'gg till'
         DataBinding.FieldName = 'MARKERAD'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ImmediatePost = True
         Properties.ValueChecked = '1'
         Properties.ValueUnchecked = '0'
@@ -370,7 +370,6 @@ object fPickPkgNo: TfPickPkgNo
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 0
-      Width = 121
     end
     object lcProductDisplayName: TcxDBLookupComboBox
       Left = 648
@@ -499,7 +498,7 @@ object fPickPkgNo: TfPickPkgNo
     Height = 113
     Align = alTop
     ParentBackground = False
-    TabOrder = 7
+    TabOrder = 3
     object Panel4: TPanel
       Left = 1
       Top = 1
@@ -519,8 +518,6 @@ object fPickPkgNo: TfPickPkgNo
       LookAndFeel.Kind = lfFlat
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
-      SpeedButtonOptions.Down = True
       TabOrder = 1
       WordWrap = True
     end
@@ -532,7 +529,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowMatchingProduct
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 2
       WordWrap = True
     end
@@ -544,7 +540,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowAddLOPkgsWithMatchingProduct
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 3
       WordWrap = True
     end
@@ -556,7 +551,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowAllAddLOPkgs
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 4
       WordWrap = True
     end
@@ -568,7 +562,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowPkgsWithSameActDimOnly
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 5
       WordWrap = True
     end
@@ -594,7 +587,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowMatchingLIP
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 7
       WordWrap = True
     end
@@ -623,7 +615,6 @@ object fPickPkgNo: TfPickPkgNo
       Action = acShowMatchingArticle
       LookAndFeel.NativeStyle = False
       LookAndFeel.SkinName = 'Foggy'
-      SpeedButtonOptions.GroupIndex = 1
       TabOrder = 9
       WordWrap = True
     end
@@ -653,11 +644,7 @@ object fPickPkgNo: TfPickPkgNo
     UseSystemFont = False
     Left = 144
     Top = 280
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       BorderStyle = bbsNone
       Caption = 'Custom 1'
@@ -755,6 +742,7 @@ object fPickPkgNo: TfPickPkgNo
     UseOwnFont = False
     Left = 64
     Top = 280
+    PixelsPerInch = 96
   end
   object ActionList1: TActionList
     Left = 144
@@ -829,11 +817,12 @@ object fPickPkgNo: TfPickPkgNo
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 272
     Top = 384
     object mtProductProductNo: TIntegerField
@@ -1190,7 +1179,7 @@ object fPickPkgNo: TfPickPkgNo
     end
   end
   object siLangLinked_fPickPkgNo: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

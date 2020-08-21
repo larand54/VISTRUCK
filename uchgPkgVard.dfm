@@ -354,7 +354,6 @@ object fchgPkgVard: TfchgPkgVard
             Properties.ValueUnchecked = 0
             Properties.OnChange = cdAutoColWidthPropertiesChange
             TabOrder = 3
-            Width = 144
           end
           object cxButton3: TcxButton
             Left = 128
@@ -375,6 +374,7 @@ object fchgPkgVard: TfchgPkgVard
         TabOrder = 1
         object grdLengthsDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dmPkgs.dsmtPackages
           DataController.KeyFieldNames = 'RecId'
           DataController.Summary.DefaultGroupSummaryItems = <>
@@ -384,6 +384,7 @@ object fchgPkgVard: TfchgPkgVard
         end
         object grdLengthsDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           OnEditing = grdLengthsDBBandedTableView1Editing
           OnEditKeyDown = grdLengthsDBBandedTableView1EditKeyDown
           DataController.DataSource = dmPkgs.dsmtPackages
@@ -417,7 +418,6 @@ object fchgPkgVard: TfchgPkgVard
       Properties.OnChange = cbLIPChangePropertiesChange
       TabOrder = 10
       Visible = False
-      Width = 153
     end
     object lcVERK: TcxDBLookupComboBox
       Left = 816
@@ -519,7 +519,7 @@ object fchgPkgVard: TfchgPkgVard
     Width = 1011
     Height = 261
     Align = alClient
-    TabOrder = 6
+    TabOrder = 2
     object grdPaket: TcxGrid
       Left = 1
       Top = 31
@@ -529,6 +529,7 @@ object fchgPkgVard: TfchgPkgVard
       TabOrder = 0
       object grdPaketDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'LoadDetailNo'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -632,6 +633,7 @@ object fchgPkgVard: TfchgPkgVard
       end
       object grdPaketDBBandedTableView1: TcxGridDBBandedTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.KeyFieldNames = 'ROWNO'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -787,6 +789,7 @@ object fchgPkgVard: TfchgPkgVard
         object grdPaketDBBandedTableView1Status: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Status'
           PropertiesClassName = 'TcxCheckBoxProperties'
+          Properties.Alignment = taRightJustify
           Properties.ReadOnly = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
@@ -1050,11 +1053,7 @@ object fchgPkgVard: TfchgPkgVard
     UseSystemFont = False
     Left = 336
     Top = 344
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       BorderStyle = bbsNone
       Caption = 'Custom 1'
@@ -1194,6 +1193,7 @@ object fchgPkgVard: TfchgPkgVard
     UseOwnFont = False
     Left = 304
     Top = 344
+    PixelsPerInch = 96
   end
   object ImageList1: TImageList
     Height = 24
@@ -2086,11 +2086,12 @@ object fchgPkgVard: TfchgPkgVard
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtUserPropAfterInsert
     Left = 152
     Top = 336
@@ -2388,7 +2389,7 @@ object fchgPkgVard: TfchgPkgVard
     end
   end
   object siLangLinked_fchgPkgVard: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

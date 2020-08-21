@@ -13,7 +13,8 @@ uses
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Comp.Client,
   FireDAC.Moni.Base, FireDAC.Moni.RemoteClient, FireDAC.VCLUI.Login, FireDAC.VCLUI.Error,
   FireDAC.VCLUI.Wait, FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, FireDAC.Comp.DataSet,
-  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ,uIDBConnector;
+  FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ,uIDBConnector,
+  FireDAC.Phys.MSSQLDef, System.ImageList;
 
 type
   TdmsConnector = class(TDataModule,IDBConnector)

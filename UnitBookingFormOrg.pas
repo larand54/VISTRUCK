@@ -26,7 +26,9 @@ uses
   dxSkinTheAsphaltWorld, dxSkinsDefaultPainters, dxSkinValentine,
   dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter,
   cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  System.ImageList ;
 
 type
   TFormBookingFormOrg = class(TForm)
@@ -163,7 +165,8 @@ implementation
 
 uses   VidaConst,
   VidaUser,
-dmBooking, dmsDataConn, UnitCarrier, UnitCRViewReport, dmsVidaSystem,
+dmBooking, dmsDataConn, UnitCarrier, //UnitCRViewReport,
+dmsVidaSystem,
   dmsVidaContact;
 
 {$R *.dfm}
@@ -350,27 +353,29 @@ begin
 end;
 
 procedure TFormBookingFormOrg.acPrintExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+Var //FormCRViewReport : TFormCRViewReport ;
     A                : array of variant ;
 begin
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-// SetLength(A, 1);
-// A[0]:= dm_Booking.cdsBookingShippingPlanNo.AsInteger ;
- if OrderType = 0 then
- FormCRViewReport.CreateCo('TRP_ORDER_NOTE.RPT')
- else
-  FormCRViewReport.CreateCo('trp_order_inkop_NOTE.RPT') ;
+{
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
+  // SetLength(A, 1);
+  // A[0]:= dm_Booking.cdsBookingShippingPlanNo.AsInteger ;
+   if OrderType = 0 then
+   FormCRViewReport.CreateCo('TRP_ORDER_NOTE.RPT')
+   else
+    FormCRViewReport.CreateCo('trp_order_inkop_NOTE.RPT') ;
 
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dm_Booking.cdsBookingShippingPlanNo.AsInteger) ;
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dm_Booking.cdsBookingShippingPlanNo.AsInteger) ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport) ;
- End ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+    FreeAndNil(FormCRViewReport) ;
+   End ;
+}
 end;
 
 

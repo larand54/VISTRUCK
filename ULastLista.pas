@@ -29,7 +29,9 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions ;
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  dxBarBuiltInMenu, System.ImageList ;
 
 type
   TfLastLista = class(TForm)
@@ -187,7 +189,8 @@ var
 
 implementation
 
-uses UnitCRViewReport, dmc_ArrivingLoads, VidaUtils, Vidauser,
+uses //UnitCRViewReport,
+dmc_ArrivingLoads, VidaUtils, Vidauser,
   UnitPkgInfo, dmsVidaContact, dmcVidaSystem, dmsDataConn, VidaConst ,
   dmsVidaSystem, dmc_UserProps;
 
@@ -440,41 +443,45 @@ begin
 end; *)
 
 procedure TfLastLista.PrintSamlingsspecifikation(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cds_verkLasterLASTNR.AsInteger < 1 then exit ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-  FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport) ;
- End ;
+  {
+   if dmArrivingLoads.cds_verkLasterLASTNR.AsInteger < 1 then exit ;
+    FormCRViewReport:= TFormCRViewReport.Create(Nil);
+    Try
+     FormCRViewReport.CreateCo('SAM_LAST.RPT') ;
+    if FormCRViewReport.ReportFound then
+    Begin
+     FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+     FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+     FormCRViewReport.CRViewer91.ViewReport ;
+     FormCRViewReport.ShowModal ;
+    End ;
+    Finally
+     FreeAndNil(FormCRViewReport) ;
+    End ;
+ }
 end;
 
 procedure TfLastLista.PrintSamlingsspecifikationPKTNR(Sender: TObject;const SamLastNr : Integer);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- if dmArrivingLoads.cds_verkLasterLASTNR.AsInteger < 1 then exit ;
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-  FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport) ;
- End ;
+{
+   if dmArrivingLoads.cds_verkLasterLASTNR.AsInteger < 1 then exit ;
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
+    FormCRViewReport.CreateCo('SAM_LAST_PKTNR.RPT') ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(SamLastNr) ;
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+    FreeAndNil(FormCRViewReport) ;
+   End ;
+}
 end;
 
 procedure TfLastLista.SkrivSamlingsSpecifikationClick(Sender: TObject);

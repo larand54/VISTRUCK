@@ -26,7 +26,9 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions ;
+  dxSkinOffice2013White, cxNavigator, siComp, siLngLnk, System.Actions,
+  dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
+  System.ImageList ;
 
 type
   TFormBookingForm = class(TForm)
@@ -164,7 +166,8 @@ implementation
 
 uses   VidaConst,
   VidaUser,
-dmBooking, dmsDataConn, UnitCarrier, UnitCRViewReport, dmsVidaSystem,
+dmBooking, dmsDataConn, UnitCarrier, //UnitCRViewReport,
+dmsVidaSystem,
   dmsVidaContact;
 
 {$R *.dfm}
@@ -355,26 +358,28 @@ begin
 end;
 
 procedure TFormBookingForm.acPrintExecute(Sender: TObject);
-Var FormCRViewReport : TFormCRViewReport ;
+//Var FormCRViewReport : TFormCRViewReport ;
 begin
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
+{
+   FormCRViewReport:= TFormCRViewReport.Create(Nil);
+   Try
 
- if OrderType = 0 then
- FormCRViewReport.CreateCo('TRP_ORDER_NOTE.RPT') 
- else
-  FormCRViewReport.CreateCo('trp_order_inkop_NOTE.RPT') ;
+   if OrderType = 0 then
+   FormCRViewReport.CreateCo('TRP_ORDER_NOTE.RPT')
+   else
+    FormCRViewReport.CreateCo('trp_order_inkop_NOTE.RPT') ;
 
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dm_Booking.cdsBookingShippingPlanNo.AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
- Finally
-  FreeAndNil(FormCRViewReport) ;
- End ;
+   if FormCRViewReport.ReportFound then
+   Begin
+    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dm_Booking.cdsBookingShippingPlanNo.AsInteger);
+    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
+    FormCRViewReport.CRViewer91.ViewReport ;
+    FormCRViewReport.ShowModal ;
+   End ;
+   Finally
+    FreeAndNil(FormCRViewReport) ;
+   End ;
+}
 end;
 
 

@@ -12,7 +12,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, dxBarExtItems, StdCtrls, ImgList, OleServer, OleCtrls,
   Menus, DB, ActnList,
-  CrystalActiveXReportViewerLib11_TLB, cxStyles, cxCustomData, cxGraphics,
+  cxStyles, cxCustomData, cxGraphics,
   cxFilter, cxData, cxDataStorage, cxEdit, cxDBData, cxLabel, cxCheckBox,
   cxTextEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   cxContainer, cxMaskEdit, cxDropDownEdit, cxGridBandedTableView,
@@ -32,7 +32,7 @@ uses
   dxPScxCheckListBoxLnk, dxPSLbxLnk, dxPSTextLnk, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet,
-  CRAXDRT_TLB, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
+  dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint,
   dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
   dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
   dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
@@ -45,11 +45,12 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxPCdxBarPopupMenu,
   dxSkinsdxBarPainter, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
-  dxSkinsdxRibbonPainter, dxPScxPivotGridLnk, ComCtrls, dxCore, dxPScxSSLnk,
+  dxSkinsdxRibbonPainter, dxPScxPivotGridLnk, ComCtrls, dxCore, //dxPScxSSLnk,
   cxNavigator, cxDateUtils, cxSpinEdit, cxButtonEdit, SqlTimSt,
   cxShellBrowserDialog, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
-  dxBarBuiltInMenu, System.Actions, siComp, siLngLnk ;
+  dxBarBuiltInMenu, System.Actions, siComp, siLngLnk, dxSkinOffice2019Colorful,
+  dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList ;
 
 
 type

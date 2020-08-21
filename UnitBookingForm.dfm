@@ -746,6 +746,7 @@ object FormBookingForm: TFormBookingForm
         LookAndFeel.Kind = lfFlat
         object grdOrderDocumentDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataModeController.GridMode = True
           DataController.DataSource = dm_Booking.ds_DocText
           DataController.KeyFieldNames = 'DocTextNo'
@@ -782,6 +783,7 @@ object FormBookingForm: TFormBookingForm
       Control = PanelFixedNotes
       Color = clMaroon
       ParentColor = False
+      ExplicitWidth = 8
     end
   end
   object grdLoRows: TcxGrid
@@ -793,6 +795,7 @@ object FormBookingForm: TFormBookingForm
     TabOrder = 1
     object grdLoRowsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dm_Booking.dsBookingProducts
       DataController.KeyFieldNames = 'CSDNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -874,6 +877,7 @@ object FormBookingForm: TFormBookingForm
     Control = grdLoRows
     Color = clMaroon
     ParentColor = False
+    ExplicitWidth = 8
   end
   object ImageList1: TImageList
     Height = 24
@@ -1536,6 +1540,7 @@ object FormBookingForm: TFormBookingForm
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    SkinName = 'Silver'
     Left = 520
     Top = 168
   end
@@ -1560,7 +1565,7 @@ object FormBookingForm: TFormBookingForm
     end
   end
   object siLangLinked_FormBookingForm: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
