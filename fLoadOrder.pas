@@ -696,8 +696,6 @@ uses
   dmsVidaSystem, // UnitCRPrintReport,
   uLOLengths, uLoadOrderListSetup , dmBooking,
   uLoadOrderSearch, //UnitCRExportOneReport,
-  ISendMailInterfaces, uSendMail,
-  //uSelectFSFileName,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, //UnitCRPrintOneReport ,
   uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS, udmFRSystem, uFastReports2, uFixMail, uFRAccessories, uFRConstants,
   uSamlastInfo;
@@ -5383,7 +5381,6 @@ var
   FR: TFastReports;
   FR2: TFastReports2;
   SR: integer;
-  sm: ISendMail;
   MailToAddress: string;
   LoNo: integer;
   LONos: TList<integer>;
@@ -5414,12 +5411,11 @@ begin
   Lang := dmsContact.getCustomerLanguage(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
   try
     SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-    sm := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
     if TAction(Sender) = acMailTO_Manually then
     begin
       LONos := TList<integer>.create;
       LONos.Add(LoNo);
-      FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCELDIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
+      FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCELDIR'), ThisUser.UserEmail, MailToAddress, Lang, SR, ThisUser.UserID);
       FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos)
     end
     else
@@ -5510,48 +5506,6 @@ begin
   finally
     dmsConnector.RestoreCursor;
   end;
-(*
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then exit ;
-
- FormCRViewReport:= TFormCRViewReport.Create(Nil);
- Try
-
-// if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
-//  FormCRViewReport.CreateCo('TALLY_INTERNAL_VER2_NOTE_MM.RPT')
-//  else
-//  Begin
-//Do not use   dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-//Do not use   dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL(False) ;
-//   if dmsContact.Client_Language(dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger) = cSwedish then
-   FormCRViewReport.CreateCo('TALLY_VER2_NOTE_MM.RPT') ;
-//   else
-//   FormCRViewReport.CreateCo('TALLY_eng_VER2_NOTE_MM.RPT') ;
-
-//  End ;
-
- if FormCRViewReport.ReportFound then
- Begin
-  FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger);
-  FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-
-  FormCRViewReport.CRViewer91.ViewReport ;
-  FormCRViewReport.ShowModal ;
- End ;
-  Try
-  dmsSystem.sq_DelPkgType.ParamByName('LoadNo').AsInteger:= grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger ;
-  dmsSystem.sq_DelPkgType.ExecSQL ;
-     except
-      On E: Exception do
-      Begin
-       dmsSystem.FDoLog(E.Message) ;
-//      ShowMessage(E.Message);
-       Raise ;
-      End ;
-     end;
- Finally
-    FreeAndNil(FormCRViewReport)  ;
- End ;
- *)
 end;
 
 procedure TfrmVisTruckLoadOrder.teSearchLONoKeyDown(Sender: TObject; var Key: Word;
@@ -5646,7 +5600,6 @@ procedure TfrmVisTruckLoadOrder.acEmailaFSExecute(Sender: TObject);
 const
   LF = #10;
 Var
-    dmSendMail              : ISendMail;
     MailToAddress           : String ;
     MailFrom                : string;
     ExcelDir                : String ;
@@ -5682,12 +5635,11 @@ begin
     ExcelDir := dmsSystem.Get_Dir('ExcelDir');
     if Length(MailToAddress) > 0 then
     begin
-      MailFrom := dmsSystem.Get_Dir('MyEmailAddress');
+      MailFrom := ThisUser.UserEmail;
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
-        FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
+        FR2 := TFastReports2.createForMail(dmFR, nil, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
         try
           FR2.mailTallyByType(ReportType, loads, true);
         finally
@@ -5697,118 +5649,6 @@ begin
         loads.free;
       end;
     end;
-(*
-    NoOfCopies := 0;
-    if (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger > 0) and
-      (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.IsNull = False) then
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersCHCustomerNo.AsInteger)
-    else
-      MailToAddress := dmsContact.GetEmailAddress
-        (dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger);
-    if Length(MailToAddress) = 0 then
-    Begin
-      MailToAddress := 'ange@adress.nu';
-      ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-        ('IDS_16' { 'Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)' } )
-        );
-    End;
-    if Length(MailToAddress) > 0 then
-    Begin
-      LoadNo := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-        .AsInteger;
-      if LoadNo < 1
-      then
-        Exit;
-      Lang := dmsContact.getCustomerLanguage
-        (dmcOrder.cdsSawmillLoadOrdersCSH_CustomerNo.AsInteger);
-      if uReportController.useFR then
-      begin
-        if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
-          .AsInteger <> 2 then
-          ReportType := cFoljesedelIntern
-        else
-          ReportType := cFoljesedel;
-        try
-          FR := TFastReports.Create;
-          FR.Tally(LoadNo, ReportType, Lang, MailToAddress, '', '', NoOfCopies);
-        finally
-          FreeAndNil(FR);
-        end;
-      end
-      else
-      begin
-        FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-        Try
-          SetLength(A, 1);
-          A[0] := grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-            .AsInteger; // dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
-
-          if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType')
-            .AsInteger <> 2 then
-            ReportType := cFoljesedelIntern
-          else
-          Begin
-            Try
-              dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger
-                := grdFSDBTableView1.DataController.DataSet.FieldByName
-                ('LoadNo').AsInteger;
-              // dmcOrder.cdsLoadsForLOLoadNo.AsInteger ;
-              dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
-            except
-              On E: Exception do
-              Begin
-                dmsSystem.FDoLog(E.Message);
-                // ShowMessage(E.Message);
-                Raise;
-              End;
-            end;
-
-            if Lang = cSwedish
-            then
-              ReportType := cFoljesedel
-            else
-              ReportType := cFoljesedel_eng;
-          End;
-
-          FormCRExportOneReport.CreateCo(1, ReportType, A, ExcelDir + 'FS ' +
-            grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-            .AsString); // dmcOrder.cdsLoadsForLOLoadNo.AsString) ;
-
-          if FormCRExportOneReport.ReportFound = False then
-            Exit;
-        Finally
-          FreeAndNil(FormCRExportOneReport); // .Free ;
-        End;
-        SetLength(Attach, 1);
-        Attach[0] := ExcelDir + 'FS ' + grdFSDBTableView1.DataController.
-          DataSet.FieldByName('LoadNo').AsString + '.pdf';
-        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
-        Try
-          dm_SendMapiMail.SendMail('Följesedel. FSnr: ' +
-            grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo')
-            .AsString,
-            siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-            ('IDS_18' { 'Följesedel bifogad. ' } )
-            + LF + ''
-            + siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault
-            ('IDS_19' { 'Load tally attached. ' } )
-            + LF + ''
-            + LF + ''
-            + LF + 'MVH/Best Regards, '
-            + LF + ''
-            + dmsContact.GetFirstAndLastName(ThisUser.UserID),
-            dmsSystem.Get_Dir('MyEmailAddress'),
-            MailToAddress,
-            Attach);
-        Finally
-          FreeAndNil(dm_SendMapiMail);
-        End;
-      End
-    end
-    else
-      ShowMessage('Emailaddress is missing');
-*)
   finally
     dmFR.RestoreCursor;
   end;
@@ -5822,33 +5662,6 @@ end;
 
 procedure TfrmVisTruckLoadOrder.acUtlastningsSpecExecute(Sender: TObject);
 begin
-(*
-  with TfLoadEntrySSPTemp.CreateWithNewLoad(NIL,
-  dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger, //SSP customer
-  dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger, //SSP supplier
-  dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger, //LO
-  dmcOrder.cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
-  dmcOrder.cdsSawmillLoadOrdersLoadingLocationNo.AsInteger,
-  -1{LoadNo},
-  grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
-  grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger
-
-  ) do try
-    ShowModal;
-    Application.ProcessMessages ;
-
-    if dmLoadEntrySSPTemp.cds_LoadHeadLoadNo.AsInteger > 0 then
-    AddLoadNoToList(dmLoadEntrySSPTemp.cds_LoadHeadLoadNo.AsInteger,
-    dmLoadEntrySSPTemp.cds_LSPShippingPlanNo.AsInteger) ;
-
-    dmcOrder.ShowLoadsForLO(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger);
-
-    if dmLoadEntrySSPTemp.cds_LoadHeadLoadNo.AsInteger > 0 then
-    if dmcOrder.FindLoadRecord(dmLoadEntrySSPTemp.cds_LoadHeadLoadNo.AsInteger) then ;
-  finally
-    Free
-  end;
-  *)
 end;
 
 procedure TfrmVisTruckLoadOrder.CreateLoadForm ;
@@ -5869,68 +5682,6 @@ procedure TfrmVisTruckLoadOrder.cxButton3Click(Sender: TObject);
 begin
 
 end;
-
-(*
-procedure TfrmVisTruckLoadOrder.OpenNormalLoad(Sender: TObject);
-Var LSupplierNo : Integer ;
-begin
- CreateLoadForm ;
- if (grdFSDBTableView1.DataController.DataSet.Active) and (grdFSDBTableView1.DataController.DataSet.RecordCount > 0) then
- Begin
-
-//dmcOrder.SupplierNo är valt företag i droplistan
-//Endast vidawood användare kan välja ett annat än sitt eget företag
-//Väljer en vida wood användare ett annat företag används LO.supplierNo som supplier till last form.
- if ThisUser.CompanyNo = VIDA_WOOD_COMPANY_NO then
-  LSupplierNo:= grdLODBTableView1.DataController.DataSet.FieldByName('Supplier').AsInteger
-   else //dmcOrder.SupplierNo kan vara tex en lego
-    LSupplierNo:= dmcOrder.SupplierNo ;
-
- if grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger < 1 then
- Exit ;
- CheckIfChangesUnSaved(Sender) ;
-// LockWindowUpdate(grdFS.Handle);
-//  try
-//    LoadBM := grdLoads.DataSource.DataSet.Bookmark;
-//    try
-
-      fLoadEntrySSP.CreateWithExistingLoad(
-
-//om användaren är vida wood skall supplierno vara LOens supplierno
-//då är det ingen risk att fel lager väljs
-        //dmcOrder.SupplierNo,
-        LSupplierNo,
-        grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger,
-        grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
-        grdLODBTableView1.DataController.DataSet.FieldByName('LoadingLocationNo').AsInteger,
-        grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger,
-        grdFSDBTableView1.DataController.DataSet.FieldByName('SupplierNo').AsInteger,
-        grdLODBTableView1.DataController.DataSet.FieldByName('SPCustomerNo').AsInteger
-        ) ;
-        fLoadEntrySSP.Show ;
-        Application.ProcessMessages ;
-
-       AddLoadNoTab(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsString) ;
-//       AddLoadNoToList(grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger,
-//       grdLODBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger);
-//       dmcOrder.ShowLoadsForLO(grdLODBTableView1.DataController.DataSet.FieldByName('ShippingPlanNo').AsInteger) ;
-//      finally
-//        Free
-//      end;
-//    finally
-//      try
-//        grdLoads.DataSource.DataSet.Bookmark := LoadBM;
-//  except
-//   on E:Exception do
-          {Nothing};
-//   end;
-//  end;
-//  finally
-//    LockWindowUpdate(0);
-//  end;
- End ;//if..
-end;
-  *)
 
 
 function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
