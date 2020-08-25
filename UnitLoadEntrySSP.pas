@@ -4374,7 +4374,7 @@ begin
       begin
         LONos := TList<integer>.create;
         LONos.Add(LoNo);
-        FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCEL_DIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
+        FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCEL_DIR'), ThisUser.UserEmail, MailToAddress, Lang, SR, ThisUser.UserID);
         FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
       end
       else
