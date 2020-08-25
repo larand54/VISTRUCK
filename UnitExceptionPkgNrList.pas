@@ -105,7 +105,10 @@ implementation
 {$R *.dfm}
 
 uses dmc_ArrivingLoads, dmsDataConn, UnitPkgInfo, dmsVidaSystem, uSendMapiMail,
-  dmsVidaContact;
+  dmsVidaContact
+  ,  uOAuthMail
+  ,  synCommons
+;
 
 procedure TPkgNrExceptionList.acChangeFormSizeExecute(Sender: TObject);
 begin
@@ -133,47 +136,36 @@ end;
 procedure TPkgNrExceptionList.acMailaExecute(Sender: TObject);
 const
   LF = #10;
-Var
-    A                       : array of variant ;
-    dm_SendMapiMail         : Tdm_SendMapiMail;
-    Attach                  : array of String ;
-    MailToAddress,
-    ExcelDir                : String ;
-    ReportType              : Integer ;
+var
+  A: array of variant;
+  dm_SendMapiMail: Tdm_SendMapiMail;
+  Attach: array of RawUTF8;
+  MailToAddress, ExcelDir: string;
+									  
+  ReportType: Integer;
+  mailMessage,
+  subject: string;
 begin
- ExcelDir          := dmsSystem.Get_Dir('ExcelDir') ;
- if Length(MailToAddress) = 0 then
- Begin
-  MailToAddress:= 'ange@adress.nu' ;
-  ShowMessage('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)') ;
- End ;
- if Length(MailToAddress) > 0 then
- Begin
+  ExcelDir := dmsSystem.Get_Dir('ExcelDir');
+  if Length(MailToAddress) = 0 then
+  begin
+    MailToAddress := 'ange@adress.nu';
+    ShowMessage('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)');
+  end;
+  if Length(MailToAddress) > 0 then
+  begin
 
-  Refresh_GetScannedPkgs ;
-  frxPDFExport1.ShowDialog  := false ;
-  frxPDFExport1.FileName    := ExcelDir + 'Felscan.pdf' ;
-  frxReport1.Export(frxPDFExport1) ;
+    Refresh_GetScannedPkgs;
+    frxPDFExport1.ShowDialog := false;
+    frxPDFExport1.FileName := ExcelDir + 'Felscan.pdf';
+    frxReport1.Export(frxPDFExport1);
+    subject := 'Felskannade paketlista.';
+    mailMessage := 'Bifogar lista på felskannade paketnr.' + LF + 'Period ' + datetimetostr(cxDateEditStart.Date) + ' - ' + datetimetostr(cxDateEditEnd.Date) + LF + '' + LF + '' + LF + 'MVH/Best Regards, ' + LF + '' + dmsContact.GetFirstAndLastName(ThisUser.UserID);
+    SetLength(Attach, 1);
+    Attach[0] := ExcelDir + 'Felscan.pdf';
 
- SetLength(Attach, 1);
- Attach[0]        := ExcelDir + 'Felscan.pdf' ;
- dm_SendMapiMail  := Tdm_SendMapiMail.Create(nil);
- Try
-  dm_SendMapiMail.SendMail('Felskannade paketlista. ' ,
-  'Bifogar lista på felskannade paketnr.'
-  +LF+'Period ' + datetimetostr(cxDateEditStart.Date) + ' - ' + datetimetostr(cxDateEditEnd.Date)
-  +LF+''
-  +LF+''
-  +LF+'MVH/Best Regards, '
-  +LF+''
-  +dmsContact.GetFirstAndLastName(ThisUser.UserID),
-  dmsSystem.Get_Dir('MyEmailAddress'),
-  MailToAddress,
-  Attach) ;
- Finally
-  FreeAndNil(dm_SendMapiMail) ;
- End ;
-end;
+    TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, mailMessage, ThisUser.UserEmail, mailToAddress, '', Attach, false);
+ end;
 end;
 
 procedure TPkgNrExceptionList.acPackageInfoExecute(Sender: TObject);

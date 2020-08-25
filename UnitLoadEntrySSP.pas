@@ -716,7 +716,10 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
   //,uIIPObserver,  uIMsgObserver
 {$ENDIF}
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
-  uAddErrorPkgLoad, ISendMailInterfaces, uSendMail;
+  uAddErrorPkgLoad
+  , uOAuthMail
+  , synCommons
+; 
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -4335,7 +4338,6 @@ var
   FR: TFastReports;
   FR2: TFastReports2;
   SR: integer;
-  sm: ISendMail;
   MailToAddress: string;
   LoNo: integer;
   LONos: TList<integer>;
@@ -4372,8 +4374,7 @@ begin
       begin
         LONos := TList<integer>.create;
         LONos.Add(LoNo);
-        sm := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
-        FR2 := TFastReports2.createForMail(dmFR, sm, dmsSystem.Get_Dir('EXCEL_DIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
+        FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCEL_DIR'), '', MailToAddress, Lang, SR, ThisUser.UserID);
         FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
       end
       else
@@ -6730,25 +6731,7 @@ Begin
 end;
 
 procedure TfLoadEntrySSP.acMailaFSExecute(Sender: TObject);
-const
-  LF = #10;
-Var 
-(*
-    FormCRExportOneReport   : TFormCRExportOneReport ;
-    A                       : array of variant ;
-    dm_SendMapiMail         : Tdm_SendMapiMail;
-    Attach                  : array of String ;
-    MailToAddress           : String ;
-    ReportType              : Integer ;
-    Language                : Integer;
-    LoadNo: integer;
-    ExcelDir                : String ;
-    fr                      : TFastReports;
-    FR2                     : TFastReports2;
-    salesRegion             : integer;
-    NoOfCopies              : integer;
-*)
-    dmSendMail              : ISendMail;
+Var
     MailToAddress           : String ;
     MailFrom                : string;
     ExcelDir                : String ;
@@ -6781,14 +6764,14 @@ begin
     ExcelDir := dmsSystem.Get_Dir('ExcelDir');
     if Length(MailToAddress) > 0 then
     begin
-      MailFrom := dmsSystem.Get_Dir('MyEmailAddress');
+      MailFrom := ThisUser.UserEmail;
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-        dmSendMail := TSendMail.Create(ThisUser.UserName, ThisUser.UserEmail);
+																			  
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
-          FR2 := TFastReports2.createForMail(dmFR, dmSendMail, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
+          FR2 := TFastReports2.createForMail(dmFR, nil, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
           try
             FR2.mailTallyByType(cfTally, loads, true);
           finally
@@ -6804,106 +6787,6 @@ begin
   finally
     dmFR.RestoreCursor;
   end;
-(*
-  NoOfCopies := 0;
-  if (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger > 0) and
-      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.IsNull = False) then
-    MailToAddress := dmsContact.GetEmailAddress
-      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger)
-  else
-    MailToAddress := dmsContact.GetEmailAddress
-      (dmLoadEntrySSP.cds_LSPCustomerNo.AsInteger);
-  if Length(MailToAddress) = 0 then
-  Begin
-    MailToAddress := 'ange@adress.nu';
-    ShowMessage
-      ('Emailadress saknas för klienten, ange adressen direkt i mailet(outlook)');
-  End;
-  if Length(MailToAddress) > 0 then
-  begin
-    LoadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
-    language := dmsContact.getCustomerLanguage
-              (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-    if uReportController.useFR then
-    begin
-      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-        ReportType := cFoljesedelIntern
-      else
-        ReportType := cFoljesedel;
-      try
-        fr := TFastReports.Create;
-        fr.Tally_Pkg_Matched(LoadNo,
-          ReportType, Language, MailToAddress, '','', NoOfCopies);
-      finally
-        FreeAndNil(fr);
-      end;
-    end
-    else
-    begin
-      ExcelDir := dmsSystem.Get_Dir('ExcelDir');
-      Begin
-        FormCRExportOneReport := TFormCRExportOneReport.Create(Nil);
-        Try
-          SetLength(A, 1);
-          A[0] := LoadNo;
-
-          if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger <> 2 then
-            ReportType := cFoljesedelIntern
-          else
-          Begin
-
-            Try
-              dmsSystem.sq_PkgType_InvoiceByLO.ParamByName('LoadNo').AsInteger := LoadNo;
-              dmsSystem.sq_PkgType_InvoiceByLO.ExecSQL;
-            except
-              On E: Exception do
-              Begin
-                dmsSystem.FDoLog(E.Message);
-                // ShowMessage(E.Message);
-                Raise;
-              End;
-            end;
-
-            if Language = cSwedish then
-              ReportType := cFoljesedel
-            else
-              ReportType := cFoljesedel_eng;
-          End;
-
-          FormCRExportOneReport.CreateCo(1, ReportType, A,
-            ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString);
-          if FormCRExportOneReport.ReportFound = False then
-            Exit;
-        Finally
-          FreeAndNil(FormCRExportOneReport); // .Free ;
-        End;
-        SetLength(Attach, 1);
-        Attach[0] := ExcelDir + 'FS ' + dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString
-          + '.pdf';
-        dm_SendMapiMail := Tdm_SendMapiMail.Create(nil);
-        Try
-          dm_SendMapiMail.SendMail('Följesedel. FSnr: ' +
-            dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
-            'Följesedel bifogad. '
-            + LF + ''
-            + 'Load tally attached. '
-            + LF + ''
-            + LF + ''
-            + LF + 'MVH/Best Regards, '
-            + LF + ''
-            + dmsContact.GetFirstAndLastName(ThisUser.UserID),
-            dmsSystem.Get_Dir('MyEmailAddress'),
-            MailToAddress,
-            Attach);
-        Finally
-          FreeAndNil(dm_SendMapiMail);
-        End;
-      End
-    end;
-  end
-  else
-    ShowMessage('Emailadress saknas för klienten!');
-  *)
 {TSI:IGNORE OFF}
 end;
 
