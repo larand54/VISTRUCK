@@ -132,19 +132,19 @@
         <DCC_DebugInformation>1</DCC_DebugInformation>
         <BT_BuildType>Debug</BT_BuildType>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <DCC_ExeOutput>E:\git\KLONE\VISTRUCK\WIN32\RELEASE\EXE\</DCC_ExeOutput>
-        <DCC_DcuOutput>E:\git\KLONE\VISTRUCK\WIN32\RELEASE\DCU\</DCC_DcuOutput>
+        <DCC_ExeOutput>..\VISTRUCK\WIN32\RELEASE\EXE\</DCC_ExeOutput>
+        <DCC_DcuOutput>..\VISTRUCK\WIN32\RELEASE\DCU\</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
-        <DCC_ExeOutput>E:\git\KLONE\VISTRUCK\WIN64\RELEASE\EXE\</DCC_ExeOutput>
+        <DCC_ExeOutput>..\VISTRUCK\WIN64\RELEASE\EXE\</DCC_ExeOutput>
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
         <VerInfo_Build>0</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <DCC_DcuOutput>E:\git\KLONE\VISTRUCK\WIN64\RELEASE\DCU\</DCC_DcuOutput>
+        <DCC_DcuOutput>..\VISTRUCK\WIN64\RELEASE\DCU\</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -158,20 +158,20 @@
         <VerInfo_Keys>CompanyName=;FileVersion=1.2.1.61;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <BT_BuildType>Debug</BT_BuildType>
-        <DCC_ExeOutput>E:\git\KLONE\VISTRUCK\WIN32\DEBUG\EXE\</DCC_ExeOutput>
+        <DCC_ExeOutput>..\VISTRUCK\WIN32\DEBUG\EXE\</DCC_ExeOutput>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <DCC_DcuOutput>E:\git\KLONE\VISTRUCK\WIN32\DEBUG\DCU\</DCC_DcuOutput>
+        <DCC_DcuOutput>..\VISTRUCK\WIN32\DEBUG\DCU\</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <DCC_ExeOutput>E:\git\KLONE\VISTRUCK\WIN64\DEBUG\EXE\</DCC_ExeOutput>
+        <DCC_ExeOutput>..\VISTRUCK\WIN64\DEBUG\EXE\</DCC_ExeOutput>
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
         <VerInfo_Build>0</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_DcuOutput>E:\git\KLONE\VISTRUCK\WIN64\DEBUG\DCU\</DCC_DcuOutput>
+        <DCC_DcuOutput>..\WIN64\DEBUG\DCU\</DCC_DcuOutput>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

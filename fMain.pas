@@ -178,7 +178,6 @@ type
     acPositionView: TAction;
     dxBarLargeButton33: TdxBarLargeButton;
     dxBarLargeButton34: TdxBarLargeButton;
-    cxbtnChangeReporter: TdxBarLargeButton;
     acRefresh_Usersmonpu_piv: TAction;
     cxStyleRepository1: TcxStyleRepository;
     GridTableViewStyleSheetWindowsStandardlarge: TcxGridTableViewStyleSheet;
@@ -294,8 +293,6 @@ type
     dxBarLargeButton37: TdxBarLargeButton;
     dxBarLargeButton38: TdxBarLargeButton;
     sp_GetGroupClientRegionNo: TFDStoredProc;
-    dxBarLargeButtonEWSProfileManager: TdxBarLargeButton;
-    acEWSProfile: TAction;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -318,7 +315,6 @@ type
     procedure acChangeLanguageExecute(Sender: TObject);
     procedure acDeRegisterPackagesExecute(Sender: TObject);
     procedure acPositionViewExecute(Sender: TObject);
-    procedure cxbtnChangeReporterClick(Sender: TObject);
     procedure acRefresh_Usersmonpu_pivExecute(Sender: TObject);
     procedure grdPkgOutputDBTableView1GetDisplayText(
   Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
@@ -345,8 +341,6 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
-    procedure dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
-    procedure acEWSProfileExecute(Sender: TObject);
 
   private
     ShowAllOutput   : Boolean ;
@@ -380,20 +374,19 @@ uses
   VidaConst,
   VidaType,
   VidaUser,
-  dmcVidaSystem, UnitSetup, //UnitCRViewReport,
+  dmcVidaSystem, UnitSetup,
   fLoadOrder, dmcVidaOrder, UnitAboutBox,
   UnitLoadArrivals, UnitPkgInfo, dmsDataConn,
   dmsVidaProduct,
   dmsVidaSystem,
   uUserPreference,
- // UnitCRPrintReport,
   uEncode,
   UPortArrivals, uChangeLogins ,
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
   uSetupUserOutput, UnitSokAvropFormular
-  , dmsUserAdm, uEWSMail;
+  , dmsUserAdm;
 
 
 
@@ -664,7 +657,6 @@ begin
   End;
   dmFR.SetUpConnection(dmsConnector.FDConnection1);
   uReportController.useFR := true;
-  cxbtnChangeReporter.Caption := 'Change to CrystalReports';
   Caption  := lCaption ;
 
  dmInventory.Set_mtUserUserID ;
@@ -714,29 +706,6 @@ begin
  End ;
 end;
 
-
-procedure TfrmMain.dxBarLargeButtonEWSProfileManagerClick(Sender: TObject);
-begin
-  with TEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
-  begin
-    if EWSSession.ShowProfileManager = mrOK then
-      showMessage('EWS Profile updated');
-    free;
-  end;
-end;
-
-procedure TfrmMain.cxbtnChangeReporterClick(Sender: TObject);
-begin
-  if cxbtnChangeReporter.Caption = 'Change to FastReport' then begin
-    cxbtnChangeReporter.Caption := 'Change to CrystalReports';
-    uReportController.useFR := true;
-  end
-  else
-  begin
-    cxbtnChangeReporter.Caption := 'Change to FastReport';
-    uReportController.useFR := false;
-  end;
-end;
 
 procedure TfrmMain.acUserPreferenceExecute(Sender: TObject);
 begin
@@ -1206,16 +1175,6 @@ End;
 procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);
 begin
   AvregistreraPaket ;
-end;
-
-procedure TfrmMain.acEWSProfileExecute(Sender: TObject);
-begin
-  with TEWSSendMail.createWithProfile(ThisUser.UserName, ThisUser.UserEmail) do
-  begin
-    if EWSSession.ShowProfileManager = mrOK then
-      showMessage('EWS Profile updated');
-    free;
-  end;
 end;
 
 procedure TfrmMain.Timer1Timer(Sender: TObject);

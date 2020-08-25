@@ -1179,7 +1179,6 @@ object frmMain: TfrmMain
     end
     object acEWSProfile: TAction
       Caption = 'acEWSProfile'
-      OnExecute = acEWSProfileExecute
     end
   end
   object imglOutbar_large: TImageList
@@ -4014,14 +4013,6 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxBarLargeButton34'
-        end
-        item
-          Visible = True
-          ItemName = 'cxbtnChangeReporter'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarLargeButtonEWSProfileManager'
         end>
       OneOnRow = True
       Row = 0
@@ -4218,7 +4209,6 @@ object frmMain: TfrmMain
       Category = 0
       Hint = 'Change to FastReport'
       Visible = ivAlways
-      OnClick = cxbtnChangeReporterClick
     end
     object dxBarLargeButton35: TdxBarLargeButton
       Action = acFragaAvrop
