@@ -509,7 +509,11 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   VidaUtils , UchgPkgVard, uLagerPos, uReportController, uReport,
   ufrmPkgLabelSetup,  uDlgReferensAndInfo, UnitPackageEntry, dmcLoadEntrySSP, dmcPkgs, UnitPkgEntry, dmsVidaPkg, UnitMovePkgs,
   UnitRemovePkg, UfelRegPkg
-  ,udmLanguage; //, uAddManualBooking, uBookingRa, uLOBuffertParams;
+  ,udmLanguage  
+  ,uOAuthMail
+  ,synCommons
+  ;
+			 
 
 {$R *.dfm}
 
@@ -858,8 +862,7 @@ procedure TfLager.ExportPkgTables(Sender: TObject);
 const
   LF = #10;
 Var
-    dm_SendMapiMail         : Tdm_SendMapiMail;
-    Attach                  : Array of String ;
+    Attach                  : Array of RawUTF8;
     MailToAddress           : String ;
     Subject                 : String ;
     InfogadHTMLFil          : String ;
@@ -872,25 +875,7 @@ begin
 
  SetLength(Attach, 1);
  Attach[0]:= InfogadHTMLFil ;
-// Attach[1]:= ExtractFilePath(Forms.Application.ExeName) + '\'+'Specification '+dmVidaInvoice.cdsInvoiceListINVOICE_NO.AsString+'.pdf' ;
- dm_SendMapiMail         := Tdm_SendMapiMail.Create(nil);
- Try
-
-{
-  dm_SendMapiMail.SendMail(Subject,
-  'Paketspecifikation inkluderad. '
-  +LF+''
-  +LF+'MVH/Best Regards, '
-  +LF+''
-  +'Lars',//dmsContact.GetFirstAndLastName(ThisUser.UserID),
-  'lars.makiaho@falubo.se',
-  MailToAddress,
-  InfogadHTMLFil,
-  Attach) ;
-  }
- Finally
-  FreeAndNil(dm_SendMapiMail) ;
- End ;
+ TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, 'Paketspec från VISTRUCK', ThisUser.UserEmail, mailToAddress, '', Attach, false);
 
 end;
 
