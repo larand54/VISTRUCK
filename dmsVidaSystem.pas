@@ -743,7 +743,6 @@ type
 
 
     procedure FDoLog(s: string);
-    procedure Email_Attachments(const Attach: array of String;const fMailToAddress, Subject, Stext : String);
     function  Get_A_Value_From_UserDir(const Form, pFieldName : String) : String ;
     procedure Save_A_Value_To_UserDir (const Form,Value, Field : String) ;
     Function  POLoadConfirmed(const POLoadNo : Integer;Var Sales_LONo : Integer) : Integer ;
@@ -1549,39 +1548,44 @@ End ;
 function TdmsSystem.Get_Dir(const pFieldName : String) : String ;
 Begin
   {$IFDEF DEBUG}
-    if copy(GetEnvironmentVariable('COMPUTERNAME'),0,6) = 'CARMAK' then begin
-      if AnsiUpperCase(pFieldName) = 'EXCELDIR' then
-        Result := dmsConnector.DriveLetter+'VIS\TEMP\EXCEL\'
-      else if pFieldName = 'MyEmailAddress' then
-        if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
-           Result := 'larand54@gmail.com'
-      else if pFieldName = 'UserDir' then
-          result := ExtractFilePath(ParamStr(0))
-      else
-        result :=  'c:\VIS\TEMP\';
-      exit;
-    end;
-  {$ENDIF}
-    if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+  if copy(GetEnvironmentVariable('COMPUTERNAME'), 0, 6) = 'CARMAK' then
+  begin
+    if AnsiUpperCase(pFieldName) = 'EXCELDIR' then
+      Result := dmsConnector.DriveLetter + 'VIS\TEMP\EXCEL\'
+    else if pFieldName = 'MyEmailAddress' then
     begin
-      if pFieldName = 'UserDir' then
-          result := ExtractFilePath(ParamStr(0))
+      if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+        Result := 'lars-goran.andersson@vida.se'
       else
-        result := 'C:\VIS\TEMP\';
-      exit;
-    end;
+        result := ThisUser.UserEmail;
+    end
+    else if pFieldName = 'UserDir' then
+      result := ExtractFilePath(ParamStr(0))
+    else
+      result := 'c:\VIS\TEMP\';
+    exit;
+  end;
+  {$ENDIF}
+  if GetEnvironmentVariable('COMPUTERNAME') = 'CARMAK-FASTER' then
+  begin
+    if pFieldName = 'UserDir' then
+      result := ExtractFilePath(ParamStr(0))
+    else
+      result := 'C:\VIS\TEMP\';
+    exit;
+  end;
   cds_Props.Active := False;
   cds_Props.ParamByName('UserID').AsInteger := ThisUser.UserID;
-  cds_Props.ParamByName('Form').AsString    := 'Global';
+  cds_Props.ParamByName('Form').AsString := 'Global';
   cds_Props.Active := True;
   if not cds_Props.Eof then
-  Begin
+  begin
     Result := cds_Props.FieldByName(pFieldName).AsString;
-  End
+  end
   else
     Result := 'C:\Temp\';
   cds_Props.Active := False;
-End ;
+end;
 
 function TdmsSystem.Get_SystemDir(const Form, pFieldName : String) : String ;
 Begin
@@ -2730,6 +2734,7 @@ Begin
  cds_Props.Active:= False ;
 End ;
 
+(*  LGA.2020-08			   
 procedure TdmsSystem.Email_Attachments(const Attach: array of String;const fMailToAddress, Subject, Stext : String);
 const
   LF = #10;
@@ -2798,6 +2803,7 @@ begin
   else
    ShowMessage('Emailadress saknas för klienten!') ;
 end;
+*)// LGA-2020-08-25				   
 
 procedure TdmsSystem.Open_ClientPrefDocs ;
 Begin
