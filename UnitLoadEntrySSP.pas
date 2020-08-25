@@ -34,8 +34,7 @@ uses
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
   Vcl.Touch.Keyboard, uReportController, cxSplitter, Vcl.Buttons,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  System.ImageList, dxSkinBasic, dxSkinOffice2019Black,
-  dxSkinOffice2019DarkGray, dxSkinOffice2019White ;
+  System.ImageList ;
 
 type
   TfLoadEntrySSP = class(TForm)

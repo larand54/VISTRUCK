@@ -166,7 +166,11 @@ uses
   uDO_LOG in '..\CommonSources\DelphiLogg\uDO_LOG.pas',
   uSamlastInfo in 'uSamlastInfo.pas' {fSamLastInfo},
   uEWSMail in '..\CommonSources\sendMail\uEWSMail.pas',
-  uMAPIMail in '..\CommonSources\sendMail\uMAPIMail.pas';
+  uMAPIMail in '..\CommonSources\sendMail\uMAPIMail.pas',
+  uOAuthDB in '..\CommonSources\sendMail\uOAuthDB.pas',
+  uOAuthMail in '..\CommonSources\sendMail\uOAuthMail.pas',
+  uOAuthSecurities in '..\CommonSources\sendMail\uOAuthSecurities.pas',
+  LGstrUtils in '..\CommonSources\specialTools\LGstrUtils.pas';
 
 {$R *.res}
 begin
