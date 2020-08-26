@@ -6779,7 +6779,7 @@ begin
           end;
         end
         else
-          showMessage(format('Wrong ordertype: %d', [dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger]));
+          showMessage(format('Wrong objecttype: %d', [dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger]));
       finally
         loads.free;
       end;
