@@ -3,7 +3,9 @@ unit UnitSokAvropFormular;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  Windows, Messages
+  , synCommons
+  , SysUtils, Variants, Classes, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxContainer, cxEdit, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
   dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans,
   dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
@@ -25,7 +27,7 @@ uses
   cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, Data.SQLTimst,
   system.Generics.collections, Forms, dxPScxEditorProducers, dxPScxExtEditorProducers,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  dxBarBuiltInMenu, System.ImageList
+  dxBarBuiltInMenu, System.ImageList, dxSkinBasic
   ;
 
 type
@@ -315,7 +317,7 @@ uses VidaUser, dmSokFormular, dmcVidaOrder, dmsVidaContact,
   dmsDataConn, VidaConst,
   dmsVidaSystem, uSokAvropMall, uSendMapiMail,
   uEntryField, dmBooking, udmLanguage, uReport, uReportController
-  , uVIS_UTILS, uFRConstants, uFastReports2, uOAuthMail, synCommons, udmFR;
+  , uVIS_UTILS, uFRConstants, uFastReports2, uOAuthMail, udmFR;
 
 {$R *.dfm}
 
@@ -1439,7 +1441,7 @@ begin
               + LF + '' + LF + '' + LF + 'MVH/Best Regards, ' + LF + '' + dmsContact.GetFirstAndLastName(ThisUser.UserID);
       mailFrom := ThisUser.UserEmail;
       mailStatus := TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, mailSubject, mailMsg, mailFrom, mailToList,'',Attach, false);
-      if pos('error',mailStatus) > 0 then
+      if  (mailStatus = '') or (pos('"isError":true',mailStatus) > 0 )then
         showMessage('Mail could not be sent!')
       else
         showMessage('Mail successfully added to the draft-folder!');

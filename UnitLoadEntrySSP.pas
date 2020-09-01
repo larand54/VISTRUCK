@@ -4,7 +4,9 @@ unit UnitLoadEntrySSP;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages
+  , synCommons
+  , SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, System.Generics.Collections,
 
   VidaType, db,
@@ -34,7 +36,7 @@ uses
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
   Vcl.Touch.Keyboard, uReportController, cxSplitter, Vcl.Buttons,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  System.ImageList ;
+  System.ImageList, dxSkinBasic ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -718,8 +720,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
   uAddErrorPkgLoad
   , uOAuthMail
-  , synCommons
-; 
+;
 {$R *.dfm}
 
 { TfrmLoadEntry }

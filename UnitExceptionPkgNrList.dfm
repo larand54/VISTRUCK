@@ -62,6 +62,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
       TabOrder = 1
       object cxGrid1DBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = ds_GetScannedPkgs
         DataController.KeyFieldNames = 'DateCreated'
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -321,6 +322,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Version = 0
     Left = 480
     Top = 248
+    PixelsPerInch = 96
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = cxGrid1
       PrinterPage.DMPaper = 9
@@ -335,11 +337,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
+      PixelsPerInch = 96
       BuiltInReportLink = True
     end
   end
   object frxReport1: TfrxReport
-    Version = '5.4.3'
+    Version = '6.6'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -375,34 +378,43 @@ object PkgNrExceptionList: TPkgNrExceptionList
       RightMargin = 10.000000000000000000
       TopMargin = 10.000000000000000000
       BottomMargin = 10.000000000000000000
+      Frame.Typ = []
+      MirrorMode = []
       object ReportTitle1: TfrxReportTitle
         FillType = ftBrush
+        Frame.Typ = []
         Height = 22.677180000000000000
         Top = 18.897650000000000000
         Width = 1046.929810000000000000
         object SysMemo2: TfrxSysMemoView
+          AllowVectorExport = True
           Left = 914.646260000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             '[DATE]')
         end
       end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
+        Frame.Typ = []
         Height = 22.677180000000000000
         Top = 268.346630000000000000
         Width = 1046.929810000000000000
         object SysMemo1: TfrxSysMemoView
+          AllowVectorExport = True
           Left = 929.764380000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             '[PAGE#]')
         end
       end
       object MasterData1: TfrxMasterData
         FillType = ftBrush
+        Frame.Typ = []
         Height = 26.456710000000000000
         Top = 181.417440000000000000
         Width = 1046.929810000000000000
@@ -410,6 +422,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
         DataSetName = 'frxDBDataset1'
         RowCount = 0
         object frxDBDataset1ScannedString: TfrxMemoView
+          AllowVectorExport = True
           Left = 22.677180000000000000
           Top = 3.779530000000000000
           Width = 170.078850000000000000
@@ -417,10 +430,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'ScannedString'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."ScannedString"]')
         end
         object frxDBDataset1PackageNo: TfrxMemoView
+          AllowVectorExport = True
           Left = 200.315090000000000000
           Top = 3.779530000000000000
           Width = 79.370130000000000000
@@ -428,10 +443,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'PackageNo'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."PackageNo"]')
         end
         object frxDBDataset1Prefix: TfrxMemoView
+          AllowVectorExport = True
           Left = 287.244280000000000000
           Top = 3.779530000000000000
           Width = 22.677180000000000000
@@ -439,10 +456,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'Prefix'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."Prefix"]')
         end
         object frxDBDataset1DateCreated: TfrxMemoView
+          AllowVectorExport = True
           Left = 336.378170000000000000
           Top = 3.779530000000000000
           Width = 204.094620000000000000
@@ -450,10 +469,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'DateCreated'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."DateCreated"]')
         end
         object frxDBDataset1UserName: TfrxMemoView
+          AllowVectorExport = True
           Left = 570.709030000000000000
           Top = 7.559060000000000000
           Width = 60.472480000000000000
@@ -461,10 +482,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'UserName'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."UserName"]')
         end
         object frxDBDataset1Mottagare: TfrxMemoView
+          AllowVectorExport = True
           Left = 646.299630000000000000
           Top = 3.779530000000000000
           Width = 132.283550000000000000
@@ -472,10 +495,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'Mottagare'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."Mottagare"]')
         end
         object frxDBDataset1Levereratill: TfrxMemoView
+          AllowVectorExport = True
           Left = 789.921770000000000000
           Top = 3.779530000000000000
           Width = 124.724490000000000000
@@ -483,10 +508,12 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'Leverera till'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."Leverera till"]')
         end
         object frxDBDataset1ClientName: TfrxMemoView
+          AllowVectorExport = True
           Left = 925.984850000000000000
           Top = 3.779530000000000000
           Width = 105.826840000000000000
@@ -494,16 +521,19 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'ClientName'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."ClientName"]')
         end
       end
       object Header1: TfrxHeader
         FillType = ftBrush
+        Frame.Typ = []
         Height = 56.692950000000000000
         Top = 102.047310000000000000
         Width = 1046.929810000000000000
         object frxDBDataset1Applikation: TfrxMemoView
+          AllowVectorExport = True
           Left = 22.677180000000000000
           Top = 3.779530000000000000
           Width = 400.630180000000000000
@@ -511,70 +541,87 @@ object PkgNrExceptionList: TPkgNrExceptionList
           DataField = 'Applikation'
           DataSet = frxDBDataset1
           DataSetName = 'frxDBDataset1'
+          Frame.Typ = []
           Memo.UTF8W = (
             '[frxDBDataset1."Applikation"]')
         end
         object Memo1: TfrxMemoView
+          AllowVectorExport = True
           Left = 22.677180000000000000
           Top = 37.795300000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Skannad str'#228'ng')
         end
         object Memo2: TfrxMemoView
+          AllowVectorExport = True
           Left = 204.094620000000000000
           Top = 30.236240000000000000
           Width = 79.370130000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Paketnr')
         end
         object Memo3: TfrxMemoView
+          AllowVectorExport = True
           Left = 287.244280000000000000
           Top = 30.236240000000000000
           Width = 37.795300000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Prefix')
         end
         object Memo4: TfrxMemoView
+          AllowVectorExport = True
           Left = 336.378170000000000000
           Top = 30.236240000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Registrerad')
         end
         object Memo5: TfrxMemoView
+          AllowVectorExport = True
           Left = 570.709030000000000000
           Top = 37.795300000000000000
           Width = 60.472480000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Reg. av')
         end
         object Memo6: TfrxMemoView
+          AllowVectorExport = True
           Left = 646.299630000000000000
           Top = 34.015770000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Mottagare')
         end
         object Memo7: TfrxMemoView
+          AllowVectorExport = True
           Left = 789.921770000000000000
           Top = 34.015770000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Leverera till')
         end
         object Memo8: TfrxMemoView
+          AllowVectorExport = True
           Left = 925.984850000000000000
           Top = 34.015770000000000000
           Width = 71.811070000000000000
           Height = 18.897650000000000000
+          Frame.Typ = []
           Memo.UTF8W = (
             'Leverant'#246'r')
         end
@@ -590,7 +637,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Top = 320
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -3,7 +3,9 @@ unit MainU;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages
+  , synCommons
+  , SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, DB, ADODB, xmldom, XMLIntf, msxmldom, XMLDoc, PackageExportU,
   ComCtrls, ExtCtrls, Buttons, FMTBcd, DBClient, Provider, SqlExpr,
   cxShellBrowserDialog, ActnList, cxControls, cxContainer, cxEdit,
@@ -24,7 +26,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  dxSkinOffice2019Colorful;
+  dxSkinOffice2019Colorful, dxSkinBasic;
 
 type
 
@@ -126,7 +128,6 @@ uses PackageImportU, ComObj, TypInfo, dmsVidaSystem, VidaUser ,
   VidaConst , dmc_ImportWoodx, uReport, uReportController, uVIS_UTILS
   ,uOAuthMail
   , udmFR
-  , synCommons
   ;
 
 

@@ -3,7 +3,9 @@ unit uLager;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages
+  , synCommons
+  , SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, dxBar, dxBarExtItems, StdCtrls, ImgList, OleServer, OleCtrls,
   Menus, DB, ActnList, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, cxStyles,
@@ -40,7 +42,8 @@ uses
   dxSkinsdxRibbonPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   dxBarBuiltInMenu, System.Actions, siComp, siLngLnk, dxSkinOffice2019Colorful,
-  dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList ;
+  dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList,
+  dxSkinBasic ;
 
 const cFirstLengthFieldNumber         = 27 ;
       cFirstLengthFieldNumberPaketnr  = 37 ;
@@ -511,7 +514,6 @@ uses VidaType, dmsDataConn, VidaUser, dm_Inventory, dmsVidaContact, VidaConst,
   UnitRemovePkg, UfelRegPkg
   ,udmLanguage  
   ,uOAuthMail
-  ,synCommons
   ;
 			 
 

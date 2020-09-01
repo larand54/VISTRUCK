@@ -3,7 +3,9 @@ unit UnitExceptionPkgNrList;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages
+  , synCommons
+  , System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxLookAndFeels,
   cxLookAndFeelPainters, Vcl.Menus, dxSkinsCore, dxSkinBlack, dxSkinBlue,
   dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
@@ -32,7 +34,8 @@ uses
   cxDrawTextUtils, dxPSPrVwStd, dxPSPrVwAdv, dxPSPrVwRibbon,
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon, frxClass,
-  frxDBSet, frxExportPDF, siComp, siLngLnk ;
+  frxDBSet, frxExportPDF, siComp, siLngLnk, dxSkinBasic, dxDateRanges,
+  dxScrollbarAnnotations, dxPScxEditorProducers, dxPScxExtEditorProducers ;
 
 type
   TPkgNrExceptionList = class(TForm)
@@ -107,7 +110,6 @@ implementation
 uses dmc_ArrivingLoads, dmsDataConn, UnitPkgInfo, dmsVidaSystem, uSendMapiMail,
   dmsVidaContact
   ,  uOAuthMail
-  ,  synCommons
 ;
 
 procedure TPkgNrExceptionList.acChangeFormSizeExecute(Sender: TObject);
