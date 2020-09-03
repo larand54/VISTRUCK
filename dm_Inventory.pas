@@ -129,7 +129,6 @@ type
     cds_ProductionUnitProdUnitNo: TIntegerField;
     cds_ProductionUnitCost: TFloatField;
     cds_ProductionUnitLonPerTimme: TFloatField;
-    cds_ProductionUnitLegoCostPerAM3: TBCDField;
     cds_OtherBookings: TFDQuery;
     cds_OtherBookingsProdukt: TStringField;
     cds_OtherBookingsYearWeek: TStringField;
@@ -1476,6 +1475,7 @@ type
     cds_GetPakProdNamePcsPerLength: TStringField;
     cds_GetPakProdNameMatchingPT: TStringField;
     cds_KilnChargeRowsTotalm3Actual: TFloatField;
+    cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;

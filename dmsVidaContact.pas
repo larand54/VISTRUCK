@@ -99,7 +99,6 @@ type
     cds_ProductionUnitCapitalCost: TFloatField;
     cds_ProductionUnitOverheadCost: TFloatField;
     cds_ProductionUnitSalaryCost: TFloatField;
-    cds_ProductionUnitLegoCostPerAM3: TBCDField;
     cds_ProductionUnitProductionUnitCode: TStringField;
     cds_ProductionUnitPkgPrefix: TStringField;
     cds_ProductionUnitStoppOrsakFil: TStringField;
@@ -334,6 +333,7 @@ type
     LanguageCode: TIntegerField;
     sq_GetRealInterverk: TFDQuery;
     sq_GetRealInterverkIntVerk: TIntegerField;
+    cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;

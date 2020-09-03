@@ -486,6 +486,7 @@ object dmsContact: TdmsContact
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end>
   end
   object cdsProducers: TFDStoredProc
@@ -515,6 +516,7 @@ object dmsContact: TdmsContact
     end
   end
   object cds_RegPoints: TFDQuery
+    Active = True
     AfterInsert = cds_RegPointsAfterInsert
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
@@ -668,10 +670,8 @@ object dmsContact: TdmsContact
       Origin = 'SalaryCost'
       ProviderFlags = [pfInUpdate]
     end
-    object cds_ProductionUnitLegoCostPerAM3: TBCDField
+    object cds_ProductionUnitLegoCostPerAM3: TFMTBCDField
       FieldName = 'LegoCostPerAM3'
-      Origin = 'LegoCostPerAM3'
-      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 1
     end
@@ -791,6 +791,7 @@ object dmsContact: TdmsContact
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -1347,6 +1348,7 @@ object dmsContact: TdmsContact
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -1437,6 +1439,13 @@ object dmsContact: TdmsContact
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@ClientNo'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
     object sp_actAgentsClientNo: TIntegerField
       FieldName = 'ClientNo'
@@ -2463,7 +2472,6 @@ object dmsContact: TdmsContact
     end
   end
   object sq_GetRealInterverk: TFDQuery
-    Active = True
     Connection = dmsConnector.FDConnection1
     SQL.Strings = (
       'select * from dbo.Client C'
