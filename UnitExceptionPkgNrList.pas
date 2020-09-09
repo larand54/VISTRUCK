@@ -166,7 +166,7 @@ begin
     SetLength(Attach, 1);
     Attach[0] := ExcelDir + 'Felscan.pdf';
 
-    TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, mailMessage, ThisUser.UserEmail, mailToAddress, '', Attach, false);
+    TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, mailMessage, ThisUser.UserEmail, mailToAddress, '', Attach, false, ThisUser.UserID);
  end;
 end;
 

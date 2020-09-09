@@ -5715,7 +5715,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     object acUtlastningsSpec: TAction
       Caption = 'Hampen spec'
       ImageIndex = 9
-      OnExecute = acUtlastningsSpecExecute
     end
     object acPrintFS: TAction
       Caption = 'F'#246'ljesedel'

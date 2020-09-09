@@ -554,7 +554,6 @@ type
     procedure acOpenFSUpdate(Sender: TObject);
     procedure acEmailaFSExecute(Sender: TObject);
     procedure grdLODBTableView1DblClick(Sender: TObject);
-    procedure acUtlastningsSpecExecute(Sender: TObject);
     procedure tcLOChange(Sender: TObject);
     procedure acPrintFSExecute(Sender: TObject);
     procedure teMultiSearchKeyDown(Sender: TObject; var Key: Word;
@@ -587,7 +586,6 @@ type
     procedure PrintLO_Manually(aSupplierNo: integer);
     procedure acPrintLO_Your_MillExecute(Sender: TObject);
     procedure acPrintLO_All_MillsExecute(Sender: TObject);
-    procedure cxButton3Click(Sender: TObject);
     procedure dxBarButton35Click(Sender: TObject);
     procedure acSendWoodxDeliveryMessageExecute(Sender: TObject);
     procedure acSendWoodxDeliveryMessageUpdate(Sender: TObject);
@@ -716,6 +714,8 @@ Begin
       else
        fLoadEntrySSP.grdLORows.SetFocus ;
    end;
+
+
  end;
 End;
 
@@ -4158,7 +4158,9 @@ begin
      fLoadEntrySSP.mePackageNo.SetFocus
       else
        fLoadEntrySSP.grdLORows.SetFocus ;
-   end;
+
+
+   end ;
  End;
 end;
 
@@ -5660,10 +5662,6 @@ begin
  acPrintLOStatusExecute(Sender) ;
 end;
 
-procedure TfrmVisTruckLoadOrder.acUtlastningsSpecExecute(Sender: TObject);
-begin
-end;
-
 procedure TfrmVisTruckLoadOrder.CreateLoadForm ;
 Begin
  if not assigned(fLoadEntrySSP) then
@@ -5678,12 +5676,6 @@ Begin
  fLoadEntrySSP.BorderStyle  := bsNone ;
 
 End ;
-procedure TfrmVisTruckLoadOrder.cxButton3Click(Sender: TObject);
-begin
-
-end;
-
-
 function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
 Var LSupplierNo     : Integer ;
     ReservedByUser  : String ;

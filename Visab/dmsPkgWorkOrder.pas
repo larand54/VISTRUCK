@@ -103,8 +103,6 @@ type
     cds_NewPkgsMAXLENGTH: TFloatField;
     cds_NewPkgsMAXProductLengthNo: TIntegerField;
     cds_NewPkgsVaruVarde: TFloatField;
-    cds_NewPkgsPris: TBCDField;
-    cds_NewPkgsPrice_SEKPerNM3: TBCDField;
     cds_NewPkgsPriceListNo: TIntegerField;
     cds_NewPkgsProductNo: TIntegerField;
     cds_NewPkgsPkgStatus: TIntegerField;
@@ -240,6 +238,8 @@ type
     cds_UsedPkgsAvRegPktNr: TIntegerField;
     cds_UsedPkgsAvRegPrefix: TStringField;
     siLangLinked_dm_PkgWorkOrder: TsiLangLinked;
+    cds_NewPkgsPris: TFMTBCDField;
+    cds_NewPkgsPrice_SEKPerNM3: TFMTBCDField;
     procedure dsp_NewPkgsGetTableName(Sender: TObject; DataSet: TDataSet;
       var TableName: String);
     procedure dsp_NewSawPkgsGetTableName(Sender: TObject;

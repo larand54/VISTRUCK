@@ -30,6 +30,7 @@ object dmInventory: TdmInventory
     ParamData = <
       item
         Name = 'LANGUAGECODE'
+        DataType = ftInteger
         ParamType = ptInput
       end>
     object sq_Speciespeciescode: TStringField
@@ -122,10 +123,12 @@ object dmInventory: TdmInventory
     ParamData = <
       item
         Name = 'LANGUAGECODE'
+        DataType = ftInteger
         ParamType = ptInput
       end
       item
         Name = 'PKTNRLEVKOD'
+        DataType = ftString
         ParamType = ptInput
       end>
     object sq_SurfacingSurfacingcode: TStringField
@@ -1260,6 +1263,7 @@ object dmInventory: TdmInventory
   end
   object cds_ProductionUnit: TFDQuery
     CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     SQL.Strings = (
       
@@ -1322,9 +1326,8 @@ object dmInventory: TdmInventory
       ReadOnly = True
       Required = True
     end
-    object cds_ProductionUnitLegoCostPerAM3: TBCDField
+    object cds_ProductionUnitLegoCostPerAM3: TFMTBCDField
       FieldName = 'LegoCostPerAM3'
-      Origin = 'LegoCostPerAM3'
       ReadOnly = True
       Required = True
       Precision = 18
@@ -8938,11 +8941,12 @@ object dmInventory: TdmInventory
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     BeforePost = mtSelectedPkgNoBeforePost
     Left = 912
     Top = 712
@@ -8978,7 +8982,6 @@ object dmInventory: TdmInventory
     end
   end
   object cds_KilnChargeRows: TFDQuery
-    Active = True
     AfterInsert = cds_KilnChargeRowsAfterInsert
     AfterPost = cds_KilnChargeRowsAfterPost
     BeforeDelete = cds_KilnChargeRowsBeforeDelete
@@ -10536,39 +10539,6 @@ object dmInventory: TdmInventory
     StoredProcName = 'dbo.vis_GetProdDescByPkgNoAndnrPrefix'
     Left = 336
     Top = 840
-    ParamData = <
-      item
-        Position = 1
-        Name = '@RETURN_VALUE'
-        DataType = ftInteger
-        ParamType = ptResult
-      end
-      item
-        Position = 2
-        Name = '@PackageNo'
-        DataType = ftString
-        ParamType = ptInput
-        Size = 8
-      end
-      item
-        Position = 3
-        Name = '@ClientNo'
-        DataType = ftInteger
-        ParamType = ptInput
-      end
-      item
-        Position = 4
-        Name = '@RegPointName'
-        DataType = ftString
-        ParamType = ptInput
-        Size = 20
-      end
-      item
-        Position = 5
-        Name = '@LanguageID'
-        DataType = ftInteger
-        ParamType = ptInput
-      end>
   end
   object sp_allPkgsatoutput: TFDStoredProc
     Indexes = <

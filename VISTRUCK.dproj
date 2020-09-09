@@ -651,11 +651,12 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\CommonSources\sendMail\uEWSMail.pas"/>
-        <DCCReference Include="..\CommonSources\sendMail\uMAPIMail.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\uOAuthDB.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\uOAuthMail.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\uOAuthSecurities.pas"/>
         <DCCReference Include="..\CommonSources\specialTools\LGstrUtils.pas"/>
+        <DCCReference Include="..\CommonSources\sendMail\uMAPIMail.pas"/>
+        <DCCReference Include="..\CommonSources\sendMail\uUseMAPI.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
@@ -722,12 +723,6 @@
             </Platforms>
             <ModelSupport>True</ModelSupport>
             <Deployment Version="3">
-                <DeployFile LocalName="EXE\VISTRUCK.exe" Configuration="Release" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>VISTRUCK.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="VISTRUCK.todo" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -740,19 +735,43 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="WIN64\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>VISTRUCK.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="EXE\VISTRUCK.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>VISTRUCK.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>VISTRUCK.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="VISTRUCK.todo" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
+                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="VISTRUCK.todo" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="VISTRUCK.todo" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

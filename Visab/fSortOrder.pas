@@ -41,7 +41,8 @@ uses
   dxSkinsdxBarPainter, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxRibbonPainter, cxNavigator, siComp, siLngLnk, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions ;
+  dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions, dxDateRanges,
+  dxScrollbarAnnotations, System.ImageList ;
 
 
   Const
@@ -6439,6 +6440,7 @@ var
 begin
   with dm_Vis_Vida, dmsSortOrder do
   begin
+    PkgSupplierCode := '' ;
     cxLabelSkannarPaketnr.Caption := '';
     cxLabelSkannarPaketnrProblem.Caption := '';
     Save_Cursor := Screen.Cursor;
