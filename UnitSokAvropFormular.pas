@@ -1444,7 +1444,7 @@ begin
       if  (mailStatus = '') or (pos('"isError":true',mailStatus) > 0 )then
         showMessage('Mail could not be sent!')
       else
-        showMessage('Mail successfully added to the draft-folder!');
+        ;
     end
     else
       ShowMessage('Email address missing.');
