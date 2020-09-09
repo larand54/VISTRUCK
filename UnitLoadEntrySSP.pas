@@ -410,6 +410,7 @@ type
     dxBarLargeButton12: TdxBarLargeButton;
     acShowPkgLogg: TAction;
     grdLORowsDBBandedTableView1Lagerkod: TcxGridDBBandedColumn;
+    Timer2: TTimer;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -539,6 +540,7 @@ type
     procedure cxbtnScanArticleClick(Sender: TObject);
     procedure cxbtnCreatePalletPkgClick(Sender: TObject);
     procedure acShowPkgLoggExecute(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
 
   private
     { Private declarations }
@@ -720,7 +722,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
   uAddErrorPkgLoad
   , uOAuthMail
-;
+, fMain;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -6538,9 +6540,9 @@ Begin
       End;
      cdsLORows.Next ;
     End;
-  End ;
-   //else
-   // Result := True ;
+  End
+   else
+    Result := True ;
  End;
 End;
 
@@ -7203,6 +7205,12 @@ begin
  Timer1.Enabled:= False ;
 end;
 
+procedure TfLoadEntrySSP.Timer2Timer(Sender: TObject);
+begin
+   FrmMain.Width  := FrmMain.Width - 50 ;
+   Timer2.Enabled := False;
+end;
+
 function TfLoadEntrySSP.unPackRestoredFormSettings(const aPack: string): TStringList;
 var
   s: string;
@@ -7368,6 +7376,7 @@ begin
     cxbtnCreatePalletPkg.Visible := false;
     cxbtnCreatePalletPkg.Enabled := false;
   end;
+  FrmMain.Width  := FrmMain.Width - 1 ;
 end;
 
 procedure TfLoadEntrySSP.PrintDirectCMR(Sender: TObject);

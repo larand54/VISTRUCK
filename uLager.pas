@@ -877,7 +877,7 @@ begin
 
  SetLength(Attach, 1);
  Attach[0]:= InfogadHTMLFil ;
- TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, 'Paketspec från VISTRUCK', ThisUser.UserEmail, mailToAddress, '', Attach, false);
+ TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, 'Paketspec från VISTRUCK', ThisUser.UserEmail, mailToAddress, '', Attach, false, ThisUser.UserID);
 
 end;
 

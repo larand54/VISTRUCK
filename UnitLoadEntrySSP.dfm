@@ -672,10 +672,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -5766,5 +5762,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Left = 408
     Top = 418
     PixelsPerInch = 96
+  end
+  object Timer2: TTimer
+    OnTimer = Timer2Timer
+    Left = 152
+    Top = 256
   end
 end

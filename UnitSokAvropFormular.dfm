@@ -2420,7 +2420,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44075.549898564810000000
+      ReportDocument.CreationDate = 44081.431343043980000000
       TimeFormat = 0
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
