@@ -75,7 +75,6 @@ type
     cds_ImpLenMapDeliveryMessageNumber: TStringField;
     cds_ImpLenMapIdentifier: TStringField;
     cds_ImpLenMapLengthCategory: TStringField;
-    cds_ImpLenMapStyck: TBCDField;
     cds_ImpLenMapLngd: TFloatField;
     cds_ImpLenMapProductLengthNo: TIntegerField;
     sq_SearchPkgNoPackageNo: TIntegerField;
@@ -112,7 +111,6 @@ type
     cds_ImpLengthsDeliveryShipmentLineItemNumber: TIntegerField;
     cds_ImpLengthsIdentifier: TStringField;
     cds_ImpLengthsLengthCategory: TStringField;
-    cds_ImpLengthsTotalNumberOfUnitsValue: TBCDField;
     cds_ImpLengthsTotalNumberOfUnitsUOM: TStringField;
     sq_GetDMHW: TFDQuery;
     sq_GetPGNo: TFDQuery;
@@ -162,7 +160,6 @@ type
     cds_DMWHAdditionalText: TStringField;
     cds_DMWHTotalNumberOfShipments: TIntegerField;
     cds_DMWHTotalQuantityQuantityType: TStringField;
-    cds_DMWHTotalQuantityValue: TBCDField;
     cds_DMWHTotalQuantityUOM: TStringField;
     cds_DMWHInternalInvoiceNo: TIntegerField;
     sq_GetDMRInvoiceNo: TIntegerField;
@@ -282,9 +279,7 @@ type
     cds_DMSGradingRule: TStringField;
     cds_DMSGradeCode: TStringField;
     cds_DMSGradeName: TStringField;
-    cds_DMSWidthValue: TBCDField;
     cds_DMSWidthUOM: TStringField;
-    cds_DMSThicknessValue: TBCDField;
     cds_DMSThicknessUOM: TStringField;
     cds_DMSManufacturingProcessType: TStringField;
     cds_DMSExlogValue: TIntegerField;
@@ -352,10 +347,8 @@ type
     cds_TrpPkgInfoIdentifier: TStringField;
     cds_TrpPkgInfoIdentifierCodeType: TStringField;
     cds_TrpPkgInfoIdentifierType: TStringField;
-    cds_TrpPkgInfoItemCountValue: TBCDField;
     cds_TrpPkgInfoItemCountUOM: TStringField;
     cds_TrpPkgInfoQuantityType: TStringField;
-    cds_TrpPkgInfoQuantityValue: TBCDField;
     cds_TrpPkgInfoQuantityUOM: TStringField;
     cds_TrpPkgInfoInternalInvoiceNo: TIntegerField;
     sq_GetIQDeliveryMessageNumber: TStringField;
@@ -372,7 +365,6 @@ type
     cds_InfoQuantDeliveryShipmentLineItemNumber: TIntegerField;
     cds_InfoQuantIdentifier: TStringField;
     cds_InfoQuantInformationalQuantityType: TStringField;
-    cds_InfoQuantInformationalQuantityValue: TBCDField;
     cds_InfoQuantInformationalQuantityUOM: TStringField;
     cds_InfoQuantInternalInvoiceNo: TIntegerField;
     sq_GetLSDeliveryMessageNumber: TStringField;
@@ -387,7 +379,6 @@ type
     cds_LengthSpecDeliveryShipmentLineItemNumber: TIntegerField;
     cds_LengthSpecIdentifier: TStringField;
     cds_LengthSpecLengthCategory: TStringField;
-    cds_LengthSpecTotalNumberOfUnitsValue: TBCDField;
     cds_LengthSpecTotalNumberOfUnitsUOM: TStringField;
     cds_LengthSpecInternalInvoiceNo: TIntegerField;
     sq_GetTrpPaketAprefix: TStringField;
@@ -600,6 +591,15 @@ type
     sq_getAddress_TallySupplierVatNo: TStringField;
     sq_getAddress_TallySupplierClientNo: TIntegerField;
     sq_getAddress_TallySupplierClientCode: TStringField;
+    cds_DMWHTotalQuantityValue: TFMTBCDField;
+    cds_DMSWidthValue: TFMTBCDField;
+    cds_DMSThicknessValue: TFMTBCDField;
+    cds_TrpPkgInfoItemCountValue: TFMTBCDField;
+    cds_TrpPkgInfoQuantityValue: TFMTBCDField;
+    cds_InfoQuantInformationalQuantityValue: TFMTBCDField;
+    cds_LengthSpecTotalNumberOfUnitsValue: TFMTBCDField;
+    cds_ImpLengthsTotalNumberOfUnitsValue: TFMTBCDField;
+    cds_ImpLenMapStyck: TFMTBCDField;
     procedure dsp_ImpClientMapGetTableName(Sender: TObject; DataSet: TDataSet;
       var TableName: String);
     procedure dsp_ImpProdMapGetTableName(Sender: TObject; DataSet: TDataSet;

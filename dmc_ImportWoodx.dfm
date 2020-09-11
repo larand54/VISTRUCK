@@ -50,11 +50,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 360
     Top = 192
     object mtPkgStatusStatus: TIntegerField
@@ -91,11 +92,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtClientAfterInsert
     Left = 616
     Top = 200
@@ -202,11 +204,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 616
     Top = 152
     object mtLoadProductsProductNo: TIntegerField
@@ -389,7 +392,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'TotalQuantityQuantityType'
       Size = 50
     end
-    object cds_DMWHTotalQuantityValue: TBCDField
+    object cds_DMWHTotalQuantityValue: TFMTBCDField
       FieldName = 'TotalQuantityValue'
       Origin = 'TotalQuantityValue'
       Precision = 18
@@ -578,9 +581,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
       Size = 40
     end
-    object cds_ImpLenMapStyck: TBCDField
+    object cds_ImpLenMapStyck: TFMTBCDField
       FieldName = 'Styck'
-      Origin = 'Styck'
       Precision = 18
       Size = 3
     end
@@ -1054,9 +1056,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
       Size = 40
     end
-    object cds_ImpLengthsTotalNumberOfUnitsValue: TBCDField
+    object cds_ImpLengthsTotalNumberOfUnitsValue: TFMTBCDField
       FieldName = 'TotalNumberOfUnitsValue'
-      Origin = 'TotalNumberOfUnitsValue'
       Precision = 18
       Size = 3
     end
@@ -2485,7 +2486,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'GradeName'
       Size = 50
     end
-    object cds_DMSWidthValue: TBCDField
+    object cds_DMSWidthValue: TFMTBCDField
       FieldName = 'WidthValue'
       Origin = 'WidthValue'
       Precision = 18
@@ -2496,7 +2497,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'WidthUOM'
       Size = 50
     end
-    object cds_DMSThicknessValue: TBCDField
+    object cds_DMSThicknessValue: TFMTBCDField
       FieldName = 'ThicknessValue'
       Origin = 'ThicknessValue'
       Precision = 18
@@ -3019,7 +3020,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'IdentifierType'
       Size = 50
     end
-    object cds_TrpPkgInfoItemCountValue: TBCDField
+    object cds_TrpPkgInfoItemCountValue: TFMTBCDField
       FieldName = 'ItemCountValue'
       Origin = 'ItemCountValue'
       Precision = 18
@@ -3035,7 +3036,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Origin = 'QuantityType'
       Size = 50
     end
-    object cds_TrpPkgInfoQuantityValue: TBCDField
+    object cds_TrpPkgInfoQuantityValue: TFMTBCDField
       FieldName = 'QuantityValue'
       Origin = 'QuantityValue'
       Precision = 18
@@ -3302,10 +3303,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
       Size = 50
     end
-    object cds_InfoQuantInformationalQuantityValue: TBCDField
+    object cds_InfoQuantInformationalQuantityValue: TFMTBCDField
       FieldName = 'InformationalQuantityValue'
-      Origin = 'InformationalQuantityValue'
-      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 3
     end
@@ -3561,10 +3560,8 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       Required = True
       Size = 40
     end
-    object cds_LengthSpecTotalNumberOfUnitsValue: TBCDField
+    object cds_LengthSpecTotalNumberOfUnitsValue: TFMTBCDField
       FieldName = 'TotalNumberOfUnitsValue'
-      Origin = 'TotalNumberOfUnitsValue'
-      ProviderFlags = [pfInUpdate]
       Precision = 18
       Size = 3
     end
@@ -3914,11 +3911,12 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 992
     Top = 29
     object mtVisKlientClientNo: TIntegerField
@@ -4026,6 +4024,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
+        Value = 0
       end
       item
         Position = 2
@@ -4872,7 +4871,6 @@ object dm_ImportWoodx: Tdm_ImportWoodx
     end
   end
   object sq_getAddress_Tally: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

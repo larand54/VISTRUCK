@@ -796,7 +796,7 @@ begin
   dmcOrder.cds_LOListHH.ParamByName('UserID').AsInteger  := ThisUser.UserID ;
   dmcOrder.cds_LOListHH.Active := True ;
 
-  atRefreshExecute(Sender) ;
+  //atRefreshExecute(Sender) ;
 
  Finally
 //  cbSupplier.Properties.OnChange  := cbSupplierPropertiesCloseUp ;
@@ -4278,7 +4278,8 @@ begin
   Begin
    if grdFSDBTableView1.DataController.DataSet.FieldByName('SenderLoadStatus').AsInteger = 2 then
    Begin
-     Path := dmsSystem.GetFtpTarget(cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
+     //  'c:\temp\' ;
+     Path :=  dmsSystem.GetFtpTarget(cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
      grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) ;
       if (Path <> '0') and (Path <> 'x') then
       Begin

@@ -993,7 +993,7 @@ var
 
   M: Integer;
 
-  sIdentifier: string;
+  sIdentifier2, sIdentifier: string;
 
   sLengthCategory: string;
   sTotalNumberOfUnitsValue: string;
@@ -1002,13 +1002,20 @@ begin
   Result := False;
 
   TPI := pNode as IXMLTransportPackageInformation;
-  
+
           for M := 0 to TPI.Identifier.Count - 1 do
           begin
-
-            IS60 := TPI.Identifier.Items[M];
-            if (Length(IS60.Text) < Length(sIdentifier)) or (Length(sIdentifier) = 0) then
+                IS60 := TPI.Identifier.Items[M];
             sIdentifier := IS60.Text;
+
+{
+              IS60 := TPI.Identifier.Items[M];
+              if (Length(IS60.Text) < Length(sIdentifier)) or (Length(sIdentifier) = 0) then
+              sIdentifier := IS60.Text;        }
+
+              if IS60.IdentifierType = 'Primary' then
+               sIdentifier2 := IS60.Text;
+
           end;
 
           TPI.WoodItem.Clear;
@@ -1021,10 +1028,11 @@ begin
                 sTotalNumberOfUnitsValue := dsInfo.FieldByName('TotalNumberOfUnitsValue').AsString;
                 sTotalNumberOfUnitsUOM   := dsInfo.FieldByName('TotalNumberOfUnitsUOM').AsString;
 
-               if sIdentifier = dsInfo.FieldByName('Identifier').AsString then
+              if sIdentifier2 = dsInfo.FieldByName('Identifier').AsString then
                begin
                   with WI.LengthSpecification.Add do
                   begin
+
                     LengthCategory := sLengthCategory;
                     TotalNumberOfUnits.Value.Text := sTotalNumberOfUnitsValue;
                     TotalNumberOfUnits.Value.UOM  := sTotalNumberOfUnitsUOM;
