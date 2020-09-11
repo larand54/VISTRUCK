@@ -7127,7 +7127,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
-    SkinName = 'Silver'
+    ScrollbarMode = sbmClassic
+    SkinName = 'Office2013DarkGray'
     Left = 488
     Top = 638
   end

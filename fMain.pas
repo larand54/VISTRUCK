@@ -31,7 +31,7 @@ uses
   cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
   cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, dxSkinsCore,
-  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip ;
+  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm ;
 
 
 
@@ -293,6 +293,7 @@ type
     dxBarLargeButton37: TdxBarLargeButton;
     dxBarLargeButton38: TdxBarLargeButton;
     sp_GetGroupClientRegionNo: TFDStoredProc;
+    dxSkinController1: TdxSkinController;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);

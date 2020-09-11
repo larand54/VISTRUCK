@@ -5642,4 +5642,11 @@ object frmMain: TfrmMain
         ParamType = ptInput
       end>
   end
+  object dxSkinController1: TdxSkinController
+    Kind = lfFlat
+    ScrollbarMode = sbmClassic
+    SkinName = 'Office2013DarkGray'
+    Left = 720
+    Top = 570
+  end
 end
