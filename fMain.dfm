@@ -418,6 +418,10 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object Panel3: TPanel
               Left = 0
               Top = 0
@@ -5645,7 +5649,7 @@ object frmMain: TfrmMain
   object dxSkinController1: TdxSkinController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Office2013DarkGray'
+    SkinName = 'Silver'
     Left = 720
     Top = 570
   end

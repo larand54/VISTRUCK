@@ -6988,6 +6988,7 @@ var
   end;
 
 begin
+ //GetpackageNoEntered
   PkgSupplierCode := '';
  With dmLoadEntrySSP do
  Begin
@@ -7011,10 +7012,18 @@ begin
               ShowMessage(E.ClassName + E.Message);
           End;
           if NewPkgNo < 1 then
+          Begin
             Action := eaREJECT;
+            Errortext := 'Reject lång kod. NewPkgNo < 1';
+            Error := True;
+          End ;
 
           if Length(PkgSupplierCode) < 1 then
+          Begin
             Action := eaREJECT;
+            Errortext := 'Reject lång kod. Length(PkgSupplierCode) < 1' ;
+            Error := True;
+          End ;
 
           // PktNrLevKod      := Copy(PackageNo, dmsSystem.LevKodPos, dmsSystem.AntPosLevKod) ;
           // PkgSupplierCode  := dmsContact.GetSuppliercodeByPktLevKod (PktNrLevKod) ;
@@ -7030,7 +7039,11 @@ begin
               then
                 Action := eaACCEPT
               else
+               Begin
                 Action := eaREJECT;
+                Errortext := 'Reject lång kod.';
+                Error := True;
+               End ;
             End;
 
           End;
@@ -7041,6 +7054,8 @@ begin
           NewPkgNo := StrToIntDef(PackageNo, 0);
           if NewPkgNo = 0 then
           Begin
+            Errortext := 'Reject kort kod. NewPkgNo = 0' ;
+            Error := True;
             Errortext := siLangLinked_fLoadEntrySSP.GetTextOrDefault
               ('IDS_33' (* 'Koden kunde inte översättas till ett Paketnr' *) );
             exit;
@@ -7153,10 +7168,11 @@ begin
         Errortext := 'Paketnr saknas.';
         Error := True;
       End;
-      if Error then
-       AddLoadPkgErrorLog(cds_LoadHeadLoadNo.AsInteger, NewPkgNo, PkgSupplierCode, Errortext) ;
+
         //ShowPkgInfo(NewPkgNo, PkgSupplierCode, Errortext);
     finally
+      if Error then
+      AddLoadPkgErrorLog(cds_LoadHeadLoadNo.AsInteger, NewPkgNo, PkgSupplierCode, Errortext) ;
       Screen.Cursor := Save_Cursor; { Always restore to normal }
     end;
   End; // With

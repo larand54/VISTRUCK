@@ -23,7 +23,8 @@ uses
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
   System.Actions, Vcl.ActnList, cxContainer, Vcl.ComCtrls, dxCore, cxDateUtils,
   Vcl.Menus, Vcl.StdCtrls, cxButtons, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxCalendar, cxCheckBox, SqlTimSt ;
+  cxCalendar, cxCheckBox, SqlTimSt, dxDateRanges, dxScrollbarAnnotations,
+  cxLabel ;
 
 type
   TfAddErrorPkgLoad = class(TForm)

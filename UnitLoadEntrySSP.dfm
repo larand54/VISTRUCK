@@ -3980,6 +3980,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 112
     Top = 674

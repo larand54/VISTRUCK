@@ -2,7 +2,7 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
   Left = 0
   Top = 0
   Caption = 'Package error logg'
-  ClientHeight = 485
+  ClientHeight = 597
   ClientWidth = 1088
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,12 +17,12 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 408
+    Top = 520
     Width = 1088
     Height = 77
     Align = alBottom
     TabOrder = 0
-    ExplicitWidth = 630
+    ExplicitTop = 408
     object cxButton3: TcxButton
       Left = 448
       Top = 12
@@ -42,13 +42,13 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
     Left = 0
     Top = 113
     Width = 1088
-    Height = 295
+    Height = 407
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 72
-    ExplicitHeight = 336
+    ExplicitHeight = 295
     object grdPkgLoadErrorLogDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = dmLoadEntrySSP.ds_AddLoadPkgErrorLog
       DataController.KeyFieldNames = 'RowID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -84,6 +84,9 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
       end
       object grdPkgLoadErrorLogDBTableView1DateCreated: TcxGridDBColumn
         DataBinding.FieldName = 'DateCreated'
+        PropertiesClassName = 'TcxLabelProperties'
+        SortIndex = 0
+        SortOrder = soDescending
         Width = 202
       end
       object grdPkgLoadErrorLogDBTableView1UserID: TcxGridDBColumn
@@ -114,7 +117,6 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 0
-      Width = 281
     end
     object deStartDate: TcxDateEdit
       Left = 407
@@ -172,9 +174,6 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
       Font.Style = []
       ParentFont = False
       TabOrder = 4
-      ExplicitLeft = 16
-      ExplicitTop = 8
-      ExplicitWidth = 1065
     end
   end
   object cxStyleRepository1: TcxStyleRepository
@@ -286,14 +285,14 @@ object fAddErrorPkgLoad: TfAddErrorPkgLoad
       Styles.Content = cxStyle1
       Styles.ContentEven = cxStyle2
       Styles.ContentOdd = cxStyle3
-      Styles.Inactive = cxStyle8
-      Styles.Selection = cxStyle11
       Styles.Footer = cxStyle4
       Styles.Group = cxStyle5
       Styles.GroupByBox = cxStyle6
       Styles.Header = cxStyle7
+      Styles.Inactive = cxStyle8
       Styles.Indicator = cxStyle9
       Styles.Preview = cxStyle10
+      Styles.Selection = cxStyle11
       BuiltIn = True
     end
   end

@@ -54,11 +54,12 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 232
     Top = 584
     object mtPkgNosPackageNo: TIntegerField
@@ -178,11 +179,12 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 456
     Top = 136
     object mtLoadPackagesLONo: TIntegerField
@@ -3119,11 +3121,12 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 296
     Top = 584
     object mtLoadPropPIPNo: TIntegerField
@@ -4133,6 +4136,38 @@
         Name = '@Error'
         DataType = ftInteger
         ParamType = ptInputOutput
+      end>
+  end
+  object sp_CtrlPkgSavedToLoad: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_CtrlPkgSavedToLoad'
+    Left = 592
+    Top = 200
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@PackageNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@SupplierCode'
+        DataType = ftFixedChar
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
       end>
   end
 end
