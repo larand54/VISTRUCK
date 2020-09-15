@@ -5649,7 +5649,7 @@ object frmMain: TfrmMain
   object dxSkinController1: TdxSkinController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Silver'
+    SkinName = 'Office2013DarkGray'
     Left = 720
     Top = 570
   end

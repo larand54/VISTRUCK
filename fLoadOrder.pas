@@ -65,7 +65,7 @@ uses
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
   siLngLnk, System.Actions, udmFR, uReportController, uReport, System.Generics.Collections, dxPScxPivotGridLnk,
   dxPSLbxLnk, dxPSTextLnk, dxSkinOffice2019Colorful, dxDateRanges,
-  dxScrollbarAnnotations, cxImageList, System.ImageList;
+  dxScrollbarAnnotations, cxImageList, System.ImageList, dxSkinBasic;
 
   Const
     CM_MOVEIT = WM_USER + 1;
