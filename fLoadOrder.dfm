@@ -1082,7 +1082,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         end
         object cxButton10: TcxButton
           Left = 920
-          Top = 64
+          Top = 62
           Width = 305
           Height = 33
           Action = acSendWoodxDeliveryMessage
