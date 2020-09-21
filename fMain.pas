@@ -31,7 +31,7 @@ uses
   cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
   cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, dxSkinsCore,
-  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm ;
+  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm, dxSkinBasic ;
 
 
 
