@@ -847,6 +847,8 @@ End;
 procedure TdmLoadEntrySSP.SaveLoadPkgs(const WhenPosted : TDateTime;const LoadNo:Integer);
 var
   Save_Cursor : TCursor;
+  PackageNo   : Integer ;
+  Prefix      : String ;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
@@ -857,6 +859,8 @@ begin
   cds_LoadPackages.First ;
   While cds_LoadPackages.RecordCount > 0 do
   Begin
+   PackageNo  := cds_LoadPackagesPackageNo.AsInteger ;
+   Prefix     := cds_LoadPackagesSupplierCode.AsString ;
    LOBSetChanged(cds_LoadPackagesPackageNo.AsInteger, cds_LoadPackagesSupplierCode.AsString) ;
    if cds_LoadPackagesChanged.AsInteger = 1 then
    Begin
@@ -879,8 +883,8 @@ begin
                                     cds_LoadPackages.CommitUpdates;
                                   end;
 
-                                  CtrlPkgSavedToLoad(cds_LoadPackagesPackageNo.AsInteger,
-                                  cds_LoadPackagesSupplierCode.AsString, LoadNo) ;
+                                  CtrlPkgSavedToLoad(PackageNo,
+                                  Prefix, LoadNo) ;
                                 End ;
         DELETE_PKG            : Begin
                                 //DeletePackage proc also makes an entry to PackageNumberLog
@@ -932,8 +936,8 @@ begin
                                     cds_LoadPackages.CommitUpdates;
                                   end;
 
-                                  CtrlPkgSavedToLoad(cds_LoadPackagesPackageNo.AsInteger,
-                                  cds_LoadPackagesSupplierCode.AsString, LoadNo) ;
+                                  CtrlPkgSavedToLoad(PackageNo,
+                                  Prefix, LoadNo) ;
 
                                 End ;
         DELETE_PKG            : Begin

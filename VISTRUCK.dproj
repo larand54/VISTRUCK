@@ -141,11 +141,12 @@
         <DCC_ExeOutput>..\VISTRUCK\WIN64\RELEASE\EXE\</DCC_ExeOutput>
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Release>0</VerInfo_Release>
-        <VerInfo_Build>0</VerInfo_Build>
+        <VerInfo_Build>2</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=4.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=4.0.0.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_DcuOutput>..\VISTRUCK\WIN64\RELEASE\DCU\</DCC_DcuOutput>
         <VerInfo_MajorVer>4</VerInfo_MajorVer>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -709,10 +710,11 @@
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\FastReport 6 VCL Professional\LibD26\dclfrxTee26.bpl">FastReport 6.0 Tee Components</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\FastReport 6 VCL Professional\LibD26\dclfsTee26.bpl">FastScript 1.9 Tee Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\dxSkinProject1RS26.bpl">ExpressSkins - MySkin_Office2016Dark Skin</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\FastReport 6 VCL Professional\LibD26\dclfrxIBX26.bpl">FastReport 6.0 IBX Components</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\FastReport 6 VCL Professional\LibD26\dclfsIBX26.bpl">FastScript 1.9 IBX Components</Excluded_Packages>
                 </Excluded_Packages>

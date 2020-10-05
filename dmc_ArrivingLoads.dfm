@@ -118,11 +118,12 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 728
     Top = 200
     object mtLoadPackagesLoadNo: TIntegerField
@@ -248,11 +249,12 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 872
     Top = 152
     object mtLoadShippingPlanLoadNo: TIntegerField
@@ -371,11 +373,12 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 872
     Top = 200
     object mtLoadRemovedPackagesLoadNo: TIntegerField
@@ -486,11 +489,12 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.83.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 728
     Top = 152
     object mtNewPackagesPACKAGETYPENO: TIntegerField

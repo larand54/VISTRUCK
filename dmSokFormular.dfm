@@ -404,12 +404,9 @@ object dm_SokFormular: Tdm_SokFormular
       Origin = 'ETA'
       ProviderFlags = []
     end
-    object cds_MakeSokAvropAM3: TBCDField
+    object cds_MakeSokAvropAM3: TFMTBCDField
       FieldName = 'AM3'
-      Origin = 'AM3'
-      ProviderFlags = []
       ReadOnly = True
-      DisplayFormat = '#,###,###.000'
       Precision = 18
       Size = 3
     end
@@ -649,9 +646,8 @@ object dm_SokFormular: Tdm_SokFormular
       FieldName = 'ETA'
       Origin = 'ETA'
     end
-    object cds_SokAvropAM3_ORDER: TBCDField
+    object cds_SokAvropAM3_ORDER: TFMTBCDField
       FieldName = 'AM3_ORDER'
-      Origin = 'AM3_ORDER'
       Precision = 18
       Size = 3
     end
@@ -664,19 +660,17 @@ object dm_SokFormular: Tdm_SokFormular
       FieldName = 'NoOfSuppliers'
       Origin = 'NoOfSuppliers'
     end
-    object cds_SokAvropAM3_DEL: TBCDField
-      FieldName = 'AM3_DEL'
-      Origin = 'AM3_DEL'
-      ProviderFlags = []
-      Precision = 18
-      Size = 3
-    end
     object cds_SokAvropAM3_REST: TFMTBCDField
       FieldName = 'AM3_REST'
       Origin = 'AM3_REST'
       ProviderFlags = []
       ReadOnly = True
       Precision = 19
+      Size = 3
+    end
+    object cds_SokAvropAM3_DEL: TFMTBCDField
+      FieldName = 'AM3_DEL'
+      Precision = 18
       Size = 3
     end
   end

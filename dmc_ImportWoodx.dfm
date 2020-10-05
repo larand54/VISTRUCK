@@ -4270,7 +4270,10 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       'Select DISTINCT'
       'L.LoadNo '#9#9'AS LoadNo,'
       'OH.OrderNoText '#9#9'AS OrderNoText,'
-      'SP.ShippingPlanNo '#9'AS LONo,'
+      'CASE WHEN SP.LO_No is not null THEN'
+      ' SP.LO_No'
+      '  ELSE'
+      #9'SP.ShippingPlanNo END'#9'AS LONo,'
       'OL.Reference     '#9'AS IL_Reference,'
       'SP.Reference     '#9'AS SP_Reference,'
       'OH.PO_Number'
@@ -4287,8 +4290,7 @@ object dm_ImportWoodx: Tdm_ImportWoodx
       #9'ON OL.OrderNo = SP.OrderNo'
       #9'and OL.OrderLineNo = SP.OrderLineNo'
       ''
-      'WHERE L.LoadNo = :LoadNo'
-      '')
+      'WHERE L.LoadNo = :LoadNo')
     Left = 136
     Top = 336
     ParamData = <

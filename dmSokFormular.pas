@@ -43,7 +43,6 @@ type
     cds_MakeSokAvropVESSEL: TStringField;
     cds_MakeSokAvropETD: TSQLTimeStampField;
     cds_MakeSokAvropETA: TSQLTimeStampField;
-    cds_MakeSokAvropAM3: TBCDField;
     cds_MakeSokAvropLEVLO: TFloatField;
     cds_MakeSokAvropSupplierReference: TStringField;
     cds_MakeSokAvropNoOfSuppliers: TIntegerField;
@@ -79,8 +78,6 @@ type
     cds_SokAvropVESSEL: TStringField;
     cds_SokAvropETD: TSQLTimeStampField;
     cds_SokAvropETA: TSQLTimeStampField;
-    cds_SokAvropAM3_ORDER: TBCDField;
-    cds_SokAvropAM3_DEL: TBCDField;
     cds_SokAvropSupplierReference: TStringField;
     cds_SokAvropNoOfSuppliers: TIntegerField;
     cds_SokAvropAM3_REST: TFMTBCDField;
@@ -163,6 +160,9 @@ type
     cds_MakeSokAvropShippingPlanNo: TIntegerField;
     cds_MakeSokAvropVoyageNo: TIntegerField;
     cds_MakeSokAvropLand: TStringField;
+    cds_SokAvropAM3_ORDER: TFMTBCDField;
+    cds_SokAvropAM3_DEL: TFMTBCDField;
+    cds_MakeSokAvropAM3: TFMTBCDField;
     procedure dsp_MakeSokAvropGetTableName(Sender: TObject; DataSet: TDataSet;
       var TableName: String);
     procedure cds_MakeSokAvropBeforePost(DataSet: TDataSet);

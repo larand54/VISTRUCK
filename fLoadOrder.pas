@@ -4278,7 +4278,7 @@ begin
   Begin
    if grdFSDBTableView1.DataController.DataSet.FieldByName('SenderLoadStatus').AsInteger = 2 then
    Begin
-     //  'c:\temp\' ;
+   //   Path :=  'c:\temp\' ;
      Path :=  dmsSystem.GetFtpTarget(cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
      grdFSDBTableView1.DataController.DataSet.FieldByName('LoadNo').AsInteger) ;
       if (Path <> '0') and (Path <> 'x') then

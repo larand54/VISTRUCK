@@ -4141,8 +4141,8 @@
   object sp_CtrlPkgSavedToLoad: TFDStoredProc
     Connection = dmsConnector.FDConnection1
     StoredProcName = 'dbo.vis_CtrlPkgSavedToLoad'
-    Left = 592
-    Top = 200
+    Left = 608
+    Top = 656
     ParamData = <
       item
         Position = 1
