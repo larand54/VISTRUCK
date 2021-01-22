@@ -3981,7 +3981,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Silver'
+    SkinName = 'Office2013DarkGray'
     Left = 112
     Top = 674
   end

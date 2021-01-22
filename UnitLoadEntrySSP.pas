@@ -2381,7 +2381,7 @@ begin
     Begin
       Try
        cds_LoadPackages.Insert ;
-       cds_LoadPackagesPackageNo.AsInteger:= PkgNo ;
+       cds_LoadPackagesPackageNo.AsInteger  := PkgNo ;
        if ValidatePkgInSerie(Sender, PkgNo) <> eaACCEPT then
         cds_LoadPackages.Cancel ;
       Except
@@ -3294,8 +3294,8 @@ begin
     Begin
       Try
        cds_LoadPackages.Insert ;
-       cds_LoadPackagesPackageNo.AsInteger:= mtPkgNospackageno.AsInteger ;
-       cds_LoadPackagesSupplierCode.AsString:= mtPkgNosSuppliercode.AsString ;
+       cds_LoadPackagesPackageNo.AsInteger      := mtPkgNospackageno.AsInteger ;
+       cds_LoadPackagesSupplierCode.AsString    := mtPkgNosSuppliercode.AsString ;
        ValidatePkgNoSuppCode(Sender, mtPkgNospackageno.AsInteger,
        mtPkgNosSuppliercode.AsString,
        mtPkgNosproductno.AsInteger, mtPkgNosproductlengthno.AsInteger);
@@ -3633,13 +3633,13 @@ begin
   try
   newPkgNo := dmLoadEntrySSP.getNewBULKPackageNo;
   dmLoadEntrySSP.sp_CreateNewBulkPkg.Active := false;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@UserID').AsInteger := ThisUser.UserID;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PackageNo').AsInteger := newPkgNo;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@LIPNoAlt').AsInteger := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@ProductNoAlt').AsInteger := dmLoadEntrySSP.cdsLORowsProductNo.AsInteger;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Prefix').AsString := 'BLK';
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Kg').AsInteger := deliveredWeight;
-  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PkgArticleNo').AsInteger := dmLoadEntrySSP.cdsLORowsPkgArticleNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@UserID').AsInteger        := ThisUser.UserID;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PackageNo').AsInteger     := newPkgNo;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@LIPNoAlt').AsInteger      := dmLoadEntrySSP.cds_LoadHeadLIPNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@ProductNoAlt').AsInteger  := dmLoadEntrySSP.cdsLORowsProductNo.AsInteger;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Prefix').AsString         := 'BLK';
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@Kg').AsInteger            := deliveredWeight;
+  dmLoadEntrySSP.sp_CreateNewBulkPkg.Params.ParamByName('@PkgArticleNo').AsInteger  := dmLoadEntrySSP.cdsLORowsPkgArticleNo.AsInteger;
   dmLoadEntrySSP.sp_CreateNewBulkPkg.ExecProc;
   // Add package to Load
 
@@ -7269,7 +7269,7 @@ Begin
    Screen.Cursor := crHourGlass;
    try
     if (cds_LSP.Active) AND (cds_LSP.RecordCount > 0) then
-    SaveLOData(cds_LoadHeadLoadNo.AsInteger) ;
+     SaveLOData(cds_LoadHeadLoadNo.AsInteger) ;
 //     else
 //      ShowMessage('Lägg till minst en LO.') ;
 //    if (cds_LoadHeadSenderLoadStatus.AsInteger = 1) and (cds_LoadPackages.RecordCount > 0) then

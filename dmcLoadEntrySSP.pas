@@ -854,119 +854,121 @@ begin
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
  Try
 
-  cds_LoadPackages.Filter   := 'Changed = 1' ;
-  cds_LoadPackages.Filtered := True ;
-  cds_LoadPackages.First ;
-  While cds_LoadPackages.RecordCount > 0 do
-  Begin
-   PackageNo  := cds_LoadPackagesPackageNo.AsInteger ;
-   Prefix     := cds_LoadPackagesSupplierCode.AsString ;
-   LOBSetChanged(cds_LoadPackagesPackageNo.AsInteger, cds_LoadPackagesSupplierCode.AsString) ;
-   if cds_LoadPackagesChanged.AsInteger = 1 then
-   Begin
-   if cds_LoadPackagesPkg_State.AsInteger = EXISTING_PACKAGE then
-   Begin
-    Case cds_LoadPackagesPkg_Function.AsInteger of
-        ADD_PKG_TO_LOAD       : Begin
-                                 //No log operations as nothing happened with the package
-                                 // UpdateLoadDtl sätter status och loggen
-//                                 UpdateLoadDtl(Sender, WhenPosted, LoadNo) ;
-//                                 SaveLoadDetailMatch(Sender, WhenPosted, LoadNo) ;
-//                                 SaveLoadDetailPkgLength(Sender, LoadNo) ;
-                                 cds_LoadPackages.Edit ;
-                                 cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
-                                 cds_LoadPackagesChanged.AsInteger    := 0 ;
-                                 cds_LoadPackages.Post ;
-                                  if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
+    cds_LoadPackages.Filter   := 'Changed = 1' ;
+    cds_LoadPackages.Filtered := True ;
+    cds_LoadPackages.First ;
+    While cds_LoadPackages.RecordCount > 0 do
+    Begin
+     PackageNo  := cds_LoadPackagesPackageNo.AsInteger ;
+     Prefix     := cds_LoadPackagesSupplierCode.AsString ;
+     LOBSetChanged(cds_LoadPackagesPackageNo.AsInteger, cds_LoadPackagesSupplierCode.AsString) ;
+       if cds_LoadPackagesChanged.AsInteger = 1 then
+       Begin
+       if cds_LoadPackagesPkg_State.AsInteger = EXISTING_PACKAGE then
+       Begin
+        Case cds_LoadPackagesPkg_Function.AsInteger of
+            ADD_PKG_TO_LOAD       : Begin
+                                     //No log operations as nothing happened with the package
+                                     // UpdateLoadDtl sätter status och loggen
+    //                                 UpdateLoadDtl(Sender, WhenPosted, LoadNo) ;
+    //                                 SaveLoadDetailMatch(Sender, WhenPosted, LoadNo) ;
+    //                                 SaveLoadDetailPkgLength(Sender, LoadNo) ;
+                                     cds_LoadPackages.Edit ;
+                                     cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
+                                     cds_LoadPackagesChanged.AsInteger    := 0 ;
+                                     cds_LoadPackages.Post ;
+                                      if cds_LoadPackages.ChangeCount > 0 then
+                                      begin
+                                        cds_LoadPackages.ApplyUpdates(0);
+                                        cds_LoadPackages.CommitUpdates;
+                                      end;
 
-                                  CtrlPkgSavedToLoad(PackageNo,
-                                  Prefix, LoadNo) ;
-                                End ;
-        DELETE_PKG            : Begin
-                                //DeletePackage proc also makes an entry to PackageNumberLog
-                                 DeletePackage(LoadNo) ;
-                                 cds_LoadPackages.Delete ;
-                                  if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
-                                End ;
-        REMOVE_PKG_FROM_LOAD  : Begin
-                                //Make an entry to PackageNumberLog and set pkgStatus = 1
-                                 if cds_LoadPackagesOldPackageTypeNo.AsInteger > 0 then
-                                 RemovePkgFromLoad_II(status_Pkg_IN_Inventory, oper_Remove_From_Load)
-                                 else
-                                 RemovePkgFromLoad(status_Pkg_IN_Inventory, oper_Remove_From_Load) ;
+                                      CtrlPkgSavedToLoad(PackageNo,
+                                      Prefix, LoadNo) ;
+                                    End ;
+            DELETE_PKG            : Begin
+                                    //DeletePackage proc also makes an entry to PackageNumberLog
+                                     DeletePackage(LoadNo) ;
+                                     cds_LoadPackages.Delete ;
+                                      if cds_LoadPackages.ChangeCount > 0 then
+                                      begin
+                                        cds_LoadPackages.ApplyUpdates(0);
+                                        cds_LoadPackages.CommitUpdates;
+                                      end;
+                                    End ;
+            REMOVE_PKG_FROM_LOAD  : Begin
+                                    //Make an entry to PackageNumberLog and set pkgStatus = 1
+                                     if cds_LoadPackagesOldPackageTypeNo.AsInteger > 0 then
+                                     RemovePkgFromLoad_II(status_Pkg_IN_Inventory, oper_Remove_From_Load)
+                                     else
+                                     RemovePkgFromLoad(status_Pkg_IN_Inventory, oper_Remove_From_Load) ;
 
-                                 cds_LoadPackages.Delete ;
+                                     cds_LoadPackages.Delete ;
 
-                                   if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
-                                End ;
-    End ; //case
-   End
-   else //NEW_PACKAGE
-   Begin
-    Case cds_LoadPackagesPkg_Function.AsInteger of
-        ADD_PKG_TO_LOAD       : Begin
-                                //Remove pkg from inventory pkgStatus = 0 and make entry in PackageNumberLog
-                                //SaveLoadDetail makes entry to sp_UpdatePackages and LoadDetailMatch
-//                                 SaveLoadDetail(Sender, WhenPosted, LoadNo) ;
-//                                 SaveLoadDetailPkgLength(Sender, LoadNo) ;
-                                 //Change packageNumber.status and make entry to PackageNumberLog
-                                 ProcessPkgAND_Log(status_Pkg_NOT_IN_Inventory, oper_Add_Pkg_To_Load) ;
+                                       if cds_LoadPackages.ChangeCount > 0 then
+                                      begin
+                                        cds_LoadPackages.ApplyUpdates(0);
+                                        cds_LoadPackages.CommitUpdates;
+                                      end;
+                                    End ;
+        End ; //case
+       End
+        else //NEW_PACKAGE
+           Begin
+            Case cds_LoadPackagesPkg_Function.AsInteger of
+                ADD_PKG_TO_LOAD       : Begin
+                                        //Remove pkg from inventory pkgStatus = 0 and make entry in PackageNumberLog
+                                        //SaveLoadDetail makes entry to sp_UpdatePackages and LoadDetailMatch
+        //                                 SaveLoadDetail(Sender, WhenPosted, LoadNo) ;
+        //                                 SaveLoadDetailPkgLength(Sender, LoadNo) ;
+                                         //Change packageNumber.status and make entry to PackageNumberLog
+                                         ProcessPkgAND_Log(status_Pkg_NOT_IN_Inventory, oper_Add_Pkg_To_Load) ;
 
-                                 //Package is now an existing package.
-                                 cds_LoadPackages.Edit ;
-                                 cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
-                                 cds_LoadPackagesChanged.AsInteger    := 0 ;
-                                 cds_LoadPackages.Post ;
+                                         //Package is now an existing package.
+                                         cds_LoadPackages.Edit ;
+                                         cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
+                                         cds_LoadPackagesChanged.AsInteger    := 0 ;
+                                         cds_LoadPackages.Post ;
 
-                                  if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
+                                          if cds_LoadPackages.ChangeCount > 0 then
+                                          begin
+                                            cds_LoadPackages.ApplyUpdates(0);
+                                            cds_LoadPackages.CommitUpdates;
+                                          end;
 
-                                  CtrlPkgSavedToLoad(PackageNo,
-                                  Prefix, LoadNo) ;
+                                          CtrlPkgSavedToLoad(PackageNo,
+                                          Prefix, LoadNo) ;
 
-                                End ;
-        DELETE_PKG            : Begin
-                                //DeletePackage proc also makes an entry to PackageNumberLog
-                                 DeletePackage(LoadNo) ;
-                                 cds_LoadPackages.Delete ;
-                                  if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
-                                End ;
-        REMOVE_PKG_FROM_LOAD  : Begin
-                                 //Do nothing as package is still in inventory
-                                 //no set pkg status is needed as it set to 1 already
-                                 cds_LoadPackages.Delete ;
-                                  if cds_LoadPackages.ChangeCount > 0 then
-                                  begin
-                                    cds_LoadPackages.ApplyUpdates(0);
-                                    cds_LoadPackages.CommitUpdates;
-                                  end;
-                                End ;
-    End ; //case
-   End ;
+                                        End ;
+                DELETE_PKG            : Begin
+                                        //DeletePackage proc also makes an entry to PackageNumberLog
+                                         DeletePackage(LoadNo) ;
+                                         cds_LoadPackages.Delete ;
+                                          if cds_LoadPackages.ChangeCount > 0 then
+                                          begin
+                                            cds_LoadPackages.ApplyUpdates(0);
+                                            cds_LoadPackages.CommitUpdates;
+                                          end;
+                                        End ;
+                REMOVE_PKG_FROM_LOAD  : Begin
+                                         //Do nothing as package is still in inventory
+                                         //no set pkg status is needed as it set to 1 already
+                                         cds_LoadPackages.Delete ;
+                                          if cds_LoadPackages.ChangeCount > 0 then
+                                          begin
+                                            cds_LoadPackages.ApplyUpdates(0);
+                                            cds_LoadPackages.CommitUpdates;
+                                          end;
+                                        End ;
+            End ; //case
+           End ;  //else begin
 
-   End ;//if..
+       End ;//if..
 
-//   cds_LoadPackages.Next ;
-  end; //While
+
+     cds_LoadPackages.Next ;
+    end; //While
+
  Finally
   cds_LoadPackages.Filtered := False ;
   Screen.Cursor             := Save_Cursor ;
