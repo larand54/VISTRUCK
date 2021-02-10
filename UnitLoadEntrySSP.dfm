@@ -3981,7 +3981,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Office2013DarkGray'
+    SkinName = 'Silver'
     Left = 112
     Top = 674
   end
@@ -4354,7 +4354,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Top = 408
   end
   object siLangLinked_fLoadEntrySSP: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

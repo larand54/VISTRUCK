@@ -118,7 +118,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -249,7 +249,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -373,7 +373,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -489,7 +489,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -642,7 +642,9 @@ object dmArrivingLoads: TdmArrivingLoads
         'inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.In' +
         'ternalInvoiceNo'
       'WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo,'
-      'SP.LoadingLocationNo, CSH.OrderNo'
+      
+        'SP.LoadingLocationNo, CSH.OrderNo, IsNull(SP.Lagerkod,1) as Lage' +
+        'rkod'
       ''
       ''
       ''
@@ -734,8 +736,7 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       
         'AND L.LOADNO NOT IN (SELECT Confirmed_LoadNo FROM dbo.Confirmed_' +
-        'Load )'
-      '')
+        'Load )')
     Left = 56
     Top = 24
     object cdsArrivingLoadsLoadAR: TIntegerField
@@ -965,6 +966,33 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'OrderNo'
       Origin = 'OrderNo'
       ProviderFlags = []
+    end
+    object cdsArrivingLoadsintNM3: TFloatField
+      FieldName = 'intNM3'
+    end
+    object cdsArrivingLoadsAM3: TFloatField
+      FieldName = 'AM3'
+    end
+    object cdsArrivingLoadsPcs: TIntegerField
+      FieldName = 'Pcs'
+    end
+    object cdsArrivingLoadsPkgs: TIntegerField
+      FieldName = 'Pkgs'
+    end
+    object cdsArrivingLoadsClientName: TStringField
+      FieldName = 'ClientName'
+      Size = 80
+    end
+    object cdsArrivingLoadsBookingType: TStringField
+      FieldName = 'BookingType'
+      FixedChar = True
+      Size = 30
+    end
+    object cdsArrivingLoadsLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      ReadOnly = True
+      Required = True
+      Size = 4
     end
   end
   object cdsArrivingPackages: TFDQuery

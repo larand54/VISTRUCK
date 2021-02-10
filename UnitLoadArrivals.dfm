@@ -35,7 +35,6 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
@@ -51,8 +50,33 @@ object frmLoadArrivals: TfrmLoadArrivals
       DataController.DataSource = dmArrivingLoads.dsrcArrivingLoads
       DataController.KeyFieldNames = 'LO;LOADNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = '#,###.00'
+          Kind = skSum
+          FieldName = 'intNM3'
+          Column = grdLoadsDBTableView1intNM3
+        end
+        item
+          Format = '#,###.00'
+          Kind = skSum
+          FieldName = 'AM3'
+          Column = grdLoadsDBTableView1AM3
+        end
+        item
+          Format = '#####'
+          Kind = skSum
+          FieldName = 'NoOfPackages'
+          Column = grdLoadsDBTableView1NoOfPackages
+        end
+        item
+          Format = '#######'
+          Kind = skSum
+          FieldName = 'Pcs'
+          Column = grdLoadsDBTableView1Pcs
+        end>
       DataController.Summary.SummaryGroups = <>
+      DataController.Summary.Options = [soMultipleSelectedRecords]
       OptionsBehavior.PullFocusing = True
       OptionsCustomize.DataRowSizing = True
       OptionsData.Deleting = False
@@ -285,6 +309,46 @@ object frmLoadArrivals: TfrmLoadArrivals
       end
       object grdLoadsDBTableView1OriginalInvoiceNo: TcxGridDBColumn
         DataBinding.FieldName = 'OriginalInvoiceNo'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1OBJECTTYPE_1: TcxGridDBColumn
+        DataBinding.FieldName = 'OBJECTTYPE_1'
+      end
+      object grdLoadsDBTableView1LoadingLocationNo: TcxGridDBColumn
+        DataBinding.FieldName = 'LoadingLocationNo'
+      end
+      object grdLoadsDBTableView1OrderNo: TcxGridDBColumn
+        DataBinding.FieldName = 'OrderNo'
+      end
+      object grdLoadsDBTableView1intNM3: TcxGridDBColumn
+        DataBinding.FieldName = 'intNM3'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Properties.DisplayFormat = '#,######.00'
+      end
+      object grdLoadsDBTableView1AM3: TcxGridDBColumn
+        DataBinding.FieldName = 'AM3'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Properties.DisplayFormat = '#,######.00'
+      end
+      object grdLoadsDBTableView1Pcs: TcxGridDBColumn
+        DataBinding.FieldName = 'Pcs'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1Pkgs: TcxGridDBColumn
+        DataBinding.FieldName = 'Pkgs'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1ClientName: TcxGridDBColumn
+        Caption = 'Kund'
+        DataBinding.FieldName = 'ClientName'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1BookingType: TcxGridDBColumn
+        DataBinding.FieldName = 'BookingType'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1Lagerkod: TcxGridDBColumn
+        DataBinding.FieldName = 'Lagerkod'
         PropertiesClassName = 'TcxLabelProperties'
       end
     end
@@ -3184,7 +3248,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3235,6 +3299,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 72
     Top = 392
@@ -3824,7 +3889,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -6098,6 +6163,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController2: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 1056
     Top = 264
@@ -7294,7 +7360,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

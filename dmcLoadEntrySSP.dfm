@@ -54,7 +54,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -179,7 +179,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3121,7 +3121,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

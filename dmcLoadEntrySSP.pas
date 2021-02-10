@@ -925,10 +925,12 @@ begin
                                          ProcessPkgAND_Log(status_Pkg_NOT_IN_Inventory, oper_Add_Pkg_To_Load) ;
 
                                          //Package is now an existing package.
+                                         if cds_LoadPackages.State in [dsbrowse] then
                                          cds_LoadPackages.Edit ;
                                          cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
                                          cds_LoadPackagesChanged.AsInteger    := 0 ;
                                          cds_LoadPackages.Post ;
+
 
                                           if cds_LoadPackages.ChangeCount > 0 then
                                           begin
@@ -944,6 +946,7 @@ begin
                                         //DeletePackage proc also makes an entry to PackageNumberLog
                                          DeletePackage(LoadNo) ;
                                          cds_LoadPackages.Delete ;
+                                        //cds_LoadPackages
                                           if cds_LoadPackages.ChangeCount > 0 then
                                           begin
                                             cds_LoadPackages.ApplyUpdates(0);
@@ -1220,7 +1223,7 @@ End ;
 
 procedure TdmLoadEntrySSP.ProcessPkgAND_Log(const Status, Operation : Integer) ;
 Begin
-//Set PackageNumber.Status
+//Set PackageNumber.Status = 0
 //Make entry to PackageNumberLog
       Try
       sp_ProcessPkgAND_Log.Close ;

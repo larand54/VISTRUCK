@@ -586,6 +586,13 @@ type
     sp_UNDOintALOAR_OK: TFDStoredProc;
     sp_RtR_Load_is_AR: TFDStoredProc;
     sp_delAR_RtRLoad: TFDStoredProc;
+    cdsArrivingLoadsintNM3: TFloatField;
+    cdsArrivingLoadsAM3: TFloatField;
+    cdsArrivingLoadsPcs: TIntegerField;
+    cdsArrivingLoadsPkgs: TIntegerField;
+    cdsArrivingLoadsClientName: TStringField;
+    cdsArrivingLoadsBookingType: TStringField;
+    cdsArrivingLoadsLagerkod: TStringField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
