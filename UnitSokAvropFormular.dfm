@@ -2420,7 +2420,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44081.431343043980000000
+      ReportDocument.CreationDate = 44242.900918148150000000
       TimeFormat = 0
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
@@ -2447,6 +2447,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 80
     Top = 328
@@ -2913,7 +2914,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     Top = 248
   end
   object siLangLinked_frmSokAvropFormular: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

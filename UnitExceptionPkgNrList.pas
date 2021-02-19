@@ -35,7 +35,8 @@ uses
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon, frxClass,
   frxDBSet, frxExportPDF, siComp, siLngLnk, dxSkinBasic, dxDateRanges,
-  dxScrollbarAnnotations, dxPScxEditorProducers, dxPScxExtEditorProducers ;
+  dxScrollbarAnnotations, dxPScxEditorProducers, dxPScxExtEditorProducers,
+  frxExportBaseDialog ;
 
 type
   TPkgNrExceptionList = class(TForm)
@@ -76,10 +77,10 @@ type
     frxDBDataset1: TfrxDBDataset;
     cxButton5: TcxButton;
     acChangeFormSize: TAction;
-    frxPDFExport1: TfrxPDFExport;
     cxGrid1DBTableView1ScanStatus: TcxGridDBColumn;
     cxGrid1DBTableView1ErrorBeskrivning: TcxGridDBColumn;
     siLangLinked_frmLoadArrivals: TsiLangLinked;
+    frxPDFExport1: TfrxPDFExport;
 
     procedure acCloseExecute(Sender: TObject);
     procedure acRefreshExecute(Sender: TObject);
@@ -166,7 +167,7 @@ begin
     SetLength(Attach, 1);
     Attach[0] := ExcelDir + 'Felscan.pdf';
 
-    TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, mailMessage, ThisUser.UserEmail, mailToAddress, '', Attach, false, ThisUser.UserID);
+    TOAuthMail.OASendMail(dmsConnector.FDConnection1.Params, subject, mailMessage, ThisUser.UserEmail, mailToAddress, '', Attach, 0, ThisUser.UserID);
  end;
 end;
 

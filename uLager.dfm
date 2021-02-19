@@ -2329,7 +2329,7 @@ object fLager: TfLager
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -6484,7 +6484,7 @@ object fLager: TfLager
     PixelsPerInch = 96
   end
   object siLangLinked_fLager: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
