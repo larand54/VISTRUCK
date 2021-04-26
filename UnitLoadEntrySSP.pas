@@ -547,6 +547,7 @@ type
 //     TempEditString  : String ;
      gLagerkod : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     Procedure RefreshLoadDetails ;
      function verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
      function linkedArticle(const aArticleNo: integer): boolean;
      function validatePkgsReference(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3): TEditAction;
@@ -3520,6 +3521,8 @@ begin
  End ;  //with
 end;
 
+
+
 procedure TfLoadEntrySSP.acInsertPkgToInventoryExecute(Sender: TObject);
 var
   Save_Cursor: TCursor;
@@ -3545,11 +3548,14 @@ begin
             cds_LoadPackages.Delete
           else
           begin
-            if cds_LoadPackages.State = dsBrowse then
-              cds_LoadPackages.Edit;
-            cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD;
-            cds_LoadPackagesChanged.AsInteger := 1;
-            cds_LoadPackages.Post;
+           RemPkgFromLoad_III(cds_LoadPackagesLoadNo.AsInteger, cds_LoadPackagesLoadDetailNo.AsInteger) ;
+{
+              if cds_LoadPackages.State = dsBrowse then
+                cds_LoadPackages.Edit;
+              cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD;
+              cds_LoadPackagesChanged.AsInteger := 1;
+              cds_LoadPackages.Post;
+}
           end;
         end;
         mtLoadPackages.Next;
@@ -6771,12 +6777,17 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
+
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [0, 1] then
+        ReportType := cfTallyInternal
+      else
+        ReportType := cfTally;
 																			  
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
           FR2 := TFastReports2.createForMail(dmFR, nil, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
           try
-            FR2.mailTallyByType(cfTally, loads, true);
+            FR2.mailTallyByType(ReportType, loads, true);
           finally
             FR2.free;
           end;
@@ -7196,7 +7207,7 @@ begin
           ScanPkgsByArticle(Sender, mePackageNo.Text);
         end
         else
-          GetpackageNoEntered(Sender, mePackageNo.Text);
+         GetpackageNoEntered(Sender, mePackageNo.Text);
       end;
     finally
       mePackageNo.Text := '';
@@ -7338,9 +7349,29 @@ begin
   End;
 end;
 
+Procedure TfLoadEntrySSP.RefreshLoadDetails ;
+  Begin
+    // dmLoadEntrySSP.GlobalLoadDetailNo :=  1 + dmLoadEntrySSP.GetMaxLoadDetailNoMaxLoadDetailNo(LoadNo) ;
+
+    With dmLoadEntrySSP do
+    Begin
+      cds_LoadPackages.DisableControls;
+      Try
+        cds_LoadPackages.Active := False;
+        cds_LoadPackages.ParamByName('LoadNo').AsInteger      := cds_LoadHeadLoadNo.AsInteger ;
+//        cds_LoadPackages.ParamByName('LanguageID').AsInteger  := ThisUser.LanguageID ;
+        cds_LoadPackages.Active := True;
+      Finally
+        cds_LoadPackages.EnableControls;
+      End;
+    End;
+  End;
+
+
 procedure TfLoadEntrySSP.acRaderaPaketExecute(Sender: TObject);
 begin
  acInsertPkgToInventoryExecute(Sender) ;
+ RefreshLoadDetails ;
  SaveLoad ;
  if mePackageNo.Enabled then
   mePackageNo.SetFocus ;

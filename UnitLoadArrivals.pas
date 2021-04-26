@@ -2117,7 +2117,7 @@ Begin
           cdsArrivingLoads.SQL.Add('AND Not Exists (Select cl2.Confirmed_LoadNo FROM dbo.Confirmed_Load_EXT cl2') ;
           cdsArrivingLoads.SQL.Add('WHERE cl2.Confirmed_LoadNo = LSP.LoadNo') ;
           cdsArrivingLoads.SQL.Add('AND cl2.Confirmed_ShippingPlanNo = LSP.ShippingPlanNo)') ;
-          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0');
+//          cdsArrivingLoads.SQL.Add('AND L.LoadAR = 0'); //kolla på //
         End
         else if bcConfirmedv2.ItemIndex = 1 then
         // lbConfirmLoad.Enabled = True then
@@ -2175,7 +2175,7 @@ Begin
 
     cdsArrivingLoads.SQL.Add('select * from @ArrivalLoads') ;
 
-//    if thisuser.UserID = 258 then   cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
+//    if thisuser.UserID = 258 then cdsArrivingLoads.SQL.SaveToFile('cdsArrivingLoads.TXT');
   End;
 End;
 

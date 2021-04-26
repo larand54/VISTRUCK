@@ -762,29 +762,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           TabOrder = 10
           Width = 103
         end
-        object lcLaststlle: TcxDBLookupComboBox
-          Left = 386
-          Top = 11
-          DataBinding.DataField = 'Lastst'#228'lle'
-          DataBinding.DataSource = dmcOrder.ds_Props
-          ParentFont = False
-          Properties.ClearKey = 46
-          Properties.DropDownWidth = 200
-          Properties.KeyFieldNames = 'CityNo'
-          Properties.ListColumns = <
-            item
-              FieldName = 'Ort'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -15
-          Style.Font.Name = 'Tahoma'
-          Style.Font.Style = []
-          Style.IsFontAssigned = True
-          TabOrder = 3
-          Width = 117
-        end
         object lcDestination: TcxDBLookupComboBox
           Left = 386
           Top = 39
@@ -1087,6 +1064,29 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Height = 33
           Action = acSendWoodxDeliveryMessage
           TabOrder = 28
+        end
+        object lcLaststlle: TcxDBLookupComboBox
+          Left = 386
+          Top = 11
+          DataBinding.DataField = 'Lastst'#228'lle'
+          DataBinding.DataSource = dmcOrder.ds_Props
+          ParentFont = False
+          Properties.ClearKey = 46
+          Properties.DropDownWidth = 200
+          Properties.KeyFieldNames = 'CityNo'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Ort'
+            end>
+          Properties.ListOptions.ShowHeader = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -15
+          Style.Font.Name = 'Tahoma'
+          Style.Font.Style = []
+          Style.IsFontAssigned = True
+          TabOrder = 3
+          Width = 117
         end
       end
     end
@@ -1469,6 +1469,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
+          ImageIndex = 29
           Glyph.Data = {
             76060000424D7606000000000000360400002800000018000000180000000100
             0800000000004002000000000000000000000001000000000000000000000000
@@ -1537,6 +1538,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = []
+          ImageIndex = 20
           Glyph.Data = {
             36050000424D3605000000000000360400002800000010000000100000000100
             08000000000000010000220B0000220B00000001000000010000942929009431
@@ -7128,7 +7130,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Office2013DarkGray'
+    SkinName = 'Silver'
     Left = 488
     Top = 638
   end
@@ -7158,7 +7160,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -7189,7 +7191,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -8430,7 +8432,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Top = 386
   end
   object siLangLinked_frmVisTruckLoadOrder: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -931,8 +931,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxButton4: TcxButton
-            Left = 1173
-            Top = 4
+            Left = 1172
+            Top = 1
             Width = 155
             Height = 31
             Margins.Left = 2
@@ -949,8 +949,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             ParentFont = False
           end
           object cxBtnChgTreatmentInfo: TcxButton
-            Left = 1072
-            Top = 1
+            Left = 1058
+            Top = 3
             Width = 97
             Height = 35
             Margins.Left = 2
@@ -4157,7 +4157,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end>
     UseOwnFont = True
     Left = 889
-    Top = 511
+    Top = 399
     PixelsPerInch = 96
   end
   object PopupMenu1: TPopupMenu

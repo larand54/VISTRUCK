@@ -329,7 +329,6 @@ type
     sq_PkgExistInInventoryPackageNo: TIntegerField;
     cdsLORowsCERTI: TStringField;
     cdsLORowsTräslag: TStringField;
-    cdsLORowsLoadedPkgs: TIntegerField;
     cdsLORowsPkgDiff: TFloatField;
     cds_LoadPackagesPaketstorlek: TStringField;
     cds_LoadPackagesCertfiering: TStringField;
@@ -419,6 +418,9 @@ type
     cds_LoadHeadLagerkod: TStringField;
     cdsLORowsLagerkod: TStringField;
     sp_CtrlPkgSavedToLoad: TFDStoredProc;
+    cdsLORowsLoadedPkgs: TFloatField;
+    sp_RegisterToLoadArrivalReg: TFDStoredProc;
+    sp_RemPkgFromLoad_III: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -471,6 +473,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   procedure RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
    function  ErrorPkgExist(const LoadNo : Integer) : Boolean ;
    procedure AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
    function  noWarningForRefMismatch: boolean;
@@ -793,6 +796,7 @@ procedure TdmLoadEntrySSP.ModifyLoadHeader(const WhenPosted : TDateTime;const Lo
 const
   ALWAYS_ZERO = 0;
 begin
+ Try
  if cds_LoadHead.State in [dsEdit, dsInsert] then
  cds_LoadHead.Post ;
  cds_LoadHead.Edit ;
@@ -817,6 +821,11 @@ begin
  End
  else
  cds_LoadHead.CommitUpdates ;
+
+ Finally
+    sp_RegisterToLoadArrivalReg.ParamByName('@LoadNo').AsInteger  := cds_LoadHeadLoadNo.AsInteger ;
+    sp_RegisterToLoadArrivalReg.ExecProc ;
+ End;
 end;
 
 function TdmLoadEntrySSP.noWarningForRefMismatch: boolean;
@@ -2076,5 +2085,22 @@ begin
     else
      Result := False ;
 End;
+
+procedure TdmLoadEntrySSP.RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
+Begin
+    Try
+    sp_RemPkgFromLoad_III.ParamByName('@LoadNo').AsInteger        := LoadNo ;
+    sp_RemPkgFromLoad_III.ParamByName('@LoadDetailNo').AsInteger  := LoadDetailNo ;
+    sp_RemPkgFromLoad_III.ParamByName('@UserID').AsInteger        := ThisUser.UserID ;
+    sp_RemPkgFromLoad_III.ExecProc ;
+     except
+      On E: Exception do
+      Begin
+       dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+       Raise ;
+      End ;
+     end;
+End ;
 
 end.
