@@ -125,9 +125,9 @@
         <VerInfo_Private>true</VerInfo_Private>
         <VerInfo_Debug>false</VerInfo_Debug>
         <VerInfo_PreRelease>true</VerInfo_PreRelease>
-        <VerInfo_Build>226</VerInfo_Build>
+        <VerInfo_Build>231</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.226;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;SpecialBuild=;PrivateBuild=;LastCompiledTime=2020-02-03 19:05:02;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.231;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;SpecialBuild=;PrivateBuild=;LastCompiledTime=2020-02-03 19:05:02;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
         <DCC_DebugInformation>1</DCC_DebugInformation>
         <BT_BuildType>Debug</BT_BuildType>
@@ -660,6 +660,7 @@
         <DCCReference Include="..\CommonSources\specialTools\LGstrUtils.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\uMAPIMail.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\uUseMAPI.pas"/>
+        <DCCReference Include="..\CommonSources\sendMail\uMailMadExcept.pas"/>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Debug">
@@ -736,15 +737,15 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="WIN64\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>VISTRUCK.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -754,7 +755,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="WIN32\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>VISTRUCK.exe</RemoteName>
                         <Overwrite>true</Overwrite>

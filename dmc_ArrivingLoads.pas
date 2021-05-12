@@ -593,6 +593,11 @@ type
     cdsArrivingLoadsClientName: TStringField;
     cdsArrivingLoadsBookingType: TStringField;
     cdsArrivingLoadsLagerkod: TStringField;
+    cds_verkLasterStart_Week: TIntegerField;
+    cds_verkLasterEnd_Week: TIntegerField;
+    cds_verkLasterReady_Date: TStringField;
+    cds_verkLasterNote: TStringField;
+    cds_verkLasterCarriers_Date: TSQLTimeStampField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;

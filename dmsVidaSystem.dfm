@@ -69,7 +69,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -174,7 +174,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -201,7 +201,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -267,7 +267,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3170,6 +3170,7 @@ object dmsSystem: TdmsSystem
     Top = 496
   end
   object cdsBookingType: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -4222,7 +4223,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -4811,7 +4812,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -5514,7 +5515,7 @@ object dmsSystem: TdmsSystem
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

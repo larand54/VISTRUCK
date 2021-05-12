@@ -684,6 +684,10 @@ type
     function UserIsAllowedToMovePkgs(const aUserID: integer): integer;
     procedure StoreGridLayout_Specialv2(const UserID: Integer;
       const Form, ViewName: String; AGridView: TcxGridTableView);
+
+
+
+
     function  LoadGridLayout_Specialv2(const UserID: Integer;
       const Form, ViewName: String; AGridView: TcxGridTableView): Boolean;
     function  UserIsAllowedToSetStatusToActive(const LONo : Integer) : Boolean ;
@@ -760,6 +764,7 @@ type
     function  LoadGridLayout_Special(const UserID : Integer;const Form, ViewName : String;AGridView: TcxGridTableView;const MallName : String) : Boolean ;
     procedure StoreGridLayout(const UserID : Integer;const ViewName : String;AGridView: TcxGridTableView) ;
     procedure StoreGridLayout_Special(const UserID : Integer;const Form, ViewName : String;AGridView: TcxGridTableView;const MallName : String) ;
+
 
     procedure StoreGridSets(const UserID : Integer;const Name, Form, ViewName : String;AGridView: TcxGridTableView) ;
 
@@ -2478,7 +2483,11 @@ end;
 function TdmsSystem.LoadGridLayout(const UserID : Integer;const ViewName : String;AGridView: TcxGridTableView) : Boolean ;
 var
   Stream: TMemoryStream;
+  Save_Cursor: TCursor;
 begin
+ Save_Cursor := Screen.Cursor;
+ Screen.Cursor := crHourGlass; { Show hourglass cursor }
+ Try
  Result:= False ;
  With dmsSystem do
  Begin
@@ -2499,6 +2508,9 @@ begin
   End ;
   cds_GridSettings.Active:= False ;
  End ;
+  Finally
+    Screen.Cursor := Save_Cursor;
+  End;
 end;
 
 function TdmsSystem.LoadGridLayout_Special(const UserID : Integer;const Form, ViewName : String;

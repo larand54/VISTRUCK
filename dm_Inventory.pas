@@ -1103,7 +1103,7 @@ type
     sp_UtlastLevelThreeAvailPeriod: TFloatField;
     sp_UtlastLevelThreeAvailNetto: TFloatField;
     ds_UtlastLevelThree: TDataSource;
-    sp_invpiv: TFDStoredProc;
+    sp_invpivXXX: TFDStoredProc;
     ds_invpiv: TDataSource;
     ds_invpivPkgDtl: TDataSource;
     sp_invpivPkg: TFDStoredProc;
@@ -1476,6 +1476,7 @@ type
     cds_GetPakProdNameMatchingPT: TStringField;
     cds_KilnChargeRowsTotalm3Actual: TFloatField;
     cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
+    sq_invpiv: TFDQuery;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -2415,12 +2416,12 @@ End ;
 procedure TdmInventory.Refresh_sp_invpiv(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
 Begin
 
-   if sp_invpiv.Active then
+   if sq_invpiv.Active then
    Begin
-    sp_invpiv.Fields.Clear ;
-    sp_invpiv.EmptyDataSet ;
-    sp_invpiv.Active := False ;
-    sp_invpiv.Disconnect(True);
+    sq_invpiv.Fields.Clear ;
+    sq_invpiv.EmptyDataSet ;
+    sq_invpiv.Active := False ;
+    sq_invpiv.Disconnect(True);
    End ;
 
 
@@ -2432,42 +2433,52 @@ Begin
   sp_invpivPkgDtl.Disconnect(True);
  End ;
 
+ if LIPNos = '' then
+  sq_invpiv.ParamByName('LIPNo2').Clear()
+  else
+  sq_invpiv.ParamByName('LIPNo2').AsString           := LIPNos ;
+  sq_invpiv.ParamByName('PivotUnit').AsInteger      := PivotUnit ;
+  sq_invpiv.ParamByName('LanguageCode').AsInteger   := ThisUser.LanguageID ;
+  sq_invpiv.ParamByName('OwnerNo').AsInteger        := OwnerNo ;
 
- sp_invpiv.ParamByName('@LIPNo').AsString           := LIPNos ;
- sp_invpiv.ParamByName('@PivotUnit').AsInteger      := PivotUnit ;
- sp_invpiv.ParamByName('@LanguageCode').AsInteger   := ThisUser.LanguageID ;
- sp_invpiv.ParamByName('@OwnerNo').AsInteger        := OwnerNo ;
- if AT > 0 then
- sp_invpiv.ParamByName('@AT').AsFloat               := AT
- else
- sp_invpiv.ParamByName('@AT').AsFloat               := 0 ;
- if AB > 0 then
- sp_invpiv.ParamByName('@AB').AsFloat               := AB
- else
- sp_invpiv.ParamByName('@AB').AsFloat               := 0 ;
 
- if Length(Trim(Ref)) > 0 then
- sp_invpiv.ParamByName('@Ref').AsString             := Trim(Ref)
- else
- sp_invpiv.ParamByName('@Ref').AsString             := '' ;
+     if AT > 0 then
+     sq_invpiv.ParamByName('AT').AsFloat               := AT
+     else
+     sq_invpiv.ParamByName('AT').Clear() ;
 
- if Length(Trim(BL)) > 0 then
- sp_invpiv.ParamByName('@BL').AsString              := Trim(BL)
- else
- sp_invpiv.ParamByName('@BL').AsString             := '' ;
+       if AB > 0 then
+            sq_invpiv.ParamByName('AB').AsFloat               := AB
+            else
+            sq_invpiv.ParamByName('AB').Clear ;
 
- if Length(Trim(Info2)) > 0 then
- sp_invpiv.ParamByName('@Info2').AsString           := Trim(Info2)
- else
- sp_invpiv.ParamByName('@Info2').AsString             := '' ;
+            if Length(Trim(Ref)) > 0 then
+            sq_invpiv.ParamByName('Ref').AsString             := Trim(Ref)
+            else
+            sq_invpiv.ParamByName('Ref').Clear() ;
 
+            if Length(Trim(BL)) > 0 then
+            sq_invpiv.ParamByName('BL').AsString              := Trim(BL)
+            else
+            sq_invpiv.ParamByName('BL').Clear() ;
+
+            if Length(Trim(Info2)) > 0 then
+            sq_invpiv.ParamByName('Info2').AsString           := Trim(Info2)
+            else
+            sq_invpiv.ParamByName('Info2').Clear() ;
+
+
+
+
+//     sq_invpiv.SQL.SaveToFile('sq_invpiv.txt') ;
 
  Try
- sp_invpiv.Active := True ;
+ sq_invpiv.Prepare ;
+ sq_invpiv.Active := True ;
  Except
 //  On E: Exception do
 //  Begin
-//   dmsSystem.FDoLog(E.Message + ' sp_invpiv.Active ') ;
+//   dmsSystem.FDoLog(E.Message + ' sq_invpiv.Active ') ;
 //   ShowMessage(E.Message+' :sp_MergeBookings.Exec') ;
 //   Raise ;
 //  End ;

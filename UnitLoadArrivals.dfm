@@ -400,7 +400,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
         end
         object lcVerk: TcxDBLookupComboBox
-          Left = 88
+          Left = 91
           Top = 7
           TabStop = False
           DataBinding.DataField = 'Verk'
@@ -429,7 +429,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
         end
         object lcDestination: TcxDBLookupComboBox
-          Left = 87
+          Left = 91
           Top = 37
           TabStop = False
           DataBinding.DataField = 'Destination'
@@ -608,7 +608,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       TabOrder = 2
       object cxLabel2: TcxLabel
         Left = 11
-        Top = 76
+        Top = 71
         Caption = 'Visa:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -763,8 +763,8 @@ object frmLoadArrivals: TfrmLoadArrivals
         ParentFont = False
       end
       object bcConfirmedv2: TcxComboBox
-        Left = 78
-        Top = 72
+        Left = 79
+        Top = 65
         TabStop = False
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
@@ -783,6 +783,13 @@ object frmLoadArrivals: TfrmLoadArrivals
         TabOrder = 10
         Text = 'New arrivals'
         Width = 147
+      end
+      object cbNewArrivalQuery: TcxCheckBox
+        Left = 80
+        Top = 93
+        Caption = 'Use new arrival query'
+        Style.TransparentBorder = False
+        TabOrder = 11
       end
     end
   end

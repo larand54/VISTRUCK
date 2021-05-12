@@ -27,6 +27,7 @@ object fLastLista: TfLastLista
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = -6
     DesignSize = (
       1131
       73)
@@ -50,7 +51,11 @@ object fLastLista: TfLastLista
       DataBinding.DataField = 'Verk'
       DataBinding.DataSource = ds_Props
       Properties.ImmediatePost = True
-      Properties.ListColumns = <>
+      Properties.KeyFieldNames = 'ClientNo'
+      Properties.ListColumns = <
+        item
+          FieldName = 'ClientName'
+        end>
       Properties.ListOptions.ShowHeader = False
       TabOrder = 0
       Width = 145
@@ -96,6 +101,42 @@ object fLastLista: TfLastLista
       Action = acClose
       Anchors = [akTop, akRight]
       TabOrder = 5
+    end
+    object cxButton5: TcxButton
+      Left = 632
+      Top = 8
+      Width = 73
+      Height = 49
+      Action = acNewMall
+      TabOrder = 6
+      WordWrap = True
+    end
+    object cxButton6: TcxButton
+      Left = 711
+      Top = 8
+      Width = 73
+      Height = 49
+      Action = acOpenMall
+      TabOrder = 7
+      WordWrap = True
+    end
+    object cxButton7: TcxButton
+      Left = 790
+      Top = 8
+      Width = 73
+      Height = 49
+      Action = acSaveMall
+      TabOrder = 8
+      WordWrap = True
+    end
+    object cxButton8: TcxButton
+      Left = 869
+      Top = 8
+      Width = 73
+      Height = 49
+      Action = acSetSTDMall
+      TabOrder = 9
+      WordWrap = True
     end
   end
   object grdLastLista: TcxGrid
@@ -163,19 +204,19 @@ object fLastLista: TfLastLista
       object grdLastListaDBTableView1ShippingPlanNo: TcxGridDBColumn
         DataBinding.FieldName = 'LONo'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 77
+        Width = 38
       end
       object grdLastListaDBTableView1LASTNR: TcxGridDBColumn
         DataBinding.FieldName = 'LASTNR'
-        Width = 70
+        Width = 37
       end
       object grdLastListaDBTableView1FS: TcxGridDBColumn
         DataBinding.FieldName = 'FS'
-        Width = 105
+        Width = 51
       end
       object grdLastListaDBTableView1DATUM: TcxGridDBColumn
         DataBinding.FieldName = 'DATUM'
-        Width = 54
+        Width = 38
       end
       object grdLastListaDBTableView1STATUS: TcxGridDBColumn
         DataBinding.FieldName = 'STATUS'
@@ -197,47 +238,67 @@ object fLastLista: TfLastLista
             ImageIndex = 2
             Value = 2
           end>
-        Width = 57
+        Width = 37
       end
       object grdLastListaDBTableView1LOAD_ID: TcxGridDBColumn
         DataBinding.FieldName = 'LOAD_ID'
-        Width = 73
+        Width = 38
       end
       object grdLastListaDBTableView1INT_DEST: TcxGridDBColumn
         DataBinding.FieldName = 'INT_DEST'
-        Width = 76
+        Width = 38
       end
       object grdLastListaDBTableView1LASTSTALLE: TcxGridDBColumn
         DataBinding.FieldName = 'LASTSTALLE'
-        Width = 78
+        Width = 37
       end
       object grdLastListaDBTableView1VERK: TcxGridDBColumn
         DataBinding.FieldName = 'VERK'
-        Width = 107
+        Width = 53
       end
       object grdLastListaDBTableView1INT_KUND: TcxGridDBColumn
         DataBinding.FieldName = 'INT_KUND'
-        Width = 120
+        Width = 58
       end
       object grdLastListaDBTableView1AM3: TcxGridDBColumn
         DataBinding.FieldName = 'AM3'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 76
+        Width = 38
       end
       object grdLastListaDBTableView1NM3: TcxGridDBColumn
         DataBinding.FieldName = 'NM3'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 75
+        Width = 38
       end
       object grdLastListaDBTableView1Styck: TcxGridDBColumn
         DataBinding.FieldName = 'Styck'
         PropertiesClassName = 'TcxLabelProperties'
-        Width = 75
+        Width = 37
       end
       object grdLastListaDBTableView1Paket: TcxGridDBColumn
         DataBinding.FieldName = 'Paket'
         PropertiesClassName = 'TcxLabelProperties'
+        Width = 71
+      end
+      object grdLastListaDBTableView1Start_Week: TcxGridDBColumn
+        DataBinding.FieldName = 'Start_Week'
+        Width = 98
+      end
+      object grdLastListaDBTableView1End_Week: TcxGridDBColumn
+        DataBinding.FieldName = 'End_Week'
         Width = 74
+      end
+      object grdLastListaDBTableView1Ready_Date: TcxGridDBColumn
+        DataBinding.FieldName = 'Ready_Date'
+        Width = 100
+      end
+      object grdLastListaDBTableView1Note: TcxGridDBColumn
+        DataBinding.FieldName = 'Note'
+        Width = 81
+      end
+      object grdLastListaDBTableView1Carriers_Date: TcxGridDBColumn
+        DataBinding.FieldName = 'Carriers_Date'
+        Width = 138
       end
     end
     object grdLastListaLevel1: TcxGridLevel
@@ -391,7 +452,6 @@ object fLastLista: TfLastLista
     Control = grdLastLista
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object imglistActions: TImageList
     Height = 24
@@ -1757,7 +1817,7 @@ object fLastLista: TfLastLista
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -1771,8 +1831,8 @@ object fLastLista: TfLastLista
   end
   object ds_Props: TDataSource
     DataSet = cds_Props
-    Left = 496
-    Top = 240
+    Left = 304
+    Top = 416
   end
   object cds_Props: TFDQuery
     AfterInsert = cds_PropsAfterInsert
@@ -1782,12 +1842,24 @@ object fLastLista: TfLastLista
     SQL.Strings = (
       'Select * FROM dbo.userprops'
       'WHERE UserID = :UserID'
+      'AND Name = :Name'
+      'AND ((LOObjectType = :LOObjectType) or (0 = :LOObjectType))'
       'AND Form = :Form')
-    Left = 496
-    Top = 192
+    Left = 304
+    Top = 368
     ParamData = <
       item
         Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'NAME'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'LOOBJECTTYPE'
         DataType = ftInteger
         ParamType = ptInput
       end
@@ -2147,6 +2219,22 @@ object fLastLista: TfLastLista
       ImageIndex = 0
       OnExecute = acCloseExecute
     end
+    object acSaveMall: TAction
+      Caption = 'Save template'
+      OnExecute = acSaveMallExecute
+    end
+    object acNewMall: TAction
+      Caption = 'New template'
+      OnExecute = acNewMallExecute
+    end
+    object acSetSTDMall: TAction
+      Caption = 'Set template as default'
+      OnExecute = acSetSTDMallExecute
+    end
+    object acOpenMall: TAction
+      Caption = 'Open template'
+      OnExecute = acOpenMallExecute
+    end
   end
   object cxStyleRepository1: TcxStyleRepository
     Left = 121
@@ -2224,7 +2312,7 @@ object fLastLista: TfLastLista
     end
   end
   object siLangLinked_fLastLista: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -2636,5 +2724,64 @@ object fLastLista: TfLastLista
       01000100010001000D000A00630078005300740079006C00650043006F006E00
       740065006E0074004F00640064000100440045004600410055004C0054005F00
       430048004100520053004500540001000100010001000D000A00}
+  end
+  object cds_mall: TFDQuery
+    CachedUpdates = True
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    SQL.Strings = (
+      'Select * FROM dbo.userprops'
+      'WHERE UserID = :UserID'
+      'AND Name = :Name'
+      'AND ((LOObjectType = :LOObjectType) or (0 = :LOObjectType))')
+    Left = 208
+    Top = 352
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'NAME'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'LOOBJECTTYPE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object cds_mallUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_mallForm: TStringField
+      FieldName = 'Form'
+      Origin = 'Form'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      Size = 50
+    end
+    object cds_mallName: TStringField
+      FieldName = 'Name'
+      Origin = 'Name'
+      Size = 50
+    end
+    object cds_mallVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+      Origin = 'VerkNo'
+    end
+    object cds_mallLOObjectType: TIntegerField
+      FieldName = 'LOObjectType'
+      Origin = 'LOObjectType'
+    end
+  end
+  object ds_mall: TDataSource
+    DataSet = cds_mall
+    Left = 208
+    Top = 408
   end
 end

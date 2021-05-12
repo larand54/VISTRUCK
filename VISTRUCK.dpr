@@ -171,7 +171,8 @@ uses
   uOAuthSecurities in '..\CommonSources\sendMail\uOAuthSecurities.pas',
   LGstrUtils in '..\CommonSources\specialTools\LGstrUtils.pas',
   uMAPIMail in '..\CommonSources\sendMail\uMAPIMail.pas',
-  uUseMAPI in '..\CommonSources\sendMail\uUseMAPI.pas';
+  uUseMAPI in '..\CommonSources\sendMail\uUseMAPI.pas',
+  uMailMadExcept in '..\CommonSources\sendMail\uMailMadExcept.pas';
 
 {$R *.res}
 begin
