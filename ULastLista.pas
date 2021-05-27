@@ -177,6 +177,7 @@ type
     cxButton6: TcxButton;
     cxButton7: TcxButton;
     cxButton8: TcxButton;
+    grdLastListaDBTableView1shortnote: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure PackageInfo1Click(Sender: TObject);
@@ -616,7 +617,7 @@ Begin
   Add('SP.EndETDYearWeek as End_Week,') ;
   Add('B.PreliminaryRequestedPeriod as Ready_Date,') ;
   Add('B.Panic_Note as Note,') ;
-  Add('B.ShippersShipDate as Carriers_Date') ;
+  Add('B.ShippersShipDate as Carriers_Date, L.shortnote') ;
 
 
   Add('FROM dbo.LoadShippingPlan LSP') ;
@@ -648,7 +649,7 @@ Begin
   Add('Loading.CityName,') ;
   Add('SUPP.ClientName,') ;
   Add('CUST.ClientName, LSP.ShippingPlanNo,') ;
-  Add('SP.StartETDYearWeek, SP.EndETDYearWeek, B.PreliminaryRequestedPeriod, B.Panic_Note, B.ShippersShipDate') ;
+  Add('SP.StartETDYearWeek, SP.EndETDYearWeek, B.PreliminaryRequestedPeriod, B.Panic_Note, B.ShippersShipDate, L.shortnote') ;
 
 //  if ThisUser.UserID = 8 then SaveToFile('sq_VerkLaster.txt') ;
  End ;

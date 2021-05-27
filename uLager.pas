@@ -3238,7 +3238,7 @@ begin
 
 
 
- LoadGridLayoutPaketNrVy ;
+// LoadGridLayoutPaketNrVy ;
 
  grdDBBandedPerPaketNr.BeginUpdate ;
  Try

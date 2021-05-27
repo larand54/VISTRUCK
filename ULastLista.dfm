@@ -27,7 +27,6 @@ object fLastLista: TfLastLista
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = -6
     DesignSize = (
       1131
       73)
@@ -208,14 +207,17 @@ object fLastLista: TfLastLista
       end
       object grdLastListaDBTableView1LASTNR: TcxGridDBColumn
         DataBinding.FieldName = 'LASTNR'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 37
       end
       object grdLastListaDBTableView1FS: TcxGridDBColumn
         DataBinding.FieldName = 'FS'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 51
       end
       object grdLastListaDBTableView1DATUM: TcxGridDBColumn
         DataBinding.FieldName = 'DATUM'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 38
       end
       object grdLastListaDBTableView1STATUS: TcxGridDBColumn
@@ -242,22 +244,27 @@ object fLastLista: TfLastLista
       end
       object grdLastListaDBTableView1LOAD_ID: TcxGridDBColumn
         DataBinding.FieldName = 'LOAD_ID'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 38
       end
       object grdLastListaDBTableView1INT_DEST: TcxGridDBColumn
         DataBinding.FieldName = 'INT_DEST'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 38
       end
       object grdLastListaDBTableView1LASTSTALLE: TcxGridDBColumn
         DataBinding.FieldName = 'LASTSTALLE'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 37
       end
       object grdLastListaDBTableView1VERK: TcxGridDBColumn
         DataBinding.FieldName = 'VERK'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 53
       end
       object grdLastListaDBTableView1INT_KUND: TcxGridDBColumn
         DataBinding.FieldName = 'INT_KUND'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 58
       end
       object grdLastListaDBTableView1AM3: TcxGridDBColumn
@@ -282,23 +289,33 @@ object fLastLista: TfLastLista
       end
       object grdLastListaDBTableView1Start_Week: TcxGridDBColumn
         DataBinding.FieldName = 'Start_Week'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 98
       end
       object grdLastListaDBTableView1End_Week: TcxGridDBColumn
         DataBinding.FieldName = 'End_Week'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 74
       end
       object grdLastListaDBTableView1Ready_Date: TcxGridDBColumn
         DataBinding.FieldName = 'Ready_Date'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 100
       end
       object grdLastListaDBTableView1Note: TcxGridDBColumn
         DataBinding.FieldName = 'Note'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 81
       end
       object grdLastListaDBTableView1Carriers_Date: TcxGridDBColumn
         DataBinding.FieldName = 'Carriers_Date'
+        PropertiesClassName = 'TcxLabelProperties'
         Width = 138
+      end
+      object grdLastListaDBTableView1shortnote: TcxGridDBColumn
+        DataBinding.FieldName = 'shortnote'
+        PropertiesClassName = 'TcxLabelProperties'
+        Width = 100
       end
     end
     object grdLastListaLevel1: TcxGridLevel

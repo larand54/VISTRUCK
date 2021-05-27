@@ -38,12 +38,14 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object grdLoads: TcxGrid
     Left = 0
-    Top = 118
+    Top = 127
     Width = 1207
-    Height = 378
+    Height = 369
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
+    ExplicitTop = 118
+    ExplicitHeight = 378
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       ScrollbarAnnotations.CustomAnnotations = <>
@@ -360,7 +362,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Left = 0
     Top = 0
     Width = 1207
-    Height = 118
+    Height = 127
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
@@ -368,9 +370,10 @@ object frmLoadArrivals: TfrmLoadArrivals
       Left = 443
       Top = 0
       Width = 701
-      Height = 118
+      Height = 127
       Align = alClient
       TabOrder = 0
+      ExplicitHeight = 118
       object dxBarDockControl1: TdxBarDockControl
         Left = 1
         Top = 1
@@ -383,9 +386,10 @@ object frmLoadArrivals: TfrmLoadArrivals
         Left = 1
         Top = 46
         Width = 699
-        Height = 71
+        Height = 80
         Align = alClient
         TabOrder = 1
+        ExplicitHeight = 71
         object cxLabel1: TcxLabel
           Left = 3
           Top = 6
@@ -564,15 +568,24 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
           TabOrder = 10
         end
+        object cbShowPreliminaryLoads: TcxCheckBox
+          Left = 433
+          Top = 61
+          Caption = 'Show only complete loads'
+          State = cbsChecked
+          Style.TransparentBorder = False
+          TabOrder = 11
+        end
       end
     end
     object Panel3: TPanel
       Left = 1144
       Top = 0
       Width = 63
-      Height = 118
+      Height = 127
       Align = alRight
       TabOrder = 1
+      ExplicitHeight = 118
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
@@ -603,9 +616,10 @@ object frmLoadArrivals: TfrmLoadArrivals
       Left = 0
       Top = 0
       Width = 443
-      Height = 118
+      Height = 127
       Align = alLeft
       TabOrder = 2
+      ExplicitHeight = 118
       object cxLabel2: TcxLabel
         Left = 11
         Top = 71

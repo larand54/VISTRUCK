@@ -522,6 +522,7 @@ type
     grdLoadsDBTableView1BookingType: TcxGridDBColumn;
     grdLoadsDBTableView1Lagerkod: TcxGridDBColumn;
     cbNewArrivalQuery: TcxCheckBox;
+    cbShowPreliminaryLoads: TcxCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1079,20 +1080,32 @@ end;
 
 procedure TfrmLoadArrivals.BuildARQueryv2(const LONo, LoadNo : Integer);
 Begin
-  with dmArrivingLoads do
+ with dmArrivingLoads do
   Begin
    cdsArrivingLoads.SQL.Clear;
    with cdsArrivingLoads.SQL do
    Begin
 
-    Add('Select *') ;
+    Add('SELECT la.[SqlSats] ,la.[Egen],la.[OriginalLO],la.[OriginalLoadNo],L.[LoadAR],la.[CountryCode],la.[LO],la.[LOADNO],la.[FS],la.[LOADEDDATE]');
+          Add(',la.[LOAD_STATUS],la.[LOAD_ID],la.[SUPPLIER],la.[SUPPCODE],la.[DESTINATION],la.[ORDER_NO],la.[OBJECTTYPE],la.[INVPOINTNO],la.[INVPOINTNAME]');
+          Add(',la.[CUSTOMERNO],la.[CUSTOMER],la.[SUPPLIERNO],la.[AVROP_CUSTOMERNO],la.[AVROP_CUSTOMER],la.[OBJECTTYPE_1],la.[INITIALS],la.[ORDERTYPE]');
+          Add(',la.[TYP],la.[LOTYP],la.[LOINI],la.[LASTSTÄLLE],la.[LipNo],la.[Trading],la.[ARtillLager],la.[ImpVerk],la.[intNM3],la.[AM3],la.[Pcs],la.[Pkgs]');
+          Add(',la.[ClientName],la.[BookingType],la.[NoOfPackages],la.[PackagesConfirmed],la.[OriginalInvoiceNo],la.[LoadingLocationNo]');
+          Add(',la.[OrderNo],la.[Lagerkod],la.[CityNo]');
     Add('FROM  dbo.LoadArrivalReg la') ;
     Add('inner join dbo.Loads L on L.LoadNo = la.LoadNo') ;
-    Add('WHERE 1 = 1');
+    Add('inner join [dbo].[UserArrivalPoint] ua on ua.PhyInvPointNameNo = la.cityNo') ;
+//    Add('inner join dbo.ARGroupClient gc on gc.ClientNo = la.CustomerNo') ;
+    Add('inner join dbo.LoadShippingPlan LS on LS.LoadNo = la.LoadNo') ;
+    Add('WHERE ua.UserID = ' + inttostr(ThisUser.UserID)) ;
+    if cbShowPreliminaryLoads.Checked then
+     Add('and L.SenderLoadStatus = 2') ;
 
     if (LONo = -1) and (LoadNo = -1) then
     if (not cds_PropsVerkNo.IsNull) and (cds_PropsVerkNo.AsInteger > 0) then
-      Add('and la.CustomerNo = ' + cds_PropsVerkNo.AsString) ;
+//     Add('and gc.MainClientNo = ' + cds_PropsVerkNo.AsString) ;
+     Add('and la.CustomerNo = ' + cds_PropsVerkNo.AsString) ;
+     Add('and la.CustomerNo = ua.ClientNo') ;
 
      if (LONo = -1) and (LoadNo = -1) then
      if (not cds_PropsClientNo.IsNull) and (cds_PropsClientNo.AsInteger > 0) then
@@ -1101,16 +1114,23 @@ Begin
     if (LONo > -1) or (LoadNo > -1) then
     Begin
       if LONo > -1 then
-        Add('AND la.LONo = ' + IntToStr(LONo));
+        Add('AND la.LO = ' + IntToStr(LONo));
       if LoadNo > -1 then
         Add('AND la.LoadNo = ' + IntToStr(LoadNo));
     End;
 
     if (LONo = -1) and (LoadNo = -1) then
     Begin
-      if cds_PropsBookingTypeNo.AsInteger > 0 then
-        Add('AND la.CityNo = ' +
+      if (cds_PropsBookingTypeNo.IsNull) or  (cds_PropsBookingTypeNo.AsInteger < 1) then
+         Begin
+
+         End
+         else
+         Begin
+          if cds_PropsBookingTypeNo.AsInteger > 0 then
+          Add('AND la.CityNo = ' +
           cds_PropsBookingTypeNo.AsString) ;// Destination, leverera till ort
+         End ;
 
       if (not cds_PropsLoadingLocationNo.IsNull) and
         (cds_PropsLoadingLocationNo.AsInteger > 0) then
@@ -1177,7 +1197,7 @@ Begin
 
 
 
-  //  if thisuser.UserID = 258 then    SaveToFile('cdsArrivingLoadsv2.TXT');
+  //  if thisuser.UserID = 258 then  SaveToFile('cdsArrivingLoadsv2.TXT');
    End;
   End;
 End;

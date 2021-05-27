@@ -1430,6 +1430,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cds_verkLaster: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -1456,7 +1457,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'SP.EndETDYearWeek as End_Week,'
       'B.PreliminaryRequestedPeriod as Ready_Date,'
       'B.Panic_Note as Note,'
-      'B.ShippersShipDate as Carriers_Date'
+      'B.ShippersShipDate as Carriers_Date,'
+      'L.shortnote'
       ''
       'FROM'
       'dbo.LoadShippingPlan LSP'
@@ -1502,7 +1504,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'SP.EndETDYearWeek,'
       'B.PreliminaryRequestedPeriod,'
       'B.Panic_Note,'
-      'B.ShippersShipDate')
+      'B.ShippersShipDate,'
+      'L.shortnote')
     Left = 368
     Top = 32
     object cds_verkLasterLASTNR: TIntegerField
@@ -1604,6 +1607,12 @@ object dmArrivingLoads: TdmArrivingLoads
     object cds_verkLasterCarriers_Date: TSQLTimeStampField
       FieldName = 'Carriers_Date'
       Origin = 'Carriers_Date'
+    end
+    object cds_verkLastershortnote: TStringField
+      DisplayLabel = 'Trucknotering'
+      FieldName = 'shortnote'
+      Origin = 'shortnote'
+      Size = 150
     end
   end
   object cds_VerkLastPkgs: TFDQuery

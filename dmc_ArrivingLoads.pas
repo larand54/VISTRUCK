@@ -598,6 +598,7 @@ type
     cds_verkLasterReady_Date: TStringField;
     cds_verkLasterNote: TStringField;
     cds_verkLasterCarriers_Date: TSQLTimeStampField;
+    cds_verkLastershortnote: TStringField;
     procedure dsrcArrivingLoadsDataChange(Sender: TObject; Field: TField);
     procedure ds_verkLasterDataChange(Sender: TObject; Field: TField);
     procedure dsrcPortArrivingLoadsDataChange(Sender: TObject;
