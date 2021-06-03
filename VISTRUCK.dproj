@@ -3,7 +3,7 @@
         <ProjectGuid>{8743B446-FAAE-4E65-93E0-6A05B554552C}</ProjectGuid>
         <MainSource>VISTRUCK.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -737,14 +737,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="WIN64\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win64">
-                        <RemoteName>VISTRUCK.exe</RemoteName>
+                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="WIN32\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
+                <DeployFile LocalName="WIN64\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
                         <RemoteName>VISTRUCK.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -755,9 +755,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="ModelSupport_VISTRUCK\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="WIN32\DEBUG\EXE\VISTRUCK.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
+                        <RemoteName>VISTRUCK.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
