@@ -2,7 +2,7 @@
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 823
-  Width = 1095
+  Width = 1115
   object ds_LoadHead: TDataSource
     DataSet = cds_LoadHead
     Left = 32
