@@ -9084,7 +9084,7 @@ object dmInventory: TdmInventory
       DisplayLabel = 'Vagnnr'
       FieldName = 'VagnNo'
       Origin = 'VagnNo'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
     object cds_KilnChargeRowsRowNo: TIntegerField
       DisplayLabel = 'Radnr'
@@ -12483,5 +12483,10 @@ object dmInventory: TdmInventory
         DataType = ftInteger
         ParamType = ptInput
       end>
+  end
+  object ds_KilnVagn: TDataSource
+    DataSet = cds_KilnVagn
+    Left = 1208
+    Top = 496
   end
 end

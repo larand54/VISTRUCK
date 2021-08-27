@@ -1606,6 +1606,12 @@ Var Save_Cursor : TCursor;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
+
+ grdDBBandedPerSortiment.Controller.ClearGrouping ;
+ grdDBBandedPerSortiment.DataController.ClearSorting(False);
+
+
+
  Try
 
  if ((IsLIPChecked) and (dmsContact.IsClientLego(ThisUser.CompanyNo) = 6))

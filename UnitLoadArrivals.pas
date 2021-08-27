@@ -786,6 +786,12 @@ begin
   cds_Props.CommitUpdates ;
  End ;
 
+
+     if cds_PropsOrderTypeNo.AsInteger = 1 then
+     cbNewArrivalQuery.Checked  := True
+      else
+       cbNewArrivalQuery.Checked  := False ;
+
   if ThisUser.CompanyNo = VIDA_WOOD_COMPANY_NO then
    lcVerk.Enabled := True
     else
@@ -2830,6 +2836,14 @@ end;
 procedure TfrmLoadArrivals.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
+  if cds_Props.State in [dsBrowse] then
+    cds_Props.Edit ;
+   if cbNewArrivalQuery.Checked then
+    cds_PropsOrderTypeNo.AsInteger := 1
+    else
+    cds_PropsOrderTypeNo.AsInteger := 0 ;
+
+
  if cds_Props.State in [dsEdit, dsInsert] then
  cds_Props.Post ;
  if cds_Props.ChangeCount > 0 then
@@ -6757,7 +6771,8 @@ begin
           ('LoadNo').Index;
         LoadNo := grdLoadsDBTableView1.DataController.Values[RecIDX, ColIdx];
 
-        if dmsContact.GetSalesRegionNo(SupplierNo) <>  dmsContact.GetSalesRegionNo(ThisUser.CompanyNo) then
+        if (dmsContact.GetSalesRegionNo(SupplierNo) <>  dmsContact.GetSalesRegionNo(ThisUser.CompanyNo))
+        and (dmsContact.ThisCompanyPermittedToHandleSupplierNo(ThisUser.CompanyNo, SupplierNo) = False) then
         Begin
           ShowMessage('LoadNo ' + IntToStr(LoadNo) + ' does not appear to be a valid load to confirm arrival on due to difference in salesregion.') ;
           Result := False ;

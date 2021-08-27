@@ -44,8 +44,6 @@ object frmLoadArrivals: TfrmLoadArrivals
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
-    ExplicitTop = 118
-    ExplicitHeight = 378
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       ScrollbarAnnotations.CustomAnnotations = <>
@@ -373,7 +371,6 @@ object frmLoadArrivals: TfrmLoadArrivals
       Height = 127
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 118
       object dxBarDockControl1: TdxBarDockControl
         Left = 1
         Top = 1
@@ -389,7 +386,6 @@ object frmLoadArrivals: TfrmLoadArrivals
         Height = 80
         Align = alClient
         TabOrder = 1
-        ExplicitHeight = 71
         object cxLabel1: TcxLabel
           Left = 3
           Top = 6
@@ -585,7 +581,6 @@ object frmLoadArrivals: TfrmLoadArrivals
       Height = 127
       Align = alRight
       TabOrder = 1
-      ExplicitHeight = 118
       object dxBarDockControl3: TdxBarDockControl
         Left = 1
         Top = 1
@@ -619,7 +614,6 @@ object frmLoadArrivals: TfrmLoadArrivals
       Height = 127
       Align = alLeft
       TabOrder = 2
-      ExplicitHeight = 118
       object cxLabel2: TcxLabel
         Left = 11
         Top = 71

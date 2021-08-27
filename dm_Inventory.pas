@@ -1477,6 +1477,7 @@ type
     cds_KilnChargeRowsTotalm3Actual: TFloatField;
     cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
     sq_invpiv: TFDQuery;
+    ds_KilnVagn: TDataSource;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -1643,11 +1644,11 @@ End;
 
 procedure TdmInventory.EditVagn(const pKilnChargeNo, VagnNo : Integer) ;
 Begin
-  KilnChargeNo  := pKilnChargeNo ;
-  cds_KilnVagn.Active  := False ;
+  KilnChargeNo                                        := pKilnChargeNo ;
+  cds_KilnVagn.Active                                 := False ;
   cds_KilnVagn.ParamByName('KilnChargeNo').AsInteger  := KilnChargeNo ;
   cds_KilnVagn.ParamByName('VagnNo').AsInteger        := VagnNo ;
-  cds_KilnVagn.Active  := True ;
+  cds_KilnVagn.Active                                 := True ;
 
   Open_cds_KilnChargeHdr ;
   Open_cds_KilnChargeRows ;
@@ -1745,10 +1746,15 @@ end;
 
 procedure TdmInventory.Open_cds_KilnChargeRows ;
 Begin
+ cds_KilnChargeRows.DisableControls ;
+ Try
   cds_KilnChargeRows.Active := False ;
   cds_KilnChargeRows.ParamByName('KilnChargeNo').AsInteger  :=  KilnChargeNo ;
   cds_KilnChargeRows.ParamByName('VagnNo').AsInteger        :=  cds_KilnVagnVagnNo.AsInteger ;
   cds_KilnChargeRows.Active := True ;
+ Finally
+  cds_KilnChargeRows.EnableControls ;
+ End;
 End;
 
 
