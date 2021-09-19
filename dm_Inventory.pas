@@ -1478,6 +1478,8 @@ type
     cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
     sq_invpiv: TFDQuery;
     ds_KilnVagn: TDataSource;
+    sp_ReOrderRowNo: TFDStoredProc;
+    sp_EmptyCartBeforeKilnExists: TFDStoredProc;
 
     procedure cds_BookingHdrAfterInsert(DataSet: TDataSet);
     procedure cds_BookingDtlPostError(DataSet: TDataSet; E: EDatabaseError;
@@ -1530,6 +1532,8 @@ type
     RoleType : Integer ;
     FilterRawDtlData  : Boolean ;
 
+    function  EmptyCartBeforeKilnExists (const KilnChargeNo : Integer) : integer ;
+    procedure ReOrderRowNo(const KilnChargeNo, VagnNo : Integer) ;
     procedure Open_AreasAndPositions(const PIPNo  : Integer) ;
     procedure FindMatchingPositionFromSelectedPkgs ;
     procedure Refresh_PkgsToReposition ;
@@ -1653,6 +1657,23 @@ Begin
   Open_cds_KilnChargeHdr ;
   Open_cds_KilnChargeRows ;
 End;
+
+function TdmInventory.EmptyCartBeforeKilnExists (const KilnChargeNo : Integer) : integer ;
+Begin
+  Try
+  if sp_EmptyCartBeforeKilnExists.Active then
+   sp_EmptyCartBeforeKilnExists.Active := False ;
+  sp_EmptyCartBeforeKilnExists.ParamByName('@KilnChargeNo').AsInteger := KilnChargeNo ;
+  sp_EmptyCartBeforeKilnExists.Active := True ;
+  if not sp_EmptyCartBeforeKilnExists.eof then
+   Result := sp_EmptyCartBeforeKilnExists.FieldByName('VagnNo').AsInteger
+    else
+     Result := -1 ;
+  Finally
+    sp_EmptyCartBeforeKilnExists.Active := False ;
+  End;
+
+End ;
 
 procedure TdmInventory.AddVagn(const pKilnChargeNo : Integer) ;
 Begin
@@ -3352,6 +3373,20 @@ Begin
  end;
 End;
 
+procedure TdmInventory.ReOrderRowNo(const KilnChargeNo, VagnNo : Integer) ;
+Begin
+ Try
+ sp_ReOrderRowNo.ParamByName('@KilnChargeNo').AsInteger  := KilnChargeNo ;
+ sp_ReOrderRowNo.ParamByName('@VagnNo').AsInteger        := VagnNo ;
+ sp_ReOrderRowNo.ExecProc ;
+ Except
+   On E: Exception do
+   Begin
+    ShowMessage(E.Message+' :sp_ReOrderRowNo.ExecProc') ;
+    Raise ;
+   End ;
+ End ;
+End;
 
 
 end.

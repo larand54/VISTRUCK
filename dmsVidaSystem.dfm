@@ -3170,7 +3170,6 @@ object dmsSystem: TdmsSystem
     Top = 496
   end
   object cdsBookingType: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

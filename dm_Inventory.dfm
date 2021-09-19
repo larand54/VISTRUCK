@@ -12489,4 +12489,49 @@ object dmInventory: TdmInventory
     Left = 1208
     Top = 496
   end
+  object sp_ReOrderRowNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_ReOrderRowNo'
+    Left = 48
+    Top = 1064
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@KilnChargeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@VagnNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_EmptyCartBeforeKilnExists: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_EmptyCartBeforeKilnExists'
+    Left = 56
+    Top = 1168
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@KilnChargeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

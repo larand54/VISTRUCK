@@ -507,11 +507,14 @@ type
     procedure acRemoveVagnExecute(Sender: TObject);
     procedure grdVagnPkgsDBTableView1DblClick(Sender: TObject);
     procedure acPrintPackagesExecute(Sender: TObject);
+    procedure acPickPackagesUpdate(Sender: TObject);
+    procedure acRemovePackageUpdate(Sender: TObject);
+    procedure acRemoveVagnUpdate(Sender: TObject);
 
   private
     { Private declarations }
     TypeOfLine            : Integer ;
-
+    EditAllowed           : Boolean ;
     FColumn               : TcxGridColumn ;
     ReportInProgress      : Boolean ;
     RowNo                 : Integer ;
@@ -1160,8 +1163,14 @@ begin
     AddSelectedPkgsToVagn(Sender) ;
   Finally
    FreeAndNil(fPickPkgNoTork) ;
+   mePackageNo.SetFocus ;
   End;
  End;//With
+end;
+
+procedure TfkilnHandling.acPickPackagesUpdate(Sender: TObject);
+begin
+ acPickPackages.Enabled  := EditAllowed ;
 end;
 
 procedure TfkilnHandling.AddSelectedPkgsToVagn(Sender: TObject) ;
@@ -1247,6 +1256,7 @@ var
 begin
  With dmInventory do
  Begin
+
    if SelectedVagnNo > -1 then
    Begin
     if IsVagnStatus0(SelectedVagnNo, mtUserPropKilnChargeNo.AsInteger) then
@@ -1335,6 +1345,8 @@ begin
      if cds_KilnVagnar.Active then
      Begin
       SetKolumnNameAndHideNonUsedKolumns(Sender) ;
+      if cxGrid1DBBandedTableView1.Bands[1].Width < 500 then
+      cxGrid1DBBandedTableView1.Bands[1].Width  := 500 ;
   //    cxGrid1DBBandedTableView1.Columns[65].Visible  := True ;
   //    cxGrid1DBBandedTableView1.Columns[65].Caption   := 'ÖVRIGA' ;
      End ;
@@ -1378,6 +1390,8 @@ begin
   dxComponentPrinter1Link1.OptionsOnEveryPage.Footers := False ;
   dxComponentPrinter1Link1.PrinterPage.ApplyToPrintDevice ;
   dxComponentPrinter1.Preview(True, dxComponentPrinter1Link1) ;
+
+  mePackageNo.SetFocus ;
 end;
 
 procedure TfkilnHandling.acRemovePackageExecute(Sender: TObject);
@@ -1390,10 +1404,20 @@ begin
          cds_KilnChargeRows.ApplyUpdates(0) ;
          cds_KilnChargeRows.Commitupdates ;
       End ;
+   ReOrderRowNo(cds_KilnVagnKilnChargeNo.AsInteger, cds_KilnVagnVagnNo.AsInteger) ;
+   RowNo := pred(RowNo) ;
 //      cds_KilnChargeRows.Post ;
-//      cds_KilnChargeRows.Refresh;
+
+      cds_KilnChargeRows.Refresh;
       cds_KilnChargeRows.Last ;
+  acPkgTypeTableExecute(Sender) ;
+  mePackageNo.SetFocus ;
  End;
+end;
+
+procedure TfkilnHandling.acRemovePackageUpdate(Sender: TObject);
+begin
+  acRemovePackage.Enabled := EditAllowed ;
 end;
 
 procedure TfkilnHandling.acRemoveVagnExecute(Sender: TObject);
@@ -1409,6 +1433,11 @@ begin
     else
      Showmessage('Remove assigned packages before removing the cart.') ;
  End;
+end;
+
+procedure TfkilnHandling.acRemoveVagnUpdate(Sender: TObject);
+begin
+  acRemoveVagn.Enabled  := EditAllowed ;
 end;
 
 procedure TfkilnHandling.acSavePropsExecute(Sender: TObject);
@@ -1537,8 +1566,8 @@ begin
     cds_Vagnar.First ;
     while not cds_Vagnar.Eof do
     Begin
-      cds_KilnVagnar.SQL.Add(',CAST(Max(CASE WHEN kcr.VagnNo = ' + cds_VagnarVagnNo.AsString + ' THEN Cast(KV.VagnStatus AS char(1)) '
-      + '  END) AS VARCHAR(1)) AS L' + inttostr(VagnNo))  ;
+      cds_KilnVagnar.SQL.Add(',isNull(CAST(Max(CASE WHEN kv.VagnNo = ' + cds_VagnarVagnNo.AsString + ' THEN Cast(KV.VagnStatus AS char(1)) '
+      + '  END) AS VARCHAR(1)), ' + QuotedStr('0') + ') AS L' + inttostr(VagnNo))  ;
       cds_Vagnar.Next ;
       VagnNo  := succ(VagnNo) ;
     End;
@@ -1555,12 +1584,12 @@ begin
     cds_KilnVagnar.SQL.Add('FROM dbo.KilnChargeHdr KCH') ;
 
     cds_KilnVagnar.SQL.Add('Inner join dbo.Kilns K on K.KilnNo = KCH.KilnNo') ;
-    cds_KilnVagnar.SQL.Add('Inner join dbo.KilnChargeRows kcr on kcr.KilnChargeNo = KCH.KilnChargeNo') ;
+//    cds_KilnVagnar.SQL.Add('Inner join dbo.KilnChargeRows kcr on kcr.KilnChargeNo = KCH.KilnChargeNo') ;
 //    cds_KilnVagnar.SQL.Add('inner JOIN dbo.PackageNumber pn ON pn.PackageNo = kcr.packageno') ;
 //    cds_KilnVagnar.SQL.Add('and pn.SupplierCode = kcr.SupplierCode') ;
 
     cds_KilnVagnar.SQL.Add('inner join dbo.KilnVagn KV on KV.KilnChargeNo = KCH.KilnChargeNo') ;
-    cds_KilnVagnar.SQL.Add('and kv.VagnNo = kcr.VagnNo') ;
+  //  cds_KilnVagnar.SQL.Add('and kv.VagnNo = kcr.VagnNo') ;
 
 //    cds_KilnVagnar.SQL.Add('Inner Join dbo.PackageType pt ON pt.PackageTypeNo = pn.PackageTypeNo') ;
 //    cds_KilnVagnar.SQL.Add('inner join [dbo].[visv_GetMaxLength] ML on ML.PackageTypeNo = pn.PackageTypeNo') ;
@@ -1691,6 +1720,9 @@ var
   PkgNoPrefix       : Integer ;
   EnteredPkgNo      : Integer ;
 begin
+ if (dmInventory.cds_KilnVagnKilnChargeNo.IsNull = false) and (dmInventory.cds_KilnVagnKilnChargeNo.AsInteger > 0) then
+ Begin
+
  if Key <> VK_RETURN then Exit;
  if Length(mePackageNo.Text) > 0 then
  Begin
@@ -1734,6 +1766,9 @@ begin
      fkilnHandling.mtUserProp.Post ;
    End;
  End;
+ End
+  else
+   ShowMessage('Please select a valid cart.') ;
 end;
 
 procedure TfkilnHandling.GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
@@ -1861,20 +1896,23 @@ begin
     Begin
       Result := eaREJECT;
     End
-    else
+     else
+      Result := eaACCEPT ;
 //check that no user has reserved the package
-        if dmsSystem.Pkg_Reserved(
-          PkgNo,
-          PkgSupplierCode, Self.Name, Res_UserName
-          ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
-          begin
-           Result := eaACCEPT ;
-          end
-        else
-         begin
-          MessageBeep(MB_ICONEXCLAMATION);
-          Result := eaReserved ; //eaREJECT;
-        end;
+(*
+          if dmsSystem.Pkg_Reserved(
+            PkgNo,
+            PkgSupplierCode, Self.Name, Res_UserName
+            ) = ThisUser.UserName+'/'+Self.Name { NO_USER_HAS_THIS_PACKAGE_RESERVED }then
+            begin
+             Result := eaACCEPT ;
+            end
+          else
+           begin
+            MessageBeep(MB_ICONEXCLAMATION);
+            Result := eaReserved ; //eaREJECT;
+          end;
+*)
  End;//With
 end;
 
@@ -1963,6 +2001,7 @@ end;
 procedure TfkilnHandling.acAddVagnLocallyExecute(Sender: TObject);
 begin
  AddVagn(Sender) ;
+ mePackageNo.Enabled  := EditAllowed ;
  mePackageNo.SetFocus ;
 end;
 
@@ -2201,6 +2240,7 @@ begin
         mtUserProp.Post ;
       End;
       self.EditVagn(Sender) ;
+      if mePackageNo.Enabled then
       mePackageNo.SetFocus ;
     End;
    End;
@@ -2212,9 +2252,9 @@ begin
  Begin
   if cds_KilnChargeRows.RecordCount > 0 then
   Begin
-//   RowNo  := cds_KilnChargeRows.RecordCount + 1 ;
+   RowNo  := cds_KilnChargeRows.RecordCount + 1 ;
    cds_KilnChargeRows.Last ;
-   RowNo  := cds_KilnChargeRowsRowNo.AsInteger + 1 ;
+//   RowNo  := cds_KilnChargeRowsRowNo.AsInteger + 1 ;
   End
     else
      RowNo  := 1 ;
@@ -2300,10 +2340,14 @@ begin
  Begin
   SelectedVagnNo := GetVagnNoForKilnChargeNo(mtUserPropKilnChargeNo.AsInteger) ;
 
-   if SelectedVagnNo > -1 then
-   Begin
-    if IsVagnStatus0(SelectedVagnNo, mtUserPropKilnChargeNo.AsInteger) then
-    Begin
+      {
+     if SelectedVagnNo > -1 then
+        Begin
+   }
+{
+      if IsVagnStatus0(SelectedVagnNo, mtUserPropKilnChargeNo.AsInteger) then
+      Begin
+}
      if mtUserPropKilnChargeNo.AsInteger > 0 then
      Begin
 
@@ -2314,23 +2358,49 @@ begin
 
 //        fEnterKilnVagn.ShowModal ;
         IMPNO := dmInventory.cds_KilnVagnIMPNo.AsInteger ;
-        SelectedVagnNo := -1 ;
+//        SelectedVagnNo := -1 ;
 //        acPkgTypeTableExecute(Sender) ;
         if IMPNO > 0 then
           dmInventory.SaveIMPNoWithKiln(mtUserPropKilnChargeNo.AsInteger, IMPNO) ;   //Spara senaste Impregneringskategorin
         GetVagnData(Sender) ;
+
+      if not IsVagnStatus0(SelectedVagnNo, mtUserPropKilnChargeNo.AsInteger) then
+      Begin
+        mePackageNo.Enabled := False ;
+        acPickPackages.Enabled := False ;
+        acRemovePackage.Enabled := False ;
+        acRemoveVagn.Enabled := False ;
+        EditAllowed  := False ;
+      End
+      else
+       Begin
+        mePackageNo.Enabled := True ;
+        acPickPackages.Enabled := True ;
+        acRemovePackage.Enabled := True ;
+        acRemoveVagn.Enabled := True ;
+        EditAllowed  := True ;
+       End;
+
      End;//if..
-    End //if..
-     else
-      ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_9' (* 'Endast vagnar "In till tork" kan ändras.' *) )) ;
-   End
-    else
-     Begin
-      dmInventory.EditVagn(mtUserPropKilnChargeNo.AsInteger, SelectedVagnNo) ;
-      if MessageDlg('No wagon before kiln, do you want to add one??',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
-       self.AddVagn(Sender) ;
-  //     ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_10' (* 'Välj en vagn att ändra.' *) )) ;
-     End;
+        {
+      End //if..
+           else
+            Begin
+             ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_9' (* 'Endast vagnar "In till tork" kan ändras.' *) )) ;
+             dmInventory.EditVagn(-1, -1) ;
+            End;
+    }
+
+{
+     End
+      else
+       Begin
+        dmInventory.EditVagn(mtUserPropKilnChargeNo.AsInteger, SelectedVagnNo) ;
+        if MessageDlg('No wagon before kiln, do you want to add one??',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+         self.AddVagn(Sender) ;
+    //     ShowMessage(siLangLinked_fkilnHandling.GetTextOrDefault('IDS_10' (* 'Välj en vagn att ändra.' *) )) ;
+       End;
+}
  End;
 end;
 
@@ -2338,11 +2408,15 @@ end;
 procedure TfkilnHandling.AddVagn(Sender: TObject);
 var
 //  fEnterKilnVagn    : TfEnterKilnVagn;
-  IMPNO             : Integer ;
+  IMPNO, EmptyVagnNo             : Integer ;
 begin
  if mtUserPropKilnChargeNo.AsInteger > 0 then
  Begin
-  TypeOfLine := dmInventory.GetTypeOfLine(mtUserPropKilnChargeNo.AsInteger) ;
+  EmptyVagnNo := dmInventory.EmptyCartBeforeKilnExists(mtUserPropKilnChargeNo.AsInteger) ;
+  if EmptyVagnNo = -1 then
+  Begin
+
+    TypeOfLine := dmInventory.GetTypeOfLine(mtUserPropKilnChargeNo.AsInteger) ;
 
 //  fEnterKilnVagn  := TfEnterKilnVagn.Create(nil);
 //  Try
@@ -2363,9 +2437,13 @@ begin
 
     GetVagnNos ;
     RowNo     := 1 ;
+    EditAllowed  := True ;
 //  Finally
 //   FreeAndNil(fEnterKilnVagn) ;
 //  End;
+  End
+   else
+    ShowMessage('There is a empty cart before tube/kiln already, use that one. (Cart no: ' + inttostr(EmptyVagnNo)) ;
  End;//if..
 end;
 

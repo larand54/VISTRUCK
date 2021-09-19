@@ -33,7 +33,6 @@ object fkilnHandling: TfkilnHandling
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ExplicitWidth = 1252
     ClientRectBottom = 85
     ClientRectLeft = 4
     ClientRectRight = 1411
@@ -41,7 +40,6 @@ object fkilnHandling: TfkilnHandling
     object tsLagret: TcxTabSheet
       Caption = 'Lager'
       ImageIndex = 2
-      ExplicitWidth = 1244
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -50,7 +48,6 @@ object fkilnHandling: TfkilnHandling
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 1244
         DesignSize = (
           1407
           81)
@@ -200,7 +197,6 @@ object fkilnHandling: TfkilnHandling
           Caption = 'St'#228'ng'
           TabOrder = 3
           OnClick = cxButton9Click
-          ExplicitLeft = 1144
         end
         object seColWidth: TcxDBSpinEdit
           Left = 409
@@ -248,6 +244,7 @@ object fkilnHandling: TfkilnHandling
     Properties.Rotate = True
     Properties.ShowFrame = True
     Properties.Style = 6
+    Properties.TabCaptionAlignment = taLeftJustify
     Properties.TabHeight = 30
     Properties.TabIndex = 1
     Properties.TabPosition = tpLeft
@@ -259,7 +256,6 @@ object fkilnHandling: TfkilnHandling
     LookAndFeel.NativeStyle = False
     LookAndFeel.SkinName = 'Office2013DarkGray'
     OnChange = tcKilnsChange
-    ExplicitWidth = 161
     ClientRectBottom = 732
     ClientRectLeft = 108
     ClientRectRight = 119
@@ -275,8 +271,6 @@ object fkilnHandling: TfkilnHandling
     AutoPosition = False
     Color = clMaroon
     ParentColor = False
-    ExplicitLeft = 167
-    ExplicitTop = 67
   end
   object MainPanel: TPanel
     Left = 128
@@ -284,7 +278,7 @@ object fkilnHandling: TfkilnHandling
     Width = 1287
     Height = 733
     Align = alRight
-    TabOrder = 7
+    TabOrder = 3
     object cxGrid1: TcxGrid
       Left = 1
       Top = 1
@@ -781,9 +775,6 @@ object fkilnHandling: TfkilnHandling
       AlignSplitter = salTop
       Color = clMaroon
       ParentColor = False
-      ExplicitLeft = -9
-      ExplicitTop = 617
-      ExplicitWidth = 1050
     end
     object VagnPanel: TPanel
       Left = 1
@@ -793,9 +784,6 @@ object fkilnHandling: TfkilnHandling
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 280
-      ExplicitWidth = 1050
-      ExplicitHeight = 452
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -803,8 +791,6 @@ object fkilnHandling: TfkilnHandling
         Height = 515
         Align = alLeft
         TabOrder = 0
-        ExplicitLeft = -3
-        ExplicitTop = -2
         object mePackageNo: TcxTextEdit
           Left = 67
           Top = 11
@@ -987,6 +973,7 @@ object fkilnHandling: TfkilnHandling
           Margins.Right = 2
           Margins.Bottom = 2
           DataBinding.DataField = 'IMP'
+          DataBinding.DataSource = dmInventory.ds_KilnVagn
           ParentFont = False
           ParentShowHint = False
           Properties.KeyFieldNames = 'ProductCategoryNo'
@@ -1043,7 +1030,9 @@ object fkilnHandling: TfkilnHandling
           Width = 196
           Height = 39
           Action = acRemovePackage
+          SpeedButtonOptions.CanBeFocused = False
           TabOrder = 15
+          TabStop = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -17
@@ -1083,7 +1072,9 @@ object fkilnHandling: TfkilnHandling
           Width = 196
           Height = 41
           Action = acRemoveVagn
+          SpeedButtonOptions.CanBeFocused = False
           TabOrder = 18
+          TabStop = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -17
@@ -1113,10 +1104,6 @@ object fkilnHandling: TfkilnHandling
         Height = 515
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = 236
-        ExplicitTop = 120
-        ExplicitWidth = 713
-        ExplicitHeight = 393
         object grdVagnPkgs: TcxGrid
           Left = 1
           Top = 1
@@ -1124,9 +1111,6 @@ object fkilnHandling: TfkilnHandling
           Height = 513
           Align = alClient
           TabOrder = 0
-          ExplicitTop = 159
-          ExplicitWidth = 831
-          ExplicitHeight = 355
           object grdVagnPkgsDBTableView1: TcxGridDBTableView
             OnDblClick = grdVagnPkgsDBTableView1DblClick
             Navigator.Buttons.CustomButtons = <>
@@ -1192,22 +1176,22 @@ object fkilnHandling: TfkilnHandling
               PropertiesClassName = 'TcxLabelProperties'
               SortIndex = 0
               SortOrder = soDescending
-              Width = 82
+              Width = 56
             end
             object grdVagnPkgsDBTableView1PackageNo: TcxGridDBColumn
               DataBinding.FieldName = 'PackageNo'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 112
+              Width = 127
             end
             object grdVagnPkgsDBTableView1SupplierCode: TcxGridDBColumn
               DataBinding.FieldName = 'SupplierCode'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 83
+              Width = 53
             end
             object grdVagnPkgsDBTableView1ProductDisplayName: TcxGridDBColumn
               DataBinding.FieldName = 'ProductDisplayName'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 518
+              Width = 333
             end
             object grdVagnPkgsDBTableView1NoOfPkgs: TcxGridDBColumn
               DataBinding.FieldName = 'NoOfPkgs'
@@ -1217,12 +1201,12 @@ object fkilnHandling: TfkilnHandling
             object grdVagnPkgsDBTableView1PcsPerLength: TcxGridDBColumn
               DataBinding.FieldName = 'PcsPerLength'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 261
+              Width = 166
             end
             object grdVagnPkgsDBTableView1DateCreated: TcxGridDBColumn
               DataBinding.FieldName = 'DateCreated'
               PropertiesClassName = 'TcxLabelProperties'
-              Width = 186
+              Width = 119
             end
             object grdVagnPkgsDBTableView1CreatedUser: TcxGridDBColumn
               DataBinding.FieldName = 'CreatedUser'
@@ -1233,9 +1217,11 @@ object fkilnHandling: TfkilnHandling
               Caption = 'Matching P/T'
               DataBinding.FieldName = 'MatchingPT'
               PropertiesClassName = 'TcxLabelProperties'
+              Width = 119
             end
             object grdVagnPkgsDBTableView1Totalm3Actual: TcxGridDBColumn
               DataBinding.FieldName = 'Totalm3Actual'
+              Width = 79
             end
           end
           object grdVagnPkgsLevel1: TcxGridLevel
@@ -1862,10 +1848,12 @@ object fkilnHandling: TfkilnHandling
     object acPickPackages: TAction
       Caption = 'Pick packages'
       OnExecute = acPickPackagesExecute
+      OnUpdate = acPickPackagesUpdate
     end
     object acRemovePackage: TAction
       Caption = 'Remove package'
       OnExecute = acRemovePackageExecute
+      OnUpdate = acRemovePackageUpdate
     end
     object acAddVagnLocally: TAction
       Category = 'TorkSats'
@@ -1876,6 +1864,7 @@ object fkilnHandling: TfkilnHandling
       Category = 'TorkSats'
       Caption = 'Remove cart'
       OnExecute = acRemoveVagnExecute
+      OnUpdate = acRemoveVagnUpdate
     end
     object Action2: TAction
       Category = 'TorkSats'

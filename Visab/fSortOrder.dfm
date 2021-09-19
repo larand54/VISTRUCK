@@ -4363,7 +4363,7 @@ object frmSortOrder: TfrmSortOrder
                   object SpeedButton1: TSpeedButton
                     Left = 272
                     Top = 9
-                    Width = 275
+                    Width = 193
                     Height = 32
                     Action = acStart
                     Font.Charset = DEFAULT_CHARSET
@@ -4398,6 +4398,35 @@ object frmSortOrder: TfrmSortOrder
                     ParentFont = False
                     TabOrder = 1
                     OnKeyPress = Edit1KeyPress
+                  end
+                  object cxLabel1: TcxLabel
+                    Left = 490
+                    Top = 12
+                    Caption = 'Preset digits:'
+                    ParentFont = False
+                    Style.Font.Charset = DEFAULT_CHARSET
+                    Style.Font.Color = clWindowText
+                    Style.Font.Height = -17
+                    Style.Font.Name = 'Tahoma'
+                    Style.Font.Style = []
+                    Style.IsFontAssigned = True
+                  end
+                  object cxDBMaskEdit1: TcxDBMaskEdit
+                    Left = 598
+                    Top = 8
+                    DataBinding.DataField = 'MarketRegionNo'
+                    DataBinding.DataSource = dmSotOrderList.ds_Props
+                    ParentFont = False
+                    Properties.MaskKind = emkRegExpr
+                    Properties.EditMask = '[0-9]+'
+                    Style.Font.Charset = DEFAULT_CHARSET
+                    Style.Font.Color = clWindowText
+                    Style.Font.Height = -17
+                    Style.Font.Name = 'Tahoma'
+                    Style.Font.Style = []
+                    Style.IsFontAssigned = True
+                    TabOrder = 3
+                    Width = 59
                   end
                 end
                 object PanelPaketBuffert: TPanel
@@ -8984,6 +9013,8 @@ object frmSortOrder: TfrmSortOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
+    SkinName = 'Silver'
     Left = 520
     Top = 1000
   end
@@ -12213,7 +12244,7 @@ object frmSortOrder: TfrmSortOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -13061,7 +13092,7 @@ object frmSortOrder: TfrmSortOrder
     end
   end
   object siLangLinked_frmSortOrder: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

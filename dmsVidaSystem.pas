@@ -10,7 +10,7 @@ uses
   cxGridTableView, Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, SqlTimSt, cxPropertiesStore, dateutils,
-  FireDAC.Stan.StorageBin, Windows ;
+  FireDAC.Stan.StorageBin, Windows, cxClasses ;
 
 type
  TAmbiguityEvent = procedure(

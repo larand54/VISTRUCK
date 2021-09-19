@@ -239,6 +239,7 @@ Begin
   cds_PropsAutoColWidth.AsInteger :=  1 ;
   cds_PropsSupplierCode.AsString  := dmsContact.GetClientCode(cds_PropsProducerNo.AsInteger) ;
   cds_PropsLengthGroupNo.AsInteger:= 1 ;
+
   cds_Props.Post ;
  End ;
 

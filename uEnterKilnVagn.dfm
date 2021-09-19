@@ -115,7 +115,9 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 129
       Height = 65
       Action = acRemovePackage
+      SpeedButtonOptions.CanBeFocused = False
       TabOrder = 6
+      TabStop = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -17
@@ -879,6 +881,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -891,7 +894,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44428.627800682870000000
+      ReportDocument.CreationDate = 44442.508710821750000000
       TimeFormat = 0
       PixelsPerInch = 96
       BuiltInReportLink = True
