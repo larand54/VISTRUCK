@@ -4243,4 +4243,54 @@
         ParamType = ptInput
       end>
   end
+  object sp_IsOrderPrepaid_Terms: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_IsOrderPrepaid_Terms'
+    Left = 56
+    Top = 720
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prepaid'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object sp_IsLoadPrepaid_Terms: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_IsLoadPrepaid_Terms'
+    Left = 312
+    Top = 712
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prepaid'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
 end

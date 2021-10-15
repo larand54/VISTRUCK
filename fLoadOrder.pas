@@ -5677,6 +5677,7 @@ Begin
  fLoadEntrySSP.BorderStyle  := bsNone ;
 
 End ;
+
 function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
 Var LSupplierNo     : Integer ;
     ReservedByUser  : String ;

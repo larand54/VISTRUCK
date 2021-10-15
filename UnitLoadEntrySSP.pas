@@ -1152,6 +1152,7 @@ const LocalCustomerNo,
 
 //Var FLocalSupplierNo, x : Integer ;
 Var ReservedByUser : String ;
+    Prepaid : Integer ;
 begin
 //  inherited Create(AOwner);
 //  dmLoadEntrySSP      := TdmLoadEntrySSP.Create(Self);
@@ -1229,6 +1230,7 @@ begin
    End
    else
    cds_LSP.Active := True ;
+
    if LO_NO > 0 then
    Begin
     AddLONumberOnOpenTheForm(LO_NO, LocalCustomerNo, LocalSupplierNo, ShipToInvPointNo, LoadingLocationNo);
@@ -1238,6 +1240,13 @@ begin
       cds_LoadHeadPIPNo.AsInteger := cds_LSPPIPNo.AsInteger  ;
     cds_LoadHeadLIPNo.AsInteger   := cds_LSPLIPNo.AsInteger ;
     cds_LoadHead.Post ;
+
+    Prepaid := IsOrderPrepaid_Terms(LO_NO) ;
+    if Prepaid > 2 then
+     Begin
+      if Prepaid = 3 then
+       ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+     End;
    End ;
 
 
@@ -4572,13 +4581,20 @@ end;
 
 
 procedure TfLoadEntrySSP.acPrintFSExecute(Sender: TObject);
-Var Val     : Integer ;
-    Avsluta : Boolean ;
+Var Val, Prepaid    : Integer ;
+    Avsluta         : Boolean ;
 begin
  Avsluta := False ;
  Val := TfSelectPrintDevice.Execute ;
  if Val > 0 then
  Begin
+    Prepaid := dmLoadEntrySSP.IsLoadPrepaid_Terms(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
+    if Prepaid > 2 then
+     Begin
+      if Prepaid = 3 then
+       ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+     End;
+
   if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
    if TfConfirm.Execute (siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_63' (* 'Avsluta lasten' *) )) = mrYes then
     Avsluta := True ;
@@ -6554,7 +6570,7 @@ End;
 
 procedure TfLoadEntrySSP.acSaveAndOKExecute(Sender: TObject);
 var
-  DagensDag, UtlastningsDatum: Integer;
+  Prepaid, DagensDag, UtlastningsDatum: Integer;
   var path : string ;
 begin
   with dmLoadEntrySSP do
@@ -6596,6 +6612,25 @@ begin
         cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
         cds_LoadHead.Post;
       end;
+
+     Prepaid := IsLoadPrepaid_Terms(cds_LoadHeadLoadNo.AsInteger) ;
+     if Prepaid = 3 then
+     Begin
+      ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+      if cds_LoadHead.State in [dsBrowse] then
+        cds_LoadHead.Edit;
+      cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
+      cds_LoadHead.Post;
+     End
+     else
+     if Prepaid = 4 then
+     Begin
+      ShowMessage('Note, Load is prepaid and is ok to be delivered.') ;
+      if cds_LoadHead.State in [dsBrowse] then
+        cds_LoadHead.Edit;
+      cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
+      cds_LoadHead.Post;
+     End;
 
       SaveLoad;
       SetLoadEnabled;

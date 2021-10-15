@@ -12115,7 +12115,7 @@ object dmInventory: TdmInventory
       #9#9'and ((pn.Info2 Like :Info2) or (:Info2 is null))'
       ''
       #9#9'and ((pg.ActualThicknessMM = :AT) or (:AT is null))'
-      #9#9'and ((pg.ActualWidthMM = :AB) or (:AB is null))'
+      ' '#9#9'and ((pg.ActualWidthMM = :AB) or (:AB is null))'
       ''
       ''
       ''
@@ -12192,12 +12192,14 @@ object dmInventory: TdmInventory
         'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Inter' +
         'nalInvoiceNo = inl.InternalInvoiceNo)'
       ''
-      'AND ((pn.REFERENCE Like :REF) or (:REF = '#39#39'))'
-      'AND ((pn.BL_NO Like :BL) or (:BL = '#39#39'))'
-      'AND ((pn.Info2 Like :Info2) or (:info2 = '#39#39'))'
+      'AND ((pn.REFERENCE Like :REF) or (:REF is null))'
+      'AND ((pn.BL_NO Like :BL) or (:BL is null))'
+      'AND ((pn.Info2 Like :Info2) or (:info2 is null))'
+      ''
       'AND PIP.OwnerNo = :OwnerNo'
-      'AND ((pg.ActualThicknessMM = :AT) or (:AT = 0))'
-      'AND ((pg.ActualWidthMM = :AB) or (:AB = 0))'
+      ''
+      'AND ((pg.ActualThicknessMM = :AT) or (:AT is null))'
+      'AND ((pg.ActualWidthMM = :AB) or (:AB is null))'
       ''
       ''
       'AND ('
@@ -12434,7 +12436,7 @@ object dmInventory: TdmInventory
       '        + '#39' ORDER BY ProductDisplayName, PIP, LIP, AM3 '#39
       #9#9'+ '#39';'#39
       'EXECUTE(@query)'
-      '--DROP TABLE #totalinventory')
+      '-- DROP TABLE #totalinventory')
     Left = 96
     Top = 552
     ParamData = <

@@ -421,6 +421,8 @@ type
     cdsLORowsLoadedPkgs: TFloatField;
     sp_RegisterToLoadArrivalReg: TFDStoredProc;
     sp_RemPkgFromLoad_III: TFDStoredProc;
+    sp_IsOrderPrepaid_Terms: TFDStoredProc;
+    sp_IsLoadPrepaid_Terms: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -449,6 +451,7 @@ type
    FOnAmbiguousPkgNo: TAmbiguityEvent;
    FWarningForRefMismatch: integer;
 
+
    procedure CtrlPkgSavedToLoad(const PackageNo : Integer;
                                   const SupplierCode : String; const LoadNo : Integer) ;
    procedure updateFlagForNoWarnings;
@@ -473,6 +476,8 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function  IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
+   function  IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
    procedure RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
    function  ErrorPkgExist(const LoadNo : Integer) : Boolean ;
    procedure AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
@@ -735,7 +740,10 @@ begin
 end;
 
 function TdmLoadEntrySSP.IS_Load_OK: Word;
+Var Status : integer ;
 begin
+  Status := cds_LoadHeadSenderLoadStatus.AsInteger ;
+
   Result := 2;
   cds_LoadPackages.First;
   while not cds_LoadPackages.Eof do
@@ -746,6 +754,10 @@ begin
  or (cds_LoadPackagesDefsspno.AsInteger = -1) then
       Result := 1;
     cds_LoadPackages.Next;
+
+  if Status = 3 then
+   Result := Status ;
+
   end;
 end;
 
@@ -1622,6 +1634,20 @@ begin
   Abort ;
  End ;
 end;
+
+function TdmLoadEntrySSP.IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
+Begin
+  sp_IsOrderPrepaid_Terms.ParamByName('@LONo').AsInteger := LONo ;
+  sp_IsOrderPrepaid_Terms.ExecProc ;
+  Result := sp_IsOrderPrepaid_Terms.ParamByName('@Prepaid').AsInteger ;
+End ;
+
+function TdmLoadEntrySSP.IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
+Begin
+  sp_IsLoadPrepaid_Terms.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_IsLoadPrepaid_Terms.ExecProc ;
+  Result := sp_IsLoadPrepaid_Terms.ParamByName('@Prepaid').AsInteger ;
+End ;
 
 procedure TdmLoadEntrySSP.cds_LSPAfterInsert(DataSet: TDataSet);
 begin

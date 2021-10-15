@@ -2469,30 +2469,34 @@ Begin
   sq_invpiv.ParamByName('OwnerNo').AsInteger        := OwnerNo ;
 
 
-     if AT > 0 then
-     sq_invpiv.ParamByName('AT').AsFloat               := AT
-     else
-     sq_invpiv.ParamByName('AT').Clear() ;
 
-       if AB > 0 then
-            sq_invpiv.ParamByName('AB').AsFloat               := AB
-            else
-            sq_invpiv.ParamByName('AB').Clear ;
+       if AT > 0 then
+           sq_invpiv.ParamByName('AT').AsFloat               := AT
+           else
+           sq_invpiv.ParamByName('AT').Clear() ;
 
-            if Length(Trim(Ref)) > 0 then
-            sq_invpiv.ParamByName('Ref').AsString             := Trim(Ref)
-            else
-            sq_invpiv.ParamByName('Ref').Clear() ;
+             if AB > 0 then
+                  sq_invpiv.ParamByName('AB').AsFloat               := AB
+                  else
+                  sq_invpiv.ParamByName('AB').Clear ;
 
-            if Length(Trim(BL)) > 0 then
-            sq_invpiv.ParamByName('BL').AsString              := Trim(BL)
-            else
-            sq_invpiv.ParamByName('BL').Clear() ;
 
-            if Length(Trim(Info2)) > 0 then
-            sq_invpiv.ParamByName('Info2').AsString           := Trim(Info2)
-            else
-            sq_invpiv.ParamByName('Info2').Clear() ;
+
+                  if Length(Trim(Ref)) > 0 then
+                  sq_invpiv.ParamByName('Ref').AsString             := Trim(Ref)
+                  else
+                  sq_invpiv.ParamByName('Ref').Clear() ;
+
+                  if Length(Trim(BL)) > 0 then
+                  sq_invpiv.ParamByName('BL').AsString              := Trim(BL)
+                  else
+                  sq_invpiv.ParamByName('BL').Clear() ;
+
+                  if Length(Trim(Info2)) > 0 then
+                  sq_invpiv.ParamByName('Info2').AsString           := Trim(Info2)
+                  else
+                  sq_invpiv.ParamByName('Info2').Clear() ;
+
 
 
 
