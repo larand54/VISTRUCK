@@ -1846,8 +1846,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     ClientRectTop = 35
   end
   object pnlLoad: TPanel
-    Left = 16
-    Top = 101
+    Left = 69
+    Top = 95
     Width = 1137
     Height = 540
     TabOrder = 3

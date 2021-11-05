@@ -723,7 +723,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
   uAddErrorPkgLoad
   , uOAuthMail
-, fMain;
+, fMain, uOKDia;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -771,9 +771,23 @@ Begin
 
    LoadEnabled:= True ;
 
+   PrepaidLoad                                           := False ;
+
 //  if (dmsSystem.sp_OneLoadConfirmed.AsInteger > 0) or (dmsSystem.sp_OneLoadInvoiced.AsInteger > 0)
+  if (cds_LoadHeadSenderLoadStatus.AsInteger = 3) then
+  Begin
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_1' (* 'Laststatus är "Prepaid" och paket kan inte tas bort eller läggas till.' *) ) ;
+    PrepaidLoad                                           := True ;
+    LoadEnabled                                           := True ;
+    cds_LoadHead.UpdateOptions.ReadOnly                   := False ;
+    grdLORowsDBBandedTableView1MATCH.Properties.ReadOnly  := True ;
+    cds_LSP.UpdateOptions.ReadOnly                        := True ;
+    cds_LoadPackages.UpdateOptions.ReadOnly               := True ;
+  End
+  else
   if (LoadAR)  or (cds_LoadHeadSenderLoadStatus.AsInteger = 2) then
   Begin
+
    if ThisUser.UserID = 888 then
    Begin
     LoadEnabled:= True ;
@@ -1242,10 +1256,10 @@ begin
     cds_LoadHead.Post ;
 
     Prepaid := IsOrderPrepaid_Terms(LO_NO) ;
-    if Prepaid > 2 then
+    if Prepaid > 0 then
      Begin
-      if Prepaid = 3 then
-       ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+      if Prepaid = 1 then
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald.') ;
      End;
    End ;
 
@@ -4212,6 +4226,7 @@ Begin
    cds_LSP.DisableControls ;
 //   cdsLORows.DisableControls ;
    cds_LoadHead.DisableControls ;
+   if not cds_LoadPackages.UpdateOptions.ReadOnly then
    ValidateAllPkgs ;
    Save_Cursor := Screen.Cursor;
    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -4592,7 +4607,7 @@ begin
     if Prepaid > 2 then
      Begin
       if Prepaid = 3 then
-       ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald.') ;
      End;
 
   if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
@@ -6616,7 +6631,7 @@ begin
      Prepaid := IsLoadPrepaid_Terms(cds_LoadHeadLoadNo.AsInteger) ;
      if Prepaid = 3 then
      Begin
-      ShowMessage('Note, Load cannot be delivered until invoice is prepaid!') ;
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald. Status kan inte sättas till Avslutad förrän fakturan är betald.') ;
       if cds_LoadHead.State in [dsBrowse] then
         cds_LoadHead.Edit;
       cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
@@ -6625,11 +6640,16 @@ begin
      else
      if Prepaid = 4 then
      Begin
-      ShowMessage('Note, Load is prepaid and is ok to be delivered.') ;
+
+      tfOKDia.Execute('Notering, Lasten är förskottsbetald och kan lastas ut.') ;
+
+
+
       if cds_LoadHead.State in [dsBrowse] then
         cds_LoadHead.Edit;
-      cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
+      cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
       cds_LoadHead.Post;
+      SetCallOffLoadStatus(cds_LoadHeadLoadNo.AsInteger) ;
      End;
 
       SaveLoad;

@@ -4293,4 +4293,23 @@
         ParamType = ptInputOutput
       end>
   end
+  object sp_SetCallOffLoadStatus: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_SetCallOffLoadStatus]'
+    Left = 592
+    Top = 144
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
 end

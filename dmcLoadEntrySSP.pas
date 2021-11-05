@@ -423,6 +423,7 @@ type
     sp_RemPkgFromLoad_III: TFDStoredProc;
     sp_IsOrderPrepaid_Terms: TFDStoredProc;
     sp_IsLoadPrepaid_Terms: TFDStoredProc;
+    sp_SetCallOffLoadStatus: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -473,9 +474,11 @@ type
 
   public
     { Public declarations }
+   PrepaidLoad  : Boolean ;
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   procedure SetCallOffLoadStatus(const LoadNo : Integer) ;
    function  IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
    function  IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
    procedure RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
@@ -649,7 +652,7 @@ begin
     WhenPosted := Now; // Make sure all records get same time of posting.
 
     if ThisUser.UserID <> 8 then
-      if Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger) then
+      if (Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger)) and (PrepaidLoad = False) then
       begin
         ShowMessage('Kan inte spara för att lasten är ankomstregistrerad');
         Exit;
@@ -723,7 +726,7 @@ begin
     dmsSystem.AssignDMToThisWork('TdmLoadEntrySSP', 'dmArrivingLoads');
     try
 
-      if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
+      if cds_LoadHeadSenderLoadStatus.AsInteger >= 2 then
         dmArrivingLoads.GetIntPrice(-1, 0, -1, cds_LoadHeadLoadNo.AsInteger, True);
 
     finally
@@ -1648,6 +1651,20 @@ Begin
   sp_IsLoadPrepaid_Terms.ExecProc ;
   Result := sp_IsLoadPrepaid_Terms.ParamByName('@Prepaid').AsInteger ;
 End ;
+
+procedure TdmLoadEntrySSP.SetCallOffLoadStatus(const LoadNo : Integer) ;
+Begin
+ Try
+  sp_SetCallOffLoadStatus.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_SetCallOffLoadStatus.ExecProc ;
+ except
+  On E: Exception do
+  Begin
+   dmsSystem.FDoLog(E.Message) ;
+  // Raise ;
+  End ;
+ end;
+End;
 
 procedure TdmLoadEntrySSP.cds_LSPAfterInsert(DataSet: TDataSet);
 begin
