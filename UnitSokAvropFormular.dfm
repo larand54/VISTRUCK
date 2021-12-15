@@ -2420,7 +2420,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44081.431343043980000000
+      ReportDocument.CreationDate = 44240.834682962970000000
       TimeFormat = 0
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
@@ -2447,7 +2447,8 @@ object frmSokAvropFormular: TfrmSokAvropFormular
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
-    SkinName = 'Silver'
+    ScrollbarMode = sbmClassic
+    SkinName = 'Office2013DarkGray'
     Left = 80
     Top = 328
   end

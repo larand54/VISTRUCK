@@ -693,7 +693,7 @@ begin
 
       mailTitle := 'Faktura/specifikation. Fakturanr: ' + IntToStr(InvoiceNo) + ' - Invoice/package specification. InvoiceNo: ' + IntToStr(InvoiceNo);
       mailMessage := 'Faktura, paketspecifikation bifogad. ' + LF + '' + 'Invoice, package specification attached. ' + LF + '' + LF + '' + LF + 'MVH/Best Regards, ' + LF + '' + dmsContact.GetFirstAndLastName(ThisUser.UserID);
-      TOAuthMail.OASendMail(udmFR.dmFR.getParams, mailTitle, mailMessage, MailFrom, MailToList, '', Attach, false, ThisUser.UserID );
+      TOAuthMail.OASendMail(udmFR.dmFR.getParams, mailTitle, mailMessage, MailFrom, MailToList, '', Attach, 0, ThisUser.UserID );
     End // if cbEmaila.Checked then
     else
       ShowMessage('Emailadress saknas för klienten!');
@@ -785,7 +785,7 @@ begin
 
       mailTitle := 'Faktura/specifikation. Fakturanr: ' + IntToStr(InvoiceNo) + ' - Invoice/package specification. InvoiceNo: ' + IntToStr(InvoiceNo);
       mailMessage := 'Faktura, paketspecifikation bifogad. ' + LF + '' + 'Invoice, package specification attached. ' + LF + '' + LF + '' + LF + 'MVH/Best Regards, ' + LF + '' + dmsContact.GetFirstAndLastName(ThisUser.UserID);
-      TOAuthMail.OASendMail(udmFR.dmFR.getParams, mailTitle, mailMessage, MailFrom, MailToList, '', Attach, false, ThisUser.UserID );
+      TOAuthMail.OASendMail(udmFR.dmFR.getParams, mailTitle, mailMessage, MailFrom, MailToList, '', Attach, 0, ThisUser.UserID );
     End // if cbEmaila.Checked then
     else
       ShowMessage('Emailadress saknas för klienten!');
