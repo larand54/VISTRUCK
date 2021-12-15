@@ -172,7 +172,11 @@ uses
   LGstrUtils in '..\CommonSources\specialTools\LGstrUtils.pas',
   uMAPIMail in '..\CommonSources\sendMail\uMAPIMail.pas',
   uUseMAPI in '..\CommonSources\sendMail\uUseMAPI.pas',
-  uMailMadExcept in '..\CommonSources\sendMail\uMailMadExcept.pas';
+  uMailMadExcept in '..\CommonSources\sendMail\uMailMadExcept.pas',
+  uCustomizedMailMessage in '..\CommonSources\sendMail\uCustomizedMailMessage.pas',
+  VISConst in '..\CommonUnits\VISConst.pas',
+  uCMMsgSrv in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSrv.pas',
+  uCMMsgSQLRecords in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSQLRecords.pas';
 
 {$R *.res}
 begin

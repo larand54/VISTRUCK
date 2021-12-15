@@ -11,7 +11,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   PopupMenu = PopupMenu1
   Position = poScreenCenter
   OnActivate = FormActivate
@@ -4491,7 +4490,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
     Top = 408
   end
   object siLangLinked_fLoadEntrySSP: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

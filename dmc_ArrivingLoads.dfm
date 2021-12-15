@@ -1,8 +1,8 @@
 object dmArrivingLoads: TdmArrivingLoads
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 917
   Width = 1189
+  PixelsPerInch = 96
   object dsrcArrivingLoads: TDataSource
     DataSet = cdsArrivingLoads
     OnDataChange = dsrcArrivingLoadsDataChange
@@ -118,7 +118,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -249,7 +249,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -373,7 +373,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -489,7 +489,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2057,8 +2057,8 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vida_PackageTypeDetail'
-    Left = 1048
-    Top = 656
+    Left = 1056
+    Top = 640
     ParamData = <
       item
         Position = 1
@@ -2078,8 +2078,8 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vida_Populate_One_PackageTypeLengths'
-    Left = 1048
-    Top = 704
+    Left = 1056
+    Top = 688
     ParamData = <
       item
         Position = 1
@@ -2769,6 +2769,8 @@ object dmArrivingLoads: TdmArrivingLoads
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopyLOLoadToSales'
     Left = 1032
     Top = 128
@@ -2808,6 +2810,8 @@ object dmArrivingLoads: TdmArrivingLoads
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopyARIntAddLOLoad_II'
     Left = 1032
     Top = 184
@@ -6206,6 +6210,8 @@ object dmArrivingLoads: TdmArrivingLoads
   end
   object sp_CopySalesLoadToPO: TFDStoredProc
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopySalesLoadToPO'
     Left = 1056
     Top = 488

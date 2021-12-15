@@ -5211,7 +5211,7 @@ begin
     sq_IsLoadConfirmed.Open ;
     if sq_IsLoadConfirmed.Eof then
     Begin
-     if cdsArrivingLoadsLOAD_STATUS.AsInteger = 2 then
+     if cdsArrivingLoadsLOAD_STATUS.AsInteger >= 2 then
      Begin
 //      formConfirmanyNormalLoad:= TformConfirmanyNormalLoad.Create(Nil);
       Try

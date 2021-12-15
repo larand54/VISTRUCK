@@ -4396,36 +4396,36 @@ begin
   if LoNo < 1 then
     Exit;
 
-
   // Check language
-  Lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-  if uReportController.useFR then
-  begin
-    try
-      SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-      if mailToAddress <> '' then
-      begin
-        LONos := TList<integer>.create;
-        LONos.Add(LoNo);
-        FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCEL_DIR'), ThisUser.UserEmail, MailToAddress, Lang, SR, ThisUser.UserID);
-        FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
-      end
-      else
-      begin
-        FR2 := TFastReports2.create(dmFR, Lang, SR);
-        FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LoNo);
-      end;
-//      FR := TFastReports.Create;
-//      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
-    finally
-      FreeAndNil(FR2);
-      if assigned(LONOs) then FreeAndNil(LONos);
+  Lang := dmsContact.getCustomerLanguage
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  try
+    SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
+    if MailToAddress <> '' then
+    begin
+      LONos := TList<integer>.create;
+      LONos.Add(LONo);
+      FR2 := TFastReports2.createForMail(dmFR, nil,
+        dmsSystem.Get_Dir('EXCELDIR'), ThisUser.UserEmail, MailToAddress, Lang,
+        SR, ThisUser.UserID);
+      FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
+    end
+    else
+    begin
+      FR2 := TFastReports2.create(dmFR, Lang, SR);
+      FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LONo);
     end;
+    // FR := TFastReports.Create;
+    // FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+  finally
+    FreeAndNil(FR2);
+    if assigned(LONos) then
+      FreeAndNil(LONos);
   end;
 end;
 
-procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange(
-  Sender: TObject);
+procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange
+  (Sender: TObject);
 begin
  With dmLoadEntrySSP do
  Begin
@@ -6068,7 +6068,7 @@ begin
         cds_LoadPackagesPackageOK.AsInteger := errCode;
         cds_LoadPackagesProblemPackageLog.AsString := errMsg;
      end;
-     
+
     end;
 
   end;
@@ -6837,7 +6837,7 @@ begin
         ReportType := cfTallyInternal
       else
         ReportType := cfTally;
-																			  
+
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
           FR2 := TFastReports2.createForMail(dmFR, nil, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);

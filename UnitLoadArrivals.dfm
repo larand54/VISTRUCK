@@ -14,7 +14,6 @@ object frmLoadArrivals: TfrmLoadArrivals
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   PopupMenu = PopupMenu1
   WindowState = wsMaximized
   OnClose = FormClose
@@ -3263,7 +3262,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3904,7 +3903,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -7375,7 +7374,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
