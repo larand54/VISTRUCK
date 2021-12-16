@@ -547,6 +547,7 @@ type
 //     TempEditString  : String ;
      gLagerkod : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     Procedure RefreshLoadDetails ;
      function verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
      function linkedArticle(const aArticleNo: integer): boolean;
      function validatePkgsReference(Sender: TObject;const PkgNo : Integer;const PkgSupplierCode : String3): TEditAction;
@@ -722,7 +723,7 @@ uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
   uAddErrorPkgLoad
   , uOAuthMail
-, fMain;
+, fMain, uOKDia;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -770,9 +771,23 @@ Begin
 
    LoadEnabled:= True ;
 
+   PrepaidLoad                                           := False ;
+
 //  if (dmsSystem.sp_OneLoadConfirmed.AsInteger > 0) or (dmsSystem.sp_OneLoadInvoiced.AsInteger > 0)
+  if (cds_LoadHeadSenderLoadStatus.AsInteger = 3) then
+  Begin
+    Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_1' (* 'Laststatus är "Prepaid" och paket kan inte tas bort eller läggas till.' *) ) ;
+    PrepaidLoad                                           := True ;
+    LoadEnabled                                           := True ;
+    cds_LoadHead.UpdateOptions.ReadOnly                   := False ;
+    grdLORowsDBBandedTableView1MATCH.Properties.ReadOnly  := True ;
+    cds_LSP.UpdateOptions.ReadOnly                        := True ;
+    cds_LoadPackages.UpdateOptions.ReadOnly               := True ;
+  End
+  else
   if (LoadAR)  or (cds_LoadHeadSenderLoadStatus.AsInteger = 2) then
   Begin
+
    if ThisUser.UserID = 888 then
    Begin
     LoadEnabled:= True ;
@@ -1151,6 +1166,7 @@ const LocalCustomerNo,
 
 //Var FLocalSupplierNo, x : Integer ;
 Var ReservedByUser : String ;
+    Prepaid : Integer ;
 begin
 //  inherited Create(AOwner);
 //  dmLoadEntrySSP      := TdmLoadEntrySSP.Create(Self);
@@ -1228,6 +1244,7 @@ begin
    End
    else
    cds_LSP.Active := True ;
+
    if LO_NO > 0 then
    Begin
     AddLONumberOnOpenTheForm(LO_NO, LocalCustomerNo, LocalSupplierNo, ShipToInvPointNo, LoadingLocationNo);
@@ -1237,6 +1254,13 @@ begin
       cds_LoadHeadPIPNo.AsInteger := cds_LSPPIPNo.AsInteger  ;
     cds_LoadHeadLIPNo.AsInteger   := cds_LSPLIPNo.AsInteger ;
     cds_LoadHead.Post ;
+
+    Prepaid := IsOrderPrepaid_Terms(LO_NO) ;
+    if Prepaid > 0 then
+     Begin
+      if Prepaid = 1 then
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald.') ;
+     End;
    End ;
 
 
@@ -3520,6 +3544,8 @@ begin
  End ;  //with
 end;
 
+
+
 procedure TfLoadEntrySSP.acInsertPkgToInventoryExecute(Sender: TObject);
 var
   Save_Cursor: TCursor;
@@ -3545,11 +3571,14 @@ begin
             cds_LoadPackages.Delete
           else
           begin
-            if cds_LoadPackages.State = dsBrowse then
-              cds_LoadPackages.Edit;
-            cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD;
-            cds_LoadPackagesChanged.AsInteger := 1;
-            cds_LoadPackages.Post;
+           RemPkgFromLoad_III(cds_LoadPackagesLoadNo.AsInteger, cds_LoadPackagesLoadDetailNo.AsInteger) ;
+{
+              if cds_LoadPackages.State = dsBrowse then
+                cds_LoadPackages.Edit;
+              cds_LoadPackagesPkg_Function.AsInteger := REMOVE_PKG_FROM_LOAD;
+              cds_LoadPackagesChanged.AsInteger := 1;
+              cds_LoadPackages.Post;
+}
           end;
         end;
         mtLoadPackages.Next;
@@ -4197,6 +4226,7 @@ Begin
    cds_LSP.DisableControls ;
 //   cdsLORows.DisableControls ;
    cds_LoadHead.DisableControls ;
+   if not cds_LoadPackages.UpdateOptions.ReadOnly then
    ValidateAllPkgs ;
    Save_Cursor := Screen.Cursor;
    Screen.Cursor := crHourGlass;    { Show hourglass cursor }
@@ -4366,36 +4396,36 @@ begin
   if LoNo < 1 then
     Exit;
 
-
   // Check language
-  Lang := dmsContact.getCustomerLanguage(dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-  if uReportController.useFR then
-  begin
-    try
-      SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
-      if mailToAddress <> '' then
-      begin
-        LONos := TList<integer>.create;
-        LONos.Add(LoNo);
-        FR2 := TFastReports2.createForMail(dmFR, nil, dmsSystem.Get_Dir('EXCEL_DIR'), ThisUser.UserEmail, MailToAddress, Lang, SR, ThisUser.UserID);
-        FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
-      end
-      else
-      begin
-        FR2 := TFastReports2.create(dmFR, Lang, SR);
-        FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LoNo);
-      end;
-//      FR := TFastReports.Create;
-//      FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
-    finally
-      FreeAndNil(FR2);
-      if assigned(LONOs) then FreeAndNil(LONos);
+  Lang := dmsContact.getCustomerLanguage
+    (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
+  try
+    SR := dmsContact.GetSalesRegionNo(ThisUser.CompanyNo);
+    if MailToAddress <> '' then
+    begin
+      LONos := TList<integer>.create;
+      LONos.Add(LONo);
+      FR2 := TFastReports2.createForMail(dmFR, nil,
+        dmsSystem.Get_Dir('EXCELDIR'), ThisUser.UserEmail, MailToAddress, Lang,
+        SR, ThisUser.UserID);
+      FR2.mailTrpOrderByType(cfTrpOrder_Manual, LONos);
+    end
+    else
+    begin
+      FR2 := TFastReports2.create(dmFR, Lang, SR);
+      FR2.preViewTrpOrderByReportType(cfTrpOrder_Manual, LONo);
     end;
+    // FR := TFastReports.Create;
+    // FR.TrpO(LoNo, cTrpOrder_manuell, Lang, MailToAddress, '', '');
+  finally
+    FreeAndNil(FR2);
+    if assigned(LONos) then
+      FreeAndNil(LONos);
   end;
 end;
 
-procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange(
-  Sender: TObject);
+procedure TfLoadEntrySSP.grdLORowsDBBandedTableView1MATCHPropertiesChange
+  (Sender: TObject);
 begin
  With dmLoadEntrySSP do
  Begin
@@ -4566,13 +4596,20 @@ end;
 
 
 procedure TfLoadEntrySSP.acPrintFSExecute(Sender: TObject);
-Var Val     : Integer ;
-    Avsluta : Boolean ;
+Var Val, Prepaid    : Integer ;
+    Avsluta         : Boolean ;
 begin
  Avsluta := False ;
  Val := TfSelectPrintDevice.Execute ;
  if Val > 0 then
  Begin
+    Prepaid := dmLoadEntrySSP.IsLoadPrepaid_Terms(dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger) ;
+    if Prepaid > 2 then
+     Begin
+      if Prepaid = 3 then
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald.') ;
+     End;
+
   if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
    if TfConfirm.Execute (siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_63' (* 'Avsluta lasten' *) )) = mrYes then
     Avsluta := True ;
@@ -6031,7 +6068,7 @@ begin
         cds_LoadPackagesPackageOK.AsInteger := errCode;
         cds_LoadPackagesProblemPackageLog.AsString := errMsg;
      end;
-     
+
     end;
 
   end;
@@ -6548,7 +6585,7 @@ End;
 
 procedure TfLoadEntrySSP.acSaveAndOKExecute(Sender: TObject);
 var
-  DagensDag, UtlastningsDatum: Integer;
+  Prepaid, DagensDag, UtlastningsDatum: Integer;
   var path : string ;
 begin
   with dmLoadEntrySSP do
@@ -6590,6 +6627,30 @@ begin
         cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
         cds_LoadHead.Post;
       end;
+
+     Prepaid := IsLoadPrepaid_Terms(cds_LoadHeadLoadNo.AsInteger) ;
+     if Prepaid = 3 then
+     Begin
+       TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald. Status kan inte sättas till Avslutad förrän fakturan är betald.') ;
+      if cds_LoadHead.State in [dsBrowse] then
+        cds_LoadHead.Edit;
+      cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
+      cds_LoadHead.Post;
+     End
+     else
+     if Prepaid = 4 then
+     Begin
+
+      tfOKDia.Execute('Notering, Lasten är förskottsbetald och kan lastas ut.') ;
+
+
+
+      if cds_LoadHead.State in [dsBrowse] then
+        cds_LoadHead.Edit;
+      cds_LoadHeadSenderLoadStatus.AsInteger := 2; //OK
+      cds_LoadHead.Post;
+      SetCallOffLoadStatus(cds_LoadHeadLoadNo.AsInteger) ;
+     End;
 
       SaveLoad;
       SetLoadEnabled;
@@ -6747,7 +6808,7 @@ Var
     loads                   : TList<integer>;
 begin
 {TSI:IGNORE ON}
-  dmFR.SaveCursor;
+  dmFR.SaveAndSetCursor(crHourGlass);
   try
     loadNo := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
     if loadNo < 1 then
@@ -6771,12 +6832,17 @@ begin
       loads := TList<integer>.create;
       try
         loads.add(loadNo);
-																			  
+
+      if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger in [0, 1] then
+        ReportType := cfTallyInternal
+      else
+        ReportType := cfTally;
+
         if dmLoadEntrySSP.cds_LSPOBJECTTYPE.AsInteger = 2 then
         begin
           FR2 := TFastReports2.createForMail(dmFR, nil, ExcelDir, MailFrom, MailToAddress, lang, SalesRegion, ThisUser.UserID);
           try
-            FR2.mailTallyByType(cfTally, loads, true);
+            FR2.mailTallyByType(ReportType, loads, true);
           finally
             FR2.free;
           end;
@@ -7196,7 +7262,7 @@ begin
           ScanPkgsByArticle(Sender, mePackageNo.Text);
         end
         else
-          GetpackageNoEntered(Sender, mePackageNo.Text);
+         GetpackageNoEntered(Sender, mePackageNo.Text);
       end;
     finally
       mePackageNo.Text := '';
@@ -7338,9 +7404,29 @@ begin
   End;
 end;
 
+Procedure TfLoadEntrySSP.RefreshLoadDetails ;
+  Begin
+    // dmLoadEntrySSP.GlobalLoadDetailNo :=  1 + dmLoadEntrySSP.GetMaxLoadDetailNoMaxLoadDetailNo(LoadNo) ;
+
+    With dmLoadEntrySSP do
+    Begin
+      cds_LoadPackages.DisableControls;
+      Try
+        cds_LoadPackages.Active := False;
+        cds_LoadPackages.ParamByName('LoadNo').AsInteger      := cds_LoadHeadLoadNo.AsInteger ;
+//        cds_LoadPackages.ParamByName('LanguageID').AsInteger  := ThisUser.LanguageID ;
+        cds_LoadPackages.Active := True;
+      Finally
+        cds_LoadPackages.EnableControls;
+      End;
+    End;
+  End;
+
+
 procedure TfLoadEntrySSP.acRaderaPaketExecute(Sender: TObject);
 begin
  acInsertPkgToInventoryExecute(Sender) ;
+ RefreshLoadDetails ;
  SaveLoad ;
  if mePackageNo.Enabled then
   mePackageNo.SetFocus ;

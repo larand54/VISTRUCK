@@ -2,7 +2,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
   Left = 0
   Top = 0
   Caption = 'Vagn/Sats'
-  ClientHeight = 564
+  ClientHeight = 592
   ClientWidth = 1256
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -52,8 +52,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Style.IsFontAssigned = True
     end
     object cxDBLabel1: TcxDBLabel
-      Left = 923
-      Top = 11
+      Left = 931
+      Top = 9
       DataBinding.DataField = 'KilnChargeNo'
       DataBinding.DataSource = dmInventory.ds_KilnChargeRows
       ParentColor = False
@@ -69,8 +69,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 121
     end
     object cxLabel2: TcxLabel
-      Left = 801
-      Top = 8
+      Left = 769
+      Top = 11
       Caption = 'Torksatsnr:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -115,7 +115,9 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 129
       Height = 65
       Action = acRemovePackage
+      SpeedButtonOptions.CanBeFocused = False
       TabOrder = 6
+      TabStop = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -17
@@ -138,8 +140,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       ParentFont = False
     end
     object lcImp: TcxDBLookupComboBox
-      Left = 924
-      Top = 40
+      Left = 932
+      Top = 32
       Hint = 'Please select a pressure treated type!'
       Margins.Left = 2
       Margins.Top = 2
@@ -167,8 +169,8 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Width = 314
     end
     object LabelIMP: TcxLabel
-      Left = 801
-      Top = 43
+      Left = 769
+      Top = 40
       Caption = 'Impregnering:'
       ParentFont = False
       Style.Font.Charset = DEFAULT_CHARSET
@@ -257,10 +259,39 @@ object fEnterKilnVagn: TfEnterKilnVagn
       Font.Style = []
       ParentFont = False
     end
+    object cxDBMaskEdit1: TcxDBMaskEdit
+      Left = 931
+      Top = 67
+      DataBinding.DataField = 'MarketRegionNo'
+      DataBinding.DataSource = fkilnHandling.dsUserProp
+      ParentFont = False
+      Properties.MaskKind = emkRegExpr
+      Properties.EditMask = '[0-9]+'
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -17
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+      TabOrder = 15
+      Width = 121
+    end
+    object cxLabel6: TcxLabel
+      Left = 769
+      Top = 74
+      Caption = 'Preset pkg no digits:'
+      ParentFont = False
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -17
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
+    end
   end
   object Panel2: TPanel
     Left = 0
-    Top = 496
+    Top = 524
     Width = 1256
     Height = 68
     Align = alBottom
@@ -299,7 +330,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
     Left = 0
     Top = 105
     Width = 1256
-    Height = 391
+    Height = 419
     Align = alClient
     TabOrder = 2
     object grdVagnPkgsDBTableView1: TcxGridDBTableView
@@ -566,7 +597,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
     end
   end
   object siLangLinked_fEnterKilnVagn: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -850,6 +881,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PageNumberFormat = pnfNumeral
       PrinterPage.DMPaper = 9
       PrinterPage.Footer = 6350
+      PrinterPage.GrayShading = True
       PrinterPage.Header = 6350
       PrinterPage.Margins.Bottom = 12700
       PrinterPage.Margins.Left = 12700
@@ -862,7 +894,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 43962.741574317130000000
+      ReportDocument.CreationDate = 44442.508710821750000000
       TimeFormat = 0
       PixelsPerInch = 96
       BuiltInReportLink = True

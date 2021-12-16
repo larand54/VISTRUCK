@@ -14,7 +14,6 @@ object frmLoadArrivals: TfrmLoadArrivals
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   PopupMenu = PopupMenu1
   WindowState = wsMaximized
   OnClose = FormClose
@@ -35,13 +34,12 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
-    ExplicitWidth = 8
   end
   object grdLoads: TcxGrid
     Left = 0
-    Top = 118
+    Top = 127
     Width = 1207
-    Height = 378
+    Height = 369
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
@@ -51,8 +49,33 @@ object frmLoadArrivals: TfrmLoadArrivals
       DataController.DataSource = dmArrivingLoads.dsrcArrivingLoads
       DataController.KeyFieldNames = 'LO;LOADNO'
       DataController.Summary.DefaultGroupSummaryItems = <>
-      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <
+        item
+          Format = '#,###.00'
+          Kind = skSum
+          FieldName = 'intNM3'
+          Column = grdLoadsDBTableView1intNM3
+        end
+        item
+          Format = '#,###.00'
+          Kind = skSum
+          FieldName = 'AM3'
+          Column = grdLoadsDBTableView1AM3
+        end
+        item
+          Format = '#####'
+          Kind = skSum
+          FieldName = 'NoOfPackages'
+          Column = grdLoadsDBTableView1NoOfPackages
+        end
+        item
+          Format = '#######'
+          Kind = skSum
+          FieldName = 'Pcs'
+          Column = grdLoadsDBTableView1Pcs
+        end>
       DataController.Summary.SummaryGroups = <>
+      DataController.Summary.Options = [soMultipleSelectedRecords]
       OptionsBehavior.PullFocusing = True
       OptionsCustomize.DataRowSizing = True
       OptionsData.Deleting = False
@@ -287,6 +310,46 @@ object frmLoadArrivals: TfrmLoadArrivals
         DataBinding.FieldName = 'OriginalInvoiceNo'
         PropertiesClassName = 'TcxLabelProperties'
       end
+      object grdLoadsDBTableView1OBJECTTYPE_1: TcxGridDBColumn
+        DataBinding.FieldName = 'OBJECTTYPE_1'
+      end
+      object grdLoadsDBTableView1LoadingLocationNo: TcxGridDBColumn
+        DataBinding.FieldName = 'LoadingLocationNo'
+      end
+      object grdLoadsDBTableView1OrderNo: TcxGridDBColumn
+        DataBinding.FieldName = 'OrderNo'
+      end
+      object grdLoadsDBTableView1intNM3: TcxGridDBColumn
+        DataBinding.FieldName = 'intNM3'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Properties.DisplayFormat = '#,######.00'
+      end
+      object grdLoadsDBTableView1AM3: TcxGridDBColumn
+        DataBinding.FieldName = 'AM3'
+        PropertiesClassName = 'TcxCalcEditProperties'
+        Properties.DisplayFormat = '#,######.00'
+      end
+      object grdLoadsDBTableView1Pcs: TcxGridDBColumn
+        DataBinding.FieldName = 'Pcs'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1Pkgs: TcxGridDBColumn
+        DataBinding.FieldName = 'Pkgs'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1ClientName: TcxGridDBColumn
+        Caption = 'Kund'
+        DataBinding.FieldName = 'ClientName'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1BookingType: TcxGridDBColumn
+        DataBinding.FieldName = 'BookingType'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
+      object grdLoadsDBTableView1Lagerkod: TcxGridDBColumn
+        DataBinding.FieldName = 'Lagerkod'
+        PropertiesClassName = 'TcxLabelProperties'
+      end
     end
     object grdLoadsLevel1: TcxGridLevel
       GridView = grdLoadsDBTableView1
@@ -296,7 +359,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Left = 0
     Top = 0
     Width = 1207
-    Height = 118
+    Height = 127
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
@@ -304,7 +367,7 @@ object frmLoadArrivals: TfrmLoadArrivals
       Left = 443
       Top = 0
       Width = 701
-      Height = 118
+      Height = 127
       Align = alClient
       TabOrder = 0
       object dxBarDockControl1: TdxBarDockControl
@@ -319,7 +382,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Left = 1
         Top = 46
         Width = 699
-        Height = 71
+        Height = 80
         Align = alClient
         TabOrder = 1
         object cxLabel1: TcxLabel
@@ -336,7 +399,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
         end
         object lcVerk: TcxDBLookupComboBox
-          Left = 88
+          Left = 91
           Top = 7
           TabStop = False
           DataBinding.DataField = 'Verk'
@@ -365,7 +428,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
         end
         object lcDestination: TcxDBLookupComboBox
-          Left = 87
+          Left = 91
           Top = 37
           TabStop = False
           DataBinding.DataField = 'Destination'
@@ -500,13 +563,21 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.IsFontAssigned = True
           TabOrder = 10
         end
+        object cbShowPreliminaryLoads: TcxCheckBox
+          Left = 433
+          Top = 61
+          Caption = 'Show only complete loads'
+          State = cbsChecked
+          Style.TransparentBorder = False
+          TabOrder = 11
+        end
       end
     end
     object Panel3: TPanel
       Left = 1144
       Top = 0
       Width = 63
-      Height = 118
+      Height = 127
       Align = alRight
       TabOrder = 1
       object dxBarDockControl3: TdxBarDockControl
@@ -539,12 +610,12 @@ object frmLoadArrivals: TfrmLoadArrivals
       Left = 0
       Top = 0
       Width = 443
-      Height = 118
+      Height = 127
       Align = alLeft
       TabOrder = 2
       object cxLabel2: TcxLabel
         Left = 11
-        Top = 76
+        Top = 71
         Caption = 'Visa:'
         ParentFont = False
         Style.Font.Charset = DEFAULT_CHARSET
@@ -699,8 +770,8 @@ object frmLoadArrivals: TfrmLoadArrivals
         ParentFont = False
       end
       object bcConfirmedv2: TcxComboBox
-        Left = 78
-        Top = 72
+        Left = 79
+        Top = 65
         TabStop = False
         ParentFont = False
         Properties.DropDownListStyle = lsFixedList
@@ -719,6 +790,13 @@ object frmLoadArrivals: TfrmLoadArrivals
         TabOrder = 10
         Text = 'New arrivals'
         Width = 147
+      end
+      object cbNewArrivalQuery: TcxCheckBox
+        Left = 80
+        Top = 93
+        Caption = 'Use new arrival query'
+        Style.TransparentBorder = False
+        TabOrder = 11
       end
     end
   end
@@ -3184,7 +3262,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3235,6 +3313,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 72
     Top = 392
@@ -3824,7 +3903,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     end
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -6098,6 +6177,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController2: TcxLookAndFeelController
     Kind = lfFlat
+    ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 1056
     Top = 264
@@ -7294,7 +7374,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

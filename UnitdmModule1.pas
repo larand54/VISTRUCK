@@ -221,6 +221,7 @@ type
     cds_LFEgenValuta: TStringField;
     ds_LFALL: TDataSource;
     FDmSelectedRowsNote: TStringField;
+    cds_PkgInfoTork: TStringField;
     procedure cds_LFFraktChange(Sender: TField);
     procedure cds_LFConfirmFraktChange(Sender: TField);
     procedure cds_LFConfirmKommChange(Sender: TField);

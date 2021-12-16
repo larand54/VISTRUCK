@@ -31,7 +31,8 @@ uses
   cxGridDBCardView, cxGridCustomLayoutView, cxGridBandedTableView,
   cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, dxSkinsCore,
-  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm, dxSkinBasic ;
+  dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm, dxSkinBasic,
+  dxCore ;
 
 
 
@@ -386,8 +387,7 @@ uses
   dmc_UserProps , uLager, uLastLista, uSetStdPkgSizeIntervall, UchgPkgVard,
   uKilnHandling, ufrmChangeLanguage, udmLanguage, fSortOrder,
   uSelectSortingOrderNo, dmsVidaContact, uPositionView, dm_Inventory,
-  uSetupUserOutput, UnitSokAvropFormular
-  , dmsUserAdm;
+  uSetupUserOutput, UnitSokAvropFormular, dmsUserAdm, uMailMadExcept ;
 
 
 
@@ -637,6 +637,7 @@ begin
       End ;
 
  ChangeUserSettingsOnStartUp ;
+ uMailMadExcept.setUpMailBugreport(dmsConnector.FDConnection1.Params, ThisUser.UserID, ThisUser.UserEmail);
 
  if forms.Screen.MonitorCount = 2 then
  Begin

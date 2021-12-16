@@ -2,7 +2,7 @@
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 823
-  Width = 1095
+  Width = 1115
   object ds_LoadHead: TDataSource
     DataSet = cds_LoadHead
     Left = 32
@@ -54,7 +54,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -179,7 +179,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -798,10 +798,36 @@
       'End AS CERTI,'
       'SP.SpeciesName AS Tr'#228'slag,'
       ''
-      '(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD'
+      '(Select'
+      ''
+      
+        'Case When UN.VolumeUnitName = '#39'Packages'#39' then COUNT(LD.PackageNo' +
+        ')'
+      'When UN.VolumeUnitName = '#39'm3 aDxaL'#39' then sum(pt.Totalm3Actual)'
+      'When UN.VolumeUnitName = '#39'm3 nDxnL'#39' then sum(pt.Totalm3Nominal)'
+      
+        'When UN.VolumeUnitName = '#39'm3 aDxnL'#39' then sum(pt.TotalM3ActualSiz' +
+        'eNomLength)'
+      
+        'When UN.VolumeUnitName = '#39'm3 nDxaL'#39' then sum(pt.TotalM3NomSizeAc' +
+        'tualLength)'
+      'When UN.VolumeUnitName = '#39'Lopm a'#39' then sum(pt.m3Net)'
+      
+        'When UN.VolumeUnitName = '#39'MFBM Nom'#39' then sum(pt.TotalMFBMNominal' +
+        ')'
+      
+        'When UN.VolumeUnitName = '#39'Stycketal'#39' then sum(pt.TotalNoOfPieces' +
+        ')'
+      'End'
+      ''
+      'FROM dbo.Loaddetail LD'
+      
+        'inner join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
+        'peNo'
       'WHERE LD.LoadNo = LS.LoadNo'
       'AND LD.ShippingPlanNo = LS.ShippingPlanNo'
       'AND LD.Defsspno = SSP.SupplierShipPlanObjectNo ) AS LoadedPkgs,'
+      ''
       'ps.PackageSizeName AS Paketstorlek,'
       'SSP.ObjectType,'
       'SSP.InternRowNote AS Internnotering,'
@@ -882,8 +908,7 @@
       '-- AND isnull(SSP.Lagerkod,1) = :Lagerkod'
       
         'AND ((SSP.ShippingPlanStatus <> 7) and (SSP.ShippingPlanStatus <' +
-        '> 8)) '
-      '')
+        '> 8)) ')
     Left = 200
     Top = 24
     ParamData = <
@@ -1109,11 +1134,9 @@
       ProviderFlags = []
       Size = 30
     end
-    object cdsLORowsLoadedPkgs: TIntegerField
-      DisplayLabel = 'Utlastade pkt'
+    object cdsLORowsLoadedPkgs: TFloatField
       FieldName = 'LoadedPkgs'
       Origin = 'LoadedPkgs'
-      ProviderFlags = []
       ReadOnly = True
     end
     object cdsLORowsPkgDiff: TFloatField
@@ -3121,7 +3144,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -4165,6 +4188,125 @@
       end
       item
         Position = 4
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_RegisterToLoadArrivalReg: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_RegisterToLoadArrivalReg]'
+    Left = 312
+    Top = 648
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_RemPkgFromLoad_III: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_remLoadPkg_III]'
+    Left = 600
+    Top = 552
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@LoadDetailNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@UserID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_IsOrderPrepaid_Terms: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_IsOrderPrepaid_Terms'
+    Left = 56
+    Top = 720
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LONo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prepaid'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object sp_IsLoadPrepaid_Terms: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_IsLoadPrepaid_Terms'
+    Left = 312
+    Top = 712
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@LoadNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@Prepaid'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object sp_SetCallOffLoadStatus: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = '[dbo].[vis_SetCallOffLoadStatus]'
+    Left = 592
+    Top = 144
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
         Name = '@LoadNo'
         DataType = ftInteger
         ParamType = ptInput

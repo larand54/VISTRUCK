@@ -326,7 +326,6 @@ object fLager: TfLager
               ParentFont = False
               Style.StyleController = cxEditStyleControllerFileldLabels
               Properties.Alignment.Horz = taCenter
-              ExplicitTop = 58
               AnchorX = 641
             end
             object cxButton6: TcxButton
@@ -491,7 +490,6 @@ object fLager: TfLager
           Control = PanelPaketnr
           Color = clGreen
           ParentColor = False
-          ExplicitWidth = 8
         end
       end
     end
@@ -1094,7 +1092,7 @@ object fLager: TfLager
   end
   object ActionList1: TActionList
     Left = 456
-    Top = 233
+    Top = 201
     object acClose: TAction
       Caption = 'St'#228'ng'
       ImageIndex = 11
@@ -1227,8 +1225,8 @@ object fLager: TfLager
   object dxComponentPrinter1: TdxComponentPrinter
     CurrentLink = dxComponentPrinter1Link1
     Version = 0
-    Left = 1008
-    Top = 297
+    Left = 952
+    Top = 289
     PixelsPerInch = 96
     object dxComponentPrinter1Link1: TdxGridReportLink
       Component = grdBoT
@@ -2329,7 +2327,7 @@ object fLager: TfLager
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2415,8 +2413,8 @@ object fLager: TfLager
     Style.ButtonStyle = btsOffice11
     Style.ButtonTransparency = ebtHideUnselected
     Style.IsFontAssigned = True
-    Left = 176
-    Top = 352
+    Left = 288
+    Top = 376
     PixelsPerInch = 96
   end
   object cxImageList1: TcxImageList
@@ -6436,11 +6434,11 @@ object fLager: TfLager
     PixelsPerInch = 96
   end
   object FD_Query: TFDQuery
-    Left = 1009
+    Left = 953
     Top = 349
   end
   object ds_invpiv: TDataSource
-    DataSet = dmInventory.sp_invpiv
+    DataSet = dmInventory.sp_invpivXXX
     Left = 464
     Top = 544
   end
@@ -6468,7 +6466,7 @@ object fLager: TfLager
     UseOwnFont = False
     OnPopup = pmSortimentsVyPopup
     Left = 456
-    Top = 289
+    Top = 257
     PixelsPerInch = 96
   end
   object pmPrint: TdxBarPopupMenu
@@ -6484,7 +6482,7 @@ object fLager: TfLager
     PixelsPerInch = 96
   end
   object siLangLinked_fLager: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -8102,7 +8100,7 @@ object fLager: TfLager
       end>
     UseOwnFont = False
     Left = 456
-    Top = 349
+    Top = 317
     PixelsPerInch = 96
   end
 end

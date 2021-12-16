@@ -35,7 +35,8 @@ uses
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon, frxClass,
   frxDBSet, frxExportPDF, siComp, siLngLnk, dxSkinBasic, dxDateRanges,
-  dxScrollbarAnnotations, dxPScxEditorProducers, dxPScxExtEditorProducers ;
+  dxScrollbarAnnotations, dxPScxEditorProducers, dxPScxExtEditorProducers,
+  frxExportBaseDialog ;
 
 type
   TPkgNrExceptionList = class(TForm)
@@ -76,10 +77,10 @@ type
     frxDBDataset1: TfrxDBDataset;
     cxButton5: TcxButton;
     acChangeFormSize: TAction;
-    frxPDFExport1: TfrxPDFExport;
     cxGrid1DBTableView1ScanStatus: TcxGridDBColumn;
     cxGrid1DBTableView1ErrorBeskrivning: TcxGridDBColumn;
     siLangLinked_frmLoadArrivals: TsiLangLinked;
+    frxPDFExport1: TfrxPDFExport;
 
     procedure acCloseExecute(Sender: TObject);
     procedure acRefreshExecute(Sender: TObject);

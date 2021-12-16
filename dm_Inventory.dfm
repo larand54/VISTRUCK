@@ -8360,14 +8360,14 @@ object dmInventory: TdmInventory
     Left = 640
     Top = 392
   end
-  object sp_invpiv: TFDStoredProc
+  object sp_invpivXXX: TFDStoredProc
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     ResourceOptions.AssignedValues = [rvCmdExecMode]
     ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.Vis_Lager_v13'
-    Left = 216
-    Top = 536
+    Left = 224
+    Top = 544
     ParamData = <
       item
         Position = 1
@@ -8437,9 +8437,9 @@ object dmInventory: TdmInventory
       end>
   end
   object ds_invpiv: TDataSource
-    DataSet = sp_invpiv
-    Left = 216
-    Top = 584
+    DataSet = sq_invpiv
+    Left = 88
+    Top = 608
   end
   object sp_invpivPkgDtl: TFDStoredProc
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
@@ -8941,7 +8941,7 @@ object dmInventory: TdmInventory
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -9084,7 +9084,7 @@ object dmInventory: TdmInventory
       DisplayLabel = 'Vagnnr'
       FieldName = 'VagnNo'
       Origin = 'VagnNo'
-      ProviderFlags = [pfInUpdate]
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
     object cds_KilnChargeRowsRowNo: TIntegerField
       DisplayLabel = 'Radnr'
@@ -12020,5 +12020,520 @@ object dmInventory: TdmInventory
       Required = True
       Size = 15
     end
+  end
+  object sq_invpiv: TFDQuery
+    Connection = dmsConnector.FDConnection1
+    SQL.Strings = (
+      ' DECLARE  @err int,  @UnitName varchar(15),'
+      ' @MinInvoiceLoadDate DateTime, @BaseLoadDateFilter DateTime'
+      ''
+      ''
+      ''
+      'SET @BaseLoadDateFilter = '#39'2020-12-01'#39
+      'CREATE TABLE #totalinventory ('
+      #9'  PIP varchar(50)'
+      #9', LIP varchar(50)'
+      #9', Paketnr int'
+      #9', Prefix char(3)'
+      #9', ProductDisplayName varchar(100)'
+      #9', PackageSizeName varchar(50)'
+      #9', PackageTypeNo int'
+      #9', Styck int'
+      #9', AM3 float'
+      #9', NM3 float'
+      #9', AT float'
+      #9', AB float'
+      #9', ProductNo int'
+      #9', AM1 float'
+      #9', MFBM float'
+      #9', AM2 float'
+      #9', Species'#9'varchar(30)'
+      #9', Impregnering varchar(40)'
+      #9', Kvalitet varchar(30)'
+      #9', Surfacing varchar(30)'
+      #9', LIPNo int'
+      #9', PIPNo int  '
+      #9', ProductValue float'
+      #9', VarugruppNamn varchar(35)'
+      #9', Package_Size int'
+      #9', LP int'
+      #9', InventorySource int'
+      #9', LPName varchar(2)'
+      #9', ActualLengthMM float not null'
+      #9', P0 int null'
+      #9', P1 float null'
+      #9', P2 float null'
+      #9', P3 int null'
+      #9')'
+      ';'
+      'WITH Inventory_1 AS'
+      '('
+      'SELECT LIP = LIP.LogicalInventoryName'
+      ', PaketNr = pn.PackageNo'
+      ', Prefix = pn.SupplierCode'
+      ', PackageTypeNo = pn.PackageTypeNo'
+      ', AT = pg.ActualThicknessMM'
+      ', AB = pg.ActualWidthMM'
+      ', ProductNo = p.ProductNo'
+      ', LIPNo = lip.LogicalInventoryPointNo'
+      ', PIPNo = pip.PhysicalInventoryPointNo'
+      ', ProductValue = pn.Original_Price * pt.Totalm3Nominal'
+      ', Package_Size = pn.Package_Size'
+      ', InventorySource = 0'
+      ', PositionJoin = pn.PositionID'
+      ', VarugruppJoin = p.VarugruppNo'
+      ', LengthSpecJoin = pt.LengthSpecNo'
+      ', SpeciesJoin = pg.SpeciesNo'
+      ', ProductCategoryJoin = pg.ProductCategoryNo'
+      ', GradeJoin = p.GradeNo'
+      ', SurfacingJoin = pg.SurfacingNo'
+      ', CityJoin = PIP.PhyInvPointNameNo'
+      ', PackageSizeJoin = pn.Package_Size'
+      'FROM dbo.PackageNumber pn with(nolock)'
+      
+        'INNER JOIN dbo.Packagetype pt with(nolock) ON pt.packagetypeno =' +
+        ' pn.packagetypeno'
+      
+        'INNER JOIN dbo.Product p with(nolock) ON p.ProductNo = pt.Produc' +
+        'tNo'
+      
+        'INNER JOIN dbo.ProductGroup pg with(nolock) ON pg.ProductGroupNo' +
+        ' = p.ProductGroupNo'
+      
+        'INNER JOIN dbo.LogicalInventoryPoint LIP with(nolock) ON LIP.Log' +
+        'icalInventoryPointNo = pn.LogicalInventoryPointNo'
+      
+        'INNER JOIN dbo.PhysicalInventoryPoint PIP with(nolock) ON PIP.Ph' +
+        'ysicalInventoryPointNo = LIP.PhysicalInventoryPointNo'
+      'WHERE'
+      'PIP.OwnerNo = :OwnerNo AND'
+      'pn.[Status] = 1'
+      ''
+      ''
+      #9#9'and ((pn.REFERENCE Like :REF) or (:REF is null))'
+      #9#9'and ((pn.BL_NO Like :BL) or (:BL is null))'
+      #9#9'and ((pn.Info2 Like :Info2) or (:Info2 is null))'
+      ''
+      #9#9'and ((pg.ActualThicknessMM = :AT) or (:AT is null))'
+      ' '#9#9'and ((pg.ActualWidthMM = :AB) or (:AB is null))'
+      ''
+      ''
+      ''
+      'AND ('
+      
+        ':LIPNo2 IS NULL OR EXISTS (SELECT Item FROM dbo.SplitStringToInt' +
+        'Table(:LIPNo2 ) i WHERE lip.LogicalInventoryPointNo = i.Item)'
+      #9')'
+      ')'
+      ','
+      'Inventory_2 AS'
+      '('
+      'SELECT LIP = LIP.LogicalInventoryName'
+      ', PaketNr = pn.PackageNo'
+      ', Prefix = pn.SupplierCode'
+      ', PackageTypeNo = pn.PackageTypeNo'
+      ', AT = pg.ActualThicknessMM'
+      ', AB = pg.ActualWidthMM'
+      ', ProductNo = pd.ProductNo'
+      ', LIPNo = lip.LogicalInventoryPointNo'
+      ', PIPNo = pip.PhysicalInventoryPointNo'
+      ', ProductValue = pn.Original_Price * pt.Totalm3Nominal'
+      ', Package_Size = pn.Package_Size'
+      ', InventorySource = 1'
+      ', PositionJoin = pn.PositionID'
+      ', VarugruppJoin = pd.VarugruppNo'
+      ', LengthSpecJoin = pt.LengthSpecNo'
+      ', SpeciesJoin = pg.SpeciesNo'
+      ', ProductCategoryJoin = pg.ProductCategoryNo'
+      ', GradeJoin = pd.GradeNo'
+      ', SurfacingJoin = pg.SurfacingNo'
+      ', CityJoin = PIP.PhyInvPointNameNo'
+      ', PackageSizeJoin = pn.Package_Size'
+      'FROM dbo.Client Verk with(nolock)'
+      
+        'INNER JOIN dbo.Loads L with(nolock) ON L.SupplierNo = Verk.Clien' +
+        'tNo'
+      
+        'LEFT  JOIN dbo.Invoiced_Load inl with(nolock) ON inl.LoadNo = L.' +
+        'LoadNo'
+      
+        'INNER JOIN dbo.LoadDetail LD with(nolock) ON LD.LoadNo = L.LoadN' +
+        'o'
+      
+        'INNER JOIN dbo.CustomerShippingPlanDetails csd with(nolock) ON c' +
+        'sd.CustShipPlanDetailObjectNo = LD.DefaultCustShipObjectNo'
+      
+        'INNER JOIN dbo.CustomerShippingPlanHeader csh with(nolock) ON cs' +
+        'h.ShippingPlanNo = csd.ShippingPlanNo'
+      'INNER JOIN dbo.Orders oh ON oh.OrderNo = csh.OrderNo'
+      
+        'INNER JOIN dbo.LogicalInventoryPoint lip with(nolock) ON lip.Log' +
+        'icalInventoryPointNo = LD.LIPNo'
+      
+        'INNER JOIN dbo.PhysicalInventoryPoint pip with(nolock) ON pip.Ph' +
+        'ysicalInventoryPointNo = lip.PhysicalInventoryPointNo'
+      
+        'INNER JOIN dbo.PackageNumber pn with(nolock) ON pn.PackageNo = L' +
+        'D.PackageNo and pn.SupplierCode = LD.SupplierCode'
+      
+        'INNER JOIN dbo.PackageType pt with(nolock) ON pt.PackageTypeNo =' +
+        ' LD.PackageTypeNo'
+      
+        'INNER JOIN dbo.Product pd with(nolock) ON pd.ProductNo = pt.Prod' +
+        'uctNo'
+      
+        'INNER JOIN dbo.ProductGroup pg ON pg.ProductGroupNo = pd.Product' +
+        'GroupNo'
+      'WHERE'
+      'Verk.ClientNo = :OwnerNo AND'
+      'L.LoadedDate >= @BaseLoadDateFilter AND'
+      'oh.OrderType = 0'
+      
+        'AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.Inter' +
+        'nalInvoiceNo = inl.InternalInvoiceNo)'
+      ''
+      'AND ((pn.REFERENCE Like :REF) or (:REF is null))'
+      'AND ((pn.BL_NO Like :BL) or (:BL is null))'
+      'AND ((pn.Info2 Like :Info2) or (:info2 is null))'
+      ''
+      'AND PIP.OwnerNo = :OwnerNo'
+      ''
+      'AND ((pg.ActualThicknessMM = :AT) or (:AT is null))'
+      'AND ((pg.ActualWidthMM = :AB) or (:AB is null))'
+      ''
+      ''
+      'AND ('
+      
+        ':LIPNo2  IS NULL OR EXISTS (SELECT Item FROM dbo.SplitStringToIn' +
+        'tTable(:LIPNo2) i WHERE lip.LogicalInventoryPointNo = i.Item)'
+      #9')'
+      ')'
+      ', result AS ('
+      'SELECT LIP, PaketNr, Prefix, PackageTypeNo, AT, AB, ProductNo'
+      ', LIPNo, PIPNo, ProductValue, Package_Size, InventorySource'
+      
+        ', PositionJoin, VarugruppJoin, LengthSpecJoin, SpeciesJoin, Prod' +
+        'uctCategoryJoin,'
+      ' GradeJoin, SurfacingJoin, CityJoin, PackageSizeJoin'
+      'FROM Inventory_1'
+      'UNION'
+      'SELECT LIP, PaketNr, Prefix, PackageTypeNo, AT, AB, ProductNo'
+      ', LIPNo, PIPNo, ProductValue, Package_Size, InventorySource'
+      
+        ', PositionJoin, VarugruppJoin, LengthSpecJoin, SpeciesJoin, Prod' +
+        'uctCategoryJoin'
+      ', GradeJoin, SurfacingJoin, CityJoin, PackageSizeJoin'
+      'FROM Inventory_2'
+      ')'
+      
+        'INSERT INTO #totalinventory (PIP, LIP, PaketNr, Prefix, ProductD' +
+        'isplayName, PackageSizeName, PackageTypeNo, Styck'
+      
+        ', AM3, NM3, AT, AB, ProductNo, AM1, MFBM, AM2, Species, Impregne' +
+        'ring, Kvalitet, Surfacing'
+      
+        ', LIPNo, PIPNo, ProductValue, VarugruppNamn, Package_Size, LP, I' +
+        'nventorySource, LPName, ActualLengthMM, P0, P1, P2, P3)'
+      
+        'SELECT  PIP = cy.CityName, LIP, PaketNr, Prefix, ProductDisplayN' +
+        'ame = pde.ProductDisplayName'
+      
+        ', PackageSizeName = ps.PackageSizeName, r.PackageTypeNo, Styck =' +
+        ' ptd.NoOfPieces, AM3 = ptd.m3Actual'
+      
+        ', NM3 = ptd.m3Nominal, AT, AB, r.ProductNo, AM1 = ptd.LinealMete' +
+        'rActualLength, MFBM = ptd.MFBMNominal'
+      ', AM2 = ptd.SQMofActualWidth, Species = SPE.SpeciesName'
+      
+        ', Impregnering = imp.ProductCategoryName, Kvalitet = Gr.GradeNam' +
+        'e, Surfacing = SUR.SurfacingName'
+      
+        ', LIPNo, r.PIPNo, ProductValue, VarugruppNamn = va.VarugruppNamn' +
+        ', Package_Size, LP = LS.ProductLengthNo, InventorySource'
+      
+        ', LPName = CASE WHEN LS.ProductLengthNo = 0 THEN '#39'TP'#39' ELSE '#39'LP'#39' ' +
+        'END'
+      ', ActualLengthMM = t1.ActualLengthMM'
+      ', P0 = ptd.NoOfPieces'
+      ', P1 = ptd.m3Actual'
+      ', P2 = ptd.m3Nominal  '
+      ', P3 = 1'
+      'FROM result r INNER JOIN dbo.City cy on cy.CityNo = r.CityJoin'
+      
+        'INNER JOIN dbo.LengthSpec LS with(nolock) ON LS.LengthSpecNo = r' +
+        '.LengthSpecJoin'
+      
+        'INNER JOIN dbo.ProductCategory imp with(nolock) ON imp.ProductCa' +
+        'tegoryNo = r.ProductCategoryJoin AND imp.LanguageCode = :Languag' +
+        'eCode'
+      
+        'INNER JOIN dbo.Species SPE with(nolock) ON SPE.SpeciesNo = r.Spe' +
+        'ciesJoin AND SPE.LanguageCode = :LanguageCode'
+      
+        'INNER JOIN dbo.Surfacing SUR with(nolock) ON SUR.SurfacingNo = r' +
+        '.SurfacingJoin AND SUR.LanguageCode = :LanguageCode'
+      
+        'INNER JOIN dbo.Grade Gr with(nolock) ON Gr.GradeNo = r.GradeJoin' +
+        ' AND Gr.LanguageCode = :LanguageCode'
+      
+        'INNER JOIN PackageTypeDetail ptd with(nolock) ON ptd.PackageType' +
+        'No = r.PackageTypeNo'
+      
+        'INNER JOIN dbo.ProductLength t1 with(nolock) ON t1.ProductLength' +
+        'No = ptd.ProductLengthNo'
+      
+        'LEFT OUTER JOIN dbo.PackageSize ps with(nolock) on ps.PackageSiz' +
+        'eNo = r.PackageSizeJoin and ps.LanguageCode = 1'
+      
+        'LEFT OUTER JOIN dbo.ProductDesc pde with(nolock) on pde.ProductN' +
+        'o = r.ProductNo AND pde.LanguageID = :LanguageCode'
+      
+        'LEFT OUTER JOIN dbo.Varugrupp va with(nolock) on va.VarugruppNo ' +
+        '= r.VarugruppJoin AND va.LanguageCode = :LanguageCode'
+      'DECLARE @cols nvarchar(MAX)'
+      'DECLARE @sumcols nvarchar(MAX)'
+      'DECLARE @query nvarchar(MAX)'
+      ';WITH Lengths AS'
+      '( SELECT DISTINCT  l.ActualLengthMM'
+      ' FROM #totalinventory i'
+      
+        ' INNER JOIN PackageTypeDetail d ON d.PackageTypeNo = i.PackageTy' +
+        'peNo'
+      
+        ' INNER JOIN ProductLength l ON l.ProductLengthNo = d.ProductLeng' +
+        'thNo'
+      ' )'
+      'SELECT  @cols = STUFF(( SELECT DISTINCT TOP 100 PERCENT'
+      
+        '                                '#39'],['#39' + CAST(t.ActualLengthMM AS' +
+        ' nvarchar(50))'
+      '                        FROM    Lengths AS t'
+      
+        '                        ORDER BY '#39'],['#39' + CAST(t.ActualLengthMM A' +
+        'S nvarchar(50))'
+      '                        FOR XML PATH('#39#39')  '
+      '                      ), 1, 2, '#39#39') +  '#39']'#39
+      ';WITH Lengths AS'
+      '( SELECT DISTINCT  l.ActualLengthMM'
+      ' FROM #totalinventory i'
+      
+        ' INNER JOIN PackageTypeDetail d ON d.PackageTypeNo = i.PackageTy' +
+        'peNo'
+      
+        ' INNER JOIN ProductLength l ON l.ProductLengthNo = d.ProductLeng' +
+        'thNo'
+      ' )'
+      'SELECT  @sumcols = STUFF(( SELECT DISTINCT TOP 100 PERCENT'
+      
+        ' '#39',[L'#39' + CAST(t.ActualLengthMM AS nvarchar(50)) + '#39'] = SUM(['#39' + ' +
+        'CAST(t.ActualLengthMM AS nvarchar(50)) + '#39'])'#39
+      '                        FROM    Lengths AS t'
+      
+        'ORDER BY '#39',[L'#39' + CAST(t.ActualLengthMM AS nvarchar(50)) + '#39'] = S' +
+        'UM(['#39' + CAST(t.ActualLengthMM AS nvarchar(50)) + '#39'])'#39
+      '                        FOR XML PATH('#39#39')'
+      '                      ), 1, 1, '#39#39')'
+      'SELECT @query = N'#39'SELECT Paket = COUNT(DISTINCT PaketId)'
+      '                    , PT = LPName'
+      '                    , PIP = PIP'
+      '                    , LIP = LIP'
+      '                    , ProductDisplayName = ProductDisplayName'
+      '                    , PackageSizeName = PackageSizeName'
+      '                    , Styck = SUM(Styck)'
+      '                    , AM3 = SUM(AM3)'
+      '                    , NM3 = SUM(NM3)'
+      '                    , AT = AT'
+      '                    , AB = AB'
+      '                    , ProductNo = ProductNo'
+      '                    , AM1 = SUM(AM1)'
+      '                    , MFBM = SUM(MFBM)'
+      '                    , AM2 = SUM(AM2)'
+      '                    , Species = Species'
+      '                    , Impregnering = Impregnering'
+      '                    , Kvalitet = Kvalitet'
+      '                    , Surfacing = Surfacing'
+      '                    , LIPNo = LIPNo'
+      '                    , PIPNo = PIPNo'
+      #9#9#9#9#9', ProductValue = SUM(ProductValue)'
+      '                    , VarugruppNamn = VarugruppNamn'
+      
+        '                    , AvgLength = CAST( SUM(AM1) / SUM(Styck) AS' +
+        ' float)'
+      '                    , Package_Size = Package_Size'
+      '                    , LP = LP'
+      '                    , InventorySource = InventorySource'
+      '                    , '#39
+      '+ @sumcols'
+      '+ '#39' FROM ( '
+      '          SELECT PaketId = CAST(Paketnr as varchar(20)) + Prefix'
+      '               , PIP'
+      '               , LIP'
+      '               , ProductDisplayName'
+      '               , PackageSizeName'
+      '              , Styck  = SUM(Styck)'
+      '              , AM3  = SUM(AM3)'
+      '               , NM3  = SUM(NM3)'
+      '               , AT'
+      '               , AB'
+      '               , ProductNo'
+      '               , AM1  = SUM(AM1)'
+      '               , MFBM  = SUM(MFBM)'
+      '               , AM2  = SUM(AM2)'
+      '               , Species'
+      '               , Impregnering'
+      '               , Kvalitet'
+      '               , Surfacing'
+      '               , LIPNo'
+      '               , PIPNo'
+      '               , ProductValue = SUM(ProductValue)'
+      '               , VarugruppNamn'
+      '               , Package_Size'
+      '               , LP'
+      '               , InventorySource'
+      '               , LPName'
+      #9#9'       , ColumnName = CAST(t.ActualLengthMM AS nvarchar(50))'
+      #9#9#9'   , P0 = SUM(P0)'
+      #9#9#9'   , P1 = SUM(P1)'
+      #9#9#9'   , P2 = SUM(P2)'
+      #9#9#9'   , P3 = SUM(P3)'
+      #9#9#9'   FROM #totalinventory AS t'
+      
+        #9#9#9'   GROUP BY PIP, LIP, ProductDisplayName, PackageSizeName,  P' +
+        'roductNo, Species, Impregnering'
+      
+        '               , Kvalitet, Surfacing, LIPNo, PIPNo, VarugruppNam' +
+        'n, Package_Size'
+      
+        '               , LP, InventorySource, LPName, CAST(t.ActualLengt' +
+        'hMM AS nvarchar(50))'
+      '               , AT, AB, Paketnr ,Prefix'
+      '          ) p '#39
+      
+        '      + CASE :PivotUnit WHEN 3 THEN '#39' PIVOT (SUM(P3) FOR ColumnN' +
+        'ame IN ( '#39
+      
+        #9'                    WHEN 2 THEN '#39' PIVOT (SUM(P2) FOR ColumnName' +
+        ' IN ( '#39
+      
+        #9'                    WHEN 1 THEN '#39' PIVOT (SUM(P1) FOR ColumnName' +
+        ' IN ( '#39
+      
+        #9'                    WHEN 0 THEN '#39' PIVOT (SUM(P0) FOR ColumnName' +
+        ' IN ( '#39
+      
+        #9'                    ELSE '#39' PIVOT (SUM(P3) FOR ColumnName IN ( '#39 +
+        ' END'
+      #9' +  @cols'
+      '       +  '#39' )) AS pvt'#39
+      
+        #9#9'+ '#39' GROUP BY LP, PIP, LIP,  ProductDisplayName, PackageSizeNam' +
+        'e, '#39
+      
+        '    +    '#39' AT, AB, ProductNo, Species, Impregnering, Kvalitet, S' +
+        'urfacing, LIPNo, PIPNo, '#39
+      '     +   '#39' VarugruppNamn, Package_Size, LP, InventorySource '#39
+      '+ '#39' , LPName '#39
+      '        + '#39' ORDER BY ProductDisplayName, PIP, LIP, AM3 '#39
+      #9#9'+ '#39';'#39
+      'EXECUTE(@query)'
+      '-- DROP TABLE #totalinventory')
+    Left = 96
+    Top = 552
+    ParamData = <
+      item
+        Name = 'OWNERNO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'REF'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'BL'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'INFO2'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'AT'
+        DataType = ftFloat
+        ParamType = ptInput
+      end
+      item
+        Name = 'AB'
+        DataType = ftFloat
+        ParamType = ptInput
+      end
+      item
+        Name = 'LIPNO2'
+        DataType = ftString
+        ParamType = ptInput
+      end
+      item
+        Name = 'LANGUAGECODE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'PIVOTUNIT'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object ds_KilnVagn: TDataSource
+    DataSet = cds_KilnVagn
+    Left = 1208
+    Top = 496
+  end
+  object sp_ReOrderRowNo: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_ReOrderRowNo'
+    Left = 48
+    Top = 1064
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@KilnChargeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@VagnNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object sp_EmptyCartBeforeKilnExists: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_EmptyCartBeforeKilnExists'
+    Left = 56
+    Top = 1168
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+        Value = 0
+      end
+      item
+        Position = 2
+        Name = '@KilnChargeNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

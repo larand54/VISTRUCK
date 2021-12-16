@@ -1,8 +1,8 @@
 object dmArrivingLoads: TdmArrivingLoads
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 917
   Width = 1189
+  PixelsPerInch = 96
   object dsrcArrivingLoads: TDataSource
     DataSet = cdsArrivingLoads
     OnDataChange = dsrcArrivingLoadsDataChange
@@ -118,7 +118,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -249,7 +249,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -373,7 +373,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -489,7 +489,7 @@ object dmArrivingLoads: TdmArrivingLoads
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -570,6 +570,7 @@ object dmArrivingLoads: TdmArrivingLoads
     ResourceOptions.CmdExecMode = amCancelDialog
     SQL.Strings = (
       'SELECT DISTINCT'
+      #39'OH.Trading in (2,3)  '#39' as SqlSats,'
       '0 AS EGEN,'
       'L.LoadAR,'
       'ST_AdrCtry.CountryCode,'
@@ -642,7 +643,9 @@ object dmArrivingLoads: TdmArrivingLoads
         'inner join dbo.InvoiceNos inos on inos.InternalInvoiceNo = il.In' +
         'ternalInvoiceNo'
       'WHERE cl.NewLoadNo = L.LoadNo) AS OriginalInvoiceNo,'
-      'SP.LoadingLocationNo, CSH.OrderNo'
+      
+        'SP.LoadingLocationNo, CSH.OrderNo, IsNull(SP.Lagerkod,1) as Lage' +
+        'rkod, IName.CityNo'
       ''
       ''
       ''
@@ -734,8 +737,7 @@ object dmArrivingLoads: TdmArrivingLoads
       ''
       
         'AND L.LOADNO NOT IN (SELECT Confirmed_LoadNo FROM dbo.Confirmed_' +
-        'Load )'
-      '')
+        'Load )')
     Left = 56
     Top = 24
     object cdsArrivingLoadsLoadAR: TIntegerField
@@ -965,6 +967,33 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'OrderNo'
       Origin = 'OrderNo'
       ProviderFlags = []
+    end
+    object cdsArrivingLoadsintNM3: TFloatField
+      FieldName = 'intNM3'
+    end
+    object cdsArrivingLoadsAM3: TFloatField
+      FieldName = 'AM3'
+    end
+    object cdsArrivingLoadsPcs: TIntegerField
+      FieldName = 'Pcs'
+    end
+    object cdsArrivingLoadsPkgs: TIntegerField
+      FieldName = 'Pkgs'
+    end
+    object cdsArrivingLoadsClientName: TStringField
+      FieldName = 'ClientName'
+      Size = 80
+    end
+    object cdsArrivingLoadsBookingType: TStringField
+      FieldName = 'BookingType'
+      FixedChar = True
+      Size = 30
+    end
+    object cdsArrivingLoadsLagerkod: TStringField
+      FieldName = 'Lagerkod'
+      ReadOnly = True
+      Required = True
+      Size = 4
     end
   end
   object cdsArrivingPackages: TFDQuery
@@ -1401,6 +1430,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cds_verkLaster: TFDQuery
+    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
@@ -1422,7 +1452,13 @@ object dmArrivingLoads: TdmArrivingLoads
       'SUM(P.Totalm3Nominal)'#9#9'AS '#9'NM3,'
       'SUM(P.TotalNoOfPieces)'#9#9'AS'#9'Styck,'
       'Count(LD.LoadDetailNo) AS Paket,'
-      'LSP.ShippingPlanNo AS LONo'
+      'LSP.ShippingPlanNo AS LONo,'
+      'SP.StartETDYearWeek AS Start_Week,'
+      'SP.EndETDYearWeek as End_Week,'
+      'B.PreliminaryRequestedPeriod as Ready_Date,'
+      'B.Panic_Note as Note,'
+      'B.ShippersShipDate as Carriers_Date,'
+      'L.shortnote'
       ''
       'FROM'
       'dbo.LoadShippingPlan LSP'
@@ -1435,8 +1471,8 @@ object dmArrivingLoads: TdmArrivingLoads
       
         'INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.SupplierSh' +
         'ipPlanObjectNo = LD.defsspno'
-      #9#9#9#9#9'AND     L.supplierno '#9#9'= SP.SUPPLIERno'
-      #9#9#9#9#9'AND     L.CustomerNo '#9#9'= SP.CustomerNo'
+      ''
+      'LEFT JOIN dbo.Booking B on B.ShippingPlanNo = SP.ShippingPlanNo'
       ''
       
         'LEFT OUTER JOIN dbo.CITY                     Shipto         ON S' +
@@ -1453,6 +1489,7 @@ object dmArrivingLoads: TdmArrivingLoads
         'No            = L.CustomerNo            -- LARS'
       ''
       'WHERE  L.SupplierNo = -1'
+      'AND L.LoadedDate >= '#39'2021-04-01'#39
       ''
       'Group By L.LoadNo, L.FS,'
       'L.LoadedDate,'
@@ -1462,8 +1499,13 @@ object dmArrivingLoads: TdmArrivingLoads
       'Loading.CityName,'
       'SUPP.ClientName,'
       'CUST.ClientName,'
-      'LSP.ShippingPlanNo'
-      '')
+      'LSP.ShippingPlanNo,'
+      'SP.StartETDYearWeek,'
+      'SP.EndETDYearWeek,'
+      'B.PreliminaryRequestedPeriod,'
+      'B.Panic_Note,'
+      'B.ShippersShipDate,'
+      'L.shortnote')
     Left = 368
     Top = 32
     object cds_verkLasterLASTNR: TIntegerField
@@ -1543,6 +1585,34 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'LONo'
       Origin = 'LONo'
       Required = True
+    end
+    object cds_verkLasterStart_Week: TIntegerField
+      FieldName = 'Start_Week'
+      Origin = 'Start_Week'
+    end
+    object cds_verkLasterEnd_Week: TIntegerField
+      FieldName = 'End_Week'
+      Origin = 'End_Week'
+    end
+    object cds_verkLasterReady_Date: TStringField
+      FieldName = 'Ready_Date'
+      Origin = 'Ready_Date'
+      Size = 30
+    end
+    object cds_verkLasterNote: TStringField
+      FieldName = 'Note'
+      Origin = 'Note'
+      Size = 255
+    end
+    object cds_verkLasterCarriers_Date: TSQLTimeStampField
+      FieldName = 'Carriers_Date'
+      Origin = 'Carriers_Date'
+    end
+    object cds_verkLastershortnote: TStringField
+      DisplayLabel = 'Trucknotering'
+      FieldName = 'shortnote'
+      Origin = 'shortnote'
+      Size = 150
     end
   end
   object cds_VerkLastPkgs: TFDQuery
@@ -1987,8 +2057,8 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vida_PackageTypeDetail'
-    Left = 1048
-    Top = 656
+    Left = 1056
+    Top = 640
     ParamData = <
       item
         Position = 1
@@ -2008,8 +2078,8 @@ object dmArrivingLoads: TdmArrivingLoads
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
     StoredProcName = 'dbo.vida_Populate_One_PackageTypeLengths'
-    Left = 1048
-    Top = 704
+    Left = 1056
+    Top = 688
     ParamData = <
       item
         Position = 1
@@ -2699,6 +2769,8 @@ object dmArrivingLoads: TdmArrivingLoads
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopyLOLoadToSales'
     Left = 1032
     Top = 128
@@ -2738,6 +2810,8 @@ object dmArrivingLoads: TdmArrivingLoads
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopyARIntAddLOLoad_II'
     Left = 1032
     Top = 184
@@ -6136,6 +6210,8 @@ object dmArrivingLoads: TdmArrivingLoads
   end
   object sp_CopySalesLoadToPO: TFDStoredProc
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     StoredProcName = 'dbo.vis_CopySalesLoadToPO'
     Left = 1056
     Top = 488

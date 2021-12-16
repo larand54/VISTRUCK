@@ -334,6 +334,7 @@ type
     sq_GetRealInterverk: TFDQuery;
     sq_GetRealInterverkIntVerk: TIntegerField;
     cds_ProductionUnitLegoCostPerAM3: TFMTBCDField;
+    sp_GroupClientExists: TFDStoredProc;
     procedure provSawMillLoadOrders1111GetTableName(Sender: TObject;
       DataSet: TDataSet; var TableName: String);
     procedure cds_PkgNoSerie1PostError(DataSet: TDataSet; E: EDatabaseError;
@@ -354,6 +355,7 @@ type
 //    function  WhoBelongsToLoadingLocation(const LoadingLocationNo : Integer) : Integer ;
 
   public
+    function  ThisCompanyPermittedToHandleSupplierNo (const MainClientNo, ClientNo : Integer) : Boolean ;
     function  IsRealInternverk (const CompanyNo : Integer) : Boolean ;
     function  GetSalesRegionNo (const CompanyNo : Integer) : Integer ;
     Function  Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
@@ -403,6 +405,20 @@ uses Vcl.Controls, Vcl.Forms, dmsDataConn, VidaConst, VidaUser, dmsVidaSystem,
 
 
 { TdmsContact }
+function TdmsContact.ThisCompanyPermittedToHandleSupplierNo (const MainClientNo, ClientNo : Integer) : Boolean ;
+Begin
+ sp_GroupClientExists.ParamByName('@MainClientNo').AsInteger    := MainClientNo ;
+ sp_GroupClientExists.ParamByName('@ClientNo').AsInteger        := ClientNo ;
+ Try
+ sp_GroupClientExists.Open ;
+ if not sp_GroupClientExists.Eof then
+  Result  := True
+   else
+    Result:= False ;
+ Finally
+  sp_GroupClientExists.Close ;
+ End ;
+End ;
 
 Function TdmsContact.Get_GetProdUnitNo(const ClientNo, RegPointNo : Integer) : Integer ;
 Begin

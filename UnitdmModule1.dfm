@@ -54,11 +54,12 @@ object dmModule1: TdmModule1
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.02.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 856
     Top = 24
     object mtShippersShipper: TStringField
@@ -144,7 +145,20 @@ object dmModule1: TdmModule1
       'PT.TotalSQMofActualWidth AS M2,'
       'PT.PackageTypeNo AS PACKAGETYPENO,'
       'pc.PackageCodeNo AS KORTAKODEN,'
-      'pp.PackageCode AS LANGAKODEN'
+      'pp.PackageCode AS LANGAKODEN,'
+      ''
+      
+        '(select TOP 1 K.KilnName + '#39' - '#39' + isnull(KCH.Info,'#39#39') + '#39'  ['#39' +' +
+        ' CAST(ISNULL(KCH.KilnChargeNo,'#39'-'#39') AS varchar(6)) + '#39']'#39' + '#39' / Ca' +
+        'rt No: '#39' + LTRIM(str(kcr.VagnNo))'
+      'from dbo.KilnChargeRows kcr'
+      
+        'inner join dbo.KilnChargeHdr kch on kch.KilnChargeNo = kcr.KilnC' +
+        'hargeNo'
+      'inner join dbo.Kilns k on k.KilnNo = kch.KilnNo'
+      'where kcr.PackageNo = PN.PackageNo'
+      'and kcr.SupplierCode = PN.SupplierCode) as Tork'
+      ''
       ''
       'FROM PackageNumber PN'
       'Inner Join PackageType PT ON PT.PackageTypeNo = PN.PackageTypeNo'
@@ -352,6 +366,12 @@ object dmModule1: TdmModule1
       FieldName = 'LANGAKODEN'
       Origin = 'LANGAKODEN'
       Size = 50
+    end
+    object cds_PkgInfoTork: TStringField
+      FieldName = 'Tork'
+      Origin = 'Tork'
+      ReadOnly = True
+      Size = 115
     end
   end
   object sqGetSupplierNo: TFDQuery

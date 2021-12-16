@@ -428,6 +428,7 @@ type
 //    CurrentNoOfPkgs,
     SelectedProductNo     : Integer ;
     SelectedLength        : String ;
+    procedure BuildSql (const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
     procedure RefreshAfterChanges;
     procedure RefreshPkgNosByPosition(Sender: TObject;const ALMM : Integer) ;
     procedure FormatLengthColumnsPosition ;
@@ -555,18 +556,18 @@ end;
 
 procedure TfLager.ChangeInventorySource(Sender: TObject) ;
 Begin
-  if dmInventory.sp_invpiv.RecordCount > 0 then
+  if dmInventory.sq_invpiv.RecordCount > 0 then
   Begin
    if cbInklEjFakt.ItemIndex <> 1 then
    Begin
     if cbInklEjFakt.ItemIndex = 0 then
-     dmInventory.sp_invpiv.Filter  := 'InventorySource = 0'
+     dmInventory.sq_invpiv.Filter  := 'InventorySource = 0'
       else
-       dmInventory.sp_invpiv.Filter  := 'InventorySource = 1' ;
-    dmInventory.sp_invpiv.Filtered  := True ;
+       dmInventory.sq_invpiv.Filter  := 'InventorySource = 1' ;
+    dmInventory.sq_invpiv.Filtered  := True ;
    End
     else
-     dmInventory.sp_invpiv.Filtered  := False ;
+     dmInventory.sq_invpiv.Filtered  := False ;
 
    SetGridParamsPerSortiment(Sender) ;
   End;
@@ -791,10 +792,10 @@ Var x : Integer ;
 Begin
  With dmInventory do
  Begin
-  With sp_invpiv do
+  With sq_invpiv do
   Begin
 
-   For x:= cFirstLengthFieldNumber to sp_invpiv.FieldCount - 1 do
+   For x:= cFirstLengthFieldNumber to sq_invpiv.FieldCount - 1 do
    if (cds_PropsLengthVolUnitNo.AsInteger = 0) or (cds_PropsLengthVolUnitNo.AsInteger = 3) then
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###'
     else
@@ -808,7 +809,7 @@ Begin
    TFloatField(Fields.FieldByName('Paket')).DisplayFormat :=  '###,###,###' ;
    TFloatField(Fields.FieldByName('Styck')).DisplayFormat :=  '###,###,###' ;
    TFloatField(Fields.FieldByName('AvgLength')).DisplayFormat :=  '###,###,###.0' ;
-  End ; //With sp_invpiv do
+  End ; //With sq_invpiv do
 
 
  End ; //With dmInventory do
@@ -830,7 +831,7 @@ Begin
   With sp_invpivPkg do
   Begin
 
-   For x:= cFirstLengthFieldNumberPaketnr to sp_invpiv.FieldCount - 1 do
+   For x:= cFirstLengthFieldNumberPaketnr to sq_invpiv.FieldCount - 1 do
    if (cds_PropsLengthVolUnitNo.AsInteger = 0) or (cds_PropsLengthVolUnitNo.AsInteger = 3) then
     TFloatField(Fields.Fields[x]).DisplayFormat:='###,###,###'
     else
@@ -844,7 +845,7 @@ Begin
    TFloatField(Fields.FieldByName('Paket')).DisplayFormat :=  '###,###,###' ;
    TFloatField(Fields.FieldByName('Styck')).DisplayFormat :=  '###,###,###' ;
    TFloatField(Fields.FieldByName('AvgLength')).DisplayFormat :=  '###,###,###.0' ;
-  End ; //With sp_invpiv do
+  End ; //With sq_invpiv do
 
 
  End ; //With dmInventory do
@@ -1582,21 +1583,21 @@ procedure TfLager.SetFilter ;
 Begin
  with dmInventory do
  Begin
-  sp_invpiv.Filter    := '' ;
+  sq_invpiv.Filter    := '' ;
   if (Length(eAT.Text) > 0) and (Length(eAB.Text) > 0) then
-  sp_invpiv.Filter    := GetDimFilter('AT', eAT.Text) + ' AND ' + GetDimFilter('AB', eAB.Text)
+  sq_invpiv.Filter    := GetDimFilter('AT', eAT.Text) + ' AND ' + GetDimFilter('AB', eAB.Text)
   else
   if (Length(eAT.Text) > 0) then
-  sp_invpiv.Filter    := GetDimFilter('AT', eAT.Text)
+  sq_invpiv.Filter    := GetDimFilter('AT', eAT.Text)
   else
   if (Length(eAB.Text) > 0) then
-  sp_invpiv.Filter    := GetDimFilter('AB', eAB.Text) ;
+  sq_invpiv.Filter    := GetDimFilter('AB', eAB.Text) ;
 
-  sp_invpiv.Filter  :=  ReplaceCommas(sp_invpiv.Filter) ;
-  if Length(sp_invpiv.Filter) > 0 then
-  sp_invpiv.Filtered  := True
+  sq_invpiv.Filter  :=  ReplaceCommas(sq_invpiv.Filter) ;
+  if Length(sq_invpiv.Filter) > 0 then
+  sq_invpiv.Filtered  := True
   else
-  sp_invpiv.Filtered  := False ;
+  sq_invpiv.Filtered  := False ;
  End ;
 End ;
 
@@ -1605,6 +1606,12 @@ Var Save_Cursor : TCursor;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
+
+ grdDBBandedPerSortiment.Controller.ClearGrouping ;
+ grdDBBandedPerSortiment.DataController.ClearSorting(False);
+
+
+
  Try
 
  if ((IsLIPChecked) and (dmsContact.IsClientLego(ThisUser.CompanyNo) = 6))
@@ -1700,26 +1707,30 @@ Var Save_Cursor : TCursor;
 begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
- dmInventory.sp_invpiv.DisableControls ;
+ dmInventory.sq_invpiv.DisableControls ;
+ grdDBBandedPerSortiment.BeginUpdate() ;
  Try
  LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
  grdDBBandedPerSortiment.ClearItems ;
- dmInventory.sp_invpiv.Filtered  := False ;
+ dmInventory.sq_invpiv.Filtered  := False ;
 
  dmInventory.Refresh_sp_invpiv(LIPs, cds_PropsLengthVolUnitNo.AsInteger, cds_PropsOwnerNo.AsInteger,
  StrToFloatDef(eAT.Text,0), StrToFloatDef(eAB.Text,0),
  eReference.Text, eBL.Text, eInfo2.Text) ;
-
+//  BuildSql(LIPs, cds_PropsLengthVolUnitNo.AsInteger, cds_PropsOwnerNo.AsInteger,
+//  StrToFloatDef(eAT.Text,0), StrToFloatDef(eAB.Text,0),
+//  eReference.Text, eBL.Text, eInfo2.Text) ;
+// dmInventory.sq_invpiv.sql.SaveToFile('LagerSql.txt') ;
  Try
   Except
    On E: Exception do
    Begin
-    ShowMessage('dmInventory.sp_invpiv.Active, Error message ' + E.Message) ;
+    ShowMessage('dmInventory.sq_invpiv.Active, Error message ' + E.Message) ;
    End ;
   End ;
 
   Try
-    dmInventory.sp_invpiv.EnableControls ;
+    dmInventory.sq_invpiv.EnableControls ;
     ChangeInventorySource(Sender);
    Except
     On E: Exception do
@@ -1730,7 +1741,8 @@ begin
 
 
  Finally
-  dmInventory.sp_invpiv.EnableControls ;
+  grdDBBandedPerSortiment.Endupdate ;
+  dmInventory.sq_invpiv.EnableControls ;
   Screen.Cursor := Save_Cursor ;
  End ;
 end;
@@ -1914,59 +1926,59 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
 // SetFilter ;
   if not (dmLanguage.siLang1.ActiveLanguage in [2,4]) then
   begin
-    dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'Package';
-    dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel := 'PT';
-    dmInventory.sp_invpiv.FieldByName('Styck').DisplayLabel := 'Pcs';
-    dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel := 'Place';
-    dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel := 'Group';
-    dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Product';
-    dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Size';
-    dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel := 'AT';
-    dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel := 'AB';
-    dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel := 'Average length';
-    dmInventory.sp_invpiv.FieldByName('InventorySource').DisplayLabel := 'Source';
-    dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel := 'Species';
-    dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel := 'Surfacing';
-    dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Commodity';
+    dmInventory.sq_invpiv.FieldByName('Paket').DisplayLabel := 'Package';
+    dmInventory.sq_invpiv.FieldByName('LP').DisplayLabel := 'PT';
+    dmInventory.sq_invpiv.FieldByName('Styck').DisplayLabel := 'Pcs';
+    dmInventory.sq_invpiv.FieldByName('PIP').DisplayLabel := 'Place';
+    dmInventory.sq_invpiv.FieldByName('LIP').DisplayLabel := 'Group';
+    dmInventory.sq_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Product';
+    dmInventory.sq_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Size';
+    dmInventory.sq_invpiv.FieldByName('AT').DisplayLabel := 'AT';
+    dmInventory.sq_invpiv.FieldByName('AB').DisplayLabel := 'AB';
+    dmInventory.sq_invpiv.FieldByName('AvgLength').DisplayLabel := 'Average length';
+    dmInventory.sq_invpiv.FieldByName('InventorySource').DisplayLabel := 'Source';
+    dmInventory.sq_invpiv.FieldByName('Species').DisplayLabel := 'Species';
+    dmInventory.sq_invpiv.FieldByName('Surfacing').DisplayLabel := 'Surfacing';
+    dmInventory.sq_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Commodity';
   end
   else
   begin
 
     if cds_PropsOwnerNo.AsInteger = 30220 then
     begin
-      dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'PALL';
+      dmInventory.sq_invpiv.FieldByName('Paket').DisplayLabel := 'PALL';
     end
     else
-      dmInventory.sp_invpiv.FieldByName('Paket').DisplayLabel := 'Paket';
+      dmInventory.sq_invpiv.FieldByName('Paket').DisplayLabel := 'Paket';
 
-    dmInventory.sp_invpiv.FieldByName('Styck').DisplayLabel := 'STYCK';
-    dmInventory.sp_invpiv.FieldByName('LP').DisplayLabel := 'PT';
-    dmInventory.sp_invpiv.FieldByName('PIP').DisplayLabel := 'Ställe';
-    dmInventory.sp_invpiv.FieldByName('LIP').DisplayLabel := 'Grupp';
-    dmInventory.sp_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Produkt';
-    dmInventory.sp_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Storlek';
+    dmInventory.sq_invpiv.FieldByName('Styck').DisplayLabel := 'STYCK';
+    dmInventory.sq_invpiv.FieldByName('LP').DisplayLabel := 'PT';
+    dmInventory.sq_invpiv.FieldByName('PIP').DisplayLabel := 'Ställe';
+    dmInventory.sq_invpiv.FieldByName('LIP').DisplayLabel := 'Grupp';
+    dmInventory.sq_invpiv.FieldByName('ProductDisplayName').DisplayLabel := 'Produkt';
+    dmInventory.sq_invpiv.FieldByName('PackageSizeName').DisplayLabel := 'Storlek';
 
-    dmInventory.sp_invpiv.FieldByName('AT').DisplayLabel := 'AT';
-    dmInventory.sp_invpiv.FieldByName('AB').DisplayLabel := 'AB';
+    dmInventory.sq_invpiv.FieldByName('AT').DisplayLabel := 'AT';
+    dmInventory.sq_invpiv.FieldByName('AB').DisplayLabel := 'AB';
 
-    dmInventory.sp_invpiv.FieldByName('AvgLength').DisplayLabel := 'Medellängd';
+    dmInventory.sq_invpiv.FieldByName('AvgLength').DisplayLabel := 'Medellängd';
 
 
 
-// dmInventory.sp_invpiv.FieldByName('CertShortName').DisplayLabel      := 'Cert.' ;
- //dmInventory.sp_invpiv.FieldByName('RegPointType').DisplayLabel       := 'RPT' ;
-    dmInventory.sp_invpiv.FieldByName('InventorySource').DisplayLabel := 'Källa';
+// dmInventory.sq_invpiv.FieldByName('CertShortName').DisplayLabel      := 'Cert.' ;
+ //dmInventory.sq_invpiv.FieldByName('RegPointType').DisplayLabel       := 'RPT' ;
+    dmInventory.sq_invpiv.FieldByName('InventorySource').DisplayLabel := 'Källa';
 
-// dmInventory.sp_invpiv.FieldByName('LIPGroupNo').Visible              := False ;
-// dmInventory.sp_invpiv.FieldByName('nooflengths').Visible             := False ;
-// dmInventory.sp_invpiv.FieldByName('AT').Visible                      := False ;
-// dmInventory.sp_invpiv.FieldByName('AB').Visible                      := False ;
-    dmInventory.sp_invpiv.FieldByName('Species').DisplayLabel := 'Träslag';
-    dmInventory.sp_invpiv.FieldByName('Surfacing').DisplayLabel := 'Utförande';
-// dmInventory.sp_invpiv.FieldByName('LPName').DisplayLabel           := 'LP' ;
-// dmInventory.sp_invpiv.FieldByName('AreaName').DisplayLabel         := 'Area' ;
-// dmInventory.sp_invpiv.FieldByName('PositionName').DisplayLabel     := 'Position' ;
-    dmInventory.sp_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Varugrupp';
+// dmInventory.sq_invpiv.FieldByName('LIPGroupNo').Visible              := False ;
+// dmInventory.sq_invpiv.FieldByName('nooflengths').Visible             := False ;
+// dmInventory.sq_invpiv.FieldByName('AT').Visible                      := False ;
+// dmInventory.sq_invpiv.FieldByName('AB').Visible                      := False ;
+    dmInventory.sq_invpiv.FieldByName('Species').DisplayLabel := 'Träslag';
+    dmInventory.sq_invpiv.FieldByName('Surfacing').DisplayLabel := 'Utförande';
+// dmInventory.sq_invpiv.FieldByName('LPName').DisplayLabel           := 'LP' ;
+// dmInventory.sq_invpiv.FieldByName('AreaName').DisplayLabel         := 'Area' ;
+// dmInventory.sq_invpiv.FieldByName('PositionName').DisplayLabel     := 'Position' ;
+    dmInventory.sq_invpiv.FieldByName('VarugruppNamn').DisplayLabel := 'Varugrupp';
   end;
 
   aColumn := grdDBBandedPerSortiment.GetColumnByFieldName('productNo');
@@ -2097,10 +2109,10 @@ procedure TfLager.DoOnGetContentStyle(Sender: TcxCustomGridTableView;
    aColumn.Position.BandIndex := 3 ;
 }
 
-  for x := cFirstLengthFieldNumber to dmInventory.sp_invpiv.FieldCount - 1 do
+  for x := cFirstLengthFieldNumber to dmInventory.sq_invpiv.FieldCount - 1 do
   begin
-    dmInventory.sp_invpiv.Fields.Fields[x].ReadOnly := False;
-    dmInventory.sp_invpiv.Fields.Fields[x].Required := False;
+    dmInventory.sq_invpiv.Fields.Fields[x].ReadOnly := False;
+    dmInventory.sq_invpiv.Fields.Fields[x].Required := False;
   end;
 
   for x := cFirstLengthFieldNumber to grdDBBandedPerSortiment.ColumnCount - 1 do
@@ -2202,7 +2214,7 @@ Begin
   Begin
    if grdDBBandedPerSortiment.Columns[x].Caption = cds_BookingDtlBookedALMM.AsString then
    Begin
-    if sp_invpiv.Locate('ProductNo;LIPGroupNo', VarArrayOf([cds_BookingDtlBookedProductNo.AsInteger,
+    if sq_invpiv.Locate('ProductNo;LIPGroupNo', VarArrayOf([cds_BookingDtlBookedProductNo.AsInteger,
     cds_BookingDtlBookedLIPGroupNo.AsInteger]), []) then
     Begin
      SD := GetSDBalance(cds_BookingDtlBookedProductNo.AsInteger,
@@ -2210,10 +2222,10 @@ Begin
      cds_BookingDtlBookedLIPGroupNo.AsInteger,
      cds_BookingDtlBookedALMM.AsFloat) ;
 
-     sp_invpiv.Edit ;
-     sp_invpiv.FieldByName(grdDBBandedPerSortiment.Columns[x].DataBinding.FieldName).AsFloat := SD ;
+     sq_invpiv.Edit ;
+     sq_invpiv.FieldByName(grdDBBandedPerSortiment.Columns[x].DataBinding.FieldName).AsFloat := SD ;
 //     ShowMessage(grdDBBandedPerSortiment.Columns[x].Caption) ;
-     sp_invpiv.Post ;
+     sq_invpiv.Post ;
     End ;
    End ;
   End ;
@@ -2436,10 +2448,10 @@ begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
  Try
- if Length(sp_invpiv.FieldByName('PackageSizeName').AsString) = 0 then
+ if Length(sq_invpiv.FieldByName('PackageSizeName').AsString) = 0 then
   Package_Size := -1
   else
-   Package_Size := sp_invpiv.FieldByName('Package_Size').AsInteger ;
+   Package_Size := sq_invpiv.FieldByName('Package_Size').AsInteger ;
 // LIPs := TRIM(GetSQLofComboFilter(cbLIP)) ;
 // LoadGridLayoutPkgNoDtl ;
   grdPkgNosDBBandedTableView1.Bands.Items[2].Caption := 'ANTAL STYCK PER LÄNGD' ;// grdDBBandedPerSortiment.Bands.Items[2].Caption ;
@@ -2449,13 +2461,13 @@ begin
 
 
  grdPkgNosDBBandedTableView1.ClearItems ;
- dmInventory.Refresh_sp_invpivPkgDtl(sp_invpiv.FieldByName('LIPNo').AsInteger,
- sp_invpiv.FieldByName('InventorySource').AsInteger,
+ dmInventory.Refresh_sp_invpivPkgDtl(sq_invpiv.FieldByName('LIPNo').AsInteger,
+ sq_invpiv.FieldByName('InventorySource').AsInteger,
  0, // Alltid UNIT = Styck här //cds_PropsLengthVolUnitNo.AsInteger,
- sp_invpiv.FieldByName('ProductNo').AsInteger,
- ALMM, sp_invpiv.FieldByName('LP').AsInteger,
+ sq_invpiv.FieldByName('ProductNo').AsInteger,
+ ALMM, sq_invpiv.FieldByName('LP').AsInteger,
  Package_Size,
- 0, //sp_invpiv.FieldByName('CertNo').AsInteger,
+ 0, //sq_invpiv.FieldByName('CertNo').AsInteger,
  eReference.Text, eBL.Text, eInfo2.Text) ;
  Try
   Except
@@ -2556,8 +2568,8 @@ begin
  Try
    With dmInventory do
    Begin
-    sp_invpiv.Active  := False ;
-    sp_invpiv.Active  := True ;
+    sq_invpiv.Active  := False ;
+    sq_invpiv.Active  := True ;
     sp_invpivPkgDtl.Active    := False ;
     sp_invpivPkgDtl.Active    := True ;
    End ;
@@ -2966,8 +2978,8 @@ begin
  Try
    With dmInventory do
    Begin
-    sp_invpiv.Active  := False ;
-    sp_invpiv.Active  := True ;
+    sq_invpiv.Active  := False ;
+    sq_invpiv.Active  := True ;
     sp_invpivPkgDtl.Active    := False ;
     sp_invpivPkgDtl.execute ;
    End ;
@@ -3232,7 +3244,7 @@ begin
 
 
 
- LoadGridLayoutPaketNrVy ;
+// LoadGridLayoutPaketNrVy ;
 
  grdDBBandedPerPaketNr.BeginUpdate ;
  Try
@@ -4041,5 +4053,333 @@ Begin
 // grdDBBandedPerSortiment.OptionsBehavior.BestFitMaxRecordCount := grdDBBandedPerSortiment.ViewInfo.VisibleRecordCount ;
 // grdDBBandedPerSortiment.ApplyBestFit();
 End ;
+
+procedure TfLager.BuildSql(const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
+Var LipNo2 : String ;
+Begin
+ with dmInventory.sq_invpiv do
+ Begin
+  SQL.Add(' DECLARE  @err int, @LIPNo2 varchar(100), @UnitName varchar(15), @MinInvoiceLoadDate DateTime, @BaseLoadDateFilter DateTime') ;
+
+  SQL.Add('SET @BaseLoadDateFilter = ' +  QuotedStr('2020-12-01') );
+
+  LipNo2 := LIPNos ;
+
+{
+    SQL.Add('IF Len(@LIPNo) > 0');
+    SQL.Add('SET @LIPNo2	= @LIPNo');
+    SQL.Add('ELSE');
+    SQL.Add('SET @LIPNo2	= NULL');
+}
+
+  SQL.Add('CREATE TABLE #totalinventory (');
+  SQL.Add('	  PIP varchar(50)');
+  SQL.Add('	, LIP varchar(50)');
+  SQL.Add('	, Paketnr int');
+  SQL.Add('	, Prefix char(3)');
+  SQL.Add('	, ProductDisplayName varchar(100)');
+  SQL.Add('	, PackageSizeName varchar(50)');
+  SQL.Add('	, PackageTypeNo int');
+  SQL.Add('	, Styck int');
+  SQL.Add('	, AM3 float');
+  SQL.Add('	, NM3 float');
+  SQL.Add('	, AT float');
+  SQL.Add('	, AB float');
+  SQL.Add('	, ProductNo int');
+  SQL.Add('	, AM1 float');
+  SQL.Add('	, MFBM float');
+  SQL.Add('	, AM2 float');
+  SQL.Add('	, Species	varchar(30)');
+  SQL.Add('	, Impregnering varchar(40)');
+  SQL.Add('	, Kvalitet varchar(30)');
+  SQL.Add('	, Surfacing varchar(30)');
+  SQL.Add('	, LIPNo int');
+  SQL.Add('	, PIPNo int  ');
+  SQL.Add('	, ProductValue float');
+  SQL.Add('	, VarugruppNamn varchar(35)');
+  SQL.Add('	, Package_Size int');
+  SQL.Add('	, LP int');
+  SQL.Add('	, InventorySource int');
+  SQL.Add('	, LPName varchar(2)');
+  SQL.Add('	, ActualLengthMM float not null');
+  SQL.Add('	, P0 int null');
+  SQL.Add('	, P1 float null');
+  SQL.Add('	, P2 float null');
+  SQL.Add('	, P3 int null');
+  SQL.Add('	)');
+  SQL.Add(';');
+
+  SQL.Add('WITH Inventory_1 AS');
+  SQL.Add('(');
+  SQL.Add('SELECT LIP = LIP.LogicalInventoryName');
+  SQL.Add(', PaketNr = pn.PackageNo');
+  SQL.Add(', Prefix = pn.SupplierCode');
+  SQL.Add(', PackageTypeNo = pn.PackageTypeNo');
+  SQL.Add(', AT = pg.ActualThicknessMM');
+  SQL.Add(', AB = pg.ActualWidthMM');
+  SQL.Add(', ProductNo = p.ProductNo');
+  SQL.Add(', LIPNo = lip.LogicalInventoryPointNo');
+  SQL.Add(', PIPNo = pip.PhysicalInventoryPointNo');
+  SQL.Add(', ProductValue = pn.Original_Price * pt.Totalm3Nominal');
+  SQL.Add(', Package_Size = pn.Package_Size');
+  SQL.Add(', InventorySource = 0');
+  SQL.Add(', PositionJoin = pn.PositionID');
+  SQL.Add(', VarugruppJoin = p.VarugruppNo');
+  SQL.Add(', LengthSpecJoin = pt.LengthSpecNo');
+  SQL.Add(', SpeciesJoin = pg.SpeciesNo');
+  SQL.Add(', ProductCategoryJoin = pg.ProductCategoryNo');
+  SQL.Add(', GradeJoin = p.GradeNo');
+  SQL.Add(', SurfacingJoin = pg.SurfacingNo');
+  SQL.Add(', CityJoin = PIP.PhyInvPointNameNo');
+  SQL.Add(', PackageSizeJoin = pn.Package_Size  ');
+  SQL.Add('FROM dbo.PackageNumber pn with(nolock)');
+  SQL.Add('INNER JOIN dbo.Packagetype pt with(nolock) ON pt.packagetypeno = pn.packagetypeno');
+  SQL.Add('INNER JOIN dbo.Product p with(nolock) ON p.ProductNo = pt.ProductNo');
+  SQL.Add('INNER JOIN dbo.ProductGroup pg with(nolock) ON pg.ProductGroupNo = p.ProductGroupNo');
+  SQL.Add('INNER JOIN dbo.LogicalInventoryPoint LIP with(nolock) ON LIP.LogicalInventoryPointNo = pn.LogicalInventoryPointNo');
+  SQL.Add('INNER JOIN dbo.PhysicalInventoryPoint PIP with(nolock) ON PIP.PhysicalInventoryPointNo = LIP.PhysicalInventoryPointNo');
+  SQL.Add('WHERE');
+  SQL.Add('pn.[Status] = 1');
+{
+    SQL.Add('AND ((pn.REFERENCE Like @REF) or (@REF = ''))');
+    SQL.Add('AND ((pn.BL_NO Like @BL) or (@BL = ''))');
+    SQL.Add('AND ((pn.Info2 Like @Info2) or (@info2 = ''))');
+    SQL.Add('AND PIP.OwnerNo = @OwnerNo');
+    SQL.Add('AND ((pg.ActualThicknessMM = @AT) or (@AT = 0))');
+    SQL.Add('AND ((pg.ActualWidthMM = @AB) or (@AB = 0))');
+}
+  SQL.Add('AND (');
+  SQL.Add(      LIPNo2 + ' IS NULL OR EXISTS (SELECT Item FROM dbo.SplitStringToIntTable(' + LIPNo2 + ' ) i WHERE lip.LogicalInventoryPointNo = i.Item)');
+  SQL.Add('	)');
+  SQL.Add(')');
+  SQL.Add(',');
+
+
+  SQL.Add('Inventory_2 AS');
+  SQL.Add('(');
+  SQL.Add('SELECT LIP = LIP.LogicalInventoryName');
+  SQL.Add(', PaketNr = pn.PackageNo');
+  SQL.Add(', Prefix = pn.SupplierCode');
+  SQL.Add(', PackageTypeNo = pn.PackageTypeNo');
+  SQL.Add(', AT = pg.ActualThicknessMM');
+  SQL.Add(', AB = pg.ActualWidthMM');
+  SQL.Add(', ProductNo = pd.ProductNo');
+  SQL.Add(', LIPNo = lip.LogicalInventoryPointNo');
+  SQL.Add(', PIPNo = pip.PhysicalInventoryPointNo');
+  SQL.Add(', ProductValue = pn.Original_Price * pt.Totalm3Nominal');
+  SQL.Add(', Package_Size = pn.Package_Size');
+  SQL.Add(', InventorySource = 1');
+  SQL.Add(', PositionJoin = pn.PositionID');
+  SQL.Add(', VarugruppJoin = pd.VarugruppNo');
+  SQL.Add(', LengthSpecJoin = pt.LengthSpecNo');
+  SQL.Add(', SpeciesJoin = pg.SpeciesNo');
+  SQL.Add(', ProductCategoryJoin = pg.ProductCategoryNo');
+  SQL.Add(', GradeJoin = pd.GradeNo');
+  SQL.Add(', SurfacingJoin = pg.SurfacingNo');
+  SQL.Add(', CityJoin = PIP.PhyInvPointNameNo');
+  SQL.Add(', PackageSizeJoin = pn.Package_Size');
+  SQL.Add('FROM dbo.Client Verk with(nolock)');
+  SQL.Add('INNER JOIN dbo.Loads L with(nolock) ON L.SupplierNo = Verk.ClientNo');
+  SQL.Add('LEFT  JOIN dbo.Invoiced_Load inl with(nolock) ON inl.LoadNo = L.LoadNo');
+  SQL.Add('INNER JOIN dbo.LoadDetail LD with(nolock) ON LD.LoadNo = L.LoadNo');
+  SQL.Add('INNER JOIN dbo.CustomerShippingPlanDetails csd with(nolock) ON csd.CustShipPlanDetailObjectNo = LD.DefaultCustShipObjectNo');
+  SQL.Add('INNER JOIN dbo.CustomerShippingPlanHeader csh with(nolock) ON csh.ShippingPlanNo = csd.ShippingPlanNo');
+  SQL.Add('INNER JOIN dbo.Orders oh ON oh.OrderNo = csh.OrderNo');
+  SQL.Add('INNER JOIN dbo.LogicalInventoryPoint lip with(nolock) ON lip.LogicalInventoryPointNo = LD.LIPNo');
+  SQL.Add('INNER JOIN dbo.PhysicalInventoryPoint pip with(nolock) ON pip.PhysicalInventoryPointNo = lip.PhysicalInventoryPointNo');
+  SQL.Add('INNER JOIN dbo.PackageNumber pn with(nolock) ON pn.PackageNo = LD.PackageNo and pn.SupplierCode = LD.SupplierCode');
+  SQL.Add('INNER JOIN dbo.PackageType pt with(nolock) ON pt.PackageTypeNo = LD.PackageTypeNo');
+  SQL.Add('INNER JOIN dbo.Product pd with(nolock) ON pd.ProductNo = pt.ProductNo');
+  SQL.Add('INNER JOIN dbo.ProductGroup pg ON pg.ProductGroupNo = pd.ProductGroupNo');
+  SQL.Add('WHERE');
+
+  SQL.Add('Verk.ClientNo = @OwnerNo AND');
+  SQL.Add('L.LoadedDate >= @BaseLoadDateFilter AND');
+  SQL.Add('oh.OrderType = 0');
+
+
+  SQL.Add('AND NOT EXISTS (SELECT * FROM dbo.InvoiceNos nos WHERE nos.InternalInvoiceNo = inl.InternalInvoiceNo)');
+
+{
+    SQL.Add('AND ((pn.REFERENCE Like @REF) or (@REF = ''))');
+    SQL.Add('AND ((pn.BL_NO Like @BL) or (@BL = ''))');
+    SQL.Add('AND ((pn.Info2 Like @Info2) or (@info2 = ''))');
+    SQL.Add('AND PIP.OwnerNo = @OwnerNo');
+    SQL.Add('AND ((pg.ActualThicknessMM = @AT) or (@AT = 0))');
+    SQL.Add('AND ((pg.ActualWidthMM = @AB) or (@AB = 0))');
+}
+  SQL.Add('AND (');
+  SQL.Add(      LIPNo2 + '  IS NULL OR EXISTS (SELECT Item FROM dbo.SplitStringToIntTable('+LIPNo2 + ') i WHERE lip.LogicalInventoryPointNo = i.Item)');
+  SQL.Add('	)');
+  SQL.Add(')');
+  SQL.Add(', result AS (');
+  SQL.Add('SELECT LIP, PaketNr, Prefix, PackageTypeNo, AT, AB, ProductNo');
+  SQL.Add(', LIPNo, PIPNo, ProductValue, Package_Size, InventorySource');
+  SQL.Add(', PositionJoin, VarugruppJoin, LengthSpecJoin, SpeciesJoin, ProductCategoryJoin,');
+  SQL.Add(' GradeJoin, SurfacingJoin, CityJoin, PackageSizeJoin');
+  SQL.Add('FROM Inventory_1');
+
+  SQL.Add('UNION');
+
+  SQL.Add('SELECT LIP, PaketNr, Prefix, PackageTypeNo, AT, AB, ProductNo');
+  SQL.Add(', LIPNo, PIPNo, ProductValue, Package_Size, InventorySource');
+  SQL.Add(', PositionJoin, VarugruppJoin, LengthSpecJoin, SpeciesJoin, ProductCategoryJoin');
+  SQL.Add(', GradeJoin, SurfacingJoin, CityJoin, PackageSizeJoin');
+  SQL.Add('FROM Inventory_2');
+  SQL.Add(')');
+
+  SQL.Add('INSERT INTO #totalinventory (PIP, LIP, PaketNr, Prefix, ProductDisplayName, PackageSizeName, PackageTypeNo, Styck');
+  SQL.Add(', AM3, NM3, AT, AB, ProductNo, AM1, MFBM, AM2, Species, Impregnering, Kvalitet, Surfacing');
+  SQL.Add(', LIPNo, PIPNo, ProductValue, VarugruppNamn, Package_Size, LP, InventorySource, LPName, ActualLengthMM, P0, P1, P2, P3)');
+  SQL.Add('SELECT  PIP = cy.CityName, LIP, PaketNr, Prefix, ProductDisplayName = pde.ProductDisplayName');
+  SQL.Add(', PackageSizeName = ps.PackageSizeName, r.PackageTypeNo, Styck = ptd.NoOfPieces, AM3 = ptd.m3Actual');
+  SQL.Add(', NM3 = ptd.m3Nominal, AT, AB, r.ProductNo, AM1 = ptd.LinealMeterActualLength, MFBM = ptd.MFBMNominal');
+  SQL.Add(', AM2 = ptd.SQMofActualWidth, Species = SPE.SpeciesName');
+  SQL.Add(', Impregnering = imp.ProductCategoryName, Kvalitet = Gr.GradeName, Surfacing = SUR.SurfacingName');
+  SQL.Add(', LIPNo, r.PIPNo, ProductValue, VarugruppNamn = va.VarugruppNamn, Package_Size, LP = LS.ProductLengthNo, InventorySource');
+  SQL.Add(', LPName = CASE WHEN LS.ProductLengthNo = 0 THEN '+QuotedStr('TP')+' ELSE '+QuotedStr('LP')+' END');
+  SQL.Add(', ActualLengthMM = t1.ActualLengthMM');
+  SQL.Add(', P0 = ptd.NoOfPieces');
+  SQL.Add(', P1 = ptd.m3Actual');
+  SQL.Add(', P2 = ptd.m3Nominal  ');
+  SQL.Add(', P3 = 1');
+  SQL.Add('FROM result r INNER JOIN dbo.City cy on cy.CityNo = r.CityJoin');
+  SQL.Add('INNER JOIN dbo.LengthSpec LS with(nolock) ON LS.LengthSpecNo = r.LengthSpecJoin');
+  SQL.Add('INNER JOIN dbo.ProductCategory imp with(nolock) ON imp.ProductCategoryNo = r.ProductCategoryJoin AND imp.LanguageCode = @LanguageCode');
+  SQL.Add('INNER JOIN dbo.Species SPE with(nolock) ON SPE.SpeciesNo = r.SpeciesJoin AND SPE.LanguageCode = @LanguageCode');
+  SQL.Add('INNER JOIN dbo.Surfacing SUR with(nolock) ON SUR.SurfacingNo = r.SurfacingJoin AND SUR.LanguageCode = @LanguageCode');
+  SQL.Add('INNER JOIN dbo.Grade Gr with(nolock) ON Gr.GradeNo = r.GradeJoin AND Gr.LanguageCode = @LanguageCode');
+  SQL.Add('INNER JOIN PackageTypeDetail ptd with(nolock) ON ptd.PackageTypeNo = r.PackageTypeNo');
+  SQL.Add('INNER JOIN dbo.ProductLength t1 with(nolock) ON t1.ProductLengthNo = ptd.ProductLengthNo');
+  SQL.Add('LEFT OUTER JOIN dbo.PackageSize ps with(nolock) on ps.PackageSizeNo = r.PackageSizeJoin and ps.LanguageCode = 1');
+  SQL.Add('LEFT OUTER JOIN dbo.ProductDesc pde with(nolock) on pde.ProductNo = r.ProductNo AND pde.LanguageID = @LanguageCode');
+  SQL.Add('LEFT OUTER JOIN dbo.Varugrupp va with(nolock) on va.VarugruppNo = r.VarugruppJoin AND va.LanguageCode = @LanguageCode');
+
+  SQL.Add('DECLARE @cols nvarchar(MAX)');
+  SQL.Add('DECLARE @sumcols nvarchar(MAX)');
+  SQL.Add('DECLARE @query nvarchar(MAX)');
+
+  SQL.Add(';WITH Lengths AS');
+  SQL.Add('( SELECT DISTINCT  l.ActualLengthMM');
+  SQL.Add(' FROM #totalinventory i');
+  SQL.Add(' INNER JOIN PackageTypeDetail d ON d.PackageTypeNo = i.PackageTypeNo');
+  SQL.Add(' INNER JOIN ProductLength l ON l.ProductLengthNo = d.ProductLengthNo');
+  SQL.Add(' )');
+  SQL.Add('SELECT  @cols = STUFF(( SELECT DISTINCT TOP 100 PERCENT');
+  SQL.Add('                                '+QuotedStr('],[')+' + CAST(t.ActualLengthMM AS nvarchar(50))');
+  SQL.Add('                        FROM    Lengths AS t');
+  SQL.Add('                        ORDER BY '+QuotedStr('],[')+' + CAST(t.ActualLengthMM AS nvarchar(50))');
+
+  SQL.Add('                        FOR XML PATH('+QuotedStr('')+')  ');
+  SQL.Add('                      ), 1, 2, '+QuotedStr('') + ') +  '+QuotedStr(']'));
+
+  SQL.Add(';WITH Lengths AS');
+  SQL.Add('( SELECT DISTINCT  l.ActualLengthMM');
+  SQL.Add(' FROM #totalinventory i');
+  SQL.Add(' INNER JOIN PackageTypeDetail d ON d.PackageTypeNo = i.PackageTypeNo');
+  SQL.Add(' INNER JOIN ProductLength l ON l.ProductLengthNo = d.ProductLengthNo');
+  SQL.Add(' )');
+
+
+  SQL.Add('SELECT  @sumcols = STUFF(( SELECT DISTINCT TOP 100 PERCENT');
+  SQL.Add(' '+QuotedStr(',[L') + ' + CAST(t.ActualLengthMM AS nvarchar(50)) + ' +  QuotedStr('] = SUM([') + ' + CAST(t.ActualLengthMM AS nvarchar(50)) + '+QuotedStr('])'));
+  SQL.Add('                        FROM    Lengths AS t');
+  SQL.Add('ORDER BY '+QuotedStr(',[L') + ' + CAST(t.ActualLengthMM AS nvarchar(50)) + '  +QuotedStr('] = SUM([') + ' + CAST(t.ActualLengthMM AS nvarchar(50)) + '+QuotedStr('])'));
+  SQL.Add('                        FOR XML PATH('+QuotedStr('')+')');
+  SQL.Add('                      ), 1, 1, '+QuotedStr('')+')');
+
+  //SQL.Add('print(@sumcols)');
+
+  SQL.Add('SELECT @query = N'''+'SELECT Paket = COUNT(DISTINCT PaketId)');
+  SQL.Add('                    , PT = LPName');
+  SQL.Add('                    , PIP = PIP');
+  SQL.Add('                    , LIP = LIP');
+  SQL.Add('                    , ProductDisplayName = ProductDisplayName');
+  SQL.Add('                    , PackageSizeName = PackageSizeName');
+  SQL.Add('                    , Styck = SUM(Styck)');
+  SQL.Add('                    , AM3 = SUM(AM3)');
+  SQL.Add('                    , NM3 = SUM(NM3)');
+  SQL.Add('                    , AT = AT');
+  SQL.Add('                    , AB = AB');
+  SQL.Add('                    , ProductNo = ProductNo');
+  SQL.Add('                    , AM1 = SUM(AM1)');
+  SQL.Add('                    , MFBM = SUM(MFBM)');
+  SQL.Add('                    , AM2 = SUM(AM2)');
+  SQL.Add('                    , Species = Species');
+  SQL.Add('                    , Impregnering = Impregnering');
+  SQL.Add('                    , Kvalitet = Kvalitet');
+  SQL.Add('                    , Surfacing = Surfacing');
+  SQL.Add('                    , LIPNo = LIPNo');
+  SQL.Add('                    , PIPNo = PIPNo');
+  SQL.Add('					, ProductValue = SUM(ProductValue)');
+  SQL.Add('                    , VarugruppNamn = VarugruppNamn');
+  SQL.Add('                    , AvgLength = CAST( SUM(AM1) / SUM(Styck) AS float)');
+  SQL.Add('                    , Package_Size = Package_Size');
+  SQL.Add('                    , LP = LP');
+  SQL.Add('                    , InventorySource = InventorySource');
+  SQL.Add('                    , ''');
+  SQL.Add('+ @sumcols');
+  SQL.Add('+ ''' + ' FROM ( ');
+  SQL.Add('          SELECT PaketId = CAST(Paketnr as varchar(20)) + Prefix');
+  SQL.Add('               , PIP');
+  SQL.Add('               , LIP');
+  SQL.Add('               , ProductDisplayName');
+  SQL.Add('               , PackageSizeName');
+  SQL.Add('              , Styck  = SUM(Styck)');
+  SQL.Add('              , AM3  = SUM(AM3)');
+  SQL.Add('               , NM3  = SUM(NM3)');
+  SQL.Add('               , AT');
+  SQL.Add('               , AB');
+  SQL.Add('               , ProductNo');
+  SQL.Add('               , AM1  = SUM(AM1)');
+  SQL.Add('               , MFBM  = SUM(MFBM)');
+  SQL.Add('               , AM2  = SUM(AM2)');
+  SQL.Add('               , Species');
+  SQL.Add('               , Impregnering');
+  SQL.Add('               , Kvalitet');
+  SQL.Add('               , Surfacing');
+  SQL.Add('               , LIPNo');
+  SQL.Add('               , PIPNo');
+  SQL.Add('               , ProductValue = SUM(ProductValue)');
+  SQL.Add('               , VarugruppNamn');
+  SQL.Add('               , Package_Size');
+  SQL.Add('               , LP');
+  SQL.Add('               , InventorySource');
+  SQL.Add('               , LPName');
+  SQL.Add('		       , ColumnName = CAST(t.ActualLengthMM AS nvarchar(50))');
+  SQL.Add('			   , P0 = SUM(P0)');
+  SQL.Add('			   , P1 = SUM(P1)');
+  SQL.Add('			   , P2 = SUM(P2)');
+  SQL.Add('			   , P3 = SUM(P3)');
+  SQL.Add('			   FROM #totalinventory AS t');
+  SQL.Add('			   GROUP BY PIP, LIP, ProductDisplayName, PackageSizeName,  ProductNo, Species, Impregnering');
+  SQL.Add('               , Kvalitet, Surfacing, LIPNo, PIPNo, VarugruppNamn, Package_Size');
+  SQL.Add('               , LP, InventorySource, LPName, CAST(t.ActualLengthMM AS nvarchar(50))');
+  SQL.Add('               , AT, AB, Paketnr ,Prefix');
+  SQL.Add('          ) p ''');
+
+  SQL.Add('      + CASE @PivotUnit WHEN 3 THEN ' + QuotedStr(' PIVOT (SUM(P3) FOR ColumnName IN ( ') );
+  SQL.Add('	                    WHEN 2 THEN '+QuotedStr(' PIVOT (SUM(P2) FOR ColumnName IN ( '));
+  SQL.Add('	                    WHEN 1 THEN '+QuotedStr(' PIVOT (SUM(P1) FOR ColumnName IN ( '));
+  SQL.Add('	                    WHEN 0 THEN '+QuotedStr(' PIVOT (SUM(P0) FOR ColumnName IN ( '));
+  SQL.Add('	                    ELSE '+QuotedStr(' PIVOT (SUM(P3) FOR ColumnName IN ( ') +' END');
+
+  SQL.Add('	 +  @cols');
+  SQL.Add('       +  '+QuotedStr(' )) AS pvt'));
+  SQL.Add('		+ '+QuotedStr(' GROUP BY LP, PIP, LIP,  ProductDisplayName, PackageSizeName, '));
+  SQL.Add('    +    '+QuotedStr(' AT, AB, ProductNo, Species, Impregnering, Kvalitet, Surfacing, LIPNo, PIPNo, '));
+  SQL.Add('     +   '+QuotedStr(' VarugruppNamn, Package_Size, LP, InventorySource '));
+  SQL.Add('+ ' + QuotedStr(' , LPName '));
+  SQL.Add('        + '+QuotedStr(' ORDER BY ProductDisplayName, PIP, LIP, AM3 '));
+
+  SQL.Add('		+ '+QuotedStr(';'));
+
+  SQL.Add('EXECUTE(@query)');
+
+  SQL.Add('DROP TABLE #totalinventory');
+
+//  SQL.SaveToFile('LAGER01.TXT') ;
+ End ;//with
+End;
 
 End.

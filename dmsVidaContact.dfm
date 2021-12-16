@@ -516,7 +516,6 @@ object dmsContact: TdmsContact
     end
   end
   object cds_RegPoints: TFDQuery
-    Active = True
     AfterInsert = cds_RegPointsAfterInsert
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
@@ -2488,5 +2487,30 @@ object dmsContact: TdmsContact
       FieldName = 'IntVerk'
       Origin = 'IntVerk'
     end
+  end
+  object sp_GroupClientExists: TFDStoredProc
+    Connection = dmsConnector.FDConnection1
+    StoredProcName = 'dbo.vis_GroupClientExists'
+    Left = 304
+    Top = 664
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@MainClientNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@ClientNo'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
   end
 end

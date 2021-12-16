@@ -329,7 +329,6 @@ type
     sq_PkgExistInInventoryPackageNo: TIntegerField;
     cdsLORowsCERTI: TStringField;
     cdsLORowsTräslag: TStringField;
-    cdsLORowsLoadedPkgs: TIntegerField;
     cdsLORowsPkgDiff: TFloatField;
     cds_LoadPackagesPaketstorlek: TStringField;
     cds_LoadPackagesCertfiering: TStringField;
@@ -419,6 +418,12 @@ type
     cds_LoadHeadLagerkod: TStringField;
     cdsLORowsLagerkod: TStringField;
     sp_CtrlPkgSavedToLoad: TFDStoredProc;
+    cdsLORowsLoadedPkgs: TFloatField;
+    sp_RegisterToLoadArrivalReg: TFDStoredProc;
+    sp_RemPkgFromLoad_III: TFDStoredProc;
+    sp_IsOrderPrepaid_Terms: TFDStoredProc;
+    sp_IsLoadPrepaid_Terms: TFDStoredProc;
+    sp_SetCallOffLoadStatus: TFDStoredProc;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);
@@ -447,6 +452,7 @@ type
    FOnAmbiguousPkgNo: TAmbiguityEvent;
    FWarningForRefMismatch: integer;
 
+
    procedure CtrlPkgSavedToLoad(const PackageNo : Integer;
                                   const SupplierCode : String; const LoadNo : Integer) ;
    procedure updateFlagForNoWarnings;
@@ -468,9 +474,14 @@ type
 
   public
     { Public declarations }
+   PrepaidLoad  : Boolean ;
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   procedure SetCallOffLoadStatus(const LoadNo : Integer) ;
+   function  IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
+   function  IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
+   procedure RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
    function  ErrorPkgExist(const LoadNo : Integer) : Boolean ;
    procedure AddLoadPkgErrorLog(const LoadNo, NewPkgNo : Integer;const PkgSupplierCode, Errortext : String) ;
    function  noWarningForRefMismatch: boolean;
@@ -641,7 +652,7 @@ begin
     WhenPosted := Now; // Make sure all records get same time of posting.
 
     if ThisUser.UserID <> 8 then
-      if Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger) then
+      if (Is_Load_Confirmed(cds_LoadHeadLoadNo.AsInteger)) and (PrepaidLoad = False) then
       begin
         ShowMessage('Kan inte spara för att lasten är ankomstregistrerad');
         Exit;
@@ -715,7 +726,7 @@ begin
     dmsSystem.AssignDMToThisWork('TdmLoadEntrySSP', 'dmArrivingLoads');
     try
 
-      if cds_LoadHeadSenderLoadStatus.AsInteger = 2 then
+      if cds_LoadHeadSenderLoadStatus.AsInteger >= 2 then
         dmArrivingLoads.GetIntPrice(-1, 0, -1, cds_LoadHeadLoadNo.AsInteger, True);
 
     finally
@@ -732,7 +743,10 @@ begin
 end;
 
 function TdmLoadEntrySSP.IS_Load_OK: Word;
+Var Status : integer ;
 begin
+  Status := cds_LoadHeadSenderLoadStatus.AsInteger ;
+
   Result := 2;
   cds_LoadPackages.First;
   while not cds_LoadPackages.Eof do
@@ -743,6 +757,10 @@ begin
  or (cds_LoadPackagesDefsspno.AsInteger = -1) then
       Result := 1;
     cds_LoadPackages.Next;
+
+  if Status = 3 then
+   Result := Status ;
+
   end;
 end;
 
@@ -793,6 +811,7 @@ procedure TdmLoadEntrySSP.ModifyLoadHeader(const WhenPosted : TDateTime;const Lo
 const
   ALWAYS_ZERO = 0;
 begin
+ Try
  if cds_LoadHead.State in [dsEdit, dsInsert] then
  cds_LoadHead.Post ;
  cds_LoadHead.Edit ;
@@ -817,6 +836,11 @@ begin
  End
  else
  cds_LoadHead.CommitUpdates ;
+
+ Finally
+    sp_RegisterToLoadArrivalReg.ParamByName('@LoadNo').AsInteger  := cds_LoadHeadLoadNo.AsInteger ;
+    sp_RegisterToLoadArrivalReg.ExecProc ;
+ End;
 end;
 
 function TdmLoadEntrySSP.noWarningForRefMismatch: boolean;
@@ -925,10 +949,12 @@ begin
                                          ProcessPkgAND_Log(status_Pkg_NOT_IN_Inventory, oper_Add_Pkg_To_Load) ;
 
                                          //Package is now an existing package.
+                                         if cds_LoadPackages.State in [dsbrowse] then
                                          cds_LoadPackages.Edit ;
                                          cds_LoadPackagesPkg_State.AsInteger  := EXISTING_PACKAGE ;
                                          cds_LoadPackagesChanged.AsInteger    := 0 ;
                                          cds_LoadPackages.Post ;
+
 
                                           if cds_LoadPackages.ChangeCount > 0 then
                                           begin
@@ -944,6 +970,7 @@ begin
                                         //DeletePackage proc also makes an entry to PackageNumberLog
                                          DeletePackage(LoadNo) ;
                                          cds_LoadPackages.Delete ;
+                                        //cds_LoadPackages
                                           if cds_LoadPackages.ChangeCount > 0 then
                                           begin
                                             cds_LoadPackages.ApplyUpdates(0);
@@ -1220,7 +1247,7 @@ End ;
 
 procedure TdmLoadEntrySSP.ProcessPkgAND_Log(const Status, Operation : Integer) ;
 Begin
-//Set PackageNumber.Status
+//Set PackageNumber.Status = 0
 //Make entry to PackageNumberLog
       Try
       sp_ProcessPkgAND_Log.Close ;
@@ -1610,6 +1637,34 @@ begin
   Abort ;
  End ;
 end;
+
+function TdmLoadEntrySSP.IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
+Begin
+  sp_IsOrderPrepaid_Terms.ParamByName('@LONo').AsInteger := LONo ;
+  sp_IsOrderPrepaid_Terms.ExecProc ;
+  Result := sp_IsOrderPrepaid_Terms.ParamByName('@Prepaid').AsInteger ;
+End ;
+
+function TdmLoadEntrySSP.IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
+Begin
+  sp_IsLoadPrepaid_Terms.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_IsLoadPrepaid_Terms.ExecProc ;
+  Result := sp_IsLoadPrepaid_Terms.ParamByName('@Prepaid').AsInteger ;
+End ;
+
+procedure TdmLoadEntrySSP.SetCallOffLoadStatus(const LoadNo : Integer) ;
+Begin
+ Try
+  sp_SetCallOffLoadStatus.ParamByName('@LoadNo').AsInteger := LoadNo ;
+  sp_SetCallOffLoadStatus.ExecProc ;
+ except
+  On E: Exception do
+  Begin
+   dmsSystem.FDoLog(E.Message) ;
+  // Raise ;
+  End ;
+ end;
+End;
 
 procedure TdmLoadEntrySSP.cds_LSPAfterInsert(DataSet: TDataSet);
 begin
@@ -2073,5 +2128,22 @@ begin
     else
      Result := False ;
 End;
+
+procedure TdmLoadEntrySSP.RemPkgFromLoad_III(const LoadNo, LoadDetailNo : Integer) ;
+Begin
+    Try
+    sp_RemPkgFromLoad_III.ParamByName('@LoadNo').AsInteger        := LoadNo ;
+    sp_RemPkgFromLoad_III.ParamByName('@LoadDetailNo').AsInteger  := LoadDetailNo ;
+    sp_RemPkgFromLoad_III.ParamByName('@UserID').AsInteger        := ThisUser.UserID ;
+    sp_RemPkgFromLoad_III.ExecProc ;
+     except
+      On E: Exception do
+      Begin
+       dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+       Raise ;
+      End ;
+     end;
+End ;
 
 end.

@@ -1,9 +1,9 @@
 object dmsConnector: TdmsConnector
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   Height = 500
   Width = 834
+  PixelsPerInch = 96
   object ilStatus: TImageList
     Left = 176
     Top = 72

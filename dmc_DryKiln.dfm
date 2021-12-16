@@ -50,11 +50,12 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.86.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 544
     Top = 24
     object mtPkgNosPackageNo: TIntegerField
@@ -381,22 +382,27 @@
     object cds_KilnChargeRowNoOfPkgs: TIntegerField
       FieldName = 'NoOfPkgs'
       Origin = 'NoOfPkgs'
+      ProviderFlags = [pfInUpdate]
     end
     object cds_KilnChargeRowDateCreated: TSQLTimeStampField
       FieldName = 'DateCreated'
       Origin = 'DateCreated'
+      ProviderFlags = [pfInUpdate]
     end
     object cds_KilnChargeRowCreatedUser: TIntegerField
       FieldName = 'CreatedUser'
       Origin = 'CreatedUser'
+      ProviderFlags = [pfInUpdate]
     end
     object cds_KilnChargeRowVagnNo: TIntegerField
       FieldName = 'VagnNo'
       Origin = 'VagnNo'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
     object cds_KilnChargeRowRowNo: TIntegerField
       FieldName = 'RowNo'
       Origin = 'RowNo'
+      ProviderFlags = [pfInUpdate]
     end
     object cds_KilnChargeRowProductDisplayName: TStringField
       DisplayLabel = 'Produkt'

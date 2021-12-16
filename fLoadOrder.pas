@@ -5677,6 +5677,7 @@ Begin
  fLoadEntrySSP.BorderStyle  := bsNone ;
 
 End ;
+
 function TfrmVisTruckLoadOrder.OpenNormalLoad(const LONo, LoadNo : Integer;const Lagerkod : String) : Boolean ;
 Var LSupplierNo     : Integer ;
     ReservedByUser  : String ;
@@ -5904,7 +5905,7 @@ begin
       Lang := cSwedish;
 
       salesRegion := TdmFRSystem.CompanyNoFromUser(ThisUser.UserID, dmsConnector.FDConnection1);
-    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger <> 2 then
+    if grdLODBTableView1.DataController.DataSet.FieldByName('ObjectType').AsInteger < 2 then
       ReportType := cfTallyInternal
     else
       ReportType := cfTally;
@@ -6020,6 +6021,8 @@ Begin
    End ;
    tcLO.TabIndex  := 0 ;
    SetPanelToShowAndHide ;
+   teSearchLONo.Text := intToStr(LONo) ;
+   GetOneLO(nil) ;
  Finally
    tcLO.OnChange  := tcLOChange ;
  End;

@@ -342,7 +342,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
     end
   end
   object frxReport1: TfrxReport
-    Version = '6.6'
+    Version = '6.8.6'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -637,7 +637,7 @@ object PkgNrExceptionList: TPkgNrExceptionList
     Top = 320
   end
   object siLangLinked_frmLoadArrivals: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -942,5 +942,33 @@ object PkgNrExceptionList: TPkgNrExceptionList
       0100440045004600410055004C0054005F004300480041005200530045005400
       0100440045004600410055004C0054005F004300480041005200530045005400
       01000D000A00}
+  end
+  object frxPDFExport1: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    InteractiveFormsFontSubset = 'A-Z,a-z,0-9,#43-#47 '
+    OpenAfterExport = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Transparency = False
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    PDFStandard = psNone
+    PDFVersion = pv17
+    Left = 440
+    Top = 200
   end
 end

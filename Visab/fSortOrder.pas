@@ -42,7 +42,7 @@ uses
   dxSkinsdxRibbonPainter, cxNavigator, siComp, siLngLnk, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions, dxDateRanges,
-  dxScrollbarAnnotations, System.ImageList ;
+  dxScrollbarAnnotations, System.ImageList, dxSkinBasic ;
 
 
   Const
@@ -1128,6 +1128,8 @@ type
     SpeedButton14: TSpeedButton;
     cbTaskCompleteField: TcxDBCheckBox;
     siLangLinked_frmSortOrder: TsiLangLinked;
+    cxLabel1: TcxLabel;
+    cxDBMaskEdit1: TcxDBMaskEdit;
     procedure acRefresh_AvropExecute(Sender: TObject);
     procedure ac_ExitExecute(Sender: TObject);
     procedure ac_RefreshExecute(Sender: TObject);
@@ -6383,12 +6385,34 @@ begin
 end;
 
 procedure TfrmSortOrder.Edit1KeyPress(Sender: TObject; var Key: Char);
+Var PkgNoPrefix       : Integer ;
+    EnteredPkgNo      : Integer ;
 begin
- if (Key = #13) and (Length(Edit1.Text) > 0) then
+  if (Key = #13) and (Length(Edit1.Text) > 0) then
   Begin
    Try
+    PkgNoPrefix := dmSotOrderList.cds_PropsMarketRegionNo.AsInteger ;
+
+
+    if PkgNoPrefix > 0 then
+    Begin
+     EnteredPkgNo   := StrToIntDef(Edit1.Text,0) ;
+     Edit1.Text     := inttostr(PkgNoPrefix) + Edit1.Text ;
+    End;
+
     ScanningPkgNo(Sender, Edit1.Text) ;
     Edit1.Text:= '' ;
+
+     if (EnteredPkgNo = 9999) or (EnteredPkgNo = 999) or (EnteredPkgNo = 99) then
+     Begin
+       if MessageDlg('Do you want to increase prefix number?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+       Begin
+         if dmSotOrderList.cds_Props.State in [dsBrowse] then
+         dmSotOrderList.cds_Props.Edit ;
+         dmSotOrderList.cds_PropsMarketRegionNo.AsInteger := dmSotOrderList.cds_PropsMarketRegionNo.AsInteger + 1 ;
+         dmSotOrderList.cds_Props.Post ;
+       End;
+     End;
    Except
     Edit1.Text:= '' ;
    End ;
@@ -6821,14 +6845,37 @@ begin
 end;
 
 procedure TfrmSortOrder.FormKeyPress(Sender: TObject; var Key: Char);
+Var PkgNoPrefix       : Integer ;
+    EnteredPkgNo      : Integer ;
 begin
  if AcceptInput then
  Begin
   if (Key = #13) and (Length(Edit1.Text) > 0) then
   Begin
    Try
+    PkgNoPrefix := dmSotOrderList.cds_PropsMarketRegionNo.AsInteger ;
+
+
+    if PkgNoPrefix > 0 then
+    Begin
+     EnteredPkgNo   := StrToIntDef(Edit1.Text,0) ;
+     Edit1.Text     := inttostr(PkgNoPrefix) + Edit1.Text ;
+    End;
+
     ScanningPkgNo(Sender, Edit1.Text) ;
     Edit1.Text:= '' ;
+
+     if (EnteredPkgNo = 9999) or (EnteredPkgNo = 999) or (EnteredPkgNo = 99) then
+     Begin
+       if MessageDlg('Do you want to increase prefix number?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+       Begin
+         if dmSotOrderList.cds_Props.State in [dsBrowse] then
+         dmSotOrderList.cds_Props.Edit ;
+         dmSotOrderList.cds_PropsMarketRegionNo.AsInteger := dmSotOrderList.cds_PropsMarketRegionNo.AsInteger + 1 ;
+         dmSotOrderList.cds_Props.Post ;
+       End;
+     End;
+
    Except
     Edit1.Text:= '' ;
    End ;

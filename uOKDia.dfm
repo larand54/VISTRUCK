@@ -3,8 +3,8 @@ object fOKDia: TfOKDia
   Top = 107
   BorderStyle = bsDialog
   Caption = 'Meddelande'
-  ClientHeight = 479
-  ClientWidth = 531
+  ClientHeight = 471
+  ClientWidth = 523
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,10 +16,11 @@ object fOKDia: TfOKDia
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 56
-    Top = 48
-    Width = 48
-    Height = 16
+    Left = 24
+    Top = 32
+    Width = 465
+    Height = 321
+    AutoSize = False
     Caption = 'Label1'
     Color = clWhite
     Font.Charset = DEFAULT_CHARSET
@@ -47,7 +48,7 @@ object fOKDia: TfOKDia
     TabOrder = 0
   end
   object siLangLinked_fOKDia: TsiLangLinked
-    Version = '7.2'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

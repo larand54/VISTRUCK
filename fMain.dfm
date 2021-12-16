@@ -4552,7 +4552,7 @@ object frmMain: TfrmMain
     PixelsPerInch = 96
   end
   object siLangLinked1: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -5649,7 +5649,7 @@ object frmMain: TfrmMain
   object dxSkinController1: TdxSkinController
     Kind = lfFlat
     ScrollbarMode = sbmClassic
-    SkinName = 'Office2013DarkGray'
+    SkinName = 'Silver'
     Left = 720
     Top = 570
   end

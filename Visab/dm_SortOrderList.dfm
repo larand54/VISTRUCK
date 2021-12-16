@@ -556,7 +556,7 @@
     end
   end
   object siLangLinked_dmSotOrderList: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.8.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

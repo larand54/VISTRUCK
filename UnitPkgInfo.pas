@@ -24,7 +24,8 @@ uses
   dxSkinXmas2008Blue, dxSkinscxPCPainter, dxSkinsdxBarPainter, Vcl.Buttons,
   Vcl.Menus, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
   dxSkinOffice2013LightGray, dxSkinOffice2013White, cxNavigator, siComp,
-  siLngLnk, System.Actions;
+  siLngLnk, System.Actions, dxSkinBasic, dxDateRanges, dxScrollbarAnnotations,
+  System.ImageList;
 
 type
   TfrmPkgInfo = class(TForm)
@@ -111,8 +112,6 @@ type
     Label15: TLabel;
     Label16: TLabel;
     Label17: TLabel;
-    Bevel1: TBevel;
-    Label18: TLabel;
     dxDBEdit3: TcxDBTextEdit;
     dxDBEdit4: TcxDBTextEdit;
     dxDBEdit5: TcxDBTextEdit;
@@ -165,6 +164,8 @@ type
     PopupMenu1: TPopupMenu;
     StngF121: TMenuItem;
     siLangLinked_frmPkgInfo: TsiLangLinked;
+    cxDBTextEdit5: TcxDBTextEdit;
+    Label29: TLabel;
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lbExitClick(Sender: TObject);

@@ -30,7 +30,7 @@ uses
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  dxPScxEditorProducers, dxPScxExtEditorProducers ;
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinBasic ;
 
 type
   TfEnterKilnVagn = class(TForm)
@@ -91,6 +91,8 @@ type
     acPrint: TAction;
     dxComponentPrinter1: TdxComponentPrinter;
     dxComponentPrinter1Link1: TdxGridReportLink;
+    cxDBMaskEdit1: TcxDBMaskEdit;
+    cxLabel6: TcxLabel;
     procedure mePackageNoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Timer1Timer(Sender: TObject);
@@ -120,12 +122,12 @@ type
     TypeOfLine  : Integer ;
   end;
 
-//var fEnterKilnVagn: TfEnterKilnVagn;
+var fEnterKilnVagn: TfEnterKilnVagn;
 
 implementation
 
 Uses VidaConst, VidaUtils, dmsVidaSystem,
-  dmsVidaContact, VidaUser, dm_Inventory, uPickPkgNoTork ;
+  dmsVidaContact, VidaUser, dm_Inventory, uPickPkgNoTork , uKilnHandling;
 
 {$R *.dfm}
 
@@ -534,12 +536,25 @@ var
   Res_UserName      : String ;
   ErrorText,
   RegPointName      : String ;
+  PkgNoPrefix       : Integer ;
+  EnteredPkgNo      : Integer ;
 begin
  if Key <> VK_RETURN then Exit;
  if Length(mePackageNo.Text) > 0 then
  Begin
+  PkgNoPrefix := fkilnHandling.mtUserPropMarketRegionNo.AsInteger ;
+
+
+
   if dmInventory.cds_KilnVagn.State in [dsEdit, dsInsert] then
    dmInventory.cds_KilnVagn.Post ;
+
+  if PkgNoPrefix > 0 then
+  Begin
+   EnteredPkgNo     := StrToIntDef(mePackageNo.Text,0) ;
+   mePackageNo.Text := inttostr(PkgNoPrefix) + mePackageNo.Text ;
+  End;
+
   GetpackageNoEntered(Sender, mePackageNo.Text) ;
    with dmInventory do
    Begin
@@ -557,6 +572,17 @@ begin
  End;
  Timer1.Enabled   := True ;
  mePackageNo.Text := '' ;
+
+ if (EnteredPkgNo = 9999) or (EnteredPkgNo = 999) or (EnteredPkgNo = 99) then
+ Begin
+   if MessageDlg('Do you want to increase prefix number?',  mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+   Begin
+     fkilnHandling.mtUserProp.Edit ;
+     fkilnHandling.mtUserPropMarketRegionNo.AsInteger := fkilnHandling.mtUserPropMarketRegionNo.AsInteger + 1 ;
+     fkilnHandling.mtUserProp.Post ;
+   End;
+ End;
+
 
  (*
 
