@@ -42,7 +42,7 @@ uses
   dxSkinsdxRibbonPainter, cxNavigator, siComp, siLngLnk, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
   dxSkinOffice2013White, dxBarBuiltInMenu, System.Actions, dxDateRanges,
-  dxScrollbarAnnotations, System.ImageList, dxSkinBasic ;
+  dxScrollbarAnnotations, System.ImageList, dxSkinBasic, dxCore, dxSkinsForm ;
 
 
   Const
@@ -1130,6 +1130,32 @@ type
     siLangLinked_frmSortOrder: TsiLangLinked;
     cxLabel1: TcxLabel;
     cxDBMaskEdit1: TcxDBMaskEdit;
+    GridTableViewStyleSheetDesert: TcxGridTableViewStyleSheet;
+    cxStyle2: TcxStyle;
+    cxStyle3: TcxStyle;
+    cxStyle4: TcxStyle;
+    cxStyle5: TcxStyle;
+    cxStyle6: TcxStyle;
+    cxStyle8: TcxStyle;
+    cxStyle9: TcxStyle;
+    cxStyle10: TcxStyle;
+    cxStyle11: TcxStyle;
+    cxStyle12: TcxStyle;
+    cxStyle13: TcxStyle;
+    GridBandedTableViewStyleSheetDesert: TcxGridBandedTableViewStyleSheet;
+    cxStyle14: TcxStyle;
+    cxStyle15: TcxStyle;
+    cxStyle16: TcxStyle;
+    cxStyle17: TcxStyle;
+    cxStyle18: TcxStyle;
+    cxStyle19: TcxStyle;
+    cxStyle20: TcxStyle;
+    cxStyle21: TcxStyle;
+    cxStyle22: TcxStyle;
+    cxStyle23: TcxStyle;
+    cxStyle24: TcxStyle;
+    cxStyle25: TcxStyle;
+    dxSkinController1: TdxSkinController;
     procedure acRefresh_AvropExecute(Sender: TObject);
     procedure ac_ExitExecute(Sender: TObject);
     procedure ac_RefreshExecute(Sender: TObject);
@@ -2161,6 +2187,7 @@ end;
 procedure TfrmSortOrder.FormCreate(Sender: TObject);
 Var Save_Cursor         : TCursor;
 Begin
+
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crSQLWait;    { Show hourglass cursor }
  Try
@@ -6948,6 +6975,7 @@ procedure TfrmSortOrder.FormShow(Sender: TObject);
 begin
   With dm_Vis_Vida, dmsSortOrder do
   Begin
+   PanelAOMain.Align  := alClient ;
    FDm_PaRegPkgs.Active := True ;
 
    FDm_AvRegPkgs.Filter   := 'OperationStatus <> 1' ;

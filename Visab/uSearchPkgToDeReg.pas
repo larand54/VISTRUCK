@@ -26,7 +26,8 @@ uses
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinWhiteprint, dxSkinVS2010,
   dxSkinXmas2008Blue, dxSkinscxPCPainter, cxNavigator, siComp, siLngLnk,
   dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
-  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, cxDBEdit, Vcl.ComCtrls, dxCore, cxDateUtils ;
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, System.Actions, cxDBEdit, Vcl.ComCtrls, dxCore, cxDateUtils,
+  dxDateRanges, dxScrollbarAnnotations ;
 
 type
   TfSearchPkgToDeReg = class(TForm)
@@ -113,6 +114,7 @@ type
     cxdtAvregDatum: TcxDateEdit;
     cxlblAvregDate: TcxLabel;
     cxbtnSelectManyPkgs: TcxButton;
+    cxButton1: TcxButton;
     procedure acRefreshInventoryExecute(Sender: TObject);
     procedure acAvregistreraMarkeradePaketExecute(Sender: TObject);
     procedure mtProductProductNoChange(Sender: TField);
@@ -128,6 +130,7 @@ type
     procedure mtProductALMMChange(Sender: TField);
     procedure FormShow(Sender: TObject);
     procedure cxbtnSelectManyPkgsClick(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
   private
     { Private declarations }
     procedure RefreshLagerLista(const ProductNo : Integer) ;
@@ -314,6 +317,11 @@ begin
     finally
       dlg.Free;
     end;
+end;
+
+procedure TfSearchPkgToDeReg.cxButton1Click(Sender: TObject);
+begin
+ Close ;
 end;
 
 procedure TfSearchPkgToDeReg.mtProductProductNoChange(Sender: TField);

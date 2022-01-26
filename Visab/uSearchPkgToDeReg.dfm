@@ -3,15 +3,14 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   Top = 123
   ActiveControl = lcProductDisplayName
   Caption = 'S'#246'k paket'
-  ClientHeight = 617
-  ClientWidth = 1126
+  ClientHeight = 770
+  ClientWidth = 1129
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
   OnShow = FormShow
@@ -20,13 +19,17 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   object grdPickPkgNos: TcxGrid
     Left = 0
     Top = 147
-    Width = 1126
-    Height = 470
+    Width = 1129
+    Height = 623
     Align = alClient
     TabOrder = 0
+    LookAndFeel.SkinName = 'Office2013DarkGray'
+    ExplicitWidth = 1126
+    ExplicitHeight = 470
     object grdPickPkgNosDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.Buttons.Cancel.Visible = True
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = ds_SelectedPkgNo
       DataController.KeyFieldNames = 'PAKETNR;LEVKOD'
       DataController.Options = [dcoAssignGroupingValues, dcoAssignMasterDetailKeys, dcoSaveExpanding, dcoImmediatePost]
@@ -63,6 +66,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
         Caption = 'V'#228'lj'
         DataBinding.FieldName = 'MARKERAD'
         PropertiesClassName = 'TcxCheckBoxProperties'
+        Properties.Alignment = taRightJustify
         Properties.ImmediatePost = True
         Properties.ValueChecked = '1'
         Properties.ValueUnchecked = '0'
@@ -133,10 +137,11 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
   object Panel25: TPanel
     Left = 0
     Top = 0
-    Width = 1126
+    Width = 1129
     Height = 122
     Align = alTop
     TabOrder = 1
+    ExplicitWidth = 1126
     object cxButton27: TcxButton
       Left = 6
       Top = 7
@@ -371,15 +376,33 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
       ParentFont = False
       OnClick = cxbtnSelectManyPkgsClick
     end
+    object cxButton1: TcxButton
+      Left = 944
+      Top = 16
+      Width = 169
+      Height = 97
+      Caption = 'CLOSE'
+      LookAndFeel.Kind = lfFlat
+      LookAndFeel.SkinName = 'Office2013DarkGray'
+      TabOrder = 15
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -16
+      Font.Name = 'Verdana'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = cxButton1Click
+    end
   end
   object Panel1: TPanel
     Left = 0
     Top = 122
-    Width = 1126
+    Width = 1129
     Height = 25
     Align = alTop
     Caption = 'Paketlista'
     TabOrder = 2
+    ExplicitWidth = 1126
   end
   object mtProduct: TkbmMemTable
     DesignActivation = True
@@ -429,11 +452,12 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 272
     Top = 232
     object mtProductProductNo: TIntegerField
@@ -489,8 +513,8 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     Top = 280
   end
   object ActionList1: TActionList
-    Left = 376
-    Top = 224
+    Left = 226
+    Top = 219
     object acRefreshInventory: TAction
       Caption = 'Uppdatera'
       ImageIndex = 29
@@ -872,7 +896,7 @@ object fSearchPkgToDeReg: TfSearchPkgToDeReg
     end
   end
   object siLangLinked_fSearchPkgToDeReg: TsiLangLinked
-    Version = '7.2'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

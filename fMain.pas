@@ -372,6 +372,7 @@ var
 implementation
 
 uses
+  SynLog,
   Dialogs,
   VidaConst,
   VidaType,
@@ -497,6 +498,15 @@ begin
 // ExceptionNotify := MyNotify; // Assign ExceptionNotify variable to MyNotify procedure.
   Application.OnException := AppException;
   ShowAllOutput := False ;
+
+   with TSynLog.Family do begin
+    Level := LOG_VERBOSE;
+    if GetEnvironmentVariable('COMPUTERNAME')= 'CARMAK-FASTER'  then
+      DestinationPath := 'C:\VIS\TEMP\Logs'
+    else
+      DestinationPath := '\\vida.se\dfs\System\VIS\VIS_TEMP\';
+//    EchoToConsole := LOG_VERBOSE; // log all events to the console
+  end;
 end;
 
 
@@ -1152,6 +1162,7 @@ Begin
       Default_RegPointNo := -1;
       frmSortOrder := TfrmSortOrder.Create(nil);
       try
+        frmSortOrder.PopupParent  := self ;
         Screen.Cursor := crSQLWait; { Show hourglass cursor }
 
         frmSortOrder.CreateCo(VerkNo);

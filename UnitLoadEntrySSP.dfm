@@ -45,16 +45,15 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Properties.CustomButtons.Buttons = <>
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.SkinName = ''
-      ClientRectBottom = 227
-      ClientRectLeft = 4
-      ClientRectRight = 1233
+      ClientRectBottom = 231
+      ClientRectRight = 1237
       ClientRectTop = 24
       object tsLoadData: TcxTabSheet
         Caption = 'Leveranshuvud'
         object pLoadHead: TPanel
           Left = 0
           Top = 0
-          Width = 1229
+          Width = 1237
           Height = 74
           Align = alTop
           BevelOuter = bvNone
@@ -419,8 +418,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         object pgrdLO: TPanel
           Left = 0
           Top = 74
-          Width = 1229
-          Height = 65
+          Width = 1237
+          Height = 69
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -431,8 +430,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
           object grdLO: TcxGrid
             Left = 1
             Top = 1
-            Width = 1227
-            Height = 63
+            Width = 1235
+            Height = 67
             Align = alClient
             TabOrder = 0
             object grdLODBTableView1: TcxGridDBTableView
@@ -620,8 +619,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         end
         object pgrdAddress: TPanel
           Left = 0
-          Top = 139
-          Width = 1229
+          Top = 143
+          Width = 1237
           Height = 64
           Margins.Left = 2
           Margins.Top = 2
@@ -632,7 +631,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           object grdAddress: TcxGrid
             Left = 1
             Top = 1
-            Width = 1227
+            Width = 1235
             Height = 62
             Align = alClient
             TabOrder = 0
@@ -676,10 +675,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       end
       object tsLoadNote: TcxTabSheet
         Caption = 'Notering'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object meInternalNote: TcxDBMemo
           Left = 0
           Top = 0
@@ -687,8 +682,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
           DataBinding.DataField = 'InternalNote'
           DataBinding.DataSource = dmLoadEntrySSP.ds_LoadHead
           TabOrder = 0
-          Height = 203
-          Width = 1229
+          Height = 207
+          Width = 1237
         end
       end
     end
@@ -2151,8 +2146,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
         PopupMenu = ppmenuLO_Lines
       end>
     UseSystemFont = False
-    Left = 928
-    Top = 440
+    Left = 952
+    Top = 416
     PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
@@ -2640,8 +2635,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
   object ImageList1: TImageList
     Height = 24
     Width = 24
-    Left = 840
-    Top = 440
+    Left = 848
+    Top = 408
     Bitmap = {
       494C01010B000D00040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
@@ -4120,6 +4115,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 112

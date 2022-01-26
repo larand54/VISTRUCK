@@ -4,14 +4,13 @@ object frmMain: TfrmMain
   Hint = 'Currency'
   Caption = 'VISTRUCK'
   ClientHeight = 795
-  ClientWidth = 1132
+  ClientWidth = 1226
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
@@ -21,23 +20,25 @@ object frmMain: TfrmMain
   object Panel1: TPanel
     Left = 0
     Top = 126
-    Width = 1132
+    Width = 1226
     Height = 669
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 1132
     object panelBase: TPanel
       Left = 0
       Top = 0
-      Width = 1132
+      Width = 1226
       Height = 669
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitWidth = 1132
       object PanelA: TPanel
         Left = 0
         Top = 0
-        Width = 1132
+        Width = 1226
         Height = 669
         Margins.Left = 2
         Margins.Top = 2
@@ -47,10 +48,11 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         Caption = 'PanelA'
         TabOrder = 0
+        ExplicitWidth = 1132
         object Panel7: TPanel
           Left = 0
           Top = 0
-          Width = 1132
+          Width = 1226
           Height = 116
           Margins.Left = 2
           Margins.Top = 2
@@ -59,10 +61,11 @@ object frmMain: TfrmMain
           Align = alTop
           Caption = 'Panel7'
           TabOrder = 0
+          ExplicitWidth = 1132
           object grdSelectedPkgs: TcxGrid
             Left = 1
             Top = 1
-            Width = 1130
+            Width = 1224
             Height = 114
             Margins.Left = 2
             Margins.Top = 2
@@ -70,6 +73,7 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Align = alClient
             TabOrder = 0
+            ExplicitWidth = 1130
             object grdSelectedPkgsDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               ScrollbarAnnotations.CustomAnnotations = <>
@@ -150,7 +154,7 @@ object frmMain: TfrmMain
         object pcPositioning: TcxPageControl
           Left = 0
           Top = 116
-          Width = 1132
+          Width = 1226
           Height = 553
           Margins.Left = 2
           Margins.Top = 2
@@ -160,10 +164,11 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 549
-          ClientRectLeft = 4
-          ClientRectRight = 1128
-          ClientRectTop = 24
+          ExplicitWidth = 1132
+          ClientRectBottom = 552
+          ClientRectLeft = 1
+          ClientRectRight = 1225
+          ClientRectTop = 21
           object tsUttag: TcxTabSheet
             Margins.Left = 2
             Margins.Top = 2
@@ -171,11 +176,15 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 1124
+            ExplicitHeight = 525
             object PanelMain: TPanel
               Left = 0
               Top = 0
-              Width = 1124
-              Height = 525
+              Width = 1224
+              Height = 531
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -183,11 +192,13 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
+              ExplicitWidth = 1124
+              ExplicitHeight = 525
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
-                Width = 1124
-                Height = 466
+                Width = 1224
+                Height = 472
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -195,11 +206,13 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
+                ExplicitWidth = 1124
+                ExplicitHeight = 466
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1124
-                  Height = 466
+                  Width = 1224
+                  Height = 472
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -207,10 +220,12 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
+                  ExplicitWidth = 1124
+                  ExplicitHeight = 466
                   object Panel4: TPanel
                     Left = 0
-                    Top = 422
-                    Width = 1124
+                    Top = 428
+                    Width = 1224
                     Height = 44
                     Margins.Left = 2
                     Margins.Top = 2
@@ -219,18 +234,22 @@ object frmMain: TfrmMain
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
+                    ExplicitTop = 422
+                    ExplicitWidth = 1124
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
-                    Width = 1124
-                    Height = 422
+                    Width = 1224
+                    Height = 428
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
+                    ExplicitWidth = 1124
+                    ExplicitHeight = 422
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
                       Navigator.Buttons.CustomButtons = <>
@@ -334,7 +353,7 @@ object frmMain: TfrmMain
               object PanelTop: TPanel
                 Left = 0
                 Top = 0
-                Width = 1124
+                Width = 1224
                 Height = 59
                 Margins.Left = 2
                 Margins.Top = 2
@@ -343,6 +362,7 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitWidth = 1124
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -418,14 +438,14 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 1124
+            ExplicitHeight = 525
             object Panel3: TPanel
               Left = 0
               Top = 0
-              Width = 1124
+              Width = 1224
               Height = 61
               Margins.Left = 2
               Margins.Top = 2
@@ -433,6 +453,7 @@ object frmMain: TfrmMain
               Margins.Bottom = 2
               Align = alTop
               TabOrder = 0
+              ExplicitWidth = 1124
               object cxButton3: TcxButton
                 Left = 7
                 Top = 4
@@ -461,8 +482,8 @@ object frmMain: TfrmMain
             object Panel8: TPanel
               Left = 0
               Top = 61
-              Width = 1124
-              Height = 464
+              Width = 1224
+              Height = 470
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -470,11 +491,13 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
+              ExplicitWidth = 1124
+              ExplicitHeight = 464
               object Panel2: TPanel
                 Left = 0
                 Top = 0
                 Width = 390
-                Height = 464
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -482,6 +505,7 @@ object frmMain: TfrmMain
                 Align = alLeft
                 Caption = 'Panelpositionering'
                 TabOrder = 0
+                ExplicitHeight = 464
                 object Panel9: TPanel
                   Left = 1
                   Top = 1
@@ -499,13 +523,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 388
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 1
+                  ExplicitHeight = 409
                   object grdMatchingGridDBCardView1: TcxGridDBCardView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -677,8 +702,8 @@ object frmMain: TfrmMain
               object Panel5: TPanel
                 Left = 390
                 Top = 0
-                Width = 267
-                Height = 464
+                Width = 367
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -686,10 +711,12 @@ object frmMain: TfrmMain
                 Align = alClient
                 Caption = 'Panel5'
                 TabOrder = 1
+                ExplicitWidth = 267
+                ExplicitHeight = 464
                 object Panel10: TPanel
                   Left = 1
                   Top = 1
-                  Width = 265
+                  Width = 365
                   Height = 53
                   Margins.Left = 2
                   Margins.Top = 2
@@ -698,19 +725,22 @@ object frmMain: TfrmMain
                   Align = alTop
                   Caption = 'Panel9'
                   TabOrder = 0
+                  ExplicitWidth = 265
                 end
               end
               object Panel6: TPanel
-                Left = 657
+                Left = 757
                 Top = 0
                 Width = 467
-                Height = 464
+                Height = 470
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
                 Margins.Bottom = 2
                 Align = alRight
                 TabOrder = 2
+                ExplicitLeft = 657
+                ExplicitHeight = 464
                 object Panel11: TPanel
                   Left = 1
                   Top = 1
@@ -728,13 +758,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 195
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alLeft
                   TabOrder = 1
+                  ExplicitHeight = 409
                   object grdAreaDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -770,13 +801,14 @@ object frmMain: TfrmMain
                   Left = 196
                   Top = 54
                   Width = 270
-                  Height = 409
+                  Height = 415
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 2
+                  ExplicitHeight = 409
                   object cxPositionDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -823,7 +855,7 @@ object frmMain: TfrmMain
   object dxRibbon1: TdxRibbon
     Left = 0
     Top = 0
-    Width = 1132
+    Width = 1226
     Height = 126
     ApplicationButton.Glyph.SourceDPI = 96
     ApplicationButton.Glyph.Data = {
@@ -908,6 +940,7 @@ object frmMain: TfrmMain
     Contexts = <>
     TabOrder = 1
     TabStop = False
+    ExplicitWidth = 1132
     object dxRibbon1Tab2: TdxRibbonTab
       Active = True
       Caption = 'Lastorder'
@@ -4552,7 +4585,7 @@ object frmMain: TfrmMain
     PixelsPerInch = 96
   end
   object siLangLinked1: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -5648,8 +5681,11 @@ object frmMain: TfrmMain
   end
   object dxSkinController1: TdxSkinController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
     SkinName = 'Silver'
+    UseSkins = False
+    UseSkinsInPopupMenus = False
     Left = 720
     Top = 570
   end

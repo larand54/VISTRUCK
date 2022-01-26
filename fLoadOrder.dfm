@@ -13,7 +13,6 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   PopupMenu = pmShortcuts
   Position = poDesigned
   OnClose = FormClose
@@ -1846,8 +1845,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     ClientRectTop = 35
   end
   object pnlLoad: TPanel
-    Left = 69
-    Top = 95
+    Left = 265
+    Top = 101
     Width = 1137
     Height = 540
     TabOrder = 3
@@ -7268,6 +7267,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 488
@@ -7299,7 +7299,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -7330,7 +7330,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -8571,7 +8571,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Top = 386
   end
   object siLangLinked_frmVisTruckLoadOrder: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -1,11 +1,12 @@
 object frmSortOrder: TfrmSortOrder
   Tag = 1
-  Left = 193
-  Top = 40
+  Left = 0
+  Top = 77
   Align = alClient
+  Anchors = []
   Caption = 'Arbetsorders'
-  ClientHeight = 860
-  ClientWidth = 1157
+  ClientHeight = 900
+  ClientWidth = 1126
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +14,6 @@ object frmSortOrder: TfrmSortOrder
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   PopupMenu = PopupMenu1
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
@@ -22,38 +22,43 @@ object frmSortOrder: TfrmSortOrder
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
+  DesignSize = (
+    1126
+    900)
   TextHeight = 13
   object PanelAOMain: TPanel
-    Left = 0
-    Top = 0
-    Width = 1157
-    Height = 860
-    Align = alClient
+    Left = 8
+    Top = 2
+    Width = 1108
+    Height = 892
+    Anchors = [akLeft, akTop, akRight, akBottom]
     BevelOuter = bvNone
     TabOrder = 0
     object pgMain: TcxPageControl
       Left = 0
       Top = 168
-      Width = 1157
-      Height = 652
+      Width = 1108
+      Height = 684
       Align = alClient
+      Color = clBtnFace
+      ParentColor = False
       TabOrder = 0
       Properties.ActivePage = tsAnalys
       Properties.CustomButtons.Buttons = <>
       Properties.HideTabs = True
       Properties.Images = ImageList1
-      ClientRectBottom = 648
-      ClientRectLeft = 4
-      ClientRectRight = 1153
-      ClientRectTop = 4
+      ClientRectBottom = 683
+      ClientRectLeft = 1
+      ClientRectRight = 1107
+      ClientRectTop = 1
       object tsVeckoVy: TcxTabSheet
         Caption = 'tsVeckoVy'
         ImageIndex = 0
         object grdWorkOrder: TcxGrid
           Left = 0
           Top = 64
-          Width = 1149
-          Height = 561
+          Width = 1106
+          Height = 599
           Align = alClient
           PopupMenu = pmAO
           TabOrder = 0
@@ -333,8 +338,8 @@ object frmSortOrder: TfrmSortOrder
         end
         object StatusBar1: TStatusBar
           Left = 0
-          Top = 625
-          Width = 1149
+          Top = 663
+          Width = 1106
           Height = 19
           Panels = <>
           SimplePanel = True
@@ -342,7 +347,7 @@ object frmSortOrder: TfrmSortOrder
         object Panel2: TPanel
           Left = 0
           Top = 0
-          Width = 1149
+          Width = 1106
           Height = 64
           Align = alTop
           BevelOuter = bvNone
@@ -350,7 +355,7 @@ object frmSortOrder: TfrmSortOrder
           object Panel3: TPanel
             Left = 297
             Top = 0
-            Width = 852
+            Width = 809
             Height = 64
             Align = alClient
             BevelOuter = bvNone
@@ -358,7 +363,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel6: TPanel
               Left = 0
               Top = 0
-              Width = 852
+              Width = 809
               Height = 64
               Align = alClient
               BevelOuter = bvNone
@@ -366,21 +371,21 @@ object frmSortOrder: TfrmSortOrder
               object Panel7: TPanel
                 Left = 0
                 Top = 0
-                Width = 766
+                Width = 723
                 Height = 64
                 Align = alClient
                 TabOrder = 0
                 object dxBarDockControl3: TdxBarDockControl
                   Left = 1
                   Top = 1
-                  Width = 764
+                  Width = 721
                   Height = 41
                   Align = dalTop
                   BarManager = dxBarManager1
                 end
               end
               object Panel8: TPanel
-                Left = 787
+                Left = 744
                 Top = 0
                 Width = 65
                 Height = 64
@@ -388,7 +393,7 @@ object frmSortOrder: TfrmSortOrder
                 TabOrder = 1
               end
               object Panel9: TPanel
-                Left = 766
+                Left = 723
                 Top = 0
                 Width = 21
                 Height = 64
@@ -484,46 +489,46 @@ object frmSortOrder: TfrmSortOrder
         object pgEditKorOrder: TcxPageControl
           Left = 0
           Top = 24
-          Width = 1149
-          Height = 620
+          Width = 1106
+          Height = 658
           Align = alClient
           TabOrder = 0
           Properties.ActivePage = tsInstruktioner
           Properties.CustomButtons.Buttons = <>
-          ClientRectBottom = 616
-          ClientRectLeft = 4
-          ClientRectRight = 1145
-          ClientRectTop = 24
+          ClientRectBottom = 657
+          ClientRectLeft = 1
+          ClientRectRight = 1105
+          ClientRectTop = 21
           object tsInstruktioner: TcxTabSheet
             Caption = 'tsInstruktioner'
             ImageIndex = 1
             object cxPageControl2: TcxPageControl
               Left = 0
               Top = 0
-              Width = 1141
-              Height = 592
+              Width = 1104
+              Height = 636
               Align = alClient
               TabOrder = 0
               Properties.ActivePage = tsHuvudinstruktioner
               Properties.CustomButtons.Buttons = <>
               Properties.Images = ImageList1
-              ClientRectBottom = 588
-              ClientRectLeft = 4
-              ClientRectRight = 1137
-              ClientRectTop = 25
+              ClientRectBottom = 635
+              ClientRectLeft = 1
+              ClientRectRight = 1103
+              ClientRectTop = 22
               object tsHuvudinstruktioner: TcxTabSheet
                 Caption = 'Huvudinstruktioner'
                 ImageIndex = 0
                 object PanelInstruktioner: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1133
-                  Height = 563
+                  Width = 1102
+                  Height = 613
                   Align = alClient
                   TabOrder = 0
                   DesignSize = (
-                    1133
-                    563)
+                    1102
+                    613)
                   object Label32: TLabel
                     Left = 344
                     Top = 310
@@ -956,7 +961,7 @@ object frmSortOrder: TfrmSortOrder
                     DataBinding.DataSource = dmsSortOrder.ds_ProdInstruct
                     TabOrder = 23
                     Height = 72
-                    Width = 477
+                    Width = 446
                   end
                   object cxDBImage1: TcxDBImage
                     Left = 664
@@ -968,8 +973,8 @@ object frmSortOrder: TfrmSortOrder
                     Properties.FitMode = ifmProportionalStretch
                     Properties.GraphicClassName = 'TdxSmartImage'
                     TabOrder = 25
-                    Height = 391
-                    Width = 477
+                    Height = 441
+                    Width = 446
                   end
                   object mExternalNote: TcxDBMemo
                     Left = 664
@@ -979,7 +984,7 @@ object frmSortOrder: TfrmSortOrder
                     DataBinding.DataSource = dmsSortOrder.ds_ProdInstruct
                     TabOrder = 24
                     Height = 63
-                    Width = 477
+                    Width = 446
                   end
                   object cxButton5: TcxButton
                     Left = 8
@@ -1119,16 +1124,16 @@ object frmSortOrder: TfrmSortOrder
                 object PanelRowInfo: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1133
-                  Height = 563
+                  Width = 1102
+                  Height = 613
                   Align = alClient
                   Caption = 'PanelRowInfo'
                   TabOrder = 0
                   object PanelKorOrderInfo: TPanel
                     Left = 1
                     Top = 1
-                    Width = 1131
-                    Height = 561
+                    Width = 1100
+                    Height = 611
                     Align = alClient
                     BevelOuter = bvNone
                     Caption = 'PanelKorOrderInfo'
@@ -1137,7 +1142,7 @@ object frmSortOrder: TfrmSortOrder
                       Left = 0
                       Top = 0
                       Width = 561
-                      Height = 561
+                      Height = 611
                       Align = alLeft
                       BevelOuter = bvNone
                       Caption = 'Panel11'
@@ -1483,15 +1488,15 @@ object frmSortOrder: TfrmSortOrder
                         Style.Font.Style = []
                         Style.IsFontAssigned = True
                         TabOrder = 1
-                        Height = 528
+                        Height = 578
                         Width = 561
                       end
                     end
                     object Panel13: TPanel
                       Left = 561
                       Top = 0
-                      Width = 570
-                      Height = 561
+                      Width = 539
+                      Height = 611
                       Align = alClient
                       BevelOuter = bvNone
                       Caption = 'Panel13'
@@ -1499,7 +1504,7 @@ object frmSortOrder: TfrmSortOrder
                       object Panel28: TPanel
                         Left = 0
                         Top = 0
-                        Width = 570
+                        Width = 539
                         Height = 33
                         Align = alTop
                         BevelOuter = bvNone
@@ -1845,8 +1850,8 @@ object frmSortOrder: TfrmSortOrder
                         Style.Font.Style = []
                         Style.IsFontAssigned = True
                         TabOrder = 1
-                        Height = 528
-                        Width = 570
+                        Height = 578
+                        Width = 539
                       end
                     end
                   end
@@ -1858,8 +1863,8 @@ object frmSortOrder: TfrmSortOrder
                 object Panel12: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1133
-                  Height = 563
+                  Width = 1102
+                  Height = 613
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
@@ -2391,14 +2396,14 @@ object frmSortOrder: TfrmSortOrder
                 object PanelPaketSpec: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1133
+                  Width = 1102
                   Height = 217
                   Align = alTop
                   TabOrder = 0
                   object Panel18: TPanel
                     Left = 1
                     Top = 1
-                    Width = 1131
+                    Width = 1100
                     Height = 25
                     Align = alTop
                     BevelOuter = bvNone
@@ -2431,7 +2436,7 @@ object frmSortOrder: TfrmSortOrder
                   object grdSpecLayout: TcxGrid
                     Left = 1
                     Top = 26
-                    Width = 1131
+                    Width = 1100
                     Height = 190
                     Align = alClient
                     TabOrder = 1
@@ -2487,15 +2492,15 @@ object frmSortOrder: TfrmSortOrder
             object PanelKopplaRavara: TPanel
               Left = 0
               Top = 0
-              Width = 1141
-              Height = 592
+              Width = 1104
+              Height = 636
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
-                Width = 1141
+                Width = 1104
                 Height = 25
                 Align = alTop
                 BevelOuter = bvNone
@@ -2511,8 +2516,8 @@ object frmSortOrder: TfrmSortOrder
               object grdRawMtrl: TcxGrid
                 Left = 0
                 Top = 81
-                Width = 1141
-                Height = 511
+                Width = 1104
+                Height = 555
                 Align = alClient
                 PopupMenu = pmRawMtrl
                 TabOrder = 1
@@ -2839,7 +2844,7 @@ object frmSortOrder: TfrmSortOrder
               object Panel16: TPanel
                 Left = 0
                 Top = 25
-                Width = 1141
+                Width = 1104
                 Height = 56
                 Align = alTop
                 BevelOuter = bvNone
@@ -3006,7 +3011,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel23: TPanel
               Left = 0
               Top = 0
-              Width = 1141
+              Width = 1104
               Height = 113
               Align = alTop
               TabOrder = 0
@@ -3124,7 +3129,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel25: TPanel
               Left = 0
               Top = 0
-              Width = 1141
+              Width = 1104
               Height = 121
               Align = alTop
               TabOrder = 0
@@ -3162,7 +3167,7 @@ object frmSortOrder: TfrmSortOrder
         object tcEditKorOrder: TcxTabControl
           Left = 0
           Top = 0
-          Width = 1149
+          Width = 1106
           Height = 24
           Align = alTop
           TabOrder = 1
@@ -3175,35 +3180,39 @@ object frmSortOrder: TfrmSortOrder
             'F'#246'rkalkyl'
             #214'vrigt')
           OnChange = tcEditKorOrderChange
-          ClientRectBottom = 25
-          ClientRectLeft = 4
-          ClientRectRight = 1145
-          ClientRectTop = 25
+          ClientRectBottom = 23
+          ClientRectLeft = 1
+          ClientRectRight = 1105
+          ClientRectTop = 22
         end
       end
       object tsAnalys: TcxTabSheet
         Caption = 'tsAnalys'
+        Color = clBtnFace
         ImageIndex = 3
+        ParentColor = False
         object pgSubAttest: TcxPageControl
           Left = 0
           Top = 0
-          Width = 1149
-          Height = 644
+          Width = 1106
+          Height = 682
           Align = alClient
+          Color = clBtnFace
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
           Font.Name = 'MS Sans Serif'
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
           TabOrder = 0
           Properties.ActivePage = tsAttest
           Properties.CustomButtons.Buttons = <>
           Properties.Images = ImageList1
-          ClientRectBottom = 640
-          ClientRectLeft = 4
-          ClientRectRight = 1145
-          ClientRectTop = 27
+          ClientRectBottom = 681
+          ClientRectLeft = 1
+          ClientRectRight = 1105
+          ClientRectTop = 24
           object tsAvstamningRavara: TcxTabSheet
             Caption = 'Paketista'
             Font.Charset = DEFAULT_CHARSET
@@ -3216,22 +3225,22 @@ object frmSortOrder: TfrmSortOrder
             object Panel20: TPanel
               Left = 0
               Top = 4
-              Width = 1141
-              Height = 609
+              Width = 1104
+              Height = 653
               Align = alClient
               TabOrder = 0
               object Panel21: TPanel
                 Left = 1
                 Top = 1
                 Width = 543
-                Height = 607
+                Height = 651
                 Align = alLeft
                 TabOrder = 0
                 object grdNewPkgs: TcxGrid
                   Left = 1
                   Top = 65
                   Width = 541
-                  Height = 541
+                  Height = 585
                   Align = alClient
                   TabOrder = 0
                   LookAndFeel.Kind = lfFlat
@@ -3363,6 +3372,7 @@ object frmSortOrder: TfrmSortOrder
                   Font.Height = -12
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
+                  ParentBackground = False
                   ParentFont = False
                   TabOrder = 1
                 end
@@ -3374,6 +3384,7 @@ object frmSortOrder: TfrmSortOrder
                   Align = alTop
                   BevelOuter = bvNone
                   Color = 57825
+                  ParentBackground = False
                   TabOrder = 2
                   object cxButton7: TcxButton
                     Left = 410
@@ -3441,14 +3452,14 @@ object frmSortOrder: TfrmSortOrder
               object Panel22: TPanel
                 Left = 552
                 Top = 1
-                Width = 588
-                Height = 607
+                Width = 551
+                Height = 651
                 Align = alClient
                 TabOrder = 1
                 object PanelAvRegHeader: TPanel
                   Left = 1
                   Top = 1
-                  Width = 586
+                  Width = 549
                   Height = 23
                   Align = alTop
                   BevelOuter = bvNone
@@ -3459,14 +3470,15 @@ object frmSortOrder: TfrmSortOrder
                   Font.Height = -12
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
+                  ParentBackground = False
                   ParentFont = False
                   TabOrder = 0
                 end
                 object grdUsedPkgs: TcxGrid
                   Left = 1
                   Top = 65
-                  Width = 586
-                  Height = 541
+                  Width = 549
+                  Height = 585
                   Align = alClient
                   PopupMenu = pmUsedPkgs
                   TabOrder = 1
@@ -3581,11 +3593,12 @@ object frmSortOrder: TfrmSortOrder
                 object Panel27: TPanel
                   Left = 1
                   Top = 24
-                  Width = 586
+                  Width = 549
                   Height = 41
                   Align = alTop
                   BevelOuter = bvNone
                   Color = clOlive
+                  ParentBackground = False
                   TabOrder = 2
                   object cxButton8: TcxButton
                     Left = 8
@@ -3667,7 +3680,7 @@ object frmSortOrder: TfrmSortOrder
                 Left = 544
                 Top = 1
                 Width = 8
-                Height = 607
+                Height = 651
                 HotZoneClassName = 'TcxMediaPlayer8Style'
                 Control = Panel21
                 Color = clGreen
@@ -3677,7 +3690,7 @@ object frmSortOrder: TfrmSortOrder
             object Panel19: TPanel
               Left = 0
               Top = 0
-              Width = 1141
+              Width = 1104
               Height = 4
               Align = alTop
               TabOrder = 1
@@ -3690,7 +3703,7 @@ object frmSortOrder: TfrmSortOrder
             object PanelAOHeadData: TPanel
               Left = 0
               Top = 0
-              Width = 1141
+              Width = 1104
               Height = 67
               Align = alTop
               TabOrder = 0
@@ -3815,15 +3828,15 @@ object frmSortOrder: TfrmSortOrder
             object Panel14: TPanel
               Left = 0
               Top = 109
-              Width = 1141
-              Height = 504
+              Width = 1104
+              Height = 548
               Align = alClient
               TabOrder = 1
             end
             object Panel35: TPanel
               Left = 0
               Top = 67
-              Width = 1141
+              Width = 1104
               Height = 42
               Align = alTop
               TabOrder = 2
@@ -3904,25 +3917,32 @@ object frmSortOrder: TfrmSortOrder
           end
           object tsAttest: TcxTabSheet
             Caption = 'Avst'#228'mning r'#229'vara'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -12
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             ImageIndex = 3
+            ParentColor = False
             ParentFont = False
             object Panel24: TPanel
               Left = 0
-              Top = 270
-              Width = 1141
+              Top = 322
+              Width = 1104
               Height = 343
               Align = alBottom
               BevelOuter = bvNone
+              ParentBackground = False
               TabOrder = 0
+              ExplicitTop = 314
+              DesignSize = (
+                1104
+                343)
               object Shape1: TShape
                 Left = 8
-                Top = 161
-                Width = 449
+                Top = 159
+                Width = 465
                 Height = 2
               end
               object Label40: TLabel
@@ -4187,12 +4207,19 @@ object frmSortOrder: TfrmSortOrder
               end
               object grdOutputSummary: TcxGrid
                 Left = 8
-                Top = 168
-                Width = 449
-                Height = 265
+                Top = 165
+                Width = 465
+                Height = 176
+                Anchors = [akLeft, akTop, akRight, akBottom]
                 BevelInner = bvNone
                 BevelOuter = bvNone
                 BorderStyle = cxcbsNone
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -12
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
                 TabOrder = 9
                 object grdOutputSummaryDBTableView1: TcxGridDBTableView
                   Navigator.Buttons.CustomButtons = <>
@@ -4255,6 +4282,8 @@ object frmSortOrder: TfrmSortOrder
                   OptionsView.GroupByBox = False
                   OptionsView.Indicator = True
                   Styles.OnGetContentStyle = grdOutputSummaryDBTableView1StylesGetContentStyle
+                  Styles.Header = cxStyle9
+                  Styles.StyleSheet = GridTableViewStyleSheetDesert
                   object grdOutputSummaryDBTableView1ProductDisplayName: TcxGridDBColumn
                     DataBinding.FieldName = 'ProductDisplayName'
                     PropertiesClassName = 'TcxLabelProperties'
@@ -4338,9 +4367,9 @@ object frmSortOrder: TfrmSortOrder
                 Width = 65
               end
               object PanelMainAvRegPkgs: TPanel
-                Left = 468
+                Left = 479
                 Top = 0
-                Width = 673
+                Width = 625
                 Height = 343
                 Align = alRight
                 Anchors = [akLeft, akTop, akRight, akBottom]
@@ -4348,7 +4377,7 @@ object frmSortOrder: TfrmSortOrder
                 object Panel36: TPanel
                   Left = 1
                   Top = 1
-                  Width = 671
+                  Width = 623
                   Height = 43
                   Align = alTop
                   BevelOuter = bvNone
@@ -4358,12 +4387,14 @@ object frmSortOrder: TfrmSortOrder
                   Font.Height = -12
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
+                  ParentBackground = False
                   ParentFont = False
                   TabOrder = 0
+                  ExplicitWidth = 634
                   object SpeedButton1: TSpeedButton
                     Left = 272
                     Top = 9
-                    Width = 193
+                    Width = 281
                     Height = 32
                     Action = acStart
                     Font.Charset = DEFAULT_CHARSET
@@ -4400,7 +4431,7 @@ object frmSortOrder: TfrmSortOrder
                     OnKeyPress = Edit1KeyPress
                   end
                   object cxLabel1: TcxLabel
-                    Left = 490
+                    Left = 610
                     Top = 12
                     Caption = 'Preset digits:'
                     ParentFont = False
@@ -4412,7 +4443,7 @@ object frmSortOrder: TfrmSortOrder
                     Style.IsFontAssigned = True
                   end
                   object cxDBMaskEdit1: TcxDBMaskEdit
-                    Left = 598
+                    Left = 726
                     Top = 8
                     DataBinding.DataField = 'MarketRegionNo'
                     DataBinding.DataSource = dmSotOrderList.ds_Props
@@ -4432,21 +4463,23 @@ object frmSortOrder: TfrmSortOrder
                 object PanelPaketBuffert: TPanel
                   Left = 1
                   Top = 169
-                  Width = 671
+                  Width = 623
                   Height = 173
                   Align = alBottom
                   BevelOuter = bvNone
                   TabOrder = 1
                   Visible = False
+                  ExplicitWidth = 634
                   object cxGrid2: TcxGrid
                     Left = 0
                     Top = 72
-                    Width = 671
+                    Width = 623
                     Height = 101
                     Align = alClient
                     BevelOuter = bvNone
                     TabOrder = 0
                     LookAndFeel.Kind = lfFlat
+                    ExplicitWidth = 634
                     object cxGridDBTableView4: TcxGridDBTableView
                       Navigator.Buttons.CustomButtons = <>
                       ScrollbarAnnotations.CustomAnnotations = <>
@@ -4485,6 +4518,8 @@ object frmSortOrder: TfrmSortOrder
                       OptionsView.Footer = True
                       OptionsView.GroupByBox = False
                       OptionsView.Indicator = True
+                      Styles.Header = cxStyleOlive
+                      Styles.StyleSheet = GridTableViewStyleSheetDesert
                       object cxGridDBTableView2PaketNr: TcxGridDBColumn
                         DataBinding.FieldName = 'PaketNr'
                         PropertiesClassName = 'TcxLabelProperties'
@@ -4560,11 +4595,12 @@ object frmSortOrder: TfrmSortOrder
                   object Panel39: TPanel
                     Left = 0
                     Top = 0
-                    Width = 671
+                    Width = 623
                     Height = 72
                     Align = alTop
                     BevelOuter = bvNone
                     TabOrder = 1
+                    ExplicitWidth = 634
                     object SpeedButton7: TSpeedButton
                       Left = 16
                       Top = 24
@@ -4594,7 +4630,7 @@ object frmSortOrder: TfrmSortOrder
                     object Panel30: TPanel
                       Left = 0
                       Top = 0
-                      Width = 671
+                      Width = 623
                       Height = 17
                       Align = alTop
                       BevelOuter = bvNone
@@ -4607,26 +4643,29 @@ object frmSortOrder: TfrmSortOrder
                       Font.Style = [fsBold]
                       ParentFont = False
                       TabOrder = 0
+                      ExplicitWidth = 634
                     end
                   end
                 end
                 object PanelAvregPkgs: TPanel
                   Left = 1
                   Top = 44
-                  Width = 671
+                  Width = 623
                   Height = 125
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 2
+                  ExplicitWidth = 634
                   object cxGrid1: TcxGrid
                     Left = 0
                     Top = 67
-                    Width = 671
+                    Width = 623
                     Height = 58
                     Align = alClient
                     PopupMenu = pmUsedPkgs
                     TabOrder = 0
                     LookAndFeel.Kind = lfFlat
+                    ExplicitWidth = 634
                     object cxGridDBTableView3: TcxGridDBTableView
                       Navigator.Buttons.CustomButtons = <>
                       ScrollbarAnnotations.CustomAnnotations = <>
@@ -4673,6 +4712,7 @@ object frmSortOrder: TfrmSortOrder
                       OptionsView.Footer = True
                       OptionsView.GroupByBox = False
                       OptionsView.Indicator = True
+                      Styles.StyleSheet = GridTableViewStyleSheetDesert
                       object cxGridDBColumn1: TcxGridDBColumn
                         DataBinding.FieldName = 'PAKETNR'
                         PropertiesClassName = 'TcxLabelProperties'
@@ -4739,13 +4779,14 @@ object frmSortOrder: TfrmSortOrder
                   object Panel37: TPanel
                     Left = 0
                     Top = 0
-                    Width = 671
+                    Width = 623
                     Height = 67
                     Align = alTop
                     BevelOuter = bvNone
                     TabOrder = 1
+                    ExplicitWidth = 634
                     DesignSize = (
-                      671
+                      623
                       67)
                     object SpeedButton2: TSpeedButton
                       Left = 8
@@ -4801,7 +4842,7 @@ object frmSortOrder: TfrmSortOrder
                       ParentFont = False
                     end
                     object SpeedButton6: TSpeedButton
-                      Left = 579
+                      Left = 531
                       Top = 26
                       Width = 89
                       Height = 39
@@ -4818,7 +4859,7 @@ object frmSortOrder: TfrmSortOrder
                     object Panel38: TPanel
                       Left = 0
                       Top = 0
-                      Width = 671
+                      Width = 623
                       Height = 23
                       Align = alTop
                       BevelOuter = bvNone
@@ -4829,8 +4870,10 @@ object frmSortOrder: TfrmSortOrder
                       Font.Height = -12
                       Font.Name = 'MS Sans Serif'
                       Font.Style = [fsBold]
+                      ParentBackground = False
                       ParentFont = False
                       TabOrder = 0
+                      ExplicitWidth = 634
                     end
                   end
                 end
@@ -4946,28 +4989,31 @@ object frmSortOrder: TfrmSortOrder
             object Panel29: TPanel
               Left = 0
               Top = 65
-              Width = 1141
-              Height = 205
+              Width = 1104
+              Height = 257
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
+              ExplicitHeight = 249
               object PanelFardigVaraSamman: TPanel
                 Left = 0
                 Top = 0
                 Width = 465
-                Height = 205
+                Height = 257
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 0
+                ExplicitHeight = 249
                 object grdOutputPkgs: TcxGrid
                   Left = 0
                   Top = 24
                   Width = 465
-                  Height = 181
+                  Height = 233
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
                   LookAndFeel.Kind = lfFlat
+                  ExplicitHeight = 225
                   object cxGridDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -5025,6 +5071,7 @@ object frmSortOrder: TfrmSortOrder
                     OptionsView.GroupByBox = False
                     OptionsView.Indicator = True
                     Styles.Header = cxStyle3FardigVara
+                    Styles.StyleSheet = GridTableViewStyleSheetDesert
                     object cxGridDBTableView1SortingOrderNo: TcxGridDBColumn
                       DataBinding.FieldName = 'SortingOrderNo'
                       PropertiesClassName = 'TcxLabelProperties'
@@ -5163,6 +5210,7 @@ object frmSortOrder: TfrmSortOrder
                   Font.Height = -16
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
+                  ParentBackground = False
                   ParentFont = False
                   TabOrder = 1
                 end
@@ -5170,20 +5218,22 @@ object frmSortOrder: TfrmSortOrder
               object PanelRaVaruSamman: TPanel
                 Left = 473
                 Top = 0
-                Width = 668
-                Height = 205
+                Width = 631
+                Height = 257
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitHeight = 249
                 object grdInputPkgs: TcxGrid
                   Left = 0
                   Top = 24
-                  Width = 668
-                  Height = 181
+                  Width = 631
+                  Height = 233
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
                   LookAndFeel.Kind = lfFlat
+                  ExplicitHeight = 225
                   object cxGridDBTableView2: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -5467,6 +5517,7 @@ object frmSortOrder: TfrmSortOrder
                     OptionsView.Footer = True
                     OptionsView.GroupByBox = False
                     OptionsView.Indicator = True
+                    Styles.StyleSheet = GridBandedTableViewStyleSheetDesert
                     Styles.BandHeader = cxStyleOlive
                     Bands = <
                       item
@@ -5734,7 +5785,7 @@ object frmSortOrder: TfrmSortOrder
                 object Panel33: TPanel
                   Left = 0
                   Top = 0
-                  Width = 668
+                  Width = 631
                   Height = 24
                   Align = alTop
                   BevelOuter = bvNone
@@ -5745,6 +5796,7 @@ object frmSortOrder: TfrmSortOrder
                   Font.Height = -16
                   Font.Name = 'MS Sans Serif'
                   Font.Style = [fsBold]
+                  ParentBackground = False
                   ParentFont = False
                   TabOrder = 1
                 end
@@ -5753,25 +5805,27 @@ object frmSortOrder: TfrmSortOrder
                 Left = 465
                 Top = 0
                 Width = 8
-                Height = 205
+                Height = 257
                 HotZoneClassName = 'TcxMediaPlayer8Style'
                 Control = PanelFardigVaraSamman
                 Color = clGreen
                 ParentColor = False
+                ExplicitHeight = 249
               end
             end
             object Panel5: TPanel
               Left = 0
               Top = 0
-              Width = 1141
+              Width = 1104
               Height = 65
               Align = alTop
+              ParentBackground = False
               TabOrder = 2
               DesignSize = (
-                1141
+                1104
                 65)
               object SpeedButton10: TSpeedButton
-                Left = 996
+                Left = 959
                 Top = 4
                 Width = 140
                 Height = 57
@@ -6658,8 +6712,8 @@ object frmSortOrder: TfrmSortOrder
         object grdSortOrderRows: TcxGrid
           Left = 0
           Top = 56
-          Width = 1149
-          Height = 588
+          Width = 1106
+          Height = 626
           Align = alClient
           PopupMenu = dxBarPopupMenuSortOrderRows
           TabOrder = 0
@@ -7236,7 +7290,7 @@ object frmSortOrder: TfrmSortOrder
         object Panel34: TPanel
           Left = 0
           Top = 0
-          Width = 1149
+          Width = 1106
           Height = 56
           Align = alTop
           TabOrder = 1
@@ -7282,17 +7336,19 @@ object frmSortOrder: TfrmSortOrder
     object PanelKopplaFardigvara: TPanel
       Left = 0
       Top = 0
-      Width = 1157
+      Width = 1108
       Height = 168
       Align = alTop
+      Anchors = []
       TabOrder = 1
       Visible = False
       object grdSortRows: TcxGrid
         Left = 1
         Top = 1
-        Width = 1155
+        Width = 1106
         Height = 166
         Align = alClient
+        Anchors = []
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -8054,8 +8110,8 @@ object frmSortOrder: TfrmSortOrder
     end
     object PanelResultatKorning: TPanel
       Left = 0
-      Top = 820
-      Width = 1157
+      Top = 852
+      Width = 1108
       Height = 40
       Align = alBottom
       BevelOuter = bvNone
@@ -9013,6 +9069,7 @@ object frmSortOrder: TfrmSortOrder
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 520
@@ -11967,8 +12024,8 @@ object frmSortOrder: TfrmSortOrder
     Top = 324
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 184
-    Top = 909
+    Left = 320
+    Top = 376
     PixelsPerInch = 96
     object cxStyle1Yellow: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
@@ -12074,7 +12131,249 @@ object frmSortOrder: TfrmSortOrder
       Font.Name = 'Tahoma'
       Font.Style = []
     end
+    object cxStyle2: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle3: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 12307669
+      TextColor = clBlack
+    end
+    object cxStyle4: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 14542570
+      TextColor = clBlack
+    end
+    object cxStyle5: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle6: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6852002
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle8: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6852002
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle9: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle10: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clTeal
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle11: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle12: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clTeal
+    end
+    object cxStyle13: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clTeal
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle14: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle15: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle16: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 12307669
+      TextColor = clBlack
+    end
+    object cxStyle17: TcxStyle
+      AssignedValues = [svColor, svTextColor]
+      Color = 14542570
+      TextColor = clBlack
+    end
+    object cxStyle18: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clBlack
+    end
+    object cxStyle19: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6852002
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle20: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 6852002
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clWhite
+    end
+    object cxStyle21: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle22: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clTeal
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
+    object cxStyle23: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = 12307669
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clBlack
+    end
+    object cxStyle24: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = [fsBold]
+      TextColor = clTeal
+    end
+    object cxStyle25: TcxStyle
+      AssignedValues = [svColor, svFont, svTextColor]
+      Color = clTeal
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Microsoft Sans Serif'
+      Font.Style = []
+      TextColor = clWhite
+    end
     object cxGridTableViewStyleSheet1: TcxGridTableViewStyleSheet
+      Styles.Header = cxStyleOlive
+      BuiltIn = True
+    end
+    object GridTableViewStyleSheetDesert: TcxGridTableViewStyleSheet
+      Caption = 'Desert'
+      Styles.Content = cxStyle2
+      Styles.ContentEven = cxStyle3
+      Styles.ContentOdd = cxStyle4
+      Styles.Footer = cxStyle5
+      Styles.Group = cxStyle6
+      Styles.GroupByBox = cxStyle8
+      Styles.Header = cxStyle9
+      Styles.Inactive = cxStyle10
+      Styles.Indicator = cxStyle11
+      Styles.Preview = cxStyle12
+      Styles.Selection = cxStyle13
+      BuiltIn = True
+    end
+    object GridBandedTableViewStyleSheetDesert: TcxGridBandedTableViewStyleSheet
+      Caption = 'Desert'
+      Styles.Content = cxStyle15
+      Styles.ContentEven = cxStyle16
+      Styles.ContentOdd = cxStyle17
+      Styles.Footer = cxStyle18
+      Styles.Group = cxStyle19
+      Styles.GroupByBox = cxStyle20
+      Styles.Header = cxStyle21
+      Styles.Inactive = cxStyle22
+      Styles.Indicator = cxStyle23
+      Styles.Preview = cxStyle24
+      Styles.Selection = cxStyle25
+      Styles.BandHeader = cxStyle14
       BuiltIn = True
     end
   end
@@ -12244,7 +12543,7 @@ object frmSortOrder: TfrmSortOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -12305,8 +12604,8 @@ object frmSortOrder: TfrmSortOrder
     end
   end
   object pmSkrivut: TPopupMenu
-    Left = 648
-    Top = 867
+    Left = 744
+    Top = 803
     object Krorder1: TMenuItem
       Action = acPrintAOKorOrder
     end
@@ -12328,8 +12627,8 @@ object frmSortOrder: TfrmSortOrder
     Top = 312
   end
   object ImageList1: TImageList
-    Left = 313
-    Top = 901
+    Left = 425
+    Top = 549
     Bitmap = {
       494C010108000D00040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -12737,8 +13036,8 @@ object frmSortOrder: TfrmSortOrder
   object cxGridPopupMenu5: TcxGridPopupMenu
     Grid = grdSortOrderRows
     PopupMenus = <>
-    Left = 449
-    Top = 733
+    Left = 1033
+    Top = 293
   end
   object PopupMenu1: TPopupMenu
     AutoPopup = False
@@ -12769,12 +13068,12 @@ object frmSortOrder: TfrmSortOrder
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    Left = 444
-    Top = 909
+    Left = 428
+    Top = 605
   end
   object ColorDialog1: TColorDialog
-    Left = 448
-    Top = 677
+    Left = 1032
+    Top = 237
   end
   object PopupMenu3: TPopupMenu
     Left = 56
@@ -12835,8 +13134,8 @@ object frmSortOrder: TfrmSortOrder
   object cxGridPopupMenu6: TcxGridPopupMenu
     Grid = grdWorkOrder
     PopupMenus = <>
-    Left = 449
-    Top = 790
+    Left = 1033
+    Top = 350
   end
   object pmMergeBookings: TdxBarPopupMenu
     BarManager = dxBarManager1
@@ -13092,7 +13391,7 @@ object frmSortOrder: TfrmSortOrder
     end
   end
   object siLangLinked_frmSortOrder: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -18229,5 +18528,15 @@ object frmSortOrder: TfrmSortOrder
       4500540001000100010001000D000A0074007300410076007300740061006D00
       6E0069006E006700520061007600610072006100010044004500460041005500
       4C0054005F00430048004100520053004500540001000100010001000D000A00}
+  end
+  object dxSkinController1: TdxSkinController
+    Kind = lfFlat
+    NativeStyle = False
+    ScrollbarMode = sbmClassic
+    SkinName = 'Silver'
+    UseSkins = False
+    UseSkinsInPopupMenus = False
+    Left = 152
+    Top = 442
   end
 end
