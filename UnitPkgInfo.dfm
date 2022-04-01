@@ -10,7 +10,6 @@ object frmPkgInfo: TfrmPkgInfo
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   PopupMenu = PopupMenu1
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
@@ -25,8 +24,6 @@ object frmPkgInfo: TfrmPkgInfo
     Height = 246
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 1126
-    ExplicitHeight = 229
     object Panel5: TPanel
       Left = 1
       Top = 1
@@ -36,7 +33,6 @@ object frmPkgInfo: TfrmPkgInfo
       BevelOuter = bvNone
       Caption = 'Paketlogg'
       TabOrder = 0
-      ExplicitWidth = 1124
     end
     object grdPkgLogg: TcxGrid
       Left = 1
@@ -45,7 +41,6 @@ object frmPkgInfo: TfrmPkgInfo
       Height = 105
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 1124
       object grdPkgLoggDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         ScrollbarAnnotations.CustomAnnotations = <>
@@ -138,7 +133,6 @@ object frmPkgInfo: TfrmPkgInfo
       Control = grdPkgLogg
       Color = clMaroon
       ParentColor = False
-      ExplicitWidth = 1124
     end
     object Panel6: TPanel
       Left = 1
@@ -147,8 +141,6 @@ object frmPkgInfo: TfrmPkgInfo
       Height = 116
       Align = alClient
       TabOrder = 3
-      ExplicitWidth = 1124
-      ExplicitHeight = 99
       object grdLinkedPackage: TcxGrid
         Left = 1
         Top = 16
@@ -156,8 +148,6 @@ object frmPkgInfo: TfrmPkgInfo
         Height = 99
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 1122
-        ExplicitHeight = 82
         object grdLinkedPackageDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           ScrollbarAnnotations.CustomAnnotations = <>
@@ -255,7 +245,6 @@ object frmPkgInfo: TfrmPkgInfo
         Align = alTop
         Caption = 'L'#228'nkat paket'
         TabOrder = 1
-        ExplicitWidth = 1122
       end
     end
   end
@@ -270,7 +259,6 @@ object frmPkgInfo: TfrmPkgInfo
     Margins.Bottom = 2
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1126
     object Panel1: TPanel
       Left = 1
       Top = 1
@@ -279,7 +267,6 @@ object frmPkgInfo: TfrmPkgInfo
       Align = alTop
       BevelOuter = bvLowered
       TabOrder = 0
-      ExplicitWidth = 1124
       object Label1: TLabel
         Left = 344
         Top = 99
@@ -738,9 +725,6 @@ object frmPkgInfo: TfrmPkgInfo
       Align = alClient
       Caption = 'Panel3'
       TabOrder = 1
-      ExplicitTop = 236
-      ExplicitWidth = 1124
-      ExplicitHeight = 228
       object grdPkgInfo: TcxGrid
         Left = 1
         Top = 20
@@ -748,8 +732,6 @@ object frmPkgInfo: TfrmPkgInfo
         Height = 193
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 1122
-        ExplicitHeight = 207
         object grdPkgInfoDBBandedTableView1: TcxGridDBBandedTableView
           Navigator.Buttons.CustomButtons = <>
           ScrollbarAnnotations.CustomAnnotations = <>
@@ -939,7 +921,6 @@ object frmPkgInfo: TfrmPkgInfo
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1122
       end
     end
   end
@@ -1343,7 +1324,7 @@ object frmPkgInfo: TfrmPkgInfo
     end
   end
   object siLangLinked_frmPkgInfo: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

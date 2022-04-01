@@ -32,7 +32,19 @@ uses
   cxGridDBBandedTableView, dxBarBuiltInMenu, cxPC, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, dxSkinsCore,
   dxRibbonSkins, dxBarApplicationMenu, dxScreenTip, dxSkinsForm, dxSkinBasic,
-  dxCore ;
+  dxCore, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
+  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinOffice2010Black, dxSkinOffice2010Blue, dxSkinOffice2010Silver,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinOffice2016Colorful,
+  dxSkinOffice2016Dark, dxSkinOffice2019Black, dxSkinOffice2019DarkGray,
+  dxSkinOffice2019White, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
+  dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringtime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinTheBezier,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue ;
 
 
 
@@ -295,6 +307,60 @@ type
     dxBarLargeButton38: TdxBarLargeButton;
     sp_GetGroupClientRegionNo: TFDStoredProc;
     dxSkinController1: TdxSkinController;
+    dxBarCombo1: TdxBarCombo;
+    cds_PropsInv: TFDQuery;
+    cds_PropsInvUserID: TIntegerField;
+    cds_PropsInvForm: TStringField;
+    cds_PropsInvName: TStringField;
+    cds_PropsInvVerkNo: TIntegerField;
+    cds_PropsInvOwnerNo: TIntegerField;
+    cds_PropsInvPIPNo: TIntegerField;
+    cds_PropsInvLIPNo: TIntegerField;
+    cds_PropsInvInputOption: TIntegerField;
+    cds_PropsInvRegPointNo: TIntegerField;
+    cds_PropsInvRegDate: TSQLTimeStampField;
+    cds_PropsInvCopyPcs: TIntegerField;
+    cds_PropsInvRunNo: TIntegerField;
+    cds_PropsInvProducerNo: TIntegerField;
+    cds_PropsInvAutoColWidth: TIntegerField;
+    cds_PropsInvSupplierCode: TStringField;
+    cds_PropsInvLengthOption: TIntegerField;
+    cds_PropsInvLengthGroupNo: TIntegerField;
+    cds_PropsInvNewItemRow: TIntegerField;
+    cds_PropsInvSalesRegionNo: TIntegerField;
+    cds_PropsInvMarketRegionNo: TIntegerField;
+    cds_PropsInvOrderTypeNo: TIntegerField;
+    cds_PropsInvStatus: TIntegerField;
+    cds_PropsInvFilterOrderDate: TIntegerField;
+    cds_PropsInvStartPeriod: TSQLTimeStampField;
+    cds_PropsInvEndPeriod: TSQLTimeStampField;
+    cds_PropsInvClientNo: TIntegerField;
+    cds_PropsInvSalesPersonNo: TIntegerField;
+    cds_PropsInvVerkSupplierNo: TIntegerField;
+    cds_PropsInvVerkKundNo: TIntegerField;
+    cds_PropsInvLOObjectType: TIntegerField;
+    cds_PropsInvBarCodeNo: TIntegerField;
+    cds_PropsInvGradeStampNo: TIntegerField;
+    cds_PropsInvVolumeUnitNo: TIntegerField;
+    cds_PropsInvLengthFormatNo: TIntegerField;
+    cds_PropsInvLengthVolUnitNo: TIntegerField;
+    cds_PropsInvGroupByBox: TIntegerField;
+    cds_PropsInvGroupSummary: TIntegerField;
+    cds_PropsInvAgentNo: TIntegerField;
+    cds_PropsInvLoadingLocationNo: TIntegerField;
+    cds_PropsInvShipperNo: TIntegerField;
+    cds_PropsInvBookingTypeNo: TIntegerField;
+    cds_PropsInvCustomerNo: TIntegerField;
+    cds_PropsInvShowProduct: TIntegerField;
+    cds_PropsInvMarknad: TStringField;
+    cds_PropsInvKund: TStringField;
+    cds_PropsInvSR: TStringField;
+    cds_PropsInvSaljgrupp: TStringField;
+    cds_PropsInvVerk: TStringField;
+    cds_PropsInvShipper: TStringField;
+    cds_PropsInvBokningstyp: TStringField;
+    cds_PropsInvLaststalle: TStringField;
+    cds_PropsInvAgentNamn: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure atExitExecute(Sender: TObject);
     procedure atAboutExecute(Sender: TObject);
@@ -343,6 +409,8 @@ type
       Sender: TcxCustomGridTableView;
       ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
       AShift: TShiftState; var AHandled: Boolean);
+    procedure dxBarCombo1Change(Sender: TObject);
+    procedure cds_PropsInvAfterInsert(DataSet: TDataSet);
 
   private
     ShowAllOutput   : Boolean ;
@@ -350,6 +418,8 @@ type
     TempEditString  : String ;
     OriginalUserID  : Integer ;
     a : String ;
+    procedure Open_cds_PropsInv ;
+    procedure Save_cds_PropsInv ;
     Function  GetGroupClientRegionNo(VerkNo, SalesRegionNo  : Integer) : Boolean ;
     function  ScannedPkg(const AViewInfo  : String) : Boolean ;
     procedure GetpackageNoEntered(Sender: TObject;const PackageNo : String) ;
@@ -494,7 +564,18 @@ end;
 
 //---------------------------------------------------------------------
 procedure TfrmMain.FormCreate(Sender: TObject);
+Var I : integer ;
 begin
+ dxBarCombo1.OnChange := nil ;
+ Try
+  for i:=0 to cxLookAndFeelPaintersManager.Count-1 do
+   begin
+    dxBarCombo1.Items.Add(cxLookAndFeelPaintersManager.Items[i].LookAndFeelName) ;
+   end;
+ Finally
+    dxBarCombo1.OnChange :=  dxBarCombo1Change ;
+ End;
+
 // ExceptionNotify := MyNotify; // Assign ExceptionNotify variable to MyNotify procedure.
   Application.OnException := AppException;
   ShowAllOutput := False ;
@@ -705,7 +786,7 @@ begin
 
 
 
-
+  Open_cds_PropsInv ;
 end;
 
 
@@ -718,6 +799,26 @@ begin
  End ;
 end;
 
+
+procedure TfrmMain.dxBarCombo1Change(Sender: TObject);
+begin
+  dxSkinController1.SkinName  :=   ///cbSkins.Properties.
+  dxBarCombo1.Items.Strings[dxBarCombo1.ItemIndex] ;
+  dxRibbon1.ColorSchemeName   :=   dxSkinController1.SkinName ;
+  Save_cds_PropsInv ;
+
+  if Assigned(frmVisTruckLoadOrder) then
+   frmVisTruckLoadOrder.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+
+  if Assigned(fLager) then
+   fLager.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+
+  if Assigned(frmLoadArrivals) then
+    frmLoadArrivals.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+
+ if Assigned(fkilnHandling) then
+  fkilnHandling.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+end;
 
 procedure TfrmMain.acUserPreferenceExecute(Sender: TObject);
 begin
@@ -974,27 +1075,6 @@ end;
 procedure TfrmMain.acBytAnvandareExecute(Sender: TObject);
 var OKHelpBottomDlg: TOKHelpBottomDlg;
 begin
-{
-   if (Trim(dmsConnector.Get_AD_Name) = 'VIDA\johlis')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\larmak')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\admin')
-   or (Trim(dmsConnector.Get_AD_Name) = 'Lars')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\krikuh')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\jenjoh')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\marhug')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\annjon')
-   or (Trim(dmsConnector.Get_AD_Name) = 'VIDA\kritom')
-   or (Trim(dmsConnector.Get_AD_Name) = 'sa')
-   then
-   Begin
-   if FormOpen then
-   Begin
-    ShowMessage(siLangLinked1.GetTextOrDefault('IDS_9' (* 'Stäng alla formulär först!' *) ));
-    Exit ;
-   End ;
-}
-
-
  if dmsConnector.CanChangeUser(OriginalUserID) then
  Begin
  if FormOpen then
@@ -1034,6 +1114,8 @@ begin
         a:= Application.Title+'/'+dmsConnector.GetCompanyName (ThisUser.CompanyNo) +'/' + ThisUser.UserName +' ver '+GetVersion
         +' - '+dmsConnector.FDConnection1.Params.Values['Server']
         +'/'+dmsConnector.FDConnection1.Params.Values['Database']+' ' ;
+
+        Open_cds_PropsInv ;
        End
        else
        Begin
@@ -1185,6 +1267,12 @@ Begin
   end;
 End;
 
+procedure TfrmMain.cds_PropsInvAfterInsert(DataSet: TDataSet);
+begin
+  cds_PropsInvUserID.AsInteger        := thisuser.userid;
+  cds_PropsInvForm.AsString           := 'Truck_frmMain';
+end;
+
 procedure TfrmMain.acDeRegisterPackagesExecute(Sender: TObject);
 begin
   AvregistreraPaket ;
@@ -1212,6 +1300,7 @@ if ThisUser.CanView[dcInventorySection] then
    fkilnHandling.CreateCo( Sender,ThisUser.CompanyNo);
    fkilnHandling.Parent := panelBase;
    fkilnHandling.Show;
+   fkilnHandling.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
 //   fkilnHandling.Edit1.SetFocus ;
   End
   else
@@ -1234,6 +1323,7 @@ begin
      frmLoadArrivals.Parent := panelBase;
      frmLoadArrivals.Show;
      frmLoadArrivals.Edit1.Setfocus ;
+     frmLoadArrivals.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
     End
     else
     begin
@@ -1278,6 +1368,7 @@ begin
    frmVisTruckLoadOrder.Parent := panelBase;
    frmVisTruckLoadOrder.Show;
    frmVisTruckLoadOrder.teSearchLONo.SetFocus ;
+   frmVisTruckLoadOrder.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
   End
   else
     begin
@@ -1322,6 +1413,7 @@ begin
    fLager.Parent        := panelBase;
 
    fLager.Show;
+   fLager.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
 //   fLager.lcAgent.SetFocus ;
   End
   else
@@ -1804,6 +1896,63 @@ begin
   FreeAndNil(fchgPkgVard) ;
  end;
 end;
+
+procedure TfrmMain.Open_cds_PropsInv ;
+Var IndexNo : integer ;
+Begin
+    if cds_PropsInv.Active then
+    cds_PropsInv.Active := False;
+    Try
+    cds_PropsInv.ParamByName('UserID').AsInteger := thisuser.userid;
+//    cds_PropsInv.ParamByName('Name').AsString := cds_mallName.AsString;
+    cds_PropsInv.ParamByName('Form').AsString := 'Truck_frmMain';
+    // cds_mallName.AsString ;
+//    cds_PropsInv.ParamByName('LOObjectType').AsInteger := 1;
+    cds_PropsInv.Active := True;
+    if (cds_PropsInv.RecordCount > 0) AND (cds_PropsInvName.AsString > '') then
+    Begin
+      dxSkinController1.SkinName  := cds_PropsInvName.AsString ;
+      dxRibbon1.ColorSchemeName   := dxSkinController1.SkinName ;
+      IndexNo := dxBarCombo1.Items.IndexOf(cds_PropsInvName.AsString) ;
+      if IndexNo > -1 then
+      dxBarCombo1.ItemIndex := IndexNo ;
+    End
+    else
+   Begin
+    dxSkinController1.SkinName  := 'Office2013DarkGray' ;
+    dxRibbon1.ColorSchemeName   := 'Office2013DarkGray' ;
+   End;
+    Finally
+      cds_PropsInv.Active := False;
+    End;
+End;
+
+procedure TfrmMain.Save_cds_PropsInv ;
+Var IndexNo : integer ;
+Begin
+
+    if cds_PropsInv.Active then
+    cds_PropsInv.Active := False;
+    cds_PropsInv.ParamByName('UserID').AsInteger := thisuser.userid;
+//    cds_PropsInv.ParamByName('Name').AsString := cds_mallName.AsString;
+    cds_PropsInv.ParamByName('Form').AsString := 'Truck_frmMain';
+    // cds_mallName.AsString ;
+//    cds_PropsInv.ParamByName('LOObjectType').AsInteger := 1;
+    cds_PropsInv.Active := True;
+    if (cds_PropsInv.RecordCount > 0) AND (cds_PropsInvName.AsString > '') then
+    Begin
+     cds_PropsInv.Edit ;
+     cds_PropsInvName.AsString  := dxBarCombo1.Items.Strings[dxBarCombo1.ItemIndex] ;
+     cds_PropsInv.Post ;
+    End
+    else
+    Begin
+     cds_PropsInv.Insert ;
+     cds_PropsInvName.AsString  := dxBarCombo1.Items.Strings[dxBarCombo1.ItemIndex] ;
+     cds_PropsInv.Post ;
+    End;
+
+End;
 
 
 end.

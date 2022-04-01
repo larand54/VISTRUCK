@@ -30,7 +30,10 @@ uses
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   cxNavigator, siComp, siLngLnk, System.Actions, Vcl.Grids, Vcl.DBGrids,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  dxBarBuiltInMenu, System.ImageList ;
+  dxBarBuiltInMenu, System.ImageList, dxSkinOffice2016Colorful,
+  dxSkinOffice2016Dark, dxSkinOffice2019Black, dxSkinOffice2019DarkGray,
+  dxSkinOffice2019White, dxSkinTheBezier, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light ;
 
   Const
     CM_MOVEIT = WM_USER + 1;

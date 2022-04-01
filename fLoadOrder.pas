@@ -65,7 +65,11 @@ uses
   dxSkinOffice2013LightGray, dxSkinOffice2013White, dxBarBuiltInMenu, siComp,
   siLngLnk, System.Actions, udmFR, uReportController, uReport, System.Generics.Collections, dxPScxPivotGridLnk,
   dxPSLbxLnk, dxPSTextLnk, dxSkinOffice2019Colorful, dxDateRanges,
-  dxScrollbarAnnotations, cxImageList, System.ImageList, dxSkinBasic;
+  dxScrollbarAnnotations, cxImageList, System.ImageList, dxSkinBasic,
+  dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
+  dxSkinOffice2019DarkGray, dxSkinOffice2019White, dxSkinTheBezier,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -471,6 +475,9 @@ type
     acSendWoodxDeliveryMessage: TAction;
     cxButton10: TcxButton;
     grdFSDBTableView1Lagerkod: TcxGridDBColumn;
+    ILStatus1616: TImageList;
+    grdLODBTableView1LoadStatus: TcxGridDBColumn;
+    grdLODBTableView1NoOfLoads: TcxGridDBColumn;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -592,6 +599,15 @@ type
     procedure grdFSDBTableView1StylesGetContentStyle(
       Sender: TcxCustomGridTableView; ARecord: TcxCustomGridRecord;
       AItem: TcxCustomGridTableItem; var AStyle: TcxStyle);
+    procedure grdLODBTableView1LoadStatusCustomDrawCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+    procedure grdLODBTableView1LoadStatusGetDisplayText(
+      Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+      var AText: string);
+    procedure grdLODBTableView1CustomDrawGroupCell(
+      Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+      AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
 
   private
     { Private declarations }
@@ -600,7 +616,8 @@ type
     SearchOneLO : Boolean ;
     SupplierShipPlanObjectNo : Integer ;
     OrderTypeChanged   : Boolean ;
-    LOs : TStringList ;
+//    LOs : TStringList ;
+    function  GetGridValue(aGridRow: TcxCustomGridRecord; aFieldIndex : integer) : variant;
     procedure CheckSamlast ;
     procedure BuildGetLONos ;
     procedure CancelChangesExecute ;
@@ -672,6 +689,11 @@ var
 
   frmVisTruckLoadOrder: TfrmVisTruckLoadOrder;
   OriginalPos : String;
+
+
+type
+  TcxViewInfoAcess = class( TcxGridTableDataCellViewInfo );
+  TcxPainterAccess = class( TcxGridTableDataCellPainter );
 
 implementation
 
@@ -1394,9 +1416,9 @@ CheckIfChangesUnSaved ;
  With dmcOrder do
  Begin
   Try
-   LOs  := TStringList.Create ;
+//   LOs  := TStringList.Create ;
 
-   LOs.Delimiter  := ',' ;
+//   LOs.Delimiter  := ',' ;
 
   // Samlast  := TStringList.Create ;
 
@@ -1544,7 +1566,21 @@ CheckIfChangesUnSaved ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
   cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,') ;
+
+  cdsSawmillLoadOrders.SQL.Add('IsNull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+  cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+  cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+  cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+  cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+  cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc), 5) AS LoadStatus,') ;
+
+
+  cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+  cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+  cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+  cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+  cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
 
   cdsSawmillLoadOrders.SQL.Add('FROM dbo.Client_LoadingLocation     CLL') ;
 
@@ -1553,6 +1589,7 @@ CheckIfChangesUnSaved ;
   else
   cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
 
+  cdsSawmillLoadOrders.SQL.Add('inner join dbo.LOs LO on LO.LONo = SP.ShippingPlanNo') ;
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
 
   cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
@@ -1621,9 +1658,11 @@ CheckIfChangesUnSaved ;
   cdsSawmillLoadOrders.SQL.Add('AND SP.ShippingPlanNo > 1');
   AddFilter ;
 
-  cdsSawmillLoadOrders.SQL.Add('and sp.ShippingPlanNo in (') ;
-  cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
-  cdsSawmillLoadOrders.SQL.Add(')') ;
+{
+    cdsSawmillLoadOrders.SQL.Add('and sp.ShippingPlanNo in (') ;
+    cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
+    cdsSawmillLoadOrders.SQL.Add(')') ;
+}
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> U N I O N <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   cdsSawmillLoadOrders.SQL.Add('UNION');
@@ -1768,14 +1807,29 @@ CheckIfChangesUnSaved ;
   cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo') ;
   cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,') ;
   cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,') ;
-  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering') ;
+  cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,') ;
 
-  cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
+  cdsSawmillLoadOrders.SQL.Add('Isnull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+  cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+  cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+  cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+  cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+  cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc),5) AS LoadStatus,') ;
+
+  cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+  cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+  cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+  cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+  cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
+
+  cdsSawmillLoadOrders.SQL.Add('FROM dbo.Client_LoadingLocation     CLL') ;
 
   if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
   cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLocationNo       = CLL.PhyInvPointNameNo')
   else
   cdsSawmillLoadOrders.SQL.Add('INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.ShipToInvPointNo       = CLL.PhyInvPointNameNo') ;
+
+  cdsSawmillLoadOrders.SQL.Add('inner join dbo.LOs LO on LO.LONo = SP.ShippingPlanNo') ;
 
   cdsSawmillLoadOrders.SQL.Add('Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.Delivery_WeekNo') ;
   cdsSawmillLoadOrders.SQL.Add('LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Size and ps.LanguageCode = 1') ;
@@ -1839,9 +1893,11 @@ CheckIfChangesUnSaved ;
 
    AddFilter ;
 
-   cdsSawmillLoadOrders.SQL.Add('and sp.ShippingPlanNo in (') ;
-   cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
-   cdsSawmillLoadOrders.SQL.Add(')') ;
+{
+     cdsSawmillLoadOrders.SQL.Add('and sp.ShippingPlanNo in (') ;
+     cdsSawmillLoadOrders.SQL.Add(LOs.DelimitedText) ;
+     cdsSawmillLoadOrders.SQL.Add(')') ;
+}
 
    //Start third union script
 
@@ -2052,7 +2108,7 @@ CheckIfChangesUnSaved ;
  *)
    //End third union script
 
-   if thisUser.UserID = 258 then cdsSawmillLoadOrders.SQL.SaveToFile('BuildLOSQL.sql');
+//   if thisUser.UserID = 258 then  cdsSawmillLoadOrders.SQL.SaveToFile('BuildLOSQL.sql');
 
    //cdsSawmillLoadOrders.SQL.SaveToFile('BuildLOSQL.sql');
 
@@ -2060,7 +2116,7 @@ CheckIfChangesUnSaved ;
 // if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.txt');
     OrderTypeChanged := False ;
    Finally
-    FreeAndNil(LOs) ;
+  //  FreeAndNil(LOs) ;
  //   FreeAndNil(Samlast) ;
    End ;
 
@@ -2135,10 +2191,14 @@ procedure TfrmVisTruckLoadOrder.BuildGetLONos;
 
 Begin
 
+  Try
   with dmcOrder do
   Begin
     sq_GetLONos.SQL.Clear;
-    sq_GetLONos.SQL.Add('SELECT distinct SP.ShippingPlanNo');
+    sq_GetLONos.SQL.Add('DELETE dbo.LOs WHERE UserID = ' + IntToStr(ThisUser.UserID)) ;
+
+    sq_GetLONos.SQL.Add('INSERT INTO dbo.LOs') ;
+    sq_GetLONos.SQL.Add('SELECT distinct SP.ShippingPlanNo,' + IntToStr(ThisUser.UserID));
     sq_GetLONos.SQL.Add('FROM dbo.Client_LoadingLocation     CLL');
     if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
       sq_GetLONos.SQL.Add
@@ -2173,20 +2233,35 @@ Begin
 
   if computerName = 'CARMAK-FASTER' then sq_GetLONos.SQL.SaveToFile('sq_GetLONos.sql');
 
-  sq_GetLONos.Active := True;
-  sq_GetLONos.First;
-  while not sq_GetLONos.Eof do
-  Begin
-    LOs.Add(sq_GetLONos.FieldByName('ShippingPlanNo').AsString);
-    sq_GetLONos.Next;
-  End;
 
-  sq_GetLONos.Active := False;
+  sq_GetLONos.ExecSQL ;
 
-  if LOs.Count = 0 then
-    LOs.Add('1');
-  // sq_GetLONos.SQL.SaveToFile('sq_GetLONos.txt') ;
-  // LOs.SaveToFile('LOs.txt') ;
+     except
+      On E: Exception do
+      Begin
+       dmsSystem.FDoLog(E.Message) ;
+//      ShowMessage(E.Message);
+       Raise ;
+      End ;
+     end;
+
+
+  {
+    sq_GetLONos.Active := True;
+     sq_GetLONos.First;
+     while not sq_GetLONos.Eof do
+     Begin
+       LOs.Add(sq_GetLONos.FieldByName('ShippingPlanNo').AsString);
+       sq_GetLONos.Next;
+     End;
+
+     sq_GetLONos.Active := False;
+
+     if LOs.Count = 0 then
+       LOs.Add('1');
+      sq_GetLONos.SQL.SaveToFile('sq_GetLONos.txt') ;
+      LOs.SaveToFile('LOs.txt') ;
+ }
 
   {
     with dmcOrder do
@@ -2512,7 +2587,21 @@ begin
       cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
       cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
       cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
-      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,');
+
+      cdsSawmillLoadOrders.SQL.Add('Isnull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc),5) AS LoadStatus,') ;
+
+
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
 
       cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
       if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
@@ -2733,7 +2822,20 @@ begin
       cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
       cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
       cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
-      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,');
+
+      cdsSawmillLoadOrders.SQL.Add('Isnull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc),5) AS LoadStatus,') ;
+
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
 
       cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
       if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
@@ -3163,7 +3265,20 @@ begin
       cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
       cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
       cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
-      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,');
+
+      cdsSawmillLoadOrders.SQL.Add('Isnull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc), 5) AS LoadStatus,') ;
+
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
 
       cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
       if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
@@ -3379,7 +3494,20 @@ begin
       cdsSawmillLoadOrders.SQL.Add('										AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo');
       cdsSawmillLoadOrders.SQL.Add('WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,');
       cdsSawmillLoadOrders.SQL.Add('SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,');
-      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering');
+      cdsSawmillLoadOrders.SQL.Add('SP.InternalNote AS Produktnotering,');
+
+      cdsSawmillLoadOrders.SQL.Add('Isnull((Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo') ;
+      cdsSawmillLoadOrders.SQL.Add('Order by L.SenderLoadStatus desc),5) AS LoadStatus,') ;
+
+      cdsSawmillLoadOrders.SQL.Add('(Select Count(distinct L.LoadNo) FROM dbo.Loads L') ;
+      cdsSawmillLoadOrders.SQL.Add('Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo') ;
+      cdsSawmillLoadOrders.SQL.Add('WHERE') ;
+      cdsSawmillLoadOrders.SQL.Add('LS.ShippingPlanNo = SP.ShippingPlanNo') ;
+      cdsSawmillLoadOrders.SQL.Add('AND L.SupplierNo = SP.SupplierNo) AS NoOfLoads') ;
 
       cdsSawmillLoadOrders.SQL.Add('FROM   dbo.Client_LoadingLocation     CLL');
       if dmcOrder.cds_PropsOrderTypeNo.AsInteger = 0 then
@@ -3441,8 +3569,7 @@ begin
         cdsSawmillLoadOrders.SQL.Add('WHERE  SP.ShippingPlanNo = ' + teSearchLONo.Text);
 
       cdsSawmillLoadOrders.SQL.Add('AND SP.ObjectType < 2');
-      if thisUser.UserID = 258 then
-        cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
+      if thisUser.UserID = 258 then    cdsSawmillLoadOrders.SQL.SaveToFile('cdsSawmillLoadOrders.sql');
 
 // if ThisUser.UserID = 8 then cdsSawmillLoadOrders.SQL.SaveToFile('BuildVIDAWOODGetOne_LO_SQL_BuildGetOne_LO_SQL.txt');
       OrderTypeChanged := False;
@@ -4106,7 +4233,7 @@ begin
    SetPanelToShowAndHide ;
 
 
-
+   fLoadEntrySSP.dxBarManager1.LookAndFeel.SkinName := self.dxBarManager1.LookAndFeel.SkinName ;
   Finally
    tcLO.OnChange := tcLOChange ;
   End ;
@@ -4159,7 +4286,7 @@ begin
       else
        fLoadEntrySSP.grdLORows.SetFocus ;
 
-
+    fLoadEntrySSP.dxBarManager1.LookAndFeel.SkinName := self.dxBarManager1.LookAndFeel.SkinName ;
    end ;
  End;
 end;
@@ -5193,6 +5320,54 @@ begin
  End;
 end;
 
+procedure TfrmVisTruckLoadOrder.grdLODBTableView1LoadStatusCustomDrawCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableDataCellViewInfo; var ADone: Boolean);
+var
+  aPainter: TcxPainterAccess;
+  aIcon : integer;
+begin          // SystemId
+  inherited;
+  aIcon := GetGridValue( AViewInfo.GridRecord, 82 );
+  APainter := TcxPainterAccess(TcxViewInfoAcess(AViewInfo).GetPainterClass.Create(ACanvas, AViewInfo));
+  with APainter do
+  begin
+    try
+      with TcxCustomTextEditViewInfo(AViewInfo.EditViewInfo).TextRect do
+        Left := Left + ImageList1.Width + 1;
+      DrawContent;
+      DrawBorders;
+      with AViewInfo.ClientBounds do
+       dmsConnector.cxImageListLoadStatus.Draw(ACanvas.Canvas, Left + 1, Top + 1,
+          aIcon);
+    finally
+      Free;
+      ADone := True;
+    end;
+  end;
+end;
+
+
+procedure TfrmVisTruckLoadOrder.grdLODBTableView1LoadStatusGetDisplayText(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AText: string);
+begin
+ if ARecord is TcxGridGroupRow then
+ begin
+   AText := '         ' + AText;
+ end;
+end;
+
+function TfrmVisTruckLoadOrder.GetGridValue(aGridRow: TcxCustomGridRecord; aFieldIndex : integer) : variant;
+var
+  aColumnIndex : integer;
+  RecordIndex : integer;
+begin
+  aColumnIndex  := aGridRow.GridView.FindItemByID(aFieldIndex).Index;
+  RecordIndex   := aGridRow.RecordIndex;
+  result        := aGridRow.GridView.DataController.Values[ RecordIndex, aColumnIndex ];
+end;
+
 procedure TfrmVisTruckLoadOrder.acPrintMarkedLOsUpdate(Sender: TObject);
 begin
  acPrintMarkedLOs.Enabled:= grdLODBTableView1.Controller.SelectedRecordCount > 0 ;
@@ -5655,6 +5830,29 @@ begin
   finally
     dmFR.RestoreCursor;
   end;
+end;
+
+procedure TfrmVisTruckLoadOrder.grdLODBTableView1CustomDrawGroupCell(
+  Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
+  AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
+var
+  aItem: TcxGridColumn;
+  aPainter: TcxPainterAccess;
+  aIcon : integer;
+  aText: string;
+  aTextRect: TRect;
+begin   // Draw group cell
+  inherited;
+  aItem := TcxGridColumn(Sender.GroupedItems[TcxCustomGridRow(AViewInfo.GridRecord).Level]);
+  if (aItem <> grdLODBTableView1LoadStatus) then
+    exit;
+  aIcon := GetGridValue( AViewInfo.GridRecord, 82 );
+  TcxGridTableView(Sender).OnCustomDrawGroupCell := nil;
+  aViewInfo.RecordViewInfo.Paint(acanvas);
+  TcxGridTableView(Sender).OnCustomDrawGroupCell := grdLODBTableView1CustomDrawGroupCell;
+  ACanvas.DrawImage(dmsConnector.cxImageListLoadStatus, AviewInfo.TextAreaBounds.Left, AViewInfo.TextAreaBounds.Top, aIcon, True);
+  ACanvas.Brush.Style := bsClear;
+  ADone := True;
 end;
 
 procedure TfrmVisTruckLoadOrder.grdLODBTableView1DblClick(Sender: TObject);

@@ -29,7 +29,11 @@ uses
   dxSkinsdxBarPainter, cxNavigator, dxSkinMetropolis, dxSkinMetropolisDark,
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   siComp, siLngLnk, System.Actions, dxSkinOffice2019Colorful, dxDateRanges,
-  dxScrollbarAnnotations, dxBarBuiltInMenu, System.ImageList ;
+  dxScrollbarAnnotations, dxBarBuiltInMenu, System.ImageList,
+  dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
+  dxSkinOffice2019DarkGray, dxSkinOffice2019White, dxSkinTheBezier,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light ;
 
   Const
     CM_MOVEIT = WM_USER + 1;

@@ -450,6 +450,8 @@ type
     sp_SamlastInfo: TFDStoredProc;
     cdsLoadsForLOLagerkod: TStringField;
     cdsLoadsForLO_forVWLagerkod: TStringField;
+    cdsSawmillLoadOrdersLoadStatus: TIntegerField;
+    cdsSawmillLoadOrdersNoOfLoads: TIntegerField;
 
 
     procedure provSawMillLoadOrdersGetTableName(Sender: TObject;
@@ -489,7 +491,7 @@ type
   private
     PackageCode_Layout  : Array of array of variant ;
     FLastLagerkodChecked : String ;
-    FLastLOChecked : Integer;
+    FLastSupplierNoChecked, FLastLOChecked : Integer;
     FLoadOrdersAfterScroll : TDataSetNotifyEvent;
     procedure ShowLoadsForLO_II(const LONo, pSupplierNo : Integer;const Lagerkod : String);
     procedure CheckIfPkgCodeNeedsToBeGeneratedFor_ELO (InfoList : TStrings) ;
@@ -590,7 +592,8 @@ begin
   ShowLoadsForLO_II(cdsSawmillLoadOrdersLONumber.AsInteger, cdsSawmillLoadOrdersSupplier.AsInteger,
   cdsSawmillLoadOrdersLagerkod.AsString) ;
   FLastLOChecked := LONo;
-  FLastLagerkodChecked  := cdsSawmillLoadOrdersLagerkod.AsString ;
+  FLastLagerkodChecked    := cdsSawmillLoadOrdersLagerkod.AsString ;
+  FLastSupplierNoChecked  := cdsSawmillLoadOrdersSupplier.AsInteger ;
  Finally
   Screen.Cursor := Save_Cursor ;
  End ;
@@ -669,6 +672,7 @@ procedure TdmcOrder.dsrcSawmillLoadOrdersDataChange(Sender: TObject;
   Field: TField);
 begin
  if (cdsSawmillLoadOrdersLONumber.AsInteger <>  FLastLOChecked)
+ or (cdsSawmillLoadOrdersSupplier.AsInteger <>  FLastSupplierNoChecked)
  or (cdsSawmillLoadOrdersLagerkod.AsString <> FLastLagerkodChecked)  then
   ShowLoadsForLO(cdsSawmillLoadOrdersLONumber.AsInteger) ;
 

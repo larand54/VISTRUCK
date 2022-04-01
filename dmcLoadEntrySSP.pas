@@ -758,7 +758,7 @@ begin
       Result := 1;
     cds_LoadPackages.Next;
 
-  if Status = 3 then
+  if (Status = 3) or (Status = 4) then
    Result := Status ;
 
   end;

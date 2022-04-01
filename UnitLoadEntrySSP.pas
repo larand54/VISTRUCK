@@ -36,7 +36,10 @@ uses
   dxSkinOffice2013White, dxBarBuiltInMenu, siComp, siLngLnk, System.Actions,
   Vcl.Touch.Keyboard, uReportController, cxSplitter, Vcl.Buttons,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  System.ImageList, dxSkinBasic ;
+  System.ImageList, dxSkinBasic, cxImageList, dxSkinOffice2016Colorful,
+  dxSkinOffice2016Dark, dxSkinOffice2019Black, dxSkinOffice2019DarkGray,
+  dxSkinOffice2019White, dxSkinTheBezier, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -92,7 +95,6 @@ type
     Panel5: TPanel;
     dxBarDockControl1: TdxBarDockControl;
     acSaveLoad: TAction;
-    Panel6: TPanel;
     Panel7: TPanel;
     dxBarDockControl2: TdxBarDockControl;
     imgcbStatus: TcxDBImageComboBox;
@@ -235,7 +237,6 @@ type
     cxLabel2: TcxLabel;
     cxGridPopupMenu1: TcxGridPopupMenu;
     cxGridPopupMenu2: TcxGridPopupMenu;
-    Edit1: TEdit;
     dxBarLargeButton10: TdxBarLargeButton;
     acPrintCMR: TAction;
     dxBarLargeButton11: TdxBarLargeButton;
@@ -411,6 +412,12 @@ type
     acShowPkgLogg: TAction;
     grdLORowsDBBandedTableView1Lagerkod: TcxGridDBBandedColumn;
     Timer2: TTimer;
+    dxBarLargeButton13: TdxBarLargeButton;
+    dxBarLargeButton14: TdxBarLargeButton;
+    acSetLoadReady: TAction;
+    cxImageList1: TcxImageList;
+    Panel6: TPanel;
+    cxDBImageComboBox1: TcxDBImageComboBox;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -451,10 +458,8 @@ type
     procedure acDeleteLoadExecute(Sender: TObject);
     procedure acDeleteLoadUpdate(Sender: TObject);
     procedure acPrintFSExecute(Sender: TObject);
-    procedure acPrintHyvelOrderExecute(Sender: TObject);
     procedure acLOAllaVerkExecute(Sender: TObject);
     procedure acPrintLOErtVerkExecute(Sender: TObject);
-    procedure acPrintSpecAllaLasterLOExecute(Sender: TObject);
     procedure acPrintFSUpdate(Sender: TObject);
     procedure acPrintSpecAllaLasterLOUpdate(Sender: TObject);
     procedure acPrintLOErtVerkUpdate(Sender: TObject);
@@ -541,6 +546,8 @@ type
     procedure cxbtnCreatePalletPkgClick(Sender: TObject);
     procedure acShowPkgLoggExecute(Sender: TObject);
     procedure Timer2Timer(Sender: TObject);
+    procedure acSetLoadReadyExecute(Sender: TObject);
+    procedure acSetLoadReadyUpdate(Sender: TObject);
 
   private
     { Private declarations }
@@ -785,7 +792,7 @@ Begin
     cds_LoadPackages.UpdateOptions.ReadOnly               := True ;
   End
   else
-  if (LoadAR)  or (cds_LoadHeadSenderLoadStatus.AsInteger = 2) then
+  if (LoadAR)  or ((cds_LoadHeadSenderLoadStatus.AsInteger = 2) or (cds_LoadHeadSenderLoadStatus.AsInteger = 4)) then
   Begin
 
    if ThisUser.UserID = 888 then
@@ -810,7 +817,11 @@ Begin
     Caption                                               := siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_1' (* 'Lasten kan inte ändras för att status är "Avslutad"' *) ) ;
 
     LoadEnabled                                           := False ;
+    if cds_LoadHeadSenderLoadStatus.AsInteger = 4 then
+    cds_LoadHead.UpdateOptions.ReadOnly                   := False
+    else
     cds_LoadHead.UpdateOptions.ReadOnly                   := True ;
+
     grdLORowsDBBandedTableView1MATCH.Properties.ReadOnly  := True ;
     cds_LSP.UpdateOptions.ReadOnly                        := True ;
     cds_LoadPackages.UpdateOptions.ReadOnly               := True ;
@@ -3033,26 +3044,32 @@ begin
    mtSelectedPkgNo.First ;
     While not mtSelectedPkgNo.Eof do
     Begin
-      Try
-       cds_LoadPackages.Insert ;
-       cds_LoadPackagesPackageNo.AsInteger    := mtSelectedPkgNoPaketnr.AsInteger ;
-       cds_LoadPackagesSupplierCode.AsString  := mtSelectedPkgNoLevKod.AsString ;
-       cds_LoadPackagesDefsspno.AsInteger     := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
-       cds_LoadPackagesOverrideRL.AsInteger   := cdsLORowsOverrideRL.AsInteger ;
+      if not cds_LoadPackages.FindKey([mtSelectedPkgNoPaketnr.AsInteger, Trim(mtSelectedPkgNoLevKod.AsString)]) then
+      Begin
+        Try
+         cds_LoadPackages.Insert ;
+         cds_LoadPackagesPackageNo.AsInteger    := mtSelectedPkgNoPaketnr.AsInteger ;
+         cds_LoadPackagesSupplierCode.AsString  := mtSelectedPkgNoLevKod.AsString ;
+         cds_LoadPackagesDefsspno.AsInteger     := cdsLORowsSupplierShipPlanObjectNo.AsInteger ;
+         cds_LoadPackagesOverrideRL.AsInteger   := cdsLORowsOverrideRL.AsInteger ;
 
 
-       ValidatePkgNoSuppCode_WhenPickPkgNo(Sender, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
-       mtSelectedPkgNoproductno.AsInteger, mtSelectedPkgNoNOOFLENGTHS.AsInteger);
-//       if (cds_LoadPackagesPackageOK.AsInteger <> 0) AND (cds_LoadPackagesPackageOK.AsInteger <> 13) then
-//         ValidatePkgNoSuppCode(Sender, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
-//         mtSelectedPkgNoproductno.AsInteger, mtSelectedPkgNoNOOFLENGTHS.AsInteger);
-      Except
-       on eDatabaseError do
-       Begin
-        Raise ;
-        cds_LoadPackages.Cancel ;
-       End ;
-      End ;
+         ValidatePkgNoSuppCode_WhenPickPkgNo(Sender, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
+         mtSelectedPkgNoproductno.AsInteger, mtSelectedPkgNoNOOFLENGTHS.AsInteger);
+  //       if (cds_LoadPackagesPackageOK.AsInteger <> 0) AND (cds_LoadPackagesPackageOK.AsInteger <> 13) then
+  //         ValidatePkgNoSuppCode(Sender, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
+  //         mtSelectedPkgNoproductno.AsInteger, mtSelectedPkgNoNOOFLENGTHS.AsInteger);
+        Except
+         on eDatabaseError do
+         Begin
+          Raise ;
+          cds_LoadPackages.Cancel ;
+         End ;
+        End ;
+      End
+       else
+        AddLoadPkgErrorLog(cds_LoadHeadLoadNo.AsInteger, mtSelectedPkgNoPaketnr.AsInteger, mtSelectedPkgNoLevKod.AsString,
+        'Package ' + mtSelectedPkgNoPaketnr.AsString + '/' + mtSelectedPkgNoLevKod.AsString + ' already in the load') ;
      mtSelectedPkgNo.Next ;
      cdsLORows.Locate('SupplierShipPlanObjectNo', SupplierShipPlanObjectNo, []) ;
     End ; //While
@@ -3880,6 +3897,44 @@ begin
  acSetDefaultMatchOnAllPkgs.Enabled:=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
 end;
 
+procedure TfLoadEntrySSP.acSetLoadReadyExecute(Sender: TObject);
+begin
+ with dmLoadEntrySSP do
+ Begin
+  if not dmsSystem.IsLoadAR(cds_LoadHeadLoadNo.AsInteger) then
+  Begin
+   if cds_LoadPackages.UpdateOptions.ReadOnly then
+    cds_LoadPackages.UpdateOptions.ReadOnly := False ;
+   if cds_LoadHead.UpdateOptions.ReadOnly then
+    cds_LoadHead.UpdateOptions.ReadOnly := False ;
+   if cds_LoadHead.State in [dsBrowse] then
+   cds_LoadHead.Edit ;
+   cds_LoadHeadSenderLoadStatus.AsInteger := 4 ; //Ready
+   cds_LoadHead.Post ;
+   SaveLoad ;
+   SetLoadEnabled ;
+
+   if mePackageNo.Enabled then
+    mePackageNo.SetFocus ;
+
+  End
+   else
+    Begin
+     ShowMessage(siLangLinked_fLoadEntrySSP.GetTextOrDefault('IDS_85' (* 'Lasten kan inte sättas till "Ready" för att den är ankomstregistrerad.' *) ));
+     SetLoadEnabled ;
+    End ;
+ End ;
+end;
+
+procedure TfLoadEntrySSP.acSetLoadReadyUpdate(Sender: TObject);
+begin
+ with dmLoadEntrySSP do
+ Begin
+  acSetLoadReady.Enabled:= //(not DataSaved) and (LoadEnabled) and
+  (cds_LoadHeadSenderLoadStatus.AsInteger <> 4) ;
+ End ;
+end;
+
 procedure TfLoadEntrySSP.acSetPositionInAllPkgsExecute(Sender: TObject);
 Var Save_Cursor   : TCursor ;
     PositionID    : Integer ;
@@ -4087,19 +4142,19 @@ begin
     else
       fPickPkgNo := TfPickPkgNo.Create(Nil,-1);
     try
-      fPickPkgNo.ProductNo := cdsLORowsProductNo.AsInteger;
-      fPickPkgNo.ProductLengthNo := cdsLORowsProductLengthNo.AsInteger;
-      fPickPkgNo.ALMM := cdsLORowsACT_LENGTH.AsString;
-      fPickPkgNo.PIPNo := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger;
-      fPickPkgNo.LONo := cdsLORowsShippingPlanNo.AsInteger;
-      fPickPkgNo.LabelProduct.Caption := cdsLORowsINTERNPRODDESC.AsString; //cdsLORowsPRODUCTDESCRIPTION.AsString ;
-      fPickPkgNo.LabelLength.Caption := cdsLORowsLENGTHDESC.AsString;
-      fPickPkgNo.LabelPIPName.Caption := lcPIP.Text;
-      fPickPkgNo.LabelOwner.Caption := cds_LSPSUPPLIER.AsString;
-      fPickPkgNo.LabelLONr.Caption := cdsLORowsShippingPlanNo.AsString;
-      fPickPkgNo.LabelReferens.Caption := cdsLORowsKR_Ref.AsString;
-      fPickPkgNo.ObjectType := cds_LSPOBJECTTYPE.AsInteger;
-      fPickPkgNo.Referens := cdsLORowsKR_Ref.AsString;
+      fPickPkgNo.ProductNo              := cdsLORowsProductNo.AsInteger;
+      fPickPkgNo.ProductLengthNo        := cdsLORowsProductLengthNo.AsInteger;
+      fPickPkgNo.ALMM                   := cdsLORowsACT_LENGTH.AsString;
+      fPickPkgNo.PIPNo                  := dmLoadEntrySSP.cds_LoadHeadPIPNo.AsInteger;
+      fPickPkgNo.LONo                   := cdsLORowsShippingPlanNo.AsInteger;
+      fPickPkgNo.LabelProduct.Caption   := cdsLORowsINTERNPRODDESC.AsString; //cdsLORowsPRODUCTDESCRIPTION.AsString ;
+      fPickPkgNo.LabelLength.Caption    := cdsLORowsLENGTHDESC.AsString;
+      fPickPkgNo.LabelPIPName.Caption   := lcPIP.Text;
+      fPickPkgNo.LabelOwner.Caption     := cds_LSPSUPPLIER.AsString;
+      fPickPkgNo.LabelLONr.Caption      := cdsLORowsShippingPlanNo.AsString;
+      fPickPkgNo.LabelReferens.Caption  := cdsLORowsKR_Ref.AsString;
+      fPickPkgNo.ObjectType             := cds_LSPOBJECTTYPE.AsInteger;
+      fPickPkgNo.Referens               := cdsLORowsKR_Ref.AsString;
 
       if fPickPkgNo.ShowModal = mrOK then
       begin
@@ -4788,41 +4843,15 @@ begin
   end;
 end;
 
-procedure TfLoadEntrySSP.acPrintHyvelOrderExecute(Sender: TObject);
-//Var
- // FormCRViewReport: TFormCRViewReport ;
-begin
- Edit1.SetFocus ;
-{
-
-   FormCRViewReport:= TFormCRViewReport.Create(Nil);
-   Try
-
-   FormCRViewReport.CreateCo('HYVEL_ORDER.RPT') ;
-   if FormCRViewReport.ReportFound then
-   Begin
-    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-  //  FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(dmLoadEntrySSP.ShippingPlanSupplierNo.AsInteger);
-    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-
-    FormCRViewReport.CRViewer91.ViewReport ;
-    FormCRViewReport.ShowModal ;
-   End ;
-   Finally
-    FreeAndNil(FormCRViewReport)  ;
-   End ;
-}
-end;
-
 procedure TfLoadEntrySSP.acLOAllaVerkExecute(Sender: TObject);
-Var //FormCRViewReport : TFormCRViewReport ;
+Var
   fr: TFastReports;
   ReportType: Integer;
   language: integer;
   LONo,
     Supplier: Integer;
 begin
-  Edit1.SetFocus;
+//  Edit1.SetFocus;
   if uReportController.useFR then
   begin
     // Check language
@@ -4864,14 +4893,13 @@ end;
 
 procedure TfLoadEntrySSP.acPrintLOErtVerkExecute(Sender: TObject);
 Var
- // FormCRViewReport: TFormCRViewReport ;
   fr: TFastReports;
   ReportType: Integer;
   language: integer;
   LONo,
   Supplier: Integer;
 begin
-  Edit1.SetFocus;
+//  Edit1.SetFocus;
   if uReportController.useFR then
   begin
     // Check language
@@ -4887,62 +4915,7 @@ begin
     finally
       FreeAndNil(fr);
     end;
-  end
-  else
-  begin
-
-      {
-      FormCRViewReport := TFormCRViewReport.Create(Nil);
-         Try
-
-           FormCRViewReport.CreateCo('LASTORDER_VERK_NOTE_ver3.RPT');
-           if FormCRViewReport.ReportFound then
-           Begin
-             FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-               (dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-             FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue
-               (dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger);
-
-             FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-
-             FormCRViewReport.CRViewer91.ViewReport;
-             FormCRViewReport.ShowModal;
-           End;
-         Finally
-           FreeAndNil(FormCRViewReport);
-         End;
-   }
-  end;
-end;
-
-procedure TfLoadEntrySSP.acPrintSpecAllaLasterLOExecute(Sender: TObject);
-{
-  Var
-    FormCRViewReport : TFormCRViewReport ;
-}
-begin
- Edit1.SetFocus ;
-{
-
-   FormCRViewReport:= TFormCRViewReport.Create(Nil);
-   Try
-
-   FormCRViewReport.CreateCo('SPEC_ALLA_LASTER_VERK_III.RPT') ;
-
-   if FormCRViewReport.ReportFound then
-   Begin
-    FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsInteger);
-    FormCRViewReport.report.ParameterFields.Item[2].AddCurrentValue(dmLoadEntrySSP.cds_LSPSupplierNo.AsInteger);
-
-    FormCRViewReport.CRViewer91.ReportSource:= FormCRViewReport.Report ;
-
-    FormCRViewReport.CRViewer91.ViewReport ;
-    FormCRViewReport.ShowModal ;
-   End ;
-   Finally
-    FreeAndNil(FormCRViewReport)  ;
-   End ;
-}
+  end ;
 end;
 
 procedure TfLoadEntrySSP.acPrintFSUpdate(Sender: TObject);
@@ -6687,13 +6660,6 @@ end;
 
 procedure TfLoadEntrySSP.acPrintFSMisMatchExecute(Sender: TObject);
 Var
-(*
-  FormCRViewReport : TFormCRViewReport ;
-  fr: TFastReports;
-  ReportType: integer;
-  Language: integer;
-  NoOfCopies: integer;
-*)
   LoadNo        : integer;
   FR2           : TFastReports2;
   lang          : integer;
@@ -6716,39 +6682,7 @@ begin
   finally
     dmsConnector.RestoreCursor;
   end;
-(*  if uReportController.useFR then
-  begin
-    NoOfCopies := 0;
-    Language := dmsContact.getCustomerLanguage
-      (dmLoadEntrySSP.cds_LSPAVROP_CUSTOMERNO.AsInteger);
-      ReportType := cFoljesedel_no_matching_pkg;
-    try
-      fr := TFastReports.Create;
-      fr.Tally_Pkg_Not_Matched(LoadNo,
-        ReportType, language, '', '', '', NoOfCopies);
-    finally
-      FreeAndNil(fr);
-    end
-  end
-  else
-  begin
-    Edit1.SetFocus;
 
-    FormCRViewReport := TFormCRViewReport.Create(Nil);
-    Try
-      FormCRViewReport.CreateCo('TALLY_VER2_NOTE_MM.RPT');
-      if FormCRViewReport.ReportFound then
-      Begin
-        FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue(LoadNo);
-        FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-        FormCRViewReport.CRViewer91.ViewReport;
-        FormCRViewReport.ShowModal;
-      End;
-    Finally
-      FreeAndNil(FormCRViewReport);
-    End;
-  end;
-  *)
 end;
 
 procedure TfLoadEntrySSP.acDeleteNotCompletePkgsExecute(Sender: TObject);
@@ -7142,6 +7076,14 @@ begin
       if (NewPkgNo > 0) and (Length(PkgSupplierCode) > 0) then
       Begin
 
+        if cds_LoadPackages.FindKey([NewPkgNo, Trim(PkgSuppliercode)]) then
+        Begin
+            Action := eaAlreadyExistInLoad ;
+            Errortext := 'Packageno ' + IntToStr(NewPkgNo) + ' prefix:' +
+              PkgSupplierCode + ' already exist in the load ';
+            Error := True;
+        End ;
+
         // Får inte använda post själv, det gör rutinen automatiskt
         if Action = eaACCEPT then
         Begin
@@ -7227,7 +7169,12 @@ begin
             siLangLinked_fLoadEntrySSP.GetTextOrDefault
             ('IDS_99' (* ' är redan inmatat' *) );
           Error := True;
+        End
+        else if Action = eaAlreadyExistInLoad then
+        Begin
+          Error := True;
         End;
+
       End
       else
       Begin
@@ -7530,11 +7477,10 @@ end;
 
 procedure TfLoadEntrySSP.PreviewCMR(Sender: TObject);
 Var
-  //FormCRViewReport: TFormCRViewReport;
-  aLO: Integer;
-  fr: TFastReports;
+  aLO : Integer;
+  fr  : TFastReports;
 begin
-  Edit1.SetFocus ;
+//  Edit1.SetFocus ;
  if uReportController.useFR then
   begin
     aLO := dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger;
@@ -7544,28 +7490,7 @@ begin
     finally
       FreeAndNil(fr);
     end;
-  end
-  else
-  begin
-
-      {
-      FormCRViewReport := TFormCRViewReport.Create(Nil);
-         Try
-           FormCRViewReport.CreateCo('CMR.RPT');
-
-           if FormCRViewReport.ReportFound then
-           Begin
-             FormCRViewReport.report.ParameterFields.Item[1].AddCurrentValue
-               (dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger);
-             FormCRViewReport.CRViewer91.ReportSource := FormCRViewReport.report;
-             FormCRViewReport.CRViewer91.ViewReport;
-             FormCRViewReport.ShowModal;
-           End;
-         Finally
-           FreeAndNil(FormCRViewReport);
-         End;
-   }
-  end;
+  end ;
 end;
 
 procedure TfLoadEntrySSP.acPrintCMRExecute(Sender: TObject);
@@ -7598,19 +7523,11 @@ begin
  Val := TfSelectPrintDevice.Execute ;
  if Val > 0 then
  Begin
-//  if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
-//   if TfConfirm.Execute ('Avsluta lasten') = mrYes then
-//    Avsluta := True ;
   if Val = 2 then
    PreviewCMR(Sender)
     else
      if Val = 1 then
       PrintDirectCMR(Sender) ;
-//  if Avsluta then
-//  Begin
-//   if dmLoadEntrySSP.cds_LoadHeadSenderLoadStatus.AsInteger <> 2 then
-//   acSaveAndOKExecute(Sender) ;
-//  End ;
  End ;
 End ;
 

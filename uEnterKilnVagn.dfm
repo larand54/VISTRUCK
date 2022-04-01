@@ -10,7 +10,6 @@ object fEnterKilnVagn: TfEnterKilnVagn
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -597,7 +596,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
     end
   end
   object siLangLinked_fEnterKilnVagn: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -894,7 +893,7 @@ object fEnterKilnVagn: TfEnterKilnVagn
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44442.508710821750000000
+      ReportDocument.CreationDate = 44638.824431168990000000
       TimeFormat = 0
       PixelsPerInch = 96
       BuiltInReportLink = True

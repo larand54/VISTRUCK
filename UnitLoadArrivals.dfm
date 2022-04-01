@@ -34,6 +34,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Control = Panel5
     Color = clMaroon
     ParentColor = False
+    ExplicitTop = 500
   end
   object grdLoads: TcxGrid
     Left = 0
@@ -43,6 +44,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
+    ExplicitHeight = 373
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       ScrollbarAnnotations.CustomAnnotations = <>
@@ -397,6 +399,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
+          Transparent = True
         end
         object lcVerk: TcxDBLookupComboBox
           Left = 91
@@ -426,6 +429,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
+          Transparent = True
         end
         object lcDestination: TcxDBLookupComboBox
           Left = 91
@@ -458,6 +462,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
+          Transparent = True
         end
         object lcInternKund: TcxDBLookupComboBox
           Left = 298
@@ -487,6 +492,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
+          Transparent = True
         end
         object lcLaststlle: TcxDBLookupComboBox
           Left = 298
@@ -542,6 +548,7 @@ object frmLoadArrivals: TfrmLoadArrivals
           Style.Font.Style = []
           Style.TextStyle = [fsBold]
           Style.IsFontAssigned = True
+          Transparent = True
         end
         object cbShowOnlyVWLoads: TcxDBCheckBox
           Left = 431
@@ -625,6 +632,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
+        Transparent = True
       end
       object cxLabel3: TcxLabel
         Left = 11
@@ -638,6 +646,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
+        Transparent = True
       end
       object Edit1: TEdit
         Left = 78
@@ -681,6 +690,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
+        Transparent = True
       end
       object cxLabel5: TcxLabel
         Left = 232
@@ -694,6 +704,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.Font.Style = []
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
+        Transparent = True
       end
       object deStartPeriod: TcxDBDateEdit
         Left = 288
@@ -752,6 +763,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Style.TextStyle = [fsBold]
         Style.IsFontAssigned = True
         TabOrder = 4
+        Transparent = True
         Visible = False
       end
       object btPrepareScan: TcxButton
@@ -797,6 +809,7 @@ object frmLoadArrivals: TfrmLoadArrivals
         Caption = 'Use new arrival query'
         Style.TransparentBorder = False
         TabOrder = 11
+        Transparent = True
       end
     end
   end
@@ -3313,8 +3326,8 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
-    SkinName = 'Silver'
     Left = 72
     Top = 392
   end
@@ -5739,13 +5752,13 @@ object frmLoadArrivals: TfrmLoadArrivals
     DataSet = Mem_MatchaProduct
     ScopeMappings = <>
     Left = 824
-    Top = 744
+    Top = 648
   end
   object BindingsList1: TBindingsList
     Methods = <>
     OutputConverters = <>
-    Left = 28
-    Top = 165
+    Left = 76
+    Top = 141
   end
   object Mem_MatchaProduct: TFDMemTable
     FieldDefs = <>
@@ -5832,8 +5845,8 @@ object frmLoadArrivals: TfrmLoadArrivals
       'WHERE '
       'pn.PackageNo = :PaketNr'
       'and pn.SupplierCode = :SupplierCode')
-    Left = 968
-    Top = 592
+    Left = 1064
+    Top = 640
     ParamData = <
       item
         Name = 'PAKETNR'
@@ -5861,8 +5874,8 @@ object frmLoadArrivals: TfrmLoadArrivals
   object BindSourceDB2: TBindSourceDB
     DataSet = Mem_PackProdList
     ScopeMappings = <>
-    Left = 504
-    Top = 728
+    Left = 512
+    Top = 680
   end
   object Mem_PackProdList: TFDMemTable
     FieldDefs = <>
@@ -5940,7 +5953,7 @@ object frmLoadArrivals: TfrmLoadArrivals
   object ds_MatchPosition: TDataSource
     DataSet = FDQ_MatchPosition
     Left = 816
-    Top = 656
+    Top = 536
   end
   object ds_MatchaProduct: TDataSource
     DataSet = Mem_MatchaProduct
@@ -6023,8 +6036,8 @@ object frmLoadArrivals: TfrmLoadArrivals
         '.PositionID, pn.LogicalInventoryPointNo, pt.ProductNo,'
       'Po.PosStatus'
       'order by PosStatus, StoredDate')
-    Left = 769
-    Top = 592
+    Left = 689
+    Top = 656
     ParamData = <
       item
         Name = 'PRODUCTNO'
@@ -6079,8 +6092,8 @@ object frmLoadArrivals: TfrmLoadArrivals
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
-    Left = 648
-    Top = 736
+    Left = 688
+    Top = 712
     object Mem_StorePositionPositionID: TIntegerField
       FieldName = 'PositionID'
     end
@@ -6177,10 +6190,10 @@ object frmLoadArrivals: TfrmLoadArrivals
   end
   object cxLookAndFeelController2: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
-    SkinName = 'Silver'
-    Left = 1056
-    Top = 264
+    Left = 912
+    Top = 312
   end
   object cxEditStyleController1: TcxEditStyleController
     Style.Color = clInfoBk
@@ -7380,8 +7393,8 @@ object frmLoadArrivals: TfrmLoadArrivals
     SubLanguageID = 1
     LocaleID = 1024
     AutoUpdateFieldVariables = False
-    Left = 184
-    Top = 257
+    Left = 144
+    Top = 369
     object mtPkgNosPackageNo: TIntegerField
       FieldName = 'PackageNo'
     end

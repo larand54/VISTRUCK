@@ -30,7 +30,11 @@ uses
   dxPScxPageControlProducer, dxPScxGridLnk, dxPScxGridLayoutViewLnk,
   dxSkinsdxBarPainter, dxSkinsdxRibbonPainter, dxPSCore, dxPScxCommon,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinBasic ;
+  dxPScxEditorProducers, dxPScxExtEditorProducers, dxSkinBasic,
+  dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
+  dxSkinOffice2019DarkGray, dxSkinOffice2019White, dxSkinTheBezier,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light ;
 
 type
   TfEnterKilnVagn = class(TForm)

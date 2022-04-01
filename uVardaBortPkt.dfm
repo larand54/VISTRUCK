@@ -10,7 +10,6 @@ object fVardaBortPkt: TfVardaBortPkt
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -41,6 +40,7 @@ object fVardaBortPkt: TfVardaBortPkt
       TabOrder = 0
       object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <
@@ -438,7 +438,7 @@ object fVardaBortPkt: TfVardaBortPkt
     Width = 1046
     Height = 87
     Align = alTop
-    TabOrder = 6
+    TabOrder = 2
     object Label11: TLabel
       Left = 14
       Top = 29
@@ -641,11 +641,7 @@ object fVardaBortPkt: TfVardaBortPkt
     UseSystemFont = False
     Left = 312
     Top = 184
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
       AllowCustomizing = False
@@ -821,6 +817,7 @@ object fVardaBortPkt: TfVardaBortPkt
     UseOwnFont = False
     Left = 336
     Top = 296
+    PixelsPerInch = 96
   end
   object ImageList1: TImageList
     Height = 24
@@ -1803,11 +1800,12 @@ object fVardaBortPkt: TfVardaBortPkt
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtUserPropAfterInsert
     Left = 152
     Top = 336
@@ -2088,7 +2086,7 @@ object fVardaBortPkt: TfVardaBortPkt
     end
   end
   object siLangLinked_fVardaBortPkt: TsiLangLinked
-    Version = '7.2'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

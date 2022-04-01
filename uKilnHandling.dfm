@@ -13,7 +13,6 @@ object fkilnHandling: TfkilnHandling
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   PopupMenu = pmFormShortcuts
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
@@ -33,24 +32,24 @@ object fkilnHandling: TfkilnHandling
     Properties.ActivePage = tsLagret
     Properties.CustomButtons.Buttons = <>
     Properties.HideTabs = True
-    ClientRectBottom = 85
-    ClientRectLeft = 4
-    ClientRectRight = 1411
-    ClientRectTop = 4
+    ClientRectBottom = 88
+    ClientRectLeft = 1
+    ClientRectRight = 1414
+    ClientRectTop = 1
     object tsLagret: TcxTabSheet
       Caption = 'Lager'
       ImageIndex = 2
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 1407
-        Height = 81
+        Width = 1413
+        Height = 87
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          1407
-          81)
+          1413
+          87)
         object cxLabel2: TcxLabel
           Left = 4
           Top = 8
@@ -189,7 +188,7 @@ object fkilnHandling: TfkilnHandling
           Width = 85
         end
         object cxButton9: TcxButton
-          Left = 1307
+          Left = 1313
           Top = 0
           Width = 88
           Height = 79
@@ -286,6 +285,8 @@ object fkilnHandling: TfkilnHandling
       Height = 208
       Align = alTop
       TabOrder = 0
+      ExplicitLeft = -2
+      ExplicitTop = 3
       object cxGrid1DBBandedTableView1: TcxGridDBBandedTableView
         OnMouseDown = cxGrid1DBBandedTableView1MouseDown
         Navigator.Buttons.CustomButtons = <>
@@ -2587,7 +2588,7 @@ object fkilnHandling: TfkilnHandling
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2963,7 +2964,7 @@ object fkilnHandling: TfkilnHandling
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -4790,7 +4791,7 @@ object fkilnHandling: TfkilnHandling
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -4867,7 +4868,7 @@ object fkilnHandling: TfkilnHandling
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -5129,7 +5130,7 @@ object fkilnHandling: TfkilnHandling
     Top = 512
   end
   object siLangLinked_fkilnHandling: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

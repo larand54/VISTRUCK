@@ -11,7 +11,6 @@ object fSokAvropMall: TfSokAvropMall
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
@@ -76,6 +75,7 @@ object fSokAvropMall: TfSokAvropMall
     TabOrder = 2
     object grdMallDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
+      ScrollbarAnnotations.CustomAnnotations = <>
       DataController.DataSource = ds_mall
       DataController.KeyFieldNames = 'Form;Name;UserID'
       DataController.Summary.DefaultGroupSummaryItems = <>
@@ -142,7 +142,7 @@ object fSokAvropMall: TfSokAvropMall
     Top = 136
   end
   object siLangLinked_fSokAvropMall: TsiLangLinked
-    Version = '7.2'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -10,7 +10,6 @@ object fchgPkgVard: TfchgPkgVard
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -1051,8 +1050,8 @@ object fchgPkgVard: TfchgPkgVard
       item
       end>
     UseSystemFont = False
-    Left = 336
-    Top = 344
+    Left = 296
+    Top = 464
     PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       BorderStyle = bbsNone
@@ -1198,8 +1197,8 @@ object fchgPkgVard: TfchgPkgVard
   object ImageList1: TImageList
     Height = 24
     Width = 24
-    Left = 448
-    Top = 344
+    Left = 408
+    Top = 400
     Bitmap = {
       494C010107000900040018001800FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000003000000001002000000000000048
@@ -1947,8 +1946,8 @@ object fchgPkgVard: TfchgPkgVard
   end
   object ActionList1: TActionList
     Images = ImageList1
-    Left = 496
-    Top = 344
+    Left = 408
+    Top = 464
     object acSearchRunNo: TAction
       Caption = 'S'#246'k k'#246'rnr'
       OnExecute = acSearchRunNoExecute
@@ -2086,7 +2085,7 @@ object fchgPkgVard: TfchgPkgVard
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2370,12 +2369,12 @@ object fchgPkgVard: TfchgPkgVard
   object cxGridPopupMenu1: TcxGridPopupMenu
     Grid = grdPaket
     PopupMenus = <>
-    Left = 248
-    Top = 406
+    Left = 152
+    Top = 454
   end
   object cxStyleRepository1: TcxStyleRepository
-    Left = 312
-    Top = 374
+    Left = 304
+    Top = 406
     PixelsPerInch = 96
     object cxStyleRedBg: TcxStyle
       AssignedValues = [svColor, svFont, svTextColor]
@@ -2389,7 +2388,7 @@ object fchgPkgVard: TfchgPkgVard
     end
   end
   object siLangLinked_fchgPkgVard: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -2482,8 +2481,8 @@ object fchgPkgVard: TfchgPkgVard
       'UpdateTableName'
       'Version'
       'ListField')
-    Left = 496
-    Top = 296
+    Left = 528
+    Top = 344
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A005400660063006800670050006B0067005600610072006400

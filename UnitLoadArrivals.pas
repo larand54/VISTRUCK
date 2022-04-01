@@ -38,7 +38,11 @@ uses
   Vcl.Bind.DBEngExt, Data.Bind.Components, Data.Bind.DBScope, cxListView, System.Generics.Collections,
   UnitPosition, UnitStylesOKCANCL, UnitExceptionPkgNrList, cxPropertiesStore,
   Vcl.Touch.Keyboard, dxSkinOffice2019Colorful, dxDateRanges,
-  dxScrollbarAnnotations, dxBarBuiltInMenu, System.ImageList, dxSkinBasic;
+  dxScrollbarAnnotations, dxBarBuiltInMenu, System.ImageList, dxSkinBasic,
+  dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
+  dxSkinOffice2019DarkGray, dxSkinOffice2019White, dxSkinTheBezier,
+  dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light;
 
 const AppFormName = 'VisTruck.Ankomstreg' ;
 
@@ -2798,7 +2802,12 @@ begin
     EGEN        := grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx];
 
     ColIdx      := grdLoadsDBTableView1.DataController.GetItemByFieldName('AVROP_CUSTOMERNO').Index;
-    AvropCustomerNo := grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx];
+    if grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx] <> null then
+    AvropCustomerNo       := grdLoadsDBTableView1.DataController.Values[RecIdx, ColIdx]
+    else
+    AvropCustomerNo       := 0 ;
+
+
 
         ColIdx := grdLoadsDBTableView1.DataController.GetItemByFieldName
           ('Trading').Index;

@@ -19,27 +19,28 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 126
+    Top = 159
     Width = 1226
-    Height = 669
+    Height = 636
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 1132
+    ExplicitTop = 126
+    ExplicitHeight = 669
     object panelBase: TPanel
       Left = 0
       Top = 0
       Width = 1226
-      Height = 669
+      Height = 636
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitWidth = 1132
+      ExplicitHeight = 669
       object PanelA: TPanel
         Left = 0
         Top = 0
         Width = 1226
-        Height = 669
+        Height = 636
         Margins.Left = 2
         Margins.Top = 2
         Margins.Right = 2
@@ -48,7 +49,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         Caption = 'PanelA'
         TabOrder = 0
-        ExplicitWidth = 1132
+        ExplicitHeight = 669
         object Panel7: TPanel
           Left = 0
           Top = 0
@@ -61,7 +62,6 @@ object frmMain: TfrmMain
           Align = alTop
           Caption = 'Panel7'
           TabOrder = 0
-          ExplicitWidth = 1132
           object grdSelectedPkgs: TcxGrid
             Left = 1
             Top = 1
@@ -73,7 +73,8 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 1130
+            ExplicitLeft = 0
+            ExplicitTop = -2
             object grdSelectedPkgsDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               ScrollbarAnnotations.CustomAnnotations = <>
@@ -155,7 +156,7 @@ object frmMain: TfrmMain
           Left = 0
           Top = 116
           Width = 1226
-          Height = 553
+          Height = 520
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -164,8 +165,8 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ExplicitWidth = 1132
-          ClientRectBottom = 552
+          ExplicitHeight = 553
+          ClientRectBottom = 519
           ClientRectLeft = 1
           ClientRectRight = 1225
           ClientRectTop = 21
@@ -176,15 +177,12 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 1124
-            ExplicitHeight = 525
+            ExplicitHeight = 531
             object PanelMain: TPanel
               Left = 0
               Top = 0
               Width = 1224
-              Height = 531
+              Height = 498
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -192,13 +190,12 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 1124
-              ExplicitHeight = 525
+              ExplicitHeight = 531
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
                 Width = 1224
-                Height = 472
+                Height = 439
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -206,13 +203,12 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
-                ExplicitWidth = 1124
-                ExplicitHeight = 466
+                ExplicitHeight = 472
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
                   Width = 1224
-                  Height = 472
+                  Height = 439
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -220,11 +216,10 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
-                  ExplicitWidth = 1124
-                  ExplicitHeight = 466
+                  ExplicitHeight = 472
                   object Panel4: TPanel
                     Left = 0
-                    Top = 428
+                    Top = 395
                     Width = 1224
                     Height = 44
                     Margins.Left = 2
@@ -234,22 +229,20 @@ object frmMain: TfrmMain
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitTop = 422
-                    ExplicitWidth = 1124
+                    ExplicitTop = 428
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
                     Width = 1224
-                    Height = 428
+                    Height = 395
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
-                    ExplicitWidth = 1124
-                    ExplicitHeight = 422
+                    ExplicitHeight = 428
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
                       Navigator.Buttons.CustomButtons = <>
@@ -362,7 +355,6 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitWidth = 1124
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -438,10 +430,7 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 1124
-            ExplicitHeight = 525
+            ExplicitHeight = 531
             object Panel3: TPanel
               Left = 0
               Top = 0
@@ -453,7 +442,6 @@ object frmMain: TfrmMain
               Margins.Bottom = 2
               Align = alTop
               TabOrder = 0
-              ExplicitWidth = 1124
               object cxButton3: TcxButton
                 Left = 7
                 Top = 4
@@ -483,7 +471,7 @@ object frmMain: TfrmMain
               Left = 0
               Top = 61
               Width = 1224
-              Height = 470
+              Height = 437
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -491,13 +479,12 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
-              ExplicitWidth = 1124
-              ExplicitHeight = 464
+              ExplicitHeight = 470
               object Panel2: TPanel
                 Left = 0
                 Top = 0
                 Width = 390
-                Height = 470
+                Height = 437
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -505,7 +492,7 @@ object frmMain: TfrmMain
                 Align = alLeft
                 Caption = 'Panelpositionering'
                 TabOrder = 0
-                ExplicitHeight = 464
+                ExplicitHeight = 470
                 object Panel9: TPanel
                   Left = 1
                   Top = 1
@@ -523,14 +510,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 388
-                  Height = 415
+                  Height = 382
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 1
-                  ExplicitHeight = 409
+                  ExplicitHeight = 415
                   object grdMatchingGridDBCardView1: TcxGridDBCardView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -703,7 +690,7 @@ object frmMain: TfrmMain
                 Left = 390
                 Top = 0
                 Width = 367
-                Height = 470
+                Height = 437
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -711,8 +698,7 @@ object frmMain: TfrmMain
                 Align = alClient
                 Caption = 'Panel5'
                 TabOrder = 1
-                ExplicitWidth = 267
-                ExplicitHeight = 464
+                ExplicitHeight = 470
                 object Panel10: TPanel
                   Left = 1
                   Top = 1
@@ -725,22 +711,20 @@ object frmMain: TfrmMain
                   Align = alTop
                   Caption = 'Panel9'
                   TabOrder = 0
-                  ExplicitWidth = 265
                 end
               end
               object Panel6: TPanel
                 Left = 757
                 Top = 0
                 Width = 467
-                Height = 470
+                Height = 437
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
                 Margins.Bottom = 2
                 Align = alRight
                 TabOrder = 2
-                ExplicitLeft = 657
-                ExplicitHeight = 464
+                ExplicitHeight = 470
                 object Panel11: TPanel
                   Left = 1
                   Top = 1
@@ -758,14 +742,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 195
-                  Height = 415
+                  Height = 382
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alLeft
                   TabOrder = 1
-                  ExplicitHeight = 409
+                  ExplicitHeight = 415
                   object grdAreaDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -801,14 +785,14 @@ object frmMain: TfrmMain
                   Left = 196
                   Top = 54
                   Width = 270
-                  Height = 415
+                  Height = 382
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 2
-                  ExplicitHeight = 409
+                  ExplicitHeight = 415
                   object cxPositionDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -856,7 +840,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1226
-    Height = 126
+    Height = 159
     ApplicationButton.Glyph.SourceDPI = 96
     ApplicationButton.Glyph.Data = {
       424D360900000000000036000000280000001800000018000000010020000000
@@ -935,12 +919,11 @@ object frmMain: TfrmMain
       00000000000000000000000000000000000000000000}
     ApplicationButton.Menu = dxBarApplicationMenu1
     BarManager = dxBarManager1
-    ColorSchemeName = 'Black'
+    ColorSchemeName = 'Blue'
     QuickAccessToolbar.Toolbar = dxBarManager1Bar1
     Contexts = <>
     TabOrder = 1
     TabStop = False
-    ExplicitWidth = 1132
     object dxRibbon1Tab2: TdxRibbonTab
       Active = True
       Caption = 'Lastorder'
@@ -3958,7 +3941,6 @@ object frmMain: TfrmMain
       BorderStyle = bbsNone
       Caption = 'MainMenu'
       CaptionButtons = <>
-      DockedDockingStyle = dsTop
       DockedLeft = 0
       DockedTop = 0
       FloatLeft = 276
@@ -3983,7 +3965,7 @@ object frmMain: TfrmMain
       Row = 0
       UseOwnFont = False
       UseRestSpace = True
-      Visible = False
+      Visible = True
       WholeRow = False
     end
     object dxBarManager1Bar4: TdxBar
@@ -4130,6 +4112,10 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxBarButton12'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarCombo1'
         end>
     end
     object dxBarSubItem4: TdxBarSubItem
@@ -4267,6 +4253,15 @@ object frmMain: TfrmMain
       Action = acEWSProfile
       Caption = 'EWS Profile'
       Category = 0
+    end
+    object dxBarCombo1: TdxBarCombo
+      Caption = 'Skin:'
+      Category = 0
+      Hint = 'Select a skin'
+      Visible = ivAlways
+      OnChange = dxBarCombo1Change
+      DropDownCount = 30
+      ItemIndex = -1
     end
     object dxBarButton1: TdxBarButton
       Action = atExit
@@ -5683,10 +5678,356 @@ object frmMain: TfrmMain
     Kind = lfFlat
     NativeStyle = False
     ScrollbarMode = sbmClassic
-    SkinName = 'Silver'
-    UseSkins = False
-    UseSkinsInPopupMenus = False
     Left = 720
     Top = 570
+  end
+  object cds_PropsInv: TFDQuery
+    AfterInsert = cds_PropsInvAfterInsert
+    Indexes = <
+      item
+        Active = True
+        Selected = True
+        Name = 'cds_PropsInvPKey'
+        Fields = 'Form;UserID'
+      end>
+    IndexName = 'cds_PropsInvPKey'
+    Connection = dmsConnector.FDConnection1
+    FetchOptions.AssignedValues = [evCache]
+    UpdateOptions.UpdateTableName = 'dbo.userprops'
+    SQL.Strings = (
+      'Select * FROM dbo.userprops'
+      'WHERE UserID = :UserID'
+      'AND Form = :Form')
+    Left = 80
+    Top = 272
+    ParamData = <
+      item
+        Name = 'USERID'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Name = 'FORM'
+        DataType = ftString
+        ParamType = ptInput
+      end>
+    object cds_PropsInvUserID: TIntegerField
+      FieldName = 'UserID'
+      Origin = 'UserID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object cds_PropsInvForm: TStringField
+      FieldName = 'Form'
+      Origin = 'Form'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Size = 50
+    end
+    object cds_PropsInvName: TStringField
+      FieldName = 'Name'
+      Origin = 'Name'
+      ProviderFlags = [pfInUpdate]
+      Size = 50
+    end
+    object cds_PropsInvVerkNo: TIntegerField
+      FieldName = 'VerkNo'
+      Origin = 'VerkNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvOwnerNo: TIntegerField
+      FieldName = 'OwnerNo'
+      Origin = 'OwnerNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvPIPNo: TIntegerField
+      FieldName = 'PIPNo'
+      Origin = 'PIPNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLIPNo: TIntegerField
+      FieldName = 'LIPNo'
+      Origin = 'LIPNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvInputOption: TIntegerField
+      FieldName = 'InputOption'
+      Origin = 'InputOption'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvRegPointNo: TIntegerField
+      FieldName = 'RegPointNo'
+      Origin = 'RegPointNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvRegDate: TSQLTimeStampField
+      FieldName = 'RegDate'
+      Origin = 'RegDate'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvCopyPcs: TIntegerField
+      FieldName = 'CopyPcs'
+      Origin = 'CopyPcs'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvRunNo: TIntegerField
+      FieldName = 'RunNo'
+      Origin = 'RunNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvProducerNo: TIntegerField
+      FieldName = 'ProducerNo'
+      Origin = 'ProducerNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvAutoColWidth: TIntegerField
+      FieldName = 'AutoColWidth'
+      Origin = 'AutoColWidth'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvSupplierCode: TStringField
+      FieldName = 'SupplierCode'
+      Origin = 'SupplierCode'
+      ProviderFlags = [pfInUpdate]
+      Size = 3
+    end
+    object cds_PropsInvLengthOption: TIntegerField
+      FieldName = 'LengthOption'
+      Origin = 'LengthOption'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLengthGroupNo: TIntegerField
+      FieldName = 'LengthGroupNo'
+      Origin = 'LengthGroupNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvNewItemRow: TIntegerField
+      FieldName = 'NewItemRow'
+      Origin = 'NewItemRow'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvSalesRegionNo: TIntegerField
+      FieldName = 'SalesRegionNo'
+      Origin = 'SalesRegionNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvMarketRegionNo: TIntegerField
+      FieldName = 'MarketRegionNo'
+      Origin = 'MarketRegionNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvOrderTypeNo: TIntegerField
+      FieldName = 'OrderTypeNo'
+      Origin = 'OrderTypeNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvStatus: TIntegerField
+      FieldName = 'Status'
+      Origin = 'Status'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvFilterOrderDate: TIntegerField
+      FieldName = 'FilterOrderDate'
+      Origin = 'FilterOrderDate'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvStartPeriod: TSQLTimeStampField
+      FieldName = 'StartPeriod'
+      Origin = 'StartPeriod'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvEndPeriod: TSQLTimeStampField
+      FieldName = 'EndPeriod'
+      Origin = 'EndPeriod'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvClientNo: TIntegerField
+      FieldName = 'ClientNo'
+      Origin = 'ClientNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvSalesPersonNo: TIntegerField
+      FieldName = 'SalesPersonNo'
+      Origin = 'SalesPersonNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvVerkSupplierNo: TIntegerField
+      FieldName = 'VerkSupplierNo'
+      Origin = 'VerkSupplierNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvVerkKundNo: TIntegerField
+      FieldName = 'VerkKundNo'
+      Origin = 'VerkKundNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLOObjectType: TIntegerField
+      FieldName = 'LOObjectType'
+      Origin = 'LOObjectType'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvBarCodeNo: TIntegerField
+      FieldName = 'BarCodeNo'
+      Origin = 'BarCodeNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvGradeStampNo: TIntegerField
+      FieldName = 'GradeStampNo'
+      Origin = 'GradeStampNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvVolumeUnitNo: TIntegerField
+      FieldName = 'VolumeUnitNo'
+      Origin = 'VolumeUnitNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLengthFormatNo: TIntegerField
+      FieldName = 'LengthFormatNo'
+      Origin = 'LengthFormatNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLengthVolUnitNo: TIntegerField
+      FieldName = 'LengthVolUnitNo'
+      Origin = 'LengthVolUnitNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvGroupByBox: TIntegerField
+      FieldName = 'GroupByBox'
+      Origin = 'GroupByBox'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvGroupSummary: TIntegerField
+      FieldName = 'GroupSummary'
+      Origin = 'GroupSummary'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvAgentNo: TIntegerField
+      FieldName = 'AgentNo'
+      Origin = 'AgentNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvLoadingLocationNo: TIntegerField
+      FieldName = 'LoadingLocationNo'
+      Origin = 'LoadingLocationNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvShipperNo: TIntegerField
+      FieldName = 'ShipperNo'
+      Origin = 'ShipperNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvBookingTypeNo: TIntegerField
+      FieldName = 'BookingTypeNo'
+      Origin = 'BookingTypeNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvCustomerNo: TIntegerField
+      FieldName = 'CustomerNo'
+      Origin = 'CustomerNo'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvShowProduct: TIntegerField
+      FieldName = 'ShowProduct'
+      Origin = 'ShowProduct'
+      ProviderFlags = [pfInUpdate]
+    end
+    object cds_PropsInvMarknad: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Marknad'
+      LookupDataSet = dmsContact.cds_Market
+      LookupKeyFields = 'MarketRegionNo'
+      LookupResultField = 'MarketRegionName'
+      KeyFields = 'MarketRegionNo'
+      ProviderFlags = []
+      Size = 10
+      Lookup = True
+    end
+    object cds_PropsInvKund: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Kund'
+      LookupDataSet = dmsContact.sp_Customers
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'ClientNo'
+      ProviderFlags = []
+      Size = 80
+      Lookup = True
+    end
+    object cds_PropsInvSR: TStringField
+      FieldKind = fkLookup
+      FieldName = 'SR'
+      LookupDataSet = dmsContact.cds_SR
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'SalesRegionNo'
+      ProviderFlags = []
+      Size = 80
+      Lookup = True
+    end
+    object cds_PropsInvSaljgrupp: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Saljgrupp'
+      LookupDataSet = dmsContact.cds_SalesGrp
+      LookupKeyFields = 'SalesGroupNo'
+      LookupResultField = 'SalesGroupName'
+      KeyFields = 'SalesPersonNo'
+      ProviderFlags = []
+      Size = 15
+      Lookup = True
+    end
+    object cds_PropsInvVerk: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Verk'
+      LookupDataSet = dmsContact.cds_Verk
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'VerkNo'
+      ProviderFlags = []
+      Size = 80
+      Lookup = True
+    end
+    object cds_PropsInvShipper: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Shipper'
+      LookupDataSet = dmsContact.cds_Shippers
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'ShipperNo'
+      ProviderFlags = []
+      Size = 80
+      Lookup = True
+    end
+    object cds_PropsInvBokningstyp: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Bokningstyp'
+      LookupDataSet = dmsSystem.cdsBookingType
+      LookupKeyFields = 'BookingTypeNo'
+      LookupResultField = 'BookingType'
+      KeyFields = 'BookingTypeNo'
+      ProviderFlags = []
+      Size = 30
+      Lookup = True
+    end
+    object cds_PropsInvLaststalle: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Laststalle'
+      LookupDataSet = dmsContact.cdsCities
+      LookupKeyFields = 'CityNo'
+      LookupResultField = 'CityName'
+      KeyFields = 'LoadingLocationNo'
+      ProviderFlags = []
+      Size = 50
+      Lookup = True
+    end
+    object cds_PropsInvAgentNamn: TStringField
+      FieldKind = fkLookup
+      FieldName = 'AgentNamn'
+      LookupDataSet = dmsContact.sp_Agent
+      LookupKeyFields = 'ClientNo'
+      LookupResultField = 'ClientName'
+      KeyFields = 'AgentNo'
+      ProviderFlags = []
+      Size = 80
+      Lookup = True
+    end
   end
 end

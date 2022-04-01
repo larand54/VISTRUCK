@@ -51,7 +51,10 @@ uses
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   dxBarBuiltInMenu, System.Actions, siComp, siLngLnk, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList,
-  dxSkinBasic, VidaType ;
+  dxSkinBasic, VidaType, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinOffice2019Black, dxSkinOffice2019DarkGray, dxSkinOffice2019White,
+  dxSkinTheBezier, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light ;
 
 
 type

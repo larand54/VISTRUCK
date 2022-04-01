@@ -1,8 +1,8 @@
 ﻿object dmLoadEntrySSP: TdmLoadEntrySSP
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 823
   Width = 1115
+  PixelsPerInch = 96
   object ds_LoadHead: TDataSource
     DataSet = cds_LoadHead
     Left = 32
@@ -54,7 +54,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -179,7 +179,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -3144,7 +3144,7 @@
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1

@@ -11,22 +11,33 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 32
-    Top = 40
-    Width = 48
-    Height = 13
+    Left = 8
+    Top = 32
+    Width = 72
+    Height = 20
     Caption = 'FD Namn:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
   end
   object Label2: TLabel
-    Left = 32
-    Top = 80
-    Width = 43
-    Height = 13
+    Left = 8
+    Top = 72
+    Width = 65
+    Height = 20
     Caption = 'Databas:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
   end
   object EFD_Name: TEdit
     Left = 88
@@ -61,10 +72,10 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     OnClick = Button2Click
   end
   object BitBtn1: TBitBtn
-    Left = 206
+    Left = 184
     Top = 222
-    Width = 75
-    Height = 41
+    Width = 97
+    Height = 59
     Kind = bkOK
     NumGlyphs = 2
     TabOrder = 4
@@ -72,15 +83,15 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
   object BitBtn2: TBitBtn
     Left = 294
     Top = 222
-    Width = 75
-    Height = 41
+    Width = 91
+    Height = 59
     Kind = bkCancel
     NumGlyphs = 2
     TabOrder = 5
   end
   object cxLabel1: TcxLabel
     Left = 7
-    Top = 204
+    Top = 218
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -89,15 +100,16 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnDblClick = cxLabel1DblClick
   end
   object cxLabel2: TcxLabel
     Left = 7
-    Top = 234
+    Top = 246
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -106,15 +118,16 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnDblClick = cxLabel2DblClick
   end
   object cxLabel3: TcxLabel
     Left = 7
-    Top = 150
+    Top = 164
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -123,15 +136,16 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnDblClick = cxLabel3DblClick
   end
   object cxlblTestDB: TcxLabel
     Left = 7
-    Top = 129
+    Top = 133
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -140,16 +154,17 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnClick = cxlblTestDBClick
     OnDblClick = cxlblTestDBDblClick
   end
   object cxLabel4: TcxLabel
     Left = 7
-    Top = 171
+    Top = 192
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -158,10 +173,11 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnClick = cxLabel4Click
   end
   object cxLabel5: TcxLabel
@@ -175,15 +191,16 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnClick = cxLabel5Click
   end
   object cxLabel6: TcxLabel
     Left = 7
-    Top = 258
+    Top = 274
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -192,14 +209,15 @@ object OKHelpBottomDlg: TOKHelpBottomDlg
     ParentFont = False
     Style.Font.Charset = DEFAULT_CHARSET
     Style.Font.Color = clWindowText
-    Style.Font.Height = -13
+    Style.Font.Height = -16
     Style.Font.Name = 'MS Sans Serif'
     Style.Font.Style = []
     Style.IsFontAssigned = True
+    Transparent = True
     OnClick = cxLabel6Click
   end
   object siLangLinked_OKHelpBottomDlg: TsiLangLinked
-    Version = '7.2'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

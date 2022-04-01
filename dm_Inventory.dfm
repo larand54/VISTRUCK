@@ -1,7 +1,7 @@
 object dmInventory: TdmInventory
-  OldCreateOrder = False
   Height = 1366
   Width = 1269
+  PixelsPerInch = 96
   object ds_LengthGroup: TDataSource
     DataSet = cds_LengthGroup
     Left = 504
@@ -8540,6 +8540,8 @@ object dmInventory: TdmInventory
   object sp_invpivPkg: TFDStoredProc
     OnUpdateRecord = sp_invpivPkgUpdateRecord
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     UpdateOptions.UpdateTableName = 'dbo.PackageNumber'
     UpdateOptions.KeyFields = 'PackageNo;SupplierCode'
     UpdateObject = upd_invpivPkg
@@ -8941,7 +8943,7 @@ object dmInventory: TdmInventory
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -12023,6 +12025,8 @@ object dmInventory: TdmInventory
   end
   object sq_invpiv: TFDQuery
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     SQL.Strings = (
       ' DECLARE  @err int,  @UnitName varchar(15),'
       ' @MinInvoiceLoadDate DateTime, @BaseLoadDateFilter DateTime'

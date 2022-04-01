@@ -1,7 +1,7 @@
 object dmcOrder: TdmcOrder
-  OldCreateOrder = False
   Height = 739
   Width = 1224
+  PixelsPerInch = 96
   object dsrcSawmillLoadOrders: TDataSource
     DataSet = cdsSawmillLoadOrders
     OnDataChange = dsrcSawmillLoadOrdersDataChange
@@ -60,11 +60,12 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 75
     Top = 336
     object mtProductProductNo: TIntegerField
@@ -166,11 +167,12 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtPkgLengthsAfterInsert
     Left = 75
     Top = 392
@@ -305,11 +307,12 @@ object dmcOrder: TdmcOrder
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     Left = 536
     Top = 480
     object mtPropsVerkNo: TIntegerField
@@ -386,6 +389,7 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
+    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <
@@ -409,108 +413,132 @@ object dmcOrder: TdmcOrder
     UpdateOptions.UpdateTableName = 'dbo.SupplierShippingPlan'
     UpdateObject = upd_LO
     SQL.Strings = (
-      'SELECT distinct '
-      
-        'OL.OrderLineDescription                     AS KONTRAKTSBESKRIVN' +
-        'ING,'
-      'bk.ShippersShipDate,'
-      'bk.PreliminaryRequestedPeriod               AS READYDATE,'
-      'USR.INITIALS,'
-      'SP.ShippingPlanStatus,'
-      'SP.Lagerkod,'
-      'SP.ShippingPlanNo                           AS LONumber,'
-      'SP.PackageCode                              AS PackageCode,'
-      'SP.ProductDescription                       AS Product,'
-      'SP.LengthDescription                        AS Length,'
-      'IsNull(SP.StartETDYearWeek,-1)              AS FromWeek,'
-      'IsNull(SP.EndETDYearWeek,-1)                AS ToWeek,'
-      'SP.NoOfUnits                                AS Volume,'
-      'SP.SupplierShipPlanObjectNo,'
-      'SP.ShowInGrid,'
-      'Od.OrderNoText                              AS OrderNoText,'
-      'UN.VolumeUnitName                           AS UnitName,'
-      'Cy.CityName                                 AS Destination,'
-      'CL.ClientName                               AS ClientName,'
-      'mr.MarketRegionName                         AS MARKNAD,'
-      'CSD.Reference                               AS Reference,'
-      'SP.SupplierNo                               AS Supplier,'
-      'CH.CustomerNo                               AS CHCustomerNo,'
-      'SP.CustomerNo                               AS SPCustomerNO,'
-      'SP.CustomerPrice,'
-      'SP.CustomerShowInGrid,'
-      'SUPP.ClientName'#9#9#9#9'                      AS SUPP_NAME,'
-      'CUST.ClientName'#9#9#9#9'                      AS LOCAL_CUST,'
-      'SP.ObjectType,'
-      'CASE WHEN OD.OrderType = 1 then 1'#9'ELSE 0'#9'END AS ORDERTYPE,'
-      'ShipTo.CityName                             AS SHIPTO,'
-      'Loading.CityName                            AS LOADING,'
-      'IsNull(SP.Delivery_WeekNo,-1)               AS Delivery_WeekNo,'
-      'CH.CustomerNo                               AS CSH_CustomerNo,'
-      'SP.ShipToInvPointNo,'
-      'SP.LoadingLocationNo,'
       ''
-      'BC.BarCode,'
-      'CH.Reference                                AS REFERENS,'
-      'SP.DateCreated                              AS SKAPAD,'
-      'pli.NT,'
-      'pli.NB,'
-      'pli.AT,'
-      'pli.AB,'
-      'pli.TT,'
-      'pli.TB,'
-      'pli.TS,'
-      'pli.UT,'
-      'pli.KV,'
-      'pli.PK,'
-      'SP.lengthtyp                                AS INTL'#196'NGD,'
-      'SP.Reference                                AS RADREFERENS,'
-      #39'123456789012345678901234567890'#39'            AS Pris,'
-      'SP.ProductGroupNo,'
-      #39'******************************'#39'            AS  PriceListName,'
+      
+        'SELECT distinct OL.OrderLineDescription AS KONTRAKTSBESKRIVNING,' +
+        ' bk.ShippersShipDate,'
+      'bk.PreliminaryRequestedPeriod AS READYDATE,'
+      'USR.INITIALS,'
+      'SP.ShippingPlanStatus,                           -- Integer'
+      'isnull(SP.Lagerkod,1) as Lagerkod,'
+      'SP.ShippingPlanNo           AS LONumber,         -- Integer'
+      'SP.PackageCode              AS PackageCode,          -- Char 10'
+      'SP.ProductDescription       AS Product,          -- Char 100'
+      'SP.LengthDescription        AS Length,           -- Char 100'
+      
+        'IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- I' +
+        'nteger'
+      
+        'IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- I' +
+        'nteger'
+      'SP.NoOfUnits                AS Volume,           -- Float'
+      'SP.SupplierShipPlanObjectNo,                     -- Integer'
+      'SP.ShowInGrid,                                   -- SmallInt'
+      
+        'Od.OrderNoText              AS OrderNoText,          -- VarChar ' +
+        '20'
+      'UN.VolumeUnitName           AS UnitName,         -- VarChar 10'
+      'Cy.CityName                 AS Destination,      -- VarChar 50'
+      
+        'CL.ClientName               AS ClientName,       -- LARS VarChar' +
+        ' 80'
+      'mr.MarketRegionName         AS MARKNAD,'
+      'CSD.Reference               AS Reference,       -- LARS'
+      'SP.SupplierNo               AS Supplier,        -- Integer'
+      'CH.CustomerNo               AS CHCustomerNo,    -- Integer'
+      'SP.CustomerNo               AS SPCustomerNO,    -- Integer'
+      'SP.CustomerPrice,                               -- Float'
+      'SP.CustomerShowInGrid,                           -- SmallInt'
+      'SUPP.ClientName'#9#9#9#9'AS SUPP_NAME,'
+      'CUST.ClientName'#9#9#9#9'AS LOCAL_CUST,'
+      'SP.ObjectType,                                  -- Integer'
+      'CASE WHEN OD.OrderType = 1 then 1'#9'ELSE 0'#9'END AS ORDERTYPE,'
+      'ShipTo.CityName                 AS SHIPTO,      -- VarChar 50'
+      'Loading.CityName                 AS LOADING,'
+      'IsNull(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,'
+      
+        'CH.CustomerNo AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingL' +
+        'ocationNo,'
+      'BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,'
+      
+        'pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, ' +
+        'pli.KV, pli.PK, SP.lengthtyp AS INTL'#196'NGD, SP.Reference AS RADREF' +
+        'ERENS,'
+      'Case WHEN SP.Price > 0 then Cast((SP.Price'
+      
+        '+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BET' +
+        'WEEN vwc.Fom AND vwc.Tom),0.0))'
+      'AS Varchar(30))+'#39'kr'#39' Else'
+      'Case'
+      
+        'WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.Pri' +
+        'ceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else'
+      'Case'
+      'WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice'
+      
+        '+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BET' +
+        'WEEN vwc.Fom AND vwc.Tom),0.0))'
+      'AS Varchar(30)) +'#39'kr'#39' else'
+      
+        'Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), o' +
+        'l.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )'
+      'END END END END AS Pris,'
+      ''
+      
+        'SP.ProductGroupNo, '#39'******************************'#39'            A' +
+        'S  PriceListName,'
+      ''
+      ''
       
         'SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo,' +
-        ' PIS.ProdInstruNo, sp.ProductNo, sp.ProductLengthNo,'
-      'Od.LanguageCode AS LanguageCode,'
-      'PL.ActualLengthMM AS ALMM,'
-      'SP.SequenceNo,'
-      'SP.OrderLineNo,'
-      'SP.OrderNo,'
-      'SP.ModifiedUser,'
-      'LIP.LogicalInventoryName AS Lagergrupp,'
-      'SP.LengthSpec AS L'#228'ngd,'
-      'Vg.ETD,'
-      'Vg.ETA,'
-      'SP.Package_Size,'
-      'ps.PackageSizeName,'
-      'SP.PkgArticleNo,'
-      'SP.LOGroupNo,'
-      'LOB.LOBuffertName,'
-      '(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedPkgs,'
-      ''
-      '(Select SUM(pt.Totalm3Nominal) FROM dbo.Loaddetail LD'
+        ' PIS.ProdInstruNo,'
+      
+        'sp.ProductNo, sp.ProductLengthNo, Od.LanguageCode AS LanguageCod' +
+        'e, PL.ActualLengthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.' +
+        'OrderNo, SP.ModifiedUser, LIP.LogicalInventoryName AS Lagergrupp' +
+        ', SP.LengthSpec AS L'#228'ngd, Vg.ETD, Vg.ETA,'
+      
+        'SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroup' +
+        'No, LOB.LOBuffertName,'
+      '(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo))' +
+        ' AS LoadedPkgs,'
+      '(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
       
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
         'peNo'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedNM3,'
-      ''
-      '(Select SUM(pt.Totalm3Actual) FROM dbo.Loaddetail LD'
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ' +
+        ') AS LoadedNM3,'
+      '(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
       
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
         'peNo'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedAM3,'
-      ''
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ' +
+        ') AS LoadedAM3,'
       '(Select SUM(SOR.NoOfUnits)'
       'FROM dbo.SortingOrderRow SOR'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,'
-      ''
       '(Select SUM(SOR.PlannedAM3)'
       'FROM dbo.SortingOrderRow SOR'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,'
-      ''
       '(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR'
       
         'Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo =' +
@@ -520,75 +548,85 @@ object dmcOrder: TdmcOrder
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.Package' +
         'TypeNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,'
-      ''
       '(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR'
       
         'Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo =' +
         ' SOR.SortingOrderNo'
       #9#9#9#9#9#9#9#9#9#9'AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
+      'SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,'
+      'SP.InternalNote AS Produktnotering,'
       ''
-      'SP.ActualM3Net AS Order_AM3,'
-      'SP.InternRowNote AS Internnotering,'
-      'SP.InternalNote AS Produktnotering'
-      'FROM   dbo.Client_LoadingLocation     CLL'
+      '(Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L'
+      'Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo'
+      'WHERE'
+      'LS.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND L.SupplierNo = SP.SupplierNo'
+      'Order by L.SenderLoadStatus desc) AS LoadStatus,'
+      ''
+      '(Select Count(L.LoadNo) FROM dbo.Loads L'
+      'inner join dbo.Loaddetail ld on ld.LoadNo = L.LoadNo'
+      'WHERE'
+      'ld.Defsspno = SP.SupplierShipPlanObjectNo) AS NoOfLoads'
+      ''
+      ''
+      'FROM dbo.Client_LoadingLocation     CLL'
       
-        'INNER JOIN dbo.SupplierShippingPlan       SP    ON  SP.LoadingLo' +
-        'cationNo       = CLL.PhyInvPointNameNo'
-      
-        'LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Si' +
-        'ze'
-      'and ps.LanguageCode = 1'
+        'INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLoc' +
+        'ationNo       = CLL.PhyInvPointNameNo'
+      'inner join dbo.LOs LO on LO.LONo = SP.ShippingPlanNo'
       
         'Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.' +
         'Delivery_WeekNo'
+      
+        'LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Si' +
+        'ze and ps.LanguageCode = 1'
       
         'Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInve' +
         'ntoryPointNo = SP.LIPNo'
       
         'Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.Produ' +
         'ctLengthNo'
-      
-        'INNER JOIN dbo.PRODLIST_II pli                  ON pli.ProductNo' +
-        ' = sp.ProductNo'
-      
-        'Left Outer Join dbo.Users USR'#9#9#9'              ON USR.UserID = SP' +
-        '.ModifiedUser'
-      
-        'LEFT OUTER JOIN dbo.OrderLine    OL             ON  OL.OrderNo =' +
-        ' SP.OrderNo'
+      'INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo'
+      'Left Outer Join dbo.Users USR'#9#9#9'ON USR.UserID = SP.ModifiedUser'
+      'INNER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderNo'
       'AND OL.OrderLineNo = SP.OrderLineNo'
       
-        'INNER JOIN dbo.Client                     SUPP  ON  SUPP.ClientN' +
-        'o            = SP.SupplierNo            -- LARS'
+        'Left Outer Join dbo.PriceTemplateHeader pthol on pthol.templaten' +
+        'o = ol.PriceListNo'
       
-        'INNER JOIN dbo.Client                     CUST  ON  CUST.ClientN' +
-        'o            = SP.CustomerNo            -- LARS'
+        'Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templaten' +
+        'o = sp.PriceListNo'
       
-        'LEFT OUTER JOIN dbo.CITY         Shipto         ON ShipTo.CityNo' +
-        ' '#9'           = SP.ShipToInvPointNo'
+        'INNER JOIN dbo.Client                     SUPP   ON  SUPP.Client' +
+        'No            = SP.SupplierNo            -- LARS'
       
-        'LEFT OUTER JOIN dbo.CITY        Loading         ON Loading.CityN' +
-        'o '#9'           = SP.LoadingLocationNo'
+        'INNER JOIN dbo.Client                     CUST   ON  CUST.Client' +
+        'No            = SP.CustomerNo            -- LARS'
       
-        'LEFT OUTER JOIN dbo.Orders                 Od   ON  SP.OrderNo  ' +
-        '               = Od.OrderNo'
+        'LEFT OUTER JOIN dbo.CITY                     Shipto         ON S' +
+        'hipTo.CityNo '#9'           = SP.ShipToInvPointNo'
       
-        'LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.Shipp' +
-        'ingPlanNo          = CH.ShippingPlanNo      -- LARS'
+        'LEFT OUTER JOIN dbo.CITY                     Loading         ON ' +
+        'Loading.CityNo '#9'           = SP.LoadingLocationNo'
       
-        'LEFT OUTER JOIN dbo.Client                     CL   ON  CH.Custo' +
-        'merNo              = CL.ClientNo            -- LARS'
+        'LEFT OUTER JOIN dbo.Orders                     Od   ON  SP.Order' +
+        'No                 = Od.OrderNo'
       
-        'LEFT OUTER JOIN dbo.MarketRegion mr ON mr.MarketRegionNo = cl.Ma' +
+        'INNER JOIN dbo.CustomerShippingPlanHeader CH   ON  SP.ShippingPl' +
+        'anNo          = CH.ShippingPlanNo      -- LARS'
+      
+        'INNER JOIN dbo.Client                     CL   ON  CH.CustomerNo' +
+        '              = CL.ClientNo            -- LARS'
+      
+        'LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.Ma' +
         'rketRegionNo'
       
         'INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnit' +
         'No            = UN.VolumeUnit_No'
       
-        'LEFT OUTER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.Cus' +
-        'tShipPlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      --' +
-        ' LARS'
+        'INNER JOIN dbo.CustomerShippingPlanDetails CSD   ON  SP.CustShip' +
+        'PlanDetailObjectNo = CSD.CustShipPlanDetailObjectNo      -- LARS'
       'LEFT OUTER JOIN ShippingPlan_ShippingAddress ST'
       
         'INNER JOIN dbo.Address '#9#9'             ST_ADR     ON ST_ADR.Addre' +
@@ -604,148 +642,142 @@ object dmcOrder: TdmcOrder
       
         'Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.Shippin' +
         'gPlanNo'
-      ''
       
         'left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.' +
         'VoyageNo'
-      ''
       'Left Outer Join dbo.ProdInstru PIS'
       'Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID'
       'ON PIS.ProdInstruNo = SP.ProdInstructNo'
-      ''
-      'WHERE  CLL.ClientNo       =   232'
-      'AND SP.ShippingPlanStatus <>  0'
-      'AND SP.ObjectType         =   2'
-      'AND OD.OrderType          =   0'
-      'AND SP.ShippingPlanStatus <>  4'
-      'AND SP.ShippingPlanNo = -1'
+      'WHERE  CLL.ClientNo = 25'
+      'AND LO.UserID = 8'
+      'AND CH.ShippingPlanStatus <> 3'
+      'AND SP.ShippingPlanStatus <> 0'
+      'AND SP.ObjectType = 2'
+      'AND OD.OrderType in (0,3)'
+      'AND SP.ShippingPlanNo > 1'
+      'AND SP.LoadingLocationNo = 193'
+      '  AND SP.ShippingPlanStatus <> 4 AND SP.ShippingPlanStatus <> 8'
       ''
       'UNION'
-      ''
-      'SELECT distinct '
-      '-- NYTT'
-      #39'NA'#39' AS KONTRAKTSBESKRIVNING,'
-      'bk.ShippersShipDate,'
+      
+        'SELECT distinct '#39'NA'#39' AS KONTRAKTSBESKRIVNING, bk.ShippersShipDat' +
+        'e,'
       'bk.PreliminaryRequestedPeriod AS READYDATE,'
       'USR.INITIALS,'
-      'SP.ShippingPlanStatus,'
-      'SP.Lagerkod,'
-      'SP.ShippingPlanNo                           AS LONumber,'
-      'SP.PackageCode                              AS PackageCode,'
-      'SP.ProductDescription                       AS Product,'
-      'SP.LengthDescription                        AS Length,'
+      'SP.ShippingPlanStatus,                           -- Integer'
+      'isnull(SP.Lagerkod,1) as Lagerkod,'
+      'SP.ShippingPlanNo           AS LONumber,         -- Integer'
+      'SP.PackageCode              AS PackageCode,      -- Char 10'
+      'SP.ProductDescription       AS Product,          -- Char 100'
+      'SP.LengthDescription        AS Length,           -- Char 100'
       
-        'IsNull(SP.StartETDYearWeek,-1)              AS FromWeek,        ' +
-        ' -- Integer'
+        'IsNull(SP.StartETDYearWeek,-1)         AS FromWeek,         -- I' +
+        'nteger'
       
-        'IsNull(SP.EndETDYearWeek,-1)                AS ToWeek,          ' +
-        ' -- Integer'
-      
-        'SP.NoOfUnits                                AS Volume,          ' +
-        ' -- Float'
+        'IsNull(SP.EndETDYearWeek,-1)           AS ToWeek,           -- I' +
+        'nteger'
+      'SP.NoOfUnits                AS Volume,           -- Float'
       'SP.SupplierShipPlanObjectNo,                     -- Integer'
       'SP.ShowInGrid,                                   -- SmallInt'
-      
-        #39#39'                                          AS OrderNoText,     ' +
-        '     -- VarChar 20'
-      
-        'UN.VolumeUnitName                           AS UnitName,        ' +
-        ' -- VarChar 10'
-      
-        #39#39'                                          AS Destination,     ' +
-        ' -- VarChar 50'
-      
-        'CL.ClientName                               AS ClientName,      ' +
-        ' -- LARS VarChar 80'
-      'mr.MarketRegionName                         AS MARKNAD,'
-      
-        #39#39'                                          AS Reference,       ' +
-        '-- LARS'
-      
-        'SP.SupplierNo                               AS Supplier,        ' +
-        '-- Integer'
-      ''
-      
-        'CH.CustomerNo                               AS CHCustomerNo,    ' +
-        '-- Integer'
-      
-        'SP.CustomerNo                               AS SPCustomerNO,    ' +
-        '-- Integer'
+      #39#39'           AS OrderNo,          -- VarChar 20'
+      'UN.VolumeUnitName           AS UnitName,         -- VarChar 10'
+      #39#39'              AS Destination,      -- VarChar 50'
+      'CL.ClientName               AS ClientName,'
+      'mr.MarketRegionName         AS MARKNAD,'
+      #39#39'              AS Reference,       -- LARS'
+      'SP.SupplierNo               AS Supplier,        -- Integer'
+      'CH.CustomerNo               AS CHCustomerNo,'
+      'SP.CustomerNo               AS SPCustomerNO,    -- Integer'
       'SP.CustomerPrice,                               -- Float'
       'SP.CustomerShowInGrid,                           -- SmallInt'
-      'SUPP.ClientName'#9#9#9#9'                      AS SUPP_NAME,'
-      'CUST.ClientName'#9#9#9#9'                      AS LOCAL_CUST,'
+      'SUPP.ClientName'#9#9#9#9'AS SUPP_NAME,'
+      'CUST.ClientName'#9#9#9#9'AS LOCAL_CUST,'
       'SP.ObjectType,                                  -- Integer'
-      '0                                           AS ORDERTYPE,'
+      '0 AS ORDERTYPE,'
+      'ShipTo.CityName                 AS SHIPTO,      -- VarChar 50'
+      'Loading.CityName                 AS LOADING,'
+      'ISNULL(SP.Delivery_WeekNo,-1) AS Delivery_WeekNo,'
+      '-1 AS CSH_CustomerNo, SP.ShipToInvPointNo,SP.LoadingLocationNo,'
+      'BC.BarCode, CH.Reference AS REFERENS, SP.DateCreated AS SKAPAD,'
       
-        'ShipTo.CityName                             AS SHIPTO,      -- V' +
-        'arChar 50'
-      'Loading.CityName                            AS LOADING,'
-      'ISNULL(SP.Delivery_WeekNo,-1)               AS Delivery_WeekNo,'
-      '-1                                          AS CSH_CustomerNo,'
-      'SP.ShipToInvPointNo,'
-      'SP.LoadingLocationNo,'
+        'pli.NT, pli.NB, pli.AT, pli.AB, pli.TT, pli.TB, pli.TS, pli.UT, ' +
+        'pli.KV, pli.PK, SP.lengthtyp AS INTL'#196'NGD, SP.Reference AS RADREF' +
+        'ERENS,'
+      'Case WHEN SP.Price > 0 then Cast((SP.Price'
+      
+        '+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BET' +
+        'WEEN vwc.Fom AND vwc.Tom),0.0))'
+      'AS Varchar(30))+'#39'kr'#39' Else'
+      'Case'
+      
+        'WHEN SP.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), sp.Pri' +
+        'ceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo ) else'
+      'Case'
+      'WHEN OL.InternalPrice > 0 then Cast((OL.InternalPrice'
+      
+        '+isnull((Select vwcost From dbo.vwcost vwc WHERE   GetDate() BET' +
+        'WEEN vwc.Fom AND vwc.Tom),0.0))'
+      'AS Varchar(30)) +'#39'kr'#39' else'
+      
+        'Case WHEN ol.PriceListNo > 0 then dbo.VIS_GetPrice( GetDate(), o' +
+        'l.PriceListNo, SP.ProductNo, SP.ProductLengthNo, SP.SupplierNo )'
+      'END END END END AS Pris,'
       ''
-      'BC.BarCode,'
-      'CH.Reference                                AS REFERENS,'
-      'SP.DateCreated                              AS SKAPAD,'
-      'pli.NT,'
-      'pli.NB,'
-      'pli.AT,'
-      'pli.AB,'
-      'pli.TT,'
-      'pli.TB,'
-      'pli.TS,'
-      'pli.UT,'
-      'pli.KV,'
-      'pli.PK,'
-      'SP.lengthtyp                                AS INTL'#196'NGD,'
-      'SP.Reference                                AS RADREFERENS,'
-      #39'123456789012345678901234567890'#39'            AS Pris,'
-      'SP.ProductGroupNo,'
-      #39'******************************'#39'            AS  PriceListName,'
+      
+        'SP.ProductGroupNo, '#39'******************************'#39'            A' +
+        'S  PriceListName,'
+      ''
+      ''
       
         'SP.PcsPerPkg, SP.PackageWidth, SP.PackageHeight, SP.PkgCodePPNo,' +
-        ' PIS.ProdInstruNo, sp.ProductNo, sp.ProductLengthNo,'
-      '1 AS LanguageCode,'
-      'PL.ActualLengthMM AS ALMM,'
-      'SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.ModifiedUser,'
-      'LIP.LogicalInventoryName AS Lagergrupp,'
-      'SP.LengthSpec AS L'#228'ngd,'
-      'Vg.ETD,'
-      'Vg.ETA,'
-      'SP.Package_Size,'
-      'ps.PackageSizeName,'
-      'SP.PkgArticleNo,'
-      'SP.LOGroupNo,'
-      'LOB.LOBuffertName,'
-      ''
-      '(Select COUNT(LD.PackageNo) FROM dbo.Loaddetail LD'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedPkgs,'
-      ''
-      '(Select SUM(pt.Totalm3Nominal) FROM dbo.Loaddetail LD'
+        ' PIS.ProdInstruNo,'
+      
+        'sp.ProductNo, sp.ProductLengthNo, 1 AS LanguageCode, PL.ActualLe' +
+        'ngthMM AS ALMM, SP.SequenceNo, SP.OrderLineNo, SP.OrderNo, SP.Mo' +
+        'difiedUser, LIP.LogicalInventoryName AS Lagergrupp, SP.LengthSpe' +
+        'c AS L'#228'ngd, Vg.ETD, Vg.ETA,'
+      
+        'SP.Package_Size, ps.PackageSizeName, SP.PkgArticleNo, SP.LOGroup' +
+        'No, LOB.LOBuffertName,'
+      '(Select COUNT(LD.PackageNo) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo))' +
+        ' AS LoadedPkgs,'
+      '(Select SUM(pt.Totalm3Nominal) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
       
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
         'peNo'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedNM3,'
-      ''
-      '(Select SUM(pt.Totalm3Actual) FROM dbo.Loaddetail LD'
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ' +
+        ') AS LoadedNM3,'
+      '(Select SUM(pt.Totalm3Actual) FROM dbo.SupplierShippingPlan SP2'
+      
+        'INNER JOIN dbo.Loaddetail LD ON LD.Defsspno = SP2.SupplierShipPl' +
+        'anObjectNo'
       
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = LD.PackageTy' +
         'peNo'
-      'WHERE LD.ShippingPlanNo = SP.ShippingPlanNo'
-      'AND LD.Defsspno = SP.SupplierShipPlanObjectNo ) AS LoadedAM3,'
-      ''
+      'WHERE SP2.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND (SP2.OLO  = SP.SupplierShipPlanObjectNo)'
+      
+        'OR (SP2.SupplierShipPlanObjectNo = SP.SupplierShipPlanObjectNo) ' +
+        ') AS LoadedAM3,'
       '(Select SUM(SOR.NoOfUnits)'
       'FROM dbo.SortingOrderRow SOR'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanPaket,'
-      ''
       '(Select SUM(SOR.PlannedAM3)'
       'FROM dbo.SortingOrderRow SOR'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS PlanAM3,'
-      ''
       '(Select SUM(pt.Totalm3Actual) FROM dbo.SortingOrderRow SOR'
       
         'Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo =' +
@@ -755,86 +787,93 @@ object dmcOrder: TdmcOrder
         'Inner Join dbo.PackageType pt on pt.PackageTypeNo = SORP.Package' +
         'TypeNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedAM3,'
-      ''
       '(Select Count(SORP.PackageNo) FROM dbo.SortingOrderRow SOR'
       
         'Inner Join dbo.SortingOrderNewPkgs SORP on SORP.SortingOrderNo =' +
         ' SOR.SortingOrderNo'
       #9#9#9#9#9#9#9#9#9#9'AND SORP.SortingOrderRowNo = SOR.SortingOrderRowNo'
       'WHERE SOR.CSDNo = SP.SupplierShipPlanObjectNo) AS ProducedPKT,'
+      'SP.ActualM3Net AS Order_AM3, SP.InternRowNote AS Internnotering,'
+      'SP.InternalNote AS Produktnotering,'
       ''
-      'SP.ActualM3Net AS Order_AM3,'
-      'SP.InternRowNote AS Internnotering,'
-      'SP.InternalNote AS Produktnotering'
+      '(Select TOP 1 L.SenderLoadStatus FROM dbo.Loads L'
+      'Inner join dbo.LoadShippingPlan LS on LS.LoadNo = L.LoadNo'
+      'WHERE'
+      'LS.ShippingPlanNo = SP.ShippingPlanNo'
+      'AND L.SupplierNo = SP.SupplierNo'
+      'Order by L.SenderLoadStatus desc) AS LoadStatus,'
+      ''
+      '(Select Count(L.LoadNo) FROM dbo.Loads L'
+      'inner join dbo.Loaddetail ld on ld.LoadNo = L.LoadNo'
+      'WHERE'
+      'ld.Defsspno = SP.SupplierShipPlanObjectNo) AS NoOfLoads'
       ''
       'FROM   dbo.Client_LoadingLocation     CLL'
       
-        'INNER JOIN dbo.SupplierShippingPlan       SP    ON  SP.LoadingLo' +
-        'cationNo       = CLL.PhyInvPointNameNo'
-      
-        'LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Si' +
-        'ze'
-      'and ps.LanguageCode = 1'
+        'INNER JOIN dbo.SupplierShippingPlan       SP   ON  SP.LoadingLoc' +
+        'ationNo       = CLL.PhyInvPointNameNo'
+      'inner join dbo.LOs LO on LO.LONo = SP.ShippingPlanNo'
       
         'Left Outer Join dbo.LOBuffertParams LOB on LOB.LOBuffertNo = SP.' +
         'Delivery_WeekNo'
       
+        'LEFT Join dbo.PackageSize ps on ps.PackageSizeNo = SP.Package_Si' +
+        'ze and ps.LanguageCode = 1'
+      
+        'LEFT OUTER JOIN dbo.OrderLine    OL   ON  OL.OrderNo = SP.OrderN' +
+        'o'
+      'AND OL.OrderLineNo = SP.OrderLineNo'
+      
         'Left Outer Join dbo.LogicalInventoryPoint LIP on LIP.LogicalInve' +
         'ntoryPointNo = SP.LIPNo'
-      ''
       
         'Inner Join dbo.ProductLength PL on PL.ProductLengthNo = SP.Produ' +
         'ctLengthNo'
       
-        'INNER JOIN dbo.PRODLIST_II pli                  ON pli.ProductNo' +
-        ' = sp.ProductNo'
-      '--NYTT'
+        'Left Outer Join dbo.PriceTemplateHeader pthLO on pthLO.templaten' +
+        'o = sp.PriceListNo'
+      'INNER JOIN dbo.PRODLIST_II pli ON pli.ProductNo = sp.ProductNo'
       'LEFT OUTER JOIN dbo.CustomerShippingPlanHeader CH'
       
-        'Inner JOIN dbo.Client                     CL    ON  CL.ClientNo ' +
-        '= CH.CustomerNo'
+        'Inner JOIN dbo.Client                     CL   ON  CL.ClientNo =' +
+        ' CH.CustomerNo'
       
-        'LEFT OUTER JOIN dbo.MarketRegion mr             ON mr.MarketRegi' +
-        'onNo = cl.MarketRegionNo'
-      '  ON  CH.ShippingPlanNo          = SP.LO_No'
-      ''
+        'LEFT OUTER JOIN dbo.MarketRegion mr on mr.MarketRegionNo = cl.Ma' +
+        'rketRegionNo'
+      'ON  CH.ShippingPlanNo          = SP.LO_No'
+      '  AND CH.ShippingPlanStatus <> 3'
+      'Left Outer Join dbo.Users USR'#9#9#9'ON USR.UserID = SP.ModifiedUser'
       
-        'Left Outer Join dbo.Users USR'#9#9#9'              ON USR.UserID = SP' +
-        '.ModifiedUser'
+        'INNER JOIN dbo.Client                     SUPP   ON  SUPP.Client' +
+        'No            = SP.SupplierNo'
       
-        'INNER JOIN dbo.Client                     SUPP  ON  SUPP.ClientN' +
-        'o            = SP.SupplierNo            -- LARS'
+        'INNER JOIN dbo.Client                     CUST   ON  CUST.Client' +
+        'No            = SP.CustomerNo'
       
-        'INNER JOIN dbo.Client                     CUST  ON  CUST.ClientN' +
-        'o            = SP.CustomerNo            -- LARS'
+        'LEFT OUTER JOIN dbo.CITY                     Shipto         ON S' +
+        'hipTo.CityNo '#9'           = SP.ShipToInvPointNo'
       
-        'LEFT OUTER JOIN dbo.CITY         Shipto         ON ShipTo.CityNo' +
-        ' '#9'           = SP.ShipToInvPointNo'
+        'LEFT OUTER JOIN dbo.CITY                     Loading         ON ' +
+        'Loading.CityNo '#9'           = SP.LoadingLocationNo'
       
-        'LEFT OUTER JOIN dbo.CITY         Loading        ON Loading.CityN' +
-        'o '#9'           = SP.LoadingLocationNo'
+        'INNER JOIN dbo.UnitName                   UN   ON  SP.VolumeUnit' +
+        'No            = UN.VolumeUnit_No'
       
-        'INNER JOIN dbo.UnitName                   UN    ON  SP.VolumeUni' +
-        'tNo            = UN.VolumeUnit_No'
-      
-        'Left Outer Join dbo.Booking Bk                  On BK.ShippingPl' +
-        'anNo = SP.ShippingPlanNo'
+        'Left Outer Join dbo.Booking Bk On BK.ShippingPlanNo = SP.Shippin' +
+        'gPlanNo'
       
         'left outer JOIN dbo.Voyage  Vg  ON   Vg.VoyageNo           = Bk.' +
         'VoyageNo'
-      ''
       'Left Outer Join dbo.ProdInstru PIS'
-      
-        'Inner Join dbo.Barcode BC                       ON BC.BarCodeNo ' +
-        '= PIS.BarCodeID'
-      '  ON PIS.ProdInstruNo = SP.ProdInstructNo'
-      ''
-      'WHERE  CLL.ClientNo       =  76'
-      'AND SP.ShippingPlanStatus <>  0'
-      'AND SP.ObjectType         <   2'
-      'AND SP.ShippingPlanStatus <>  4'
-      'AND SP.ShippingPlanNo = -1'
-      'order by SP.ShippingPlanNo'
+      'Inner Join dbo.Barcode BC ON BC.BarCodeNo = PIS.BarCodeID'
+      'ON PIS.ProdInstruNo = SP.ProdInstructNo'
+      'WHERE  CLL.ClientNo          =  25'
+      'AND LO.UserID = 8'
+      'AND SP.ShippingPlanStatus <> 0'
+      'AND SP.ObjectType in (0,1)'
+      'AND SP.ShippingPlanNo > 1'
+      'AND SP.LoadingLocationNo = 193'
+      '  AND SP.ShippingPlanStatus <> 4 AND SP.ShippingPlanStatus <> 8'
       '')
     Left = 56
     Top = 24
@@ -1383,6 +1422,16 @@ object dmcOrder: TdmcOrder
       ReadOnly = True
       FixedChar = True
       Size = 4
+    end
+    object cdsSawmillLoadOrdersLoadStatus: TIntegerField
+      FieldName = 'LoadStatus'
+      Origin = 'LoadStatus'
+      ReadOnly = True
+    end
+    object cdsSawmillLoadOrdersNoOfLoads: TIntegerField
+      FieldName = 'NoOfLoads'
+      Origin = 'NoOfLoads'
+      ReadOnly = True
     end
   end
   object cdsBooking: TFDQuery

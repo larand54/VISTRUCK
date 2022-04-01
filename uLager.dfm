@@ -15,7 +15,6 @@ object fLager: TfLager
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   PopupMenu = pmFormShortcuts
   Position = poScreenCenter
   OnClose = FormClose
@@ -519,6 +518,7 @@ object fLager: TfLager
       Caption = 'Tjocklek:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
       Height = 20
       Width = 71
     end
@@ -528,6 +528,7 @@ object fLager: TfLager
       Caption = 'Bredd:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
     end
     object bUpdate: TcxButton
       Left = 833
@@ -600,6 +601,7 @@ object fLager: TfLager
       Left = 831
       Top = 94
       Caption = 'G'#246'm noll kolumner'
+      ParentBackground = False
       ParentFont = False
       State = cbsChecked
       Style.StyleController = cxEditStyleControllerFileldLabels
@@ -664,6 +666,7 @@ object fLager: TfLager
       Caption = #196'gare:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
       Height = 20
       Width = 61
     end
@@ -673,6 +676,7 @@ object fLager: TfLager
       Caption = 'Lagergrupp:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
     end
     object cxLabel4: TcxLabel
       Left = 455
@@ -680,6 +684,7 @@ object fLager: TfLager
       Caption = 'Vol.enhet:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
     end
     object eBL: TcxMaskEdit
       Left = 319
@@ -697,6 +702,7 @@ object fLager: TfLager
       FocusControl = eBL
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
       Height = 20
       Width = 71
     end
@@ -718,6 +724,7 @@ object fLager: TfLager
       FocusControl = eReference
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
       Height = 20
       Width = 71
     end
@@ -797,6 +804,7 @@ object fLager: TfLager
       Caption = 'K'#228'lla:'
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
     end
     object eInfo2: TcxMaskEdit
       Left = 84
@@ -816,6 +824,7 @@ object fLager: TfLager
       FocusControl = eInfo2
       ParentFont = False
       Style.StyleController = cxEditStyleControllerFileldLabels
+      Transparent = True
       Height = 20
       Width = 71
     end
@@ -2327,7 +2336,7 @@ object fLager: TfLager
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -6482,7 +6491,7 @@ object fLager: TfLager
     PixelsPerInch = 96
   end
   object siLangLinked_fLager: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

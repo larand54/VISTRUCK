@@ -46,7 +46,8 @@ type
     EFDuplicate,
     eaDuplicate,
     eaAlreadyAvReg,
-    eaUserCancel
+    eaUserCancel,
+    eaAlreadyExistInLoad
     );
 
 

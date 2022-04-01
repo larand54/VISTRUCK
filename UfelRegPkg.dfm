@@ -10,7 +10,6 @@ object ffelRegPkg: TffelRegPkg
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -500,7 +499,7 @@ object ffelRegPkg: TffelRegPkg
     object cbRegpoint: TcxDBCheckBox
       Left = 239
       Top = 77
-      Caption = 'cbRegpoint'
+      Caption = 'Reg.point'
       DataBinding.DataField = 'VolumeUnitNo'
       DataBinding.DataSource = dsUserProp
       Properties.ImmediatePost = True
@@ -512,7 +511,7 @@ object ffelRegPkg: TffelRegPkg
     object cbRegDate: TcxDBCheckBox
       Left = 239
       Top = 101
-      Caption = 'cxDBCheckBox1'
+      Caption = 'Registered'
       DataBinding.DataField = 'LengthFormatNo'
       DataBinding.DataSource = dsUserProp
       Properties.ImmediatePost = True
@@ -524,7 +523,7 @@ object ffelRegPkg: TffelRegPkg
     object cbSkiftLag: TcxDBCheckBox
       Left = 239
       Top = 126
-      Caption = 'cxDBCheckBox1'
+      Caption = 'Shift'
       DataBinding.DataField = 'AgentNo'
       DataBinding.DataSource = dsUserProp
       Properties.ImmediatePost = True
@@ -2244,7 +2243,7 @@ object ffelRegPkg: TffelRegPkg
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.83.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2557,7 +2556,7 @@ object ffelRegPkg: TffelRegPkg
     end
   end
   object siLangLinked_ffelRegPkg: TsiLangLinked
-    Version = '7.8.1'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

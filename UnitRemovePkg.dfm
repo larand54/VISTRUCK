@@ -11,7 +11,6 @@ object frmRemovePkg: TfrmRemovePkg
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -42,6 +41,7 @@ object frmRemovePkg: TfrmRemovePkg
       TabOrder = 0
       object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
         Navigator.Buttons.CustomButtons = <>
+        ScrollbarAnnotations.CustomAnnotations = <>
         DataController.DataSource = dmPkgs.ds_LoadPackages
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <
@@ -470,7 +470,6 @@ object frmRemovePkg: TfrmRemovePkg
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         TabOrder = 5
-        Width = 185
       end
     end
   end
@@ -480,7 +479,7 @@ object frmRemovePkg: TfrmRemovePkg
     Width = 1118
     Height = 111
     Align = alTop
-    TabOrder = 6
+    TabOrder = 2
     object Label11: TLabel
       Left = 12
       Top = 29
@@ -740,11 +739,7 @@ object frmRemovePkg: TfrmRemovePkg
     UseSystemFont = False
     Left = 400
     Top = 512
-    DockControlHeights = (
-      0
-      0
-      0
-      0)
+    PixelsPerInch = 96
     object dxBarManager1Bar1: TdxBar
       AllowClose = False
       AllowCustomizing = False
@@ -925,6 +920,7 @@ object frmRemovePkg: TfrmRemovePkg
     UseOwnFont = False
     Left = 280
     Top = 336
+    PixelsPerInch = 96
   end
   object ImageList1: TImageList
     Height = 24
@@ -1915,7 +1911,7 @@ object frmRemovePkg: TfrmRemovePkg
     Top = 447
   end
   object siLangLinked_frmRemovePkg: TsiLangLinked
-    Version = '7.2'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -2623,11 +2619,12 @@ object frmRemovePkg: TfrmRemovePkg
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.63.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
     LocaleID = 1024
+    AutoUpdateFieldVariables = False
     AfterInsert = mtUserPropAfterInsert
     Left = 152
     Top = 296

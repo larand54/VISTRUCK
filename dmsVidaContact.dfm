@@ -1,7 +1,7 @@
 object dmsContact: TdmsContact
-  OldCreateOrder = False
   Height = 778
   Width = 1112
+  PixelsPerInch = 96
   object dsrcShippers: TDataSource
     DataSet = cds_Shippers
     Left = 32
@@ -1199,7 +1199,7 @@ object dmsContact: TdmsContact
       'inner join dbo.ContactRole cr on cr.clientno = co.clientno '
       #9#9#9#9'and cr.contactno = co.contactno'
       'where co.clientno = :clientno'
-      'AND cr.RoleType = 9')
+      'AND cr.RoleType = 6')
     Left = 304
     Top = 600
     ParamData = <

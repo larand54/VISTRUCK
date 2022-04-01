@@ -43,7 +43,10 @@ uses
   dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
   dxBarBuiltInMenu, System.Actions, siComp, siLngLnk, dxSkinOffice2019Colorful,
   dxDateRanges, dxScrollbarAnnotations, System.ImageList, cxImageList,
-  dxSkinBasic ;
+  dxSkinBasic, dxSkinOffice2016Colorful, dxSkinOffice2016Dark,
+  dxSkinOffice2019Black, dxSkinOffice2019DarkGray, dxSkinOffice2019White,
+  dxSkinTheBezier, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light ;
 
 const cFirstLengthFieldNumber         = 27 ;
       cFirstLengthFieldNumberPaketnr  = 37 ;
@@ -429,7 +432,7 @@ type
     SelectedProductNo     : Integer ;
     SelectedLength        : String ;
     procedure BuildSql (const LIPNos : String;const PivotUnit, OwnerNo : Integer;const AT, AB : Double;const Ref, BL, Info2 : String) ;
-    procedure RefreshAfterChanges;
+    procedure RefreshAfterChanges(Sender: TObject) ;
     procedure RefreshPkgNosByPosition(Sender: TObject;const ALMM : Integer) ;
     procedure FormatLengthColumnsPosition ;
     procedure SetHeadersCaptionPositionVy ;
@@ -1249,7 +1252,7 @@ begin
    frmRemovePkg.RemotePkgEntry(mtPkgNos) ;
    frmRemovePkg.CreateCo ;
    frmRemovePkg.ShowModal ;
-   RefreshAfterChanges ;
+   RefreshAfterChanges(Sender)  ;
   Finally
    FreeAndNil(frmRemovePkg) ;
   End ;
@@ -1393,7 +1396,7 @@ begin
         frmMovePkgs.RemotePkgEntry(mtPkgNos);
         frmMovePkgs.CreateCo(False);
         frmMovePkgs.ShowModal;
-        RefreshAfterChanges;
+        RefreshAfterChanges(Sender) ;
       finally
         FreeAndNil(frmMovePkgs);
       end;
@@ -2969,23 +2972,27 @@ Begin
 // grdDBBandedPerSortiment.ApplyBestFit();
 End ;
 
-procedure TfLager.RefreshAfterChanges;
+procedure TfLager.RefreshAfterChanges(Sender: TObject) ;
 var
   Save_Cursor : TCursor;
 begin
- Save_Cursor := Screen.Cursor;
- Screen.Cursor := crHourGlass;    { Show hourglass cursor }
- Try
-   With dmInventory do
-   Begin
-    sq_invpiv.Active  := False ;
-    sq_invpiv.Active  := True ;
-    sp_invpivPkgDtl.Active    := False ;
-    sp_invpivPkgDtl.execute ;
+ grdDBBandedPerSortimentDblClick(Sender) ;
+
+{
+   Save_Cursor := Screen.Cursor;
+   Screen.Cursor := crHourGlass;
+   Try
+     With dmInventory do
+     Begin
+      sq_invpiv.Active  := False ;
+      sq_invpiv.Active  := True ;
+      sp_invpivPkgDtl.Active    := False ;
+      sp_invpivPkgDtl.execute ;
+     End ;
+   Finally
+    Screen.Cursor := Save_Cursor ;
    End ;
- Finally
-  Screen.Cursor := Save_Cursor ;
- End ;
+}
 end;
 
 procedure TfLager.RefreshPerPaketNr(Sender: TObject);
@@ -3577,7 +3584,7 @@ begin
    ffelRegPkg.CreateCo ;
    ffelRegPkg.RemotePkgEntry(mtPkgNos) ;
    ffelRegPkg.ShowModal ;
-   RefreshAfterChanges ;
+   RefreshAfterChanges (Sender) ;
   Finally
    FreeAndNil(ffelRegPkg) ;
   End ;

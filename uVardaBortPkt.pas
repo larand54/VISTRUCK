@@ -27,7 +27,12 @@ uses
   dxSkinWhiteprint, dxSkinVS2010, dxSkinXmas2008Blue, dxSkinscxPCPainter,
   dxSkinsdxBarPainter,  dxCore, cxNavigator, dxSkinMetropolis,
   dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
-  dxSkinOffice2013White, siComp, siLngLnk, System.Actions ;
+  dxSkinOffice2013White, siComp, siLngLnk, System.Actions,
+  dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
+  dxSkinOffice2019Colorful, dxSkinOffice2019DarkGray, dxSkinOffice2019White,
+  dxSkinTheBezier, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxDateRanges, dxScrollbarAnnotations,
+  dxBarBuiltInMenu, System.ImageList ;
 
 type
   TfVardaBortPkt = class(TForm)

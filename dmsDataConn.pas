@@ -14,7 +14,7 @@ uses
   FireDAC.Moni.Base, FireDAC.Moni.RemoteClient, FireDAC.VCLUI.Login, FireDAC.VCLUI.Error,
   FireDAC.VCLUI.Wait, FireDAC.Phys.ODBCBase, FireDAC.Phys.MSSQL, FireDAC.Comp.DataSet,
   FireDAC.Moni.FlatFile, FireDAC.VCLUI.Async, FireDAC.Comp.UI, VidaType ,uIDBConnector,
-  FireDAC.Phys.MSSQLDef, System.ImageList;
+  FireDAC.Phys.MSSQLDef, System.ImageList, cxImageList, cxGraphics;
 
 type
   TdmsConnector = class(TDataModule,IDBConnector)
@@ -49,6 +49,7 @@ type
     sp_GetSOPkgNo: TFDStoredProc;
     FD_DeleteSecondNo: TFDQuery;
     sq_GetUserNameDescription: TStringField;
+    cxImageListLoadStatus: TcxImageList;
     procedure DataModuleCreate           (Sender: TObject);
     procedure DataModuleDestroy          (Sender: TObject);
   private
