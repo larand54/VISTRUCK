@@ -19,28 +19,25 @@ object frmMain: TfrmMain
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 159
+    Top = 126
     Width = 1226
-    Height = 636
+    Height = 669
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 126
-    ExplicitHeight = 669
     object panelBase: TPanel
       Left = 0
       Top = 0
       Width = 1226
-      Height = 636
+      Height = 669
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 669
       object PanelA: TPanel
         Left = 0
         Top = 0
         Width = 1226
-        Height = 636
+        Height = 669
         Margins.Left = 2
         Margins.Top = 2
         Margins.Right = 2
@@ -49,7 +46,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         Caption = 'PanelA'
         TabOrder = 0
-        ExplicitHeight = 669
         object Panel7: TPanel
           Left = 0
           Top = 0
@@ -73,8 +69,6 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Align = alClient
             TabOrder = 0
-            ExplicitLeft = 0
-            ExplicitTop = -2
             object grdSelectedPkgsDBTableView1: TcxGridDBTableView
               Navigator.Buttons.CustomButtons = <>
               ScrollbarAnnotations.CustomAnnotations = <>
@@ -156,7 +150,7 @@ object frmMain: TfrmMain
           Left = 0
           Top = 116
           Width = 1226
-          Height = 520
+          Height = 553
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -165,11 +159,10 @@ object frmMain: TfrmMain
           TabOrder = 1
           Properties.ActivePage = tsUttag
           Properties.CustomButtons.Buttons = <>
-          ExplicitHeight = 553
-          ClientRectBottom = 519
-          ClientRectLeft = 1
-          ClientRectRight = 1225
-          ClientRectTop = 21
+          ClientRectBottom = 547
+          ClientRectLeft = 3
+          ClientRectRight = 1220
+          ClientRectTop = 26
           object tsUttag: TcxTabSheet
             Margins.Left = 2
             Margins.Top = 2
@@ -177,12 +170,15 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
+            ExplicitLeft = 1
+            ExplicitTop = 21
+            ExplicitWidth = 1224
             ExplicitHeight = 531
             object PanelMain: TPanel
               Left = 0
               Top = 0
-              Width = 1224
-              Height = 498
+              Width = 1217
+              Height = 521
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -190,12 +186,13 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
+              ExplicitWidth = 1224
               ExplicitHeight = 531
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
-                Width = 1224
-                Height = 439
+                Width = 1217
+                Height = 462
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -203,12 +200,13 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
+                ExplicitWidth = 1224
                 ExplicitHeight = 472
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
-                  Width = 1224
-                  Height = 439
+                  Width = 1217
+                  Height = 462
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
@@ -216,11 +214,12 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
+                  ExplicitWidth = 1224
                   ExplicitHeight = 472
                   object Panel4: TPanel
                     Left = 0
-                    Top = 395
-                    Width = 1224
+                    Top = 418
+                    Width = 1217
                     Height = 44
                     Margins.Left = 2
                     Margins.Top = 2
@@ -230,18 +229,20 @@ object frmMain: TfrmMain
                     BevelOuter = bvNone
                     TabOrder = 0
                     ExplicitTop = 428
+                    ExplicitWidth = 1224
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
                     Top = 0
-                    Width = 1224
-                    Height = 395
+                    Width = 1217
+                    Height = 418
                     Margins.Left = 2
                     Margins.Top = 2
                     Margins.Right = 2
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
+                    ExplicitWidth = 1224
                     ExplicitHeight = 428
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
@@ -346,7 +347,7 @@ object frmMain: TfrmMain
               object PanelTop: TPanel
                 Left = 0
                 Top = 0
-                Width = 1224
+                Width = 1217
                 Height = 59
                 Margins.Left = 2
                 Margins.Top = 2
@@ -355,6 +356,7 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitWidth = 1224
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5
@@ -430,11 +432,14 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsPositionPkgs'
             ImageIndex = 1
-            ExplicitHeight = 531
+            ExplicitLeft = 1
+            ExplicitTop = 21
+            ExplicitWidth = 1224
+            ExplicitHeight = 498
             object Panel3: TPanel
               Left = 0
               Top = 0
-              Width = 1224
+              Width = 1217
               Height = 61
               Margins.Left = 2
               Margins.Top = 2
@@ -442,6 +447,7 @@ object frmMain: TfrmMain
               Margins.Bottom = 2
               Align = alTop
               TabOrder = 0
+              ExplicitWidth = 1224
               object cxButton3: TcxButton
                 Left = 7
                 Top = 4
@@ -470,8 +476,8 @@ object frmMain: TfrmMain
             object Panel8: TPanel
               Left = 0
               Top = 61
-              Width = 1224
-              Height = 437
+              Width = 1217
+              Height = 460
               Margins.Left = 2
               Margins.Top = 2
               Margins.Right = 2
@@ -479,12 +485,13 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
-              ExplicitHeight = 470
+              ExplicitWidth = 1224
+              ExplicitHeight = 437
               object Panel2: TPanel
                 Left = 0
                 Top = 0
                 Width = 390
-                Height = 437
+                Height = 460
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -492,7 +499,7 @@ object frmMain: TfrmMain
                 Align = alLeft
                 Caption = 'Panelpositionering'
                 TabOrder = 0
-                ExplicitHeight = 470
+                ExplicitHeight = 437
                 object Panel9: TPanel
                   Left = 1
                   Top = 1
@@ -510,14 +517,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 388
-                  Height = 382
+                  Height = 405
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 1
-                  ExplicitHeight = 415
+                  ExplicitHeight = 382
                   object grdMatchingGridDBCardView1: TcxGridDBCardView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -689,8 +696,8 @@ object frmMain: TfrmMain
               object Panel5: TPanel
                 Left = 390
                 Top = 0
-                Width = 367
-                Height = 437
+                Width = 360
+                Height = 460
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
@@ -698,11 +705,12 @@ object frmMain: TfrmMain
                 Align = alClient
                 Caption = 'Panel5'
                 TabOrder = 1
-                ExplicitHeight = 470
+                ExplicitWidth = 367
+                ExplicitHeight = 437
                 object Panel10: TPanel
                   Left = 1
                   Top = 1
-                  Width = 365
+                  Width = 358
                   Height = 53
                   Margins.Left = 2
                   Margins.Top = 2
@@ -711,20 +719,22 @@ object frmMain: TfrmMain
                   Align = alTop
                   Caption = 'Panel9'
                   TabOrder = 0
+                  ExplicitWidth = 365
                 end
               end
               object Panel6: TPanel
-                Left = 757
+                Left = 750
                 Top = 0
                 Width = 467
-                Height = 437
+                Height = 460
                 Margins.Left = 2
                 Margins.Top = 2
                 Margins.Right = 2
                 Margins.Bottom = 2
                 Align = alRight
                 TabOrder = 2
-                ExplicitHeight = 470
+                ExplicitLeft = 757
+                ExplicitHeight = 437
                 object Panel11: TPanel
                   Left = 1
                   Top = 1
@@ -742,14 +752,14 @@ object frmMain: TfrmMain
                   Left = 1
                   Top = 54
                   Width = 195
-                  Height = 382
+                  Height = 405
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alLeft
                   TabOrder = 1
-                  ExplicitHeight = 415
+                  ExplicitHeight = 382
                   object grdAreaDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -785,14 +795,14 @@ object frmMain: TfrmMain
                   Left = 196
                   Top = 54
                   Width = 270
-                  Height = 382
+                  Height = 405
                   Margins.Left = 2
                   Margins.Top = 2
                   Margins.Right = 2
                   Margins.Bottom = 2
                   Align = alClient
                   TabOrder = 2
-                  ExplicitHeight = 415
+                  ExplicitHeight = 382
                   object cxPositionDBTableView1: TcxGridDBTableView
                     Navigator.Buttons.CustomButtons = <>
                     ScrollbarAnnotations.CustomAnnotations = <>
@@ -840,7 +850,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1226
-    Height = 159
+    Height = 126
     ApplicationButton.Glyph.SourceDPI = 96
     ApplicationButton.Glyph.Data = {
       424D360900000000000036000000280000001800000018000000010020000000
@@ -918,9 +928,11 @@ object frmMain: TfrmMain
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000000000000000}
     ApplicationButton.Menu = dxBarApplicationMenu1
+    ApplicationButton.Visible = False
     BarManager = dxBarManager1
     ColorSchemeName = 'Blue'
     QuickAccessToolbar.Toolbar = dxBarManager1Bar1
+    QuickAccessToolbar.Visible = False
     Contexts = <>
     TabOrder = 1
     TabStop = False
@@ -3947,19 +3959,7 @@ object frmMain: TfrmMain
       FloatTop = 216
       FloatClientWidth = 51
       FloatClientHeight = 57
-      ItemLinks = <
-        item
-          Visible = True
-          ItemName = 'dxBarSubItem1'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarSubItem2'
-        end
-        item
-          Visible = True
-          ItemName = 'dxBarSubItem3'
-        end>
+      ItemLinks = <>
       OldName = 'MainMenu'
       OneOnRow = True
       Row = 0
@@ -4028,6 +4028,18 @@ object frmMain: TfrmMain
         item
           Visible = True
           ItemName = 'dxBarLargeButton34'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSubItem2'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSubItem3'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSubItem1'
         end>
       OneOnRow = True
       Row = 0
@@ -4547,8 +4559,8 @@ object frmMain: TfrmMain
     Top = 296
   end
   object dxBarScreenTipRepository1: TdxBarScreenTipRepository
-    Left = 640
-    Top = 296
+    Left = 784
+    Top = 256
     PixelsPerInch = 96
   end
   object dxBarApplicationMenu1: TdxBarApplicationMenu
@@ -5651,7 +5663,7 @@ object frmMain: TfrmMain
     Connection = dmsConnector.FDConnection1
     SchemaName = 'dbo'
     StoredProcName = 'vis_GetGroupClientRegionNo'
-    Left = 492
+    Left = 484
     Top = 477
     ParamData = <
       item
@@ -5678,8 +5690,9 @@ object frmMain: TfrmMain
     Kind = lfFlat
     NativeStyle = False
     ScrollbarMode = sbmClassic
-    Left = 720
-    Top = 570
+    SkinName = 'Silver'
+    Left = 784
+    Top = 498
   end
   object cds_PropsInv: TFDQuery
     AfterInsert = cds_PropsInvAfterInsert
@@ -5698,8 +5711,8 @@ object frmMain: TfrmMain
       'Select * FROM dbo.userprops'
       'WHERE UserID = :UserID'
       'AND Form = :Form')
-    Left = 80
-    Top = 272
+    Left = 304
+    Top = 312
     ParamData = <
       item
         Name = 'USERID'

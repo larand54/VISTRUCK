@@ -12,7 +12,6 @@ object frmSokAvropFormular: TfrmSokAvropFormular
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   PopupMenu = pmShortcut
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
@@ -381,6 +380,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     Align = alClient
     PopupMenu = pmAvropGrd
     TabOrder = 1
+    LookAndFeel.SkinName = ''
     object grdAvropSokDBBandedTableView1: TcxGridDBBandedTableView
       Navigator.Buttons.CustomButtons = <>
       ScrollbarAnnotations.CustomAnnotations = <>
@@ -2420,7 +2420,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
       PrinterPage.PageSize.Y = 297000
       PrinterPage._dxMeasurementUnits_ = 0
       PrinterPage._dxLastMU_ = 2
-      ReportDocument.CreationDate = 44242.900918148150000000
+      ReportDocument.CreationDate = 44661.741312233800000000
       TimeFormat = 0
       OptionsView.Footers = False
       OptionsView.BandHeaders = False
@@ -2447,6 +2447,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
   end
   object cxLookAndFeelController1: TcxLookAndFeelController
     Kind = lfFlat
+    NativeStyle = False
     ScrollbarMode = sbmClassic
     SkinName = 'Silver'
     Left = 80
@@ -2914,7 +2915,7 @@ object frmSokAvropFormular: TfrmSokAvropFormular
     Top = 248
   end
   object siLangLinked_frmSokAvropFormular: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -12,7 +12,6 @@ object fLastLista: TfLastLista
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -223,7 +222,7 @@ object fLastLista: TfLastLista
       object grdLastListaDBTableView1STATUS: TcxGridDBColumn
         DataBinding.FieldName = 'STATUS'
         PropertiesClassName = 'TcxImageComboBoxProperties'
-        Properties.Images = il_LastStatus
+        Properties.Images = dmsConnector.cxImageListLoadStatus
         Properties.Items = <
           item
             Description = 'Prelimin'#228'r'
@@ -239,6 +238,16 @@ object fLastLista: TfLastLista
             Description = 'Avslutad'
             ImageIndex = 2
             Value = 2
+          end
+          item
+            Description = 'Prepaid'
+            ImageIndex = 3
+            Value = 3
+          end
+          item
+            Description = 'Ready'
+            ImageIndex = 4
+            Value = 4
           end>
         Width = 37
       end
@@ -324,9 +333,9 @@ object fLastLista: TfLastLista
   end
   object Panel2: TPanel
     Left = 0
-    Top = 286
+    Top = 282
     Width = 1131
-    Height = 308
+    Height = 312
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 2
@@ -350,7 +359,7 @@ object fLastLista: TfLastLista
       Left = 0
       Top = 25
       Width = 1131
-      Height = 283
+      Height = 287
       Align = alClient
       BevelOuter = bvNone
       PopupMenu = PopupMenu2
@@ -463,7 +472,7 @@ object fLastLista: TfLastLista
     Left = 0
     Top = 278
     Width = 1131
-    Height = 8
+    Height = 4
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salTop
     Control = grdLastLista
@@ -1834,7 +1843,7 @@ object fLastLista: TfLastLista
     LoadedCompletely = False
     SavedCompletely = False
     FilterOptions = []
-    Version = '7.86.00 Standard Edition'
+    Version = '7.95.00 Standard Edition'
     LanguageID = 0
     SortID = 0
     SubLanguageID = 1
@@ -2329,7 +2338,7 @@ object fLastLista: TfLastLista
     end
   end
   object siLangLinked_fLastLista: TsiLangLinked
-    Version = '7.8.4'
+    Version = '7.9.0.1'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

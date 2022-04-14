@@ -818,6 +818,10 @@ begin
 
  if Assigned(fkilnHandling) then
   fkilnHandling.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+
+ if Assigned(frmSokAvropFormular) then
+  frmSokAvropFormular.dxBarManager1.LookAndFeel.SkinName := dxSkinController1.SkinName ;
+
 end;
 
 procedure TfrmMain.acUserPreferenceExecute(Sender: TObject);

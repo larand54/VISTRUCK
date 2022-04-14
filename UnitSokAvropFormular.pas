@@ -27,7 +27,10 @@ uses
   cxDBLookupEdit, cxDBLookupComboBox, Vcl.StdCtrls, Vcl.ExtCtrls, Data.SQLTimst,
   system.Generics.collections, Forms, dxPScxEditorProducers, dxPScxExtEditorProducers,
   dxSkinOffice2019Colorful, dxDateRanges, dxScrollbarAnnotations,
-  dxBarBuiltInMenu, System.ImageList, dxSkinBasic
+  dxBarBuiltInMenu, System.ImageList, dxSkinBasic, dxSkinOffice2016Colorful,
+  dxSkinOffice2016Dark, dxSkinOffice2019Black, dxSkinOffice2019DarkGray,
+  dxSkinOffice2019White, dxSkinTheBezier, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light
   ;
 
 type

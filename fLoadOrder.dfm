@@ -33,7 +33,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       Left = 0
       Top = 335
       Width = 1234
-      Height = 8
+      Height = 4
       HotZoneClassName = 'TcxMediaPlayer8Style'
       AlignSplitter = salTop
       Control = Panel1
@@ -1136,9 +1136,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     end
     object PanelLoadDetail: TPanel
       Left = 0
-      Top = 343
+      Top = 339
       Width = 1234
-      Height = 305
+      Height = 309
       Align = alClient
       Constraints.MinWidth = 400
       TabOrder = 4
@@ -1146,7 +1146,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
         Left = 1
         Top = 53
         Width = 1232
-        Height = 251
+        Height = 255
         Align = alClient
         PopupMenu = pmLoadGrid
         TabOrder = 0
@@ -1895,8 +1895,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     ClientRectTop = 35
   end
   object pnlLoad: TPanel
-    Left = 775
-    Top = -151
+    Left = 89
+    Top = 493
     Width = 1137
     Height = 540
     TabOrder = 3
@@ -7319,6 +7319,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Kind = lfFlat
     NativeStyle = False
     ScrollbarMode = sbmClassic
+    SkinName = 'Silver'
     Left = 488
     Top = 638
   end
