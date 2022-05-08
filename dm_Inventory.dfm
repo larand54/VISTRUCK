@@ -8444,6 +8444,8 @@ object dmInventory: TdmInventory
   object sp_invpivPkgDtl: TFDStoredProc
     OnUpdateRecord = sp_invpivPkgDtlUpdateRecord
     Connection = dmsConnector.FDConnection1
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     UpdateObject = upd_invpivPkgDtl
     StoredProcName = 'dbo.Vis_LagerDTL_v4'
     Left = 216
@@ -8454,7 +8456,6 @@ object dmInventory: TdmInventory
         Name = '@RETURN_VALUE'
         DataType = ftInteger
         ParamType = ptResult
-        Value = 0
       end
       item
         Position = 2

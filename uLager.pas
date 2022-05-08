@@ -2450,6 +2450,7 @@ begin
  Begin
  Save_Cursor    := Screen.Cursor;
  Screen.Cursor  := crHourGlass;    { Show hourglass cursor }
+ sq_invpiv.DisableControls ;
  Try
  if Length(sq_invpiv.FieldByName('PackageSizeName').AsString) = 0 then
   Package_Size := -1
@@ -2495,6 +2496,7 @@ begin
    End ;
 
  Finally
+  sq_invpiv.EnableControls ;
   Screen.Cursor := Save_Cursor ;
  End ;
  End ;//With dmInventory do
