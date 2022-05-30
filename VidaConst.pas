@@ -283,6 +283,7 @@ const
   VP_BadImp                 = 14 ;
   VP_NyaHTFPaket            = 15 ;
   REF_MISMATCH = 20;
+  VP_BadPPP = 21 ;
 
 
   INTERNAL_LOAD = 0 ;
@@ -436,6 +437,7 @@ resourcestring
   rs_NO_Species       = 'Träslag matchar inte' ;
   rs_NO_LO_Connection = 'LO koppling saknas' ;
   rs_NO_IMP           = 'Impregnering matchar inte' ;
+  rs_BAD_PPP          = 'Pieces per package does not match pre-order' ;
 
   rs_BAD_PKG    = 'Package number not found';
   rs_PKG_OK     = 'Package number exists; contents not validated.';

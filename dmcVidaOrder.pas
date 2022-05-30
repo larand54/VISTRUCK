@@ -2013,6 +2013,11 @@ Begin
   cds_Props.Edit ;
   VerkNo  := cds_PropsVerkNo.AsInteger ;
   cds_PropsVerkNo.AsInteger := VerkNo ;
+
+  if cds_PropsVolumeUnitNo.IsNull then
+  cds_PropsVolumeUnitNo.AsInteger := 1 ;
+
+
   cds_Props.Post ;
 
 //  mtPropsRoleType.AsInteger     :=  dmsContact.GetRoleType(ThisUser.CompanyNo) ;
@@ -2060,6 +2065,7 @@ Begin
   cds_PropsAutoColWidth.AsInteger :=  1 ;
   cds_PropsSupplierCode.AsString  := dmsContact.GetClientCode(ThisUser.CompanyNo) ;
   cds_PropsLengthGroupNo.AsInteger:= -1 ;
+  cds_PropsVolumeUnitNo.AsInteger  := 1 ;
   cds_Props.Post ;
  End ;
 // cds_Props.Active:= False ;

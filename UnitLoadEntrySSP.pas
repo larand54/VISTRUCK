@@ -418,6 +418,7 @@ type
     cxImageList1: TcxImageList;
     Panel6: TPanel;
     cxDBImageComboBox1: TcxDBImageComboBox;
+    grdLORowsDBBandedTableView1LoadingAddressNo: TcxGridDBBandedColumn;
 
     procedure lbRemovePackageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1536,16 +1537,20 @@ Begin
                            cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
                           End ;
         VP_BadSpecies : Begin
-                           cds_LoadPackagesPackageOK.AsInteger:= VP_BadSpecies ;
-                           cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_BadSpecies ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
                           End ;
         VP_BadIMP     : Begin
-                           cds_LoadPackagesPackageOK.AsInteger:= VP_BadIMP ;
-                           cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_BadIMP ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
+                          End ;
+        VP_BadPPP     : Begin
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_BadPPP ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
                           End ;
         VP_NoLOConnection : Begin
-                           cds_LoadPackagesPackageOK.AsInteger:= VP_NoLOConnection ;
-                           cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_NoLOConnection ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
                           End ;
         else
         end;
@@ -2104,6 +2109,10 @@ begin
         VP_BadIMP     : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_BadIMP ;
                            cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
+                          End ;
+        VP_BadPPP     : Begin
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_BadPPP ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
                           End ;
         VP_NoLOConnection : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_NoLOConnection ;
@@ -2798,11 +2807,17 @@ var
       End
       // LM måste fixas till med impregnerings kontrollen.
       else
-        if cds_LoadPackagesProductCategoryNo.AsInteger <>
-        cdsLORowsProductCategoryNo.AsInteger then
+      if cds_LoadPackagesProductCategoryNo.AsInteger = 1 then
       Begin
         Result := VP_BadIMP;
         PkgLog := rs_NO_IMP;
+        exit;
+      End
+      else
+      if (cdsLORowsLoadingAddressNo.AsInteger = 1) and (cds_LoadPackagesPCS.AsInteger <> cdsLORowsPCSPERPKG.AsInteger) then
+      Begin
+        Result := VP_BadPPP;
+        PkgLog := rs_BAD_PPP;
         exit;
       End;
       // if we get to here all attributes are OK.
@@ -5660,7 +5675,7 @@ begin
     if ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageOK').Index] <> null then
     PackageOK:= ARecord.Values[TcxGridDBTableView(Sender).GetColumnByFieldName('PackageOK').Index] ;
     Case PackageOK of
-     1,2,3,4,5,6,7,8,9,10,11,12 : AStyle := cxStyleRed ;
+     1,2,3,4,5,6,7,8,9,10,11,12, 21 : AStyle := cxStyleRed ;
      VP_LengthNotInLengthGroup  :
      Begin
       if OverrideRL = 1 then
@@ -6163,6 +6178,10 @@ Begin
         VP_BadIMP     : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_BadIMP ;
                            cds_LoadPackagesProblemPackageLog.AsString:= PkgLog ;
+                          End ;
+        VP_BadPPP     : Begin
+                           cds_LoadPackagesPackageOK.AsInteger        := VP_BadPPP ;
+                           cds_LoadPackagesProblemPackageLog.AsString := PkgLog ;
                           End ;
         VP_NoLOConnection : Begin
                            cds_LoadPackagesPackageOK.AsInteger:= VP_NoLOConnection ;

@@ -389,7 +389,6 @@ object dmcOrder: TdmcOrder
     Top = 584
   end
   object cdsSawmillLoadOrders: TFDQuery
-    Active = True
     BeforePost = cdsSawmillLoadOrdersBeforePost
     BeforeScroll = cdsSawmillLoadOrdersBeforeScroll
     Indexes = <

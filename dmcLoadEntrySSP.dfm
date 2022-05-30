@@ -833,16 +833,17 @@
       'SSP.InternRowNote AS Internnotering,'
       'SSP.PkgArticleNo,'
       'ps.PackageSizeNo,'
-      'SSP.Lagerkod'
+      'SSP.Lagerkod,'
+      'IsNull(SSP.LoadingAddressNo,0) as LoadingAddressNo'
       ''
       'FROM  '#9'dbo.Loads L'
       #9'Inner Join dbo.LoadShippingPlan LS ON LS.LoadNo = L.LoadNo'
       
         #9'Inner Join dbo.SupplierShippingPlan SSP ON SSP.ShippingPlanNo =' +
         ' LS.ShippingPlanNo'
-      #9#9#9#9#9#9'AND SSP.SupplierNo = L.SupplierNo'
-      #9#9#9#9#9#9'AND SSP.LoadingLocationNo = LS.LoadingLocationNo'
-      #9#9#9#9#9#9'AND SSP.ShipToInvPointNo = LS.ShipToInvPointNo'
+      '  AND SSP.SupplierNo = L.SupplierNo'
+      '  AND SSP.LoadingLocationNo = LS.LoadingLocationNo'
+      '  AND SSP.ShipToInvPointNo = LS.ShipToInvPointNo'
       ''
       ''
       
@@ -1172,6 +1173,10 @@
       FieldName = 'Lagerkod'
       Origin = 'Lagerkod'
       Size = 4
+    end
+    object cdsLORowsLoadingAddressNo: TIntegerField
+      FieldName = 'LoadingAddressNo'
+      Origin = 'LoadingAddressNo'
     end
   end
   object sq_GetLO_Records: TFDQuery

@@ -424,6 +424,7 @@ type
     sp_IsOrderPrepaid_Terms: TFDStoredProc;
     sp_IsLoadPrepaid_Terms: TFDStoredProc;
     sp_SetCallOffLoadStatus: TFDStoredProc;
+    cdsLORowsLoadingAddressNo: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cds_LoadHead1SenderLoadStatusChange(Sender: TField);
     procedure ds_LoadPackages2DataChange(Sender: TObject; Field: TField);

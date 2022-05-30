@@ -1040,7 +1040,7 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cbShowOnlySelectedVerksLOs: TcxDBCheckBox
-          Left = 629
+          Left = 754
           Top = 68
           Caption = 'Visa endast valt verks LO'#39's'
           DataBinding.DataField = 'AutoColWidth'
@@ -1049,7 +1049,13 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Properties.ImmediatePost = True
           Properties.ValueChecked = 1
           Properties.ValueUnchecked = 0
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -15
+          Style.Font.Name = 'Verdana'
+          Style.Font.Style = [fsBold]
           Style.StyleController = cxEditStyleControllerFileldLabels
+          Style.IsFontAssigned = True
           TabOrder = 7
         end
         object teReferens: TcxTextEdit
@@ -1102,9 +1108,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cxButton10: TcxButton
-          Left = 923
+          Left = 1048
           Top = 66
-          Width = 305
+          Width = 180
           Height = 30
           Action = acSendWoodxDeliveryMessage
           TabOrder = 28
@@ -1131,6 +1137,24 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
           TabOrder = 3
           Width = 117
+        end
+        object cxDBCheckBox1: TcxDBCheckBox
+          Left = 518
+          Top = 68
+          Caption = 'Visa endast fr'#229'n valt lastst'#228'lle'
+          DataBinding.DataField = 'VolumeUnitNo'
+          DataBinding.DataSource = dmcOrder.ds_Props
+          ParentFont = False
+          Properties.ValueChecked = 1
+          Properties.ValueUnchecked = 0
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -15
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = [fsBold]
+          Style.TransparentBorder = False
+          Style.IsFontAssigned = True
+          TabOrder = 29
         end
       end
     end
@@ -7270,8 +7294,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object pmShortcuts: TPopupMenu
     AutoPopup = False
-    Left = 672
-    Top = 664
+    Left = 488
+    Top = 696
     object Bokning1: TMenuItem
       Action = acBooking
     end
@@ -7462,8 +7486,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
     Top = 353
   end
   object pmPrintmenu: TPopupMenu
-    Left = 808
-    Top = 234
+    Left = 648
+    Top = 226
     object Fljesedel1: TMenuItem
       Action = acPrintFS
     end
@@ -10432,8 +10456,8 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
   end
   object sq_GetLONos: TFDQuery
     Connection = dmsConnector.FDConnection1
-    Left = 312
-    Top = 550
+    Left = 288
+    Top = 574
   end
   object ILStatus1616: TImageList
     Height = 24

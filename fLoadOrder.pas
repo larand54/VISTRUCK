@@ -478,6 +478,7 @@ type
     ILStatus1616: TImageList;
     grdLODBTableView1LoadStatus: TcxGridDBColumn;
     grdLODBTableView1NoOfLoads: TcxGridDBColumn;
+    cxDBCheckBox1: TcxDBCheckBox;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -2364,7 +2365,7 @@ begin
  if (StrToIntDef(Trim(teSearchLONo.Text),0) > 0)
  or (Length(teREF.Text) > 0) or (Length(teReferens.Text) > 0) then
   Begin
-   if dmcOrder.cds_PropsVerkNo.AsInteger = 741 then
+   if (dmcOrder.cds_PropsVerkNo.AsInteger = 741) and (dmcOrder.cds_PropsVolumeUnitNo.AsInteger = 0) then
     BuildVIDAWOODGetOne_LO_SQL(Sender)
      else
       BuildGetOne_LO_SQL (Sender) ;
