@@ -39,7 +39,7 @@ uses
   System.ImageList, dxSkinBasic, cxImageList, dxSkinOffice2016Colorful,
   dxSkinOffice2016Dark, dxSkinOffice2019Black, dxSkinOffice2019DarkGray,
   dxSkinOffice2019White, dxSkinTheBezier, dxSkinVisualStudio2013Blue,
-  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light ;
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light, VidaConst ;
 
 type
   TfLoadEntrySSP = class(TForm)
@@ -710,7 +710,7 @@ type
 
 implementation
 
-uses dmcLoadEntrySSP, VidaConst, dlgPickPkg,
+uses dmcLoadEntrySSP, dlgPickPkg,
   dmsVidaContact, UnitPackageEntry, dmsVidaProduct, //UnitSelectLO_NumberSSP,
   VidaUser, //UnitCRViewReport,
   UnitPkgInfo,
@@ -2694,7 +2694,9 @@ var
     With dmLoadEntrySSP do
     Begin
       // if no match then add by productno automatically
-      if not cdsLORows.FindKey([cds_LoadPackagesDefsspno.AsInteger]) then
+      if (not cdsLORows.FindKey([cds_LoadPackagesDefsspno.AsInteger]))
+      //OR      (cdsLORowsLoadingAddressNo.AsInteger = 1)
+      then
       Begin
         // Koppla paket mot LO rader
         LOLineKey := AddLoadDetailMatchByProductNo(CustcdsNoKey, PkgNo,
@@ -2839,11 +2841,18 @@ var
         exit;
       End
       else
-        if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat
+      if cds_LoadPackagesActualWidthMM.AsFloat <> cdsLORowsACT_WIDTH.AsFloat
       then
       Begin
         PkgLog := Format(rs_NO_Width, [cds_LoadPackagesActualWidthMM.AsFloat]);
         Result := VP_BadWidth;
+        exit;
+      End
+      else
+      if (cdsLORowsLoadingAddressNo.AsInteger = 1) and (cds_LoadPackagesPCS.AsInteger <> cdsLORowsPCSPERPKG.AsInteger) then
+      Begin
+        Result := VP_BadPPP;
+        PkgLog := rs_BAD_PPP;
         exit;
       End;
       // if we get to here all attributes are OK.
@@ -2871,7 +2880,7 @@ begin
         // mtLoadDetailMatchSupplierShipPlanObjectNo.AsString ;
         cdsLORows.Filtered := True;
 
-        if cds_LoadPackagesOverrideMatch.AsInteger = 0 then
+        if (cds_LoadPackagesOverrideMatch.AsInteger = 0) then
         Begin
           Result := ValideraProduktAttribut;
           if Result = ALL_OK then
@@ -3924,7 +3933,7 @@ begin
     cds_LoadHead.UpdateOptions.ReadOnly := False ;
    if cds_LoadHead.State in [dsBrowse] then
    cds_LoadHead.Edit ;
-   cds_LoadHeadSenderLoadStatus.AsInteger := 4 ; //Ready
+   cds_LoadHeadSenderLoadStatus.AsInteger := LoadReady ; //Ready = 4
    cds_LoadHead.Post ;
    SaveLoad ;
    SetLoadEnabled ;
@@ -3946,7 +3955,7 @@ begin
  with dmLoadEntrySSP do
  Begin
   acSetLoadReady.Enabled:= //(not DataSaved) and (LoadEnabled) and
-  (cds_LoadHeadSenderLoadStatus.AsInteger <> 4) ;
+  (cds_LoadHeadSenderLoadStatus.AsInteger <> LoadReady) ;
  End ;
 end;
 
@@ -6582,10 +6591,12 @@ var
 begin
   with dmLoadEntrySSP do
   begin
-   if ErrorPkgExist(cds_LoadHeadLoadNo.AsInteger) then
+   if CheckPkgsLoaded then
    Begin
-    acShowPkgLoggExecute(Sender) ;
-   End;
+     if ErrorPkgExist(cds_LoadHeadLoadNo.AsInteger) then
+     Begin
+      acShowPkgLoggExecute(Sender) ;
+     End;
 
 
     DagensDag := DayOfTheMonth(Date);
@@ -6626,7 +6637,7 @@ begin
        TfOKDia.Execute('Notering, Lasten får inte lastas ut förrän fakturan är betald. Status kan inte sättas till Avslutad förrän fakturan är betald.') ;
       if cds_LoadHead.State in [dsBrowse] then
         cds_LoadHead.Edit;
-      cds_LoadHeadSenderLoadStatus.AsInteger := 3; //OK
+      cds_LoadHeadSenderLoadStatus.AsInteger := LoadPrepaid; //LoadPrepaid = 3
       cds_LoadHead.Post;
      End
      else
@@ -6660,7 +6671,11 @@ begin
       End;
     End;
     end;
-  end;
+
+   End
+    else
+      ShowMessage('Cannot set load to complete because no of pkgs loaded does not match no of pkgs on order. (this is a prepay load and must be loaded exactly as ordered)') ;
+  end; //With
 end;
 
 procedure TfLoadEntrySSP.acSaveAndOKUpdate(Sender: TObject);

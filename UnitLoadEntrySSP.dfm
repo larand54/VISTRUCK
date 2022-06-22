@@ -835,7 +835,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       Margins.Bottom = 2
       Align = alClient
       BevelOuter = bvNone
-      Caption = 'Panel8'
       TabOrder = 3
       object Splitter1: TSplitter
         Left = 0
@@ -1071,6 +1070,7 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alClient
           PopupMenu = pmPkgs
           TabOrder = 1
+          ExplicitLeft = 1
           object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
             OnKeyDown = grdPkgsDBBandedTableView1KeyDown
             Navigator.Buttons.CustomButtons = <>

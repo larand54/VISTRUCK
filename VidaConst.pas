@@ -7,6 +7,10 @@ uses
 
 
 const
+//Load status
+  LoadPrepaid      = 3 ;
+  LoadReady        = 4 ;
+
   cCanNOTMovePkgs  = 0 ;
   cCanMovePkgsINT  = 1 ;
   cCanMovePkgsEXT  = 2 ;

@@ -479,6 +479,7 @@ type
    LoadStatus,
    LIPNo, InventoryNo : Integer ;//, GlobalLoadDetailNo : Integer ;
    FLONo, FSupplierNo, FCustomerNo   : integer;
+   function  CheckPkgsLoaded: Boolean;
    procedure SetCallOffLoadStatus(const LoadNo : Integer) ;
    function  IsLoadPrepaid_Terms(const LoadNo : Integer) : Integer ;
    function  IsOrderPrepaid_Terms(const LONo : Integer) : Integer ;
@@ -2146,5 +2147,30 @@ Begin
       End ;
      end;
 End ;
+
+
+
+
+function TdmLoadEntrySSP.CheckPkgsLoaded ;
+Begin
+ Result := True ;
+ if cdsLORowsLoadingAddressNo.AsInteger = 1 then
+ Begin
+     cdsLORows.first ;
+
+
+     while not cdsLORows.eof do
+     Begin
+       if cdsLORowsPkgDiff.asinteger <> 0 then
+       Begin
+        Result := False ;
+        Exit ;
+       End;
+
+       cdsLORows.next ;
+     End;
+ End ;
+End ;
+
 
 end.
