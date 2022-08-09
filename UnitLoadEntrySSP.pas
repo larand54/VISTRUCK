@@ -549,6 +549,8 @@ type
     procedure Timer2Timer(Sender: TObject);
     procedure acSetLoadReadyExecute(Sender: TObject);
     procedure acSetLoadReadyUpdate(Sender: TObject);
+    procedure detLoadedEnter(Sender: TObject);
+    procedure detLoadedExit(Sender: TObject);
 
   private
     { Private declarations }
@@ -1432,6 +1434,20 @@ begin
   inherited
 end;
 
+procedure TfLoadEntrySSP.detLoadedEnter(Sender: TObject);
+begin
+ With dmLoadEntrySSP do
+ Begin
+  if cds_LoadHeadSenderLoadStatus.AsInteger = 3 then
+   detLoaded.Enabled  := False ;
+ End;
+end;
+
+procedure TfLoadEntrySSP.detLoadedExit(Sender: TObject);
+begin
+    detLoaded.Enabled  := True ;
+end;
+
 procedure TfLoadEntrySSP.dxBarSpinEditContentCurChange(Sender: TObject);
 begin
  cxStyleOrange2.Font.Size := dxBarSpinEditContent.IntCurValue ;
@@ -2293,6 +2309,8 @@ begin
   if not assigned(logg) then
     logg := TLogger.Create(dmFR.DBConnection);
 {$ENDIF}
+
+ dmUserAdm.ApplyRestrictionsOnForm(ThisUser.UserID, self);
 
 end;
 
@@ -3898,17 +3916,19 @@ end;
 
 procedure TfLoadEntrySSP.acInsertAllPkgsToInventoryUpdate(Sender: TObject);
 begin
- acInsertAllPkgsToInventory.Enabled:=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
+ //acInsertAllPkgsToInventory.Enabled:=
+ acInsertAllPkgsToInventory.Enabled :=  (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
 end;
 
 procedure TfLoadEntrySSP.acRemovePkgFromSystemUpdate(Sender: TObject);
 begin
- acRemovePkgFromSystem.Enabled  :=  False ;// (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
+// acRemovePkgFromSystem.Enabled  :=
+  acRemovePkgFromSystem.enabled := (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
 end;
 
 procedure TfLoadEntrySSP.acRemoveAllPkgsFromSystemUpdate(Sender: TObject);
 begin
- acRemoveAllPkgsFromSystem.Enabled  :=  False ;//(dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
+ acRemoveAllPkgsFromSystem.enabled  := (dmLoadEntrySSP.cds_LoadPackages.RecordCount > 0) and (LoadEnabled) ;
 end;
 
 procedure TfLoadEntrySSP.acUndoPkgOperationUpdate(Sender: TObject);

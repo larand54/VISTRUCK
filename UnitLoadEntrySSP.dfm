@@ -72,6 +72,8 @@ object fLoadEntrySSP: TfLoadEntrySSP
             StyleFocused.LookAndFeel.Kind = lfFlat
             StyleHot.LookAndFeel.Kind = lfFlat
             TabOrder = 0
+            OnEnter = detLoadedEnter
+            OnExit = detLoadedExit
             Width = 145
           end
           object imgcbStatus: TcxDBImageComboBox
@@ -1070,7 +1072,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
           Align = alClient
           PopupMenu = pmPkgs
           TabOrder = 1
-          ExplicitLeft = 1
           object grdPkgsDBBandedTableView1: TcxGridDBBandedTableView
             OnKeyDown = grdPkgsDBBandedTableView1KeyDown
             Navigator.Buttons.CustomButtons = <>
@@ -2279,6 +2280,10 @@ object fLoadEntrySSP: TfLoadEntrySSP
         item
           Visible = True
           ItemName = 'dxBarLargeButton13'
+        end
+        item
+          Visible = True
+          ItemName = 'lbPkgNoSerie'
         end>
       OldName = 'Custom 1'
       OneOnRow = True
@@ -4246,11 +4251,13 @@ object fLoadEntrySSP: TfLoadEntrySSP
     end
     object acRemovePkgFromSystem: TAction
       Caption = 'Ta bort paketet fr'#229'n systemet'
+      Visible = False
       OnExecute = acRemovePkgFromSystemExecute
       OnUpdate = acRemovePkgFromSystemUpdate
     end
     object acRemoveAllPkgsFromSystem: TAction
       Caption = 'Ta bort alla paket fr'#229'n systemet'
+      Visible = False
       OnExecute = acRemoveAllPkgsFromSystemExecute
       OnUpdate = acRemoveAllPkgsFromSystemUpdate
     end
@@ -4794,10 +4801,6 @@ object fLoadEntrySSP: TfLoadEntrySSP
       item
         Visible = True
         ItemName = 'dxBarLargeButton1'
-      end
-      item
-        Visible = True
-        ItemName = 'lbPkgNoSerie'
       end
       item
         BeginGroup = True

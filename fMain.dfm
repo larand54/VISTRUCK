@@ -170,10 +170,6 @@ object frmMain: TfrmMain
             Margins.Bottom = 2
             Caption = 'tsUttag'
             ImageIndex = 0
-            ExplicitLeft = 1
-            ExplicitTop = 21
-            ExplicitWidth = 1224
-            ExplicitHeight = 531
             object PanelMain: TPanel
               Left = 0
               Top = 0
@@ -186,8 +182,6 @@ object frmMain: TfrmMain
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 0
-              ExplicitWidth = 1224
-              ExplicitHeight = 531
               object PanelBottom: TPanel
                 Left = 0
                 Top = 59
@@ -200,8 +194,6 @@ object frmMain: TfrmMain
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
-                ExplicitWidth = 1224
-                ExplicitHeight = 472
                 object Panelgrid: TPanel
                   Left = 0
                   Top = 0
@@ -214,8 +206,6 @@ object frmMain: TfrmMain
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 0
-                  ExplicitWidth = 1224
-                  ExplicitHeight = 472
                   object Panel4: TPanel
                     Left = 0
                     Top = 418
@@ -228,8 +218,6 @@ object frmMain: TfrmMain
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitTop = 428
-                    ExplicitWidth = 1224
                   end
                   object grdPkgOutput: TcxGrid
                     Left = 0
@@ -242,8 +230,6 @@ object frmMain: TfrmMain
                     Margins.Bottom = 2
                     Align = alClient
                     TabOrder = 1
-                    ExplicitWidth = 1224
-                    ExplicitHeight = 428
                     object grdPkgOutputDBTableView1: TcxGridDBTableView
                       OnMouseDown = grdPkgOutputDBTableView1MouseDown
                       Navigator.Buttons.CustomButtons = <>
@@ -356,7 +342,6 @@ object frmMain: TfrmMain
                 Align = alTop
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitWidth = 1224
                 object cxButton1: TcxButton
                   Left = 13
                   Top = 5

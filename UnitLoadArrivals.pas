@@ -527,6 +527,8 @@ type
     grdLoadsDBTableView1Lagerkod: TcxGridDBColumn;
     cbNewArrivalQuery: TcxCheckBox;
     cbShowPreliminaryLoads: TcxCheckBox;
+    grdPkgsDBTableView1Info1: TcxGridDBColumn;
+    grdPkgsDBTableView1REFERENCE: TcxGridDBColumn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);

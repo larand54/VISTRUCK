@@ -997,6 +997,7 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cdsArrivingPackages: TFDQuery
+    Active = True
     Indexes = <
       item
         Active = True
@@ -1094,6 +1095,8 @@ object dmArrivingLoads: TdmArrivingLoads
       'and pkg.AvRegPrefix = LD.SupplierCode'
       'and pkg.ProducerNo = csh.CustomerNo),0) AS Used,'
       'pn.Info2,'
+      'pn.BL_NO as Info1,'
+      'pn.REFERENCE,'
       'pac.PackageNo,'
       'pac.SupplierCode,'
       'pac.LoadNo,'
@@ -1162,8 +1165,7 @@ object dmArrivingLoads: TdmArrivingLoads
         ' LD.PackageTypeNo'
       'WHERE'
       'LSP.LoadNo = :LoadNo'
-      'and LSP.ShippingPlanNo = :ShippingPlanNo'
-      '')
+      'and LSP.ShippingPlanNo = :ShippingPlanNo')
     Left = 168
     Top = 24
     ParamData = <
@@ -1364,6 +1366,18 @@ object dmArrivingLoads: TdmArrivingLoads
       FieldName = 'Scanned'
       Origin = 'Scanned'
     end
+    object cdsArrivingPackagesInfo1: TStringField
+      FieldName = 'Info1'
+      Origin = 'Info1'
+      ProviderFlags = []
+      Size = 30
+    end
+    object cdsArrivingPackagesREFERENCE: TStringField
+      FieldName = 'REFERENCE'
+      Origin = 'REFERENCE'
+      ProviderFlags = []
+      Size = 30
+    end
   end
   object sq_GetDefaultCSObjectNo: TFDQuery
     CachedUpdates = True
@@ -1430,7 +1444,6 @@ object dmArrivingLoads: TdmArrivingLoads
     end
   end
   object cds_verkLaster: TFDQuery
-    Active = True
     CachedUpdates = True
     Connection = dmsConnector.FDConnection1
     FetchOptions.AssignedValues = [evCache]

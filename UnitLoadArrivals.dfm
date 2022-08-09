@@ -26,25 +26,23 @@ object frmLoadArrivals: TfrmLoadArrivals
   TextHeight = 13
   object cxSplitter1: TcxSplitter
     Left = 0
-    Top = 496
+    Top = 500
     Width = 1207
-    Height = 8
+    Height = 4
     HotZoneClassName = 'TcxMediaPlayer8Style'
     AlignSplitter = salBottom
     Control = Panel5
     Color = clMaroon
     ParentColor = False
-    ExplicitTop = 500
   end
   object grdLoads: TcxGrid
     Left = 0
     Top = 127
     Width = 1207
-    Height = 369
+    Height = 373
     Align = alClient
     PopupMenu = pmLoads
     TabOrder = 1
-    ExplicitHeight = 373
     object grdLoadsDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       ScrollbarAnnotations.CustomAnnotations = <>
@@ -1128,6 +1126,15 @@ object frmLoadArrivals: TfrmLoadArrivals
         end
         object grdPkgsDBTableView1Scanned: TcxGridDBColumn
           DataBinding.FieldName = 'Scanned'
+          PropertiesClassName = 'TcxLabelProperties'
+        end
+        object grdPkgsDBTableView1Info1: TcxGridDBColumn
+          DataBinding.FieldName = 'Info1'
+          PropertiesClassName = 'TcxLabelProperties'
+        end
+        object grdPkgsDBTableView1REFERENCE: TcxGridDBColumn
+          DataBinding.FieldName = 'REFERENCE'
+          PropertiesClassName = 'TcxLabelProperties'
         end
       end
       object grdPkgsLevel1: TcxGridLevel
@@ -3328,6 +3335,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Kind = lfFlat
     NativeStyle = False
     ScrollbarMode = sbmClassic
+    SkinName = 'Silver'
     Left = 72
     Top = 392
   end
@@ -6192,6 +6200,7 @@ object frmLoadArrivals: TfrmLoadArrivals
     Kind = lfFlat
     NativeStyle = False
     ScrollbarMode = sbmClassic
+    SkinName = 'Silver'
     Left = 912
     Top = 312
   end

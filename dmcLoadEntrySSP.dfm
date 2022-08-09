@@ -60,7 +60,7 @@
     SubLanguageID = 1
     LocaleID = 1024
     AutoUpdateFieldVariables = False
-    Left = 232
+    Left = 304
     Top = 584
     object mtPkgNosPackageNo: TIntegerField
       FieldName = 'PackageNo'
@@ -3155,8 +3155,8 @@
     SubLanguageID = 1
     LocaleID = 1024
     AutoUpdateFieldVariables = False
-    Left = 296
-    Top = 584
+    Left = 304
+    Top = 528
     object mtLoadPropPIPNo: TIntegerField
       FieldName = 'PIPNo'
     end
