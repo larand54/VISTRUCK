@@ -69,7 +69,7 @@ uses
   dxSkinOffice2016Colorful, dxSkinOffice2016Dark, dxSkinOffice2019Black,
   dxSkinOffice2019DarkGray, dxSkinOffice2019White, dxSkinTheBezier,
   dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
-  dxSkinVisualStudio2013Light;
+  dxSkinVisualStudio2013Light, cxGroupBox, cxRadioGroup;
 
   Const
     CM_MOVEIT = WM_USER + 1;
@@ -479,6 +479,8 @@ type
     grdLODBTableView1LoadStatus: TcxGridDBColumn;
     grdLODBTableView1NoOfLoads: TcxGridDBColumn;
     cxDBCheckBox1: TcxDBCheckBox;
+    cxButton11: TcxButton;
+    acSetupForm: TAction;
 
     procedure atAcceptLoadOrderExecute(Sender: TObject);
     procedure atRejectLoadOrderExecute(Sender: TObject);
@@ -609,6 +611,7 @@ type
     procedure grdLODBTableView1CustomDrawGroupCell(
       Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
       AViewInfo: TcxGridTableCellViewInfo; var ADone: Boolean);
+    procedure acSetupFormExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -719,7 +722,7 @@ uses
   uLoadOrderSearch, //UnitCRExportOneReport,
   dmc_UserProps, uSelectPrintDevice , uEnterLoadWeight, //UnitCRPrintOneReport ,
   uLagerPos, uFastReports, dmsUserAdm, uVIS_UTILS, udmFRSystem, uFastReports2, uFixMail, uFRAccessories, uFRConstants,
-  uSamlastInfo;
+  uSamlastInfo, uSetupForm;
 
 procedure TfrmVisTruckLoadOrder.UmAfterDetailChangeINQ(var Message: TMessage) ; //message UM_AFTERDETAILCHANGEINQ;
 Begin
@@ -2331,6 +2334,17 @@ end;
 procedure TfrmVisTruckLoadOrder.acSetToNEWExecute(Sender: TObject);
 begin
  SetLOStatus(Sender, STATUS_NEW);
+end;
+
+procedure TfrmVisTruckLoadOrder.acSetupFormExecute(Sender: TObject);
+var  fSetupForm: TfSetupForm;
+begin
+  fSetupForm:= TfSetupForm.Create(nil) ;
+  Try
+   fSetupForm.ShowModal ;
+  Finally
+    FreeAndNil(fSetupForm) ;
+  End;
 end;
 
 procedure TfrmVisTruckLoadOrder.bbAvropVerkClick(Sender: TObject);

@@ -666,6 +666,10 @@
         <DCCReference Include="..\CommonUnits\VISConst.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSrv.pas"/>
         <DCCReference Include="..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSQLRecords.pas"/>
+        <DCCReference Include="uSetupForm.pas">
+            <Form>fSetupForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Base">

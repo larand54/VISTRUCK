@@ -1108,9 +1108,9 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.IsFontAssigned = True
         end
         object cxButton10: TcxButton
-          Left = 1048
+          Left = 1068
           Top = 66
-          Width = 180
+          Width = 160
           Height = 30
           Action = acSendWoodxDeliveryMessage
           TabOrder = 28
@@ -1155,6 +1155,14 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
           Style.TransparentBorder = False
           Style.IsFontAssigned = True
           TabOrder = 29
+        end
+        object cxButton11: TcxButton
+          Left = 1008
+          Top = 64
+          Width = 57
+          Height = 33
+          Action = acSetupForm
+          TabOrder = 30
         end
       end
     end
@@ -5866,6 +5874,10 @@ object frmVisTruckLoadOrder: TfrmVisTruckLoadOrder
       ImageIndex = 34
       OnExecute = acSendWoodxDeliveryMessageExecute
       OnUpdate = acSendWoodxDeliveryMessageUpdate
+    end
+    object acSetupForm: TAction
+      Caption = 'Setup'
+      OnExecute = acSetupFormExecute
     end
   end
   object pmPrint: TdxBarPopupMenu

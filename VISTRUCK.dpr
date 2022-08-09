@@ -181,7 +181,8 @@ uses
   uCustomizedMailMessage in '..\CommonSources\sendMail\uCustomizedMailMessage.pas',
   VISConst in '..\CommonUnits\VISConst.pas',
   uCMMsgSrv in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSrv.pas',
-  uCMMsgSQLRecords in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSQLRecords.pas';
+  uCMMsgSQLRecords in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSQLRecords.pas',
+  uSetupForm in 'uSetupForm.pas' {fSetupForm};
 
 {$R *.res}
 begin
