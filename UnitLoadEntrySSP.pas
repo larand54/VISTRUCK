@@ -557,6 +557,7 @@ type
 //     TempEditString  : String ;
      gLagerkod : String ;
      LoadEnabled, AddingPkgsFromPkgEntry : Boolean ;
+     function scanLoadID(aMsg, aLoadID: string; aLoadNo, aLONo: integer): string;
      Procedure RefreshLoadDetails ;
      function verifyPackageReference(const aPkgRef: string; const aLO_Number: integer; var aMsg: string; var aErr: integer): string;
      function linkedArticle(const aArticleNo: integer): boolean;
@@ -733,7 +734,11 @@ uses dmcLoadEntrySSP, dlgPickPkg,
 , uFRAccessories, uFRConstants, uFastReports2, uFixMail, udmFRSystem,
   uAddErrorPkgLoad
   , uOAuthMail
-, fMain, uOKDia;
+, fMain, uOKDia
+, VISTRUCK_Interfaces
+, uHandle_LoadID_Input
+, udmLoadId
+;
 {$R *.dfm}
 
 { TfrmLoadEntry }
@@ -4380,6 +4385,31 @@ Begin
  End ;//With
 end;
 
+function TfLoadEntrySSP.scanLoadID(aMsg, aLoadID: string; aLoadNo,
+  aLONo: integer): string;
+var
+  hndlLoadID: ILoadIDScanning;
+  loadIDEvaluator: ILoadIDEvaluator;
+  loadTab: ILoadTab;
+  newLoadRequired: boolean;
+begin
+  result := '';
+  hndlLoadID := THandleLoadIDScanning.create(aLONo, aLoadNo);
+  loadIDEvaluator := TLoadIDEvaluator.Create;
+  newLoadRequired := hndlLoadID.handleInput(aMsg, loadIDEvaluator);
+  loadTab := TLoadIDTab.Create(aLONo, hndlLoadID.LoadNo, hndlLoadID.LoadID);
+  if newLoadRequired then
+  begin
+    //switchToNewLoad
+    result := loadTab.TabName;
+  end;
+  if hndlLoadID.LoadNo <> aLoadNo then
+  begin
+    result := loadTab.TabName;
+  end;
+
+end;
+
 procedure TfLoadEntrySSP.SetLoadRowToChanged ;
 Begin
  With dmLoadEntrySSP do
@@ -7262,6 +7292,8 @@ begin
           mePackageNo.Enabled := false;
           ScanPkgsByArticle(Sender, mePackageNo.Text);
         end
+        else if pos('/8004/',mePackageNo.Text) > 0 then
+          scanLoadID(mePackageNo.Text, cds_LoadHeadLoadID.AsString, cds_LoadHeadLoadNo.AsInteger, cds_LoadHeadShippingPlanNo.AsInteger)
         else
          GetpackageNoEntered(Sender, mePackageNo.Text);
       end;

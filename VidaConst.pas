@@ -7,6 +7,11 @@ uses
 
 
 const
+// Used in LoadID-handling;
+  companyPrefix = '73400119';
+  PRELIMINARY_LOAD_STATUS = 2;
+  KEYEVENTF_KEYDOWN = 0;
+
 //Load status
   LoadPrepaid      = 3 ;
   LoadReady        = 4 ;

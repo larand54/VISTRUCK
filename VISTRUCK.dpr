@@ -182,7 +182,10 @@ uses
   VISConst in '..\CommonUnits\VISConst.pas',
   uCMMsgSrv in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSrv.pas',
   uCMMsgSQLRecords in '..\CommonSources\sendMail\CustomizedMailMessage\uCMMsgSQLRecords.pas',
-  uSetupForm in 'uSetupForm.pas' {fSetupForm};
+  uSetupForm in 'uSetupForm.pas' {fSetupForm},
+  VISTRUCK_Interfaces in 'VISTRUCK_Interfaces.pas',
+  uHandle_LoadID_Input in 'uHandle_LoadID_Input.pas',
+  udmLoadID in 'udmLoadID.pas' {dmLoadID: TDataModule};
 
 {$R *.res}
 begin
@@ -203,6 +206,7 @@ begin
   Application.CreateForm(TdmFRSystem, dmFRSystem);
   Application.CreateForm(TXMLImportExport, XMLImportExport);
   Application.CreateForm(Tdm_ImportWoodx, dm_ImportWoodx);
+  Application.CreateForm(TdmLoadID, dmLoadID);
   //  Application.CreateForm(TForm1, Form1);
   Application.Run
 end.

@@ -670,6 +670,13 @@
             <Form>fSetupForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="VISTRUCK_Interfaces.pas"/>
+        <DCCReference Include="uHandle_LoadID_Input.pas"/>
+        <DCCReference Include="udmLoadID.pas">
+            <Form>dmLoadID</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <None Include="VISTRUCK.todo"/>
         <None Include="ModelSupport_VISTRUCK\default.txaPackage"/>
         <BuildConfiguration Include="Base">

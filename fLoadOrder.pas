@@ -4214,54 +4214,53 @@ begin
 //  dmsConnector.FDConnection1.Params.Values['MonitorBy'] := 'FlatFile';
 //  dmsConnector.FDMoniFlatFileClientLink1.Tracing  := True ;
 // End ;
- LOStatus := dmcOrder.LO_Status(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger) ;
- if LOStatus in [1,3,6,9] then
- Begin
-  tcLO.OnChange := nil ;
+  LOStatus := dmcOrder.LO_Status(dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger);
+  if LOStatus in [1, 3, 6, 9] then
+  begin
+    tcLO.OnChange := nil;
 
-  Try
-   CheckSamlast ;
+    try
+      CheckSamlast;
 
-   CreateLoadForm ;
-   fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange  := nil ;
+      CreateLoadForm;
+      fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange := nil;
 
-   fLoadEntrySSP.ExternSaveLoad ;
+      fLoadEntrySSP.ExternSaveLoad;
 
-   fLoadEntrySSP.CreateWithNewLoad(
-   dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger, //SSP customer
-   dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger, //SSP supplier
-   dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger, //LO
-   dmcOrder.cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
-   dmcOrder.cdsSawmillLoadOrdersLoadingLocationNo.AsInteger,
-   -1{LoadNo},
-   grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
-   grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger,
-   dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString) ;
+      fLoadEntrySSP.CreateWithNewLoad(
+        dmcOrder.cdsSawmillLoadOrdersSPCustomerNo.AsInteger, //SSP customer
+        dmcOrder.cdsSawmillLoadOrdersSupplier.AsInteger, //SSP supplier
+        dmcOrder.cdsSawmillLoadOrdersLONumber.AsInteger, //LO
+        dmcOrder.cdsSawmillLoadOrdersShipToInvPointNo.AsInteger,
+        dmcOrder.cdsSawmillLoadOrdersLoadingLocationNo.AsInteger, -1{LoadNo},
+        grdLODBTableView1.DataController.DataSet.FieldByName('OrderType').AsInteger,
+        grdLODBTableView1.DataController.DataSet.FieldByName('CSH_CustomerNo').AsInteger,
+        dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString);
 
-   fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange  := fLoadEntrySSP.cbShowOriginalLOPropertiesChange ;
-   fLoadEntrySSP.Show ;
+      fLoadEntrySSP.cbShowOriginalLO.Properties.OnChange := fLoadEntrySSP.cbShowOriginalLOPropertiesChange;
+      fLoadEntrySSP.Show;
 //    Application.ProcessMessages ;
 
+      //TLoadNoTab
+      AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString,
+        dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString);
 
-   AddLoadNoTab(dmLoadEntrySSP.cds_LSPShippingPlanNo.AsString, dmLoadEntrySSP.cds_LoadHeadLoadNo.AsString, dmcOrder.cdsSawmillLoadOrdersLagerkod.AsString) ;
+      SetPanelToShowAndHide;
 
-   SetPanelToShowAndHide ;
-
-
-   fLoadEntrySSP.dxBarManager1.LookAndFeel.SkinName := self.dxBarManager1.LookAndFeel.SkinName ;
-  Finally
-   tcLO.OnChange := tcLOChange ;
-  End ;
- End
+      fLoadEntrySSP.dxBarManager1.LookAndFeel.SkinName := self.dxBarManager1.LookAndFeel.SkinName;
+    finally
+      tcLO.OnChange := tcLOChange;
+    end;
+  end
   else
-   Begin
+  begin
     if LOStatus = 0 then
-     ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_6' (* 'LO är inte aktiv' *) ))
-      else
-       if LOStatus = 2 then
-        ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_7' (* 'Avropet är inte aktiv' *) )) ;
-
-   End ;
+      ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_6'
+        (* 'LO är inte aktiv' *) ))
+    else if LOStatus = 2 then
+      ShowMessage(siLangLinked_frmVisTruckLoadOrder.GetTextOrDefault('IDS_7'
+        (* 'Avropet är inte aktiv' *) ));
+  end;
 
 
 //    if dmLoadEntrySSP.cds_LoadHeadLoadNo.AsInteger > 0 then
